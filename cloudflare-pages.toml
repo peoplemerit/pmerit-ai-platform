@@ -1,0 +1,59 @@
+[build]
+  command = "./_build.sh"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "18"
+  NPM_VERSION = "9"
+
+[[redirects]]
+  from = "/api/core/*"
+  to = "https://gabriel-api.peoplemerit.workers.dev/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/users/*"
+  to = "https://gabriel-users.peoplemerit.workers.dev/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/courses/*"
+  to = "https://gabriel-courses.peoplemerit.workers.dev/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/virtual/*"
+  to = "https://gabriel-virtual.peoplemerit.workers.dev/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/tutor/*"
+  to = "https://gabriel-tutor.peoplemerit.workers.dev/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/career/*"
+  to = "https://gabriel-career.peoplemerit.workers.dev/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/dashboard/*"
+  to = "https://gabriel-dashboard.peoplemerit.workers.dev/:splat"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, PUT, DELETE, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization"
+    Cache-Control = "no-cache"

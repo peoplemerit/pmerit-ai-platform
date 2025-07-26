@@ -1,0 +1,14 @@
+[Unit]
+Description=Gabriel AI Platform Cloudflare Tunnel
+After=network.target
+
+[Service]
+Type=simple
+User=gabriel-ai
+WorkingDirectory=/home/gabriel-ai/gabriel-ai-platform-docker
+ExecStart=/usr/local/bin/cloudflared tunnel run gabriel-ai-platform
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

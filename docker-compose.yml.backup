@@ -1,0 +1,190 @@
+version: '3.8'
+
+services:
+  # Database Services
+  gabriel-db:
+    image: postgres:15
+    container_name: gabriel-db
+    environment:
+      POSTGRES_DB: gabriel_ai
+      POSTGRES_USER: gabriel_user
+      POSTGRES_PASSWORD: gabriel_secure_2025
+    volumes:
+      - gabriel_db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - gabriel-network
+
+  gabriel-redis:
+    image: redis:7-alpine
+    container_name: gabriel-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - gabriel-network
+
+  # Gabriel AI Microservices
+  gabriel-core:
+    build: ./containers/gabriel-core
+    container_name: gabriel-core
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=gabriel-db
+      - REDIS_HOST=gabriel-redis
+      - CULTURAL_INTELLIGENCE_ENGINE=configurable
+      - DEFAULT_CULTURAL_CONTEXT=nigeria_launch
+      - GLOBAL_EXPANSION_READY=true
+    depends_on:
+      - gabriel-db
+      - gabriel-redis
+    networks:
+      - gabriel-network
+    volumes:
+      - ./shared:/app/shared
+
+  gabriel-users:
+    build: ./containers/gabriel-users
+    container_name: gabriel-users
+    ports:
+      - "8001:8001"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=gabriel-db
+      - CULTURAL_PROFILE_FEATURES=multi_region_support
+    depends_on:
+      - gabriel-db
+    networks:
+      - gabriel-network
+
+  gabriel-courses:
+    build: ./containers/gabriel-courses
+    container_name: gabriel-courses
+    ports:
+      - "8002:8002"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=gabriel-db
+      - DUAL_MODE_CURRICULUM=remote_local_career
+      - GLOBAL_CURRICULUM_STANDARDS=enabled
+    depends_on:
+      - gabriel-db
+    networks:
+      - gabriel-network
+
+  gabriel-virtual-human:
+    build: ./containers/gabriel-virtual-human
+    container_name: gabriel-virtual-human
+    ports:
+      - "8003:8003"
+    environment:
+      - NODE_ENV=development
+      - TTS_ENGINE=multi_accent_synthesis
+      - CULTURAL_VOICE_PROFILES=configurable_by_region
+    networks:
+      - gabriel-network
+
+  gabriel-assessments:
+    build: ./containers/gabriel-assessments
+    container_name: gabriel-assessments
+    ports:
+      - "8004:8004"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=gabriel-db
+      - EMPLOYER_READINESS_STANDARDS=global_remote_local_configurable
+    depends_on:
+      - gabriel-db
+    networks:
+      - gabriel-network
+
+  gabriel-ocr:
+    build: ./containers/gabriel-ocr
+    container_name: gabriel-ocr
+    ports:
+      - "8005:8005"
+    environment:
+      - NODE_ENV=development
+      - OCR_ENGINE=tesseract_optimized_mobile
+      - MOBILE_CAMERA_OPTIMIZATION=enabled
+    networks:
+      - gabriel-network
+
+  gabriel-ai-tutoring:
+    build: ./containers/gabriel-ai-tutoring
+    container_name: gabriel-ai-tutoring
+    ports:
+      - "8006:8006"
+    environment:
+      - NODE_ENV=development
+      - CLOUDFLARE_BACKEND_INTEGRATION=https://gabriel-ai-backend.peoplemerit.workers.dev
+      - CULTURAL_CONTEXT_ENGINE=configurable_regional_standards
+    networks:
+      - gabriel-network
+
+  gabriel-career:
+    build: ./containers/gabriel-career
+    container_name: gabriel-career
+    ports:
+      - "8007:8007"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=gabriel-db
+      - CAREER_MODES=global_remote_local_configurable
+    depends_on:
+      - gabriel-db
+    networks:
+      - gabriel-network
+
+  gabriel-payments:
+    build: ./containers/gabriel-payments
+    container_name: gabriel-payments
+    ports:
+      - "8008:8008"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=gabriel-db
+      - PAYMENT_PROVIDERS=multi_regional_mobile_money_global_cards
+      - FREE_FIRST_MODEL=enabled
+    depends_on:
+      - gabriel-db
+    networks:
+      - gabriel-network
+
+  gabriel-communication:
+    build: ./containers/gabriel-communication
+    container_name: gabriel-communication
+    ports:
+      - "8009:8009"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=gabriel-db
+      - MULTI_LANGUAGE_SUPPORT=configurable_by_region
+    depends_on:
+      - gabriel-db
+    networks:
+      - gabriel-network
+
+  gabriel-analytics:
+    build: ./containers/gabriel-analytics
+    container_name: gabriel-analytics
+    ports:
+      - "8010:8010"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=gabriel-db
+      - EMPLOYMENT_OUTCOME_TRACKING=enabled
+      - GLOBAL_ANALYTICS_FRAMEWORK=enabled
+    depends_on:
+      - gabriel-db
+    networks:
+      - gabriel-network
+
+volumes:
+  gabriel_db_data:
+
+networks:
+  gabriel-network:
+    driver: bridge

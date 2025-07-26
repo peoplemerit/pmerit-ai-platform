@@ -1,0 +1,38 @@
+# Environment files
+.env
+.env.local
+.env.production
+.env.development
+
+# Docker & Container specific
+docker-compose.override.yml
+/data/uploads/*
+/data/backups/*
+!/data/uploads/.gitkeep
+!/data/backups/.gitkeep
+
+# Container logs and temporary files
+/containers/*/logs/
+/containers/*/tmp/
+/shared/database/data/
+**/node_modules/
+**/__pycache__/
+**/*.pyc
+**/venv/
+**/.venv/
+
+# IDE and system files
+.vscode/settings.json
+.DS_Store
+Thumbs.db
+*.log
+.cache/
+
+# Build outputs
+/frontend/dist/
+/frontend/build/
+/api/dist/
+
+# External content (until organized)
+/external-content/
+/external-drive-import/

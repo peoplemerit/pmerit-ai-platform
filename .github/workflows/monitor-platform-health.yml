@@ -1,0 +1,33 @@
+name: Monitor Gabriel AI Platform Health
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'  # Every 15 minutes
+  workflow_dispatch:
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Check Platform Endpoints
+      run: |
+        echo "🔍 Checking Gabriel AI Platform health..."
+        
+        # Check main Cloudflare Pages
+        echo "📱 Checking Cloudflare Pages..."
+        curl -f https://pmerit-ai-platform.pages.dev || echo "⚠️ Main platform check failed"
+        curl -f https://pmerit-ai-platform-portal.pages.dev || echo "⚠️ Portal check failed"
+        
+        # Check container endpoints (when available)
+        echo "🐳 Checking container endpoints..."
+        curl -f https://gabriel-dashboard.peoplemerit.workers.dev/health || echo "ℹ️ Dashboard endpoint pending"
+        curl -f https://gabriel-api.peoplemerit.workers.dev/health || echo "ℹ️ API endpoint pending"
+        
+        echo "✅ Platform health check completed"
+    
+    - name: Performance Check
+      run: |
+        echo "⚡ Performing performance checks..."
+        # Use curl to check response times
+        time curl -s https://pmerit-ai-platform.pages.dev > /dev/null || echo "Performance check completed"

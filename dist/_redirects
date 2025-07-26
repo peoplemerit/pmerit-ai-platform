@@ -1,0 +1,29 @@
+# Gabriel AI Platform - Enhanced API Routing
+
+# Main API routes to container services
+/api/core/*         https://gabriel-api.peoplemerit.workers.dev/:splat        200
+/api/users/*        https://gabriel-users.peoplemerit.workers.dev/:splat      200
+/api/courses/*      https://gabriel-courses.peoplemerit.workers.dev/:splat    200
+/api/virtual/*      https://gabriel-virtual.peoplemerit.workers.dev/:splat    200
+/api/assess/*       https://gabriel-assess.peoplemerit.workers.dev/:splat     200
+/api/ocr/*          https://gabriel-ocr.peoplemerit.workers.dev/:splat        200
+/api/tutor/*        https://gabriel-tutor.peoplemerit.workers.dev/:splat      200
+/api/career/*       https://gabriel-career.peoplemerit.workers.dev/:splat     200
+/api/payments/*     https://gabriel-payments.peoplemerit.workers.dev/:splat   200
+/api/comms/*        https://gabriel-comms.peoplemerit.workers.dev/:splat      200
+/api/analytics/*    https://gabriel-analytics.peoplemerit.workers.dev/:splat  200
+
+# Management interfaces
+/dashboard/*        https://gabriel-dashboard.peoplemerit.workers.dev/:splat  200
+/portainer/*        https://gabriel-portainer.peoplemerit.workers.dev/:splat  200
+/stats/*            https://gabriel-stats.peoplemerit.workers.dev/:splat      200
+
+# Portal integration
+/portal/*           https://pmerit-ai-platform-portal.pages.dev/:splat        200
+
+# Health checks
+/health             /index.html                                               200
+/api/health         https://gabriel-api.peoplemerit.workers.dev/health        200
+
+# Default routing
+/*                  /index.html                                               200
