@@ -1,0 +1,11 @@
+# Gabriel AI Platform Redirects
+/api/v1/* /api/:splat 200
+/containers/* /api/containers/:splat 200
+/health/* /api/health/:splat 200
+
+# Portal integration
+/admin/* https://pmerit-ai-platform-portal.pages.dev/admin/:splat 200
+/dashboard/* https://pmerit-ai-platform-portal.pages.dev/dashboard/:splat 200
+
+# SPA fallbacks
+/* /index.html 200

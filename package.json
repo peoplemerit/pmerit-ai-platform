@@ -1,0 +1,19 @@
+{
+  "name": "gabriel-ai-platform",
+  "version": "1.0.0",
+  "description": "Gabriel AI Educational Platform - Breaking poverty cycles through accessible education",
+  "main": "index.js",
+  "scripts": {
+    "build": "echo 'Building Gabriel AI Platform...' && npm run optimize",
+    "optimize": "echo 'Optimizing for Nigerian mobile networks...'",
+    "deploy": "wrangler pages deploy dist",
+    "dev": "wrangler pages dev dist",
+    "preview": "wrangler pages dev dist --port 8080"
+  },
+  "keywords": ["education", "nigeria", "career", "docker", "mosa"],
+  "author": "PeopleMerit Gabriel AI Team",
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}

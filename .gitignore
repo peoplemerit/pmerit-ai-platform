@@ -1,38 +1,46 @@
+# Gabriel AI Platform - Git Ignore
+
+# Build outputs
+dist/
+build/
+*.log
+
 # Environment files
 .env
 .env.local
 .env.production
-.env.development
+*.env
 
-# Docker & Container specific
+# Docker
 docker-compose.override.yml
-/data/uploads/*
-/data/backups/*
-!/data/uploads/.gitkeep
-!/data/backups/.gitkeep
+.docker/
 
-# Container logs and temporary files
-/containers/*/logs/
-/containers/*/tmp/
-/shared/database/data/
-**/node_modules/
-**/__pycache__/
-**/*.pyc
-**/venv/
-**/.venv/
+# Node modules
+node_modules/
+npm-debug.log*
 
-# IDE and system files
-.vscode/settings.json
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
 .DS_Store
 Thumbs.db
+
+# Cloudflare
+.wrangler/
+wrangler.toml.backup
+
+# Logs
+logs/
 *.log
-.cache/
 
-# Build outputs
-/frontend/dist/
-/frontend/build/
-/api/dist/
+# Container data
+data/
+backups/
 
-# External content (until organized)
-/external-content/
-/external-drive-import/
+# Temporary files
+tmp/
+temp/
