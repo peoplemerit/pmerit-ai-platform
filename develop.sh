@@ -1,7 +1,9 @@
 #!/bin/bash
-# Gabriel AI Service Platform - Development Workflow
-echo "🚀 Gabriel AI Service Platform Development"
-echo "========================================="
+# Gabriel AI Service Platform - Lean Development Workflow
+export COMPOSE_PROJECT_NAME="gabriel-lean"
+
+echo "🚀 Gabriel AI Service Platform Development (Lean)"
+echo "================================================="
 
 # Start Docker containers
 echo "Starting containers..."
@@ -20,6 +22,10 @@ echo "  Live Portal: https://pmerit-ai-platform-portal.pages.dev"
 
 echo ""
 echo "💻 Development Commands:"
+echo "  ./container-manager.sh status                           # Check status"
+echo "  ./container-manager.sh logs                             # View logs"
+echo "  ./container-manager.sh restart                          # Restart services"
 echo "  git add . && git commit -m 'feat: description' && git push  # Deploy changes"
-echo "  docker-compose logs -f [service]                           # View logs"
-echo "  docker-compose restart [service]                           # Restart service"
+
+echo ""
+echo "🎯 Ready for lean Gabriel AI development!"

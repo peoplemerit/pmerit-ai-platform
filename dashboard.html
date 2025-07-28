@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - PMERIT</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/course-hub.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            padding: 2rem;
+        }
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        .back-link {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .quick-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: #764ba2;
+        }
+        .btn-logout {
+            background: #ef4444;
+        }
+        .btn-logout:hover {
+            background: #dc2626;
+        }
+        .status-box {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <a href="index.html" class="back-link">← Back to Home</a>
+        
+        <div class="welcome-section">
+            <h1 id="dashboardWelcome">Welcome to PMERIT Dashboard!</h1>
+            <p>Your personalized learning hub</p>
+        </div>
+        
+        <div class="quick-actions">
+            <a href="courses.html" class="btn">📚 Browse Courses</a>
+            <button class="btn" onclick="alert('Profile coming soon!')">👤 My Profile</button>
+            <button class="btn" onclick="alert('Settings coming soon!')">⚙️ Settings</button>
+            <button class="btn btn-logout" onclick="handleLogout()">🚪 Logout</button>
+        </div>
+        
+        <div class="status-box">
+            <h3>🎓 Ready to Start Learning!</h3>
+            <p>Your courses and progress will appear here once you enroll.</p>
+            <p><strong>Status:</strong> Dashboard Successfully Loaded</p>
+        </div>
+        
+        <div id="userInfo" style="background: #f0f0f0; padding: 1rem; border-radius: 8px; margin-top: 2rem;">
+            <h4>Session Information:</h4>
+            <p id="sessionDetails">Loading...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/auth.js"></script>
+    <script>
+        // Dashboard initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎓 Dashboard page loaded');
+            
+            // Check session
+            var session = localStorage.getItem('pmerit_session');
+            var sessionDetails = document.getElementById('sessionDetails');
+            var welcomeEl = document.getElementById('dashboardWelcome');
+            
+            if (session) {
+                try {
+                    var data = JSON.parse(session);
+                    if (data.loggedIn) {
+                        welcomeEl.textContent = 'Welcome to PMERIT Dashboard, ' + data.name + '!';
+                        sessionDetails.innerHTML = 
+                            '<strong>User:</strong> ' + data.name + '<br>' +
+                            '<strong>Email:</strong> ' + data.email + '<br>' +
+                            '<strong>Login Time:</strong> ' + new Date(data.time).toLocaleString() + '<br>' +
+                            '<span style="color: green;">✅ Session Active</span>';
+                        console.log('✅ User session found:', data.name);
+                    } else {
+                        sessionDetails.innerHTML = '<span style="color: red;">❌ No active session</span>';
+                    }
+                } catch (e) {
+                    sessionDetails.innerHTML = '<span style="color: red;">❌ Invalid session data</span>';
+                    console.error('Session parse error:', e);
+                }
+            } else {
+                sessionDetails.innerHTML = '<span style="color: red;">❌ No session found</span>';
+                console.log('⚠️ No session found - user should login');
+            }
+        });
+        
+        // Logout function
+        function handleLogout() {
+            localStorage.removeItem('pmerit_session');
+            alert('Logged out successfully!');
+            window.location.href = 'index.html';
+        }
+        
+        // Test functions
+        window.testSession = function() {
+            var session = localStorage.getItem('pmerit_session');
+            console.log('Current session:', session);
+            return session;
+        };
+        
+        console.log('💡 Dashboard ready! Use testSession() to check session data');
+    </script>
+</body>
+</html>

@@ -1,7 +1,10 @@
+# Gabriel AI Platform - Port Conflict Resolution
+# Manual configuration to avoid system service conflicts
+
 version: '3.8'
 
 services:
-  # Database Services
+  # Database Services - Using high ports to avoid conflicts
   gabriel-db:
     image: postgres:15
     container_name: gabriel-db
@@ -12,7 +15,7 @@ services:
     volumes:
       - gabriel_db_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "15432:5432"    # Changed from 5432 to 15432 (high port, unlikely conflict)
     networks:
       - gabriel-network
 
@@ -20,20 +23,22 @@ services:
     image: redis:7-alpine
     container_name: gabriel-redis
     ports:
-      - "6379:6379"
+      - "16379:6379"    # Changed from 6379 to 16379 (high port, unlikely conflict)
     networks:
       - gabriel-network
 
-  # Gabriel AI Microservices
+  # Gabriel AI Microservices - Using 9000+ range
   gabriel-core:
     build: ./containers/gabriel-core
     container_name: gabriel-core
     ports:
-      - "8000:8000"
+      - "9000:8000"     # Core API Gateway
     environment:
       - NODE_ENV=development
       - DB_HOST=gabriel-db
       - REDIS_HOST=gabriel-redis
+      - DB_PORT=5432
+      - REDIS_PORT=6379
       - CULTURAL_INTELLIGENCE_ENGINE=configurable
       - DEFAULT_CULTURAL_CONTEXT=nigeria_launch
       - GLOBAL_EXPANSION_READY=true
@@ -49,10 +54,11 @@ services:
     build: ./containers/gabriel-users
     container_name: gabriel-users
     ports:
-      - "8001:8001"
+      - "9001:8001"     # User Management
     environment:
       - NODE_ENV=development
       - DB_HOST=gabriel-db
+      - DB_PORT=5432
       - CULTURAL_PROFILE_FEATURES=multi_region_support
     depends_on:
       - gabriel-db
@@ -63,10 +69,11 @@ services:
     build: ./containers/gabriel-courses
     container_name: gabriel-courses
     ports:
-      - "8002:8002"
+      - "9002:8002"     # Course Management
     environment:
       - NODE_ENV=development
       - DB_HOST=gabriel-db
+      - DB_PORT=5432
       - DUAL_MODE_CURRICULUM=remote_local_career
       - GLOBAL_CURRICULUM_STANDARDS=enabled
     depends_on:
@@ -78,7 +85,7 @@ services:
     build: ./containers/gabriel-virtual-human
     container_name: gabriel-virtual-human
     ports:
-      - "8003:8003"
+      - "9003:8003"     # Virtual Human & TTS
     environment:
       - NODE_ENV=development
       - TTS_ENGINE=multi_accent_synthesis
@@ -90,10 +97,11 @@ services:
     build: ./containers/gabriel-assessments
     container_name: gabriel-assessments
     ports:
-      - "8004:8004"
+      - "9004:8004"     # Assessment Engine
     environment:
       - NODE_ENV=development
       - DB_HOST=gabriel-db
+      - DB_PORT=5432
       - EMPLOYER_READINESS_STANDARDS=global_remote_local_configurable
     depends_on:
       - gabriel-db
@@ -104,7 +112,7 @@ services:
     build: ./containers/gabriel-ocr
     container_name: gabriel-ocr
     ports:
-      - "8005:8005"
+      - "9005:8005"     # OCR Processing
     environment:
       - NODE_ENV=development
       - OCR_ENGINE=tesseract_optimized_mobile
@@ -116,7 +124,7 @@ services:
     build: ./containers/gabriel-ai-tutoring
     container_name: gabriel-ai-tutoring
     ports:
-      - "8006:8006"
+      - "9006:8006"     # AI Tutoring
     environment:
       - NODE_ENV=development
       - CLOUDFLARE_BACKEND_INTEGRATION=https://gabriel-ai-backend.peoplemerit.workers.dev
@@ -128,10 +136,11 @@ services:
     build: ./containers/gabriel-career
     container_name: gabriel-career
     ports:
-      - "8007:8007"
+      - "9007:8007"     # Career Assessment
     environment:
       - NODE_ENV=development
       - DB_HOST=gabriel-db
+      - DB_PORT=5432
       - CAREER_MODES=global_remote_local_configurable
     depends_on:
       - gabriel-db
@@ -142,10 +151,11 @@ services:
     build: ./containers/gabriel-payments
     container_name: gabriel-payments
     ports:
-      - "8008:8008"
+      - "9008:8008"     # Payment Processing
     environment:
       - NODE_ENV=development
       - DB_HOST=gabriel-db
+      - DB_PORT=5432
       - PAYMENT_PROVIDERS=multi_regional_mobile_money_global_cards
       - FREE_FIRST_MODEL=enabled
     depends_on:
@@ -157,10 +167,11 @@ services:
     build: ./containers/gabriel-communication
     container_name: gabriel-communication
     ports:
-      - "8009:8009"
+      - "9009:8009"     # Multi-language Communication
     environment:
       - NODE_ENV=development
       - DB_HOST=gabriel-db
+      - DB_PORT=5432
       - MULTI_LANGUAGE_SUPPORT=configurable_by_region
     depends_on:
       - gabriel-db
@@ -171,10 +182,11 @@ services:
     build: ./containers/gabriel-analytics
     container_name: gabriel-analytics
     ports:
-      - "8010:8010"
+      - "9010:8010"     # Analytics & Impact Tracking
     environment:
       - NODE_ENV=development
       - DB_HOST=gabriel-db
+      - DB_PORT=5432
       - EMPLOYMENT_OUTCOME_TRACKING=enabled
       - GLOBAL_ANALYTICS_FRAMEWORK=enabled
     depends_on:
@@ -188,3 +200,9 @@ volumes:
 networks:
   gabriel-network:
     driver: bridge
+
+# Port Summary:
+# Database: PostgreSQL 15432, Redis 16379
+# Services: 9000-9010 (Core, Users, Courses, Virtual Human, Assessments, OCR, AI Tutoring, Career, Payments, Communication, Analytics)
+# 
+# These ports should be completely free of conflicts!

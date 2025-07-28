@@ -1,0 +1,22 @@
+{
+    "Servers": {
+        "1": {
+            "Name": "Pmerit Core Database",
+            "Group": "Pmerit AI Platform",
+            "Host": "pmerit-core-db",
+            "Port": 5432,
+            "MaintenanceDB": "pmerit_core",
+            "Username": "pmerit_admin",
+            "SSLMode": "prefer"
+        },
+        "2": {
+            "Name": "Pmerit AI Intelligence Database",
+            "Group": "Pmerit AI Platform",
+            "Host": "pmerit-ai-db",
+            "Port": 5432,
+            "MaintenanceDB": "pmerit_ai",
+            "Username": "pmerit_admin",
+            "SSLMode": "prefer"
+        }
+    }
+}
