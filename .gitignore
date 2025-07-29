@@ -1,35 +1,74 @@
-# Dependencies
+# Dependencies (prevent vulnerable packages)
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+package-lock.json
+__pycache__/
+*.pyc
+vendor/
 
-# Build outputs (prevent accidental inclusion)
+# Build outputs
 dist/
 build/
 .next/
 .nuxt/
 out/
 
-# Environment files
+# Environment files (prevent credential exposure)
 .env
 .env.local
 .env.production
+.env.development
+*.env
+
+# Database files (prevent data exposure)
+*.db
+*.sqlite
+*.sqlite3
+
+# Log files (prevent information disclosure)
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # OS files
 .DS_Store
 Thumbs.db
+desktop.ini
 
-# IDE files
+# IDE files (prevent configuration exposure)
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
 
-# Logs
-logs/
-*.log
+# Temporary files
+tmp/
+temp/
+*.tmp
 
-# Cache
+# Cache directories
 .cache/
 .parcel-cache/
+.npm/
+.yarn/
+
+# Security sensitive files
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+id_rsa*
+id_dsa*
+id_ecdsa*
+id_ed25519*
+
+# Backup files
+*.bak
+*.backup
+*.old

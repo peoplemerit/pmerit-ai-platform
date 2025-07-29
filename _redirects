@@ -1,11 +1,17 @@
-# Gabriel AI Platform Redirects
-/api/v1/* /api/:splat 200
-/containers/* /api/containers/:splat 200
-/health/* /api/health/:splat 200
+# Security Redirects for PMERIT AI Educational Platform
 
-# Portal integration
-/admin/* https://pmerit-ai-platform-portal.pages.dev/admin/:splat 200
-/dashboard/* https://pmerit-ai-platform-portal.pages.dev/dashboard/:splat 200
+# Block access to sensitive files
+/.env* https://pmerit-ai-platform.pages.dev/ 301!
+/config/* https://pmerit-ai-platform.pages.dev/ 301!
+/.git/* https://pmerit-ai-platform.pages.dev/ 301!
+/admin/* https://pmerit-ai-platform-portal.pages.dev/ 301!
 
-# SPA fallbacks
-/* /index.html 200
+# API redirects for production
+/api/* http://localhost:9011/:splat 200
+
+# Student portal (future)
+/student/* /index.html 200
+
+# Default redirects
+/dashboard https://pmerit-ai-platform-portal.pages.dev/ 301
+/portal https://pmerit-ai-platform-portal.pages.dev/ 301
