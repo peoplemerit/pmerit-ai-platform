@@ -1,38 +1,22 @@
+// PMERIT AI Educational Platform - Main JavaScript
+console.log('🎓 PMERIT AI Educational Platform Loaded');
+
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🎓 Gabriel AI - Initializing...');
+    console.log('🌍 Platform ready to serve underserved communities globally');
     
-    // Mobile sidebar toggles
-    const leftSidebar = document.querySelector('.sidebar-left');
-    const rightSidebar = document.querySelector('.sidebar-right');
-    
-    if (leftSidebar) {
-        leftSidebar.addEventListener('click', function() {
-            if (window.innerWidth <= 768) {
-                this.classList.toggle('expanded');
-                if (rightSidebar) rightSidebar.classList.remove('expanded');
-            }
-        });
+    // Add mobile optimizations
+    if ('ontouchstart' in window) {
+        document.body.classList.add('touch-device');
+        console.log('📱 Touch device optimizations active');
     }
     
-    if (rightSidebar) {
-        rightSidebar.addEventListener('click', function() {
-            if (window.innerWidth <= 768) {
-                this.classList.toggle('expanded');
-                if (leftSidebar) leftSidebar.classList.remove('expanded');
-            }
-        });
-    }
-    
-    // Close sidebars when clicking outside
-    document.addEventListener('click', function(e) {
-        if (window.innerWidth <= 768) {
-            const clickedSidebar = e.target.closest('.sidebar-left') || e.target.closest('.sidebar-right');
-            if (!clickedSidebar) {
-                if (leftSidebar) leftSidebar.classList.remove('expanded');
-                if (rightSidebar) rightSidebar.classList.remove('expanded');
-            }
+    // Network optimization for 3G/4G
+    if (navigator.connection && navigator.connection.effectiveType) {
+        const connectionType = navigator.connection.effectiveType;
+        console.log(`📶 Connection: ${connectionType}`);
+        
+        if (connectionType === '3g' || connectionType === '2g') {
+            document.body.classList.add('reduced-motion');
         }
-    });
-    
-    console.log('✅ Platform initialized');
+    }
 });
