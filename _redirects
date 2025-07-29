@@ -1,17 +1,19 @@
-# Security Redirects for PMERIT AI Educational Platform
+# PMERIT AI Educational Platform - Production Redirects
 
-# Block access to sensitive files
-/.env* https://pmerit-ai-platform.pages.dev/ 301!
-/config/* https://pmerit-ai-platform.pages.dev/ 301!
-/.git/* https://pmerit-ai-platform.pages.dev/ 301!
+# Security redirects
+/.env* / 301!
+/api/* https://pmerit-ai-platform-portal.pages.dev/ 301!
+/.git/* / 301!
 /admin/* https://pmerit-ai-platform-portal.pages.dev/ 301!
 
-# API redirects for production
-/api/* http://localhost:9011/:splat 200
+# Platform redirects
+/dashboard https://pmerit-ai-platform-portal.pages.dev/ 301
+/portal https://pmerit-ai-platform-portal.pages.dev/ 301
+/employee https://pmerit-ai-platform-portal.pages.dev/employee/ 301
+/login https://pmerit-ai-platform-portal.pages.dev/ 301
 
 # Student portal (future)
 /student/* /index.html 200
 
-# Default redirects
-/dashboard https://pmerit-ai-platform-portal.pages.dev/ 301
-/portal https://pmerit-ai-platform-portal.pages.dev/ 301
+# Default fallback
+/* /index.html 200
