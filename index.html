@@ -1,308 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PMERIT AI Educational Platform</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
-            color: #1f2937;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        header {
-            text-align: center;
-            color: white;
-            margin-bottom: 3rem;
-        }
-        
-        header h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-        
-        header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-        
-        main {
-            background: white;
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-        
-        .hero {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-        
-        .hero h2 {
-            font-size: 2rem;
-            color: #2563eb;
-            margin-bottom: 1rem;
-        }
-        
-        .hero p {
-            font-size: 1.1rem;
-            color: #6b7280;
-            margin-bottom: 2rem;
-        }
-        
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-        
-        .stat {
-            text-align: center;
-            padding: 1.5rem;
-            background: #f9fafb;
-            border-radius: 8px;
-            border: 1px solid #e5e7eb;
-        }
-        
-        .stat h3 {
-            font-size: 2rem;
-            color: #2563eb;
-            margin-bottom: 0.5rem;
-        }
-        
-        .stat p {
-            color: #6b7280;
-            font-weight: 500;
-        }
-        
-        .access {
-            text-align: center;
-            margin: 3rem 0;
-        }
-        
-        .access h2 {
-            color: #1f2937;
-            margin-bottom: 2rem;
-        }
-        
-        .access-links {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-        
-        .btn-primary {
-            background: #2563eb;
-            color: white;
-        }
-        
-        .btn-secondary {
-            background: #7c3aed;
-            color: white;
-        }
-        
-        .btn-tertiary {
-            background: #059669;
-            color: white;
-        }
-        
-        .btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-        
-        footer {
-            text-align: center;
-            color: white;
-            margin-top: 2rem;
-            opacity: 0.8;
-        }
-        
-        .status {
-            background: #f0f9ff;
-            padding: 1rem;
-            border-radius: 8px;
-            border-left: 4px solid #059669;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .status-indicator {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #059669;
-        }
-        
-        /* Mobile Optimization for Nigerian/US Underserved Communities */
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-            
-            header h1 {
-                font-size: 2rem;
-            }
-            
-            .stats {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-            
-            .access-links {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .btn {
-                width: 100%;
-                max-width: 300px;
-            }
-        }
-        
-        /* Budget Device Optimization */
-        @media (max-width: 480px) {
-            body {
-                font-size: 14px;
-                padding: 10px;
-            }
-            
-            header h1 {
-                font-size: 1.5rem;
-            }
-            
-            main {
-                padding: 1rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PMERIT AI Educational Platform</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>PMERIT AI Educational Platform</h1>
-            <p>Breaking poverty cycles through accessible education</p>
-        </header>
-        
-        <main>
-            <div class="status">
-                <span class="status-indicator"></span>
-                <p><strong>Platform Status:</strong> Service platform operational and ready for global educational access</p>
-            </div>
-            
-            <section class="hero">
-                <h2>Global Educational Access</h2>
-                <p>Serving Nigerian and US underserved communities worldwide</p>
-                
-                <div class="stats">
-                    <div class="stat">
-                        <h3>3+ Billion</h3>
-                        <p>Target Users Globally</p>
-                    </div>
-                    <div class="stat">
-                        <h3>13 Containers</h3>
-                        <p>Microservices Running</p>
-                    </div>
-                    <div class="stat">
-                        <h3>100%</h3>
-                        <p>Platform Uptime</p>
-                    </div>
-                    <div class="stat">
-                        <h3>Ready</h3>
-                        <p>Content Integration</p>
-                    </div>
-                </div>
-            </section>
-            
-            <section class="access">
-                <h2>Platform Access</h2>
-                <div class="access-links">
-                    <a href="https://pmerit-ai-platform-portal.pages.dev" class="btn btn-primary">
-                        🛡️ Admin Portal
-                    </a>
-                    <a href="https://pmerit-ai-platform-portal.pages.dev/employee/login.html" class="btn btn-secondary">
-                        👥 Employee Portal
-                    </a>
-                    <a href="#" class="btn btn-tertiary" onclick="alert('Student portal coming soon!')">
-                        🎓 Student Portal
-                    </a>
-                </div>
-            </section>
-            
-            <section style="background: #f9fafb; padding: 2rem; border-radius: 8px; margin-top: 2rem;">
-                <h2 style="text-align: center; color: #1f2937; margin-bottom: 1rem;">Mission</h2>
-                <p style="text-align: center; color: #6b7280; font-size: 1.1rem; line-height: 1.6;">
-                    Breaking poverty cycles through accessible education and career opportunities 
-                    for underserved communities worldwide, with focus on Nigerian students and 
-                    US underserved populations as primary markets.
-                </p>
-            </section>
-        </main>
-        
-        <footer>
-            <p>&copy; 2025 PMERIT AI Educational Platform</p>
-            <p>Transforming Lives Through Accessible Education</p>
-        </footer>
-    </div>
-    
-    <script>
-        // Simple JavaScript for platform functionality
-        console.log('🎓 PMERIT AI Educational Platform Loaded');
-        console.log('🌍 Ready to serve 3+ billion underserved communities globally');
-        
-        // Mobile optimization detection
-        if (window.innerWidth <= 768) {
-            console.log('📱 Mobile optimization active');
-        }
-        
-        // Network optimization for 3G/4G
-        if (navigator.connection && navigator.connection.effectiveType) {
-            const connectionType = navigator.connection.effectiveType;
-            console.log('📶 Connection type:', connectionType);
-            
-            if (connectionType === '3g' || connectionType === '2g') {
-                document.body.style.background = 'linear-gradient(135deg, #2563eb 0%, #7c3aed 50%)';
-                console.log('🚀 Reduced gradient for slower connections');
-            }
-        }
-        
-        // Simple error handling
-        window.addEventListener('error', function(e) {
-            console.error('Platform Error:', e.error);
-        });
-        
-        // Log when page is fully loaded
-        window.addEventListener('load', function() {
-            console.log('✅ PMERIT AI Platform fully loaded and operational');
-        });
-    </script>
+  <div class="container">
+    <header>
+      <h1>PMERIT AI Educational Platform</h1>
+      <p>Breaking poverty cycles through accessible education</p>
+    </header>
+
+    <main>
+      <div class="status">
+        <span class="status-indicator"></span>
+        <p><strong>Platform Status:</strong> Service platform operational and ready for global educational access</p>
+      </div>
+
+      <section class="hero">
+        <h2>Global Educational Access</h2>
+        <p>Serving Nigerian and US underserved communities worldwide</p>
+        <div class="stats">
+          <div class="stat">
+            <h3>3+ Billion</h3>
+            <p>Target Users Globally</p>
+          </div>
+          <div class="stat">
+            <h3>13 Containers</h3>
+            <p>Microservices Running</p>
+          </div>
+          <div class="stat">
+            <h3>100%</h3>
+            <p>Platform Uptime</p>
+          </div>
+          <div class="stat">
+            <h3>Ready</h3>
+            <p>Content Integration</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="access">
+        <h2>Platform Access</h2>
+        <div class="access-links">
+          <a href="https://pmerit-ai-platform-portal.pages.dev" class="btn btn-primary">
+            🛡️ Admin Portal
+          </a>
+          <a href="https://pmerit-ai-platform-portal.pages.dev/employee/login.html" class="btn btn-secondary">
+            👥 Employee Portal
+          </a>
+          <a href="#" class="btn btn-tertiary" onclick="alert('Student portal coming soon!')">
+            🎓 Student Portal
+          </a>
+        </div>
+      </section>
+
+      <section class="mission-box">
+        <h2>Mission</h2>
+        <p>
+          Breaking poverty cycles through accessible education and career opportunities 
+          for underserved communities worldwide, with a focus on Nigerian students and 
+          US underserved populations as primary markets.
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 PMERIT AI Educational Platform</p>
+      <p>Transforming Lives Through Accessible Education</p>
+    </footer>
+  </div>
+  <script src="js/main.js"></script>
 </body>
 </html>
