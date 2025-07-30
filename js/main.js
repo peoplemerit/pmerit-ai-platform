@@ -1,22 +1,17 @@
 // PMERIT AI Educational Platform - Main JavaScript
-console.log('🎓 PMERIT AI Educational Platform Loaded');
-
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🌍 Platform ready to serve underserved communities globally');
-    
-    // Add mobile optimizations
-    if ('ontouchstart' in window) {
-        document.body.classList.add('touch-device');
-        console.log('📱 Touch device optimizations active');
+  console.log('🎓 PMERIT AI Educational Platform Loaded');
+  // Mobile optimization detection
+  if (window.innerWidth <= 768) {
+    console.log('📱 Mobile optimization active');
+  }
+  // Network optimization for 3G/4G
+  if (navigator.connection && navigator.connection.effectiveType) {
+    const connectionType = navigator.connection.effectiveType;
+    console.log('📶 Connection type:', connectionType);
+    if (connectionType === '3g' || connectionType === '2g') {
+      document.body.style.background = 'linear-gradient(135deg, #2563eb 0%, #7c3aed 50%)';
+      console.log('🚀 Reduced gradient for slower connections');
     }
-    
-    // Network optimization for 3G/4G
-    if (navigator.connection && navigator.connection.effectiveType) {
-        const connectionType = navigator.connection.effectiveType;
-        console.log(`📶 Connection: ${connectionType}`);
-        
-        if (connectionType === '3g' || connectionType === '2g') {
-            document.body.classList.add('reduced-motion');
-        }
-    }
+  }
 });
