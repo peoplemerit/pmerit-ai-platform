@@ -1,0 +1,48 @@
+# ===========================================
+# PMERIT PLATFORM .gitignore
+# ===========================================
+
+# Environment Files
+.env
+.env.local
+.env.development
+.env.production
+.env.staging
+
+# Docker
+docker-compose.override.yml
+.dockerignore
+
+# Logs
+logs/
+*.log
+
+# Data directories (local development)
+data/postgres/
+data/redis/
+data/uploads/
+data/ai-models/
+
+# Backups
+backups/
+
+# IDE and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Node modules (if using Node.js services)
+node_modules/
+npm-debug.log
+
+# Python (if using Python services)
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
