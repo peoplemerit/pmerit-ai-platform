@@ -5,12 +5,96 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🎓 PMERIT - Empowering Learning Through Innovation</title>
     
-    <!-- Modular CSS Files -->
+    <style>
+        :root {
+            --color-white: #fff;
+            --color-off-white: #f1f5f9;
+            --color-gray-50: #f8fafc;
+            --color-gray-100: #f1f5f9;
+            --color-gray-200: #e2e8f0;
+            --color-gray-300: #cbd5e1;
+            --color-gray-400: #94a3b8;
+            --color-gray-500: #64748b;
+            --color-gray-600: #475569;
+            --color-gray-700: #334155;
+            --color-gray-800: #1e293b;
+            --color-gray-900: #0f172a;
+            --color-blue-100: #dbeafe;
+            --color-blue-200: #bfdbfe;
+            --color-blue-500: #3b82f6;
+            --color-blue-600: #2563eb;
+            --color-purple-500: #8b5cf6;
+            --color-purple-600: #7c3aed;
+            --color-indigo-600: #4f46e5;
+            --color-indigo-700: #4338ca;
+            --color-indigo-800: #3730a3;
+            --color-primary: var(--color-blue-600);
+            --color-accent: var(--color-purple-600);
+            --color-text: var(--color-gray-700);
+            --color-text-light: var(--color-gray-500);
+            --color-border: var(--color-gray-300);
+            --color-background-panel: var(--color-white);
+            --color-background-page: var(--color-off-white);
+            --shell-max-width: 1200px;
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 12px;
+            --spacing-lg: 16px;
+            --spacing-xl: 24px;
+            --spacing-2xl: 32px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--color-background-page);
+            color: var(--color-text);
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .shell {
+            max-width: var(--shell-max-width);
+            margin: 0 auto;
+            padding: 0 var(--spacing-lg);
+        }
+
+        .shell.wrap {
+            padding: var(--spacing-lg);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--color-text);
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: 9999px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease-in-out;
+        }
+        .btn:hover { background: var(--color-gray-100); }
+        .btn:focus { outline: 2px solid var(--color-blue-500); outline-offset: 2px; }
+        .btn:active { transform: scale(0.98); }
+        .btn-primary {
+            color: var(--color-white);
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+        .btn-primary:hover { background: var(--color-blue-700); border-color: var(--color-blue-700); }
+        .btn-primary:disabled { background: var(--color-gray-300); border-color: var(--color-gray-300); cursor: not-allowed; }
+    </style>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/chat.css">
     <link rel="stylesheet" href="css/responsive.css">
     
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -30,30 +114,31 @@
 <body>
     <div class="app-container">
         <header class="header">
-            <div class="header-content">
-                <div class="logo">🎓 PMERIT</div>
-                
-                <div class="header-center">
-                    <h1>Empowering Learning Through Innovation</h1>
-                    <p>Accessible, high-quality education for global opportunities</p>
-                </div>
-                
-                <nav class="nav-actions">
-                    <select class="language-selector">
-                        <option value="en">🌍 English</option>
-                        <option value="yo">Yoruba</option>
-                        <option value="ig">Igbo</option>
-                        <option value="ha">Hausa</option>
-                    </select>
-                    <a href="courses.html" class="btn btn-pricing">💰 Pricing</a>
-                    <a href="signin.html" class="btn btn-signin">Sign In</a>
-                   <!--- <a href="dashboard.html" class="btn btn-primary">Start Learning</a>--->
+            <div class="shell wrap">
+                <div class="header-content">
+                    <div class="logo">🎓 PMERIT</div>
+                    
+                    <div class="header-center">
+                        <h1>Empowering Learning Through Innovation</h1>
+                        <p>Accessible, high-quality education for global opportunities</p>
+                    </div>
+                    
+                    <nav class="nav-actions">
+                        <select class="language-selector">
+                            <option value="en">🌍 English</option>
+                            <option value="yo">Yoruba</option>
+                            <option value="ig">Igbo</option>
+                            <option value="ha">Hausa</option>
+                        </select>
+                        <a href="courses.html" class="btn btn-pricing">💰 Pricing</a>
+                        <a href="signin.html" class="btn btn-signin">Sign In</a>
                     <a href="#" id="startLearningBtn" class="btn btn-primary">Start Learning</a>
-                </nav>
+                    </nav>
+                </div>
             </div>
         </header>
 
-        <main class="main-content">
+        <main class="main-content shell">
             <aside class="sidebar-left" id="leftSidebar">
                 <div class="sidebar-header">
                     <div class="avatar-container">
@@ -88,7 +173,7 @@
                         <span class="icon">📋</span>
                         <span class="label">Assessments</span>
                     </div>
-                    <div class="action-item" data-action="subjects">
+                    <div class="action-item" data-action="subjects" onclick="location.hash='#/paths'">
                         <span class="icon">📚</span>
                         <span class="label">Subjects</span>
                     </div>
@@ -140,6 +225,48 @@
                 </div>
             </section>
 
+            <section id="pathsPage" class="panel" hidden aria-labelledby="pathsTitle" style="background:#fff;border:1px solid #e5e7eb;border-radius:16px;box-shadow:0 10px 24px rgba(2,6,23,.06);padding:16px;">
+                <div class="panel-head" style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px;">
+                    <h3 id="pathsTitle" style="margin:0">Explore Career Paths</h3>
+                    <button class="btn btn-primary" id="gotoCoursesFromPaths" type="button">View Courses</button>
+                </div>
+                <div id="pathsList" class="cards" style="display:grid;gap:12px;"></div>
+            </section>
+
+            <section id="pathDetailPage" class="panel" hidden aria-labelledby="pathDetailTitle" style="background:#fff;border:1px solid #e5e7eb;border-radius:16px;box-shadow:0 10px 24px rgba(2,6,23,.06);padding:16px;">
+                <div class="panel-head" style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px;">
+                    <h3 id="pathDetailTitle" style="margin:0">Path</h3>
+                    <div style="display:flex;gap:8px;">
+                        <button class="btn" type="button" id="backToPaths">← All Paths</button>
+                        <button class="btn btn-primary" type="button" id="viewRelatedCourses">View related courses</button>
+                    </div>
+                </div>
+                <div id="pathDetail" style="display:grid;gap:12px;"></div>
+            </section>
+
+            <section id="coursesPage" class="panel" hidden aria-labelledby="coursesTitle" style="background:#fff;border:1px solid #e5e7eb;border-radius:16px;box-shadow:0 10px 24px rgba(2,6,23,.06);padding:16px;">
+                <div class="panel-head" style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px;">
+                    <h3 id="coursesTitle" style="margin:0">Courses</h3>
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        <select id="pathFilter" title="Filter by path"></select>
+                        <button class="btn btn-primary" id="openCart" type="button">Cart (0)</button>
+                    </div>
+                </div>
+                <div id="coursesList" class="cards" style="display:grid;gap:12px;"></div>
+            </section>
+
+            <section id="cartPage" class="panel" hidden aria-labelledby="cartTitle" style="background:#fff;border:1px solid #e5e7eb;border-radius:16px;box-shadow:0 10px 24px rgba(2,6,23,.06);padding:16px;">
+                <div class="panel-head" style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px;">
+                    <h3 id="cartTitle" style="margin:0">Your Cart</h3>
+                    <button class="btn" id="backToCourses" type="button">← Back to courses</button>
+                </div>
+                <div id="cartList" class="cards" style="display:grid;gap:12px;"></div>
+                <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:8px;">
+                    <button class="btn" id="clearCart" type="button">Clear</button>
+                    <button class="btn btn-primary" id="submitCart" type="button">Submit Registration</button>
+                </div>
+                <p id="cartNote" style="margin-top:8px;color:#64748b;font-size:.95rem;">Already-registered classes can’t be re-added. Drop from Dashboard to re-enable.</p>
+            </section>
             <aside class="sidebar-right" id="rightSidebar">
                 <div class="discovery-section">
                     <div class="section-header">
@@ -181,11 +308,190 @@
         </main>
     </div>
 
-    <!-- Modular JavaScript Files -->
     <script src="js/main.js"></script>
     <script src="js/chat.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/components.js"></script>
     <script src="js/pmerit-diagnostic-bot.js"></script>
+
+    <script>
+    (function () {
+      const $ = (s,r=document)=>r.querySelector(s);
+      const show = ids => {
+        const idsAll = ['pathsPage','pathDetailPage','coursesPage','cartPage','chatContainer'];
+        // center column: we toggle chat-container vs our pages
+        const chat = document.querySelector('.chat-container');
+        if (chat) chat.hidden = !ids.includes('chatContainer');
+        ['pathsPage','pathDetailPage','coursesPage','cartPage'].forEach(id=>{
+          const el = $('#'+id); if (el) el.hidden = !ids.includes(id);
+        });
+      };
+
+      // --------- Fallback data (replace with real API when available) ----------
+      const PATHS_FALLBACK = [
+        { id:'uiux',   title:'UI/UX Design',   summary:'From research to prototypes; build user-centered products.', level:'beginner',   estTime:'6–8 weeks' },
+        { id:'data',   title:'Data Analytics', summary:'Collect, clean, and analyze data to drive decisions.',       level:'beginner',   estTime:'6–8 weeks' },
+        { id:'fsdev',  title:'Full-Stack Dev', summary:'Front + back end fundamentals for web apps.',                level:'intermediate', estTime:'8–12 weeks' },
+        { id:'dmkt',   title:'Digital Marketing', summary:'SEO, content, ads—launch and measure campaigns.', level:'beginner',   estTime:'4–6 weeks' },
+        { id:'cs',     title:'Customer Support (Remote)', summary:'Tickets, chat, tools, and empathy at scale.',    level:'beginner',   estTime:'4–6 weeks' },
+        { id:'cloud',  title:'Cloud & DevOps (Intro)', summary:'Containers, CI/CD, and basic cloud ops.',           level:'intro',      estTime:'6–8 weeks' }
+      ];
+      const COURSES_FALLBACK = [
+        { id:'ux101',   pathId:'uiux',  title:'UX Fundamentals',      code:'UX-101', duration:'6w', schedule:'Self-paced', instructor:'Staff', availability:'Open' },
+        { id:'ux201',   pathId:'uiux',  title:'Prototyping in Figma', code:'UX-201', duration:'4w', schedule:'Cohort Tue', instructor:'Staff', availability:'Open' },
+        { id:'da101',   pathId:'data',  title:'Intro to Analytics',   code:'DA-101', duration:'6w', schedule:'Self-paced', instructor:'Staff', availability:'Open' },
+        { id:'fs101',   pathId:'fsdev', title:'Web Foundations',      code:'FS-101', duration:'8w', schedule:'Cohort Thu', instructor:'Staff', availability:'Open' },
+        { id:'dm101',   pathId:'dmkt',  title:'SEO Essentials',       code:'DM-101', duration:'4w', schedule:'Self-paced', instructor:'Staff', availability:'Open' },
+        { id:'cs101',   pathId:'cs',    title:'Support Operations',   code:'CS-101', duration:'4w', schedule:'Self-paced', instructor:'Staff', availability:'Open' },
+        { id:'cl101',   pathId:'cloud', title:'Docker & CI Basics',   code:'CL-101', duration:'6w', schedule:'Cohort Sat', instructor:'Staff', availability:'Open' }
+      ];
+      async function fetchJSON(u){ const r=await fetch(u,{headers:{'accept':'application/json'}}); if(!r.ok) throw new Error(r.status); return r.json(); }
+      async function loadPaths(){ try{ return await fetchJSON('/api/paths'); } catch{ return PATHS_FALLBACK; } }
+      async function loadPath(id){ try{ return await fetchJSON('/api/paths/'+id); } catch{ return PATHS_FALLBACK.find(p=>p.id===id)||null; } }
+      async function loadCourses(pathId){
+        try{ const q = pathId?('?path='+encodeURIComponent(pathId)) : ''; return await fetchJSON('/api/courses'+q); }
+        catch{ return COURSES_FALLBACK.filter(c=>!pathId || c.pathId===pathId); }
+      }
+
+      // --------- Cart helpers (localStorage; backend-first on submit) ----------
+      const CART_KEY = 'pmerit_cart', REG_KEY='pmerit_registered';
+      const read = k => { try{ return JSON.parse(localStorage.getItem(k)||'[]'); }catch{ return []; } };
+      const write = (k,v) => { try{ localStorage.setItem(k, JSON.stringify(v)); }catch{} };
+      function setCartCount(n){ const b=$('#openCart'); if(b) b.textContent = `Cart (${n})`; }
+
+      function addToCart(courseId){
+        const reg = new Set(read(REG_KEY)); if (reg.has(courseId)) return; // already registered
+        const cart = new Set(read(CART_KEY)); cart.add(courseId); write(CART_KEY,[...cart]); setCartCount(cart.size);
+      }
+      function removeFromCart(courseId){ const cart = new Set(read(CART_KEY)); cart.delete(courseId); write(CART_KEY,[...cart]); setCartCount(cart.size); renderCartPage(); }
+      function clearCart(){ write(CART_KEY,[]); setCartCount(0); renderCartPage(); }
+
+      async function submitCart(){
+        const ids = read(CART_KEY);
+        if(!ids.length) return alert('Cart is empty.');
+        try{
+          // Try real API first
+          const res = await fetch('/api/registrations', {method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({courseIds: ids})});
+          if(!res.ok) throw 0;
+          const {registered=[]} = await res.json().catch(()=>({registered:ids}));
+          write(CART_KEY,[]);
+          write(REG_KEY, Array.from(new Set([...read(REG_KEY), ...registered])));
+          setCartCount(0);
+          alert('Registered! Your classes will appear in Dashboard.');
+        }catch{
+          // Fallback: move cart → registered locally
+          write(REG_KEY, Array.from(new Set([...read(REG_KEY), ...ids])));
+          write(CART_KEY,[]);
+          setCartCount(0);
+          alert('Registered (local). Replace with backend when ready.');
+        }
+        location.hash = '#/courses';
+      }
+
+      // --------- Renderers ----------
+      async function renderPathsPage(){
+        const list = await loadPaths();
+        const host = $('#pathsList'); host.innerHTML = '';
+        list.forEach(p=>{
+          const card = document.createElement('div');
+          card.style.cssText='border:1px solid #e5e7eb;border-left:4px solid #6366f1;border-radius:12px;padding:12px;';
+          card.innerHTML = `
+            <h4 style="margin:.1rem 0 .25rem">${p.title}</h4>
+            <p style="margin:0 0 .5rem;color:#64748b">${p.summary||''}</p>
+            <div style="opacity:.85;margin-bottom:.75rem;">Level: <strong>${p.level||'—'}</strong> • Est: <strong>${p.estTime||'—'}</strong></div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-primary" data-view="${p.id}">View details</button>
+              <button class="btn" data-courses="${p.id}">View courses</button>
+            </div>`;
+          card.querySelector('[data-view]').onclick = ()=> navigate(`#/paths/${p.id}`);
+          card.querySelector('[data-courses]').onclick = ()=> navigate(`#/courses?path=${encodeURIComponent(p.id)}`);
+          host.appendChild(card);
+        });
+        // hydrate filter in courses page
+        const sel = $('#pathFilter'); if (sel){ sel.innerHTML = '<option value="">All paths</option>' + list.map(p=>`<option value="${p.id}">${p.title}</option>`).join(''); }
+      }
+
+      async function renderPathDetailPage(id){
+        const p = await loadPath(id) || {};
+        $('#pathDetailTitle').textContent = p.title || 'Path';
+        const host = $('#pathDetail'); host.innerHTML='';
+        const mods = p.modules || ['Orientation & Outcomes','Core fundamentals','Hands-on project','Assessment & feedback'];
+        host.innerHTML = `
+          <div style="border:1px solid #e5e7eb;border-radius:12px;padding:12px;">
+            <p style="color:#475569">${p.summary||''}</p>
+            <ul style="margin:.5rem 0 1rem;padding-left:1.1rem">${mods.map(m=>`<li>${m}</li>`).join('')}</ul>
+            <div style="opacity:.85;margin-bottom:.75rem;">Level: <strong>${p.level||'—'}</strong> • Est: <strong>${p.estTime||'—'}</strong></div>
+          </div>`;
+        $('#viewRelatedCourses').onclick = ()=> navigate(`#/courses?path=${encodeURIComponent(id)}`);
+      }
+
+      async function renderCoursesPage(){
+        const params = new URLSearchParams((location.hash.split('?')[1]||''));
+        const pathId = params.get('path') || $('#pathFilter')?.value || '';
+        if ($('#pathFilter')) $('#pathFilter').value = pathId;
+        const list = await loadCourses(pathId);
+        const registered = new Set(read(REG_KEY));
+        const inCart = new Set(read(CART_KEY));
+        setCartCount(inCart.size);
+
+        const host = $('#coursesList'); host.innerHTML='';
+        list.forEach(c=>{
+          const disabled = registered.has(c.id);
+          const card = document.createElement('div');
+          card.style.cssText='border:1px solid #e5e7eb;border-left:4px solid #6366f1;border-radius:12px;padding:12px;';
+          card.innerHTML = `
+            <h4 style="margin:.1rem 0 .25rem">${c.title} <span style="opacity:.65;font-weight:600">(${c.code})</span></h4>
+            <p style="margin:0 0 .5rem;color:#64748b">Dur: <strong>${c.duration}</strong> • ${c.schedule} • ${c.availability}</p>
+            <div style="display:flex;gap:8px;">
+              <button class="btn ${inCart.has(c.id)?'btn-primary':''}" data-add="${c.id}" ${disabled?'disabled':''}>${disabled?'Registered':'Add to Cart'}</button>
+              <button class="btn" data-remove="${c.id}" ${inCart.has(c.id)?'':'disabled'}>Remove</button>
+            </div>`;
+          card.querySelector('[data-add]').onclick = ()=>{ addToCart(c.id); renderCoursesPage(); };
+          card.querySelector('[data-remove]').onclick = ()=>{ removeFromCart(c.id); };
+          host.appendChild(card);
+        });
+      }
+
+      function renderCartPage(){
+        const ids = read(CART_KEY);
+        const byId = new Map(COURSES_FALLBACK.map(c=>[c.id,c]));
+        const host = $('#cartList'); host.innerHTML = '';
+        if(!ids.length){ host.innerHTML = '<p style="color:#64748b">Your cart is empty.</p>'; return; }
+        ids.forEach(id=>{
+          const c = byId.get(id) || {title:id, code:''};
+          const row = document.createElement('div');
+          row.style.cssText='border:1px solid #e5e7eb;border-radius:12px;padding:12px;display:flex;align-items:center;justify-content:space-between;gap:8px;';
+          row.innerHTML = `<div><strong>${c.title}</strong> <span style="opacity:.65">${c.code||''}</span></div>
+                           <button class="btn" data-remove="${id}">Remove</button>`;
+          row.querySelector('[data-remove]').onclick = ()=> removeFromCart(id);
+          host.appendChild(row);
+        });
+      }
+
+      // --------- Router ----------
+      function navigate(hash){ location.hash = hash; }
+      function route(){
+        const h = location.hash || '';
+        if (h.startsWith('#/paths/')) { const id = h.split('/')[2]; renderPathDetailPage(id); show(['pathDetailPage']); return; }
+        if (h.startsWith('#/paths'))   { renderPathsPage(); show(['pathsPage']); return; }
+        if (h.startsWith('#/courses')) { renderCoursesPage(); show(['coursesPage']); return; }
+        if (h.startsWith('#/cart'))    { renderCartPage(); show(['cartPage']); return; }
+        show(['chatContainer']); // default: original chat
+      }
+      window.addEventListener('hashchange', route);
+      document.addEventListener('DOMContentLoaded', route);
+
+      // --------- Wire UI controls on left pane ----------
+      document.querySelector('[data-action="subjects"]')?.addEventListener('click',()=>navigate('#/paths'));
+      document.querySelector('[data-action="assessments"]')?.addEventListener('click',()=>alert('Assessments open here'));
+      $('#gotoCoursesFromPaths')?.addEventListener('click', ()=> navigate('#/courses'));
+      $('#backToPaths')?.addEventListener('click', ()=> navigate('#/paths'));
+      $('#openCart')?.addEventListener('click', ()=> navigate('#/cart'));
+      $('#backToCourses')?.addEventListener('click', ()=> navigate('#/courses'));
+      $('#clearCart')?.addEventListener('click', clearCart);
+      $('#submitCart')?.addEventListener('click', submitCart);
+      $('#pathFilter')?.addEventListener('change', ()=> navigate('#/courses?path='+encodeURIComponent($('#pathFilter').value||'')));
+    })();
+    </script>
 </body>
 </html>
