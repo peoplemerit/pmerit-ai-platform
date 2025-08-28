@@ -11,17 +11,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 
-  <!--
-    PMERIT Home — Auth-aware Dashboard button + Sign Up modal
-    - Guests: clicking Dashboard opens Sign Up modal.
-    - Signed-in: clicking Dashboard goes to dashboard.html.
-    - Guests never see Profile/Assessments/Subjects/Progress on Home.
-    - White, airy baseline. Non-scrollable desktop layout with header/footer bounds.
-  -->
   <style>
     :root{
-      --brand:#2563EB;        /* global blue */
-      --accent:#7C3AED;       /* purple accent */
+      --brand:#2563EB;        /* blue */
+      --accent:#7C3AED;       /* purple */
       --ok:#16A34A;           /* green */
       --ink:#0f172a;
       --muted:#64748b;
@@ -34,14 +27,11 @@
       --header-h:74px;
       --footer-h:52px;
     }
-
-    /* Dark mode vars */
     .dark{
       --bg:#0f172a; --bg2:#111827; --card:#111827;
       --ink:#e5e7eb; --muted:#9ca3af; --border:#334155;
       --shadow:0 8px 28px rgba(0,0,0,.45);
     }
-
     html,body{height:100%;margin:0}
     body{
       background:var(--bg); color:var(--ink);
@@ -59,19 +49,21 @@
     .logo{font-weight:800; letter-spacing:.2px; color:var(--brand); font-size:1.25rem}
     .logo span{color:var(--ok)}
     nav{display:flex; gap:.5rem; align-items:center; flex-wrap:wrap}
-    select,.btn{border:1px solid var(--border); background:#fff; color:var(--ink);
+    select,.btn{
+      border:1px solid var(--border); background:#fff; color:var(--ink);
       padding:.55rem .8rem; border-radius:999px; min-height:44px; font-weight:600;
-      cursor:pointer; transition:var(--trans)}
+      cursor:pointer; transition:var(--trans)
+    }
     .btn:hover,select:hover{border-color:var(--brand)}
     .btn.primary{background:var(--brand); color:#fff; border-color:var(--brand)}
     .btn.primary:hover{filter:brightness(.97)}
     .btn.ghost{background:transparent}
     .btn.accent{background:var(--accent); color:#fff; border-color:var(--accent)}
 
-    /* Estate grid */
+    /* Estate grid (non-scroll desktop) */
     .estate{
       flex:1 1 auto; height:calc(100vh - var(--header-h) - var(--footer-h));
-      display:grid; grid-template-columns:280px minmax(560px,1fr) 340px;
+      display:grid; grid-template-columns:280px minmax(560px,1fr) 360px;
       overflow:hidden; gap:0;
     }
     aside, main{height:100%; overflow-y:auto; background:var(--bg)}
@@ -104,7 +96,7 @@
       background:linear-gradient(135deg,var(--brand),var(--ok)); color:#fff; margin:.25rem auto 0; border:3px solid var(--border)}
     .avatar.active{display:grid}
 
-    /* Center panel (chat) */
+    /* Center (chat) */
     .panel{height:100%; display:flex; flex-direction:column; background:var(--card);
       border:1px solid var(--border); border-radius:1rem; margin:1rem; box-shadow:var(--shadow); overflow:hidden}
     .panel-head{flex:0 0 auto; padding:1rem; border-bottom:1px solid var(--border); background:var(--bg2);
@@ -130,7 +122,7 @@
     .count{font-size:.92rem; color:var(--muted)}
     .send{border:none; background:var(--brand); color:#fff; padding:.55rem 1rem; border-radius:.55rem; font-weight:800; cursor:pointer}
 
-    /* Virtual Human stage (hidden by default) */
+    /* Virtual Human stage */
     #vhStage{display:none; flex-direction:column; height:100%}
     .stage{flex:1 1 auto; display:grid; place-items:center; padding:1rem}
     .human-frame{width:min(700px,92%); height:min(420px,55vh); border:2px solid var(--brand); border-radius:1rem; box-shadow:var(--shadow);
@@ -145,21 +137,20 @@
     .support-assistant h4{margin:0; color:var(--ok)}
     #right h3{margin:.25rem 0 .75rem; position:relative; padding-bottom:.35rem}
     #right h3::after{content:""; position:absolute; left:0; bottom:0; width:48px; height:3px; background:var(--brand); border-radius:2px}
-    .cards{display:grid; gap:.6rem}
-    .card{background:var(--card); border:1px solid var(--border); border-left:4px solid var(--brand);
-      border-radius:.8rem; padding:.9rem; box-shadow:var(--shadow)}
-    .card:nth-of-type(2){border-left-color:var(--ok)}
-    .card:nth-of-type(3){border-left-color:var(--accent)}
-    .card h4{margin:.1rem 0 .35rem; display:flex; align-items:center; gap:.5rem}
-    .card p{margin:0 0 .6rem; color:var(--muted); font-size:.95rem}
-    .cta{width:100%; border:none; border-radius:.55rem; padding:.55rem .8rem; background:var(--brand); color:#fff; font-weight:800; min-height:44px}
+
+    .discover{background:var(--card); border:1px solid var(--border); border-radius:1rem; box-shadow:var(--shadow); padding:1rem; display:flex; flex-direction:column; gap:.75rem}
+    .discover h4{margin:.25rem 0}
+    .discover p{margin:.25rem 0 .5rem; color:var(--muted)}
+    .discover .insights{border-top:1px dashed var(--border); padding-top:.5rem; color:var(--muted); font-size:.95rem; min-height:2.2em}
 
     /* Footer */
     footer{
       position:fixed; bottom:0; left:0; width:100%; height:var(--footer-h);
-      border-top:1px solid var(--border); background:var(--bg2); display:flex; align-items:center; justify-content:center; gap:1rem; padding:.5rem .75rem; z-index:5
+      border-top:1px solid var(--border); background:var(--bg2);
+      display:flex; align-items:center; justify-content:center; gap:1rem; padding:.5rem .75rem; z-index:5
     }
     .footer-status{font-weight:700; color:var(--brand); font-size:.94rem}
+    .footer-links{display:flex; gap:.5rem; flex-wrap:wrap}
 
     /* Mobile */
     @media (max-width:1100px){
@@ -169,7 +160,12 @@
       .logo{width:100%; text-align:center}
       aside#left, aside#right{display:none}
       main{min-height:calc(100vh - var(--header-h) - var(--footer-h) - 2rem)}
-      #page2{padding-bottom:64px}
+      #mobileAccordions{display:block; margin:0 1rem 1rem}
+      .footer-links a.btn{padding:.25rem .55rem; border-radius:.5rem}
+      .footer-status{display:none}
+    }
+    @media (min-width:1101px){
+      #mobileAccordions{display:none}
     }
 
     /* Focus */
@@ -181,62 +177,62 @@
   <header>
     <div class="logo">P<span>MERIT</span></div>
     <nav>
-      <select id="lang">
+      <select id="lang" aria-label="Language">
         <option value="en">English</option>
         <option value="yo">Yorùbá</option>
         <option value="ig">Igbo</option>
         <option value="ha">Hausa</option>
       </select>
-      <button class="btn" id="donateBtn">Donate</button>
-      <button class="btn" id="signInBtn">Sign In</button>
-      <button class="btn primary" id="startBtn">Start Learning</button>
+      <button class="btn" id="donateBtn" data-i18n="donate">Donate</button>
+      <button class="btn" id="signInBtn" data-i18n="signIn">Sign In</button>
+      <button class="btn primary" id="startBtn" data-i18n="startLearning">Start Learning</button>
     </nav>
   </header>
 
   <div class="estate">
     <!-- Left Pane -->
-    <aside id="left">
+    <aside id="left" aria-label="Quick actions sidebar">
       <section>
-        <div class="pane-title">Quick Actions</div>
+        <div class="pane-title" data-i18n="quickActions">Quick Actions</div>
 
         <button class="toggle" id="vhToggle">
-          <span><i class="fas fa-user icon"></i> Virtual Human Mode</span>
-          <span class="switch"></span>
+          <span><i class="fas fa-user icon"></i> <span data-i18n="virtualHuman">Virtual Human Mode</span></span>
+          <span class="switch" aria-hidden="true"></span>
         </button>
 
         <button class="action" id="careerPaths">
-          <span><i class="fas fa-compass icon"></i> Career Track & Explore Paths</span>
+          <span><i class="fas fa-compass icon"></i> <span data-i18n="careerPaths">Career Track & Explore Paths</span></span>
           <i class="fas fa-chevron-right" aria-hidden="true"></i>
         </button>
 
         <button class="toggle" id="supportToggle">
-          <span><i class="fas fa-headset icon"></i> Customer Service Mode</span>
-          <span class="switch"></span>
+          <span><i class="fas fa-headset icon"></i> <span data-i18n="supportMode">Customer Service Mode</span></span>
+          <span class="switch" aria-hidden="true"></span>
         </button>
 
         <div class="collapsible" id="settingsBox">
           <div class="head">
-            <strong><i class="fas fa-sliders-h"></i> Settings</strong>
+            <strong><i class="fas fa-sliders-h"></i> <span data-i18n="settings">Settings</span></strong>
             <i class="fas fa-chevron-down"></i>
           </div>
           <div class="body">
             <button class="toggle" id="darkToggle">
-              <span><i class="fas fa-moon icon"></i> Dark Mode</span>
-              <span class="switch"></span>
+              <span><i class="fas fa-moon icon"></i> <span data-i18n="darkMode">Dark Mode</span></span>
+              <span class="switch" aria-hidden="true"></span>
             </button>
             <button class="toggle" id="ttsToggle">
-              <span><i class="fas fa-volume-up icon"></i> Text-to-Speech</span>
-              <span class="switch"></span>
+              <span><i class="fas fa-volume-up icon"></i> <span data-i18n="tts">Text-to-Speech</span></span>
+              <span class="switch" aria-hidden="true"></span>
             </button>
             <button class="action" id="voicesBtn">
-              <span><i class="fas fa-headphones icon"></i> Preview Voices</span>
+              <span><i class="fas fa-headphones icon"></i> <span data-i18n="previewVoices">Preview Voices</span></span>
               <i class="fas fa-chevron-right"></i>
             </button>
           </div>
         </div>
 
-        <!-- Single Dashboard button per spec -->
-        <button class="dashboard guest" id="dashBtn"><i class="fas fa-gauge-high"></i>&nbsp;Dashboard</button>
+        <!-- Single Dashboard button -->
+        <button class="dashboard guest" id="dashBtn"><i class="fas fa-gauge-high"></i>&nbsp;<span data-i18n="dashboard">Dashboard</span></button>
 
         <div class="avatar" id="vhAvatar" title="Virtual Human">
           <i class="fas fa-user-circle" aria-hidden="true"></i>
@@ -246,40 +242,40 @@
 
     <!-- Center -->
     <main>
-      <section id="page2" class="panel">
+      <section id="page2" class="panel" aria-label="Chat panel">
         <div class="panel-head">
           <div class="badges">
-            <span class="badge vh" id="vhBadge" style="display:none"><i class="fas fa-user-astronaut"></i> Virtual Human</span>
-            <span class="badge support" id="supportBadge" style="display:none"><i class="fas fa-headset"></i> Support Assistant</span>
+            <span class="badge vh" id="vhBadge" style="display:none"><i class="fas fa-user-astronaut"></i> <span data-i18n="virtualHumanShort">Virtual Human</span></span>
+            <span class="badge support" id="supportBadge" style="display:none"><i class="fas fa-headset"></i> <span data-i18n="supportAssistant">Support Assistant</span></span>
           </div>
         </div>
 
-        <div id="textChat">
+        <div id="textChat" role="region" aria-live="polite">
           <div class="chat-body" id="chatBody">
             <article class="bubble" id="welcomeMsg">
               <div class="ava"><i class="fas fa-user-circle"></i></div>
               <div>
                 <h3>PMERIT AI:</h3>
-                <p>Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?</p>
+                <p id="welcomeCopy">Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?</p>
               </div>
             </article>
           </div>
           <div class="chat-input">
-            <textarea id="chatInput" maxlength="1000" placeholder="Ask about courses, learning paths, or your goals..."></textarea>
+            <textarea id="chatInput" maxlength="1000" placeholder="Ask about courses, learning paths, or your goals..." aria-label="Message"></textarea>
             <div class="input-bar">
               <span class="count" id="count">0/1000</span>
               <div style="display:flex;gap:.5rem;align-items:center">
-                <button class="btn ghost" id="vhQuick"><i class="fas fa-user-astronaut"></i> VH Mode</button>
-                <button class="btn ghost" id="readAbout"><i class="fas fa-book"></i> Read</button>
-                <span class="footer-status" id="status"><i class="fas fa-circle-check"></i> Connected to Educational Services</span>
+                <button class="btn ghost" id="vhQuick"><i class="fas fa-user-astronaut"></i> <span data-i18n="vhModeShort">VH Mode</span></button>
+                <button class="btn ghost" id="readAbout"><i class="fas fa-book"></i> <span data-i18n="readAbout">Read</span></button>
+                <span class="footer-status" id="status"><i class="fas fa-circle-check"></i> <span data-i18n="connected">Connected to Educational Services</span></span>
               </div>
-              <button class="send" id="sendBtn"><span>Send</span> <i class="fas fa-paper-plane"></i></button>
+              <button class="send" id="sendBtn"><span data-i18n="send">Send</span> <i class="fas fa-paper-plane"></i></button>
             </div>
           </div>
         </div>
 
         <!-- Virtual Human stage -->
-        <div id="vhStage" class="hidden">
+        <div id="vhStage" class="hidden" role="region" aria-live="polite">
           <div class="stage">
             <div class="human-frame">
               <div class="human-face"><i class="fas fa-user-circle"></i></div>
@@ -288,37 +284,55 @@
           <div class="captions" id="captions">Virtual Human is speaking…</div>
         </div>
       </section>
+
+      <!-- Mobile accordions (populate with real actions) -->
+      <div id="mobileAccordions" aria-label="Mobile quick sections">
+        <details>
+          <summary><strong><i class="fas fa-bolt"></i> <span data-i18n="quickActions">Quick Actions</span></strong></summary>
+          <div style="display:grid;gap:.6rem;margin:.75rem 0">
+            <button class="toggle" id="m_vhToggle"><span><i class="fas fa-user icon"></i> <span data-i18n="virtualHuman">Virtual Human Mode</span></span><span class="switch"></span></button>
+            <button class="action" id="m_careerPaths"><span><i class="fas fa-compass icon"></i> <span data-i18n="careerPaths">Career Track & Explore Paths</span></span><i class="fas fa-chevron-right"></i></button>
+            <button class="toggle" id="m_supportToggle"><span><i class="fas fa-headset icon"></i> <span data-i18n="supportMode">Customer Service Mode</span></span><span class="switch"></span></button>
+            <div style="display:grid;gap:.6rem">
+              <button class="toggle" id="m_darkToggle"><span><i class="fas fa-moon icon"></i> <span data-i18n="darkMode">Dark Mode</span></span><span class="switch"></span></button>
+              <button class="toggle" id="m_ttsToggle"><span><i class="fas fa-volume-up icon"></i> <span data-i18n="tts">Text-to-Speech</span></span><span class="switch"></span></button>
+            </div>
+            <button class="dashboard guest" id="m_dashBtn"><i class="fas fa-gauge-high"></i>&nbsp;<span data-i18n="dashboard">Dashboard</span></button>
+          </div>
+        </details>
+
+        <details style="margin-top:.6rem">
+          <summary><strong><i class="fas fa-compass"></i> <span data-i18n="discoverYourPath">Discover Your Path (AI)</span></strong></summary>
+          <div style="margin:.75rem 0">
+            <div class="discover">
+              <h4 data-i18n="discoverTitle">Personalized learning plan</h4>
+              <p data-i18n="discoverCopy">Start a short flow that blends learning style, interests, and skills into a plan.</p>
+              <button class="btn primary" id="m_beginAssessment" data-i18n="beginAssessment">Begin Assessment</button>
+              <div class="insights" id="m_insights"></div>
+            </div>
+          </div>
+        </details>
+      </div>
     </main>
 
     <!-- Right Pane -->
-    <aside id="right">
+    <aside id="right" aria-label="Support and discover sidebar">
       <section>
         <div class="support-assistant" id="supportBox">
-          <h4><i class="fas fa-headset"></i> Support Assistant</h4>
-          <p class="muted">Ask me about PMERIT</p>
+          <h4><i class="fas fa-headset"></i> <span data-i18n="supportAssistant">Support Assistant</span></h4>
+          <p class="muted" data-i18n="askAboutPmerit">Ask me about PMERIT</p>
           <div style="display:flex;gap:.5rem;justify-content:center;margin-top:.5rem">
-            <button class="btn ghost" style="border-color:var(--accent)"><i class="fas fa-user-astronaut"></i> Virtual Human</button>
-            <button class="btn ghost" style="border-color:var(--ok)"><i class="fas fa-headset"></i> Support</button>
+            <button class="btn ghost" style="border-color:var(--accent)" id="vhShort"><i class="fas fa-user-astronaut"></i> <span data-i18n="virtualHumanShort">Virtual Human</span></button>
+            <button class="btn ghost" style="border-color:var(--ok)" id="supportShort"><i class="fas fa-headset"></i> <span data-i18n="supportShort">Support</span></button>
           </div>
         </div>
 
-        <h3>Discover Your Path</h3>
-        <div class="cards">
-          <div class="card">
-            <h4><i class="fas fa-graduation-cap"></i> Learning Style Assessment</h4>
-            <p>Find how you learn best and personalize your experience.</p>
-            <button class="cta" data-link="#todo-assess">Start Assessment</button>
-          </div>
-          <div class="card">
-            <h4><i class="fas fa-lightbulb"></i> Interest Profiler</h4>
-            <p>Explore subjects and fields that match your interests.</p>
-            <button class="cta" data-link="#todo-interest">Discover Interests</button>
-          </div>
-          <div class="card">
-            <h4><i class="fas fa-bolt"></i> Skills Assessment</h4>
-            <p>Assess your abilities and identify growth opportunities.</p>
-            <button class="cta" data-link="#todo-skills">Evaluate Skills</button>
-          </div>
+        <h3 data-i18n="discoverYourPath">Discover Your Path (AI)</h3>
+        <div class="discover">
+          <h4 data-i18n="discoverTitle">Personalized learning plan</h4>
+          <p data-i18n="discoverCopy">Start a short flow that blends learning style, interests, and skills into a plan.</p>
+          <button class="btn primary" id="beginAssessment" data-i18n="beginAssessment">Begin Assessment</button>
+          <div class="insights" id="insights"></div>
         </div>
       </section>
     </aside>
@@ -326,154 +340,335 @@
 
   <!-- Footer -->
   <footer>
-    <span class="footer-status"><i class="fas fa-signal"></i> Connected to Educational Services</span>
-    <a class="btn ghost" href="#privacy">Privacy & Terms</a>
-    <a class="btn ghost" href="#contact">Contact</a>
-    <a class="btn ghost" href="#partners">Partnerships</a>
-    <a class="btn ghost" href="#support">Support</a>
+    <span class="footer-status"><i class="fas fa-signal"></i> <span data-i18n="connected">Connected to Educational Services</span></span>
+    <div class="footer-links">
+      <a class="btn ghost" href="#privacy" data-i18n="privacy">Privacy & Terms</a>
+      <a class="btn ghost" href="#contact" data-i18n="contact">Contact</a>
+      <a class="btn ghost" href="#partners" data-i18n="partners">Partnerships</a>
+      <a class="btn ghost" href="#support" data-i18n="support">Support</a>
+    </div>
   </footer>
 
   <!-- Modals -->
+  <!-- Sign Up -->
   <dialog id="signUpModal" style="border:none;border-radius:12px;max-width:560px;width:92%;box-shadow:var(--shadow);background:var(--card);color:var(--ink)">
     <form method="dialog" style="margin:0;padding:1rem 1rem 1.1rem">
-      <h3 style="margin:.25rem 0 1rem;color:var(--brand);display:flex;gap:.5rem;align-items:center"><i class="fas fa-user-plus"></i> Create your PMERIT account</h3>
+      <h3 style="margin:.25rem 0 1rem;color:var(--brand);display:flex;gap:.5rem;align-items:center"><i class="fas fa-user-plus"></i> <span data-i18n="createAccount">Create your PMERIT account</span></h3>
       <label style="display:grid;gap:.4rem;margin-bottom:.6rem">
-        <span>Full name</span>
+        <span data-i18n="fullName">Full name</span>
         <input id="su_name" required placeholder="Your name" style="padding:.65rem;border:1px solid var(--border);border-radius:.65rem;background:var(--bg);color:var(--ink)"/>
       </label>
       <label style="display:grid;gap:.4rem;margin-bottom:.6rem">
-        <span>Email</span>
+        <span data-i18n="email">Email</span>
         <input id="su_email" type="email" required placeholder="you@example.com" style="padding:.65rem;border:1px solid var(--border);border-radius:.65rem;background:var(--bg);color:var(--ink)"/>
       </label>
       <label style="display:grid;gap:.4rem">
-        <span>Password</span>
+        <span data-i18n="password">Password</span>
         <input id="su_pwd" type="password" required placeholder="••••••••" style="padding:.65rem;border:1px solid var(--border);border-radius:.65rem;background:var(--bg);color:var(--ink)"/>
       </label>
-      <p style="font-size:.92rem;color:var(--muted);margin:.75rem 0 0">By continuing you agree to our terms.</p>
+      <p style="font-size:.92rem;color:var(--muted);margin:.75rem 0 0" data-i18n="termsCopy">By continuing you agree to our terms.</p>
       <div style="display:flex;justify-content:flex-end;gap:.5rem;margin-top:1rem">
-        <button class="btn" value="cancel">Cancel</button>
-        <button class="btn primary" id="signUpCreate" type="button">Create account</button>
+        <button class="btn" id="signUpCancel" type="button" data-i18n="cancel">Cancel</button>
+        <button class="btn primary" id="signUpCreate" type="button" data-i18n="createAccountShort">Create account</button>
       </div>
     </form>
   </dialog>
 
+  <!-- Sign In -->
+  <dialog id="signInModal" style="border:none;border-radius:12px;max-width:520px;width:92%;box-shadow:var(--shadow);background:var(--card);color:var(--ink)">
+    <form method="dialog" style="margin:0;padding:1rem 1.1rem">
+      <h3 style="margin:.25rem 0 1rem;color:var(--brand);display:flex;gap:.5rem;align-items:center"><i class="fas fa-right-to-bracket"></i> <span data-i18n="signInToPmerit">Sign in to PMERIT</span></h3>
+      <label style="display:grid;gap:.4rem;margin-bottom:.6rem">
+        <span data-i18n="email">Email</span>
+        <input id="si_email" type="email" required placeholder="you@example.com" style="padding:.65rem;border:1px solid var(--border);border-radius:.65rem;background:var(--bg);color:var(--ink)"/>
+      </label>
+      <label style="display:grid;gap:.4rem">
+        <span data-i18n="password">Password</span>
+        <input id="si_pwd" type="password" required placeholder="••••••••" style="padding:.65rem;border:1px solid var(--border);border-radius:.65rem;background:var(--bg);color:var(--ink)"/>
+      </label>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1rem">
+        <a href="#forgot" style="font-size:.92rem" data-i18n="forgot">Forgot password?</a>
+        <div style="display:flex;gap:.5rem">
+          <button class="btn" id="signInCancel" type="button" data-i18n="cancel">Cancel</button>
+          <button class="btn primary" id="signInGo" type="button" data-i18n="signIn">Sign In</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Voices -->
   <dialog id="voicesModal" style="border:none;border-radius:12px;max-width:640px;width:92%;box-shadow:var(--shadow);background:var(--card);color:var(--ink)">
     <form method="dialog" style="margin:0;padding:1rem 1.1rem">
-      <h3 style="margin:.25rem 0 1rem;color:var(--brand);display:flex;gap:.5rem;align-items:center"><i class="fas fa-headphones"></i> Voice Sampler</h3>
+      <h3 style="margin:.25rem 0 1rem;color:var(--brand);display:flex;gap:.5rem;align-items:center"><i class="fas fa-headphones"></i> <span data-i18n="voiceSampler">Voice Sampler</span></h3>
       <label style="display:grid;gap:.35rem">
-        <span>Sample text</span>
+        <span data-i18n="sampleText">Sample text</span>
         <textarea id="voiceText" rows="3" style="border:1px solid var(--border);border-radius:.65rem;padding:.6rem">Welcome to PMERIT. Empowering learning through innovation.</textarea>
       </label>
       <div style="display:flex;justify-content:space-between;gap:.5rem;margin-top:1rem">
-        <button class="btn" id="browserTts" type="button">Browser TTS (fallback)</button>
-        <button class="btn" value="cancel">Close</button>
+        <button class="btn" id="browserTts" type="button" data-i18n="browserTts">Browser TTS (fallback)</button>
+        <button class="btn" id="voicesClose" type="button" data-i18n="close">Close</button>
       </div>
     </form>
+  </dialog>
+
+  <!-- Career Tracks -->
+  <dialog id="tracksModal" style="border:none;border-radius:12px;max-width:760px;width:92%;box-shadow:var(--shadow);background:var(--card);color:var(--ink)">
+    <div style="margin:0;padding:1rem 1.1rem">
+      <h3 style="margin:.25rem 0 1rem;color:var(--brand);display:flex;gap:.5rem;align-items:center"><i class="fas fa-compass"></i> <span data-i18n="exploreTracks">Explore Career Tracks</span></h3>
+      <div id="tracksList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.6rem"></div>
+      <div id="trackDetail" style="margin-top:1rem;display:none;border-top:1px solid var(--border);padding-top:.75rem"></div>
+      <div style="display:flex;justify-content:flex-end;gap:.5rem;margin-top:1rem">
+        <button class="btn" id="tracksClose" type="button" data-i18n="close">Close</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Unified Assessment Flow -->
+  <dialog id="assessmentModal" style="border:none;border-radius:12px;max-width:760px;width:92%;box-shadow:var(--shadow);background:var(--card);color:var(--ink)">
+    <div style="margin:0;padding:1rem 1.1rem">
+      <h3 style="margin:.25rem 0 1rem;color:var(--brand)"><i class="fas fa-graduation-cap"></i> <span data-i18n="assessmentFlow">Discover Your Path — Quick Assessment</span></h3>
+      <ol id="assSteps" style="line-height:1.65;margin:0 0 1rem 1.25rem">
+        <li data-i18n="step1">Learning style: a few preferences.</li>
+        <li data-i18n="step2">Interests: choose areas you enjoy.</li>
+        <li data-i18n="step3">Skills: rate comfort with common tools.</li>
+      </ol>
+      <p style="color:var(--muted);margin:.25rem 0 1rem" data-i18n="assessmentNote">This MVP flow records your choices locally and shows a suggested track.</p>
+      <div style="display:flex;justify-content:flex-end;gap:.5rem">
+        <button class="btn" id="assessmentCancel" type="button" data-i18n="cancel">Cancel</button>
+        <button class="btn primary" id="assessmentStart" type="button" data-i18n="start">Start</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Donate -->
+  <dialog id="donateModal" style="border:none;border-radius:12px;max-width:560px;width:92%;box-shadow:var(--shadow);background:var(--card);color:var(--ink)">
+    <div style="margin:0;padding:1rem 1.1rem">
+      <h3 style="margin:.25rem 0 1rem;color:var(--brand)"><i class="fas fa-heart"></i> <span data-i18n="supportPmerit">Support PMERIT</span></h3>
+      <p style="color:var(--muted)" data-i18n="donateCopy">Your donation helps keep education accessible. Choose a method:</p>
+      <div style="display:grid;gap:.5rem">
+        <button class="btn primary" type="button">PayPal</button>
+        <button class="btn" type="button">Card</button>
+        <button class="btn" type="button">Bank Transfer</button>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:.5rem;margin-top:1rem">
+        <button class="btn" id="donateClose" type="button" data-i18n="close">Close</button>
+      </div>
+    </div>
   </dialog>
 
   <!-- Scripts -->
   <script>
     const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
     const body=document.body;
-    const state={auth:false,dark:false,vh:false,support:false,tts:false};
+    const state={auth:false,dark:false,vh:false,support:false,tts:false,lang:'en'};
 
-    // Elements
+    /* i18n map (labels only, MVP) */
+    const I18N={
+      en:{donate:"Donate",signIn:"Sign In",startLearning:"Start Learning",quickActions:"Quick Actions",
+          virtualHuman:"Virtual Human Mode",careerPaths:"Career Track & Explore Paths",supportMode:"Customer Service Mode",
+          settings:"Settings",darkMode:"Dark Mode",tts:"Text-to-Speech",previewVoices:"Preview Voices",
+          dashboard:"Dashboard",virtualHumanShort:"Virtual Human",supportAssistant:"Support Assistant",
+          askAboutPmerit:"Ask me about PMERIT",supportShort:"Support",discoverYourPath:"Discover Your Path (AI)",
+          discoverTitle:"Personalized learning plan",discoverCopy:"Start a short flow that blends learning style, interests, and skills into a plan.",
+          beginAssessment:"Begin Assessment",connected:"Connected to Educational Services",privacy:"Privacy & Terms",
+          contact:"Contact",partners:"Partnerships",support:"Support",vhModeShort:"VH Mode",readAbout:"Read",
+          createAccount:"Create your PMERIT account",createAccountShort:"Create account",fullName:"Full name",email:"Email",password:"Password",
+          termsCopy:"By continuing you agree to our terms.",cancel:"Cancel",signInToPmerit:"Sign in to PMERIT",
+          voiceSampler:"Voice Sampler",sampleText:"Sample text",browserTts:"Browser TTS (fallback)",close:"Close",
+          exploreTracks:"Explore Career Tracks",assessmentFlow:"Discover Your Path — Quick Assessment",
+          step1:"Learning style: a few preferences.",step2:"Interests: choose areas you enjoy.",step3:"Skills: rate comfort with common tools.",
+          assessmentNote:"This MVP flow records your choices locally and shows a suggested track.",start:"Start",
+          supportPmerit:"Support PMERIT",donateCopy:"Your donation helps keep education accessible. Choose a method:"
+      },
+      yo:{donate:"Ṣe ìrànlọ́wọ́",signIn:"Wọlé",startLearning:"Bẹrẹ́ Kẹ́kọ̀ọ́",quickActions:"Ìṣe Kánkán",
+          virtualHuman:"Ọnà Ẹda Oníròyìn",careerPaths:"Ọ̀nà Ọ̀fíìsì & Ṣàwárí Òpó Ọ̀nà",supportMode:"Ọnà Ìbánisọ̀rọ̀ Onífẹ̀ẹ́",
+          settings:"Ètò",darkMode:"Ìrọ̀lẹ́ Dúdú",tts:"Ọrọ sí Ohùn",previewVoices:"Ṣàyẹ̀wò Ohùn",
+          dashboard:"Dasibodu",virtualHumanShort:"Oníròyìn",supportAssistant:"Oluranlọwọ Atilẹyin",
+          askAboutPmerit:"Bèrè nípa PMERIT",supportShort:"Atilẹyin",discoverYourPath:"Ṣàwárí Ọ̀nà Rẹ (AI)",
+          discoverTitle:"Ètò ìkẹ́kọ̀ọ́ ti ara ẹni",discoverCopy:"Bẹrẹ́ ìrìnàjò kékèké tó darapọ̀ ìfẹ́kẹ́kọ̀ọ́, ìfẹ́ sí ọ̀rọ̀, àti ọgbọ́n.",
+          beginAssessment:"Bẹrẹ Ayẹwo",connected:"So pọ̀ mọ́ Ẹ̀ka Ẹ̀kọ́",privacy:"Ìpamọ́ & Òfin",
+          contact:"Olubasọrọ",partners:"Alábàáṣiṣẹ́pọ̀",support:"Atilẹyin",vhModeShort:"VH",
+          readAbout:"Kà",createAccount:"Ṣẹda àkọọlẹ PMERIT rẹ",createAccountShort:"Ṣẹda àkọọlẹ",fullName:"Orúkọ kikun",
+          email:"Imeeli",password:"Ọrọigbaniwọle",termsCopy:"Nípasẹ̀ tẹ̀síwájú o gba ìlànà wa.",
+          cancel:"Fagilé",signInToPmerit:"Wọlé sí PMERIT",voiceSampler:"Ayẹwo Ohùn",sampleText:"Ìkànsí ọrọ",
+          browserTts:"Ohùn ẹrọ aṣàwákiri",close:"Pa",exploreTracks:"Ṣàwárí Ọ̀nà Ọ̀fíìsì",
+          assessmentFlow:"Ṣàwárí Ọ̀nà Rẹ — Ayẹwo Kékèké",step1:"Ìfẹ́kẹ́kọ̀ọ́:",step2:"Ìfẹ́ sí ọ̀rọ̀:",step3:"Ọgbọ́n:",
+          assessmentNote:"Ìpele MVP yìí n fipamọ́ yànjú rẹ lókálì.",start:"Bẹrẹ",supportPmerit:"Ṣe ìrànlọ́wọ́ PMERIT",
+          donateCopy:"Ìrànlọ́wọ́ rẹ ń ràn wá lọ́wọ́."
+      },
+      ig:{donate:"Nyefee aka",signIn:"Banye",startLearning:"Bido ọmụmụ",quickActions:"Ngwa ngwa",
+          virtualHuman:"Ụdị mmadụ Virtual",careerPaths:"Ụzọ ọrụ & chọgharịa",supportMode:"Ụzọ nkwado ahịa",
+          settings:"Ntọala",darkMode:"Ọnọdụ ọchịchịrị",tts:"Okwu gaa n'olu",previewVoices:"Nlele olu",
+          dashboard:"Dashboard",virtualHumanShort:"Virtual Human",supportAssistant:"Onye enyemaka nkwado",
+          askAboutPmerit:"Jụọ gbasara PMERIT",supportShort:"Nkwado",discoverYourPath:"Chọpụta ụzọ gị (AI)",
+          discoverTitle:"Atụmatụ mmụta nke onwe",discoverCopy:"Bido obere usoro jikọtara ụdị mmụta, mmasị, na nkà.",
+          beginAssessment:"Bido nyocha",connected:"Ejikọrọ na ọrụ agụmakwụkwọ",privacy:"Nzuzo & Usoro",
+          contact:"Kpọtụrụ",partners:"Ụmụ mmekọ",support:"Nkwado",vhModeShort:"VH",readAbout:"Gụọ",
+          createAccount:"Mepụta akaụntụ PMERIT gị",createAccountShort:"Mepụta akaụntụ",fullName:"Aha zuru ezu",
+          email:"Email",password:"Okwuntughe",termsCopy:"Iji gawa n’ihu ị na-ekweta iwu anyị.",
+          cancel:"Kagbuo",signInToPmerit:"Banye na PMERIT",voiceSampler:"Nlele olu",sampleText:"Okwu nlele",
+          browserTts:"TTS nchọgharị",close:"Mechie",exploreTracks:"Chọgharịa ụzọ ọrụ",
+          assessmentFlow:"Chọpụta ụzọ gị — nyocha ngwa ngwa",step1:"Ụdị mmụta:",step2:"Mmasị:",step3:"Nkà:",
+          assessmentNote:"MVP a na-edebe nhọrọ gị n’ime ngwaọrụ.",start:"Bido",
+          supportPmerit:"Soro kwado PMERIT",donateCopy:"Nkwado gị na-enyere ka agụmakwụkwọ bụrụ nke onye ọ bụla."
+      },
+      ha:{donate:"Ba da gudummawa",signIn:"Shiga",startLearning:"Fara koyo",quickActions:"Ayyuka na gaggawa",
+          virtualHuman:"Yanayin Virtual Human",careerPaths:"Hanyoyin aiki & binciko",supportMode:"Yanayin Tallafi",
+          settings:"Saituna",darkMode:"Yanayin duhu",tts:"Rubutu zuwa murya",previewVoices:"Duba muryoyi",
+          dashboard:"Dashboard",virtualHumanShort:"Virtual Human",supportAssistant:"Mataimakin Tallafi",
+          askAboutPmerit:"Tambaye ni game da PMERIT",supportShort:"Tallafi",discoverYourPath:"Gano Hanyarka (AI)",
+          discoverTitle:"Shirin koyo na kai",discoverCopy:"Fara gajeriyar hanya wacce ta haɗa salon koyo, sha'awa, da ƙwarewa.",
+          beginAssessment:"Fara gwaji",connected:"An haɗa zuwa ayyukan ilimi",privacy:"Sirri & Ka'idoji",
+          contact:"Tuntuɓi",partners:"Abokan hulɗa",support:"Tallafi",vhModeShort:"VH",readAbout:"Karanta",
+          createAccount:"Ƙirƙiri asusun PMERIT",createAccountShort:"Ƙirƙiri asusu",fullName:"Cikakken suna",
+          email:"Imel",password:"Kalmar sirri",termsCopy:"Ta ci gaba kana yarda da sharuddanmu.",
+          cancel:"Soke",signInToPmerit:"Shiga PMERIT",voiceSampler:"Nuna muryoyi",sampleText:"Rubutu samfurin",
+          browserTts:"TTS na mai bincike",close:"Rufe",exploreTracks:"Binciki hanyoyin aiki",
+          assessmentFlow:"Gano Hanyarka — gajeren gwaji",step1:"Salon koyo:",step2:"Sha'awa:",step3:"Kwarewa:",
+          assessmentNote:"Wannan MVP yana adana zaɓinka a na'ura.",start:"Fara",supportPmerit:"Tallafa wa PMERIT",
+          donateCopy:"Gudummawarka tana tallafawa ilimi ga kowa."
+      }
+    };
+
+    /* Elements */
     const settingsBox=$('#settingsBox'), settingsHead=settingsBox.querySelector('.head'), settingsBody=settingsBox.querySelector('.body');
     const dashBtn=$('#dashBtn'), signInBtn=$('#signInBtn'), startBtn=$('#startBtn'), donateBtn=$('#donateBtn');
     const vhToggle=$('#vhToggle'), vhAvatar=$('#vhAvatar'), vhBadge=$('#vhBadge'), vhStage=$('#vhStage'), textChat=$('#textChat');
     const supportToggle=$('#supportToggle'), supportBadge=$('#supportBadge');
     const ttsToggle=$('#ttsToggle'), chatInput=$('#chatInput'), count=$('#count'), sendBtn=$('#sendBtn'), chatBody=$('#chatBody');
-    const voicesBtn=$('#voicesBtn'), voicesDlg=$('#voicesModal'), browserTtsBtn=$('#browserTts'), voiceText=$('#voiceText');
-    const careerPaths=$('#careerPaths');
-    const signUpModal=$('#signUpModal'), signUpCreate=$('#signUpCreate');
+    const voicesBtn=$('#voicesBtn'), voicesDlg=$('#voicesModal'), browserTtsBtn=$('#browserTts'), voiceText=$('#voiceText'), voicesClose=$('#voicesClose');
+    const careerPaths=$('#careerPaths'), tracksDlg=$('#tracksModal'), tracksList=$('#tracksList'), trackDetail=$('#trackDetail'), tracksClose=$('#tracksClose');
+    const signUpModal=$('#signUpModal'), signUpCreate=$('#signUpCreate'), signUpCancel=$('#signUpCancel');
+    const signInModal=$('#signInModal'), signInGo=$('#signInGo'), signInCancel=$('#signInCancel');
+    const beginBtn=$('#beginAssessment'), m_beginBtn=$('#m_beginAssessment'), assessmentModal=$('#assessmentModal');
+    const donateModal=$('#donateModal'), donateClose=$('#donateClose');
+    const vhQuick=$('#vhQuick'), vhShort=$('#vhShort'), supportShort=$('#supportShort');
+    const langSel=$('#lang');
 
-    // Init persisted flags
+    /* Mobile duplicates (wire to same handlers/state) */
+    const m_vhToggle=$('#m_vhToggle'), m_careerPaths=$('#m_careerPaths'),
+          m_supportToggle=$('#m_supportToggle'), m_darkToggle=$('#m_darkToggle'),
+          m_ttsToggle=$('#m_ttsToggle'), m_dashBtn=$('#m_dashBtn');
+
+    function save(k,v){ try{ localStorage.setItem(k,String(v)); }catch{} }
     function initState(){
       try{
         state.dark = localStorage.getItem('pmerit_dark')==='true';
         state.auth = localStorage.getItem('pmerit_auth')==='true';
         state.tts  = localStorage.getItem('pmerit_tts')==='true';
+        state.lang = localStorage.getItem('pmerit_lang') || 'en';
       }catch{}
       body.classList.toggle('dark', state.dark);
-      if(state.dark) $('#darkToggle').classList.add('active');
-      if(state.tts)  $('#ttsToggle').classList.add('active');
+      if(state.dark){ $('#darkToggle').classList.add('active'); m_darkToggle.classList.add('active'); }
+      if(state.tts){  ttsToggle.classList.add('active'); m_ttsToggle.classList.add('active'); }
+      langSel.value = state.lang;
+      applyLang();
       updateDashboardVisual();
     }
-    function save(k,v){try{localStorage.setItem(k,String(v));}catch{}}
 
-    // UI Behaviors
+    /* i18n render */
+    function applyLang(){
+      const L=I18N[state.lang] || I18N.en;
+      $$('[data-i18n]').forEach(el=>{
+        const key=el.getAttribute('data-i18n');
+        if(L[key]) el.textContent = L[key];
+      });
+    }
+    langSel.addEventListener('change',()=>{
+      state.lang=langSel.value; save('pmerit_lang', state.lang); applyLang();
+    });
+
+    /* Collapsible settings */
     settingsHead.addEventListener('click',()=>{
       const open=settingsBody.style.display==='block';
       settingsBody.style.display=open?'none':'block';
       settingsHead.querySelector('i.fas').className=open?'fas fa-sliders-h':'fas fa-chevron-down';
     });
 
-    $('#darkToggle').addEventListener('click',()=>{
-      $('#darkToggle').classList.toggle('active');
-      state.dark = $('#darkToggle').classList.contains('active');
-      body.classList.toggle('dark', state.dark);
-      save('pmerit_dark', state.dark);
-    });
+    /* Dark mode */
+    function setDark(on){
+      $('#darkToggle').classList.toggle('active', on);
+      m_darkToggle.classList.toggle('active', on);
+      state.dark = on; body.classList.toggle('dark', on); save('pmerit_dark', on);
+    }
+    $('#darkToggle').addEventListener('click',()=>setDark(!state.dark));
+    m_darkToggle.addEventListener('click',()=>setDark(!state.dark));
 
-    ttsToggle.addEventListener('click',()=>{
-      ttsToggle.classList.toggle('active');
-      state.tts = ttsToggle.classList.contains('active');
-      save('pmerit_tts', state.tts);
-      if(!state.tts && 'speechSynthesis' in window) speechSynthesis.cancel();
-    });
+    /* TTS */
+    function setTTS(on){
+      ttsToggle.classList.toggle('active', on);
+      m_ttsToggle.classList.toggle('active', on);
+      state.tts = on; save('pmerit_tts', on);
+      if(!on && 'speechSynthesis' in window) speechSynthesis.cancel();
+    }
+    ttsToggle.addEventListener('click',()=>setTTS(!state.tts));
+    m_ttsToggle.addEventListener('click',()=>setTTS(!state.tts));
 
-    supportToggle.addEventListener('click',()=>{
-      supportToggle.classList.toggle('active');
-      state.support = supportToggle.classList.contains('active');
-      supportBadge.style.display = state.support ? 'inline-flex' : 'none';
-    });
+    /* Support mode toggles */
+    function setSupport(on){
+      supportToggle.classList.toggle('active', on);
+      m_supportToggle.classList.toggle('active', on);
+      state.support = on; supportBadge.style.display = on ? 'inline-flex' : 'none';
+      // Swap welcome copy tone
+      const welcome = $('#welcomeCopy');
+      if(welcome){
+        welcome.textContent = on
+          ? "Welcome to PMERIT Support. I can help with accounts, enrollment, and technical issues. How can I assist you today?"
+          : "Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?";
+      }
+    }
+    supportToggle.addEventListener('click',()=>setSupport(!state.support));
+    m_supportToggle.addEventListener('click',()=>setSupport(!state.support));
+    supportShort.addEventListener('click',()=>setSupport(true));
 
-    vhToggle.addEventListener('click',()=>{
-      vhToggle.classList.toggle('active');
-      state.vh = vhToggle.classList.contains('active');
-      if(state.vh){
+    /* Virtual Human toggles */
+    function setVH(on){
+      [vhToggle,m_vhToggle].forEach(t=>t.classList.toggle('active', on));
+      state.vh = on;
+      if(on){
         textChat.style.display='none';
         vhStage.style.display='flex';
         vhAvatar.classList.add('active');
         vhBadge.style.display='inline-flex';
+        $('#captions').textContent = "Virtual Human is ready.";
       }else{
         vhStage.style.display='none';
         textChat.style.display='flex';
         vhAvatar.classList.remove('active');
         vhBadge.style.display='none';
       }
-    });
-
-    // Dashboard routing per auth
-    function updateDashboardVisual(){
-      dashBtn.classList.toggle('guest', !state.auth);
     }
-    dashBtn.addEventListener('click',()=>{
+    vhToggle.addEventListener('click',()=>setVH(!state.vh));
+    m_vhToggle.addEventListener('click',()=>setVH(!state.vh));
+    vhQuick.addEventListener('click',()=>setVH(true));
+    vhShort.addEventListener('click',()=>setVH(true));
+
+    /* Dashboard routing per auth */
+    function updateDashboardVisual(){ dashBtn.classList.toggle('guest', !state.auth); m_dashBtn.classList.toggle('guest', !state.auth); }
+    function goDashboard(){
       if(state.auth){ window.location.href='dashboard.html'; }
-      else{
-        if(typeof signUpModal.showModal==='function'){ signUpModal.showModal(); }
-        else{ alert('Please sign up to access your dashboard.'); }
-      }
+      else{ if(typeof signUpModal.showModal==='function'){ signUpModal.showModal(); } }
+    }
+    dashBtn.addEventListener('click',goDashboard);
+    m_dashBtn.addEventListener('click',goDashboard);
+
+    /* Sign In / Up */
+    signInBtn.addEventListener('click',()=>{ if(typeof signInModal.showModal==='function') signInModal.showModal(); });
+    signInCancel.addEventListener('click',()=>signInModal.close());
+    signInGo.addEventListener('click',()=>{
+      const em=$('#si_email').value.trim(), pw=$('#si_pwd').value.trim();
+      if(!em||!pw){ alert('Please enter your email and password.'); return; }
+      state.auth=true; save('pmerit_auth',true); updateDashboardVisual(); signInModal.close();
     });
 
-    // Simple demo Sign In toggler (you can replace with real auth later)
-    signInBtn.addEventListener('click',()=>{
-      state.auth = !state.auth;
-      save('pmerit_auth', state.auth);
-      updateDashboardVisual();
-      alert(state.auth ? 'Signed in (demo). Dashboard enabled.' : 'Signed out.');
-    });
-
-    // Sign Up modal create account → set auth=true and go
+    signUpCancel.addEventListener('click',()=>signUpModal.close());
     signUpCreate.addEventListener('click',()=>{
       const name=$('#su_name').value.trim(), email=$('#su_email').value.trim(), pwd=$('#su_pwd').value.trim();
       if(!name || !email || !pwd){ alert('Please complete all fields.'); return; }
-      state.auth=true; save('pmerit_auth', true);
-      signUpModal.close();
-      window.location.href='dashboard.html';
+      state.auth=true; save('pmerit_auth',true); signUpModal.close(); window.location.href='dashboard.html';
     });
 
-    // Chat
+    /* Chat */
     chatInput.addEventListener('input',()=>{count.textContent=(chatInput.value||'').length+'/1000';});
     sendBtn.addEventListener('click',()=>{
       const text=(chatInput.value||'').trim(); if(!text) return;
@@ -485,38 +680,99 @@
       chatBody.appendChild(me); chatBody.scrollTop=chatBody.scrollHeight;
 
       setTimeout(()=>{
-        const reply = state.support ? "Thanks for reaching out. A support assistant will help shortly."
-                                    : "Based on your goals, consider the UI/UX Design track. Want details?";
+        const reply = state.support
+          ? "Thanks for reaching out. A support assistant can help with sign-in issues, enrollment, or payments. What do you need help with?"
+          : "Based on your goals, consider the UI/UX Design track. Want details?";
         const ai=document.createElement('article');
         ai.className='bubble';
         ai.innerHTML='<div class="ava"><i class="fas fa-user-circle"></i></div><div><h3>PMERIT AI:</h3><p></p></div>';
         ai.querySelector('p').textContent=reply;
         chatBody.appendChild(ai); chatBody.scrollTop=chatBody.scrollHeight;
         if(state.tts && 'speechSynthesis' in window){ const u=new SpeechSynthesisUtterance(reply); speechSynthesis.speak(u); }
+        if(state.vh){ $('#captions').textContent = reply; }
       },600);
 
       chatInput.value=''; count.textContent='0/1000';
     });
 
-    // Voices dialog (browser TTS)
-    voicesBtn.addEventListener('click',()=>{
-      if(typeof voicesDlg.showModal==='function'){ voicesDlg.showModal(); }
-      else{ alert('Voice sampler requires a modern browser.'); }
-    });
+    /* Voices dialog */
+    voicesBtn.addEventListener('click',()=>voicesDlg.showModal());
     browserTtsBtn.addEventListener('click',()=>{
       const t=(voiceText.value||'').trim();
       if(!t) return; if(!('speechSynthesis' in window)) { alert('Browser TTS not supported.'); return; }
       speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(t));
     });
+    voicesClose.addEventListener('click',()=>voicesDlg.close());
 
-    // Career tracks placeholder
-    careerPaths.addEventListener('click',()=>alert('Tracks:\n• Software Development (Full-stack)\n• Data Analytics\n• UI/UX Design\n• Digital Marketing\n• Customer Support (Remote)\n• Virtual Assistance / Operations\n• Cloud & DevOps (Intro)'));
+    /* Career tracks modal (styled, with blurbs) */
+    const TRACKS=[
+      {k:'fullstack', name:'Software Development (Full-stack)', blurb:'Front-end + back-end foundations with project practice.'},
+      {k:'data', name:'Data Analytics', blurb:'Spreadsheets → SQL → dashboards for real insights.'},
+      {k:'uiux', name:'UI/UX Design', blurb:'Design thinking, wireframes, prototypes, usability.'},
+      {k:'marketing', name:'Digital Marketing', blurb:'SEO, content, ads, analytics for growth.'},
+      {k:'support', name:'Customer Support (Remote)', blurb:'Ticketing, empathy, SLAs, tooling.'},
+      {k:'va', name:'Virtual Assistance / Operations', blurb:'Scheduling, docs, communication, tooling.'},
+      {k:'cloud', name:'Cloud & DevOps (Intro)', blurb:'Cloud basics, CI/CD, containers overview.'},
+    ];
+    function renderTracks(){
+      tracksList.innerHTML='';
+      TRACKS.forEach(t=>{
+        const card=document.createElement('button');
+        card.className='action';
+        card.style.justifyContent='space-between';
+        card.innerHTML=`<span><i class="fas fa-map icon"></i> ${t.name}</span> <i class="fas fa-chevron-right"></i>`;
+        card.addEventListener('click',()=>{
+          trackDetail.style.display='block';
+          trackDetail.innerHTML=`<h4 style="margin:.25rem 0">${t.name}</h4><p style="color:var(--muted)">${t.blurb}</p><button class="btn primary" type="button" id="trackCta">See sample plan</button>`;
+          $('#trackCta').addEventListener('click',()=>{ assessmentModal.showModal(); });
+        });
+        tracksList.appendChild(card);
+      });
+    }
+    function openTracks(){ renderTracks(); tracksDlg.showModal(); }
+    careerPaths.addEventListener('click', openTracks);
+    m_careerPaths.addEventListener('click', openTracks);
+    tracksClose.addEventListener('click',()=>tracksDlg.close());
 
-    // Misc
-    startBtn.addEventListener('click',()=>alert('Starting learning journey…'));
-    donateBtn.addEventListener('click',()=>alert('Thanks for supporting PMERIT!'));
+    /* Unified assessment entry */
+    function openAssessment(){ assessmentModal.showModal(); }
+    beginBtn.addEventListener('click', openAssessment);
+    m_beginBtn?.addEventListener('click', openAssessment);
+    $('#assessmentCancel').addEventListener('click',()=>assessmentModal.close());
+    $('#assessmentStart').addEventListener('click',()=>{
+      assessmentModal.close();
+      // Demo: push a recommendation bubble
+      const ai=document.createElement('article');
+      ai.className='bubble';
+      ai.innerHTML='<div class="ava"><i class="fas fa-user-circle"></i></div><div><h3>PMERIT AI:</h3><p>Thanks! Based on your quick answers, we suggest the Data Analytics path. You can start with “Intro to SQL”.</p></div>';
+      chatBody.appendChild(ai); chatBody.scrollTop=chatBody.scrollHeight;
+    });
 
-    // Kick
+    /* Start Learning → same flow */
+    startBtn.addEventListener('click', openAssessment);
+
+    /* Donate modal */
+    donateBtn.addEventListener('click',()=>donateModal.showModal());
+    donateClose.addEventListener('click',()=>donateModal.close());
+
+    /* Footer links: no JS needed */
+
+    /* Rotating insights */
+    const INSIGHTS=[
+      "Tip: Short, daily practice beats long, rare sessions.",
+      "Insight: Matching projects to your interests improves completion rates.",
+      "Pro tip: Keep notes in your own words for better recall."
+    ];
+    function rotateInsights(el){
+      let i=0; el.textContent=INSIGHTS[0];
+      setInterval(()=>{ i=(i+1)%INSIGHTS.length; el.textContent=INSIGHTS[i]; }, 5000);
+    }
+    rotateInsights($('#insights')); rotateInsights($('#m_insights'));
+
+    /* Wire small shortcuts */
+    $('#readAbout').addEventListener('click',()=>window.location.hash='#about');
+
+    /* Kick */
     initState();
   </script>
 </body>
