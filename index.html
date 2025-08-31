@@ -1,762 +1,792 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PMERIT — Accessible Global Education</title>
-
-  <!-- Icons & Fonts -->
+  
+  <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
-
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  
   <style>
-    :root{
-      /* Updated color scheme to match your design image */
-      --brand:#6366F1;        /* Purple-blue primary */
-      --accent:#8B5CF6;       /* Purple accent */
-      --ok:#10B981;           /* Green for success */
-      --warning:#F59E0B;      /* Amber for warnings */
-      --error:#EF4444;        /* Red for errors */
-      --ink:#1E293B;          /* Dark text */
-      --muted:#64748B;        /* Muted text */
-      --bg:#FFFFFF;           /* White background */
-      --bg2:#F8FAFC;          /* Light gray background */
-      --card:#FFFFFF;         /* Card background */
-      --border:#E2E8F0;       /* Border color */
-      --shadow:0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      --gradient-bg:linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
-      --gradient-purple:linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
-      --trans:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      --header-h:80px;
-      --footer-h:60px;
-      --border-radius:12px;
-      --border-radius-lg:16px;
-    }
-    
-    .dark{
-      --bg:#0F172A; 
-      --bg2:#1E293B; 
-      --card:#1E293B;
-      --ink:#F1F5F9; 
-      --muted:#94A3B8; 
-      --border:#334155;
-      --shadow:0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
-    }
-    
-    html,body{height:100%;margin:0;padding:0}
-    body{
-      background: var(--gradient-bg);
-      color:var(--ink);
-      font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,Arial;
-      overflow:hidden; 
-      display:flex; 
-      flex-direction:column;
+    /* === OFFICIAL PMERIT DESIGN SYSTEM === */
+    :root {
+      /* Brand Colors - White, Spacious Baseline */
+      --brand-primary: #2563eb;
+      --brand-secondary: #16a34a;
+      --accent: #7c3aed;
+      
+      /* White Template Colors */
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8fafc;
+      --bg-tertiary: #f1f5f9;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --border-light: #f1f5f9;
+      
+      /* Interactive */
+      --hover-bg: #f8fafc;
+      --active-bg: #e2e8f0;
+      --shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      
+      /* Layout */
+      --header-height: 64px;
+      --footer-height: 48px;
+      --sidebar-width: 280px;
+      --right-panel-width: 320px;
     }
 
-    /* Header */
-    header{
-      height:var(--header-h); 
-      flex:0 0 auto;
-      display:flex; 
-      align-items:center; 
-      justify-content:space-between;
-      padding:0 2rem; 
-      background:rgba(255,255,255,0.95); 
-      backdrop-filter:blur(10px);
-      border-bottom:1px solid rgba(226,232,240,0.8);
-      z-index:10;
-    }
-    
-    .logo{
-      display:flex;
-      align-items:center;
-      gap:0.75rem;
-      font-weight:800; 
-      font-size:1.5rem;
-      color:var(--brand);
-      text-decoration:none;
-    }
-    
-    .logo::before{
-      content:"🎓";
-      font-size:2rem;
-    }
-    
-    .logo span{
-      background:var(--gradient-purple);
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
-      background-clip:text;
-    }
-    
-    nav{
-      display:flex; 
-      gap:1rem; 
-      align-items:center;
-    }
-    
-    .language-selector{
-      display:flex;
-      align-items:center;
-      gap:0.5rem;
-      padding:0.5rem 1rem;
-      border:1px solid var(--border);
-      border-radius:999px;
-      background:var(--bg);
-      cursor:pointer;
-      transition:var(--trans);
-    }
-    
-    .language-selector:hover{
-      border-color:var(--brand);
-    }
-    
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      gap:0.5rem;
-      padding:0.75rem 1.5rem;
-      border:1px solid var(--border);
-      background:var(--bg);
-      color:var(--ink);
-      border-radius:999px;
-      font-weight:600;
-      text-decoration:none;
-      cursor:pointer;
-      transition:var(--trans);
-      font-size:0.95rem;
-    }
-    
-    .btn:hover{
-      border-color:var(--brand);
-      transform:translateY(-1px);
-    }
-    
-    .btn.primary{
-      background:var(--gradient-purple);
-      color:white;
-      border:none;
-      font-weight:700;
-    }
-    
-    .btn.primary:hover{
-      transform:translateY(-2px);
-      box-shadow:var(--shadow);
-    }
-    
-    .btn.secondary{
-      background:transparent;
-      color:var(--brand);
-      border:1px solid var(--brand);
-    }
-    
-    .btn.secondary:hover{
-      background:var(--brand);
-      color:white;
+    /* Dark Mode Override */
+    .dark {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-tertiary: #334155;
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --border: #334155;
+      --border-light: #475569;
+      --hover-bg: #1e293b;
+      --active-bg: #334155;
     }
 
-    /* Main Layout */
-    .main-container{
-      flex:1;
-      display:grid;
-      grid-template-columns:320px 1fr 380px;
-      gap:1.5rem;
-      padding:1.5rem;
-      height:calc(100vh - var(--header-h));
-      overflow:hidden;
+    /* === BASE STYLES === */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    /* Left Sidebar */
-    .left-panel{
-      background:rgba(255,255,255,0.95);
-      backdrop-filter:blur(10px);
-      border-radius:var(--border-radius-lg);
-      padding:1.5rem;
-      box-shadow:var(--shadow);
-      overflow-y:auto;
-    }
-    
-    .panel-section{
-      margin-bottom:2rem;
-    }
-    
-    .panel-section h3{
-      font-size:0.9rem;
-      font-weight:700;
-      color:var(--muted);
-      text-transform:uppercase;
-      letter-spacing:0.5px;
-      margin-bottom:1rem;
-    }
-    
-    .nav-item{
-      display:flex;
-      align-items:center;
-      gap:0.75rem;
-      padding:0.875rem 1rem;
-      border-radius:var(--border-radius);
-      color:var(--ink);
-      text-decoration:none;
-      transition:var(--trans);
-      margin-bottom:0.5rem;
-      cursor:pointer;
-      border:1px solid transparent;
-    }
-    
-    .nav-item:hover{
-      background:rgba(99,102,241,0.1);
-      border-color:var(--brand);
-    }
-    
-    .nav-item.active{
-      background:var(--gradient-purple);
-      color:white;
-    }
-    
-    .nav-item i{
-      width:20px;
-      text-align:center;
-      font-size:1.1rem;
-    }
-    
-    .toggle-item{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:0.875rem 1rem;
-      border-radius:var(--border-radius);
-      border:1px solid var(--border);
-      margin-bottom:0.5rem;
-      cursor:pointer;
-      transition:var(--trans);
-    }
-    
-    .toggle-item:hover{
-      border-color:var(--brand);
-    }
-    
-    .toggle-switch{
-      width:44px;
-      height:24px;
-      background:var(--border);
-      border-radius:12px;
-      position:relative;
-      transition:var(--trans);
-    }
-    
-    .toggle-switch::after{
-      content:"";
-      position:absolute;
-      top:2px;
-      left:2px;
-      width:20px;
-      height:20px;
-      background:white;
-      border-radius:50%;
-      transition:var(--trans);
-    }
-    
-    .toggle-item.active .toggle-switch{
-      background:var(--brand);
-    }
-    
-    .toggle-item.active .toggle-switch::after{
-      left:22px;
+    html, body {
+      height: 100%;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      overflow: hidden; /* Non-scrollable desktop */
     }
 
-    /* Main Chat Area */
-    .chat-container{
-      display:flex;
-      flex-direction:column;
-      background:rgba(255,255,255,0.95);
-      backdrop-filter:blur(10px);
-      border-radius:var(--border-radius-lg);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-    
-    .chat-header{
-      padding:1.5rem 2rem;
-      border-bottom:1px solid var(--border);
-      text-align:center;
-    }
-    
-    .chat-header h1{
-      font-size:1.75rem;
-      font-weight:700;
-      color:var(--ink);
-      margin:0 0 0.5rem 0;
-    }
-    
-    .chat-header p{
-      color:var(--muted);
-      margin:0;
-      font-size:1rem;
-    }
-    
-    .chat-body{
-      flex:1;
-      padding:2rem;
-      overflow-y:auto;
-      display:flex;
-      flex-direction:column;
-      gap:1.5rem;
-    }
-    
-    .ai-message{
-      display:flex;
-      align-items:flex-start;
-      gap:1rem;
-    }
-    
-    .ai-avatar{
-      width:40px;
-      height:40px;
-      border-radius:50%;
-      background:var(--gradient-purple);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:white;
-      font-weight:600;
-      flex-shrink:0;
-    }
-    
-    .ai-message-content{
-      flex:1;
-      background:var(--bg2);
-      padding:1.25rem 1.5rem;
-      border-radius:var(--border-radius);
-      border-top-left-radius:4px;
-    }
-    
-    .ai-message-content h4{
-      color:var(--brand);
-      margin:0 0 0.5rem 0;
-      font-weight:600;
-    }
-    
-    .user-message{
-      display:flex;
-      align-items:flex-start;
-      gap:1rem;
-      flex-direction:row-reverse;
-    }
-    
-    .user-avatar{
-      width:40px;
-      height:40px;
-      border-radius:50%;
-      background:var(--ok);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:white;
-      flex-shrink:0;
-    }
-    
-    .user-message-content{
-      flex:1;
-      background:var(--brand);
-      color:white;
-      padding:1.25rem 1.5rem;
-      border-radius:var(--border-radius);
-      border-top-right-radius:4px;
-      text-align:right;
-    }
-    
-    .chat-input-area{
-      padding:1.5rem 2rem;
-      border-top:1px solid var(--border);
-      background:var(--bg2);
-    }
-    
-    .chat-input-container{
-      display:flex;
-      gap:1rem;
-      align-items:flex-end;
-    }
-    
-    .chat-input{
-      flex:1;
-      min-height:44px;
-      max-height:120px;
-      padding:0.75rem 1rem;
-      border:1px solid var(--border);
-      border-radius:var(--border-radius);
-      resize:none;
-      font-family:inherit;
-      background:var(--bg);
-      transition:var(--trans);
-    }
-    
-    .chat-input:focus{
-      outline:none;
-      border-color:var(--brand);
-      box-shadow:0 0 0 3px rgba(99,102,241,0.1);
-    }
-    
-    .send-button{
-      padding:0.75rem 1.5rem;
-      background:var(--gradient-purple);
-      color:white;
-      border:none;
-      border-radius:var(--border-radius);
-      cursor:pointer;
-      font-weight:600;
-      transition:var(--trans);
-    }
-    
-    .send-button:hover{
-      transform:translateY(-1px);
-      box-shadow:var(--shadow);
-    }
-    
-    .send-button:disabled{
-      opacity:0.5;
-      cursor:not-allowed;
-    }
-    
-    .chat-features{
-      display:flex;
-      align-items:center;
-      gap:1rem;
-      margin-top:0.75rem;
-      font-size:0.85rem;
-    }
-    
-    .feature-badge{
-      display:flex;
-      align-items:center;
-      gap:0.5rem;
-      padding:0.25rem 0.75rem;
-      background:rgba(16,185,129,0.1);
-      color:var(--ok);
-      border-radius:999px;
-      font-weight:500;
+    /* === HEADER === */
+    .header {
+      height: var(--header-height);
+      background: var(--bg-primary);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      position: relative;
+      z-index: 50;
     }
 
-    /* Right Panel - Discovery */
-    .right-panel{
-      background:rgba(255,255,255,0.95);
-      backdrop-filter:blur(10px);
-      border-radius:var(--border-radius-lg);
-      padding:1.5rem;
-      box-shadow:var(--shadow);
-      overflow-y:auto;
-    }
-    
-    .discovery-header{
-      display:flex;
-      align-items:center;
-      gap:0.75rem;
-      margin-bottom:1.5rem;
-    }
-    
-    .discovery-header h2{
-      font-size:1.25rem;
-      font-weight:700;
-      color:var(--ink);
-      margin:0;
-    }
-    
-    .discovery-icon{
-      width:32px;
-      height:32px;
-      border-radius:50%;
-      background:linear-gradient(135deg, #EC4899, #BE185D);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      color:white;
-    }
-    
-    .assessment-card{
-      background:var(--bg);
-      border:1px solid var(--border);
-      border-radius:var(--border-radius);
-      padding:1.5rem;
-      margin-bottom:1.5rem;
-      transition:var(--trans);
-    }
-    
-    .assessment-card:hover{
-      border-color:var(--brand);
-      box-shadow:var(--shadow);
-    }
-    
-    .assessment-card h3{
-      display:flex;
-      align-items:center;
-      gap:0.75rem;
-      font-size:1rem;
-      font-weight:600;
-      color:var(--ink);
-      margin:0 0 0.75rem 0;
-    }
-    
-    .assessment-card p{
-      color:var(--muted);
-      font-size:0.9rem;
-      line-height:1.5;
-      margin:0 0 1.25rem 0;
-    }
-    
-    .assessment-button{
-      width:100%;
-      padding:0.875rem 1rem;
-      background:var(--gradient-purple);
-      color:white;
-      border:none;
-      border-radius:var(--border-radius);
-      font-weight:600;
-      cursor:pointer;
-      transition:var(--trans);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:0.5rem;
-    }
-    
-    .assessment-button:hover{
-      transform:translateY(-1px);
-      box-shadow:var(--shadow);
-    }
-    
-    .assessment-button:disabled{
-      opacity:0.6;
-      cursor:not-allowed;
-    }
-    
-    .loading{
-      display:inline-flex;
-      align-items:center;
-      gap:0.5rem;
-    }
-    
-    .spinner{
-      width:16px;
-      height:16px;
-      border:2px solid transparent;
-      border-top:2px solid currentColor;
-      border-radius:50%;
-      animation:spin 1s linear infinite;
-    }
-    
-    @keyframes spin{
-      to{transform:rotate(360deg);}
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 24px;
+      color: var(--brand-primary);
     }
 
-    /* Status Indicators */
-    .status-connected{
-      display:flex;
-      align-items:center;
-      gap:0.5rem;
-      font-size:0.85rem;
-      color:var(--ok);
-      font-weight:500;
-    }
-    
-    .status-dot{
-      width:8px;
-      height:8px;
-      border-radius:50%;
-      background:var(--ok);
-      animation:pulse 2s infinite;
-    }
-    
-    @keyframes pulse{
-      0%{opacity:1;}
-      50%{opacity:0.5;}
-      100%{opacity:1;}
+    .logo-icon {
+      color: var(--brand-secondary);
     }
 
-    /* Responsive Design */
-    @media (max-width:1200px){
-      .main-container{
-        grid-template-columns:280px 1fr 320px;
-        gap:1rem;
-        padding:1rem;
-      }
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
-    
-    @media (max-width:1024px){
-      .main-container{
-        grid-template-columns:1fr;
-        grid-template-rows:auto 1fr;
-      }
-      
-      .left-panel, .right-panel{
-        display:none;
-      }
-      
-      .mobile-nav{
-        display:flex;
-        justify-content:space-around;
-        padding:1rem;
-        background:rgba(255,255,255,0.95);
-        backdrop-filter:blur(10px);
-        border-radius:var(--border-radius-lg);
-        margin-bottom:1rem;
-      }
+
+    .language-selector {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-size: 14px;
     }
-    
-    @media (max-width:768px){
-      header{
-        padding:0 1rem;
+
+    .btn {
+      padding: 8px 16px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn:hover {
+      background: var(--hover-bg);
+      border-color: var(--brand-primary);
+    }
+
+    .btn-primary {
+      background: var(--brand-primary);
+      color: white;
+      border-color: var(--brand-primary);
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+
+    /* === THREE-PANE ESTATE LAYOUT === */
+    .estate {
+      height: calc(100vh - var(--header-height) - var(--footer-height));
+      display: grid;
+      grid-template-columns: var(--sidebar-width) 1fr var(--right-panel-width);
+      overflow: hidden;
+    }
+
+    /* === LEFT PANE - QUICK ACTIONS === */
+    .quick-actions {
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 24px 20px;
+    }
+
+    .pane-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+    }
+
+    .action-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg-primary);
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .action-item:hover {
+      border-color: var(--brand-primary);
+      box-shadow: var(--shadow);
+    }
+
+    .action-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .action-icon {
+      color: var(--brand-primary);
+      font-size: 16px;
+    }
+
+    .action-text {
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    /* Toggle Switch */
+    .toggle-switch {
+      width: 40px;
+      height: 20px;
+      background: #cbd5e1;
+      border-radius: 10px;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .toggle-switch.active {
+      background: var(--brand-primary);
+    }
+
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      background: white;
+      border-radius: 50%;
+      transition: all 0.2s;
+    }
+
+    .toggle-switch.active::after {
+      left: 22px;
+    }
+
+    /* Dashboard Button */
+    .dashboard-btn {
+      background: var(--brand-primary);
+      color: white;
+      border: none;
+      justify-content: center;
+      font-weight: 600;
+    }
+
+    .dashboard-btn.guest {
+      background: var(--text-muted);
+    }
+
+    /* Settings Collapsible */
+    .settings-collapsible {
+      margin-top: 20px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg-primary);
+    }
+
+    .settings-header {
+      padding: 12px 16px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .settings-body {
+      padding: 16px;
+      border-top: 1px solid var(--border);
+      display: none;
+    }
+
+    .settings-body.open {
+      display: block;
+    }
+
+    /* Virtual Human Avatar */
+    .virtual-human-avatar {
+      margin-top: 20px;
+      text-align: center;
+      display: none;
+    }
+
+    .virtual-human-avatar.active {
+      display: block;
+    }
+
+    .avatar-circle {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--brand-primary), var(--accent));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      color: white;
+      font-size: 32px;
+    }
+
+    /* === CENTER - AI CHAT === */
+    .ai-chat {
+      background: var(--bg-primary);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .chat-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .chat-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--brand-primary);
+      margin-bottom: 8px;
+    }
+
+    .chat-tagline {
+      color: var(--text-secondary);
+      font-size: 16px;
+    }
+
+    .mode-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      background: var(--bg-tertiary);
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-left: 8px;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 24px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .message {
+      max-width: 80%;
+      padding: 12px 16px;
+      border-radius: 16px;
+      line-height: 1.5;
+    }
+
+    .message.user {
+      background: var(--brand-primary);
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+
+    .message.ai {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+
+    .chat-input-area {
+      padding: 20px 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .chat-input-container {
+      display: flex;
+      gap: 12px;
+      align-items: flex-end;
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      resize: none;
+      font-family: inherit;
+      line-height: 1.4;
+      max-height: 120px;
+    }
+
+    .chat-input:focus {
+      outline: none;
+      border-color: var(--brand-primary);
+    }
+
+    .send-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--brand-primary);
+      color: white;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .char-counter {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-align: right;
+      margin-top: 4px;
+    }
+
+    /* === RIGHT PANE - ASSESSMENT & SUPPORT === */
+    .assessment-panel {
+      background: var(--bg-secondary);
+      border-left: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 24px 20px;
+    }
+
+    .support-assistant {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .support-assistant h3 {
+      color: var(--brand-secondary);
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .support-assistant p {
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    .discover-card {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .discover-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    .discover-description {
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .begin-assessment-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--brand-primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-bottom: 20px;
+    }
+
+    .begin-assessment-btn:hover {
+      background: #1d4ed8;
+    }
+
+    .insights-feed {
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+
+    .insights-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    .insight-item {
+      padding: 12px;
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    /* === FOOTER === */
+    .footer {
+      height: var(--footer-height);
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      font-size: 14px;
+    }
+
+    .footer-status {
+      color: var(--brand-primary);
+      font-weight: 500;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 16px;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      color: var(--brand-primary);
+    }
+
+    /* === MODALS === */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--bg-primary);
+      border-radius: 12px;
+      padding: 24px;
+      max-width: 400px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      margin-bottom: 20px;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .modal-close {
+      float: right;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--brand-primary);
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+      .estate {
+        grid-template-columns: 1fr;
+        height: auto;
+        overflow: visible;
       }
       
-      .logo{
-        font-size:1.25rem;
+      .quick-actions,
+      .assessment-panel {
+        display: none;
       }
       
-      nav{
-        gap:0.5rem;
+      .mobile-accordions {
+        display: block;
+        padding: 16px;
       }
       
-      .btn{
-        padding:0.625rem 1rem;
-        font-size:0.875rem;
+      .accordion {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        margin-bottom: 12px;
+        background: var(--bg-primary);
       }
       
-      .main-container{
-        padding:0.75rem;
+      .accordion-header {
+        padding: 12px 16px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
       
-      .chat-body{
-        padding:1.5rem 1rem;
+      .accordion-body {
+        padding: 16px;
+        border-top: 1px solid var(--border);
+        display: none;
       }
       
-      .right-panel{
-        padding:1rem;
+      .accordion-body.open {
+        display: block;
       }
     }
 
-    /* Dark mode adjustments */
-    .dark .main-container{
-      background:linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
-    }
-    
-    .dark .left-panel,
-    .dark .chat-container,
-    .dark .right-panel{
-      background:rgba(30,41,59,0.95);
-    }
-    
-    .dark .ai-message-content{
-      background:var(--card);
-    }
-    
-    .dark header{
-      background:rgba(15,23,42,0.95);
-      border-bottom-color:var(--border);
+    @media (min-width: 769px) {
+      .mobile-accordions {
+        display: none;
+      }
     }
   </style>
 </head>
+
 <body>
   <!-- Header -->
-  <header>
-    <a href="/" class="logo">
-      <span>PMERIT</span>
-    </a>
+  <header class="header">
+    <div class="logo">
+      <i class="fas fa-graduation-cap logo-icon"></i>
+      <span>P</span><span class="logo-icon">MERIT</span>
+    </div>
     
-    <nav>
-      <div class="language-selector">
-        <span>🌍</span>
-        <span>English</span>
-        <i class="fas fa-chevron-down" style="font-size:0.8rem;"></i>
-      </div>
+    <nav class="header-nav">
+      <select class="language-selector" id="languageSelect">
+        <option value="en">English</option>
+        <option value="yo">Yorùbá</option>
+        <option value="ig">Igbo</option>
+        <option value="ha">Hausa</option>
+      </select>
       
-      <div class="btn">
-        <i class="fas fa-fire"></i>
-        Pricing
-      </div>
+      <button class="btn" id="donateBtn">
+        <i class="fas fa-heart"></i>
+        Donate
+      </button>
       
-      <button class="btn secondary" id="signInBtn">
+      <button class="btn" id="signInBtn">
+        <i class="fas fa-sign-in-alt"></i>
         Sign In
       </button>
       
-      <button class="btn primary" id="startLearningBtn">
+      <button class="btn btn-primary" id="startLearningBtn">
+        <i class="fas fa-rocket"></i>
         Start Learning
       </button>
     </nav>
   </header>
 
-  <!-- Main Content -->
-  <div class="main-container">
-    <!-- Left Sidebar -->
-    <div class="left-panel">
-      <div class="panel-section">
-        <h3>Features</h3>
-        
-        <div class="toggle-item" id="ttsToggle">
-          <div>
-            <i class="fas fa-volume-up"></i>
-            <span>Text-to-Speech</span>
-          </div>
-          <div class="toggle-switch"></div>
-        </div>
-        
-        <div class="toggle-item" id="darkModeToggle">
-          <div>
-            <i class="fas fa-moon"></i>
-            <span>Dark Mode</span>
-          </div>
-          <div class="toggle-switch"></div>
+  <!-- Three-Pane Estate Layout -->
+  <div class="estate">
+    <!-- Left Pane - Quick Actions -->
+    <aside class="quick-actions">
+      <h2 class="pane-title">Quick Actions</h2>
+      
+      <!-- Dashboard Button -->
+      <div class="action-item dashboard-btn guest" id="dashboardBtn">
+        <div class="action-content">
+          <i class="fas fa-tachometer-alt action-icon"></i>
+          <span class="action-text">Dashboard</span>
         </div>
       </div>
       
-      <div class="panel-section">
-        <h3>Navigation</h3>
-        
-        <div class="nav-item active">
-          <i class="fas fa-user"></i>
-          <span>My Profile</span>
+      <!-- Virtual Human Toggle -->
+      <div class="action-item" id="virtualHumanToggle">
+        <div class="action-content">
+          <i class="fas fa-user action-icon"></i>
+          <span class="action-text">Virtual Human Mode</span>
         </div>
-        
-        <div class="nav-item" id="assessmentsNav">
-          <i class="fas fa-clipboard-check"></i>
-          <span>Assessments</span>
+        <div class="toggle-switch" id="vhToggle"></div>
+      </div>
+      
+      <!-- Career Track Explorer -->
+      <div class="action-item" id="careerTrackBtn">
+        <div class="action-content">
+          <i class="fas fa-compass action-icon"></i>
+          <span class="action-text">Career Track & Explore Paths</span>
         </div>
-        
-        <div class="nav-item">
-          <i class="fas fa-book"></i>
-          <span>Subjects</span>
+        <i class="fas fa-chevron-right"></i>
+      </div>
+      
+      <!-- Customer Service Mode Toggle -->
+      <div class="action-item" id="customerServiceToggle">
+        <div class="action-content">
+          <i class="fas fa-headset action-icon"></i>
+          <span class="action-text">Customer Service Mode</span>
         </div>
-        
-        <div class="nav-item">
-          <i class="fas fa-chart-line"></i>
-          <span>Progress</span>
+        <div class="toggle-switch" id="csToggle"></div>
+      </div>
+      
+      <!-- Settings Collapsible -->
+      <div class="settings-collapsible">
+        <div class="settings-header" id="settingsHeader">
+          <span><i class="fas fa-cog action-icon"></i> Settings</span>
+          <i class="fas fa-chevron-down"></i>
         </div>
-        
-        <div class="nav-item">
-          <i class="fas fa-cog"></i>
-          <span>Settings</span>
-        </div>
-        
-        <div class="nav-item">
-          <i class="fas fa-question-circle"></i>
-          <span>Help</span>
+        <div class="settings-body" id="settingsBody">
+          <div class="action-item" id="darkModeToggle">
+            <div class="action-content">
+              <i class="fas fa-moon action-icon"></i>
+              <span class="action-text">Dark Mode</span>
+            </div>
+            <div class="toggle-switch" id="darkToggle"></div>
+          </div>
+          
+          <div class="action-item" id="ttsToggle">
+            <div class="action-content">
+              <i class="fas fa-volume-up action-icon"></i>
+              <span class="action-text">Text-to-Speech</span>
+            </div>
+            <div class="toggle-switch" id="ttsSwitch"></div>
+          </div>
+          
+          <div class="action-item" id="voicePreviewBtn">
+            <div class="action-content">
+              <i class="fas fa-microphone action-icon"></i>
+              <span class="action-text">Voice Preview</span>
+            </div>
+            <i class="fas fa-chevron-right"></i>
+          </div>
         </div>
       </div>
-    </div>
+      
+      <!-- Virtual Human Avatar (appears when active) -->
+      <div class="virtual-human-avatar" id="virtualAvatar">
+        <div class="avatar-circle">
+          <i class="fas fa-robot"></i>
+        </div>
+        <p>Gabriel AI Active</p>
+      </div>
+    </aside>
 
-    <!-- Main Chat Area -->
-    <div class="chat-container">
+    <!-- Center - AI Chat -->
+    <main class="ai-chat">
       <div class="chat-header">
-        <h1>Empowering Learning Through Innovation</h1>
-        <p>Accessible, high-quality education for global opportunities</p>
+        <h1 class="chat-title">
+          PMERIT AI
+          <span class="mode-badge" id="modeBadge">
+            <i class="fas fa-graduation-cap"></i>
+            Educational Tutor
+          </span>
+        </h1>
+        <p class="chat-tagline">Your personalized AI learning companion for global education access</p>
       </div>
       
-      <div class="chat-body" id="chatBody">
-        <div class="ai-message">
-          <div class="ai-avatar">GA</div>
-          <div class="ai-message-content">
-            <h4>Gabriel AI</h4>
-            <p>Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?</p>
-          </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="message ai">
+          <p>Hello! I'm PMERIT AI, your educational companion. I'm here to help you discover your learning path, take assessments, and achieve your educational goals. How can I assist you today?</p>
         </div>
       </div>
       
@@ -765,473 +795,130 @@
           <textarea 
             class="chat-input" 
             id="chatInput" 
-            placeholder="Ask about courses, learning paths, or your goals..."
-            rows="1"></textarea>
-          <button class="send-button" id="sendButton">
+            placeholder="Ask me anything about your learning journey..."
+            rows="1"
+            maxlength="2000"
+          ></textarea>
+          <button class="send-btn" id="sendBtn">
             <i class="fas fa-paper-plane"></i>
-            Send
           </button>
         </div>
-        
-        <div class="chat-features">
-          <div class="feature-badge">
-            <i class="fas fa-robot"></i>
-            <span>Virtual Human Mode</span>
-          </div>
-          
-          <div class="feature-badge">
-            <i class="fas fa-book-open"></i>
-            <span>Read About</span>
-          </div>
-          
-          <div class="feature-badge status-connected">
-            <div class="status-dot"></div>
-            <span>Connected to Educational Services</span>
-          </div>
+        <div class="char-counter">
+          <span id="charCount">0</span>/2000
         </div>
       </div>
-    </div>
+    </main>
 
-    <!-- Right Panel - Discovery -->
-    <div class="right-panel">
-      <div class="discovery-header">
-        <div class="discovery-icon">
-          <i class="fas fa-compass"></i>
+    <!-- Right Pane - Assessment & Support -->
+    <aside class="assessment-panel">
+      <!-- Support Assistant -->
+      <div class="support-assistant">
+        <h3><i class="fas fa-headset"></i> Support Assistant</h3>
+        <p>Need help? Our AI support is available 24/7 to assist with technical questions and platform guidance.</p>
+      </div>
+      
+      <!-- Discover Your Path Card -->
+      <div class="discover-card">
+        <h3 class="discover-title">Discover Your Path (AI)</h3>
+        <p class="discover-description">
+          Take our comprehensive AI-powered assessment to discover your personality type, interests, and optimal learning path tailored to your unique goals.
+        </p>
+        
+        <button class="begin-assessment-btn" id="beginAssessmentBtn">
+          <i class="fas fa-play-circle"></i>
+          Begin Assessment
+        </button>
+        
+        <!-- Rotating Insights Feed -->
+        <div class="insights-feed">
+          <h4 class="insights-title">💡 Daily Insights</h4>
+          <div class="insight-item" id="insight1">
+            85% of successful learners complete their personality assessment within the first week.
+          </div>
+          <div class="insight-item" id="insight2">
+            Personalized learning paths increase course completion by 60%.
+          </div>
+          <div class="insight-item" id="insight3">
+            Students with AI tutoring support show 3x faster skill development.
+          </div>
         </div>
-        <h2>Discover Your Path</h2>
       </div>
-      
-      <p style="color:var(--muted);margin-bottom:1.5rem;">Personalized assessments to guide your learning journey</p>
-      
-      <div class="assessment-card">
-        <h3>
-          <i class="fas fa-brain" style="color:var(--brand);"></i>
-          Learning Style Assessment
-        </h3>
-        <p>Discover how you learn best and personalize your experience</p>
-        <button class="assessment-button" id="learningStyleAssessment">
-          <span>Start Assessment</span>
-          <i class="fas fa-arrow-right"></i>
-        </button>
+    </aside>
+  </div>
+
+  <!-- Mobile Accordions (shown on mobile) -->
+  <div class="mobile-accordions">
+    <div class="accordion">
+      <div class="accordion-header" onclick="toggleAccordion(this)">
+        <span>Quick Actions</span>
+        <i class="fas fa-chevron-down"></i>
       </div>
-      
-      <div class="assessment-card">
-        <h3>
-          <i class="fas fa-lightbulb" style="color:#F59E0B;"></i>
-          Interest Profiler
-        </h3>
-        <p>Explore subjects and fields that match your natural interests</p>
-        <button class="assessment-button" id="interestProfiler">
-          <span>Discover Interests</span>
-          <i class="fas fa-arrow-right"></i>
-        </button>
-      </div>
-      
-      <div class="assessment-card">
-        <h3>
-          <i class="fas fa-tools" style="color:#EF4444;"></i>
-          Skills Assessment
-        </h3>
-        <p>Assess your current abilities and identify growth opportunities</p>
-        <button class="assessment-button" id="skillsAssessment">
-          <span>Evaluate Skills</span>
-          <i class="fas fa-arrow-right"></i>
-        </button>
+      <div class="accordion-body">
+        <!-- Mobile version of quick actions -->
+        <div class="action-item" onclick="handleDashboard()">
+          <div class="action-content">
+            <i class="fas fa-tachometer-alt action-icon"></i>
+            <span class="action-text">Dashboard</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <script>
-    // PMERIT AI Platform - Integrated with 78-Table Database
-    class PMERITIntegration {
-      constructor() {
-        this.API_BASE = '/api';
-        this.AI_ENDPOINT = 'https://ai.pmerit.com';
-        this.state = {
-          darkMode: localStorage.getItem('pmerit_dark') === 'true',
-          tts: localStorage.getItem('pmerit_tts') === 'true',
-          isTyping: false,
-          currentUser: null
-        };
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-status">
+      <i class="fas fa-circle" style="color: #16a34a; font-size: 8px;"></i>
+      Connected
+    </div>
+    
+    <div class="footer-links">
+      <a href="#privacy">Privacy & Terms</a>
+      <a href="#contact">Contact</a>
+      <a href="#partnerships">Partnerships</a>
+      <a href="#support">Support</a>
+    </div>
+  </footer>
+
+  <!-- Sign In Modal -->
+  <div class="modal-overlay" id="signInModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">Sign In to PMERIT</h2>
+        <button class="modal-close" onclick="closeModal('signInModal')">&times;</button>
+      </div>
+      
+      <form id="signInForm">
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" id="email" required>
+        </div>
         
-        this.init();
-      }
-
-      init() {
-        this.setupEventListeners();
-        this.loadUserState();
-        this.initializeTheme();
-        this.testDatabaseConnection();
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-input" id="password" required>
+        </div>
         
-        console.log('🎓 PMERIT Platform initialized with 78-table database integration');
-      }
-
-      setupEventListeners() {
-        // Theme toggles
-        document.getElementById('darkModeToggle').addEventListener('click', () => this.toggleDarkMode());
-        document.getElementById('ttsToggle').addEventListener('click', () => this.toggleTTS());
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 12px;">
+          Sign In
+        </button>
         
-        // Chat functionality
-        document.getElementById('sendButton').addEventListener('click', () => this.sendMessage());
-        document.getElementById('chatInput').addEventListener('keypress', (e) => {
-          if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            this.sendMessage();
-          }
-        });
-        
-        // Assessment buttons - Connect to 78-table database
-        document.getElementById('learningStyleAssessment').addEventListener('click', () => this.startAssessment('learning_style'));
-        document.getElementById('interestProfiler').addEventListener('click', () => this.startAssessment('interest_profile'));
-        document.getElementById('skillsAssessment').addEventListener('click', () => this.startAssessment('skills'));
-        
-        // Navigation
-        document.getElementById('assessmentsNav').addEventListener('click', () => this.openAssessments());
-        document.getElementById('signInBtn').addEventListener('click', () => this.openSignIn());
-        document.getElementById('startLearningBtn').addEventListener('click', () => this.startLearning());
-        
-        // Auto-resize textarea
-        document.getElementById('chatInput').addEventListener('input', this.autoResizeTextarea);
-      }
+        <div style="text-align: center;">
+          <a href="#" style="color: var(--brand-primary); text-decoration: none;">Forgot password?</a>
+        </div>
+      </form>
+    </div>
+  </div>
 
-      autoResizeTextarea() {
-        const textarea = document.getElementById('chatInput');
-        textarea.style.height = 'auto';
-        textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
-      }
-
-      toggleDarkMode() {
-        this.state.darkMode = !this.state.darkMode;
-        document.body.classList.toggle('dark', this.state.darkMode);
-        document.getElementById('darkModeToggle').classList.toggle('active', this.state.darkMode);
-        localStorage.setItem('pmerit_dark', this.state.darkMode);
-      }
-
-      toggleTTS() {
-        this.state.tts = !this.state.tts;
-        document.getElementById('ttsToggle').classList.toggle('active', this.state.tts);
-        localStorage.setItem('pmerit_tts', this.state.tts);
-        
-        if (this.state.tts) {
-          this.speak("Text-to-speech is now enabled!");
-        }
-      }
-
-      initializeTheme() {
-        if (this.state.darkMode) {
-          document.body.classList.add('dark');
-          document.getElementById('darkModeToggle').classList.add('active');
-        }
-        
-        if (this.state.tts) {
-          document.getElementById('ttsToggle').classList.add('active');
-        }
-      }
-
-      async testDatabaseConnection() {
-        try {
-          const response = await fetch(`${this.API_BASE}/health`);
-          if (response.ok) {
-            console.log('✅ Database connection verified - 78 tables ready');
-            this.updateConnectionStatus(true);
-          }
-        } catch (error) {
-          console.log('⚠️ Using local development mode');
-          this.updateConnectionStatus(false);
-        }
-      }
-
-      updateConnectionStatus(connected) {
-        const statusElements = document.querySelectorAll('.status-connected');
-        statusElements.forEach(el => {
-          el.style.color = connected ? 'var(--ok)' : 'var(--warning)';
-          el.querySelector('span').textContent = connected ? 
-            'Connected to Educational Services' : 
-            'Development Mode - Local Database';
-        });
-      }
-
-      async sendMessage() {
-        const input = document.getElementById('chatInput');
-        const message = input.value.trim();
-        
-        if (!message || this.state.isTyping) return;
-        
-        // Add user message to chat
-        this.addMessage(message, 'user');
-        input.value = '';
-        this.autoResizeTextarea();
-        
-        // Show typing indicator
-        this.state.isTyping = true;
-        this.showTypingIndicator();
-        
-        try {
-          // Connect to your ai.pmerit.com endpoint
-          const aiResponse = await this.getAIResponse(message);
-          this.hideTypingIndicator();
-          this.addMessage(aiResponse, 'ai');
-          
-          // Text-to-speech if enabled
-          if (this.state.tts) {
-            this.speak(aiResponse);
-          }
-          
-        } catch (error) {
-          this.hideTypingIndicator();
-          this.addMessage("I'm having trouble connecting right now. Please try again in a moment.", 'ai');
-          console.error('AI response error:', error);
-        }
-        
-        this.state.isTyping = false;
-      }
-
-      async getAIResponse(message) {
-        try {
-          // First try to connect to your actual AI endpoint
-          const response = await fetch(`${this.AI_ENDPOINT}/api/generate`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              model: 'phi3:mini',
-              prompt: this.buildContextualPrompt(message),
-              options: {
-                temperature: 0.7,
-                max_tokens: 300
-              }
-            })
-          });
-          
-          if (response.ok) {
-            const data = await response.json();
-            return data.response || this.getFallbackResponse(message);
-          }
-        } catch (error) {
-          console.log('AI endpoint not available, using intelligent fallback');
-        }
-        
-        // Intelligent fallback responses based on your 78-table database context
-        return this.getFallbackResponse(message);
-      }
-
-      buildContextualPrompt(message) {
-        return `You are Gabriel AI, an educational assistant for PMERIT platform. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities.
-
-Context: The user is interacting with a comprehensive educational platform that has:
-- Personality assessment system with cultural adaptations (Nigerian, US, Global)
-- Job market integration with NBS and BLS data
-- Personalized learning paths and AI tutoring
-- Course management and certification tracking
-
-User message: ${message}
-
-Please provide a helpful, encouraging response that guides them toward their educational goals. Keep responses concise but informative.`;
-      }
-
-      getFallbackResponse(message) {
-        const msg = message.toLowerCase();
-        
-        // Assessment-related queries
-        if (msg.includes('assessment') || msg.includes('test') || msg.includes('evaluate')) {
-          return "I'd love to help you discover your learning potential! Try our Learning Style Assessment to understand how you learn best, or explore the Interest Profiler to find subjects that match your passions. Which assessment interests you most?";
-        }
-        
-        // Career and job-related queries
-        if (msg.includes('job') || msg.includes('career') || msg.includes('work')) {
-          return "PMERIT connects your learning to real career opportunities! We integrate with Nigerian Bureau of Statistics and US Bureau of Labor Statistics to provide current job market insights. Would you like to start with a skills assessment to see which career paths align with your abilities?";
-        }
-        
-        // Course and learning queries
-        if (msg.includes('course') || msg.includes('learn') || msg.includes('study')) {
-          return "Our AI-powered platform creates personalized learning paths based on your personality, interests, and career goals. We offer courses in technology, business, design, and more. What subject area interests you most?";
-        }
-        
-        // General educational guidance
-        if (msg.includes('help') || msg.includes('start') || msg.includes('begin')) {
-          return "Welcome to your learning journey! I recommend starting with our assessments to create a personalized path. You can take the Learning Style Assessment to understand how you learn best, then explore our course recommendations. What are your educational goals?";
-        }
-        
-        // Default encouraging response
-        return "That's a great question! PMERIT is designed to provide accessible education for everyone. Whether you're looking to develop new skills, change careers, or pursue your interests, our AI-powered platform can create a personalized learning path for you. What would you like to explore first?";
-      }
-
-      addMessage(content, sender) {
-        const chatBody = document.getElementById('chatBody');
-        const messageDiv = document.createElement('div');
-        messageDiv.className = sender === 'user' ? 'user-message' : 'ai-message';
-        
-        if (sender === 'user') {
-          messageDiv.innerHTML = `
-            <div class="user-avatar">
-              <i class="fas fa-user"></i>
-            </div>
-            <div class="user-message-content">
-              <p>${content}</p>
-            </div>
-          `;
-        } else {
-          messageDiv.innerHTML = `
-            <div class="ai-avatar">GA</div>
-            <div class="ai-message-content">
-              <h4>Gabriel AI</h4>
-              <p>${content}</p>
-            </div>
-          `;
-        }
-        
-        chatBody.appendChild(messageDiv);
-        chatBody.scrollTop = chatBody.scrollHeight;
-      }
-
-      showTypingIndicator() {
-        const chatBody = document.getElementById('chatBody');
-        const typingDiv = document.createElement('div');
-        typingDiv.className = 'ai-message';
-        typingDiv.id = 'typingIndicator';
-        typingDiv.innerHTML = `
-          <div class="ai-avatar">GA</div>
-          <div class="ai-message-content">
-            <h4>Gabriel AI</h4>
-            <div class="loading">
-              <div class="spinner"></div>
-              <span>Thinking...</span>
-            </div>
-          </div>
-        `;
-        
-        chatBody.appendChild(typingDiv);
-        chatBody.scrollTop = chatBody.scrollHeight;
-      }
-
-      hideTypingIndicator() {
-        const indicator = document.getElementById('typingIndicator');
-        if (indicator) {
-          indicator.remove();
-        }
-      }
-
-      speak(text) {
-        if ('speechSynthesis' in window && this.state.tts) {
-          speechSynthesis.cancel();
-          const utterance = new SpeechSynthesisUtterance(text);
-          utterance.rate = 0.9;
-          utterance.pitch = 1;
-          speechSynthesis.speak(utterance);
-        }
-      }
-
-      // Assessment Integration with 78-Table Database
-      async startAssessment(type) {
-        const button = document.getElementById(`${type === 'learning_style' ? 'learningStyleAssessment' : type === 'interest_profile' ? 'interestProfiler' : 'skillsAssessment'}`);
-        const originalContent = button.innerHTML;
-        
-        // Show loading state
-        button.disabled = true;
-        button.innerHTML = `
-          <div class="loading">
-            <div class="spinner"></div>
-            <span>Starting Assessment...</span>
-          </div>
-        `;
-        
-        try {
-          // Connect to your personality assessment tables
-          const response = await fetch(`${this.API_BASE}/assessment/start`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              assessment_type: type,
-              cultural_context: this.detectCulturalContext(),
-              language_preference: navigator.language.split('-')[0] || 'en'
-            })
-          });
-          
-          if (response.ok) {
-            const data = await response.json();
-            this.openAssessmentModal(data);
-          } else {
-            throw new Error('Assessment service unavailable');
-          }
-          
-        } catch (error) {
-          console.error('Assessment start error:', error);
-          this.addMessage(`I'd love to start the ${type.replace('_', ' ')} assessment with you! This feature connects to our comprehensive database system. For now, let me know what specific areas you'd like to explore in your learning journey.`, 'ai');
-        } finally {
-          button.disabled = false;
-          button.innerHTML = originalContent;
-        }
-      }
-
-      detectCulturalContext() {
-        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const language = navigator.language;
-        
-        if (timezone.includes('Lagos') || language.includes('en-NG')) {
-          return 'nigerian';
-        } else if (timezone.includes('America') || language.includes('en-US')) {
-          return 'us';
-        } else {
-          return 'global';
-        }
-      }
-
-      openAssessmentModal(assessmentData) {
-        // This would open a comprehensive assessment modal
-        // Connected to your pmerit_personality_assessments table
-        console.log('Opening assessment:', assessmentData);
-        
-        // For now, show integration message
-        this.addMessage(`Great choice! The ${assessmentData.assessment_type} assessment will help personalize your learning experience. This assessment is powered by our AI system and will be tailored to your cultural context (${assessmentData.cultural_context}). The full assessment interface will connect to our 78-table database system.`, 'ai');
-      }
-
-      openAssessments() {
-        this.addMessage("Here are your available assessments. Each one helps us understand you better and create a more personalized learning experience. Which would you like to start with?", 'ai');
-      }
-
-      openSignIn() {
-        this.addMessage("Welcome back! Our sign-in system connects to your personalized learning profile, tracks your progress across all assessments and courses, and saves your preferences. The full authentication system integrates with our user management tables.", 'ai');
-      }
-
-      startLearning() {
-        this.addMessage("Excellent! Let's begin your learning journey. I recommend starting with our assessment system to create your personalized path. Our platform adapts to your learning style, interests, and career goals using AI-powered analysis. What subject area interests you most?", 'ai');
-      }
-
-      loadUserState() {
-        // Load user preferences and state from local storage
-        // In full implementation, this would connect to your users table
-        const savedState = localStorage.getItem('pmerit_user_state');
-        if (savedState) {
-          try {
-            const userState = JSON.parse(savedState);
-            this.state.currentUser = userState;
-          } catch (error) {
-            console.log('Could not load user state');
-          }
-        }
-      }
-
-      saveUserState() {
-        localStorage.setItem('pmerit_user_state', JSON.stringify(this.state.currentUser));
-      }
-    }
-
-    // Initialize the PMERIT platform
-    document.addEventListener('DOMContentLoaded', () => {
-      window.pmeritPlatform = new PMERITIntegration();
-    });
-
-    // Service Worker for offline functionality
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js').then(() => {
-        console.log('✅ PMERIT PWA ready for offline use');
-      }).catch(() => {
-        console.log('Service worker registration failed');
-      });
-    }
-  </script>
-</body>
-</html>
+  <!-- Career Track Modal -->
+  <div class="modal-overlay" id="careerTrackModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">Career Tracks</h2>
+        <button class="modal-close" onclick="closeModal('careerTrackModal')">&times;</button>
+      </div>
+      
+      <div id="careerTracksList">
+        <!-- Populated by JavaScript -->
+      </div>
+    </div>
