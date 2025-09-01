@@ -1,1 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" data-page="index" data-role="user">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PMERIT - Empowering Learning Through Innovation</title>
+    <meta name="description" content="Accessible, high-quality education for global opportunities. Connect with Pmerit AI for personalized learning paths.">
+    
+    <!-- Load shared CSS (your existing base.css + new modular CSS) -->
+    <link rel="stylesheet" href="/assets/base.css">
+    <link rel="stylesheet" href="/assets/css/layout.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
+    
+    <!-- Homepage-specific styles (minimal since most is now in modular CSS) -->
+    <style>
+        .homepage-hero {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .hero-title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+        
+        .hero-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
 
+<body>
+    <!-- Shared header will be injected here by boot-includes.js -->
+    <header id="header"></header>
+    
+    <!-- Shared navigation will be injected here by boot-includes.js -->
+    <nav id="site-nav"></nav>
+    
+    <!-- Homepage-specific content -->
+    <main class="container">
+        <div class="main-content">
+            <!-- Left Panel (Desktop Only) -->
+            <aside class="left-panel" id="leftPanel">
+                <h3 data-i18n="quickActions">Quick Actions</h3>
+                <div style="margin-top: 15px;">
+                    <button class="btn btn-secondary" style="width: 100%; margin-bottom: 10px;" data-action="toggleVH" data-i18n="virtualHuman">Virtual Human Mode</button>
+                    <button class="btn btn-secondary" style="width: 100%; margin-bottom: 10px;" data-action="openCareer" data-i18n="careerPaths">Career Paths</button>
+                    <button class="btn btn-secondary" style="width: 100%;" data-action="toggleSupport" data-i18n="supportMode">Support Mode</button>
+                </div>
+            </aside>
+
+            <!-- Main Panel -->
+            <section class="main-panel" id="mainPanel">
+                <!-- Hero Section -->
+                <div class="homepage-hero">
+                    <h1 class="hero-title" data-i18n="heroTitle">Empowering Learning Through Innovation</h1>
+                    <p class="hero-subtitle" data-i18n="heroSubtitle">Accessible, high-quality education for global opportunities</p>
+                </div>
+
+                <!-- AI Chat Interface -->
+                <div class="ai-chat-container" id="aiChatContainer">
+                    <div class="ai-message">
+                        <div class="ai-avatar">P</div>
+                        <div class="ai-text">
+                            <strong>Pmerit AI:</strong> <span data-i18n="welcomeMessage">Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Input -->
+                <div class="chat-input-container" id="chatInputContainer">
+                    <input type="text" class="chat-input" id="chatInput" data-i18n-placeholder="askAboutPmerit" placeholder="Ask me about PMERIT, courses, or career paths...">
+                    <button class="btn btn-primary" id="chatSend" data-i18n="send">Send</button>
+                </div>
+
+                <!-- Character Counter -->
+                <div style="text-align: center; color: var(--text-secondary); font-size: 12px;">
+                    <span id="charCounter">0/1000</span>
+                </div>
+            </section>
+
+            <!-- Right Panel (Desktop Only) -->
+            <aside class="right-panel" id="rightPanel">
+                <div class="discovery-section">
+                    <h3 class="discovery-title" data-i18n="discoverPath">Discover Your Path (AI)</h3>
+                    <p class="discovery-description" data-i18n="discoveryDescription">
+                        Start a personalized assessment that analyzes your learning style, interests, and skills to create a customized educational plan just for you.
+                    </p>
+                    <button class="assessment-button" id="beginAssessment" data-i18n="beginAssessment">
+                        Begin Assessment
+                    </button>
+                    
+                    <div class="status-indicator">
+                        <div class="status-dot"></div>
+                        <span data-i18n="connectedServices">Connected to Educational Services</span>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+    
+    <!-- Shared footer will be injected here by boot-includes.js -->
+    <footer id="footer"></footer>
+    
+    <!-- Load shared functionality (your existing files + new modular components) -->
+    <script src="/assets/boot-includes.js" defer></script>
+    <script src="/assets/nav-config.js" defer></script>
+    
+    <!-- Load new modular JavaScript components -->
+    <script src="/assets/js/core/state.js" defer></script>
+    <script src="/assets/js/core/utils.js" defer></script>
+    <script src="/assets/js/core/i18n.js" defer></script>
+    
+    <!-- Load component-specific modules -->
+    <script src="/assets/js/components/header.js" defer></script>
+    <script src="/assets/js/components/sidebar-left.js" defer></script>
+    <script src="/assets/js/components/sidebar-right.js" defer></script>
+    <script src="/assets/js/components/chat.js" defer></script>
+    <script src="/assets/js/components/modals.js" defer></script>
+    
+    <!-- Homepage-specific initialization -->
+    <script>
+        // Enhanced homepage initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize PMERIT modular system
+            if (window.PMERIT) {
+                console.log('🏠 Homepage initializing with modular system');
+                
+                // Initialize all modules
+                PMERIT.modules.init([
+                    'state',      // State management
+                    'i18n',       // Language system  
+                    'header',     // Header functionality
+                    'sidebarLeft', // Left panel (Quick Actions)
+                    'sidebarRight', // Right panel (Assessment)
+                    'chat',       // AI Chat system
+                    'modals'      // Modal dialogs
+                ]);
+                
+                // Homepage-specific setup
+                setupHomepageFeatures();
+            } else {
+                console.warn('PMERIT system not loaded, falling back to basic functionality');
+                // Fallback for basic functionality if modular system fails
+                setupBasicHomepage();
+            }
+        });
+        
+        function setupHomepageFeatures() {
+            // Connect assessment button to database
+            const assessmentBtn = document.getElementById('beginAssessment');
+            if (assessmentBtn) {
+                assessmentBtn.addEventListener('click', async () => {
+                    try {
+                        // Open assessment modal with database connection
+                        await PMERIT.modals.openAssessment();
+                    } catch (error) {
+                        console.error('Assessment error:', error);
+                        // Fallback to basic assessment
+                        alert('Assessment system starting...');
+                    }
+                });
+            }
+            
+            // Enhanced chat functionality
+            const chatInput = document.getElementById('chatInput');
+            const chatSend = document.getElementById('chatSend');
+            
+            if (chatInput && chatSend) {
+                // Character counter
+                chatInput.addEventListener('input', (e) => {
+                    const length = e.target.value.length;
+                    document.getElementById('charCounter').textContent = `${length}/1000`;
+                    
+                    if (length > 1000) {
+                        e.target.value = e.target.value.substring(0, 1000);
+                    }
+                });
+                
+                // Send message functionality
+                const sendMessage = async () => {
+                    const message = chatInput.value.trim();
+                    if (!message) return;
+                    
+                    try {
+                        // Use modular chat system
+                        await PMERIT.chat.sendMessage(message, 'homepage_assistant');
+                        chatInput.value = '';
+                        document.getElementById('charCounter').textContent = '0/1000';
+                    } catch (error) {
+                        console.error('Chat error:', error);
+                        // Fallback response
+                        PMERIT.chat.addMessage('Pmerit AI', 'I\'m here to help with your learning journey! Please try again.', 'ai');
+                    }
+                };
+                
+                chatInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') sendMessage();
+                });
+                
+                chatSend.addEventListener('click', sendMessage);
+            }
+        }
+        
+        function setupBasicHomepage() {
+            // Basic fallback functionality
+            console.log('🔧 Setting up basic homepage functionality');
+            
+            // Basic assessment button
+            const assessmentBtn = document.getElementById('beginAssessment');
+            if (assessmentBtn) {
+                assessmentBtn.addEventListener('click', () => {
+                    alert('Assessment system will connect to your database. Please ensure your API endpoints are configured.');
+                });
+            }
+            
+            // Basic chat
+            const chatSend = document.getElementById('chatSend');
+            if (chatSend) {
+                chatSend.addEventListener('click', () => {
+                    alert('Chat system will connect to ai.pmerit.com. Please configure your API endpoints.');
+                });
+            }
+        }
+    </script>
+</body>
+</html>
