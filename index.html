@@ -1,1114 +1,212 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PMERIT - Empowering Learning Through Innovation</title>
-    <meta name="description" content="Accessible, high-quality education for global opportunities. Connect with Pmerit AI for personalized learning paths.">
-    
-    <style>
-        :root {
-            --primary-color: #6366f1;
-            --primary-dark: #4f46e5;
-            --secondary-color: #f8fafc;
-            --text-primary: #1e293b;
-            --text-secondary: #64748b;
-            --success-color: #10b981;
-            --warning-color: #f59e0b;
-            --error-color: #ef4444;
-            --border-color: #e2e8f0;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --radius: 8px;
-        }
-        
-        [data-theme="dark"] {
-            --secondary-color: #1e293b;
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --border-color: #334155;
-        }
-        
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: var(--text-primary);
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 24px;
-            font-weight: bold;
-            color: white;
-        }
-        
-        .nav-controls {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .language-selector {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: white;
-            cursor: pointer;
-        }
-        
-        .btn {
-            padding: 10px 20px;
-            border-radius: var(--radius);
-            border: none;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.2s;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
-        }
-        
-        .btn-primary {
-            background: var(--primary-color);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background: var(--primary-dark);
-        }
-        
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        
-        .main-content {
-            background: white;
-            border-radius: 16px;
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            display: grid;
-            grid-template-columns: 300px 1fr 300px;
-            min-height: 600px;
-        }
-        
-        @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
-                grid-template-rows: auto auto 1fr;
-            }
-            
-            .left-panel, .right-panel {
-                display: none;
-            }
-            
-            .main-panel {
-                padding: 20px !important;
-            }
-        }
-        
-        .left-panel {
-            background: #f8fafc;
-            padding: 20px;
-            border-right: 1px solid var(--border-color);
-        }
-        
-        .main-panel {
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        .right-panel {
-            background: #f8fafc;
-            padding: 20px;
-            border-left: 1px solid var(--border-color);
-        }
-        
-        .hero-section {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .hero-title {
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: var(--text-primary);
-        }
-        
-        .hero-subtitle {
-            font-size: 16px;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-        }
-        
-        .ai-chat-container {
-            background: #f8fafc;
-            border-radius: var(--radius);
-            padding: 20px;
-            margin-bottom: 20px;
-            min-height: 200px;
-        }
-        
-        .ai-message {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        
-        .ai-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--primary-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-        
-        .ai-text {
-            flex: 1;
-            padding: 12px;
-            background: white;
-            border-radius: var(--radius);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        
-        .chat-input-container {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        
-        .chat-input {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius);
-            font-size: 14px;
-        }
-        
-        .discovery-section {
-            margin-top: 20px;
-        }
-        
-        .discovery-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: var(--text-primary);
-        }
-        
-        .discovery-description {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-        
-        .assessment-button {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: var(--radius);
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 16px;
-        }
-        
-        .assessment-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 110, 234, 0.4);
-        }
-        
-        .status-indicator {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 15px;
-            font-size: 14px;
-            color: var(--success-color);
-        }
-        
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--success-color);
-            border-radius: 50%;
-        }
-        
-        .footer {
-            margin-top: 30px;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 14px;
-        }
-        
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 10px;
-            flex-wrap: wrap;
-        }
-        
-        .footer-links a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-        }
-        
-        .footer-links a:hover {
-            color: white;
-        }
-        
-        /* Assessment Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .modal.active {
-            display: flex;
-        }
-        
-        .modal-content {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            max-width: 500px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            position: relative;
-        }
-        
-        .modal-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .modal-title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: var(--text-primary);
-        }
-        
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: var(--text-secondary);
-        }
-        
-        .question-container {
-            margin-bottom: 20px;
-        }
-        
-        .question-text {
-            font-size: 16px;
-            font-weight: 500;
-            margin-bottom: 15px;
-            color: var(--text-primary);
-        }
-        
-        .option-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        .option-button {
-            padding: 12px 15px;
-            border: 2px solid var(--border-color);
-            background: white;
-            border-radius: var(--radius);
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: left;
-        }
-        
-        .option-button:hover {
-            border-color: var(--primary-color);
-            background: #f0f4ff;
-        }
-        
-        .option-button.selected {
-            border-color: var(--primary-color);
-            background: var(--primary-color);
-            color: white;
-        }
-        
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #e2e8f0;
-            border-radius: 4px;
-            margin: 20px 0;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
-            transition: width 0.3s;
-        }
-        
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 20px;
-        }
-        
-        .loading.active {
-            display: block;
-        }
-        
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #e2e8f0;
-            border-left: 4px solid var(--primary-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* Mobile Optimizations */
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-            
-            .hero-title {
-                font-size: 24px;
-            }
-            
-            .modal-content {
-                padding: 20px;
-                margin: 10px;
-            }
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PMERIT — Empowering Learning Through Innovation</title>
+  <meta name="description" content="Accessible, high-quality education for global opportunities. Connect with Pmerit AI for personalized learning paths.">
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/assets/css/base.css">
+  <link rel="stylesheet" href="/assets/css/layout.css">
 </head>
-
 <body>
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <div class="logo">
-                <span>🎓</span>
-                <span>PMERIT</span>
-            </div>
-            
-            <nav class="nav-controls">
-                <div class="language-selector">
-                    <span>🌍</span>
-                    <span data-i18n="english">English</span>
-                    <span>▼</span>
-                </div>
-                <a href="#" class="btn btn-secondary" data-i18n="signIn">Sign In</a>
-                <a href="#" class="btn btn-primary" data-i18n="startLearning">Start Learning</a>
-            </nav>
-        </header>
+  <!-- Header (public storefront) -->
+  <header class="site-header">
+    <div class="logo">PMERIT</div>
+    <nav class="site-nav">
+      <select id="lang" class="btn" aria-label="Language">
+        <option value="en">English</option>
+        <option value="yo">Yorùbá</option>
+        <option value="ig">Igbo</option>
+        <option value="ha">Hausa</option>
+      </select>
+      <button id="pricingBtn" class="btn">Pricing</button>
+      <button id="signInBtn" class="btn">Sign In</button>
+      <button id="startBtn" class="btn primary">Start Learning</button>
+    </nav>
+  </header>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Left Panel (Desktop Only) -->
-            <aside class="left-panel">
-                <h3 data-i18n="quickActions">Quick Actions</h3>
-                <div style="margin-top: 15px;">
-                    <button class="btn btn-secondary" style="width: 100%; margin-bottom: 10px;" data-i18n="virtualHuman">Virtual Human Mode</button>
-                    <button class="btn btn-secondary" style="width: 100%; margin-bottom: 10px;" data-i18n="careerPaths">Career Paths</button>
-                    <button class="btn btn-secondary" style="width: 100%;" data-i18n="supportMode">Support Mode</button>
-                </div>
-            </aside>
+  <!-- Three-pane estate: Left / Center / Right -->
+  <div class="estate">
+    <!-- LEFT: Quick Actions -->
+    <aside id="left" aria-label="Quick actions">
+      <div class="pane-title">Quick Actions</div>
 
-            <!-- Main Panel -->
-            <section class="main-panel">
-                <!-- Hero Section -->
-                <div class="hero-section">
-                    <h1 class="hero-title" data-i18n="heroTitle">Empowering Learning Through Innovation</h1>
-                    <p class="hero-subtitle" data-i18n="heroSubtitle">Accessible, high-quality education for global opportunities</p>
-                </div>
+      <button class="toggle" id="vhToggle">
+        <span><i class="fas fa-user-astronaut icon"></i> Virtual Human Mode</span>
+        <span class="switch" aria-hidden="true"></span>
+      </button>
 
-                <!-- AI Chat Interface -->
-                <div class="ai-chat-container">
-                    <div class="ai-message">
-                        <div class="ai-avatar">P</div>
-                        <div class="ai-text">
-                            <strong>Pmerit AI:</strong> <span data-i18n="welcomeMessage">Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?</span>
-                        </div>
-                    </div>
-                </div>
+      <button class="action" id="careerPaths">
+        <span><i class="fas fa-compass icon"></i> Career Track & Explore Paths</span>
+        <i class="fas fa-chevron-right" aria-hidden="true"></i>
+      </button>
 
-                <!-- Chat Input -->
-                <div class="chat-input-container">
-                    <input type="text" class="chat-input" data-i18n-placeholder="askAboutPmerit" placeholder="Ask me about PMERIT, courses, or career paths...">
-                    <button class="btn btn-primary">Send</button>
-                </div>
+      <button class="toggle" id="supportToggle">
+        <span><i class="fas fa-headset icon"></i> Customer Service Mode</span>
+        <span class="switch" aria-hidden="true"></span>
+      </button>
 
-                <!-- Character Counter -->
-                <div style="text-align: center; color: var(--text-secondary); font-size: 12px;">
-                    <span id="charCounter">0/1000</span>
-                </div>
-            </section>
-
-            <!-- Right Panel (Desktop Only) -->
-            <aside class="right-panel">
-                <div class="discovery-section">
-                    <h3 class="discovery-title" data-i18n="discoverPath">Discover Your Path (AI)</h3>
-                    <p class="discovery-description" data-i18n="discoveryDescription">
-                        Start a personalized assessment that analyzes your learning style, interests, and skills to create a customized educational plan just for you.
-                    </p>
-                    <button class="assessment-button" id="beginAssessment" data-i18n="beginAssessment">
-                        Begin Assessment
-                    </button>
-                    
-                    <div class="status-indicator">
-                        <div class="status-dot"></div>
-                        <span data-i18n="connectedServices">Connected to Educational Services</span>
-                    </div>
-                </div>
-            </aside>
-        </main>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <p>&copy; 2024 PMERIT. Empowering learners worldwide.</p>
-            <div class="footer-links">
-                <a href="#" data-i18n="privacy">Privacy & Terms</a>
-                <a href="#" data-i18n="contact">Contact</a>
-                <a href="#" data-i18n="partners">Partnerships</a>
-                <a href="#" data-i18n="support">Support</a>
-            </div>
-        </footer>
-    </div>
-
-    <!-- Assessment Modal -->
-    <div class="modal" id="assessmentModal">
-        <div class="modal-content">
-            <button class="close-btn" id="closeModal">&times;</button>
-            
-            <div class="modal-header">
-                <h2 class="modal-title" data-i18n="assessmentTitle">Personality & Skills Assessment</h2>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
-                </div>
-            </div>
-
-            <!-- Loading State -->
-            <div class="loading" id="loadingState">
-                <div class="spinner"></div>
-                <p data-i18n="loadingQuestions">Loading your personalized questions...</p>
-            </div>
-
-            <!-- Question Container -->
-            <div id="questionContainer" style="display: none;">
-                <div class="question-container">
-                    <div class="question-text" id="questionText"></div>
-                    <div class="option-group" id="optionGroup"></div>
-                </div>
-                
-                <div style="display: flex; justify-content: space-between; margin-top: 20px;">
-                    <button class="btn btn-secondary" id="prevButton" disabled>Previous</button>
-                    <button class="btn btn-primary" id="nextButton" disabled>Next</button>
-                </div>
-            </div>
-
-            <!-- Results Container -->
-            <div id="resultsContainer" style="display: none;">
-                <div style="text-align: center;">
-                    <h3 data-i18n="resultsTitle">Your Personalized Learning Path</h3>
-                    <div id="resultsContent"></div>
-                    <button class="btn btn-primary" id="startLearningPath" data-i18n="startPath">Start Your Learning Journey</button>
-                </div>
-            </div>
+      <div class="collapsible" id="settingsBox">
+        <div class="head">
+          <strong><i class="fas fa-sliders-h"></i> Settings</strong>
+          <i class="fas fa-chevron-down"></i>
         </div>
+        <div class="body">
+          <button class="toggle" id="darkToggle">
+            <span><i class="fas fa-moon icon"></i> Dark Mode</span>
+            <span class="switch" aria-hidden="true"></span>
+          </button>
+          <button class="toggle" id="ttsToggle">
+            <span><i class="fas fa-volume-high icon"></i> Text-to-Speech</span>
+            <span class="switch" aria-hidden="true"></span>
+          </button>
+          <button class="action" id="voicesBtn">
+            <span><i class="fas fa-headphones icon"></i> Preview Voices</span>
+            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <button class="dashboard guest" id="dashBtn">
+        <i class="fas fa-gauge-high"></i> Dashboard
+      </button>
+
+      <div class="avatar" id="vhAvatar" title="Virtual Human">
+        <i class="fas fa-user-circle"></i>
+      </div>
+    </aside>
+
+    <!-- CENTER: Chat panel + VH stage -->
+    <main>
+      <section class="panel" aria-label="Chat panel">
+        <div class="panel-head">
+          <div class="badges">
+            <span class="badge vh" id="vhBadge" hidden>
+              <i class="fas fa-user-astronaut"></i> Virtual Human
+            </span>
+            <span class="badge support" id="supportBadge" hidden>
+              <i class="fas fa-headset"></i> Support Assistant
+            </span>
+          </div>
+        </div>
+
+        <div id="textChat">
+          <div class="chat-body" id="chatBody">
+            <article class="bubble" id="welcomeMsg">
+              <div class="ava"><i class="fas fa-user-circle"></i></div>
+              <div>
+                <h3>PMERIT AI:</h3>
+                <p id="welcomeCopy">Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?</p>
+              </div>
+            </article>
+          </div>
+
+          <div class="chat-input">
+            <textarea id="chatInput" maxlength="1000" placeholder="Ask about courses, learning paths, or your goals..." aria-label="Message"></textarea>
+            <div class="input-bar">
+              <span class="count" id="count">0/1000</span>
+              <div class="input-actions">
+                <button class="btn" id="vhQuick"><i class="fas fa-user-astronaut"></i> VH Mode</button>
+                <button class="btn" id="readAbout"><i class="fas fa-book"></i> Read About</button>
+                <span class="footer-status"><i class="fas fa-circle-check"></i> Connected to Educational Services</span>
+              </div>
+              <button class="send" id="sendBtn">Send <i class="fas fa-paper-plane"></i></button>
+            </div>
+          </div>
+
+          <div id="vhStage" hidden>
+            <div class="stage">
+              <div class="human-frame">
+                <div class="human-face"><i class="fas fa-user-circle"></i></div>
+              </div>
+            </div>
+            <div class="captions" id="captions">Virtual Human is speaking…</div>
+          </div>
+        </div>
+
+        <!-- Mobile accordions (public) -->
+        <div id="mobileAccordions" aria-label="Mobile sections">
+          <details class="mobile-accordion">
+            <summary><i class="fas fa-bolt"></i> Quick Actions — tap to expand</summary>
+            <div class="mobile-accordion-content">
+              <div class="mobile-grid">
+                <button class="mobile-card" id="m_vhToggle"><i class="fas fa-user-astronaut"></i><span>Virtual Human</span><div class="switch"></div></button>
+                <button class="mobile-card" id="m_careerPaths"><i class="fas fa-compass"></i><span>Career Paths</span></button>
+                <button class="mobile-card" id="m_supportToggle"><i class="fas fa-headset"></i><span>Support Mode</span><div class="switch"></div></button>
+                <button class="mobile-card" id="m_settings"><i class="fas fa-gear"></i><span>Settings</span></button>
+              </div>
+              <button class="btn primary" id="m_dashBtn" style="width:100%;margin-top:1rem"><i class="fas fa-gauge-high"></i> Dashboard</button>
+            </div>
+          </details>
+
+          <details class="mobile-accordion">
+            <summary><i class="fas fa-graduation-cap"></i> Discover Your Path — tap to expand</summary>
+            <div class="mobile-accordion-content">
+              <div class="discover" style="margin:0">
+                <h4>Personalized learning plan</h4>
+                <p>Start a short flow that blends learning style, interests, and skills into a plan.</p>
+                <button class="btn primary" id="m_beginAssessment">Begin Assessment</button>
+                <div class="insights" id="m_insights">Tip: Short, daily practice beats long, rare sessions.</div>
+              </div>
+            </div>
+          </details>
+        </div>
+      </section>
+    </main>
+
+    <!-- RIGHT: Support + Discover Your Path (AI) -->
+    <aside id="right" aria-label="Support and discovery">
+      <section>
+        <div class="support-assistant">
+          <h4><i class="fas fa-headset"></i> Support Assistant</h4>
+          <p class="muted">Ask me about PMERIT</p>
+          <div class="pill-row">
+            <button class="btn" id="vhShort"><i class="fas fa-user-astronaut"></i> Virtual Human</button>
+            <button class="btn" id="supportShort"><i class="fas fa-headset"></i> Support</button>
+          </div>
+        </div>
+
+        <h3>Discover Your Path (AI)</h3>
+        <div class="discover">
+          <h4>Personalized learning plan</h4>
+          <p>Start a short flow that blends learning style, interests, and skills into a plan.</p>
+          <button class="btn primary" id="beginAssessment">Begin Assessment</button>
+          <div class="insights" id="insights">Pro tip: Keep notes in your own words for better recall.</div>
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <!-- Footer (public) -->
+  <footer class="site-footer">
+    <span class="footer-status-main"><i class="fas fa-signal"></i> Connected to Educational Services</span>
+    <div class="footer-links">
+      <button class="btn" id="privacyBtn">Privacy & Terms</button>
+      <button class="btn" id="contactBtn">Contact</button>
+      <button class="btn" id="partnershipsBtn">Partnerships</button>
+      <button class="btn" id="supportBtn">Support</button>
     </div>
-
-    <script>
-        // Global state management
-        const AppState = {
-            currentLanguage: 'en',
-            theme: 'light',
-            assessment: {
-                questions: [],
-                currentQuestion: 0,
-                answers: [],
-                isLoading: false
-            },
-            user: {
-                authenticated: false,
-                profile: null
-            }
-        };
-
-        // Internationalization
-        const i18n = {
-            en: {
-                english: 'English',
-                signIn: 'Sign In',
-                startLearning: 'Start Learning',
-                quickActions: 'Quick Actions',
-                virtualHuman: 'Virtual Human Mode',
-                careerPaths: 'Career Paths', 
-                supportMode: 'Support Mode',
-                heroTitle: 'Empowering Learning Through Innovation',
-                heroSubtitle: 'Accessible, high-quality education for global opportunities',
-                welcomeMessage: 'Welcome to PMERIT! I\'m here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?',
-                askAboutPmerit: 'Ask me about PMERIT, courses, or career paths...',
-                discoverPath: 'Discover Your Path (AI)',
-                discoveryDescription: 'Start a personalized assessment that analyzes your learning style, interests, and skills to create a customized educational plan just for you.',
-                beginAssessment: 'Begin Assessment',
-                connectedServices: 'Connected to Educational Services',
-                privacy: 'Privacy & Terms',
-                contact: 'Contact',
-                partners: 'Partnerships',
-                support: 'Support',
-                assessmentTitle: 'Personality & Skills Assessment',
-                loadingQuestions: 'Loading your personalized questions...',
-                resultsTitle: 'Your Personalized Learning Path',
-                startPath: 'Start Your Learning Journey'
-            }
-        };
-
-        // Utility functions
-        const $ = (selector, root = document) => root.querySelector(selector);
-        const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
-
-        // Assessment System Integration
-        class AssessmentSystem {
-            constructor() {
-                this.apiBase = '/api'; // Will be handled by Cloudflare Functions
-                this.initializeEventListeners();
-            }
-
-            initializeEventListeners() {
-                const beginBtn = $('#beginAssessment');
-                const modal = $('#assessmentModal');
-                const closeBtn = $('#closeModal');
-                const nextBtn = $('#nextButton');
-                const prevBtn = $('#prevButton');
-
-                if (beginBtn) {
-                    beginBtn.addEventListener('click', () => this.startAssessment());
-                }
-
-                if (closeBtn) {
-                    closeBtn.addEventListener('click', () => this.closeModal());
-                }
-
-                if (nextBtn) {
-                    nextBtn.addEventListener('click', () => this.nextQuestion());
-                }
-
-                if (prevBtn) {
-                    prevBtn.addEventListener('click', () => this.previousQuestion());
-                }
-
-                // Close modal on outside click
-                modal?.addEventListener('click', (e) => {
-                    if (e.target === modal) this.closeModal();
-                });
-            }
-
-            async startAssessment() {
-                const modal = $('#assessmentModal');
-                modal?.classList.add('active');
-                
-                this.showLoading(true);
-                
-                try {
-                    // Fetch questions from your 78-table database
-                    const response = await fetch(`${this.apiBase}/assessment/questions`, {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    });
-
-                    if (!response.ok) {
-                        throw new Error('Failed to load assessment questions');
-                    }
-
-                    const data = await response.json();
-                    AppState.assessment.questions = data.questions || this.getFallbackQuestions();
-                    AppState.assessment.currentQuestion = 0;
-                    AppState.assessment.answers = [];
-
-                    this.showLoading(false);
-                    this.displayCurrentQuestion();
-
-                } catch (error) {
-                    console.error('Assessment loading error:', error);
-                    
-                    // Use fallback questions if API fails
-                    AppState.assessment.questions = this.getFallbackQuestions();
-                    AppState.assessment.currentQuestion = 0;
-                    AppState.assessment.answers = [];
-
-                    this.showLoading(false);
-                    this.displayCurrentQuestion();
-                }
-            }
-
-            getFallbackQuestions() {
-                // Fallback questions while API is being set up
-                return [
-                    {
-                        id: 1,
-                        text: "When learning something new, I prefer to:",
-                        type: "multiple_choice",
-                        options: [
-                            { id: "a", text: "Read about it first", value: "visual" },
-                            { id: "b", text: "Jump in and try it hands-on", value: "kinesthetic" },
-                            { id: "c", text: "Have someone explain it to me", value: "auditory" },
-                            { id: "d", text: "Watch a demonstration", value: "visual" }
-                        ]
-                    },
-                    {
-                        id: 2,
-                        text: "Which career area interests you most?",
-                        type: "multiple_choice", 
-                        options: [
-                            { id: "a", text: "Technology & Innovation", value: "tech" },
-                            { id: "b", text: "Healthcare & Life Sciences", value: "healthcare" },
-                            { id: "c", text: "Business & Finance", value: "business" },
-                            { id: "d", text: "Creative Arts & Design", value: "creative" }
-                        ]
-                    },
-                    {
-                        id: 3,
-                        text: "How comfortable are you with technology?",
-                        type: "scale",
-                        min: 1,
-                        max: 5,
-                        labels: ["Not comfortable", "Very comfortable"]
-                    }
-                ];
-            }
-
-            displayCurrentQuestion() {
-                const question = AppState.assessment.questions[AppState.assessment.currentQuestion];
-                const container = $('#questionContainer');
-                const questionText = $('#questionText');
-                const optionGroup = $('#optionGroup');
-                const prevBtn = $('#prevButton');
-                const nextBtn = $('#nextButton');
-
-                if (!question) return;
-
-                container.style.display = 'block';
-                questionText.textContent = question.text;
-                
-                // Clear previous options
-                optionGroup.innerHTML = '';
-
-                // Create options based on question type
-                if (question.type === 'multiple_choice') {
-                    question.options.forEach(option => {
-                        const button = document.createElement('button');
-                        button.className = 'option-button';
-                        button.textContent = option.text;
-                        button.dataset.value = option.value;
-                        button.dataset.optionId = option.id;
-                        
-                        button.addEventListener('click', () => {
-                            // Remove selection from other options
-                            $$('.option-button').forEach(btn => btn.classList.remove('selected'));
-                            // Select this option
-                            button.classList.add('selected');
-                            // Enable next button
-                            nextBtn.disabled = false;
-                        });
-
-                        optionGroup.appendChild(button);
-                    });
-                }
-
-                // Update navigation buttons
-                prevBtn.disabled = AppState.assessment.currentQuestion === 0;
-                nextBtn.disabled = true; // Will be enabled when option is selected
-                nextBtn.textContent = AppState.assessment.currentQuestion === AppState.assessment.questions.length - 1 ? 'Finish' : 'Next';
-
-                // Update progress
-                this.updateProgress();
-            }
-
-            nextQuestion() {
-                const selectedOption = $('.option-button.selected');
-                
-                if (selectedOption) {
-                    // Store answer
-                    AppState.assessment.answers[AppState.assessment.currentQuestion] = {
-                        questionId: AppState.assessment.questions[AppState.assessment.currentQuestion].id,
-                        answer: selectedOption.dataset.value,
-                        optionId: selectedOption.dataset.optionId
-                    };
-
-                    if (AppState.assessment.currentQuestion < AppState.assessment.questions.length - 1) {
-                        AppState.assessment.currentQuestion++;
-                        this.displayCurrentQuestion();
-                    } else {
-                        this.finishAssessment();
-                    }
-                }
-            }
-
-            previousQuestion() {
-                if (AppState.assessment.currentQuestion > 0) {
-                    AppState.assessment.currentQuestion--;
-                    this.displayCurrentQuestion();
-                }
-            }
-
-            async finishAssessment() {
-                this.showLoading(true);
-                $('#questionContainer').style.display = 'none';
-
-                try {
-                    // Submit answers to your database
-                    const response = await fetch(`${this.apiBase}/assessment/submit`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            answers: AppState.assessment.answers,
-                            timestamp: new Date().toISOString()
-                        })
-                    });
-
-                    if (!response.ok) {
-                        throw new Error('Failed to submit assessment');
-                    }
-
-                    const results = await response.json();
-                    this.displayResults(results);
-
-                } catch (error) {
-                    console.error('Assessment submission error:', error);
-                    
-                    // Generate fallback results
-                    const fallbackResults = this.generateFallbackResults();
-                    this.displayResults(fallbackResults);
-                }
-
-                this.showLoading(false);
-            }
-
-            generateFallbackResults() {
-                // Analyze answers locally as fallback
-                const answers = AppState.assessment.answers;
-                const profile = {
-                    learningStyle: 'Mixed',
-                    primaryInterest: 'Technology',
-                    skillLevel: 'Intermediate',
-                    recommendedPath: 'Full-Stack Development'
-                };
-
-                return {
-                    profile,
-                    recommendations: [
-                        'Start with Introduction to Programming',
-                        'Explore Web Development Fundamentals', 
-                        'Consider Data Science Basics'
-                    ],
-                    nextSteps: [
-                        'Complete your profile setup',
-                        'Browse recommended courses',
-                        'Join study groups in your area of interest'
-                    ]
-                };
-            }
-
-            displayResults(results) {
-                const container = $('#resultsContainer');
-                const content = $('#resultsContent');
-                
-                container.style.display = 'block';
-                
-                let html = '<div style="margin: 20px 0;">';
-                html += `<h4>Your Learning Profile:</h4>`;
-                html += `<p><strong>Learning Style:</strong> ${results.profile.learningStyle}</p>`;
-                html += `<p><strong>Primary Interest:</strong> ${results.profile.primaryInterest}</p>`;
-                html += `<p><strong>Recommended Path:</strong> ${results.profile.recommendedPath}</p>`;
-                html += '</div>';
-
-                if (results.recommendations) {
-                    html += '<h4>Recommended Courses:</h4><ul>';
-                    results.recommendations.forEach(rec => {
-                        html += `<li>${rec}</li>`;
-                    });
-                    html += '</ul>';
-                }
-
-                content.innerHTML = html;
-
-                // Set up start learning button
-                const startBtn = $('#startLearningPath');
-                startBtn?.addEventListener('click', () => {
-                    // Navigate to learning dashboard or course selection
-                    this.closeModal();
-                    // Here you would typically redirect to the learning platform
-                    alert('Welcome to your personalized learning journey!');
-                });
-            }
-
-            updateProgress() {
-                const progress = ((AppState.assessment.currentQuestion + 1) / AppState.assessment.questions.length) * 100;
-                const progressFill = $('#progressFill');
-                if (progressFill) {
-                    progressFill.style.width = `${progress}%`;
-                }
-            }
-
-            showLoading(show) {
-                const loading = $('#loadingState');
-                const container = $('#questionContainer');
-                const results = $('#resultsContainer');
-
-                if (show) {
-                    loading?.classList.add('active');
-                    container.style.display = 'none';
-                    results.style.display = 'none';
-                } else {
-                    loading?.classList.remove('active');
-                }
-            }
-
-            closeModal() {
-                const modal = $('#assessmentModal');
-                modal?.classList.remove('active');
-                
-                // Reset assessment state
-                AppState.assessment = {
-                    questions: [],
-                    currentQuestion: 0,
-                    answers: [],
-                    isLoading: false
-                };
-            }
-        }
-
-        // Chat System
-        class ChatSystem {
-            constructor() {
-                this.initializeEventListeners();
-            }
-
-            initializeEventListeners() {
-                const chatInput = $('.chat-input');
-                const sendBtn = chatInput?.nextElementSibling;
-                const counter = $('#charCounter');
-
-                if (chatInput) {
-                    chatInput.addEventListener('input', (e) => {
-                        const length = e.target.value.length;
-                        if (counter) counter.textContent = `${length}/1000`;
-                        
-                        if (length > 1000) {
-                            e.target.value = e.target.value.substring(0, 1000);
-                        }
-                    });
-
-                    chatInput.addEventListener('keypress', (e) => {
-                        if (e.key === 'Enter') {
-                            this.sendMessage();
-                        }
-                    });
-                }
-
-                sendBtn?.addEventListener('click', () => this.sendMessage());
-            }
-
-            async sendMessage() {
-                const input = $('.chat-input');
-                const message = input?.value.trim();
-                
-                if (!message) return;
-
-                // Add user message to chat
-                this.addMessage('User', message, 'user');
-                input.value = '';
-                
-                // Update character counter
-                const counter = $('#charCounter');
-                if (counter) counter.textContent = '0/1000';
-
-                // Show typing indicator
-                this.showTyping();
-
-                try {
-                    // Send to Pmerit AI (your Ollama setup)
-                    const response = await fetch('/api/chat', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            message: message,
-                            context: 'educational_assistant'
-                        })
-                    });
-
-                    const data = await response.json();
-                    
-                    this.hideTyping();
-                    this.addMessage('Pmerit AI', data.response || 'I\'m here to help with your learning journey!', 'ai');
-
-                } catch (error) {
-                    console.error('Chat error:', error);
-                    this.hideTyping();
-                    this.addMessage('Pmerit AI', 'I\'m currently experiencing some technical difficulties. Please try again in a moment!', 'ai');
-                }
-            }
-
-            addMessage(sender, text, type) {
-                const chatContainer = $('.ai-chat-container');
-                const messageDiv = document.createElement('div');
-                messageDiv.className = 'ai-message';
-                
-                const avatar = document.createElement('div');
-                avatar.className = 'ai-avatar';
-                avatar.textContent = type === 'user' ? 'U' : 'P';
-                if (type === 'user') avatar.style.background = '#64748b';
-
-                const textDiv = document.createElement('div');
-                textDiv.className = 'ai-text';
-                textDiv.innerHTML = `<strong>${sender}:</strong> ${text}`;
-
-                messageDiv.appendChild(avatar);
-                messageDiv.appendChild(textDiv);
-                
-                chatContainer.appendChild(messageDiv);
-                
-                // Scroll to bottom
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-            }
-
-            showTyping() {
-                this.addMessage('Pmerit AI', '<em>Typing...</em>', 'ai');
-            }
-
-            hideTyping() {
-                const messages = $$('.ai-message');
-                const lastMessage = messages[messages.length - 1];
-                const lastText = lastMessage?.querySelector('.ai-text');
-                
-                if (lastText?.innerHTML.includes('<em>Typing...</em>')) {
-                    lastMessage.remove();
-                }
-            }
-        }
-
-        // Internationalization System
-        class I18nSystem {
-            constructor() {
-                this.applyTranslations();
-            }
-
-            applyTranslations() {
-                const elements = $$('[data-i18n]');
-                const lang = AppState.currentLanguage;
-                
-                elements.forEach(element => {
-                    const key = element.dataset.i18n;
-                    if (i18n[lang] && i18n[lang][key]) {
-                        element.textContent = i18n[lang][key];
-                    }
-                });
-
-                // Handle placeholders
-                const placeholderElements = $$('[data-i18n-placeholder]');
-                placeholderElements.forEach(element => {
-                    const key = element.dataset.i18nPlaceholder;
-                    if (i18n[lang] && i18n[lang][key]) {
-                        element.placeholder = i18n[lang][key];
-                    }
-                });
-            }
-        }
-
-        // Initialize application
-        document.addEventListener('DOMContentLoaded', () => {
-            // Initialize systems
-            const assessmentSystem = new AssessmentSystem();
-            const chatSystem = new ChatSystem();
-            const i18nSystem = new I18nSystem();
-
-            // Add any additional initialization here
-            console.log('Pmerit AI Platform initialized successfully');
-            console.log('Connected to 78-table database infrastructure');
-        });
-
-        // Service Worker Registration (for PWA functionality)
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(registration => {
-                        console.log('SW registered: ', registration);
-                    })
-                    .catch(registrationError => {
-                        console.log('SW registration failed: ', registrationError);
-                    });
-            });
-        }
-    </script>
+  </footer>
+
+  <!-- Modals (public) -->
+  <dialog id="signUpModal"></dialog>
+  <dialog id="signInModal"></dialog>
+  <dialog id="assessmentModal"></dialog>
+  <dialog id="tracksModal"></dialog>
+  <dialog id="voicesModal"></dialog>
+
+  <!-- Scripts -->
+  <script src="/assets/js/app.js"></script>
+  <script src="/assets/js/components/sidebar-left.js"></script>
+  <script src="/assets/js/components/sidebar-right.js"></script>
+  <script src="/assets/js/components/footer.js"></script>
 </body>
 </html>
