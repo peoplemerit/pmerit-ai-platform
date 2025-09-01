@@ -34,6 +34,30 @@
       <button id="startBtn" class="btn primary">Start Learning</button>
     </nav>
   </header>
+  <!--adding unsure line -->
+  <section class="cookie-consent sr-only" aria-live="polite"></section>
+<script>
+  (function () {
+    const key = 'pmerit_consent';
+    if (!localStorage.getItem(key)) {
+      const bar = document.createElement('div');
+      bar.className = 'fixed inset-x-0 bottom-0 bg-black/80 text-white p-3 text-sm';
+      bar.innerHTML = `
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-3">
+          <span>We use localStorage for session state and basic analytics. As a guest we log page views, clicks on major CTAs, and device type. No PII without sign-in.</span>
+          <button class="btn btn-secondary ml-auto" id="consentOk">Okay</button>
+          <a class="underline" href="/privacy.html">Learn more</a>
+        </div>`;
+      document.body.appendChild(bar);
+      document.getElementById('consentOk').onclick = () => {
+        localStorage.setItem(key, '1');
+        bar.remove();
+      };
+    }
+  })();
+</script>
+
+  <!--end of unsure line -->
 
   <!-- Three-pane estate: Left / Center / Right -->
   <div class="estate">
@@ -212,5 +236,6 @@
   <script src="/assets/js/components/sidebar-left.js"></script>
   <script src="/assets/js/components/sidebar-right.js"></script>
   <script src="/assets/js/components/footer.js"></script>
+  <script src="/assets/partials.js"></script>
 </body>
 </html>
