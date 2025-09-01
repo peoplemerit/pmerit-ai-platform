@@ -1,14 +1,18 @@
 <script>
-/* Simple HTML partials loader
-   Usage: <div data-include="/partials/header.html"></div>
-*/
-async function injectPartials() {
-  const nodes = Array.from(document.querySelectorAll('[data-include]'));
-  await Promise.all(nodes.map(async (el) => {
-    const url = el.getAttribute('data-include');
-    const res = await fetch(url, { cache: 'no-store' });
-    const html = await res.text();
-    el.outerHTML = html; // replace the placeholder with the fetched markup
-  }));
-}
+/**
+ * Tiny partials loader for GitHub Pages/Cloudflare Pages (no build step).
+ * Usage: <div data-include="/assets/partials/header.html"></div>
+ */
+(function () {
+  async function inject(el) {
+    const path = el.getAttribute('data-include');
+    if (!path) return;
+    const res = await fetch(path, { cache: 'no-store' });
+    if (!res.ok) return console.warn('Partial not found:', path);
+    el.outerHTML = await res.text();
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-include]').forEach(inject);
+  });
+})();
 </script>
