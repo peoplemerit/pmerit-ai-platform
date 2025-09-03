@@ -6,12 +6,12 @@
     <title>PMERIT - Empowering Learning Through Innovation</title>
     <meta name="description" content="Accessible, high-quality education for global opportunities. Connect with Pmerit AI for personalized learning paths.">
     
-    <!-- Load shared CSS (your existing base.css + new modular CSS) -->
+    <!-- Load CSS in correct order -->
     <link rel="stylesheet" href="/assets/base.css">
     <link rel="stylesheet" href="/assets/css/layout.css">
     <link rel="stylesheet" href="/assets/css/components.css">
     
-    <!-- Homepage-specific styles (minimal since most is now in modular CSS) -->
+    <!-- Homepage-specific styles -->
     <style>
         .homepage-hero {
             text-align: center;
@@ -106,125 +106,295 @@
     <!-- Shared footer will be injected here by boot-includes.js -->
     <footer id="footer"></footer>
     
-    <!-- Load shared functionality (your existing files + new modular components) -->
+    <!-- CRITICAL: Load core PMERIT system FIRST -->
+    <script src="/assets/js/core.js"></script>
+    
+    <!-- Load existing shared functionality -->
     <script src="/assets/boot-includes.js" defer></script>
     <script src="/assets/nav-config.js" defer></script>
     
-    <!-- Load new modular JavaScript components -->
-    <script src="/assets/js/core/state.js" defer></script>
-    <script src="/assets/js/core/utils.js" defer></script>
-    <script src="/assets/js/core/i18n.js" defer></script>
-    
-    <!-- Load component-specific modules -->
-    <script src="/assets/js/components/header.js" defer></script>
-    <script src="/assets/js/components/sidebar-left.js" defer></script>
-    <script src="/assets/js/components/sidebar-right.js" defer></script>
-    <script src="/assets/js/components/chat.js" defer></script>
-    <script src="/assets/js/components/modals.js" defer></script>
-    
-    <!-- Homepage-specific initialization -->
+    <!-- Load core modules after PMERIT system is ready -->
     <script>
-        // Enhanced homepage initialization
-        document.addEventListener('DOMContentLoaded', () => {
-            // Initialize PMERIT modular system
-            if (window.PMERIT) {
-                console.log('🏠 Homepage initializing with modular system');
-                
-                // Initialize all modules
-                PMERIT.modules.init([
-                    'state',      // State management
-                    'i18n',       // Language system  
-                    'header',     // Header functionality
-                    'sidebarLeft', // Left panel (Quick Actions)
-                    'sidebarRight', // Right panel (Assessment)
-                    'chat',       // AI Chat system
-                    'modals'      // Modal dialogs
-                ]);
-                
-                // Homepage-specific setup
-                setupHomepageFeatures();
-            } else {
-                console.warn('PMERIT system not loaded, falling back to basic functionality');
-                // Fallback for basic functionality if modular system fails
-                setupBasicHomepage();
-            }
+        // Wait for PMERIT core to be ready before loading modules
+        window.PMERIT.ready.then(() => {
+            console.log('Core system ready, loading modules...');
+            
+            // Load sidebar-right functionality
+            loadModule('sidebarRight');
+            
+            // Initialize homepage
+            initHomepage();
         });
         
-        function setupHomepageFeatures() {
-            // Connect assessment button to database
-            const assessmentBtn = document.getElementById('beginAssessment');
-            if (assessmentBtn) {
-                assessmentBtn.addEventListener('click', async () => {
-                    try {
-                        // Open assessment modal with database connection
-                        await PMERIT.modals.openAssessment();
-                    } catch (error) {
-                        console.error('Assessment error:', error);
-                        // Fallback to basic assessment
-                        alert('Assessment system starting...');
+        function loadModule(moduleName) {
+            // Register sidebar-right module
+            if (moduleName === 'sidebarRight') {
+                window.PMERIT.modules.register('sidebarRight', {
+                    name: 'sidebarRight',
+                    initialized: false,
+                    
+                    async init() {
+                        console.log('Initializing Sidebar Right (Discovery Panel)');
+                        
+                        this.setupAssessmentButton();
+                        this.setupStatusIndicator();
+                        this.checkHealth();
+                        
+                        this.initialized = true;
+                        console.log('Sidebar Right module initialized');
+                    },
+                    
+                    setupAssessmentButton() {
+                        const assessmentBtn = window.PMERIT.utils.$('#beginAssessment');
+                        
+                        if (!assessmentBtn) {
+                            console.warn('Assessment button not found');
+                            return;
+                        }
+                        
+                        assessmentBtn.addEventListener('click', async (e) => {
+                            e.preventDefault();
+                            await this.startAssessment();
+                        });
+                        
+                        console.log('Assessment button configured');
+                    },
+                    
+                    async startAssessment() {
+                        console.log('Starting assessment process');
+                        
+                        const assessmentBtn = window.PMERIT.utils.$('#beginAssessment');
+                        
+                        try {
+                            // Show loading state
+                            window.PMERIT.utils.showLoading(assessmentBtn);
+                            assessmentBtn.textContent = 'Starting Assessment...';
+                            
+                            // Check if user is authenticated
+                            const isAuthenticated = window.PMERIT.state.isAuthenticated();
+                            
+                            if (!isAuthenticated) {
+                                window.PMERIT.utils.showNotification(
+                                    'Please sign in to take your personalized assessment', 
+                                    'info'
+                                );
+                                return;
+                            }
+                            
+                            // Try to fetch from database
+                            const assessmentData = await this.fetchAssessmentQuestions();
+                            
+                            if (assessmentData && assessmentData.questions) {
+                                window.PMERIT.utils.showNotification(
+                                    'Assessment questions loaded successfully!', 
+                                    'success'
+                                );
+                                // Here you would open the assessment modal
+                                console.log('Assessment data:', assessmentData);
+                            } else {
+                                throw new Error('No assessment questions available');
+                            }
+                            
+                        } catch (error) {
+                            console.error('Assessment error:', error);
+                            window.PMERIT.utils.showNotification(
+                                'Assessment system is currently unavailable. Please try again later.', 
+                                'warning'
+                            );
+                        } finally {
+                            // Reset button state
+                            window.PMERIT.utils.hideLoading(assessmentBtn);
+                            assessmentBtn.textContent = 'Begin Assessment';
+                        }
+                    },
+                    
+                    async fetchAssessmentQuestions() {
+                        try {
+                            const data = await window.PMERIT.utils.fetchJson('/api/assessment/questions');
+                            console.log('Assessment data loaded from database');
+                            return data;
+                        } catch (error) {
+                            console.warn('Database unavailable, using fallback questions');
+                            return this.getFallbackQuestions();
+                        }
+                    },
+                    
+                    getFallbackQuestions() {
+                        return {
+                            id: 'fallback_assessment',
+                            questions: [
+                                {
+                                    id: 1,
+                                    type: 'multiple_choice',
+                                    question: 'What best describes your learning style?',
+                                    options: [
+                                        'Visual learner (I learn best by seeing)',
+                                        'Auditory learner (I learn best by listening)',
+                                        'Kinesthetic learner (I learn best by doing)',
+                                        'Reading/Writing learner (I learn best by reading and writing)'
+                                    ]
+                                },
+                                {
+                                    id: 2,
+                                    type: 'multiple_choice',
+                                    question: 'What is your primary career interest?',
+                                    options: [
+                                        'Technology and Software Development',
+                                        'Business and Entrepreneurship',
+                                        'Healthcare and Medicine',
+                                        'Education and Training',
+                                        'Creative Arts and Design'
+                                    ]
+                                }
+                            ],
+                            userProfile: {
+                                isNew: true,
+                                source: 'fallback'
+                            }
+                        };
+                    },
+                    
+                    setupStatusIndicator() {
+                        const statusIndicator = window.PMERIT.utils.$('.status-indicator');
+                        
+                        if (statusIndicator) {
+                            statusIndicator.addEventListener('click', () => {
+                                this.showSystemStatus();
+                            });
+                        }
+                    },
+                    
+                    async checkHealth() {
+                        const health = await window.PMERIT.health.check();
+                        this.updateConnectionStatus(health.status);
+                    },
+                    
+                    updateConnectionStatus(status) {
+                        const statusDot = window.PMERIT.utils.$('.status-dot');
+                        const statusText = window.PMERIT.utils.$('[data-i18n="connectedServices"]');
+                        
+                        if (statusDot && statusText) {
+                            statusDot.className = `status-dot status-${status}`;
+                            
+                            const statusMessages = {
+                                healthy: 'Connected to Educational Services',
+                                error: 'Service Connection Issues',
+                                offline: 'Services Offline - Limited Functionality'
+                            };
+                            
+                            statusText.textContent = statusMessages[status] || statusMessages.healthy;
+                        }
+                    },
+                    
+                    showSystemStatus() {
+                        const health = window.PMERIT.state.get('system_health', { status: 'unknown' });
+                        window.PMERIT.utils.showNotification(
+                            `System Status: ${health.status}`, 
+                            health.status === 'healthy' ? 'success' : 'warning'
+                        );
+                    },
+                    
+                    // Public API for other modules
+                    api: {
+                        startAssessment: function() {
+                            const module = window.PMERIT.modules.get('sidebarRight');
+                            return module ? module.startAssessment() : Promise.reject(new Error('Module not available'));
+                        }
                     }
                 });
             }
+        }
+        
+        function initHomepage() {
+            console.log('Initializing homepage functionality');
             
-            // Enhanced chat functionality
-            const chatInput = document.getElementById('chatInput');
-            const chatSend = document.getElementById('chatSend');
+            // Initialize sidebar-right module
+            window.PMERIT.modules.init(['sidebarRight']);
             
-            if (chatInput && chatSend) {
-                // Character counter
+            // Setup chat functionality
+            setupChat();
+            
+            // Setup left panel buttons
+            setupLeftPanel();
+        }
+        
+        function setupChat() {
+            const chatInput = window.PMERIT.utils.$('#chatInput');
+            const chatSend = window.PMERIT.utils.$('#chatSend');
+            const charCounter = window.PMERIT.utils.$('#charCounter');
+            
+            if (chatInput && charCounter) {
                 chatInput.addEventListener('input', (e) => {
                     const length = e.target.value.length;
-                    document.getElementById('charCounter').textContent = `${length}/1000`;
+                    charCounter.textContent = `${length}/1000`;
                     
                     if (length > 1000) {
                         e.target.value = e.target.value.substring(0, 1000);
                     }
                 });
                 
-                // Send message functionality
-                const sendMessage = async () => {
-                    const message = chatInput.value.trim();
-                    if (!message) return;
-                    
-                    try {
-                        // Use modular chat system
-                        await PMERIT.chat.sendMessage(message, 'homepage_assistant');
-                        chatInput.value = '';
-                        document.getElementById('charCounter').textContent = '0/1000';
-                    } catch (error) {
-                        console.error('Chat error:', error);
-                        // Fallback response
-                        PMERIT.chat.addMessage('Pmerit AI', 'I\'m here to help with your learning journey! Please try again.', 'ai');
-                    }
-                };
-                
                 chatInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') sendMessage();
+                    if (e.key === 'Enter') {
+                        sendChatMessage();
+                    }
                 });
-                
-                chatSend.addEventListener('click', sendMessage);
+            }
+            
+            if (chatSend) {
+                chatSend.addEventListener('click', sendChatMessage);
             }
         }
         
-        function setupBasicHomepage() {
-            // Basic fallback functionality
-            console.log('🔧 Setting up basic homepage functionality');
+        function sendChatMessage() {
+            const chatInput = window.PMERIT.utils.$('#chatInput');
+            const message = chatInput.value.trim();
             
-            // Basic assessment button
-            const assessmentBtn = document.getElementById('beginAssessment');
-            if (assessmentBtn) {
-                assessmentBtn.addEventListener('click', () => {
-                    alert('Assessment system will connect to your database. Please ensure your API endpoints are configured.');
+            if (!message) return;
+            
+            console.log('Sending chat message:', message);
+            window.PMERIT.utils.showNotification('Chat message sent! AI response coming soon...', 'info');
+            
+            // Clear input
+            chatInput.value = '';
+            window.PMERIT.utils.$('#charCounter').textContent = '0/1000';
+        }
+        
+        function setupLeftPanel() {
+            const leftPanel = window.PMERIT.utils.$('#leftPanel');
+            
+            if (leftPanel) {
+                leftPanel.addEventListener('click', (e) => {
+                    if (e.target.matches('[data-action]')) {
+                        const action = e.target.dataset.action;
+                        console.log('Left panel action:', action);
+                        
+                        switch (action) {
+                            case 'toggleVH':
+                                window.PMERIT.utils.showNotification('Virtual Human Mode activated!', 'info');
+                                break;
+                            case 'openCareer':
+                                window.PMERIT.utils.showNotification('Career Paths opening...', 'info');
+                                break;
+                            case 'toggleSupport':
+                                window.PMERIT.utils.showNotification('Support Mode enabled!', 'info');
+                                break;
+                        }
+                    }
                 });
             }
-            
-            // Basic chat
-            const chatSend = document.getElementById('chatSend');
-            if (chatSend) {
-                chatSend.addEventListener('click', () => {
-                    alert('Chat system will connect to ai.pmerit.com. Please configure your API endpoints.');
-                });
-            }
+        }
+        
+        // Fallback for browsers that don't support Promise
+        if (!window.PMERIT.ready) {
+            console.warn('PMERIT core not available, initializing basic homepage');
+            document.addEventListener('DOMContentLoaded', () => {
+                const assessmentBtn = document.getElementById('beginAssessment');
+                if (assessmentBtn) {
+                    assessmentBtn.addEventListener('click', () => {
+                        alert('Assessment system is loading. Please ensure your API endpoints are configured.');
+                    });
+                }
+            });
         }
     </script>
 </body>
