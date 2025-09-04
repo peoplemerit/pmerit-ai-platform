@@ -1,1 +1,505 @@
+<!-- PMERIT Navigation Component -->
+<nav class="pmerit-nav" id="pmeritNav" role="navigation" aria-label="Main navigation">
+  <div class="nav-container">
+    <!-- Primary Navigation -->
+    <ul class="nav-primary" id="navPrimary">
+      <!-- Home -->
+      <li class="nav-item" data-access="public">
+        <a href="/index.html" class="nav-link" data-page="home">
+          <span class="nav-icon">🏠</span>
+          <span class="nav-text">Home</span>
+        </a>
+      </li>
 
+      <!-- Assessment -->
+      <li class="nav-item" data-access="public">
+        <a href="/assessment.html" class="nav-link" data-page="assessment">
+          <span class="nav-icon">🧠</span>
+          <span class="nav-text">Assessment</span>
+        </a>
+      </li>
+
+      <!-- Courses -->
+      <li class="nav-item" data-access="public">
+        <a href="/courses.html" class="nav-link" data-page="courses">
+          <span class="nav-icon">📚</span>
+          <span class="nav-text">Courses</span>
+        </a>
+      </li>
+
+      <!-- Career Paths -->
+      <li class="nav-item" data-access="public">
+        <a href="/career.html" class="nav-link" data-page="career">
+          <span class="nav-icon">🎯</span>
+          <span class="nav-text">Career Paths</span>
+        </a>
+      </li>
+
+      <!-- Library -->
+      <li class="nav-item" data-access="public">
+        <a href="/library.html" class="nav-link" data-page="library">
+          <span class="nav-icon">📖</span>
+          <span class="nav-text">Library</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- Authenticated User Navigation -->
+    <ul class="nav-authenticated" id="navAuthenticated" style="display: none;">
+      <!-- Dashboard -->
+      <li class="nav-item" data-access="student,instructor,admin">
+        <a href="/dashboard.html" class="nav-link" data-page="dashboard">
+          <span class="nav-icon">📊</span>
+          <span class="nav-text">Dashboard</span>
+        </a>
+      </li>
+
+      <!-- My Courses -->
+      <li class="nav-item" data-access="student,instructor">
+        <a href="/courses.html?filter=enrolled" class="nav-link" data-page="my-courses">
+          <span class="nav-icon">🎓</span>
+          <span class="nav-text">My Courses</span>
+        </a>
+      </li>
+
+      <!-- Classroom -->
+      <li class="nav-item" data-access="student,instructor">
+        <a href="/classroom.html" class="nav-link" data-page="classroom">
+          <span class="nav-icon">🏫</span>
+          <span class="nav-text">Classroom</span>
+        </a>
+      </li>
+
+      <!-- Progress -->
+      <li class="nav-item" data-access="student">
+        <a href="/dashboard.html#progress" class="nav-link" data-page="progress">
+          <span class="nav-icon">📈</span>
+          <span class="nav-text">Progress</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- Admin Navigation -->
+    <ul class="nav-admin" id="navAdmin" style="display: none;">
+      <!-- Admin Panel -->
+      <li class="nav-item" data-access="admin">
+        <a href="/admin.html" class="nav-link" data-page="admin">
+          <span class="nav-icon">⚙️</span>
+          <span class="nav-text">Admin Panel</span>
+        </a>
+      </li>
+
+      <!-- Content Management -->
+      <li class="nav-item" data-access="admin,instructor">
+        <a href="/admin.html#content" class="nav-link" data-page="content">
+          <span class="nav-icon">📝</span>
+          <span class="nav-text">Content</span>
+        </a>
+      </li>
+
+      <!-- Analytics -->
+      <li class="nav-item" data-access="admin">
+        <a href="/admin.html#analytics" class="nav-link" data-page="analytics">
+          <span class="nav-icon">📊</span>
+          <span class="nav-text">Analytics</span>
+        </a>
+      </li>
+
+      <!-- AI Police -->
+      <li class="nav-item" data-access="admin">
+        <a href="/ai-police.html" class="nav-link" data-page="ai-police">
+          <span class="nav-icon">🛡️</span>
+          <span class="nav-text">AI Police</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- Support & Help -->
+    <ul class="nav-support">
+      <!-- Support -->
+      <li class="nav-item" data-access="public">
+        <a href="/support.html" class="nav-link" data-page="support">
+          <span class="nav-icon">❓</span>
+          <span class="nav-text">Support</span>
+        </a>
+      </li>
+
+      <!-- About -->
+      <li class="nav-item" data-access="public">
+        <a href="/about.html" class="nav-link" data-page="about">
+          <span class="nav-icon">ℹ️</span>
+          <span class="nav-text">About</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- Breadcrumb Navigation -->
+    <div class="nav-breadcrumb" id="navBreadcrumb" style="display: none;">
+      <ol class="breadcrumb-list" id="breadcrumbList">
+        <!-- Dynamically populated by nav-config.js -->
+      </ol>
+    </div>
+  </div>
+</nav>
+
+<style>
+/* PMERIT Navigation Styles */
+.pmerit-nav {
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  padding: var(--spacing-sm) 0;
+}
+
+.nav-container {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+/* Navigation Lists */
+.nav-primary,
+.nav-authenticated,
+.nav-admin,
+.nav-support {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: var(--spacing-xs);
+  flex-wrap: wrap;
+}
+
+.nav-item {
+  position: relative;
+}
+
+/* Navigation Links */
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  transition: var(--transition-base);
+  min-height: 36px;
+  white-space: nowrap;
+}
+
+.nav-link:hover {
+  color: var(--primary);
+  background: var(--bg-accent);
+  transform: translateY(-1px);
+}
+
+.nav-link.active {
+  color: var(--primary);
+  background: var(--bg-accent);
+  font-weight: 600;
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background: var(--primary);
+  border-radius: 1px;
+}
+
+.nav-icon {
+  font-size: var(--font-size-sm);
+  line-height: 1;
+}
+
+.nav-text {
+  font-size: var(--font-size-sm);
+}
+
+/* Navigation Sections */
+.nav-authenticated,
+.nav-admin {
+  margin-left: var(--spacing-lg);
+  padding-left: var(--spacing-lg);
+  border-left: 1px solid var(--border);
+}
+
+.nav-support {
+  margin-left: auto;
+  padding-left: var(--spacing-lg);
+}
+
+/* Breadcrumb Navigation */
+.nav-breadcrumb {
+  margin-top: var(--spacing-sm);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--border);
+}
+
+.breadcrumb-list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: var(--spacing-xs);
+  align-items: center;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.breadcrumb-item:not(:last-child)::after {
+  content: '›';
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.breadcrumb-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: var(--transition-base);
+}
+
+.breadcrumb-link:hover {
+  color: var(--primary);
+}
+
+.breadcrumb-current {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Responsive Navigation */
+@media (max-width: 1024px) {
+  .nav-primary,
+  .nav-authenticated,
+  .nav-admin,
+  .nav-support {
+    gap: 0;
+  }
+  
+  .nav-link {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-xs);
+  }
+  
+  .nav-text {
+    display: none;
+  }
+  
+  .nav-icon {
+    font-size: var(--font-size-base);
+  }
+}
+
+@media (max-width: 768px) {
+  .pmerit-nav {
+    display: none; /* Hidden on mobile, shown in header mobile menu */
+  }
+}
+
+/* Focus states for accessibility */
+.nav-link:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Loading state */
+.nav-item.loading .nav-link {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Notification badges */
+.nav-item .notification-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: var(--error);
+  color: var(--text-inverse);
+  font-size: var(--font-size-xs);
+  padding: 2px 6px;
+  border-radius: var(--radius-full);
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate(50%, -50%);
+}
+</style>
+
+<script>
+// Navigation Component JavaScript
+(function() {
+  'use strict';
+  
+  // Initialize navigation when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNavigation);
+  } else {
+    initNavigation();
+  }
+  
+  function initNavigation() {
+    updateActiveNavigation();
+    initializeBreadcrumbs();
+    
+    // Update navigation when user authentication state changes
+    document.addEventListener('auth:stateChanged', handleAuthStateChange);
+    
+    // Handle page navigation
+    document.addEventListener('page:changed', updateActiveNavigation);
+  }
+  
+  function updateActiveNavigation() {
+    const currentPage = getCurrentPageIdentifier();
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    // Remove active class from all links
+    navLinks.forEach(link => link.classList.remove('active'));
+    
+    // Add active class to current page link
+    const activeLink = document.querySelector(`[data-page="${currentPage}"]`);
+    if (activeLink) {
+      activeLink.classList.add('active');
+    }
+  }
+  
+  function getCurrentPageIdentifier() {
+    const path = window.location.pathname;
+    const page = path.split('/').pop().replace('.html', '') || 'home';
+    return page === 'index' ? 'home' : page;
+  }
+  
+  function handleAuthStateChange(event) {
+    const { isAuthenticated, userRole } = event.detail;
+    
+    // Show/hide navigation sections based on auth state
+    const authNav = document.getElementById('navAuthenticated');
+    const adminNav = document.getElementById('navAdmin');
+    
+    if (isAuthenticated) {
+      authNav.style.display = 'flex';
+      
+      // Show admin navigation for admin users
+      if (userRole === 'admin' || userRole === 'instructor') {
+        adminNav.style.display = 'flex';
+      } else {
+        adminNav.style.display = 'none';
+      }
+    } else {
+      authNav.style.display = 'none';
+      adminNav.style.display = 'none';
+    }
+    
+    // Update navigation items based on access level
+    updateNavigationAccess(userRole);
+  }
+  
+  function updateNavigationAccess(userRole) {
+    const navItems = document.querySelectorAll('.nav-item[data-access]');
+    
+    navItems.forEach(item => {
+      const access = item.getAttribute('data-access');
+      const hasAccess = checkAccess(access, userRole);
+      
+      if (hasAccess) {
+        item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
+  
+  function checkAccess(requiredAccess, userRole) {
+    if (requiredAccess === 'public') return true;
+    if (!userRole) return false;
+    
+    const accessLevels = requiredAccess.split(',');
+    return accessLevels.includes(userRole);
+  }
+  
+  function initializeBreadcrumbs() {
+    const breadcrumbContainer = document.getElementById('navBreadcrumb');
+    const breadcrumbList = document.getElementById('breadcrumbList');
+    
+    if (!breadcrumbContainer || !breadcrumbList) return;
+    
+    const breadcrumbs = generateBreadcrumbs();
+    
+    if (breadcrumbs.length > 1) {
+      breadcrumbList.innerHTML = breadcrumbs.map((crumb, index) => {
+        const isLast = index === breadcrumbs.length - 1;
+        return `
+          <li class="breadcrumb-item">
+            ${isLast 
+              ? `<span class="breadcrumb-current">${crumb.text}</span>`
+              : `<a href="${crumb.url}" class="breadcrumb-link">${crumb.text}</a>`
+            }
+          </li>
+        `;
+      }).join('');
+      
+      breadcrumbContainer.style.display = 'block';
+    } else {
+      breadcrumbContainer.style.display = 'none';
+    }
+  }
+  
+  function generateBreadcrumbs() {
+    const path = window.location.pathname;
+    const segments = path.split('/').filter(segment => segment);
+    const breadcrumbs = [{ text: 'Home', url: '/index.html' }];
+    
+    let currentPath = '';
+    segments.forEach(segment => {
+      currentPath += '/' + segment;
+      const pageName = segment.replace('.html', '');
+      const displayName = formatPageName(pageName);
+      
+      breadcrumbs.push({
+        text: displayName,
+        url: currentPath
+      });
+    });
+    
+    return breadcrumbs;
+  }
+  
+  function formatPageName(pageName) {
+    const pageNames = {
+      'assessment': 'Assessment',
+      'courses': 'Courses',
+      'career': 'Career Paths',
+      'classroom': 'Classroom',
+      'dashboard': 'Dashboard',
+      'library': 'Library',
+      'admin': 'Admin Panel',
+      'support': 'Support',
+      'about': 'About',
+      'ai-police': 'AI Police'
+    };
+    
+    return pageNames[pageName] || pageName.charAt(0).toUpperCase() + pageName.slice(1);
+  }
+  
+  // Export navigation utilities to global scope
+  window.PMERITNav = {
+    updateActiveNavigation,
+    updateNavigationAccess,
+    initializeBreadcrumbs
+  };
+})();
+</script>
