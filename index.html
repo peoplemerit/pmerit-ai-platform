@@ -1,206 +1,620 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PMERIT - Empowering Learning Through Innovation</title>
-    <meta name="description" content="Accessible, high-quality education for global opportunities">
-    <meta name="keywords" content="education, learning, AI tutoring, career development">
-    
-    <!-- Favicon -->
-    <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Styles -->
-    <link rel="stylesheet" href="/assets/base.css">
-    <link rel="stylesheet" href="/assets/home.css">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PMERIT — Accessible Global Education</title>
+
+  <!-- Icons & Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+  <style>
+    :root {
+      /* PMERIT Brand Colors - Clean White Theme */
+      --primary: #4F46E5;       /* PMERIT brand blue */
+      --primary-dark: #3730A3;
+      --accent: #7C3AED;        /* Purple accent */
+      --success: #10B981;       /* Success green */
+      --text-primary: #1E293B;  /* Dark slate text */
+      --text-secondary: #64748B;/* Gray text */
+      --text-inverse: #F8FAFC;  /* Light text for dark backgrounds */
+      --bg-primary: #FFFFFF;    /* Clean white background */
+      --bg-secondary: #F8FAFC;  /* Light gray background */
+      --bg-dark: #1E293B;       /* Dark background for contrast */
+      --card-bg: #FFFFFF;       /* Card background */
+      --border-color: #E2E8F0;  /* Border color */
+      --header-height: 70px;
+      --footer-height: 60px;
+      --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --transition: all 0.2s ease-in-out;
+    }
+
+    .dark {
+      --text-primary: #F8FAFC;
+      --text-secondary: #CBD5E1;
+      --bg-primary: #0F172A;
+      --bg-secondary: #1E293B;
+      --card-bg: #1E293B;
+      --border-color: #334155;
+      --shadow: 0 8px 28px rgba(0,0,0,.45);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      transition: var(--transition);
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Header Styles */
+    header {
+      height: var(--header-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      background-color: var(--card-bg);
+      border-bottom: 1px solid var(--border-color);
+      box-shadow: var(--shadow);
+      z-index: 50;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo::before {
+      content: "🎓";
+      font-size: 1.5rem;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .nav-btn, select {
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: var(--transition);
+      border: 1px solid var(--border-color);
+      background-color: var(--card-bg);
+      color: var(--text-primary);
+      min-height: 44px;
+    }
+
+    .nav-btn:hover, select:hover {
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .nav-btn.primary {
+      background-color: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .nav-btn.primary:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Main Layout - 3 Column Grid */
+    .estate {
+      display: grid;
+      grid-template-columns: 280px 1fr 320px;
+      height: calc(100vh - var(--header-height) - var(--footer-height));
+      overflow: hidden;
+      gap: 0;
+    }
+
+    /* Left Pane Styles */
+    #left {
+      background-color: var(--bg-secondary);
+      border-right: 1px solid var(--border-color);
+      padding: 1.5rem 1rem;
+      overflow-y: auto;
+    }
+
+    .pane-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .toggle, .action, .dashboard {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      min-height: 44px;
+    }
+
+    .toggle:hover, .action:hover, .dashboard:hover {
+      border-color: var(--primary);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow);
+    }
+
+    .icon {
+      color: var(--primary);
+      margin-right: 0.5rem;
+    }
+
+    .switch {
+      width: 40px;
+      height: 20px;
+      background: #ccc;
+      border-radius: 34px;
+      position: relative;
+      transition: .4s;
+    }
+
+    .switch::after {
+      content: "";
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      left: 2px;
+      bottom: 2px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    .toggle.active .switch {
+      background-color: var(--primary);
+    }
+
+    .toggle.active .switch::after {
+      transform: translateX(20px);
+    }
+
+    .dashboard {
+      justify-content: center;
+      font-weight: 600;
+      background-color: var(--primary);
+      color: white;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .dashboard.guest {
+      background-color: var(--text-secondary);
+    }
+
+    .dashboard:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .dashboard.guest:hover {
+      background-color: #475569;
+    }
+
+    /* Center Chat Area Styles */
+    main {
+      background-color: var(--bg-primary);
+      overflow: hidden;
+    }
+
+    .panel {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      margin: 1rem;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      background-color: var(--bg-secondary);
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .badges {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      background-color: var(--primary);
+      color: white;
+      font-size: 0.78rem;
+      padding: 0.28rem 0.6rem;
+      border-radius: 999px;
+      display: inline-flex;
+      gap: 0.35rem;
+      align-items: center;
+    }
+
+    .badge.support {
+      background-color: var(--success);
+    }
+
+    .badge.vh {
+      background-color: var(--accent);
+    }
+
+    #textChat {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .chat-body {
+      flex: 1;
+      padding: 1rem;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .bubble {
+      display: flex;
+      gap: 0.65rem;
+      align-items: flex-start;
+      background-color: rgba(79, 70, 229, 0.06);
+      border: 1px solid rgba(79, 70, 229, 0.18);
+      border-radius: 0.75rem;
+      padding: 1rem;
+    }
+
+    .ava {
+      min-width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+    }
+
+    .bubble h3 {
+      margin: 0.1rem 0 0.35rem;
+      color: var(--primary);
+      font-size: 1rem;
+    }
+
+    .bubble p {
+      margin: 0.3rem 0;
+      line-height: 1.55;
+    }
+
+    /* Right Pane Styles */
+    #right {
+      background-color: var(--bg-secondary);
+      border-left: 1px solid var(--border-color);
+      padding: 1.5rem;
+      overflow-y: auto;
+    }
+
+    .support-assistant {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+
+    .support-assistant h4 {
+      margin: 0;
+      color: var(--success);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    #right h3 {
+      margin: 0.25rem 0 0.75rem;
+      position: relative;
+      padding-bottom: 0.35rem;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--primary);
+    }
+
+    #right h3::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 40px;
+      height: 3px;
+      background-color: var(--primary);
+      border-radius: 2px;
+    }
+
+    .discover {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .discover h4 {
+      margin: 0.25rem 0;
+      font-weight: 600;
+    }
+
+    .discover p {
+      margin: 0.25rem 0 0.5rem;
+      color: var(--text-secondary);
+    }
+
+    .discover .insights {
+      border-top: 1px dashed var(--border-color);
+      padding-top: 0.5rem;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      min-height: 2.2em;
+      font-style: italic;
+    }
+
+    /* Footer Styles */
+    footer {
+      height: var(--footer-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      background-color: var(--card-bg);
+      border-top: 1px solid var(--border-color);
+      box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+      z-index: 40;
+    }
+
+    .footer-status-main {
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 0.94rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Mobile Styles */
+    @media (max-width: 1100px) {
+      .estate {
+        grid-template-columns: 1fr;
+        height: calc(100vh - var(--header-height) - var(--footer-height));
+        overflow-y: auto;
+      }
+      
+      aside {
+        display: none;
+      }
+      
+      header {
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        height: auto;
+        min-height: var(--header-height);
+        padding: 0.75rem;
+      }
+      
+      .logo {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      main {
+        min-height: calc(100vh - var(--header-height) - var(--footer-height) - 2rem);
+      }
+    }
+
+    /* Focus Styles */
+    .nav-btn:focus, .action:focus, .toggle:focus, .dashboard:focus, select:focus {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+  </style>
 </head>
-<body class="home-page">
-    <!-- Skip Link for Accessibility -->
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-    
-    <!-- Header Container (loaded by boot-includes.js) -->
-    <div id="header-container"></div>
-    
-    <!-- Navigation Container (loaded by boot-includes.js) -->
-    <div id="nav-container"></div>
-    
-    <!-- Main Content -->
-    <main id="main-content" class="home-main">
-        <!-- Three-Panel Layout (Your existing !DOCTYPE html.txt structure) -->
-        <div class="home-estate">
-            <!-- Left Panel: Quick Actions -->
-            <aside class="home-left" aria-label="Quick actions sidebar">
-                <div class="pane-title">Quick Actions</div>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo">PMERIT</div>
+    <nav>
+      <select class="nav-btn" id="lang" aria-label="Language">
+        <option value="en">English</option>
+        <option value="yo">Yorùbá</option>
+        <option value="ig">Igbo</option>
+        <option value="ha">Hausa</option>
+      </select>
+      <button class="nav-btn" id="pricingBtn">Pricing</button>
+      <button class="nav-btn" id="signInBtn">Sign In</button>
+      <button class="nav-btn primary" id="startBtn">Start Learning</button>
+    </nav>
+  </header>
 
-                <!-- Virtual Human Toggle -->
-                <button class="toggle" id="vhToggle">
-                    <span><i class="fas fa-user-astronaut icon"></i> Virtual Human Mode</span>
-                    <span class="switch" aria-hidden="true"></span>
-                </button>
+  <div class="estate">
+    <!-- Left Pane -->
+    <aside id="left" aria-label="Quick actions sidebar">
+      <section>
+        <div class="pane-title">Quick Actions</div>
 
-                <!-- Career Track Explorer -->
-                <button class="action" id="careerPaths">
-                    <span><i class="fas fa-compass icon"></i> Career Track & Explore Paths</span>
-                    <i class="fas fa-chevron-right" aria-hidden="true"></i>
-                </button>
+        <button class="toggle" id="vhToggle">
+          <span><i class="fas fa-user-astronaut icon"></i> Virtual Human Mode</span>
+          <span class="switch" aria-hidden="true"></span>
+        </button>
 
-                <!-- Customer Service Mode -->
-                <button class="toggle" id="supportToggle">
-                    <span><i class="fas fa-headset icon"></i> Customer Service Mode</span>
-                    <span class="switch" aria-hidden="true"></span>
-                </button>
+        <button class="action" id="careerPaths">
+          <span><i class="fas fa-compass icon"></i> Career Track & Explore Paths</span>
+          <i class="fas fa-chevron-right" aria-hidden="true"></i>
+        </button>
 
-                <!-- Settings Collapsible -->
-                <div class="collapsible" id="settingsBox">
-                    <div class="head">
-                        <strong><i class="fas fa-sliders-h"></i> Settings</strong>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="body">
-                        <button class="toggle" id="darkToggle">
-                            <span><i class="fas fa-moon icon"></i> Dark Mode</span>
-                            <span class="switch" aria-hidden="true"></span>
-                        </button>
-                        <button class="toggle" id="ttsToggle">
-                            <span><i class="fas fa-volume-up icon"></i> Text-to-Speech</span>
-                            <span class="switch" aria-hidden="true"></span>
-                        </button>
-                    </div>
-                </div>
+        <button class="toggle" id="supportToggle">
+          <span><i class="fas fa-headset icon"></i> Customer Service Mode</span>
+          <span class="switch" aria-hidden="true"></span>
+        </button>
 
-                <!-- Dashboard Button -->
-                <button class="dashboard guest" id="dashBtn">
-                    <i class="fas fa-gauge-high"></i> Dashboard
-                </button>
+        <button class="dashboard guest" id="dashBtn">
+          <i class="fas fa-gauge-high"></i> Dashboard
+        </button>
+      </section>
+    </aside>
 
-                <!-- Virtual Human Avatar -->
-                <div class="avatar" id="vhAvatar" title="Virtual Human">
-                    <i class="fas fa-user-circle" aria-hidden="true"></i>
-                </div>
-            </aside>
-
-            <!-- Center Panel: AI Chat -->
-            <section class="home-center">
-                <div class="panel" aria-label="Chat panel">
-                    <div class="panel-head">
-                        <div class="badges">
-                            <span class="badge vh" id="vhBadge" style="display:none">
-                                <i class="fas fa-user-astronaut"></i> Virtual Human
-                            </span>
-                            <span class="badge support" id="supportBadge" style="display:none">
-                                <i class="fas fa-headset"></i> Support Assistant
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Text Chat Interface -->
-                    <div id="textChat" role="region" aria-live="polite">
-                        <div class="chat-body" id="chatBody">
-                            <article class="bubble" id="welcomeMsg">
-                                <div class="ava"><i class="fas fa-user-circle"></i></div>
-                                <div>
-                                    <h3>PMERIT AI:</h3>
-                                    <p id="welcomeCopy">Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?</p>
-                                </div>
-                            </article>
-                        </div>
-                        
-                        <div class="chat-input">
-                            <textarea id="chatInput" maxlength="1000" placeholder="Ask about courses, learning paths, or your goals..." aria-label="Message"></textarea>
-                            <div class="input-bar">
-                                <span class="count" id="count">0/1000</span>
-                                <div class="input-actions">
-                                    <button class="nav-btn" id="vhQuick">
-                                        <i class="fas fa-user-astronaut"></i> VH Mode
-                                    </button>
-                                    <button class="nav-btn" id="readAbout">
-                                        <i class="fas fa-book"></i> Read About
-                                    </button>
-                                    <span class="footer-status">
-                                        <i class="fas fa-circle-check"></i> Connected to Educational Services
-                                    </span>
-                                </div>
-                                <button class="send" id="sendBtn">Send <i class="fas fa-paper-plane"></i></button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Virtual Human Stage -->
-                    <div id="vhStage" role="region" aria-live="polite">
-                        <div class="stage">
-                            <div class="human-frame">
-                                <div class="human-face"><i class="fas fa-user-circle"></i></div>
-                            </div>
-                        </div>
-                        <div class="captions" id="captions">Virtual Human is speaking…</div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Right Panel: Assessment & Support -->
-            <aside class="home-right" aria-label="Support and discover sidebar">
-                <!-- Support Assistant -->
-                <div class="support-assistant">
-                    <h4><i class="fas fa-headset"></i> Support Assistant</h4>
-                    <p>Ask me about PMERIT</p>
-                    <div class="support-buttons">
-                        <button class="nav-btn" id="vhShort">
-                            <i class="fas fa-user-astronaut"></i> Virtual Human
-                        </button>
-                        <button class="nav-btn" id="supportShort">
-                            <i class="fas fa-headset"></i> Support
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Discover Your Path (AI) - Single Assessment -->
-                <div class="discover-section">
-                    <h3>Discover Your Path (AI)</h3>
-                    <div class="discover">
-                        <h4>Personalized learning plan</h4>
-                        <p>Start a short flow that blends learning style, interests, and skills into a plan.</p>
-                        <button class="nav-btn primary" id="beginAssessment">Begin Assessment</button>
-                        <div class="insights" id="insights">Pro tip: Keep notes in your own words for better recall.</div>
-                    </div>
-                </div>
-            </aside>
+    <!-- Center -->
+    <main>
+      <section class="panel" aria-label="Chat panel">
+        <div class="panel-head">
+          <div class="badges">
+            <span class="badge vh" id="vhBadge" style="display:none">
+              <i class="fas fa-user-astronaut"></i> Virtual Human
+            </span>
+            <span class="badge support" id="supportBadge" style="display:none">
+              <i class="fas fa-headset"></i> Support Assistant
+            </span>
+          </div>
         </div>
 
-        <!-- Mobile Accordions (for responsive design) -->
-        <div id="mobileAccordions" class="mobile-only" aria-label="Mobile sections">
-            <details class="mobile-accordion">
-                <summary><i class="fas fa-bolt"></i> Quick Actions</summary>
-                <div class="mobile-accordion-content">
-                    <!-- Mobile quick actions content -->
-                </div>
-            </details>
-
-            <details class="mobile-accordion">
-                <summary><i class="fas fa-graduation-cap"></i> Discover Your Path</summary>
-                <div class="mobile-accordion-content">
-                    <!-- Mobile assessment content -->
-                </div>
-            </details>
+        <div id="textChat" role="region" aria-live="polite">
+          <div class="chat-body" id="chatBody">
+            <article class="bubble" id="welcomeMsg">
+              <div class="ava"><i class="fas fa-user-circle"></i></div>
+              <div>
+                <h3>PMERIT AI:</h3>
+                <p id="welcomeCopy">Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?</p>
+              </div>
+            </article>
+          </div>
         </div>
+      </section>
     </main>
-    
-    <!-- Footer Container (loaded by boot-includes.js) -->
-    <div id="footer-container"></div>
 
-    <!-- Core Scripts -->
-    <script src="/assets/boot-includes.js"></script>
-    
-    <!-- Page-specific Scripts -->
-    <script src="/assets/js/home.js"></script>
-    
-    <!-- Feature Scripts -->
-    <script src="/assets/js/features/assessment.js"></script>
-    <script src="/assets/js/features/ai-chat.js"></script>
-    <script src="/assets/js/features/virtual-human.js"></script>
+    <!-- Right Pane -->
+    <aside id="right" aria-label="Support and discover sidebar">
+      <section>
+        <div class="support-assistant">
+          <h4><i class="fas fa-headset"></i> Support Assistant</h4>
+          <p style="color: var(--text-secondary); margin: 0.5rem 0;">Ask me about PMERIT</p>
+        </div>
+
+        <h3>Discover Your Path (AI)</h3>
+        <div class="discover">
+          <h4>Personalized learning plan</h4>
+          <p>Start a short flow that blends learning style, interests, and skills into a plan.</p>
+          <button class="nav-btn primary" id="beginAssessment">Begin Assessment</button>
+          <div class="insights" id="insights">Pro tip: Keep notes in your own words for better recall.</div>
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <span class="footer-status-main">
+      <i class="fas fa-signal"></i> Connected to Educational Services
+    </span>
+  </footer>
+
+  <script>
+    // PMERIT Platform JavaScript - Replace Gabriel AI references
+    const state = {
+      auth: false,
+      dark: false,
+      vh: false,
+      support: false,
+      tts: false,
+      lang: 'en'
+    };
+
+    // Initialize PMERIT namespace
+    window.PMERIT = {
+      api: {
+        assessment: {
+          start: async () => {
+            // Connect to /functions/api/assessment/start
+            console.log('PMERIT Assessment API called');
+          }
+        },
+        ai: {
+          chat: async (message) => {
+            // Connect to ai.pmerit.com via Workers proxy
+            console.log('PMERIT AI chat:', message);
+          }
+        }
+      },
+      
+      // Initialize application
+      init: function() {
+        console.log('PMERIT Platform initialized');
+        this.bindEvents();
+      },
+      
+      bindEvents: function() {
+        // Bind assessment button
+        document.getElementById('beginAssessment')?.addEventListener('click', () => {
+          console.log('PMERIT Assessment started');
+          // TODO: Connect to actual assessment system
+        });
+        
+        // Bind dashboard button  
+        document.getElementById('dashBtn')?.addEventListener('click', () => {
+          if (state.auth) {
+            window.location.href = '/dashboard.html';
+          } else {
+            // Show sign up modal
+            console.log('Guest - show sign up');
+          }
+        });
+      }
+    };
+
+    // Initialize when DOM loads
+    document.addEventListener('DOMContentLoaded', () => {
+      window.PMERIT.init();
+    });
+  </script>
 </body>
 </html>
