@@ -1,565 +1,631 @@
-// =============================================================================
-// PMERIT NAVIGATION CONFIGURATION
-// File: /assets/nav-config.js
-// Navigation management and routing configuration for all pages
-// =============================================================================
-
 /**
- * Navigation Configuration Registry
+ * PMERIT Platform - Navigation Configuration
+ * Role-based Navigation & Access Control
+ * ================================================
+ * Version: 3.0.0
+ * Purpose: Define navigation structure and access rules
  */
-PMERIT.navigation = {
-    
-    /**
-     * Page Configuration Map
-     * Defines navigation behavior for each page
-     */
-    pageConfigs: {
-        // Homepage
-        'index': {
-            title: 'Home - PMERIT',
-            description: 'Empowering Learning Through Innovation',
-            nav: {
-                hide: [],
-                highlight: ['home'],
-                sections: ['core', 'support', 'actions']
-            },
-            breadcrumb: ['Home']
+
+(function() {
+  'use strict';
+  
+  // Navigation Configuration
+  const NAV_CONFIG = {
+    // Main navigation structure
+    navigation: {
+      primary: [
+        {
+          id: 'home',
+          label: 'Home',
+          icon: '🏠',
+          url: '/index.html',
+          access: ['public'],
+          description: 'Platform homepage with AI chat and assessment'
         },
-        
-        // Core Learning Pages
-        'dashboard': {
-            title: 'Dashboard - PMERIT',
-            description: 'Your personalized learning dashboard',
-            nav: {
-                hide: ['home'],
-                highlight: ['dashboard'],
-                sections: ['core', 'support', 'actions'],
-                requireAuth: true
-            },
-            breadcrumb: ['Home', 'Dashboard']
+        {
+          id: 'assessment',
+          label: 'Assessment',
+          icon: '🧠',
+          url: '/assessment.html',
+          access: ['public'],
+          description: 'Personality and skills assessment'
         },
-        
-        'assessment': {
-            title: 'Assessment - PMERIT',
-            description: 'Discover your learning path through personalized assessment',
-            nav: {
-                hide: ['home'],
-                highlight: ['assessment'],
-                sections: ['core', 'actions']
-            },
-            breadcrumb: ['Home', 'Assessment']
+        {
+          id: 'courses',
+          label: 'Courses',
+          icon: '📚',
+          url: '/courses.html',
+          access: ['public'],
+          description: 'Course catalog and enrollment'
         },
-        
-        'courses': {
-            title: 'Courses - PMERIT',
-            description: 'Browse our comprehensive course catalog',
-            nav: {
-                hide: ['assessment'],
-                highlight: ['courses'],
-                sections: ['core', 'support', 'actions']
-            },
-            breadcrumb: ['Home', 'Courses']
+        {
+          id: 'career',
+          label: 'Career Paths',
+          icon: '🎯',
+          url: '/career.html',
+          access: ['public'],
+          description: 'Explore career opportunities and job market data'
         },
-        
-        'classroom': {
-            title: 'Classroom - PMERIT',
-            description: 'Interactive learning environment',
-            nav: {
-                hide: ['assessment', 'courses'],
-                highlight: ['classroom'],
-                sections: ['core', 'support'],
-                requireAuth: true
-            },
-            breadcrumb: ['Home', 'Classroom']
-        },
-        
-        'career': {
-            title: 'Career Paths - PMERIT',
-            description: 'Explore career opportunities and market insights',
-            nav: {
-                hide: ['assessment'],
-                highlight: ['career'],
-                sections: ['core', 'support', 'actions']
-            },
-            breadcrumb: ['Home', 'Career']
-        },
-        
-        'library': {
-            title: 'Library - PMERIT',
-            description: 'Access learning resources and documentation',
-            nav: {
-                hide: [],
-                highlight: ['library'],
-                sections: ['core', 'support']
-            },
-            breadcrumb: ['Home', 'Library']
-        },
-        
-        // Support & User Pages
-        'support': {
-            title: 'Support - PMERIT',
-            description: 'Get help and customer support',
-            nav: {
-                hide: ['supportMode'],
-                highlight: ['support'],
-                sections: ['core', 'support']
-            },
-            breadcrumb: ['Home', 'Support']
-        },
-        
-        'help': {
-            title: 'Help Center - PMERIT',
-            description: 'Frequently asked questions and guides',
-            nav: {
-                hide: ['supportMode'],
-                highlight: ['help'],
-                sections: ['core', 'support']
-            },
-            breadcrumb: ['Home', 'Help']
-        },
-        
-        'profile': {
-            title: 'Profile - PMERIT',
-            description: 'Manage your account and preferences',
-            nav: {
-                hide: [],
-                highlight: ['profile'],
-                sections: ['core', 'support'],
-                requireAuth: true
-            },
-            breadcrumb: ['Home', 'Profile']
-        },
-        
-        'progress': {
-            title: 'Progress - PMERIT',
-            description: 'Track your learning progress',
-            nav: {
-                hide: [],
-                highlight: ['progress'],
-                sections: ['core', 'support'],
-                requireAuth: true
-            },
-            breadcrumb: ['Home', 'Progress']
-        },
-        
-        'certificates': {
-            title: 'Certificates - PMERIT',
-            description: 'View and download your certificates',
-            nav: {
-                hide: [],
-                highlight: ['certificates'],
-                sections: ['core', 'support'],
-                requireAuth: true
-            },
-            breadcrumb: ['Home', 'Certificates']
-        },
-        
-        'donate': {
-            title: 'Support PMERIT - Donate',
-            description: 'Support accessible education worldwide',
-            nav: {
-                hide: [],
-                highlight: ['donate'],
-                sections: ['core', 'support']
-            },
-            breadcrumb: ['Home', 'Donate']
-        },
-        
-        // Admin Pages
-        'admin-tier1': {
-            title: 'Admin Dashboard - PMERIT',
-            description: 'Basic administrative functions',
-            nav: {
-                hide: [],
-                highlight: ['admin-tier1'],
-                sections: ['core', 'admin', 'monitoring'],
-                requireRole: 'admin'
-            },
-            breadcrumb: ['Home', 'Admin', 'Basic Dashboard']
-        },
-        
-        'admin-tier2': {
-            title: 'Advanced Admin - PMERIT',
-            description: 'Advanced administrative controls',
-            nav: {
-                hide: [],
-                highlight: ['admin-tier2'],
-                sections: ['core', 'admin', 'monitoring'],
-                requireRole: 'admin'
-            },
-            breadcrumb: ['Home', 'Admin', 'Advanced Controls']
-        },
-        
-        'admin-content': {
-            title: 'Content Management - PMERIT',
-            description: 'Manage courses and learning content',
-            nav: {
-                hide: [],
-                highlight: ['admin-content'],
-                sections: ['core', 'admin'],
-                requireRole: 'admin'
-            },
-            breadcrumb: ['Home', 'Admin', 'Content']
-        },
-        
-        'admin-reports': {
-            title: 'Reports & Analytics - PMERIT',
-            description: 'System analytics and reporting',
-            nav: {
-                hide: [],
-                highlight: ['admin-reports'],
-                sections: ['core', 'admin', 'monitoring'],
-                requireRole: 'admin'
-            },
-            breadcrumb: ['Home', 'Admin', 'Reports']
-        },
-        
-        // Monitoring Pages
-        'monitoring': {
-            title: 'System Monitoring - PMERIT',
-            description: 'Real-time system health and performance',
-            nav: {
-                hide: [],
-                highlight: ['monitoring'],
-                sections: ['core', 'monitoring'],
-                requireRole: 'admin,monitor'
-            },
-            breadcrumb: ['Home', 'Monitoring']
-        },
-        
-        'ai-police': {
-            title: 'AI Security - PMERIT',
-            description: 'AI behavior monitoring and security',
-            nav: {
-                hide: [],
-                highlight: ['ai-police'],
-                sections: ['core', 'monitoring'],
-                requireRole: 'admin,monitor'
-            },
-            breadcrumb: ['Home', 'Monitoring', 'AI Security']
-        },
-        
-        'incident-response': {
-            title: 'Incident Response - PMERIT',
-            description: 'Security incident management',
-            nav: {
-                hide: [],
-                highlight: ['incident-response'],
-                sections: ['core', 'monitoring'],
-                requireRole: 'admin,monitor'
-            },
-            breadcrumb: ['Home', 'Monitoring', 'Incidents']
-        },
-        
-        // Additional Pages
-        'alumni': {
-            title: 'Alumni Network - PMERIT',
-            description: 'Connect with PMERIT graduates',
-            nav: {
-                hide: [],
-                highlight: ['alumni'],
-                sections: ['core', 'support', 'extras']
-            },
-            breadcrumb: ['Home', 'Community', 'Alumni']
-        },
-        
-        'employer': {
-            title: 'For Employers - PMERIT',
-            description: 'Employer resources and verification',
-            nav: {
-                hide: [],
-                highlight: ['employer'],
-                sections: ['core', 'extras']
-            },
-            breadcrumb: ['Home', 'Employers']
-        },
-        
-        'consent': {
-            title: 'Privacy & Terms - PMERIT',
-            description: 'Privacy policy and terms of service',
-            nav: {
-                hide: [],
-                highlight: ['consent'],
-                sections: ['extras']
-            },
-            breadcrumb: ['Home', 'Legal']
-        },
-        
-        // Special Pages
-        'maintenance': {
-            title: 'Maintenance - PMERIT',
-            description: 'System maintenance in progress',
-            nav: {
-                hide: '*',
-                highlight: [],
-                sections: [],
-                showMessage: 'System is under maintenance. We\'ll be back shortly!'
-            },
-            breadcrumb: ['Maintenance']
+        {
+          id: 'library',
+          label: 'Library',
+          icon: '📖',
+          url: '/library.html',
+          access: ['public'],
+          description: 'Educational resources and documentation'
         }
+      ],
+      
+      authenticated: [
+        {
+          id: 'dashboard',
+          label: 'Dashboard',
+          icon: '📊',
+          url: '/dashboard.html',
+          access: ['student', 'instructor', 'admin'],
+          description: 'Personal learning dashboard'
+        },
+        {
+          id: 'my-courses',
+          label: 'My Courses',
+          icon: '🎓',
+          url: '/courses.html?filter=enrolled',
+          access: ['student', 'instructor'],
+          description: 'Enrolled courses and progress'
+        },
+        {
+          id: 'classroom',
+          label: 'Classroom',
+          icon: '🏫',
+          url: '/classroom.html',
+          access: ['student', 'instructor'],
+          description: 'Interactive learning environment'
+        },
+        {
+          id: 'progress',
+          label: 'Progress',
+          icon: '📈',
+          url: '/dashboard.html#progress',
+          access: ['student'],
+          description: 'Learning progress and achievements'
+        }
+      ],
+      
+      admin: [
+        {
+          id: 'admin-panel',
+          label: 'Admin Panel',
+          icon: '⚙️',
+          url: '/admin.html',
+          access: ['admin'],
+          description: 'Platform administration'
+        },
+        {
+          id: 'content-management',
+          label: 'Content',
+          icon: '📝',
+          url: '/admin.html#content',
+          access: ['admin', 'instructor'],
+          description: 'Manage courses and content'
+        },
+        {
+          id: 'analytics',
+          label: 'Analytics',
+          icon: '📊',
+          url: '/admin.html#analytics',
+          access: ['admin'],
+          description: 'Platform analytics and insights'
+        },
+        {
+          id: 'ai-police',
+          label: 'AI Police',
+          icon: '🛡️',
+          url: '/ai-police.html',
+          access: ['admin'],
+          description: 'AI monitoring and security'
+        },
+        {
+          id: 'incident-response',
+          label: 'Incidents',
+          icon: '🚨',
+          url: '/incident-response.html',
+          access: ['admin'],
+          description: 'Security incident management'
+        }
+      ],
+      
+      support: [
+        {
+          id: 'support',
+          label: 'Support',
+          icon: '❓',
+          url: '/support.html',
+          access: ['public'],
+          description: 'Help center and support'
+        },
+        {
+          id: 'about',
+          label: 'About',
+          icon: 'ℹ️',
+          url: '/about.html',
+          access: ['public'],
+          description: 'About PMERIT platform'
+        }
+      ]
     },
     
-    /**
-     * Navigation Actions Configuration
-     */
-    actions: {
-        'toggleVH': {
-            handler: 'PMERIT.features.VirtualHuman.toggle',
-            label: 'Virtual Human Mode',
-            icon: '🤖'
-        },
-        
-        'openCareer': {
-            handler: 'PMERIT.navigation.goToCareer',
-            label: 'Career Exploration',
-            icon: '🎯'
-        },
-        
-        'toggleSupport': {
-            handler: 'PMERIT.features.CustomerSupport.toggle',
-            label: 'Customer Support',
-            icon: '💬'
-        }
-    },
-    
-    /**
-     * Role-based Access Control
-     */
+    // User roles and their hierarchy
     roles: {
-        'guest': {
-            label: 'Guest',
-            access: ['index', 'courses', 'career', 'library', 'help', 'support', 'donate', 'alumni', 'employer', 'consent']
-        },
-        
-        'user': {
-            label: 'User', 
-            extends: 'guest',
-            access: ['dashboard', 'assessment', 'classroom', 'profile', 'progress', 'certificates']
-        },
-        
-        'admin': {
-            label: 'Administrator',
-            extends: 'user',
-            access: ['admin-tier1', 'admin-tier2', 'admin-content', 'admin-reports', 'monitoring', 'ai-police', 'incident-response']
-        },
-        
-        'monitor': {
-            label: 'Monitor',
-            extends: 'user',
-            access: ['monitoring', 'ai-police', 'incident-response']
-        }
+      guest: {
+        level: 0,
+        permissions: ['view_public']
+      },
+      student: {
+        level: 1,
+        permissions: ['view_public', 'access_courses', 'track_progress', 'take_assessments']
+      },
+      instructor: {
+        level: 2,
+        permissions: ['view_public', 'access_courses', 'track_progress', 'take_assessments', 'create_content', 'manage_students']
+      },
+      admin: {
+        level: 3,
+        permissions: ['all']
+      }
     },
+    
+    // Page metadata and configuration
+    pages: {
+      'home': {
+        title: 'PMERIT - Empowering Learning Through Innovation',
+        description: 'Accessible, high-quality education for global opportunities',
+        keywords: 'education, learning, AI tutoring, career development',
+        requiresAuth: false,
+        layout: 'home'
+      },
+      'assessment': {
+        title: 'Assessment - PMERIT',
+        description: 'Discover your learning style and career path',
+        keywords: 'personality assessment, skills evaluation, career guidance',
+        requiresAuth: false,
+        layout: 'standard'
+      },
+      'courses': {
+        title: 'Courses - PMERIT',
+        description: 'Explore our comprehensive course catalog',
+        keywords: 'courses, education, learning paths, skills training',
+        requiresAuth: false,
+        layout: 'standard'
+      },
+      'career': {
+        title: 'Career Paths - PMERIT',
+        description: 'Explore career opportunities and job market insights',
+        keywords: 'careers, jobs, employment, market data',
+        requiresAuth: false,
+        layout: 'standard'
+      },
+      'dashboard': {
+        title: 'Dashboard - PMERIT',
+        description: 'Your personalized learning dashboard',
+        keywords: 'dashboard, progress, learning, personal',
+        requiresAuth: true,
+        layout: 'authenticated'
+      },
+      'classroom': {
+        title: 'Classroom - PMERIT',
+        description: 'Interactive learning environment',
+        keywords: 'classroom, learning, interactive, AI tutor',
+        requiresAuth: true,
+        layout: 'immersive'
+      },
+      'admin': {
+        title: 'Admin Panel - PMERIT',
+        description: 'Platform administration and management',
+        keywords: 'admin, management, analytics, content',
+        requiresAuth: true,
+        requiredRole: 'admin',
+        layout: 'admin'
+      },
+      'ai-police': {
+        title: 'AI Police - PMERIT',
+        description: 'AI monitoring and security dashboard',
+        keywords: 'security, monitoring, AI, alerts',
+        requiresAuth: true,
+        requiredRole: 'admin',
+        layout: 'admin'
+      }
+    },
+    
+    // Mobile navigation configuration
+    mobile: {
+      maxPrimaryItems: 4,
+      collapseThreshold: 768,
+      showIcons: true,
+      showLabels: false
+    },
+    
+    // Breadcrumb configuration
+    breadcrumbs: {
+      enabled: true,
+      maxDepth: 4,
+      showHome: true,
+      separator: '›'
+    }
+  };
+  
+  // Navigation Manager Class
+  class NavigationManager {
+    constructor(config) {
+      this.config = config;
+      this.currentUser = null;
+      this.currentPage = null;
+      this.activeNavItems = [];
+      
+      this.init();
+    }
     
     /**
-     * Get Configuration for Current Page
-     */
-    getCurrentConfig() {
-        const currentPage = PMERIT.utils.getCurrentPage();
-        return this.pageConfigs[currentPage] || this.pageConfigs['index'];
-    },
-    
-    /**
-     * Check if user has access to page
-     */
-    hasAccess(pageId, userRole = 'guest') {
-        const config = this.pageConfigs[pageId];
-        if (!config) return false;
-        
-        // Check role requirement
-        if (config.nav.requireRole) {
-            const allowedRoles = config.nav.requireRole.split(',');
-            if (!allowedRoles.includes(userRole)) {
-                return false;
-            }
-        }
-        
-        // Check auth requirement
-        if (config.nav.requireAuth && !PMERIT.state.user.authenticated) {
-            return false;
-        }
-        
-        // Check role access list
-        const roleConfig = this.roles[userRole];
-        if (!roleConfig) return false;
-        
-        let allowedPages = roleConfig.access || [];
-        
-        // Inherit from parent role
-        if (roleConfig.extends) {
-            const parentRole = this.roles[roleConfig.extends];
-            if (parentRole) {
-                allowedPages = [...allowedPages, ...parentRole.access];
-            }
-        }
-        
-        return allowedPages.includes(pageId);
-    },
-    
-    /**
-     * Navigation Handler Methods
-     */
-    goToPage(pageId) {
-        const userRole = PMERIT.state.user.role || 'guest';
-        
-        if (!this.hasAccess(pageId, userRole)) {
-            this.showAccessDenied(pageId);
-            return;
-        }
-        
-        const url = pageId === 'index' ? '/' : `/${pageId}.html`;
-        window.location.href = url;
-    },
-    
-    goToCareer() {
-        this.goToPage('career');
-    },
-    
-    showAccessDenied(pageId) {
-        const config = this.pageConfigs[pageId];
-        const requiresAuth = config?.nav?.requireAuth;
-        const requiresRole = config?.nav?.requireRole;
-        
-        let message = 'Access denied.';
-        
-        if (requiresAuth && !PMERIT.state.user.authenticated) {
-            message = 'Please sign in to access this page.';
-            // Show sign in modal
-            PMERIT.modules.AuthManager.showSignInModal();
-            return;
-        }
-        
-        if (requiresRole) {
-            message = `This page requires ${requiresRole} privileges.`;
-        }
-        
-        // TODO: Implement proper notification system
-        alert(message);
-    },
-    
-    /**
-     * Breadcrumb Management
-     */
-    updateBreadcrumb() {
-        const config = this.getCurrentConfig();
-        const breadcrumbEl = PMERIT.utils.$('#breadcrumb');
-        
-        if (!breadcrumbEl || !config.breadcrumb) return;
-        
-        const breadcrumbHtml = config.breadcrumb
-            .map((item, index) => {
-                const isLast = index === config.breadcrumb.length - 1;
-                const className = isLast ? 'breadcrumb-current' : 'breadcrumb-link';
-                
-                if (isLast) {
-                    return `<span class="${className}">${item}</span>`;
-                } else {
-                    return `<a href="#" class="${className}">${item}</a>`;
-                }
-            })
-            .join('<span class="breadcrumb-separator">›</span>');
-        
-        breadcrumbEl.innerHTML = breadcrumbHtml;
-    },
-    
-    /**
-     * Page Metadata Management
-     */
-    updatePageMetadata() {
-        const config = this.getCurrentConfig();
-        
-        // Update title
-        if (config.title) {
-            document.title = config.title;
-        }
-        
-        // Update meta description
-        const descriptionMeta = document.querySelector('meta[name="description"]');
-        if (descriptionMeta && config.description) {
-            descriptionMeta.content = config.description;
-        }
-        
-        // Update canonical URL
-        let canonicalLink = document.querySelector('link[rel="canonical"]');
-        if (!canonicalLink) {
-            canonicalLink = document.createElement('link');
-            canonicalLink.rel = 'canonical';
-            document.head.appendChild(canonicalLink);
-        }
-        
-        const currentPage = PMERIT.utils.getCurrentPage();
-        const baseUrl = window.location.origin;
-        const pageUrl = currentPage === 'index' ? baseUrl : `${baseUrl}/${currentPage}.html`;
-        canonicalLink.href = pageUrl;
-    },
-    
-    /**
-     * Initialize Navigation System
+     * Initialize navigation manager
      */
     init() {
-        // Apply current page configuration
-        this.updatePageMetadata();
-        this.updateBreadcrumb();
-        
-        // Set up action handlers
-        document.addEventListener('click', (e) => {
-            const actionBtn = e.target.closest('[data-action]');
-            if (actionBtn) {
-                e.preventDefault();
-                const action = actionBtn.getAttribute('data-action');
-                this.executeAction(action);
-            }
-        });
-        
-        // Listen for authentication changes
-        PMERIT.events.on('auth:login', () => {
-            // Re-apply navigation pruning with new user role
-            if (PMERIT.modules.NavigationManager) {
-                PMERIT.modules.NavigationManager.applyPruning();
-            }
-        });
-        
-        PMERIT.events.on('auth:logout', () => {
-            // Re-apply navigation pruning for guest user
-            if (PMERIT.modules.NavigationManager) {
-                PMERIT.modules.NavigationManager.applyPruning();
-            }
-        });
-    },
-    
-    /**
-     * Execute Navigation Action
-     */
-    executeAction(actionId) {
-        const actionConfig = this.actions[actionId];
-        if (!actionConfig) {
-            console.warn(`Unknown navigation action: ${actionId}`);
-            return;
-        }
-        
-        try {
-            // Execute action handler
-            const handler = this.getNestedProperty(window, actionConfig.handler);
-            if (typeof handler === 'function') {
-                handler();
-            } else {
-                console.warn(`Action handler not found: ${actionConfig.handler}`);
-            }
-        } catch (error) {
-            console.error(`Error executing action ${actionId}:`, error);
-        }
-    },
-    
-    /**
-     * Utility to get nested object property
-     */
-    getNestedProperty(obj, path) {
-        return path.split('.').reduce((current, key) => {
-            return current && current[key] !== undefined ? current[key] : undefined;
-        }, obj);
+      this.bindEvents();
+      this.updateNavigation();
     }
-};
-
-// Initialize navigation when PMERIT is ready
-PMERIT.events.on('app:ready', () => {
-    PMERIT.navigation.init();
-});
+    
+    /**
+     * Bind event listeners
+     */
+    bindEvents() {
+      // Listen for authentication changes
+      window.PMERIT.events.addEventListener('auth:stateChanged', (event) => {
+        this.handleAuthChange(event.detail);
+      });
+      
+      // Listen for page changes
+      window.PMERIT.events.addEventListener('page:changed', (event) => {
+        this.handlePageChange(event.detail.page);
+      });
+      
+      // Listen for navigation clicks
+      document.addEventListener('click', (event) => {
+        if (event.target.matches('[data-nav-item]')) {
+          this.handleNavClick(event);
+        }
+      });
+    }
+    
+    /**
+     * Handle authentication state changes
+     */
+    handleAuthChange({ isAuthenticated, userRole }) {
+      this.currentUser = {
+        authenticated: isAuthenticated,
+        role: userRole || 'guest'
+      };
+      
+      this.updateNavigation();
+      this.updatePageAccess();
+    }
+    
+    /**
+     * Handle page changes
+     */
+    handlePageChange(page) {
+      this.currentPage = page;
+      this.updateActiveNavigation();
+      this.updatePageMetadata();
+    }
+    
+    /**
+     * Handle navigation clicks
+     */
+    handleNavClick(event) {
+      const navItem = event.target.closest('[data-nav-item]');
+      const itemId = navItem.getAttribute('data-nav-item');
+      const item = this.findNavItem(itemId);
+      
+      if (!item) return;
+      
+      // Check access permissions
+      if (!this.hasAccess(item.access)) {
+        event.preventDefault();
+        this.showAccessDenied(item);
+        return;
+      }
+      
+      // Track navigation
+      this.trackNavigation(item);
+    }
+    
+    /**
+     * Update navigation based on current user and page
+     */
+    updateNavigation() {
+      this.updatePrimaryNavigation();
+      this.updateAuthenticatedNavigation();
+      this.updateAdminNavigation();
+      this.updateMobileNavigation();
+      this.updateActiveNavigation();
+    }
+    
+    /**
+     * Update primary navigation
+     */
+    updatePrimaryNavigation() {
+      const navContainer = document.getElementById('navPrimary');
+      if (!navContainer) return;
+      
+      const items = this.config.navigation.primary.filter(item => 
+        this.hasAccess(item.access)
+      );
+      
+      this.renderNavItems(navContainer, items);
+    }
+    
+    /**
+     * Update authenticated navigation
+     */
+    updateAuthenticatedNavigation() {
+      const navContainer = document.getElementById('navAuthenticated');
+      if (!navContainer) return;
+      
+      const isAuthenticated = this.currentUser?.authenticated;
+      
+      if (isAuthenticated) {
+        const items = this.config.navigation.authenticated.filter(item => 
+          this.hasAccess(item.access)
+        );
+        
+        this.renderNavItems(navContainer, items);
+        navContainer.style.display = 'flex';
+      } else {
+        navContainer.style.display = 'none';
+      }
+    }
+    
+    /**
+     * Update admin navigation
+     */
+    updateAdminNavigation() {
+      const navContainer = document.getElementById('navAdmin');
+      if (!navContainer) return;
+      
+      const userRole = this.currentUser?.role;
+      const isAdmin = userRole === 'admin' || userRole === 'instructor';
+      
+      if (isAdmin) {
+        const items = this.config.navigation.admin.filter(item => 
+          this.hasAccess(item.access)
+        );
+        
+        this.renderNavItems(navContainer, items);
+        navContainer.style.display = 'flex';
+      } else {
+        navContainer.style.display = 'none';
+      }
+    }
+    
+    /**
+     * Update mobile navigation
+     */
+    updateMobileNavigation() {
+      const mobileContainer = document.getElementById('mobileNavMenu');
+      if (!mobileContainer) return;
+      
+      // Combine all accessible navigation items
+      const allItems = [
+        ...this.config.navigation.primary,
+        ...this.config.navigation.authenticated,
+        ...this.config.navigation.admin,
+        ...this.config.navigation.support
+      ].filter(item => this.hasAccess(item.access));
+      
+      this.renderMobileNavItems(mobileContainer, allItems);
+    }
+    
+    /**
+     * Render navigation items
+     */
+    renderNavItems(container, items) {
+      container.innerHTML = items.map(item => `
+        <li class="nav-item" data-access="${item.access.join(',')}" data-nav-item="${item.id}">
+          <a href="${item.url}" class="nav-link" data-page="${item.id}">
+            <span class="nav-icon">${item.icon}</span>
+            <span class="nav-text">${item.label}</span>
+          </a>
+        </li>
+      `).join('');
+    }
+    
+    /**
+     * Render mobile navigation items
+     */
+    renderMobileNavItems(container, items) {
+      container.innerHTML = items.map(item => `
+        <a href="${item.url}" class="mobile-nav-link" data-nav-item="${item.id}">
+          <span class="mobile-nav-icon">${item.icon}</span>
+          <span class="mobile-nav-text">${item.label}</span>
+          <span class="mobile-nav-description">${item.description}</span>
+        </a>
+      `).join('');
+    }
+    
+    /**
+     * Update active navigation highlighting
+     */
+    updateActiveNavigation() {
+      // Remove active class from all nav links
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+      });
+      
+      // Add active class to current page
+      const currentPageLinks = document.querySelectorAll(`[data-page="${this.currentPage}"]`);
+      currentPageLinks.forEach(link => {
+        link.classList.add('active');
+      });
+    }
+    
+    /**
+     * Update page metadata
+     */
+    updatePageMetadata() {
+      const pageConfig = this.config.pages[this.currentPage];
+      if (!pageConfig) return;
+      
+      // Update document title
+      document.title = pageConfig.title;
+      
+      // Update meta description
+      this.updateMetaTag('description', pageConfig.description);
+      
+      // Update meta keywords
+      this.updateMetaTag('keywords', pageConfig.keywords);
+    }
+    
+    /**
+     * Update meta tag content
+     */
+    updateMetaTag(name, content) {
+      let meta = document.querySelector(`meta[name="${name}"]`);
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.name = name;
+        document.head.appendChild(meta);
+      }
+      meta.content = content;
+    }
+    
+    /**
+     * Check if user has access to navigation item
+     */
+    hasAccess(requiredAccess) {
+      if (!requiredAccess || requiredAccess.includes('public')) {
+        return true;
+      }
+      
+      const userRole = this.currentUser?.role || 'guest';
+      return requiredAccess.includes(userRole);
+    }
+    
+    /**
+     * Update page access based on current user
+     */
+    updatePageAccess() {
+      const pageConfig = this.config.pages[this.currentPage];
+      if (!pageConfig) return;
+      
+      // Check if page requires authentication
+      if (pageConfig.requiresAuth && !this.currentUser?.authenticated) {
+        this.redirectToLogin();
+        return;
+      }
+      
+      // Check if page requires specific role
+      if (pageConfig.requiredRole && this.currentUser?.role !== pageConfig.requiredRole) {
+        this.showAccessDenied();
+        return;
+      }
+    }
+    
+    /**
+     * Find navigation item by ID
+     */
+    findNavItem(itemId) {
+      const allItems = [
+        ...this.config.navigation.primary,
+        ...this.config.navigation.authenticated,
+        ...this.config.navigation.admin,
+        ...this.config.navigation.support
+      ];
+      
+      return allItems.find(item => item.id === itemId);
+    }
+    
+    /**
+     * Show access denied message
+     */
+    showAccessDenied(item = null) {
+      const message = item 
+        ? `Access denied to ${item.label}. Please sign in or contact support.`
+        : 'Access denied. You do not have permission to view this page.';
+      
+      // Dispatch event for UI to handle
+      window.PMERIT.events.dispatchEvent(new CustomEvent('nav:accessDenied', {
+        detail: { message, item }
+      }));
+    }
+    
+    /**
+     * Redirect to login page
+     */
+    redirectToLogin() {
+      const currentUrl = window.location.pathname;
+      const loginUrl = `/index.html?redirect=${encodeURIComponent(currentUrl)}`;
+      
+      window.PMERIT.events.dispatchEvent(new CustomEvent('nav:loginRequired', {
+        detail: { currentUrl, loginUrl }
+      }));
+    }
+    
+    /**
+     * Track navigation for analytics
+     */
+    trackNavigation(item) {
+      window.PMERIT.events.dispatchEvent(new CustomEvent('nav:itemClicked', {
+        detail: {
+          itemId: item.id,
+          label: item.label,
+          url: item.url,
+          userRole: this.currentUser?.role,
+          timestamp: Date.now()
+        }
+      }));
+    }
+    
+    /**
+     * Get navigation configuration
+     */
+    getConfig() {
+      return this.config;
+    }
+    
+    /**
+     * Get user-accessible navigation items
+     */
+    getAccessibleNavigation() {
+      return {
+        primary: this.config.navigation.primary.filter(item => this.hasAccess(item.access)),
+        authenticated: this.config.navigation.authenticated.filter(item => this.hasAccess(item.access)),
+        admin: this.config.navigation.admin.filter(item => this.hasAccess(item.access)),
+        support: this.config.navigation.support.filter(item => this.hasAccess(item.access))
+      };
+    }
+  }
+  
+  // Initialize navigation manager when PMERIT is ready
+  function initializeNavigation() {
+    if (!window.PMERIT) {
+      console.warn('PMERIT not found, retrying navigation initialization...');
+      setTimeout(initializeNavigation, 100);
+      return;
+    }
+    
+    // Create navigation manager instance
+    window.PMERIT.navigation = new NavigationManager(NAV_CONFIG);
+    
+    // Export config and utilities
+    window.PMERIT.navConfig = NAV_CONFIG;
+    
+    // Dispatch ready event
+    window.PMERIT.events.dispatchEvent(new CustomEvent('navigation:ready'));
+  }
+  
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeNavigation);
+  } else {
+    initializeNavigation();
+  }
+  
+})();
