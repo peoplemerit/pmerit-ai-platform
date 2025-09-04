@@ -1,401 +1,206 @@
 <!DOCTYPE html>
-<html lang="en" data-page="index" data-role="user">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PMERIT - Empowering Learning Through Innovation</title>
-    <meta name="description" content="Accessible, high-quality education for global opportunities. Connect with Pmerit AI for personalized learning paths.">
+    <meta name="description" content="Accessible, high-quality education for global opportunities">
+    <meta name="keywords" content="education, learning, AI tutoring, career development">
     
-    <!-- Load CSS in correct order -->
+    <!-- Favicon -->
+    <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
     <link rel="stylesheet" href="/assets/base.css">
-    <link rel="stylesheet" href="/assets/css/layout.css">
-    <link rel="stylesheet" href="/assets/css/components.css">
-    
-    <!-- Homepage-specific styles -->
-    <style>
-        .homepage-hero {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .hero-title {
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: var(--text-primary);
-        }
-        
-        .hero-subtitle {
-            font-size: 16px;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="/assets/home.css">
 </head>
-
-<body>
-    <!-- Shared header will be injected here by boot-includes.js -->
-    <header id="header"></header>
+<body class="home-page">
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     
-    <!-- Shared navigation will be injected here by boot-includes.js -->
-    <nav id="site-nav"></nav>
+    <!-- Header Container (loaded by boot-includes.js) -->
+    <div id="header-container"></div>
     
-    <!-- Homepage-specific content -->
-    <main class="container">
-        <div class="main-content">
-            <!-- Left Panel (Desktop Only) -->
-            <aside class="left-panel" id="leftPanel">
-                <h3 data-i18n="quickActions">Quick Actions</h3>
-                <div style="margin-top: 15px;">
-                    <button class="btn btn-secondary" style="width: 100%; margin-bottom: 10px;" data-action="toggleVH" data-i18n="virtualHuman">Virtual Human Mode</button>
-                    <button class="btn btn-secondary" style="width: 100%; margin-bottom: 10px;" data-action="openCareer" data-i18n="careerPaths">Career Paths</button>
-                    <button class="btn btn-secondary" style="width: 100%;" data-action="toggleSupport" data-i18n="supportMode">Support Mode</button>
-                </div>
-            </aside>
+    <!-- Navigation Container (loaded by boot-includes.js) -->
+    <div id="nav-container"></div>
+    
+    <!-- Main Content -->
+    <main id="main-content" class="home-main">
+        <!-- Three-Panel Layout (Your existing !DOCTYPE html.txt structure) -->
+        <div class="home-estate">
+            <!-- Left Panel: Quick Actions -->
+            <aside class="home-left" aria-label="Quick actions sidebar">
+                <div class="pane-title">Quick Actions</div>
 
-            <!-- Main Panel -->
-            <section class="main-panel" id="mainPanel">
-                <!-- Hero Section -->
-                <div class="homepage-hero">
-                    <h1 class="hero-title" data-i18n="heroTitle">Empowering Learning Through Innovation</h1>
-                    <p class="hero-subtitle" data-i18n="heroSubtitle">Accessible, high-quality education for global opportunities</p>
-                </div>
+                <!-- Virtual Human Toggle -->
+                <button class="toggle" id="vhToggle">
+                    <span><i class="fas fa-user-astronaut icon"></i> Virtual Human Mode</span>
+                    <span class="switch" aria-hidden="true"></span>
+                </button>
 
-                <!-- AI Chat Interface -->
-                <div class="ai-chat-container" id="aiChatContainer">
-                    <div class="ai-message">
-                        <div class="ai-avatar">P</div>
-                        <div class="ai-text">
-                            <strong>Pmerit AI:</strong> <span data-i18n="welcomeMessage">Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?</span>
-                        </div>
+                <!-- Career Track Explorer -->
+                <button class="action" id="careerPaths">
+                    <span><i class="fas fa-compass icon"></i> Career Track & Explore Paths</span>
+                    <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                </button>
+
+                <!-- Customer Service Mode -->
+                <button class="toggle" id="supportToggle">
+                    <span><i class="fas fa-headset icon"></i> Customer Service Mode</span>
+                    <span class="switch" aria-hidden="true"></span>
+                </button>
+
+                <!-- Settings Collapsible -->
+                <div class="collapsible" id="settingsBox">
+                    <div class="head">
+                        <strong><i class="fas fa-sliders-h"></i> Settings</strong>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="body">
+                        <button class="toggle" id="darkToggle">
+                            <span><i class="fas fa-moon icon"></i> Dark Mode</span>
+                            <span class="switch" aria-hidden="true"></span>
+                        </button>
+                        <button class="toggle" id="ttsToggle">
+                            <span><i class="fas fa-volume-up icon"></i> Text-to-Speech</span>
+                            <span class="switch" aria-hidden="true"></span>
+                        </button>
                     </div>
                 </div>
 
-                <!-- Chat Input -->
-                <div class="chat-input-container" id="chatInputContainer">
-                    <input type="text" class="chat-input" id="chatInput" data-i18n-placeholder="askAboutPmerit" placeholder="Ask me about PMERIT, courses, or career paths...">
-                    <button class="btn btn-primary" id="chatSend" data-i18n="send">Send</button>
-                </div>
+                <!-- Dashboard Button -->
+                <button class="dashboard guest" id="dashBtn">
+                    <i class="fas fa-gauge-high"></i> Dashboard
+                </button>
 
-                <!-- Character Counter -->
-                <div style="text-align: center; color: var(--text-secondary); font-size: 12px;">
-                    <span id="charCounter">0/1000</span>
+                <!-- Virtual Human Avatar -->
+                <div class="avatar" id="vhAvatar" title="Virtual Human">
+                    <i class="fas fa-user-circle" aria-hidden="true"></i>
+                </div>
+            </aside>
+
+            <!-- Center Panel: AI Chat -->
+            <section class="home-center">
+                <div class="panel" aria-label="Chat panel">
+                    <div class="panel-head">
+                        <div class="badges">
+                            <span class="badge vh" id="vhBadge" style="display:none">
+                                <i class="fas fa-user-astronaut"></i> Virtual Human
+                            </span>
+                            <span class="badge support" id="supportBadge" style="display:none">
+                                <i class="fas fa-headset"></i> Support Assistant
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Text Chat Interface -->
+                    <div id="textChat" role="region" aria-live="polite">
+                        <div class="chat-body" id="chatBody">
+                            <article class="bubble" id="welcomeMsg">
+                                <div class="ava"><i class="fas fa-user-circle"></i></div>
+                                <div>
+                                    <h3>PMERIT AI:</h3>
+                                    <p id="welcomeCopy">Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?</p>
+                                </div>
+                            </article>
+                        </div>
+                        
+                        <div class="chat-input">
+                            <textarea id="chatInput" maxlength="1000" placeholder="Ask about courses, learning paths, or your goals..." aria-label="Message"></textarea>
+                            <div class="input-bar">
+                                <span class="count" id="count">0/1000</span>
+                                <div class="input-actions">
+                                    <button class="nav-btn" id="vhQuick">
+                                        <i class="fas fa-user-astronaut"></i> VH Mode
+                                    </button>
+                                    <button class="nav-btn" id="readAbout">
+                                        <i class="fas fa-book"></i> Read About
+                                    </button>
+                                    <span class="footer-status">
+                                        <i class="fas fa-circle-check"></i> Connected to Educational Services
+                                    </span>
+                                </div>
+                                <button class="send" id="sendBtn">Send <i class="fas fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Virtual Human Stage -->
+                    <div id="vhStage" role="region" aria-live="polite">
+                        <div class="stage">
+                            <div class="human-frame">
+                                <div class="human-face"><i class="fas fa-user-circle"></i></div>
+                            </div>
+                        </div>
+                        <div class="captions" id="captions">Virtual Human is speaking…</div>
+                    </div>
                 </div>
             </section>
 
-            <!-- Right Panel (Desktop Only) -->
-            <aside class="right-panel" id="rightPanel">
-                <div class="discovery-section">
-                    <h3 class="discovery-title" data-i18n="discoverPath">Discover Your Path (AI)</h3>
-                    <p class="discovery-description" data-i18n="discoveryDescription">
-                        Start a personalized assessment that analyzes your learning style, interests, and skills to create a customized educational plan just for you.
-                    </p>
-                    <button class="assessment-button" id="beginAssessment" data-i18n="beginAssessment">
-                        Begin Assessment
-                    </button>
-                    
-                    <div class="status-indicator">
-                        <div class="status-dot"></div>
-                        <span data-i18n="connectedServices">Connected to Educational Services</span>
+            <!-- Right Panel: Assessment & Support -->
+            <aside class="home-right" aria-label="Support and discover sidebar">
+                <!-- Support Assistant -->
+                <div class="support-assistant">
+                    <h4><i class="fas fa-headset"></i> Support Assistant</h4>
+                    <p>Ask me about PMERIT</p>
+                    <div class="support-buttons">
+                        <button class="nav-btn" id="vhShort">
+                            <i class="fas fa-user-astronaut"></i> Virtual Human
+                        </button>
+                        <button class="nav-btn" id="supportShort">
+                            <i class="fas fa-headset"></i> Support
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Discover Your Path (AI) - Single Assessment -->
+                <div class="discover-section">
+                    <h3>Discover Your Path (AI)</h3>
+                    <div class="discover">
+                        <h4>Personalized learning plan</h4>
+                        <p>Start a short flow that blends learning style, interests, and skills into a plan.</p>
+                        <button class="nav-btn primary" id="beginAssessment">Begin Assessment</button>
+                        <div class="insights" id="insights">Pro tip: Keep notes in your own words for better recall.</div>
                     </div>
                 </div>
             </aside>
         </div>
+
+        <!-- Mobile Accordions (for responsive design) -->
+        <div id="mobileAccordions" class="mobile-only" aria-label="Mobile sections">
+            <details class="mobile-accordion">
+                <summary><i class="fas fa-bolt"></i> Quick Actions</summary>
+                <div class="mobile-accordion-content">
+                    <!-- Mobile quick actions content -->
+                </div>
+            </details>
+
+            <details class="mobile-accordion">
+                <summary><i class="fas fa-graduation-cap"></i> Discover Your Path</summary>
+                <div class="mobile-accordion-content">
+                    <!-- Mobile assessment content -->
+                </div>
+            </details>
+        </div>
     </main>
     
-    <!-- Shared footer will be injected here by boot-includes.js -->
-    <footer id="footer"></footer>
+    <!-- Footer Container (loaded by boot-includes.js) -->
+    <div id="footer-container"></div>
+
+    <!-- Core Scripts -->
+    <script src="/assets/boot-includes.js"></script>
     
-    <!-- CRITICAL: Load core PMERIT system FIRST -->
-    <script src="/assets/js/core.js"></script>
+    <!-- Page-specific Scripts -->
+    <script src="/assets/js/home.js"></script>
     
-    <!-- Load existing shared functionality -->
-    <script src="/assets/boot-includes.js" defer></script>
-    <script src="/assets/nav-config.js" defer></script>
-    
-    <!-- Load core modules after PMERIT system is ready -->
-    <script>
-        // Wait for PMERIT core to be ready before loading modules
-        window.PMERIT.ready.then(() => {
-            console.log('Core system ready, loading modules...');
-            
-            // Load sidebar-right functionality
-            loadModule('sidebarRight');
-            
-            // Initialize homepage
-            initHomepage();
-        });
-        
-        function loadModule(moduleName) {
-            // Register sidebar-right module
-            if (moduleName === 'sidebarRight') {
-                window.PMERIT.modules.register('sidebarRight', {
-                    name: 'sidebarRight',
-                    initialized: false,
-                    
-                    async init() {
-                        console.log('Initializing Sidebar Right (Discovery Panel)');
-                        
-                        this.setupAssessmentButton();
-                        this.setupStatusIndicator();
-                        this.checkHealth();
-                        
-                        this.initialized = true;
-                        console.log('Sidebar Right module initialized');
-                    },
-                    
-                    setupAssessmentButton() {
-                        const assessmentBtn = window.PMERIT.utils.$('#beginAssessment');
-                        
-                        if (!assessmentBtn) {
-                            console.warn('Assessment button not found');
-                            return;
-                        }
-                        
-                        assessmentBtn.addEventListener('click', async (e) => {
-                            e.preventDefault();
-                            await this.startAssessment();
-                        });
-                        
-                        console.log('Assessment button configured');
-                    },
-                    
-                    async startAssessment() {
-                        console.log('Starting assessment process');
-                        
-                        const assessmentBtn = window.PMERIT.utils.$('#beginAssessment');
-                        
-                        try {
-                            // Show loading state
-                            window.PMERIT.utils.showLoading(assessmentBtn);
-                            assessmentBtn.textContent = 'Starting Assessment...';
-                            
-                            // Check if user is authenticated
-                            const isAuthenticated = window.PMERIT.state.isAuthenticated();
-                            
-                            if (!isAuthenticated) {
-                                window.PMERIT.utils.showNotification(
-                                    'Please sign in to take your personalized assessment', 
-                                    'info'
-                                );
-                                return;
-                            }
-                            
-                            // Try to fetch from database
-                            const assessmentData = await this.fetchAssessmentQuestions();
-                            
-                            if (assessmentData && assessmentData.questions) {
-                                window.PMERIT.utils.showNotification(
-                                    'Assessment questions loaded successfully!', 
-                                    'success'
-                                );
-                                // Here you would open the assessment modal
-                                console.log('Assessment data:', assessmentData);
-                            } else {
-                                throw new Error('No assessment questions available');
-                            }
-                            
-                        } catch (error) {
-                            console.error('Assessment error:', error);
-                            window.PMERIT.utils.showNotification(
-                                'Assessment system is currently unavailable. Please try again later.', 
-                                'warning'
-                            );
-                        } finally {
-                            // Reset button state
-                            window.PMERIT.utils.hideLoading(assessmentBtn);
-                            assessmentBtn.textContent = 'Begin Assessment';
-                        }
-                    },
-                    
-                    async fetchAssessmentQuestions() {
-                        try {
-                            const data = await window.PMERIT.utils.fetchJson('/api/assessment/questions');
-                            console.log('Assessment data loaded from database');
-                            return data;
-                        } catch (error) {
-                            console.warn('Database unavailable, using fallback questions');
-                            return this.getFallbackQuestions();
-                        }
-                    },
-                    
-                    getFallbackQuestions() {
-                        return {
-                            id: 'fallback_assessment',
-                            questions: [
-                                {
-                                    id: 1,
-                                    type: 'multiple_choice',
-                                    question: 'What best describes your learning style?',
-                                    options: [
-                                        'Visual learner (I learn best by seeing)',
-                                        'Auditory learner (I learn best by listening)',
-                                        'Kinesthetic learner (I learn best by doing)',
-                                        'Reading/Writing learner (I learn best by reading and writing)'
-                                    ]
-                                },
-                                {
-                                    id: 2,
-                                    type: 'multiple_choice',
-                                    question: 'What is your primary career interest?',
-                                    options: [
-                                        'Technology and Software Development',
-                                        'Business and Entrepreneurship',
-                                        'Healthcare and Medicine',
-                                        'Education and Training',
-                                        'Creative Arts and Design'
-                                    ]
-                                }
-                            ],
-                            userProfile: {
-                                isNew: true,
-                                source: 'fallback'
-                            }
-                        };
-                    },
-                    
-                    setupStatusIndicator() {
-                        const statusIndicator = window.PMERIT.utils.$('.status-indicator');
-                        
-                        if (statusIndicator) {
-                            statusIndicator.addEventListener('click', () => {
-                                this.showSystemStatus();
-                            });
-                        }
-                    },
-                    
-                    async checkHealth() {
-                        const health = await window.PMERIT.health.check();
-                        this.updateConnectionStatus(health.status);
-                    },
-                    
-                    updateConnectionStatus(status) {
-                        const statusDot = window.PMERIT.utils.$('.status-dot');
-                        const statusText = window.PMERIT.utils.$('[data-i18n="connectedServices"]');
-                        
-                        if (statusDot && statusText) {
-                            statusDot.className = `status-dot status-${status}`;
-                            
-                            const statusMessages = {
-                                healthy: 'Connected to Educational Services',
-                                error: 'Service Connection Issues',
-                                offline: 'Services Offline - Limited Functionality'
-                            };
-                            
-                            statusText.textContent = statusMessages[status] || statusMessages.healthy;
-                        }
-                    },
-                    
-                    showSystemStatus() {
-                        const health = window.PMERIT.state.get('system_health', { status: 'unknown' });
-                        window.PMERIT.utils.showNotification(
-                            `System Status: ${health.status}`, 
-                            health.status === 'healthy' ? 'success' : 'warning'
-                        );
-                    },
-                    
-                    // Public API for other modules
-                    api: {
-                        startAssessment: function() {
-                            const module = window.PMERIT.modules.get('sidebarRight');
-                            return module ? module.startAssessment() : Promise.reject(new Error('Module not available'));
-                        }
-                    }
-                });
-            }
-        }
-        
-        function initHomepage() {
-            console.log('Initializing homepage functionality');
-            
-            // Initialize sidebar-right module
-            window.PMERIT.modules.init(['sidebarRight']);
-            
-            // Setup chat functionality
-            setupChat();
-            
-            // Setup left panel buttons
-            setupLeftPanel();
-        }
-        
-        function setupChat() {
-            const chatInput = window.PMERIT.utils.$('#chatInput');
-            const chatSend = window.PMERIT.utils.$('#chatSend');
-            const charCounter = window.PMERIT.utils.$('#charCounter');
-            
-            if (chatInput && charCounter) {
-                chatInput.addEventListener('input', (e) => {
-                    const length = e.target.value.length;
-                    charCounter.textContent = `${length}/1000`;
-                    
-                    if (length > 1000) {
-                        e.target.value = e.target.value.substring(0, 1000);
-                    }
-                });
-                
-                chatInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        sendChatMessage();
-                    }
-                });
-            }
-            
-            if (chatSend) {
-                chatSend.addEventListener('click', sendChatMessage);
-            }
-        }
-        
-        function sendChatMessage() {
-            const chatInput = window.PMERIT.utils.$('#chatInput');
-            const message = chatInput.value.trim();
-            
-            if (!message) return;
-            
-            console.log('Sending chat message:', message);
-            window.PMERIT.utils.showNotification('Chat message sent! AI response coming soon...', 'info');
-            
-            // Clear input
-            chatInput.value = '';
-            window.PMERIT.utils.$('#charCounter').textContent = '0/1000';
-        }
-        
-        function setupLeftPanel() {
-            const leftPanel = window.PMERIT.utils.$('#leftPanel');
-            
-            if (leftPanel) {
-                leftPanel.addEventListener('click', (e) => {
-                    if (e.target.matches('[data-action]')) {
-                        const action = e.target.dataset.action;
-                        console.log('Left panel action:', action);
-                        
-                        switch (action) {
-                            case 'toggleVH':
-                                window.PMERIT.utils.showNotification('Virtual Human Mode activated!', 'info');
-                                break;
-                            case 'openCareer':
-                                window.PMERIT.utils.showNotification('Career Paths opening...', 'info');
-                                break;
-                            case 'toggleSupport':
-                                window.PMERIT.utils.showNotification('Support Mode enabled!', 'info');
-                                break;
-                        }
-                    }
-                });
-            }
-        }
-        
-        // Fallback for browsers that don't support Promise
-        if (!window.PMERIT.ready) {
-            console.warn('PMERIT core not available, initializing basic homepage');
-            document.addEventListener('DOMContentLoaded', () => {
-                const assessmentBtn = document.getElementById('beginAssessment');
-                if (assessmentBtn) {
-                    assessmentBtn.addEventListener('click', () => {
-                        alert('Assessment system is loading. Please ensure your API endpoints are configured.');
-                    });
-                }
-            });
-        }
-    </script>
+    <!-- Feature Scripts -->
+    <script src="/assets/js/features/assessment.js"></script>
+    <script src="/assets/js/features/ai-chat.js"></script>
+    <script src="/assets/js/features/virtual-human.js"></script>
 </body>
 </html>
