@@ -591,7 +591,52 @@
         console.log('PMERIT Platform initialized');
         this.bindEvents();
       },
-      
+      //Starts: Virtual Human Mode toggle
+      // Add to your existing JavaScript in index (1).html
+
+// Virtual Human Mode Toggle Implementation
+function initVirtualHumanToggle() {
+  const vhToggle = document.getElementById('vhToggle');
+  const vhBadge = document.getElementById('vhBadge');
+  
+  vhToggle.addEventListener('click', function() {
+    // Toggle state
+    state.vh = !state.vh;
+    
+    // Update visual switch
+    this.classList.toggle('active', state.vh);
+    
+    // Show/hide badge in center panel
+    if (state.vh) {
+      vhBadge.style.display = 'inline-flex';
+      console.log('PMERIT: Virtual Human Mode enabled');
+    } else {
+      vhBadge.style.display = 'none';
+      console.log('PMERIT: Virtual Human Mode disabled');
+    }
+    
+    // Update AI behavior mode
+    updateAIMode();
+  });
+}
+
+// Update AI interaction mode based on current state
+function updateAIMode() {
+  const welcomeCopy = document.getElementById('welcomeCopy');
+  
+  if (state.vh) {
+    // Virtual Human mode - more personal, visual interaction
+    welcomeCopy.textContent = "Hi there! I'm your Virtual Human assistant. I can provide visual guidance and more interactive support. How would you like to explore PMERIT today?";
+  } else {
+    // Standard text mode
+    welcomeCopy.textContent = "Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?";
+  }
+}
+
+// Add to your existing PMERIT.bindEvents function:
+// Add this line inside the bindEvents function:
+initVirtualHumanToggle();
+      //Endd: Virtual Human Mode toggle
       bindEvents: function() {
         // Bind assessment button
         document.getElementById('beginAssessment')?.addEventListener('click', () => {
@@ -612,6 +657,7 @@
     };
 
     // Initialize when DOM loads
+    this.initVirtualHumanToggle();
     document.addEventListener('DOMContentLoaded', () => {
       window.PMERIT.init();
     });
