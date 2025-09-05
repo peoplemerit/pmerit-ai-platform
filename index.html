@@ -510,6 +510,171 @@
       font-style: italic;
     }
 
+    /* Assessment Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+    }
+
+    .modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: modalFadeIn 0.3s ease-out;
+    }
+
+    .modal-content {
+      background-color: var(--card-bg);
+      border-radius: 16px;
+      padding: 2rem;
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      animation: modalSlideIn 0.3s ease-out;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .modal-header h2 {
+      color: var(--primary);
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-secondary);
+      padding: 0.25rem;
+      border-radius: 4px;
+      transition: var(--transition);
+    }
+
+    .close-btn:hover {
+      background-color: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+
+    .question {
+      margin-bottom: 2rem;
+    }
+
+    .question h3 {
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+
+    .question-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: var(--transition);
+      background-color: var(--card-bg);
+    }
+
+    .option:hover {
+      border-color: var(--primary);
+      background-color: rgba(79, 70, 229, 0.05);
+    }
+
+    .option input[type="radio"] {
+      margin-right: 1rem;
+      transform: scale(1.2);
+      accent-color: var(--primary);
+    }
+
+    .option.selected {
+      border-color: var(--primary);
+      background-color: rgba(79, 70, 229, 0.1);
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .progress-indicator {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .progress-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--border-color);
+      transition: var(--transition);
+    }
+
+    .progress-dot.active {
+      background-color: var(--primary);
+    }
+
+    .modal-btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background-color: var(--card-bg);
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 500;
+    }
+
+    .modal-btn:hover {
+      border-color: var(--primary);
+      background-color: rgba(79, 70, 229, 0.05);
+    }
+
+    .modal-btn.primary {
+      background-color: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .modal-btn.primary:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .modal-btn:disabled {
+      background-color: var(--text-secondary);
+      color: white;
+      cursor: not-allowed;
+    }
+
     /* Footer Styles */
     footer {
       height: var(--footer-height);
@@ -560,6 +725,12 @@
       main {
         min-height: calc(100vh - var(--header-height) - var(--footer-height) - 2rem);
       }
+
+      .modal-content {
+        margin: 1rem;
+        width: calc(100% - 2rem);
+        max-height: calc(100vh - 2rem);
+      }
     }
 
     /* Mobile adjustments */
@@ -574,6 +745,16 @@
         align-self: stretch;
         justify-content: space-between;
       }
+
+      .question-options .option {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+      }
+
+      .modal-footer {
+        flex-direction: column;
+        gap: 1rem;
+      }
     }
     
     /* Focus Styles */
@@ -585,6 +766,16 @@
     @keyframes pulse {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(79, 70, 229, 0.4); }
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes modalSlideIn {
+      from { transform: translateY(-50px) scale(0.95); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
     }
   </style>
 </head>
@@ -700,6 +891,139 @@
     </aside>
   </div>
 
+  <!-- Assessment Modal -->
+  <div id="assessmentModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>PMERIT Career Assessment</h2>
+        <button class="close-btn" id="closeModal">&times;</button>
+      </div>
+      
+      <form id="assessmentForm">
+        <!-- Question 1: Learning Style -->
+        <div class="question" id="question1">
+          <h3>1. What's your preferred learning style?</h3>
+          <div class="question-options">
+            <label class="option">
+              <input type="radio" name="learning_style" value="visual" required>
+              <div>
+                <strong>Visual Learning</strong><br>
+                <span style="color: var(--text-secondary);">I learn best through diagrams, videos, and visual demonstrations</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="learning_style" value="hands-on" required>
+              <div>
+                <strong>Hands-On Learning</strong><br>
+                <span style="color: var(--text-secondary);">I prefer practical exercises, coding labs, and interactive projects</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="learning_style" value="structured" required>
+              <div>
+                <strong>Structured Learning</strong><br>
+                <span style="color: var(--text-secondary);">I like step-by-step courses, reading materials, and organized curriculum</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Question 2: Career Interest -->
+        <div class="question" id="question2" style="display: none;">
+          <h3>2. Which field interests you most?</h3>
+          <div class="question-options">
+            <label class="option">
+              <input type="radio" name="career_interest" value="technology" required>
+              <div>
+                <strong>Technology & Software</strong><br>
+                <span style="color: var(--text-secondary);">Building websites, apps, and digital solutions</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="career_interest" value="data" required>
+              <div>
+                <strong>Data & Analytics</strong><br>
+                <span style="color: var(--text-secondary);">Working with data to drive insights and decisions</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="career_interest" value="design" required>
+              <div>
+                <strong>Design & User Experience</strong><br>
+                <span style="color: var(--text-secondary);">Creating beautiful, user-friendly interfaces and experiences</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="career_interest" value="business" required>
+              <div>
+                <strong>Business & Marketing</strong><br>
+                <span style="color: var(--text-secondary);">Digital marketing, customer support, and business operations</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Question 3: Primary Goal -->
+        <div class="question" id="question3" style="display: none;">
+          <h3>3. What's your primary goal?</h3>
+          <div class="question-options">
+            <label class="option">
+              <input type="radio" name="primary_goal" value="remote-job" required>
+              <div>
+                <strong>Get a Remote Job</strong><br>
+                <span style="color: var(--text-secondary);">I want to land a stable remote position</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="primary_goal" value="freelance" required>
+              <div>
+                <strong>Start Freelancing</strong><br>
+                <span style="color: var(--text-secondary);">I want to work independently with multiple clients</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="primary_goal" value="career-growth" required>
+              <div>
+                <strong>Advance My Career</strong><br>
+                <span style="color: var(--text-secondary);">I want to move up in my current field or switch careers</span>
+              </div>
+            </label>
+            <label class="option">
+              <input type="radio" name="primary_goal" value="skill-building" required>
+              <div>
+                <strong>Build New Skills</strong><br>
+                <span style="color: var(--text-secondary);">I want to learn for personal growth and knowledge</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="assessmentResults" style="display: none;">
+          <div style="text-align: center; margin: 2rem 0;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
+            <h3 style="color: var(--primary); margin-bottom: 1rem;">Your Personalized Career Track</h3>
+            <div id="recommendedTrack" style="font-size: 1.2rem; font-weight: 600; margin-bottom: 2rem;"></div>
+            <div id="trackDetails" style="margin-bottom: 2rem;"></div>
+            <div id="salaryInfo" style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; margin-bottom: 2rem;"></div>
+          </div>
+        </div>
+      </form>
+
+      <div class="modal-footer">
+        <div class="progress-indicator">
+          <div class="progress-dot active" id="dot1"></div>
+          <div class="progress-dot" id="dot2"></div>
+          <div class="progress-dot" id="dot3"></div>
+        </div>
+        <div style="display: flex; gap: 1rem;">
+          <button type="button" class="modal-btn" id="prevBtn" style="display: none;">Previous</button>
+          <button type="button" class="modal-btn primary" id="nextBtn">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <footer>
     <span class="footer-status-main">
       <i class="fas fa-signal"></i> Connected to Educational Services
@@ -707,33 +1031,235 @@
   </footer>
 
   <script>
-    // PMERIT Platform JavaScript - Replace Gabriel AI references
+    // PMERIT Platform JavaScript - Clean implementation
     const state = {
       auth: false,
       dark: false,
       vh: false,
       support: false,
       tts: false,
-      lang: 'en'
+      lang: 'en',
+      currentQuestion: 1,
+      assessmentData: {}
     };
 
     // Initialize PMERIT namespace
     window.PMERIT = {
       api: {
         assessment: {
-          start: async () => {
-            // Connect to /functions/api/assessment/start
-            console.log('PMERIT Assessment API called');
+          start: async (data) => {
+            try {
+              const response = await fetch('/functions/api/assessment/start', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+              });
+              return await response.json();
+            } catch (error) {
+              console.log('Assessment API not connected yet, using fallback');
+              return window.PMERIT.generateAssessmentResult(data);
+            }
           }
         },
         ai: {
-          chat: async (message) => {
-            // Connect to ai.pmerit.com via Workers proxy
-            console.log('PMERIT AI chat:', message);
+          chat: async (message, role = 'assistant') => {
+            try {
+              const response = await fetch('/functions/api/ai/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message, role })
+              });
+              return await response.json();
+            } catch (error) {
+              console.log('AI API not connected yet, using fallback');
+              return { response: window.PMERIT.generateAIResponse(message, role) };
+            }
           }
         }
       },
       
+      // Generate assessment result (fallback until API is connected)
+      generateAssessmentResult: function(data) {
+        const tracks = {
+          'technology': {
+            name: 'Software Development Track',
+            description: 'Perfect for building websites, applications, and digital solutions. High demand for remote positions.',
+            courses: ['Web Development Fundamentals', 'JavaScript & React', 'Backend Development', 'Full Stack Projects'],
+            salary: '$45,000 - $85,000',
+            timeframe: '6-12 months'
+          },
+          'data': {
+            name: 'Data Analytics Track', 
+            description: 'Ideal for working with data to drive business insights and decision-making.',
+            courses: ['Data Analysis with Excel', 'SQL Database Skills', 'Python for Data Science', 'Analytics Projects'],
+            salary: '$50,000 - $90,000',
+            timeframe: '4-8 months'
+          },
+          'design': {
+            name: 'UI/UX Design Track',
+            description: 'Create beautiful, user-friendly interfaces and experiences that users love.',
+            courses: ['Design Principles', 'Figma & Prototyping', 'User Research', 'Portfolio Development'],
+            salary: '$40,000 - $75,000',
+            timeframe: '4-6 months'
+          },
+          'business': {
+            name: 'Digital Marketing Track',
+            description: 'Master online marketing strategies, customer support, and business operations.',
+            courses: ['Digital Marketing Fundamentals', 'Social Media Marketing', 'Customer Support Excellence', 'Business Analytics'],
+            salary: '$35,000 - $65,000',
+            timeframe: '3-5 months'
+          }
+        };
+
+        return {
+          recommended_track: tracks[data.career_interest],
+          learning_approach: data.learning_style,
+          goal_alignment: data.primary_goal
+        };
+      },
+
+      // Assessment Modal Functions
+      initAssessmentModal: function() {
+        const beginBtn = document.getElementById('beginAssessment');
+        const modal = document.getElementById('assessmentModal');
+        const closeBtn = document.getElementById('closeModal');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+
+        // Open modal
+        beginBtn.addEventListener('click', () => {
+          modal.classList.add('active');
+          this.resetAssessment();
+        });
+
+        // Close modal
+        closeBtn.addEventListener('click', () => {
+          modal.classList.remove('active');
+        });
+
+        // Close on backdrop click
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) {
+            modal.classList.remove('active');
+          }
+        });
+
+        // Next button
+        nextBtn.addEventListener('click', () => {
+          this.nextQuestion();
+        });
+
+        // Previous button  
+        prevBtn.addEventListener('click', () => {
+          this.previousQuestion();
+        });
+
+        // Radio button selection handling
+        document.addEventListener('change', (e) => {
+          if (e.target.type === 'radio') {
+            // Update visual selection
+            const options = e.target.closest('.question-options').querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            e.target.closest('.option').classList.add('selected');
+            
+            // Enable next button
+            nextBtn.disabled = false;
+          }
+        });
+      },
+
+      resetAssessment: function() {
+        state.currentQuestion = 1;
+        state.assessmentData = {};
+        this.showQuestion(1);
+        this.updateProgress();
+      },
+
+      showQuestion: function(questionNum) {
+        // Hide all questions and results
+        document.querySelectorAll('.question, #assessmentResults').forEach(el => {
+          el.style.display = 'none';
+        });
+        
+        // Show current question
+        const currentQ = document.getElementById(`question${questionNum}`);
+        if (currentQ) {
+          currentQ.style.display = 'block';
+        }
+        
+        // Update buttons
+        document.getElementById('prevBtn').style.display = questionNum > 1 ? 'block' : 'none';
+        document.getElementById('nextBtn').textContent = questionNum === 3 ? 'Get Results' : 'Next';
+        document.getElementById('nextBtn').disabled = true;
+      },
+
+      nextQuestion: function() {
+        // Save current answer
+        const currentQ = document.getElementById(`question${state.currentQuestion}`);
+        const selected = currentQ.querySelector('input[type="radio"]:checked');
+        
+        if (selected) {
+          state.assessmentData[selected.name] = selected.value;
+        }
+
+        if (state.currentQuestion === 3) {
+          // Show results
+          this.showAssessmentResults();
+        } else {
+          // Go to next question
+          state.currentQuestion++;
+          this.showQuestion(state.currentQuestion);
+          this.updateProgress();
+        }
+      },
+
+      previousQuestion: function() {
+        if (state.currentQuestion > 1) {
+          state.currentQuestion--;
+          this.showQuestion(state.currentQuestion);
+          this.updateProgress();
+        }
+      },
+
+      updateProgress: function() {
+        document.querySelectorAll('.progress-dot').forEach((dot, index) => {
+          dot.classList.toggle('active', index < state.currentQuestion);
+        });
+      },
+
+      showAssessmentResults: function() {
+        // Hide questions, show results
+        document.querySelectorAll('.question').forEach(el => el.style.display = 'none');
+        document.getElementById('assessmentResults').style.display = 'block';
+        
+        // Generate results
+        const result = this.generateAssessmentResult(state.assessmentData);
+        const track = result.recommended_track;
+        
+        // Update results display
+        document.getElementById('recommendedTrack').textContent = track.name;
+        document.getElementById('trackDetails').innerHTML = `
+          <p>${track.description}</p>
+          <h4 style="margin: 1rem 0 0.5rem; color: var(--primary);">Recommended Courses:</h4>
+          <ul style="margin: 0; padding-left: 1.5rem;">
+            ${track.courses.map(course => `<li>${course}</li>`).join('')}
+          </ul>
+        `;
+        document.getElementById('salaryInfo').innerHTML = `
+          <strong>Expected Salary Range:</strong> ${track.salary}<br>
+          <strong>Time to Complete:</strong> ${track.timeframe}
+        `;
+        
+        // Update footer buttons
+        document.getElementById('prevBtn').style.display = 'none';
+        document.getElementById('nextBtn').textContent = 'Start Learning Journey';
+        document.getElementById('nextBtn').onclick = () => {
+          // Close modal and show sign up prompt
+          document.getElementById('assessmentModal').classList.remove('active');
+          this.showSignUpPrompt(track);
+        };
+      },
+
       // Virtual Human Mode Toggle Implementation
       initVirtualHumanToggle: function() {
         const vhToggle = document.getElementById('vhToggle');
@@ -844,25 +1370,43 @@
         });
       },
       
-      showSignUpPrompt: function() {
+      showSignUpPrompt: function(trackInfo = null) {
         const chatBody = document.getElementById('chatBody');
         
-        // Add sign up prompt to chat
-        const signUpMsg = document.createElement('article');
-        signUpMsg.className = 'bubble';
-        signUpMsg.innerHTML = `
+        let message = `
           <div class="ava"><i class="fas fa-user-plus"></i></div>
           <div>
             <h3>PMERIT AI:</h3>
             <p><strong>Create Your Dashboard</strong></p>
+        `;
+
+        if (trackInfo) {
+          message += `
+            <p>Great choice with the <strong>${trackInfo.name}</strong>! To get started:</p>
+            <p>• Access your personalized learning path<br/>
+            • Track your progress through courses<br/>
+            • Get career guidance and support<br/>
+            • Connect with PMERIT community</p>
+          `;
+        } else {
+          message += `
             <p>Sign up to access your personalized dashboard with:</p>
             <p>• Track your learning progress<br/>
             • View recommended courses<br/>
             • Manage your career path<br/>
             • Access certificates and achievements</p>
+          `;
+        }
+
+        message += `
             <p>Ready to get started? Click "Start Learning" in the top navigation to create your free account!</p>
           </div>
         `;
+        
+        // Add sign up prompt to chat
+        const signUpMsg = document.createElement('article');
+        signUpMsg.className = 'bubble';
+        signUpMsg.innerHTML = message;
         
         chatBody.appendChild(signUpMsg);
         chatBody.scrollTop = chatBody.scrollHeight;
@@ -891,6 +1435,45 @@
         }
       },
 
+      // Generate AI response (fallback until real API is connected)
+      generateAIResponse: function(userMessage, role = 'assistant') {
+        const lowerMessage = userMessage.toLowerCase();
+        
+        // Role-based responses
+        if (role === 'tutor') {
+          if (lowerMessage.includes('explain') || lowerMessage.includes('how')) {
+            return "Let me break this down step by step for you. First, let's understand the core concept, then we'll build on it with practical examples. What specific area would you like me to focus on?";
+          }
+          return "As your tutor, I'm here to help you master each concept thoroughly. What topic would you like to dive deeper into?";
+        }
+        
+        if (role === 'receptionist') {
+          if (lowerMessage.includes('help') || lowerMessage.includes('support')) {
+            return "I'll be happy to direct you to the right resource! For technical support, try our help center. For enrollment questions, I can connect you with admissions. What do you need assistance with?";
+          }
+          return "Welcome to PMERIT! I'm here to help you navigate our platform and connect you with the right resources. How may I assist you today?";
+        }
+        
+        // Default assistant responses
+        if (lowerMessage.includes('course') || lowerMessage.includes('learn')) {
+          return "I'd be happy to help you explore our courses! We offer programs in Software Development, Data Analytics, UI/UX Design, Digital Marketing, and Customer Support. Would you like to start with our assessment to get personalized recommendations?";
+        }
+        
+        if (lowerMessage.includes('career') || lowerMessage.includes('job')) {
+          return "Great question about career opportunities! Our programs are designed to prepare you for remote work and high-demand fields. The assessment can help identify the best career path based on your interests and goals. Ready to discover your path?";
+        }
+        
+        if (lowerMessage.includes('assessment') || lowerMessage.includes('test')) {
+          return "The assessment takes just 5-7 minutes and will recommend personalized career tracks for you. It covers your learning style, interests, experience level, and goals. Click 'Begin Assessment' in the right panel to get started!";
+        }
+        
+        if (lowerMessage.includes('help') || lowerMessage.includes('support')) {
+          return "I'm here to help! I can assist with information about our courses, career paths, the assessment process, or any questions about PMERIT. You can also toggle 'Customer Service Mode' in the left panel for more detailed support. What would you like to know?";
+        }
+        
+        return "Thanks for your question! I'm here to guide your learning journey with PMERIT. I can help you explore courses, understand career opportunities, or start your assessment. What interests you most?";
+      },
+
       // Chat input functionality
       initializeChatInput: function() {
         const chatInput = document.getElementById('chatInput');
@@ -910,7 +1493,7 @@
         });
 
         // Send message function
-        function sendMessage() {
+        async function sendMessage() {
           const message = chatInput.value.trim();
           if (!message) return;
 
@@ -923,16 +1506,29 @@
           sendBtn.disabled = true;
           chatInput.style.height = 'auto';
 
-          // Call PMERIT AI API
-          window.PMERIT.api.ai.chat(message).then(response => {
-            addMessage('PMERIT AI', response, false);
-          }).catch(() => {
-            // Fallback response for now
-            setTimeout(() => {
-              const response = generateAIResponse(message);
-              addMessage('PMERIT AI', response, false);
-            }, 1000);
-          });
+          // Show typing indicator
+          const typingMsg = addMessage('PMERIT AI', 'Typing...', false);
+          typingMsg.style.opacity = '0.7';
+
+          try {
+            // Determine AI role
+            let role = 'assistant';
+            if (state.support) role = 'receptionist';
+            if (state.vh) role = 'tutor';
+
+            // Call PMERIT AI API
+            const result = await window.PMERIT.api.ai.chat(message, role);
+            
+            // Remove typing indicator
+            typingMsg.remove();
+            
+            // Add AI response
+            addMessage('PMERIT AI', result.response, false);
+          } catch (error) {
+            // Remove typing indicator and show error
+            typingMsg.remove();
+            addMessage('PMERIT AI', 'Sorry, I\'m having trouble connecting right now. Please try again in a moment.', false);
+          }
         }
         
         // Add message to chat
@@ -950,29 +1546,7 @@
           `;
           chatBody.appendChild(messageEl);
           chatBody.scrollTop = chatBody.scrollHeight;
-        }
-
-        // Simple AI response generation (until real API is connected)
-        function generateAIResponse(userMessage) {
-          const lowerMessage = userMessage.toLowerCase();
-          
-          if (lowerMessage.includes('course') || lowerMessage.includes('learn')) {
-            return "I'd be happy to help you explore our courses! We offer programs in Software Development, Data Analytics, UI/UX Design, Digital Marketing, and Customer Support. Would you like to start with our assessment to get personalized recommendations?";
-          }
-          
-          if (lowerMessage.includes('career') || lowerMessage.includes('job')) {
-            return "Great question about career opportunities! Our programs are designed to prepare you for remote work and high-demand fields. The assessment can help identify the best career path based on your interests and goals. Ready to discover your path?";
-          }
-          
-          if (lowerMessage.includes('assessment') || lowerMessage.includes('test')) {
-            return "The assessment takes just 5-7 minutes and will recommend personalized career tracks for you. It covers your learning style, interests, experience level, and goals. Click 'Begin Assessment' in the right panel to get started!";
-          }
-          
-          if (lowerMessage.includes('help') || lowerMessage.includes('support')) {
-            return "I'm here to help! I can assist with information about our courses, career paths, the assessment process, or any questions about PMERIT. You can also toggle 'Customer Service Mode' in the left panel for more detailed support. What would you like to know?";
-          }
-          
-          return "Thanks for your question! I'm here to guide your learning journey with PMERIT. I can help you explore courses, understand career opportunities, or start your assessment. What interests you most?";
+          return messageEl;
         }
         
         // Event listeners
@@ -1002,21 +1576,8 @@
       },
       
       bindEvents: function() {
-        // Bind assessment button
-        document.getElementById('beginAssessment')?.addEventListener('click', () => {
-          console.log('PMERIT Assessment started');
-          // TODO: Connect to actual assessment system
-        });
-        
-        // Bind dashboard button  
-        document.getElementById('dashBtn')?.addEventListener('click', () => {
-          if (state.auth) {
-            window.location.href = '/dashboard.html';
-          } else {
-            // Show sign up modal
-            console.log('Guest - show sign up');
-          }
-        });
+        // Initialize Assessment Modal
+        this.initAssessmentModal();
         
         // Initialize Virtual Human toggle
         this.initVirtualHumanToggle();
@@ -1032,6 +1593,19 @@
 
         // Initialize chat input
         this.initializeChatInput();
+
+        // Bind navigation buttons
+        document.getElementById('startBtn')?.addEventListener('click', () => {
+          console.log('Start Learning clicked - redirect to sign up');
+        });
+
+        document.getElementById('signInBtn')?.addEventListener('click', () => {
+          console.log('Sign In clicked - redirect to login');
+        });
+
+        document.getElementById('pricingBtn')?.addEventListener('click', () => {
+          console.log('Pricing clicked - show pricing info');
+        });
       }
     };
 
