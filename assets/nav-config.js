@@ -1,631 +1,671 @@
 /**
- * PMERIT Platform - Navigation Configuration
- * Role-based Navigation & Access Control
- * ================================================
- * Version: 3.0.0
- * Purpose: Define navigation structure and access rules
+ * PMERIT AI Platform - Navigation Configuration
+ * Role-based navigation logic and access control
+ * Follows Frontend Implementation Strategy.txt - DRY Principle
+ * Version: 1.0.0
  */
 
 (function() {
   'use strict';
   
-  // Navigation Configuration
-  const NAV_CONFIG = {
-    // Main navigation structure
-    navigation: {
-      primary: [
-        {
-          id: 'home',
-          label: 'Home',
-          icon: '🏠',
-          url: '/index.html',
-          access: ['public'],
-          description: 'Platform homepage with AI chat and assessment'
-        },
-        {
-          id: 'assessment',
-          label: 'Assessment',
-          icon: '🧠',
-          url: '/assessment.html',
-          access: ['public'],
-          description: 'Personality and skills assessment'
-        },
-        {
-          id: 'courses',
-          label: 'Courses',
-          icon: '📚',
-          url: '/courses.html',
-          access: ['public'],
-          description: 'Course catalog and enrollment'
-        },
-        {
-          id: 'career',
-          label: 'Career Paths',
-          icon: '🎯',
-          url: '/career.html',
-          access: ['public'],
-          description: 'Explore career opportunities and job market data'
-        },
-        {
-          id: 'library',
-          label: 'Library',
-          icon: '📖',
-          url: '/library.html',
-          access: ['public'],
-          description: 'Educational resources and documentation'
-        }
-      ],
-      
-      authenticated: [
-        {
-          id: 'dashboard',
-          label: 'Dashboard',
-          icon: '📊',
-          url: '/dashboard.html',
-          access: ['student', 'instructor', 'admin'],
-          description: 'Personal learning dashboard'
-        },
-        {
-          id: 'my-courses',
-          label: 'My Courses',
-          icon: '🎓',
-          url: '/courses.html?filter=enrolled',
-          access: ['student', 'instructor'],
-          description: 'Enrolled courses and progress'
-        },
-        {
-          id: 'classroom',
-          label: 'Classroom',
-          icon: '🏫',
-          url: '/classroom.html',
-          access: ['student', 'instructor'],
-          description: 'Interactive learning environment'
-        },
-        {
-          id: 'progress',
-          label: 'Progress',
-          icon: '📈',
-          url: '/dashboard.html#progress',
-          access: ['student'],
-          description: 'Learning progress and achievements'
-        }
-      ],
-      
-      admin: [
-        {
-          id: 'admin-panel',
-          label: 'Admin Panel',
-          icon: '⚙️',
-          url: '/admin.html',
-          access: ['admin'],
-          description: 'Platform administration'
-        },
-        {
-          id: 'content-management',
-          label: 'Content',
-          icon: '📝',
-          url: '/admin.html#content',
-          access: ['admin', 'instructor'],
-          description: 'Manage courses and content'
-        },
-        {
-          id: 'analytics',
-          label: 'Analytics',
-          icon: '📊',
-          url: '/admin.html#analytics',
-          access: ['admin'],
-          description: 'Platform analytics and insights'
-        },
-        {
-          id: 'ai-police',
-          label: 'AI Police',
-          icon: '🛡️',
-          url: '/ai-police.html',
-          access: ['admin'],
-          description: 'AI monitoring and security'
-        },
-        {
-          id: 'incident-response',
-          label: 'Incidents',
-          icon: '🚨',
-          url: '/incident-response.html',
-          access: ['admin'],
-          description: 'Security incident management'
-        }
-      ],
-      
-      support: [
-        {
-          id: 'support',
-          label: 'Support',
-          icon: '❓',
-          url: '/support.html',
-          access: ['public'],
-          description: 'Help center and support'
-        },
-        {
-          id: 'about',
-          label: 'About',
-          icon: 'ℹ️',
-          url: '/about.html',
-          access: ['public'],
-          description: 'About PMERIT platform'
-        }
-      ]
-    },
+  // ===== NAVIGATION CONFIGURATION =====
+  
+  /**
+   * User roles and permissions
+   */
+  const USER_ROLES = {
+    GUEST: 'guest',
+    STUDENT: 'student', 
+    INSTRUCTOR: 'instructor',
+    ADMIN_TIER_1: 'admin_tier_1',    // Strategic admin
+    ADMIN_TIER_2: 'admin_tier_2',    // Operational admin
+    SUPER_ADMIN: 'super_admin'
+  };
+  
+  /**
+   * Page access permissions
+   */
+  const PAGE_PERMISSIONS = {
+    // Public pages (accessible to all)
+    'index.html': [USER_ROLES.GUEST, USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+    'about.html': [USER_ROLES.GUEST, USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+    'pricing.html': [USER_ROLES.GUEST, USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+    'support.html': [USER_ROLES.GUEST, USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+    'signin.html': [USER_ROLES.GUEST],
+    'signup.html': [USER_ROLES.GUEST],
     
-    // User roles and their hierarchy
-    roles: {
-      guest: {
-        level: 0,
-        permissions: ['view_public']
+    // Assessment (guest can take, but results saved only when authenticated)
+    'assessment.html': [USER_ROLES.GUEST, USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+    
+    // Student/authenticated user pages
+    'dashboard.html': [USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+    'courses.html': [USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+    'classroom.html': [USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+    'career.html': [USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+    'library.html': [USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+    'profile.html': [USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+    
+    // Instructor pages
+    'instructor.html': [USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+    'create-course.html': [USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+    'manage-students.html': [USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+    
+    // Admin pages
+    'admin.html': [USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+    'user-management.html': [USER_ROLES.ADMIN_TIER_1, USER_ROLES.SUPER_ADMIN],
+    'system-config.html': [USER_ROLES.ADMIN_TIER_1, USER_ROLES.SUPER_ADMIN],
+    'content-moderation.html': [USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+    'analytics.html': [USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+    'reports.html': [USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN]
+  };
+  
+  /**
+   * Navigation menu structure with role-based visibility
+   */
+  const NAVIGATION_MENU = {
+    // Quick Actions (always visible in sidebar)
+    quickActions: {
+      virtualHuman: {
+        id: 'vhToggle',
+        label: 'Virtual Human Mode',
+        icon: 'fas fa-user-astronaut',
+        type: 'toggle',
+        roles: [USER_ROLES.GUEST, USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+        description: 'Toggle immersive virtual human interface'
       },
-      student: {
-        level: 1,
-        permissions: ['view_public', 'access_courses', 'track_progress', 'take_assessments']
+      careerPaths: {
+        id: 'careerPaths',
+        label: 'Career Track & Explore Paths',
+        icon: 'fas fa-compass',
+        type: 'action',
+        roles: [USER_ROLES.GUEST, USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+        description: 'Explore career paths aligned with job market data'
       },
-      instructor: {
-        level: 2,
-        permissions: ['view_public', 'access_courses', 'track_progress', 'take_assessments', 'create_content', 'manage_students']
-      },
-      admin: {
-        level: 3,
-        permissions: ['all']
+      customerService: {
+        id: 'supportToggle',
+        label: 'Customer Service Mode',
+        icon: 'fas fa-headset',
+        type: 'toggle',
+        roles: [USER_ROLES.GUEST, USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+        description: 'Switch AI to customer service support mode'
       }
     },
     
-    // Page metadata and configuration
-    pages: {
-      'home': {
-        title: 'PMERIT - Empowering Learning Through Innovation',
-        description: 'Accessible, high-quality education for global opportunities',
-        keywords: 'education, learning, AI tutoring, career development',
-        requiresAuth: false,
-        layout: 'home'
+    // Main navigation items
+    main: {
+      dashboard: {
+        id: 'dashBtn',
+        label: 'Dashboard',
+        icon: 'fas fa-gauge-high',
+        url: '/dashboard.html',
+        type: 'button',
+        roles: [USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+        guestLabel: 'Get Started',
+        guestIcon: 'fas fa-user-plus',
+        description: 'Access your personalized learning dashboard'
       },
-      'assessment': {
-        title: 'Assessment - PMERIT',
-        description: 'Discover your learning style and career path',
-        keywords: 'personality assessment, skills evaluation, career guidance',
-        requiresAuth: false,
-        layout: 'standard'
+      courses: {
+        id: 'coursesLink',
+        label: 'My Courses',
+        icon: 'fas fa-book-open',
+        url: '/courses.html',
+        type: 'link',
+        roles: [USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+        description: 'View and manage your enrolled courses'
       },
-      'courses': {
-        title: 'Courses - PMERIT',
-        description: 'Explore our comprehensive course catalog',
-        keywords: 'courses, education, learning paths, skills training',
-        requiresAuth: false,
-        layout: 'standard'
+      library: {
+        id: 'libraryLink',
+        label: 'Library',
+        icon: 'fas fa-library',
+        url: '/library.html',
+        type: 'link',
+        roles: [USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+        description: 'Access educational resources and documentation'
       },
-      'career': {
-        title: 'Career Paths - PMERIT',
-        description: 'Explore career opportunities and job market insights',
-        keywords: 'careers, jobs, employment, market data',
-        requiresAuth: false,
-        layout: 'standard'
-      },
-      'dashboard': {
-        title: 'Dashboard - PMERIT',
-        description: 'Your personalized learning dashboard',
-        keywords: 'dashboard, progress, learning, personal',
-        requiresAuth: true,
-        layout: 'authenticated'
-      },
-      'classroom': {
-        title: 'Classroom - PMERIT',
-        description: 'Interactive learning environment',
-        keywords: 'classroom, learning, interactive, AI tutor',
-        requiresAuth: true,
-        layout: 'immersive'
-      },
-      'admin': {
-        title: 'Admin Panel - PMERIT',
-        description: 'Platform administration and management',
-        keywords: 'admin, management, analytics, content',
-        requiresAuth: true,
-        requiredRole: 'admin',
-        layout: 'admin'
-      },
-      'ai-police': {
-        title: 'AI Police - PMERIT',
-        description: 'AI monitoring and security dashboard',
-        keywords: 'security, monitoring, AI, alerts',
-        requiresAuth: true,
-        requiredRole: 'admin',
-        layout: 'admin'
+      career: {
+        id: 'careerLink',
+        label: 'Career Center',
+        icon: 'fas fa-briefcase',
+        url: '/career.html',
+        type: 'link',
+        roles: [USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+        description: 'Explore career opportunities and job market data'
       }
     },
     
-    // Mobile navigation configuration
-    mobile: {
-      maxPrimaryItems: 4,
-      collapseThreshold: 768,
-      showIcons: true,
-      showLabels: false
+    // Instructor-specific navigation
+    instructor: {
+      createCourse: {
+        id: 'createCourseLink',
+        label: 'Create Course',
+        icon: 'fas fa-plus-circle',
+        url: '/create-course.html',
+        type: 'link',
+        roles: [USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+        description: 'Create new educational content'
+      },
+      manageStudents: {
+        id: 'manageStudentsLink',
+        label: 'Manage Students',
+        icon: 'fas fa-users',
+        url: '/manage-students.html',
+        type: 'link',
+        roles: [USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+        description: 'View and manage student progress'
+      }
     },
     
-    // Breadcrumb configuration
-    breadcrumbs: {
-      enabled: true,
-      maxDepth: 4,
-      showHome: true,
-      separator: '›'
+    // Admin-specific navigation
+    admin: {
+      adminPanel: {
+        id: 'adminLink',
+        label: 'Admin Panel',
+        icon: 'fas fa-cog',
+        url: '/admin.html',
+        type: 'link',
+        roles: [USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+        description: 'Administrative controls and settings'
+      },
+      userManagement: {
+        id: 'userManagementLink',
+        label: 'User Management',
+        icon: 'fas fa-users-cog',
+        url: '/user-management.html',
+        type: 'link',
+        roles: [USER_ROLES.ADMIN_TIER_1, USER_ROLES.SUPER_ADMIN],
+        description: 'Manage platform users and permissions'
+      },
+      contentModeration: {
+        id: 'contentModerationLink',
+        label: 'Content Moderation',
+        icon: 'fas fa-shield-alt',
+        url: '/content-moderation.html',
+        type: 'link',
+        roles: [USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+        description: 'Review and moderate platform content'
+      },
+      analytics: {
+        id: 'analyticsLink',
+        label: 'Analytics',
+        icon: 'fas fa-chart-bar',
+        url: '/analytics.html',
+        type: 'link',
+        roles: [USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+        description: 'View platform usage and performance metrics'
+      }
     }
   };
   
-  // Navigation Manager Class
-  class NavigationManager {
-    constructor(config) {
-      this.config = config;
+  /**
+   * Feature flags and access control
+   */
+  const FEATURE_FLAGS = {
+    // Core features
+    assessment: {
+      enabled: true,
+      guestAccess: true,
+      roles: [USER_ROLES.GUEST, USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN]
+    },
+    virtualHuman: {
+      enabled: true,
+      guestAccess: true,
+      roles: [USER_ROLES.GUEST, USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN]
+    },
+    aiChat: {
+      enabled: true,
+      guestAccess: true,
+      roles: [USER_ROLES.GUEST, USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN]
+    },
+    
+    // Premium features
+    advancedAI: {
+      enabled: true,
+      guestAccess: false,
+      roles: [USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+      requiresPremium: true
+    },
+    personalizedPaths: {
+      enabled: true,
+      guestAccess: false,
+      roles: [USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN]
+    },
+    mentorSessions: {
+      enabled: true,
+      guestAccess: false,
+      roles: [USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+      requiresPremium: true
+    },
+    
+    // Instructor features
+    courseCreation: {
+      enabled: true,
+      guestAccess: false,
+      roles: [USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN]
+    },
+    studentManagement: {
+      enabled: true,
+      guestAccess: false,
+      roles: [USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN]
+    },
+    
+    // Admin features
+    userManagement: {
+      enabled: true,
+      guestAccess: false,
+      roles: [USER_ROLES.ADMIN_TIER_1, USER_ROLES.SUPER_ADMIN]
+    },
+    systemConfig: {
+      enabled: true,
+      guestAccess: false,
+      roles: [USER_ROLES.ADMIN_TIER_1, USER_ROLES.SUPER_ADMIN]
+    },
+    contentModeration: {
+      enabled: true,
+      guestAccess: false,
+      roles: [USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN]
+    },
+    analytics: {
+      enabled: true,
+      guestAccess: false,
+      roles: [USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN]
+    }
+  };
+  
+  // ===== NAVIGATION CONTROL SYSTEM =====
+  
+  /**
+   * Navigation configuration class
+   */
+  class NavigationConfig {
+    constructor() {
       this.currentUser = null;
-      this.currentPage = null;
-      this.activeNavItems = [];
-      
+      this.currentRole = USER_ROLES.GUEST;
+      this.currentPage = this.getCurrentPage();
       this.init();
     }
     
     /**
-     * Initialize navigation manager
+     * Initialize navigation config
      */
     init() {
-      this.bindEvents();
-      this.updateNavigation();
+      // Load user data from state
+      this.updateUserContext();
+      
+      // Listen for authentication changes
+      if (window.PMERIT) {
+        window.PMERIT.on('authStateChanged', (event) => {
+          this.handleAuthChange(event.detail);
+        });
+        
+        window.PMERIT.on('partialLoaded', (event) => {
+          if (event.detail.partialName === 'nav') {
+            this.updateNavigationVisibility();
+          }
+        });
+      }
+      
+      // Update navigation when DOM is ready
+      document.addEventListener('DOMContentLoaded', () => {
+        this.updateNavigationVisibility();
+      });
     }
     
     /**
-     * Bind event listeners
+     * Get current page name
      */
-    bindEvents() {
-      // Listen for authentication changes
-      window.PMERIT.events.addEventListener('auth:stateChanged', (event) => {
-        this.handleAuthChange(event.detail);
-      });
-      
-      // Listen for page changes
-      window.PMERIT.events.addEventListener('page:changed', (event) => {
-        this.handlePageChange(event.detail.page);
-      });
-      
-      // Listen for navigation clicks
-      document.addEventListener('click', (event) => {
-        if (event.target.matches('[data-nav-item]')) {
-          this.handleNavClick(event);
+    getCurrentPage() {
+      const path = window.location.pathname;
+      const page = path.split('/').pop() || 'index.html';
+      return page.includes('.html') ? page : 'index.html';
+    }
+    
+    /**
+     * Update user context from state
+     */
+    updateUserContext() {
+      if (window.PMERIT?.state) {
+        const isAuth = window.PMERIT.state.get('pmerit_auth', false);
+        const userData = window.PMERIT.state.get('pmerit_user', null);
+        
+        if (isAuth && userData) {
+          this.currentUser = userData;
+          this.currentRole = userData.role || USER_ROLES.STUDENT;
+        } else {
+          this.currentUser = null;
+          this.currentRole = USER_ROLES.GUEST;
         }
-      });
+      }
     }
     
     /**
      * Handle authentication state changes
      */
-    handleAuthChange({ isAuthenticated, userRole }) {
-      this.currentUser = {
-        authenticated: isAuthenticated,
-        role: userRole || 'guest'
-      };
-      
-      this.updateNavigation();
-      this.updatePageAccess();
-    }
-    
-    /**
-     * Handle page changes
-     */
-    handlePageChange(page) {
-      this.currentPage = page;
-      this.updateActiveNavigation();
-      this.updatePageMetadata();
-    }
-    
-    /**
-     * Handle navigation clicks
-     */
-    handleNavClick(event) {
-      const navItem = event.target.closest('[data-nav-item]');
-      const itemId = navItem.getAttribute('data-nav-item');
-      const item = this.findNavItem(itemId);
-      
-      if (!item) return;
-      
-      // Check access permissions
-      if (!this.hasAccess(item.access)) {
-        event.preventDefault();
-        this.showAccessDenied(item);
-        return;
-      }
-      
-      // Track navigation
-      this.trackNavigation(item);
-    }
-    
-    /**
-     * Update navigation based on current user and page
-     */
-    updateNavigation() {
-      this.updatePrimaryNavigation();
-      this.updateAuthenticatedNavigation();
-      this.updateAdminNavigation();
-      this.updateMobileNavigation();
-      this.updateActiveNavigation();
-    }
-    
-    /**
-     * Update primary navigation
-     */
-    updatePrimaryNavigation() {
-      const navContainer = document.getElementById('navPrimary');
-      if (!navContainer) return;
-      
-      const items = this.config.navigation.primary.filter(item => 
-        this.hasAccess(item.access)
-      );
-      
-      this.renderNavItems(navContainer, items);
-    }
-    
-    /**
-     * Update authenticated navigation
-     */
-    updateAuthenticatedNavigation() {
-      const navContainer = document.getElementById('navAuthenticated');
-      if (!navContainer) return;
-      
-      const isAuthenticated = this.currentUser?.authenticated;
-      
-      if (isAuthenticated) {
-        const items = this.config.navigation.authenticated.filter(item => 
-          this.hasAccess(item.access)
-        );
-        
-        this.renderNavItems(navContainer, items);
-        navContainer.style.display = 'flex';
+    handleAuthChange(authDetail) {
+      if (authDetail.authenticated && authDetail.user) {
+        this.currentUser = authDetail.user;
+        this.currentRole = authDetail.user.role || USER_ROLES.STUDENT;
       } else {
-        navContainer.style.display = 'none';
+        this.currentUser = null;
+        this.currentRole = USER_ROLES.GUEST;
       }
+      
+      // Update navigation visibility
+      setTimeout(() => this.updateNavigationVisibility(), 100);
     }
     
     /**
-     * Update admin navigation
+     * Check if user has access to a page
      */
-    updateAdminNavigation() {
-      const navContainer = document.getElementById('navAdmin');
-      if (!navContainer) return;
+    hasPageAccess(page, role = this.currentRole) {
+      const permissions = PAGE_PERMISSIONS[page];
+      return permissions ? permissions.includes(role) : false;
+    }
+    
+    /**
+     * Check if user has access to a feature
+     */
+    hasFeatureAccess(feature, role = this.currentRole) {
+      const featureConfig = FEATURE_FLAGS[feature];
+      if (!featureConfig || !featureConfig.enabled) {
+        return false;
+      }
       
-      const userRole = this.currentUser?.role;
-      const isAdmin = userRole === 'admin' || userRole === 'instructor';
+      // Check if guest access is allowed
+      if (role === USER_ROLES.GUEST && !featureConfig.guestAccess) {
+        return false;
+      }
       
-      if (isAdmin) {
-        const items = this.config.navigation.admin.filter(item => 
-          this.hasAccess(item.access)
-        );
+      // Check role permissions
+      if (!featureConfig.roles.includes(role)) {
+        return false;
+      }
+      
+      // Check premium requirements
+      if (featureConfig.requiresPremium && this.currentUser) {
+        const userPlan = this.currentUser.plan || 'free';
+        return userPlan !== 'free';
+      }
+      
+      return true;
+    }
+    
+    /**
+     * Get visible navigation items for current user
+     */
+    getVisibleNavigationItems() {
+      const visibleItems = {};
+      
+      Object.keys(NAVIGATION_MENU).forEach(section => {
+        visibleItems[section] = {};
         
-        this.renderNavItems(navContainer, items);
-        navContainer.style.display = 'flex';
-      } else {
-        navContainer.style.display = 'none';
-      }
-    }
-    
-    /**
-     * Update mobile navigation
-     */
-    updateMobileNavigation() {
-      const mobileContainer = document.getElementById('mobileNavMenu');
-      if (!mobileContainer) return;
-      
-      // Combine all accessible navigation items
-      const allItems = [
-        ...this.config.navigation.primary,
-        ...this.config.navigation.authenticated,
-        ...this.config.navigation.admin,
-        ...this.config.navigation.support
-      ].filter(item => this.hasAccess(item.access));
-      
-      this.renderMobileNavItems(mobileContainer, allItems);
-    }
-    
-    /**
-     * Render navigation items
-     */
-    renderNavItems(container, items) {
-      container.innerHTML = items.map(item => `
-        <li class="nav-item" data-access="${item.access.join(',')}" data-nav-item="${item.id}">
-          <a href="${item.url}" class="nav-link" data-page="${item.id}">
-            <span class="nav-icon">${item.icon}</span>
-            <span class="nav-text">${item.label}</span>
-          </a>
-        </li>
-      `).join('');
-    }
-    
-    /**
-     * Render mobile navigation items
-     */
-    renderMobileNavItems(container, items) {
-      container.innerHTML = items.map(item => `
-        <a href="${item.url}" class="mobile-nav-link" data-nav-item="${item.id}">
-          <span class="mobile-nav-icon">${item.icon}</span>
-          <span class="mobile-nav-text">${item.label}</span>
-          <span class="mobile-nav-description">${item.description}</span>
-        </a>
-      `).join('');
-    }
-    
-    /**
-     * Update active navigation highlighting
-     */
-    updateActiveNavigation() {
-      // Remove active class from all nav links
-      document.querySelectorAll('.nav-link').forEach(link => {
-        link.classList.remove('active');
+        Object.keys(NAVIGATION_MENU[section]).forEach(itemKey => {
+          const item = NAVIGATION_MENU[section][itemKey];
+          
+          if (item.roles.includes(this.currentRole)) {
+            visibleItems[section][itemKey] = {
+              ...item,
+              visible: true
+            };
+          }
+        });
       });
       
-      // Add active class to current page
-      const currentPageLinks = document.querySelectorAll(`[data-page="${this.currentPage}"]`);
-      currentPageLinks.forEach(link => {
-        link.classList.add('active');
-      });
+      return visibleItems;
     }
     
     /**
-     * Update page metadata
+     * Update navigation visibility based on current user
      */
-    updatePageMetadata() {
-      const pageConfig = this.config.pages[this.currentPage];
-      if (!pageConfig) return;
+    updateNavigationVisibility() {
+      const visibleItems = this.getVisibleNavigationItems();
       
-      // Update document title
-      document.title = pageConfig.title;
+      // Update quick actions
+      this.updateQuickActions(visibleItems.quickActions);
       
-      // Update meta description
-      this.updateMetaTag('description', pageConfig.description);
+      // Update main navigation
+      this.updateMainNavigation(visibleItems.main);
       
-      // Update meta keywords
-      this.updateMetaTag('keywords', pageConfig.keywords);
+      // Update role-specific navigation
+      this.updateRoleSpecificNavigation(visibleItems);
+      
+      // Update dashboard button
+      this.updateDashboardButton();
+      
+      // Hide/show sections based on authentication
+      this.updateAuthenticationSections();
     }
     
     /**
-     * Update meta tag content
+     * Update quick actions visibility
      */
-    updateMetaTag(name, content) {
-      let meta = document.querySelector(`meta[name="${name}"]`);
-      if (!meta) {
-        meta = document.createElement('meta');
-        meta.name = name;
-        document.head.appendChild(meta);
-      }
-      meta.content = content;
-    }
-    
-    /**
-     * Check if user has access to navigation item
-     */
-    hasAccess(requiredAccess) {
-      if (!requiredAccess || requiredAccess.includes('public')) {
-        return true;
-      }
-      
-      const userRole = this.currentUser?.role || 'guest';
-      return requiredAccess.includes(userRole);
-    }
-    
-    /**
-     * Update page access based on current user
-     */
-    updatePageAccess() {
-      const pageConfig = this.config.pages[this.currentPage];
-      if (!pageConfig) return;
-      
-      // Check if page requires authentication
-      if (pageConfig.requiresAuth && !this.currentUser?.authenticated) {
-        this.redirectToLogin();
-        return;
-      }
-      
-      // Check if page requires specific role
-      if (pageConfig.requiredRole && this.currentUser?.role !== pageConfig.requiredRole) {
-        this.showAccessDenied();
-        return;
-      }
-    }
-    
-    /**
-     * Find navigation item by ID
-     */
-    findNavItem(itemId) {
-      const allItems = [
-        ...this.config.navigation.primary,
-        ...this.config.navigation.authenticated,
-        ...this.config.navigation.admin,
-        ...this.config.navigation.support
-      ];
-      
-      return allItems.find(item => item.id === itemId);
-    }
-    
-    /**
-     * Show access denied message
-     */
-    showAccessDenied(item = null) {
-      const message = item 
-        ? `Access denied to ${item.label}. Please sign in or contact support.`
-        : 'Access denied. You do not have permission to view this page.';
-      
-      // Dispatch event for UI to handle
-      window.PMERIT.events.dispatchEvent(new CustomEvent('nav:accessDenied', {
-        detail: { message, item }
-      }));
-    }
-    
-    /**
-     * Redirect to login page
-     */
-    redirectToLogin() {
-      const currentUrl = window.location.pathname;
-      const loginUrl = `/index.html?redirect=${encodeURIComponent(currentUrl)}`;
-      
-      window.PMERIT.events.dispatchEvent(new CustomEvent('nav:loginRequired', {
-        detail: { currentUrl, loginUrl }
-      }));
-    }
-    
-    /**
-     * Track navigation for analytics
-     */
-    trackNavigation(item) {
-      window.PMERIT.events.dispatchEvent(new CustomEvent('nav:itemClicked', {
-        detail: {
-          itemId: item.id,
-          label: item.label,
-          url: item.url,
-          userRole: this.currentUser?.role,
-          timestamp: Date.now()
+    updateQuickActions(quickActions) {
+      Object.keys(quickActions).forEach(actionKey => {
+        const action = quickActions[actionKey];
+        const element = document.getElementById(action.id);
+        
+        if (element) {
+          element.style.display = action.visible ? 'flex' : 'none';
+          element.setAttribute('aria-hidden', !action.visible);
         }
-      }));
+      });
     }
     
     /**
-     * Get navigation configuration
+     * Update main navigation visibility
      */
-    getConfig() {
-      return this.config;
+    updateMainNavigation(mainNav) {
+      // Quick navigation links
+      const quickNav = document.getElementById('quickNav');
+      if (quickNav) {
+        const hasVisibleItems = Object.values(mainNav).some(item => item.visible);
+        quickNav.style.display = hasVisibleItems ? 'flex' : 'none';
+        quickNav.setAttribute('aria-hidden', !hasVisibleItems);
+        
+        // Update individual links
+        Object.keys(mainNav).forEach(navKey => {
+          const nav = mainNav[navKey];
+          const element = document.getElementById(nav.id);
+          
+          if (element) {
+            element.style.display = nav.visible ? 'flex' : 'none';
+            element.setAttribute('aria-hidden', !nav.visible);
+          }
+        });
+      }
     }
     
     /**
-     * Get user-accessible navigation items
+     * Update role-specific navigation
      */
-    getAccessibleNavigation() {
-      return {
-        primary: this.config.navigation.primary.filter(item => this.hasAccess(item.access)),
-        authenticated: this.config.navigation.authenticated.filter(item => this.hasAccess(item.access)),
-        admin: this.config.navigation.admin.filter(item => this.hasAccess(item.access)),
-        support: this.config.navigation.support.filter(item => this.hasAccess(item.access))
+    updateRoleSpecificNavigation(visibleItems) {
+      // Instructor navigation
+      const instructorItems = visibleItems.instructor || {};
+      const hasInstructorItems = Object.keys(instructorItems).length > 0;
+      
+      // Admin navigation  
+      const adminItems = visibleItems.admin || {};
+      const hasAdminItems = Object.keys(adminItems).length > 0;
+      
+      // You can create specific instructor/admin navigation containers
+      // and show/hide them based on role
+      if (this.currentRole === USER_ROLES.INSTRUCTOR || 
+          this.currentRole === USER_ROLES.ADMIN_TIER_1 || 
+          this.currentRole === USER_ROLES.ADMIN_TIER_2 ||
+          this.currentRole === USER_ROLES.SUPER_ADMIN) {
+        // Show advanced features
+        this.showAdvancedFeatures();
+      } else {
+        this.hideAdvancedFeatures();
+      }
+    }
+    
+    /**
+     * Update dashboard button appearance
+     */
+    updateDashboardButton() {
+      const dashBtn = document.getElementById('dashBtn');
+      const mDashBtn = document.getElementById('m_dashBtn');
+      
+      [dashBtn, mDashBtn].forEach(btn => {
+        if (btn) {
+          if (this.currentRole === USER_ROLES.GUEST) {
+            btn.classList.add('guest');
+            btn.innerHTML = '<i class="fas fa-user-plus" aria-hidden="true"></i><span class="dashboard-text">Get Started</span>';
+            btn.setAttribute('aria-label', 'Get started with PMERIT');
+          } else {
+            btn.classList.remove('guest');
+            btn.innerHTML = '<i class="fas fa-gauge-high" aria-hidden="true"></i><span class="dashboard-text">Dashboard</span>';
+            btn.setAttribute('aria-label', 'Go to your dashboard');
+          }
+        }
+      });
+    }
+    
+    /**
+     * Update authentication-specific sections
+     */
+    updateAuthenticationSections() {
+      const isAuthenticated = this.currentRole !== USER_ROLES.GUEST;
+      
+      // User profile section
+      const userProfile = document.getElementById('userProfile');
+      if (userProfile) {
+        userProfile.style.display = isAuthenticated ? 'flex' : 'none';
+        userProfile.setAttribute('aria-hidden', !isAuthenticated);
+      }
+      
+      // Learning progress
+      const learningProgress = document.getElementById('learningProgress');
+      if (learningProgress) {
+        learningProgress.style.display = isAuthenticated ? 'block' : 'none';
+        learningProgress.setAttribute('aria-hidden', !isAuthenticated);
+      }
+      
+      // Update user name if available
+      const userName = document.getElementById('userName');
+      if (userName && this.currentUser) {
+        userName.textContent = this.currentUser.name || 'Student';
+      }
+      
+      // Update user status/plan
+      const userStatus = document.getElementById('userStatus');
+      if (userStatus && this.currentUser) {
+        const plan = this.currentUser.plan || 'free';
+        userStatus.textContent = plan.charAt(0).toUpperCase() + plan.slice(1) + ' Plan';
+      }
+    }
+    
+    /**
+     * Show advanced features for instructors/admins
+     */
+    showAdvancedFeatures() {
+      // Add any instructor/admin specific UI elements
+      // This could include additional buttons, sections, etc.
+    }
+    
+    /**
+     * Hide advanced features for regular users
+     */
+    hideAdvancedFeatures() {
+      // Hide instructor/admin specific UI elements
+    }
+    
+    /**
+     * Navigate to page with access control
+     */
+    navigateToPage(page) {
+      if (this.hasPageAccess(page)) {
+        window.location.href = `/${page}`;
+      } else {
+        // Redirect to appropriate page based on role
+        if (this.currentRole === USER_ROLES.GUEST) {
+          // Show sign in modal or redirect to sign in
+          if (window.PMERIT?.emit) {
+            window.PMERIT.emit('showSignIn');
+          } else {
+            window.location.href = '/signin.html';
+          }
+        } else {
+          // Show access denied message
+          if (window.PMERIT?.chat) {
+            window.PMERIT.chat.addMessage('PMERIT AI', 
+              'Access denied. You don\'t have permission to access this page. Please contact your administrator if you believe this is an error.');
+          }
+        }
+      }
+    }
+    
+    /**
+     * Get user role display name
+     */
+    getRoleDisplayName(role = this.currentRole) {
+      const roleNames = {
+        [USER_ROLES.GUEST]: 'Guest',
+        [USER_ROLES.STUDENT]: 'Student',
+        [USER_ROLES.INSTRUCTOR]: 'Instructor',
+        [USER_ROLES.ADMIN_TIER_1]: 'Admin',
+        [USER_ROLES.ADMIN_TIER_2]: 'Moderator',
+        [USER_ROLES.SUPER_ADMIN]: 'Super Admin'
       };
+      
+      return roleNames[role] || 'Unknown';
     }
   }
   
-  // Initialize navigation manager when PMERIT is ready
-  function initializeNavigation() {
-    if (!window.PMERIT) {
-      console.warn('PMERIT not found, retrying navigation initialization...');
-      setTimeout(initializeNavigation, 100);
-      return;
+  // ===== GLOBAL EXPORT =====
+  
+  // Initialize navigation config
+  const navigationConfig = new NavigationConfig();
+  
+  // Export to global scope
+  window.PMERIT = window.PMERIT || {};
+  window.PMERIT.navigation = window.PMERIT.navigation || {};
+  
+  // Add navigation config to global PMERIT object
+  Object.assign(window.PMERIT.navigation, {
+    config: navigationConfig,
+    roles: USER_ROLES,
+    permissions: PAGE_PERMISSIONS,
+    menu: NAVIGATION_MENU,
+    features: FEATURE_FLAGS,
+    
+    // Utility methods
+    hasPageAccess: (page, role) => navigationConfig.hasPageAccess(page, role),
+    hasFeatureAccess: (feature, role) => navigationConfig.hasFeatureAccess(feature, role),
+    navigateTo: (page) => navigationConfig.navigateToPage(page),
+    getCurrentRole: () => navigationConfig.currentRole,
+    getCurrentUser: () => navigationConfig.currentUser,
+    updateNavigation: () => navigationConfig.updateNavigationVisibility(),
+    
+    // Role management
+    setUserRole: (role) => {
+      navigationConfig.currentRole = role;
+      navigationConfig.updateNavigationVisibility();
+    },
+    
+    // Feature flag checking
+    isFeatureEnabled: (feature) => {
+      const featureConfig = FEATURE_FLAGS[feature];
+      return featureConfig && featureConfig.enabled;
     }
-    
-    // Create navigation manager instance
-    window.PMERIT.navigation = new NavigationManager(NAV_CONFIG);
-    
-    // Export config and utilities
-    window.PMERIT.navConfig = NAV_CONFIG;
-    
-    // Dispatch ready event
-    window.PMERIT.events.dispatchEvent(new CustomEvent('navigation:ready'));
+  });
+  
+  // Auto-update navigation when page loads
+  document.addEventListener('DOMContentLoaded', () => {
+    navigationConfig.updateNavigationVisibility();
+  });
+  
+  // Export for module systems
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+      NavigationConfig,
+      USER_ROLES,
+      PAGE_PERMISSIONS,
+      NAVIGATION_MENU,
+      FEATURE_FLAGS
+    };
   }
   
-  // Initialize when DOM is ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeNavigation);
-  } else {
-    initializeNavigation();
-  }
+  console.log('[PMERIT] Navigation configuration loaded');
   
 })();
