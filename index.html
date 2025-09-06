@@ -1,1618 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PMERIT — Accessible Global Education</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PMERIT - Breaking poverty cycles through accessible, high-quality education. AI-powered learning platform with personalized career paths.">
+  <meta name="keywords" content="education, AI learning, career development, accessible education, online courses, PMERIT">
+  <meta name="author" content="PMERIT AI Platform">
+  <meta name="theme-color" content="#4F46E5">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pmerit.com/">
+  <meta property="og:title" content="PMERIT - Accessible Global Education">
+  <meta property="og:description" content="Breaking poverty cycles through accessible, high-quality education. AI-powered learning with personalized career paths.">
+  <meta property="og:image" content="https://pmerit.com/assets/images/og-image.png">
 
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://pmerit.com/">
+  <meta property="twitter:title" content="PMERIT - Accessible Global Education">
+  <meta property="twitter:description" content="Breaking poverty cycles through accessible, high-quality education. AI-powered learning with personalized career paths.">
+  <meta property="twitter:image" content="https://pmerit.com/assets/images/twitter-image.png">
+
+  <title>PMERIT - Accessible Global Education</title>
+  
+  <!-- Preconnect to external domains -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://ai.pmerit.com">
+  
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
-
-  <style>
-    :root {
-      /* PMERIT Brand Colors - Clean White Theme */
-      --primary: #4F46E5;       /* PMERIT brand blue */
-      --primary-dark: #3730A3;
-      --accent: #7C3AED;        /* Purple accent */
-      --success: #10B981;       /* Success green */
-      --text-primary: #1E293B;  /* Dark slate text */
-      --text-secondary: #64748B;/* Gray text */
-      --text-inverse: #F8FAFC;  /* Light text for dark backgrounds */
-      --bg-primary: #FFFFFF;    /* Clean white background */
-      --bg-secondary: #F8FAFC;  /* Light gray background */
-      --bg-dark: #1E293B;       /* Dark background for contrast */
-      --card-bg: #FFFFFF;       /* Card background */
-      --border-color: #E2E8F0;  /* Border color */
-      --header-height: 70px;
-      --footer-height: 60px;
-      --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      --transition: all 0.2s ease-in-out;
-    }
-
-    .dark {
-      --text-primary: #F8FAFC;
-      --text-secondary: #CBD5E1;
-      --bg-primary: #0F172A;
-      --bg-secondary: #1E293B;
-      --card-bg: #1E293B;
-      --border-color: #334155;
-      --shadow: 0 8px 28px rgba(0,0,0,.45);
-      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html, body {
-      height: 100%;
-      font-family: 'Inter', sans-serif;
-      background-color: var(--bg-primary);
-      color: var(--text-primary);
-      transition: var(--transition);
-    }
-
-    body {
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    /* Header Styles */
-    header {
-      height: var(--header-height);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 1.5rem;
-      background-color: var(--card-bg);
-      border-bottom: 1px solid var(--border-color);
-      box-shadow: var(--shadow);
-      z-index: 50;
-    }
-
-    .logo {
-      font-weight: 700;
-      font-size: 1.5rem;
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .logo::before {
-      content: "🎓";
-      font-size: 1.5rem;
-    }
-
-    nav {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .nav-btn, select {
-      padding: 0.5rem 1rem;
-      border-radius: 50px;
-      font-weight: 500;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: var(--transition);
-      border: 1px solid var(--border-color);
-      background-color: var(--card-bg);
-      color: var(--text-primary);
-      min-height: 44px;
-    }
-
-    .nav-btn:hover, select:hover {
-      border-color: var(--primary);
-      transform: translateY(-1px);
-    }
-
-    .nav-btn.primary {
-      background-color: var(--primary);
-      color: white;
-      border-color: var(--primary);
-    }
-
-    .nav-btn.primary:hover {
-      background-color: var(--primary-dark);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-lg);
-    }
-
-    /* Main Layout - 3 Column Grid */
-    .estate {
-      display: grid;
-      grid-template-columns: 280px 1fr 320px;
-      height: calc(100vh - var(--header-height) - var(--footer-height));
-      overflow: hidden;
-      gap: 0;
-    }
-
-    /* Left Pane Styles */
-    #left {
-      background-color: var(--bg-secondary);
-      border-right: 1px solid var(--border-color);
-      padding: 1.5rem 1rem;
-      overflow-y: auto;
-    }
-
-    .pane-title {
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: var(--primary);
-      margin-bottom: 1rem;
-    }
-
-    .toggle, .action, .dashboard {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.75rem;
-      border-radius: 8px;
-      margin-bottom: 0.5rem;
-      cursor: pointer;
-      transition: var(--transition);
-      background-color: var(--card-bg);
-      border: 1px solid var(--border-color);
-      min-height: 44px;
-    }
-
-    .toggle:hover, .action:hover, .dashboard:hover {
-      border-color: var(--primary);
-      transform: translateY(-1px);
-      box-shadow: var(--shadow);
-    }
-
-    .icon {
-      color: var(--primary);
-      margin-right: 0.5rem;
-    }
-
-    .switch {
-      width: 40px;
-      height: 20px;
-      background: #ccc;
-      border-radius: 34px;
-      position: relative;
-      transition: .4s;
-    }
-
-    .switch::after {
-      content: "";
-      position: absolute;
-      width: 16px;
-      height: 16px;
-      left: 2px;
-      bottom: 2px;
-      background-color: white;
-      transition: .4s;
-      border-radius: 50%;
-    }
-
-    .toggle.active .switch {
-      background-color: var(--primary);
-    }
-
-    .toggle.active .switch::after {
-      transform: translateX(20px);
-    }
-
-    .dashboard {
-      justify-content: center;
-      font-weight: 600;
-      background-color: var(--primary);
-      color: white;
-      box-shadow: var(--shadow-lg);
-    }
-
-    .dashboard.guest {
-      background-color: var(--text-secondary);
-    }
-
-    .dashboard:hover {
-      background-color: var(--primary-dark);
-    }
-
-    .dashboard.guest:hover {
-      background-color: #475569;
-    }
-
-    /* Center Chat Area Styles */
-    main {
-      background-color: var(--bg-primary);
-      overflow: hidden;
-    }
-
-    .panel {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      background-color: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      margin: 1rem;
-      box-shadow: var(--shadow-lg);
-      overflow: hidden;
-    }
-
-    .panel-head {
-      padding: 1rem;
-      border-bottom: 1px solid var(--border-color);
-      background-color: var(--bg-secondary);
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .badges {
-      display: flex;
-      gap: 0.4rem;
-      flex-wrap: wrap;
-    }
-
-    .badge {
-      background-color: var(--primary);
-      color: white;
-      font-size: 0.78rem;
-      padding: 0.28rem 0.6rem;
-      border-radius: 999px;
-      display: inline-flex;
-      gap: 0.35rem;
-      align-items: center;
-    }
-
-    .badge.support {
-      background-color: var(--success);
-    }
-
-    .badge.vh {
-      background-color: var(--accent);
-    }
-
-    #textChat {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-
-    .chat-body {
-      flex: 1;
-      padding: 1rem;
-      overflow: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 0.9rem;
-    }
-
-    .bubble {
-      display: flex;
-      gap: 0.65rem;
-      align-items: flex-start;
-      background-color: rgba(79, 70, 229, 0.06);
-      border: 1px solid rgba(79, 70, 229, 0.18);
-      border-radius: 0.75rem;
-      padding: 1rem;
-    }
-
-    .ava {
-      min-width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      color: white;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-    }
-
-    .bubble h3 {
-      margin: 0.1rem 0 0.35rem;
-      color: var(--primary);
-      font-size: 1rem;
-    }
-
-    .bubble p {
-      margin: 0.3rem 0;
-      line-height: 1.55;
-    }
-    
-    /* Chat Input Area Styles */
-    .chat-input-area {
-      border-top: 1px solid var(--border-color);
-      background-color: var(--bg-secondary);
-      padding: 1rem;
-    }
-
-    .input-wrapper {
-      display: flex;
-      gap: 0.75rem;
-      align-items: flex-end;
-      background-color: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 0.75rem;
-      transition: var(--transition);
-    }
-
-    .input-wrapper:focus-within {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-    }
-
-    #chatInput {
-      flex: 1;
-      border: none;
-      outline: none;
-      resize: none;
-      font-family: inherit;
-      font-size: 0.9rem;
-      line-height: 1.5;
-      background: transparent;
-      color: var(--text-primary);
-      min-height: 20px;
-      max-height: 120px;
-    }
-
-    #chatInput::placeholder {
-      color: var(--text-secondary);
-    }
-
-    .send-btn {
-      background-color: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 0.5rem;
-      cursor: pointer;
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 36px;
-      height: 36px;
-    }
-
-    .send-btn:hover:not(:disabled) {
-      background-color: var(--primary-dark);
-      transform: translateY(-1px);
-    }
-
-    .send-btn:disabled {
-      background-color: var(--text-secondary);
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .input-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 0.5rem;
-      font-size: 0.8rem;
-    }
-
-    .char-count {
-      color: var(--text-secondary);
-    }
-
-    .mode-indicators {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .mode-btn {
-      background: none;
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 0.25rem 0.75rem;
-      color: var(--text-secondary);
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: var(--transition);
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-    }
-
-    .mode-btn:hover {
-      border-color: var(--primary);
-      color: var(--primary);
-      background-color: rgba(79, 70, 229, 0.05);
-    }
-
-    .mode-btn.active {
-      background-color: var(--primary);
-      color: white;
-      border-color: var(--primary);
-    }
-
-    /* Right Pane Styles */
-    #right {
-      background-color: var(--bg-secondary);
-      border-left: 1px solid var(--border-color);
-      padding: 1.5rem;
-      overflow-y: auto;
-    }
-
-    .support-assistant {
-      background-color: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 1.25rem;
-      text-align: center;
-      margin-bottom: 1.5rem;
-      box-shadow: var(--shadow);
-    }
-
-    .support-assistant h4 {
-      margin: 0;
-      color: var(--success);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-
-    #right h3 {
-      margin: 0.25rem 0 0.75rem;
-      position: relative;
-      padding-bottom: 0.35rem;
-      font-weight: 600;
-      font-size: 1.1rem;
-      color: var(--primary);
-    }
-
-    #right h3::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 40px;
-      height: 3px;
-      background-color: var(--primary);
-      border-radius: 2px;
-    }
-
-    .discover {
-      background-color: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      box-shadow: var(--shadow);
-      padding: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .discover h4 {
-      margin: 0.25rem 0;
-      font-weight: 600;
-    }
-
-    .discover p {
-      margin: 0.25rem 0 0.5rem;
-      color: var(--text-secondary);
-    }
-
-    .discover .insights {
-      border-top: 1px dashed var(--border-color);
-      padding-top: 0.5rem;
-      color: var(--text-secondary);
-      font-size: 0.95rem;
-      min-height: 2.2em;
-      font-style: italic;
-    }
-
-    /* Assessment Modal Styles */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(4px);
-    }
-
-    .modal.active {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      animation: modalFadeIn 0.3s ease-out;
-    }
-
-    .modal-content {
-      background-color: var(--card-bg);
-      border-radius: 16px;
-      padding: 2rem;
-      max-width: 600px;
-      width: 90%;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: var(--shadow-lg);
-      animation: modalSlideIn 0.3s ease-out;
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .modal-header h2 {
-      color: var(--primary);
-      margin: 0;
-      font-size: 1.5rem;
-    }
-
-    .close-btn {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: var(--text-secondary);
-      padding: 0.25rem;
-      border-radius: 4px;
-      transition: var(--transition);
-    }
-
-    .close-btn:hover {
-      background-color: var(--bg-secondary);
-      color: var(--text-primary);
-    }
-
-    .question {
-      margin-bottom: 2rem;
-    }
-
-    .question h3 {
-      color: var(--text-primary);
-      margin-bottom: 1rem;
-      font-size: 1.1rem;
-    }
-
-    .question-options {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .option {
-      display: flex;
-      align-items: center;
-      padding: 1rem;
-      border: 2px solid var(--border-color);
-      border-radius: 12px;
-      cursor: pointer;
-      transition: var(--transition);
-      background-color: var(--card-bg);
-    }
-
-    .option:hover {
-      border-color: var(--primary);
-      background-color: rgba(79, 70, 229, 0.05);
-    }
-
-    .option input[type="radio"] {
-      margin-right: 1rem;
-      transform: scale(1.2);
-      accent-color: var(--primary);
-    }
-
-    .option.selected {
-      border-color: var(--primary);
-      background-color: rgba(79, 70, 229, 0.1);
-    }
-
-    .modal-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 2rem;
-      padding-top: 1rem;
-      border-top: 1px solid var(--border-color);
-    }
-
-    .progress-indicator {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-    }
-
-    .progress-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background-color: var(--border-color);
-      transition: var(--transition);
-    }
-
-    .progress-dot.active {
-      background-color: var(--primary);
-    }
-
-    .modal-btn {
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
-      background-color: var(--card-bg);
-      color: var(--text-primary);
-      cursor: pointer;
-      transition: var(--transition);
-      font-weight: 500;
-    }
-
-    .modal-btn:hover {
-      border-color: var(--primary);
-      background-color: rgba(79, 70, 229, 0.05);
-    }
-
-    .modal-btn.primary {
-      background-color: var(--primary);
-      color: white;
-      border-color: var(--primary);
-    }
-
-    .modal-btn.primary:hover {
-      background-color: var(--primary-dark);
-    }
-
-    .modal-btn:disabled {
-      background-color: var(--text-secondary);
-      color: white;
-      cursor: not-allowed;
-    }
-
-    /* Footer Styles */
-    footer {
-      height: var(--footer-height);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 1.5rem;
-      background-color: var(--card-bg);
-      border-top: 1px solid var(--border-color);
-      box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-      z-index: 40;
-    }
-
-    .footer-status-main {
-      font-weight: 600;
-      color: var(--primary);
-      font-size: 0.94rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    /* Mobile Styles */
-    @media (max-width: 1100px) {
-      .estate {
-        grid-template-columns: 1fr;
-        height: calc(100vh - var(--header-height) - var(--footer-height));
-        overflow-y: auto;
-      }
-      
-      aside {
-        display: none;
-      }
-      
-      header {
-        flex-wrap: wrap;
-        gap: 0.6rem;
-        height: auto;
-        min-height: var(--header-height);
-        padding: 0.75rem;
-      }
-      
-      .logo {
-        width: 100%;
-        justify-content: center;
-      }
-      
-      main {
-        min-height: calc(100vh - var(--header-height) - var(--footer-height) - 2rem);
-      }
-
-      .modal-content {
-        margin: 1rem;
-        width: calc(100% - 2rem);
-        max-height: calc(100vh - 2rem);
-      }
-    }
-
-    /* Mobile adjustments */
-    @media (max-width: 768px) {
-      .input-footer {
-        flex-direction: column;
-        gap: 0.5rem;
-        align-items: flex-start;
-      }
-      
-      .mode-indicators {
-        align-self: stretch;
-        justify-content: space-between;
-      }
-
-      .question-options .option {
-        padding: 0.75rem;
-        font-size: 0.9rem;
-      }
-
-      .modal-footer {
-        flex-direction: column;
-        gap: 1rem;
-      }
-    }
-    
-    /* Focus Styles */
-    .nav-btn:focus, .action:focus, .toggle:focus, .dashboard:focus, select:focus {
-      outline: 2px solid var(--primary);
-      outline-offset: 2px;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); box-shadow: 0 0 20px rgba(79, 70, 229, 0.4); }
-    }
-
-    @keyframes modalFadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes modalSlideIn {
-      from { transform: translateY(-50px) scale(0.95); opacity: 0; }
-      to { transform: translateY(0) scale(1); opacity: 1; }
-    }
-  </style>
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  <!-- Base CSS - Design System -->
+  <link rel="stylesheet" href="/assets/base.css">
+  
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "PMERIT",
+    "description": "Accessible Global Education - Breaking poverty cycles through high-quality education",
+    "url": "https://pmerit.com",
+    "logo": "https://pmerit.com/assets/images/logo.png",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+1-555-PMERIT",
+      "contactType": "customer service",
+      "email": "support@pmerit.com"
+    }
+  }
+  </script>
 </head>
-<body>
-  <header>
-    <div class="logo">PMERIT</div>
-    <nav>
-      <select class="nav-btn" id="lang" aria-label="Language">
-        <option value="en">English</option>
-        <option value="yo">Yorùbá</option>
-        <option value="ig">Igbo</option>
-        <option value="ha">Hausa</option>
-      </select>
-      <button class="nav-btn" id="pricingBtn">Pricing</button>
-      <button class="nav-btn" id="signInBtn">Sign In</button>
-      <button class="nav-btn primary" id="startBtn">Start Learning</button>
-    </nav>
-  </header>
 
+<body class="app-layout">
+  <!-- Skip Navigation Link for Accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  
+  <!-- Header Container - Loaded via boot-includes.js -->
+  <div id="header-container" role="banner"></div>
+
+  <!-- Main Application Layout -->
   <div class="estate">
-    <aside id="left" aria-label="Quick actions sidebar">
-      <section>
-        <div class="pane-title">Quick Actions</div>
+    <!-- Left Navigation Sidebar - Loaded via boot-includes.js -->
+    <div id="nav-container" role="navigation" aria-label="Main navigation"></div>
 
-        <button class="toggle" id="vhToggle">
-          <span><i class="fas fa-user-astronaut icon"></i> Virtual Human Mode</span>
-          <span class="switch" aria-hidden="true"></span>
-        </button>
-
-        <button class="action" id="careerPaths">
-          <span><i class="fas fa-compass icon"></i> Career Track & Explore Paths</span>
-          <i class="fas fa-chevron-right" aria-hidden="true"></i>
-        </button>
-
-        <button class="toggle" id="supportToggle">
-          <span><i class="fas fa-headset icon"></i> Customer Service Mode</span>
-          <span class="switch" aria-hidden="true"></span>
-        </button>
-
-        <button class="dashboard guest" id="dashBtn">
-          <i class="fas fa-gauge-high"></i> Dashboard
-        </button>
-      </section>
-    </aside>
-
-    <main>
-      <section class="panel" aria-label="Chat panel">
+    <!-- Main Content Area -->
+    <main id="main-content" role="main" tabindex="-1">
+      <!-- Welcome Section -->
+      <section class="panel" aria-label="Welcome to PMERIT">
         <div class="panel-head">
-          <div class="badges">
-            <span class="badge vh" id="vhBadge" style="display:none">
-              <i class="fas fa-user-astronaut"></i> Virtual Human
-            </span>
-            <span class="badge support" id="supportBadge" style="display:none">
-              <i class="fas fa-headset"></i> Support Assistant
-            </span>
-          </div>
+          <h1>Empowering Learning Through Innovation</h1>
+          <p>Accessible, high-quality education for global opportunities</p>
         </div>
+        
+        <div class="panel-body">
+          <!-- AI Chat Interface -->
+          <div class="chat-container" role="region" aria-live="polite" aria-label="Chat with PMERIT AI">
+            <!-- Chat Messages -->
+            <div class="chat-messages" id="chatBody">
+              <!-- Welcome Message -->
+              <article class="chat-bubble">
+                <div class="chat-avatar">
+                  <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+                </div>
+                <div class="chat-content">
+                  <h3>PMERIT AI</h3>
+                  <p>Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?</p>
+                </div>
+              </article>
+            </div>
 
-        <div id="textChat" role="region" aria-live="polite">
-          <div class="chat-body" id="chatBody">
-            <article class="bubble" id="welcomeMsg">
-              <div class="ava"><i class="fas fa-user-circle"></i></div>
-              <div>
-                <h3>PMERIT AI:</h3>
-                <p id="welcomeCopy">Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?</p>
-              </div>
-            </article>
-          </div>
-
-          <div class="chat-input-area">
-            <div class="input-wrapper">
+            <!-- Chat Input -->
+            <div class="chat-input-container">
+              <label for="chatInput" class="sr-only">Type your message</label>
               <textarea 
                 id="chatInput" 
+                class="chat-input" 
+                maxlength="1000" 
                 placeholder="Ask about courses, learning paths, or your goals..."
-                maxlength="1000"
-                rows="1"
-              ></textarea>
-              <button id="sendBtn" class="send-btn" disabled>
-                <i class="fas fa-paper-plane"></i>
-              </button>
-            </div>
-            <div class="input-footer">
-              <span class="char-count" id="charCount">0/1000</span>
-              <div class="mode-indicators">
-                <button id="vhModeBtn" class="mode-btn">
-                  <i class="fas fa-user-astronaut"></i> VH Mode
-                </button>
-                <button id="readAboutBtn" class="mode-btn">
-                  <i class="fas fa-book-open"></i> Read About
+                rows="3"></textarea>
+              
+              <!-- Input Controls -->
+              <div class="chat-input-controls">
+                <span class="chat-counter" id="chatCounter">0/1000</span>
+                
+                <div class="chat-actions">
+                  <button class="btn btn-sm btn-outline" id="vhModeBtn" type="button">
+                    <i class="fas fa-user-astronaut" aria-hidden="true"></i>
+                    VH Mode
+                  </button>
+                  
+                  <button class="btn btn-sm btn-outline" id="readAboutBtn" type="button">
+                    <i class="fas fa-book" aria-hidden="true"></i>
+                    Read About
+                  </button>
+                  
+                  <div class="connection-status">
+                    <i class="fas fa-circle-check" aria-hidden="true"></i>
+                    Connected to Educational Services
+                  </div>
+                </div>
+                
+                <button class="btn btn-primary" id="sendBtn" type="button">
+                  <span>Send</span>
+                  <i class="fas fa-paper-plane" aria-hidden="true"></i>
                 </button>
               </div>
             </div>
           </div>
         </div>
       </section>
+
+      <!-- Mobile Accordions (shown only on mobile) -->
+      <div id="mobileAccordions" style="display: none;" role="region" aria-label="Mobile navigation">
+        <!-- Quick Actions Accordion -->
+        <details class="mobile-accordion">
+          <summary class="mobile-accordion-summary">
+            <i class="fas fa-bolt" aria-hidden="true"></i>
+            <span>Quick Actions</span>
+            <i class="fas fa-chevron-down" aria-hidden="true"></i>
+          </summary>
+          <div class="mobile-accordion-content">
+            <div class="mobile-actions-grid">
+              <button class="mobile-action-card" id="mobileVHToggle" type="button">
+                <i class="fas fa-user-astronaut" aria-hidden="true"></i>
+                <span>Virtual Human Mode</span>
+              </button>
+              
+              <button class="mobile-action-card" id="mobileCareerPaths" type="button">
+                <i class="fas fa-compass" aria-hidden="true"></i>
+                <span>Career Paths</span>
+              </button>
+              
+              <button class="mobile-action-card" id="mobileSupportToggle" type="button">
+                <i class="fas fa-headset" aria-hidden="true"></i>
+                <span>Customer Service</span>
+              </button>
+            </div>
+          </div>
+        </details>
+
+        <!-- Assessment Accordion -->
+        <details class="mobile-accordion">
+          <summary class="mobile-accordion-summary">
+            <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+            <span>Discover Your Path</span>
+            <i class="fas fa-chevron-down" aria-hidden="true"></i>
+          </summary>
+          <div class="mobile-accordion-content">
+            <div class="discover">
+              <h4>Personalized learning plan</h4>
+              <p>Start a short flow that blends learning style, interests, and skills into a plan.</p>
+              <button class="btn btn-primary" id="mobileBeginAssessment">Begin Assessment</button>
+            </div>
+          </div>
+        </details>
+      </div>
     </main>
 
-    <aside id="right" aria-label="Support and discover sidebar">
-      <section>
-        <div class="support-assistant">
-          <h4><i class="fas fa-headset"></i> Support Assistant</h4>
-          <p style="color: var(--text-secondary); margin: 0.5rem 0;">Ask me about PMERIT</p>
+    <!-- Right Panel - Loaded via boot-includes.js -->
+    <aside id="right-panel" role="complementary" aria-label="Assessment and support">
+      <!-- Support Assistant Section -->
+      <section class="support-section">
+        <h4>
+          <i class="fas fa-headset" aria-hidden="true"></i>
+          Support Assistant
+        </h4>
+        <p>Ask me about PMERIT</p>
+        
+        <div class="support-actions">
+          <button class="btn btn-sm btn-outline" id="vhSupportBtn" type="button">
+            <i class="fas fa-user-astronaut" aria-hidden="true"></i>
+            Virtual Human
+          </button>
+          
+          <button class="btn btn-sm btn-outline" id="supportModeBtn" type="button">
+            <i class="fas fa-headset" aria-hidden="true"></i>
+            Support
+          </button>
         </div>
+      </section>
 
+      <!-- Assessment Section -->
+      <section class="assessment-section">
         <h3>Discover Your Path (AI)</h3>
+        
         <div class="discover">
           <h4>Personalized learning plan</h4>
           <p>Start a short flow that blends learning style, interests, and skills into a plan.</p>
-          <button class="nav-btn primary" id="beginAssessment">Begin Assessment</button>
-          <div class="insights" id="insights">Pro tip: Keep notes in your own words for better recall.</div>
+          
+          <button class="btn btn-primary btn-lg" id="beginAssessment" type="button">
+            <i class="fas fa-rocket" aria-hidden="true"></i>
+            Begin Assessment
+          </button>
+          
+          <div class="insights" id="assessmentInsights">
+            Relate new concepts to things you already understand for better retention.
+          </div>
         </div>
       </section>
     </aside>
   </div>
 
-  <!-- Assessment Modal -->
-  <div id="assessmentModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>PMERIT Career Assessment</h2>
-        <button class="close-btn" id="closeModal">&times;</button>
-      </div>
-      
-      <form id="assessmentForm">
-        <!-- Question 1: Learning Style -->
-        <div class="question" id="question1">
-          <h3>1. What's your preferred learning style?</h3>
-          <div class="question-options">
-            <label class="option">
-              <input type="radio" name="learning_style" value="visual" required>
-              <div>
-                <strong>Visual Learning</strong><br>
-                <span style="color: var(--text-secondary);">I learn best through diagrams, videos, and visual demonstrations</span>
-              </div>
-            </label>
-            <label class="option">
-              <input type="radio" name="learning_style" value="hands-on" required>
-              <div>
-                <strong>Hands-On Learning</strong><br>
-                <span style="color: var(--text-secondary);">I prefer practical exercises, coding labs, and interactive projects</span>
-              </div>
-            </label>
-            <label class="option">
-              <input type="radio" name="learning_style" value="structured" required>
-              <div>
-                <strong>Structured Learning</strong><br>
-                <span style="color: var(--text-secondary);">I like step-by-step courses, reading materials, and organized curriculum</span>
-              </div>
-            </label>
-          </div>
-        </div>
+  <!-- Footer Container - Loaded via boot-includes.js -->
+  <div id="footer-container" role="contentinfo"></div>
 
-        <!-- Question 2: Career Interest -->
-        <div class="question" id="question2" style="display: none;">
-          <h3>2. Which field interests you most?</h3>
-          <div class="question-options">
-            <label class="option">
-              <input type="radio" name="career_interest" value="technology" required>
-              <div>
-                <strong>Technology & Software</strong><br>
-                <span style="color: var(--text-secondary);">Building websites, apps, and digital solutions</span>
-              </div>
-            </label>
-            <label class="option">
-              <input type="radio" name="career_interest" value="data" required>
-              <div>
-                <strong>Data & Analytics</strong><br>
-                <span style="color: var(--text-secondary);">Working with data to drive insights and decisions</span>
-              </div>
-            </label>
-            <label class="option">
-              <input type="radio" name="career_interest" value="design" required>
-              <div>
-                <strong>Design & User Experience</strong><br>
-                <span style="color: var(--text-secondary);">Creating beautiful, user-friendly interfaces and experiences</span>
-              </div>
-            </label>
-            <label class="option">
-              <input type="radio" name="career_interest" value="business" required>
-              <div>
-                <strong>Business & Marketing</strong><br>
-                <span style="color: var(--text-secondary);">Digital marketing, customer support, and business operations</span>
-              </div>
-            </label>
-          </div>
-        </div>
-
-        <!-- Question 3: Primary Goal -->
-        <div class="question" id="question3" style="display: none;">
-          <h3>3. What's your primary goal?</h3>
-          <div class="question-options">
-            <label class="option">
-              <input type="radio" name="primary_goal" value="remote-job" required>
-              <div>
-                <strong>Get a Remote Job</strong><br>
-                <span style="color: var(--text-secondary);">I want to land a stable remote position</span>
-              </div>
-            </label>
-            <label class="option">
-              <input type="radio" name="primary_goal" value="freelance" required>
-              <div>
-                <strong>Start Freelancing</strong><br>
-                <span style="color: var(--text-secondary);">I want to work independently with multiple clients</span>
-              </div>
-            </label>
-            <label class="option">
-              <input type="radio" name="primary_goal" value="career-growth" required>
-              <div>
-                <strong>Advance My Career</strong><br>
-                <span style="color: var(--text-secondary);">I want to move up in my current field or switch careers</span>
-              </div>
-            </label>
-            <label class="option">
-              <input type="radio" name="primary_goal" value="skill-building" required>
-              <div>
-                <strong>Build New Skills</strong><br>
-                <span style="color: var(--text-secondary);">I want to learn for personal growth and knowledge</span>
-              </div>
-            </label>
-          </div>
-        </div>
-
-        <!-- Results Screen -->
-        <div id="assessmentResults" style="display: none;">
-          <div style="text-align: center; margin: 2rem 0;">
-            <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
-            <h3 style="color: var(--primary); margin-bottom: 1rem;">Your Personalized Career Track</h3>
-            <div id="recommendedTrack" style="font-size: 1.2rem; font-weight: 600; margin-bottom: 2rem;"></div>
-            <div id="trackDetails" style="margin-bottom: 2rem;"></div>
-            <div id="salaryInfo" style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; margin-bottom: 2rem;"></div>
-          </div>
-        </div>
-      </form>
-
-      <div class="modal-footer">
-        <div class="progress-indicator">
-          <div class="progress-dot active" id="dot1"></div>
-          <div class="progress-dot" id="dot2"></div>
-          <div class="progress-dot" id="dot3"></div>
-        </div>
-        <div style="display: flex; gap: 1rem;">
-          <button type="button" class="modal-btn" id="prevBtn" style="display: none;">Previous</button>
-          <button type="button" class="modal-btn primary" id="nextBtn">Next</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <footer>
-    <span class="footer-status-main">
-      <i class="fas fa-signal"></i> Connected to Educational Services
-    </span>
-  </footer>
-
-  <script>
-    // PMERIT Platform JavaScript - Clean implementation
-    const state = {
-      auth: false,
-      dark: false,
-      vh: false,
-      support: false,
-      tts: false,
-      lang: 'en',
-      currentQuestion: 1,
-      assessmentData: {}
-    };
-
-    // Initialize PMERIT namespace
-    window.PMERIT = {
-      api: {
-        assessment: {
-          start: async (data) => {
-            try {
-              const response = await fetch('/functions/api/assessment/start', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-              });
-              return await response.json();
-            } catch (error) {
-              console.log('Assessment API not connected yet, using fallback');
-              return window.PMERIT.generateAssessmentResult(data);
-            }
-          }
-        },
-        ai: {
-          chat: async (message, role = 'assistant') => {
-            try {
-              const response = await fetch('/functions/api/ai/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message, role })
-              });
-              return await response.json();
-            } catch (error) {
-              console.log('AI API not connected yet, using fallback');
-              return { response: window.PMERIT.generateAIResponse(message, role) };
-            }
-          }
-        }
-      },
-      
-      // Generate assessment result (fallback until API is connected)
-      generateAssessmentResult: function(data) {
-        const tracks = {
-          'technology': {
-            name: 'Software Development Track',
-            description: 'Perfect for building websites, applications, and digital solutions. High demand for remote positions.',
-            courses: ['Web Development Fundamentals', 'JavaScript & React', 'Backend Development', 'Full Stack Projects'],
-            salary: '$45,000 - $85,000',
-            timeframe: '6-12 months'
-          },
-          'data': {
-            name: 'Data Analytics Track', 
-            description: 'Ideal for working with data to drive business insights and decision-making.',
-            courses: ['Data Analysis with Excel', 'SQL Database Skills', 'Python for Data Science', 'Analytics Projects'],
-            salary: '$50,000 - $90,000',
-            timeframe: '4-8 months'
-          },
-          'design': {
-            name: 'UI/UX Design Track',
-            description: 'Create beautiful, user-friendly interfaces and experiences that users love.',
-            courses: ['Design Principles', 'Figma & Prototyping', 'User Research', 'Portfolio Development'],
-            salary: '$40,000 - $75,000',
-            timeframe: '4-6 months'
-          },
-          'business': {
-            name: 'Digital Marketing Track',
-            description: 'Master online marketing strategies, customer support, and business operations.',
-            courses: ['Digital Marketing Fundamentals', 'Social Media Marketing', 'Customer Support Excellence', 'Business Analytics'],
-            salary: '$35,000 - $65,000',
-            timeframe: '3-5 months'
-          }
-        };
-
-        return {
-          recommended_track: tracks[data.career_interest],
-          learning_approach: data.learning_style,
-          goal_alignment: data.primary_goal
-        };
-      },
-
-      // Assessment Modal Functions
-      initAssessmentModal: function() {
-        const beginBtn = document.getElementById('beginAssessment');
-        const modal = document.getElementById('assessmentModal');
-        const closeBtn = document.getElementById('closeModal');
-        const nextBtn = document.getElementById('nextBtn');
-        const prevBtn = document.getElementById('prevBtn');
-
-        // Open modal
-        beginBtn.addEventListener('click', () => {
-          modal.classList.add('active');
-          this.resetAssessment();
-        });
-
-        // Close modal
-        closeBtn.addEventListener('click', () => {
-          modal.classList.remove('active');
-        });
-
-        // Close on backdrop click
-        modal.addEventListener('click', (e) => {
-          if (e.target === modal) {
-            modal.classList.remove('active');
-          }
-        });
-
-        // Next button
-        nextBtn.addEventListener('click', () => {
-          this.nextQuestion();
-        });
-
-        // Previous button  
-        prevBtn.addEventListener('click', () => {
-          this.previousQuestion();
-        });
-
-        // Radio button selection handling
-        document.addEventListener('change', (e) => {
-          if (e.target.type === 'radio') {
-            // Update visual selection
-            const options = e.target.closest('.question-options').querySelectorAll('.option');
-            options.forEach(opt => opt.classList.remove('selected'));
-            e.target.closest('.option').classList.add('selected');
-            
-            // Enable next button
-            nextBtn.disabled = false;
-          }
-        });
-      },
-
-      resetAssessment: function() {
-        state.currentQuestion = 1;
-        state.assessmentData = {};
-        this.showQuestion(1);
-        this.updateProgress();
-      },
-
-      showQuestion: function(questionNum) {
-        // Hide all questions and results
-        document.querySelectorAll('.question, #assessmentResults').forEach(el => {
-          el.style.display = 'none';
-        });
-        
-        // Show current question
-        const currentQ = document.getElementById(`question${questionNum}`);
-        if (currentQ) {
-          currentQ.style.display = 'block';
-        }
-        
-        // Update buttons
-        document.getElementById('prevBtn').style.display = questionNum > 1 ? 'block' : 'none';
-        document.getElementById('nextBtn').textContent = questionNum === 3 ? 'Get Results' : 'Next';
-        document.getElementById('nextBtn').disabled = true;
-      },
-
-      nextQuestion: function() {
-        // Save current answer
-        const currentQ = document.getElementById(`question${state.currentQuestion}`);
-        const selected = currentQ.querySelector('input[type="radio"]:checked');
-        
-        if (selected) {
-          state.assessmentData[selected.name] = selected.value;
-        }
-
-        if (state.currentQuestion === 3) {
-          // Show results
-          this.showAssessmentResults();
-        } else {
-          // Go to next question
-          state.currentQuestion++;
-          this.showQuestion(state.currentQuestion);
-          this.updateProgress();
-        }
-      },
-
-      previousQuestion: function() {
-        if (state.currentQuestion > 1) {
-          state.currentQuestion--;
-          this.showQuestion(state.currentQuestion);
-          this.updateProgress();
-        }
-      },
-
-      updateProgress: function() {
-        document.querySelectorAll('.progress-dot').forEach((dot, index) => {
-          dot.classList.toggle('active', index < state.currentQuestion);
-        });
-      },
-
-      showAssessmentResults: function() {
-        // Hide questions, show results
-        document.querySelectorAll('.question').forEach(el => el.style.display = 'none');
-        document.getElementById('assessmentResults').style.display = 'block';
-        
-        // Generate results
-        const result = this.generateAssessmentResult(state.assessmentData);
-        const track = result.recommended_track;
-        
-        // Update results display
-        document.getElementById('recommendedTrack').textContent = track.name;
-        document.getElementById('trackDetails').innerHTML = `
-          <p>${track.description}</p>
-          <h4 style="margin: 1rem 0 0.5rem; color: var(--primary);">Recommended Courses:</h4>
-          <ul style="margin: 0; padding-left: 1.5rem;">
-            ${track.courses.map(course => `<li>${course}</li>`).join('')}
-          </ul>
-        `;
-        document.getElementById('salaryInfo').innerHTML = `
-          <strong>Expected Salary Range:</strong> ${track.salary}<br>
-          <strong>Time to Complete:</strong> ${track.timeframe}
-        `;
-        
-        // Update footer buttons
-        document.getElementById('prevBtn').style.display = 'none';
-        document.getElementById('nextBtn').textContent = 'Start Learning Journey';
-        document.getElementById('nextBtn').onclick = () => {
-          // Close modal and show sign up prompt
-          document.getElementById('assessmentModal').classList.remove('active');
-          this.showSignUpPrompt(track);
-        };
-      },
-
-      // Virtual Human Mode Toggle Implementation
-      initVirtualHumanToggle: function() {
-        const vhToggle = document.getElementById('vhToggle');
-        const vhBadge = document.getElementById('vhBadge');
-        
-        vhToggle.addEventListener('click', function() {
-          // Toggle state
-          state.vh = !state.vh;
-          
-          // Update visual switch
-          this.classList.toggle('active', state.vh);
-          
-          // Show/hide badge in center panel
-          if (state.vh) {
-            vhBadge.style.display = 'inline-flex';
-            console.log('PMERIT: Virtual Human Mode enabled');
-          } else {
-            vhBadge.style.display = 'none';
-            console.log('PMERIT: Virtual Human Mode disabled');
-          }
-          
-          // Update AI behavior mode
-          window.PMERIT.updateAIMode();
-        });
-      },
-
-      // Career Track & Explore Paths button Implementation
-      initCareerPaths: function() {
-        const careerPathsBtn = document.getElementById('careerPaths');
-        
-        careerPathsBtn.addEventListener('click', function() {
-          console.log('PMERIT: Career Paths clicked');
-          
-          // Check if user is authenticated
-          if (state.auth) {
-            // Authenticated user - go to full career page
-            window.location.href = '/career.html';
-          } else {
-            // Guest user - show career tracks preview
-            window.PMERIT.showCareerTracksPreview();
-          }
-        });
-      },
-      
-      showCareerTracksPreview: function() {
-        const chatBody = document.getElementById('chatBody');
-        // Add career tracks message to chat
-        const careerMsg = document.createElement('article');
-        careerMsg.className = 'bubble';
-        careerMsg.innerHTML = `
-          <div class="ava"><i class="fas fa-compass"></i></div>
-          <div>
-            <h3>PMERIT AI:</h3>
-            <p><strong>Explore Our Career Tracks:</strong></p>
-            <p>• <strong>Software Development</strong> - Build websites, apps, and digital solutions<br/>
-            • <strong>Data Analytics</strong> - Analyze data to drive business insights<br/>
-            • <strong>UI/UX Design</strong> - Create user-friendly interfaces<br/>
-            • <strong>Digital Marketing</strong> - Online marketing and growth strategies<br/>
-            • <strong>Customer Support</strong> - Remote support and customer service</p>
-            <p>Ready to find your perfect match? Take our assessment to get personalized recommendations!</p>
-          </div>
-        `;
-        
-        chatBody.appendChild(careerMsg);
-        chatBody.scrollTop = chatBody.scrollHeight;
-      },
-      
-      // Customer Service Mode Toggle Implementation
-      initCustomerServiceToggle: function() {
-        const supportToggle = document.getElementById('supportToggle');
-        const supportBadge = document.getElementById('supportBadge');
-        
-        supportToggle.addEventListener('click', function() {
-          // Toggle state
-          state.support = !state.support;
-          
-          // Update visual switch
-          this.classList.toggle('active', state.support);
-          
-          // Show/hide badge in center panel
-          if (state.support) {
-            supportBadge.style.display = 'inline-flex';
-            console.log('PMERIT: Customer Service Mode enabled');
-          } else {
-            supportBadge.style.display = 'none';
-            console.log('PMERIT: Customer Service Mode disabled');
-          }
-          
-          // Update AI behavior mode
-          window.PMERIT.updateAIMode();
-        });
-      },
-      
-      // Dashboard button Implementation
-      initDashboardButton: function() {
-        const dashBtn = document.getElementById('dashBtn');
-        
-        dashBtn.addEventListener('click', function() {
-          console.log('PMERIT: Dashboard button clicked');
-          
-          if (state.auth) {
-            // Authenticated user - go to dashboard
-            window.location.href = '/dashboard.html';
-          } else {
-            // Guest user - show sign up prompt
-            window.PMERIT.showSignUpPrompt();
-          }
-        });
-      },
-      
-      showSignUpPrompt: function(trackInfo = null) {
-        const chatBody = document.getElementById('chatBody');
-        
-        let message = `
-          <div class="ava"><i class="fas fa-user-plus"></i></div>
-          <div>
-            <h3>PMERIT AI:</h3>
-            <p><strong>Create Your Dashboard</strong></p>
-        `;
-
-        if (trackInfo) {
-          message += `
-            <p>Great choice with the <strong>${trackInfo.name}</strong>! To get started:</p>
-            <p>• Access your personalized learning path<br/>
-            • Track your progress through courses<br/>
-            • Get career guidance and support<br/>
-            • Connect with PMERIT community</p>
-          `;
-        } else {
-          message += `
-            <p>Sign up to access your personalized dashboard with:</p>
-            <p>• Track your learning progress<br/>
-            • View recommended courses<br/>
-            • Manage your career path<br/>
-            • Access certificates and achievements</p>
-          `;
-        }
-
-        message += `
-            <p>Ready to get started? Click "Start Learning" in the top navigation to create your free account!</p>
-          </div>
-        `;
-        
-        // Add sign up prompt to chat
-        const signUpMsg = document.createElement('article');
-        signUpMsg.className = 'bubble';
-        signUpMsg.innerHTML = message;
-        
-        chatBody.appendChild(signUpMsg);
-        chatBody.scrollTop = chatBody.scrollHeight;
-        
-        // Highlight the Start Learning button briefly
-        const startBtn = document.getElementById('startBtn');
-        startBtn.style.animation = 'pulse 2s ease-in-out';
-        setTimeout(() => {
-          startBtn.style.animation = '';
-        }, 2000);
-      },
-      
-      // Update AI interaction mode based on current state
-      updateAIMode: function() {
-        const welcomeCopy = document.getElementById('welcomeCopy');
-        
-        if (state.support) {
-          // Customer Service mode - help-focused interaction
-          welcomeCopy.textContent = "Hi! I'm here in Customer Service mode to help with any questions about PMERIT - accounts, courses, technical issues, billing, or platform features. What can I assist you with today?";
-        } else if (state.vh) {
-          // Virtual Human mode
-          welcomeCopy.textContent = "Hi there! I'm your Virtual Human assistant. I can provide visual guidance and more interactive support. How would you like to explore PMERIT today?";
-        } else {
-          // Standard mode
-          welcomeCopy.textContent = "Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?";
-        }
-      },
-
-      // Generate AI response (fallback until real API is connected)
-      generateAIResponse: function(userMessage, role = 'assistant') {
-        const lowerMessage = userMessage.toLowerCase();
-        
-        // Role-based responses
-        if (role === 'tutor') {
-          if (lowerMessage.includes('explain') || lowerMessage.includes('how')) {
-            return "Let me break this down step by step for you. First, let's understand the core concept, then we'll build on it with practical examples. What specific area would you like me to focus on?";
-          }
-          return "As your tutor, I'm here to help you master each concept thoroughly. What topic would you like to dive deeper into?";
-        }
-        
-        if (role === 'receptionist') {
-          if (lowerMessage.includes('help') || lowerMessage.includes('support')) {
-            return "I'll be happy to direct you to the right resource! For technical support, try our help center. For enrollment questions, I can connect you with admissions. What do you need assistance with?";
-          }
-          return "Welcome to PMERIT! I'm here to help you navigate our platform and connect you with the right resources. How may I assist you today?";
-        }
-        
-        // Default assistant responses
-        if (lowerMessage.includes('course') || lowerMessage.includes('learn')) {
-          return "I'd be happy to help you explore our courses! We offer programs in Software Development, Data Analytics, UI/UX Design, Digital Marketing, and Customer Support. Would you like to start with our assessment to get personalized recommendations?";
-        }
-        
-        if (lowerMessage.includes('career') || lowerMessage.includes('job')) {
-          return "Great question about career opportunities! Our programs are designed to prepare you for remote work and high-demand fields. The assessment can help identify the best career path based on your interests and goals. Ready to discover your path?";
-        }
-        
-        if (lowerMessage.includes('assessment') || lowerMessage.includes('test')) {
-          return "The assessment takes just 5-7 minutes and will recommend personalized career tracks for you. It covers your learning style, interests, experience level, and goals. Click 'Begin Assessment' in the right panel to get started!";
-        }
-        
-        if (lowerMessage.includes('help') || lowerMessage.includes('support')) {
-          return "I'm here to help! I can assist with information about our courses, career paths, the assessment process, or any questions about PMERIT. You can also toggle 'Customer Service Mode' in the left panel for more detailed support. What would you like to know?";
-        }
-        
-        return "Thanks for your question! I'm here to guide your learning journey with PMERIT. I can help you explore courses, understand career opportunities, or start your assessment. What interests you most?";
-      },
-
-      // Chat input functionality
-      initializeChatInput: function() {
-        const chatInput = document.getElementById('chatInput');
-        const sendBtn = document.getElementById('sendBtn');
-        const charCount = document.getElementById('charCount');
-        const chatBody = document.getElementById('chatBody');
-
-        // Character counter and send button state
-        chatInput.addEventListener('input', function() {
-          const count = this.value.length;
-          charCount.textContent = `${count}/1000`;
-          sendBtn.disabled = this.value.trim().length === 0;
-          
-          // Auto-resize textarea
-          this.style.height = 'auto';
-          this.style.height = Math.min(this.scrollHeight, 120) + 'px';
-        });
-
-        // Send message function
-        async function sendMessage() {
-          const message = chatInput.value.trim();
-          if (!message) return;
-
-          // Add user message to chat
-          addMessage('You', message, true);
-          
-          // Clear input
-          chatInput.value = '';
-          charCount.textContent = '0/1000';
-          sendBtn.disabled = true;
-          chatInput.style.height = 'auto';
-
-          // Show typing indicator
-          const typingMsg = addMessage('PMERIT AI', 'Typing...', false);
-          typingMsg.style.opacity = '0.7';
-
-          try {
-            // Determine AI role
-            let role = 'assistant';
-            if (state.support) role = 'receptionist';
-            if (state.vh) role = 'tutor';
-
-            // Call PMERIT AI API
-            const result = await window.PMERIT.api.ai.chat(message, role);
-            
-            // Remove typing indicator
-            typingMsg.remove();
-            
-            // Add AI response
-            addMessage('PMERIT AI', result.response, false);
-          } catch (error) {
-            // Remove typing indicator and show error
-            typingMsg.remove();
-            addMessage('PMERIT AI', 'Sorry, I\'m having trouble connecting right now. Please try again in a moment.', false);
-          }
-        }
-        
-        // Add message to chat
-        function addMessage(sender, text, isUser) {
-          const messageEl = document.createElement('article');
-          messageEl.className = 'bubble';
-          messageEl.innerHTML = `
-            <div class="ava">
-              <i class="fas ${isUser ? 'fa-user' : 'fa-user-circle'}"></i>
-            </div>
-            <div>
-              <h3>${sender}:</h3>
-              <p>${text}</p>
-            </div>
-          `;
-          chatBody.appendChild(messageEl);
-          chatBody.scrollTop = chatBody.scrollHeight;
-          return messageEl;
-        }
-        
-        // Event listeners
-        sendBtn.addEventListener('click', sendMessage);
-        
-        chatInput.addEventListener('keydown', function(e) {
-          if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            sendMessage();
-          }
-        });
-
-        // Mode buttons
-        document.getElementById('vhModeBtn').addEventListener('click', function() {
-          document.getElementById('vhToggle').click(); // Trigger existing VH toggle
-        });
-
-        document.getElementById('readAboutBtn').addEventListener('click', function() {
-          addMessage('PMERIT AI', 'Here are some helpful resources: Our platform offers career-focused education in high-demand fields. Check out our Career Paths section or start with the assessment to find your perfect match!', false);
-        });
-      },
-      
-      // Initialize application
-      init: function() {
-        console.log('PMERIT Platform initialized');
-        this.bindEvents();
-      },
-      
-      bindEvents: function() {
-        // Initialize Assessment Modal
-        this.initAssessmentModal();
-        
-        // Initialize Virtual Human toggle
-        this.initVirtualHumanToggle();
-        
-        // Initialize Career Paths button
-        this.initCareerPaths();
-        
-        // Initialize Customer Service toggle
-        this.initCustomerServiceToggle();
-        
-        // Initialize Dashboard button
-        this.initDashboardButton();
-
-        // Initialize chat input
-        this.initializeChatInput();
-
-        // Bind navigation buttons
-        document.getElementById('startBtn')?.addEventListener('click', () => {
-          console.log('Start Learning clicked - redirect to sign up');
-        });
-
-        document.getElementById('signInBtn')?.addEventListener('click', () => {
-          console.log('Sign In clicked - redirect to login');
-        });
-
-        document.getElementById('pricingBtn')?.addEventListener('click', () => {
-          console.log('Pricing clicked - show pricing info');
-        });
-      }
-    };
-
-    // Initialize when DOM loads
-    document.addEventListener('DOMContentLoaded', () => {
-      window.PMERIT.init();
-    });
-  </script>
+  <!-- Core JavaScript - Shared Assets Only -->
+  <script src="/assets/nav-config.js"></script>
+  <script src="/assets/boot-includes.js"></script>
+  <script src="/assets/home.js"></script>
 </body>
 </html>
