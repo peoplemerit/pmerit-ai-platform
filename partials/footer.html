@@ -1,717 +1,119 @@
-<!-- PMERIT Platform Footer -->
-<footer class="pmerit-footer" role="contentinfo">
-  <div class="footer-container">
-    <!-- Footer Main Content -->
-    <div class="footer-main">
-      <!-- System Status -->
-      <div class="footer-status">
-        <div class="status-indicator" id="systemStatus">
-          <span class="status-icon">🟢</span>
-          <span class="status-text" id="statusText">All Systems Operational</span>
-        </div>
-        
-        <!-- Connection Status -->
-        <div class="connection-status" id="connectionStatus">
-          <span class="connection-icon">📡</span>
-          <span class="connection-text" id="connectionText">Connected to Educational Services</span>
-        </div>
-      </div>
+<!-- PMERIT Platform Footer - Shared Partial -->
+<!-- Follows Frontend Implementation Strategy.txt - DRY Principle -->
+<!-- Styles: /assets/base.css | Scripts: /assets/boot-includes.js -->
 
-      <!-- Footer Links -->
-      <nav class="footer-nav" aria-label="Footer navigation">
-        <!-- Legal & Policies -->
-        <div class="footer-section">
-          <h3 class="footer-heading">Legal</h3>
-          <ul class="footer-links">
-            <li><a href="/privacy.html" class="footer-link">Privacy Policy</a></li>
-            <li><a href="/terms.html" class="footer-link">Terms of Service</a></li>
-            <li><a href="/accessibility.html" class="footer-link">Accessibility</a></li>
-            <li><a href="/cookies.html" class="footer-link">Cookie Policy</a></li>
-          </ul>
-        </div>
-
-        <!-- Platform -->
-        <div class="footer-section">
-          <h3 class="footer-heading">Platform</h3>
-          <ul class="footer-links">
-            <li><a href="/about.html" class="footer-link">About PMERIT</a></li>
-            <li><a href="/pricing.html" class="footer-link">Pricing</a></li>
-            <li><a href="/partnerships.html" class="footer-link">Partnerships</a></li>
-            <li><a href="/api-docs.html" class="footer-link">API Documentation</a></li>
-          </ul>
-        </div>
-
-        <!-- Support -->
-        <div class="footer-section">
-          <h3 class="footer-heading">Support</h3>
-          <ul class="footer-links">
-            <li><a href="/support.html" class="footer-link">Help Center</a></li>
-            <li><a href="/contact.html" class="footer-link">Contact Us</a></li>
-            <li><a href="/community.html" class="footer-link">Community Forum</a></li>
-            <li><a href="/status.html" class="footer-link">System Status</a></li>
-          </ul>
-        </div>
-
-        <!-- Career & Learning -->
-        <div class="footer-section">
-          <h3 class="footer-heading">Learning</h3>
-          <ul class="footer-links">
-            <li><a href="/career.html" class="footer-link">Career Paths</a></li>
-            <li><a href="/courses.html" class="footer-link">Course Catalog</a></li>
-            <li><a href="/library.html" class="footer-link">Resource Library</a></li>
-            <li><a href="/blog.html" class="footer-link">Blog</a></li>
-          </ul>
-        </div>
-      </nav>
+<footer class="site-footer" role="contentinfo">
+  <!-- System Status Section -->
+  <div class="footer-status">
+    <div class="status-indicator" id="statusIndicator" tabindex="0" aria-describedby="status-desc">
+      <i class="fas fa-circle-check status-icon" aria-hidden="true"></i>
+      <span class="status-text" id="systemStatus">Connected to Educational Services</span>
     </div>
-
-    <!-- Footer Bottom -->
-    <div class="footer-bottom">
-      <!-- Copyright & Attribution -->
-      <div class="footer-copyright">
-        <div class="copyright-text">
-          © <span id="currentYear">2025</span> PMERIT Platform. 
-          <span class="attribution">Empowering Learning Through Innovation.</span>
-        </div>
-        
-        <!-- Version Info -->
-        <div class="version-info">
-          <span class="version-label">Platform Version:</span>
-          <span class="version-number" id="platformVersion">3.0.0</span>
-          |
-          <span class="build-label">Build:</span>
-          <span class="build-number" id="buildNumber">2025.09.04</span>
-        </div>
+    <div id="status-desc" class="sr-only">Click to view detailed system status</div>
+    
+    <!-- Real-time Status Details (hidden by default) -->
+    <div class="status-details" id="statusDetails" aria-hidden="true">
+      <div class="status-item">
+        <span class="status-label">Database:</span>
+        <span class="status-value" id="dbStatus">
+          <i class="fas fa-circle status-dot online" aria-hidden="true"></i>
+          Online
+        </span>
       </div>
-
-      <!-- Social Links & External -->
-      <div class="footer-external">
-        <!-- Language/Region Selector -->
-        <div class="region-selector">
-          <button class="region-btn" id="regionSelector" aria-expanded="false">
-            <span class="region-flag">🇳🇬</span>
-            <span class="region-text">Nigeria</span>
-            <span class="region-arrow">▼</span>
-          </button>
-          
-          <!-- Region Dropdown -->
-          <div class="region-dropdown" id="regionDropdown">
-            <a href="?region=ng" class="region-option" data-region="ng">
-              <span class="region-flag">🇳🇬</span>
-              Nigeria
-            </a>
-            <a href="?region=us" class="region-option" data-region="us">
-              <span class="region-flag">🇺🇸</span>
-              United States
-            </a>
-            <a href="?region=global" class="region-option" data-region="global">
-              <span class="region-flag">🌍</span>
-              Global
-            </a>
-          </div>
-        </div>
-
-        <!-- External Links -->
-        <div class="external-links">
-          <a href="https://github.com/pmerit-ai-platform" class="external-link" aria-label="GitHub Repository">
-            <span class="external-icon">💻</span>
-            GitHub
-          </a>
-          <a href="https://twitter.com/pmerit" class="external-link" aria-label="Twitter/X">
-            <span class="external-icon">🐦</span>
-            Twitter
-          </a>
-          <a href="https://linkedin.com/company/pmerit" class="external-link" aria-label="LinkedIn">
-            <span class="external-icon">💼</span>
-            LinkedIn
-          </a>
-        </div>
+      <div class="status-item">
+        <span class="status-label">AI Services:</span>
+        <span class="status-value" id="aiStatus">
+          <i class="fas fa-circle status-dot online" aria-hidden="true"></i>
+          Available
+        </span>
       </div>
-    </div>
-
-    <!-- Development/Debug Info (hidden in production) -->
-    <div class="footer-debug" id="footerDebug" style="display: none;">
-      <details class="debug-details">
-        <summary class="debug-summary">Debug Information</summary>
-        <div class="debug-content">
-          <div class="debug-item">
-            <span class="debug-label">Environment:</span>
-            <span class="debug-value" id="debugEnv">production</span>
-          </div>
-          <div class="debug-item">
-            <span class="debug-label">Database Status:</span>
-            <span class="debug-value" id="debugDb">connected</span>
-          </div>
-          <div class="debug-item">
-            <span class="debug-label">AI Service:</span>
-            <span class="debug-value" id="debugAi">operational</span>
-          </div>
-          <div class="debug-item">
-            <span class="debug-label">User Agent:</span>
-            <span class="debug-value" id="debugUserAgent">-</span>
-          </div>
-        </div>
-      </details>
+      <div class="status-item">
+        <span class="status-label">Assessment API:</span>
+        <span class="status-value" id="assessmentStatus">
+          <i class="fas fa-circle status-dot online" aria-hidden="true"></i>
+          Ready
+        </span>
+      </div>
+      <div class="status-item">
+        <span class="status-label">Job Market Data:</span>
+        <span class="status-value" id="jobDataStatus">
+          <i class="fas fa-circle status-dot online" aria-hidden="true"></i>
+          Updated
+        </span>
+      </div>
     </div>
   </div>
+
+  <!-- Footer Links Section -->
+  <nav class="footer-links" role="navigation" aria-label="Footer navigation">
+    <!-- Primary Support Links -->
+    <div class="link-group primary-links">
+      <button class="footer-btn" id="supportBtn" type="button" aria-describedby="support-desc">
+        <i class="fas fa-life-ring" aria-hidden="true"></i>
+        <span>Support</span>
+      </button>
+      <div id="support-desc" class="sr-only">Get help with platform issues and questions</div>
+
+      <button class="footer-btn" id="contactBtn" type="button" aria-describedby="contact-desc">
+        <i class="fas fa-envelope" aria-hidden="true"></i>
+        <span>Contact</span>
+      </button>
+      <div id="contact-desc" class="sr-only">Contact PMERIT team</div>
+
+      <button class="footer-btn" id="privacyBtn" type="button" aria-describedby="privacy-desc">
+        <i class="fas fa-shield-halved" aria-hidden="true"></i>
+        <span>Privacy & Terms</span>
+      </button>
+      <div id="privacy-desc" class="sr-only">View privacy policy and terms of service</div>
+    </div>
+
+    <!-- Secondary Links -->
+    <div class="link-group secondary-links">
+      <button class="footer-btn" id="partnershipsBtn" type="button" aria-describedby="partnerships-desc">
+        <i class="fas fa-handshake" aria-hidden="true"></i>
+        <span>Partnerships</span>
+      </button>
+      <div id="partnerships-desc" class="sr-only">Learn about partnership opportunities</div>
+
+      <button class="footer-btn" id="careersBtn" type="button" aria-describedby="careers-desc">
+        <i class="fas fa-briefcase" aria-hidden="true"></i>
+        <span>Careers</span>
+      </button>
+      <div id="careers-desc" class="sr-only">Join the PMERIT team</div>
+
+      <button class="footer-btn" id="aboutBtn" type="button" aria-describedby="about-desc">
+        <i class="fas fa-info-circle" aria-hidden="true"></i>
+        <span>About</span>
+      </button>
+      <div id="about-desc" class="sr-only">Learn about PMERIT's mission</div>
+    </div>
+  </nav>
+
+  <!-- Platform Info -->
+  <div class="platform-info">
+    <div class="platform-tagline">
+      <span class="tagline-text">Accessible Global Education</span>
+      <span class="tagline-emoji" role="img" aria-label="Education">🎓</span>
+    </div>
+    <div class="platform-version">
+      <span class="version-text" id="platformVersion">v1.0.0</span>
+      <span class="build-info" id="buildInfo">Build 2024.09</span>
+    </div>
+  </div>
+
+  <!-- Mobile Quick Actions (shown on mobile) -->
+  <div class="mobile-quick-actions" aria-label="Quick actions">
+    <button class="quick-action-btn" id="mobileSupport" type="button" aria-label="Support">
+      <i class="fas fa-life-ring" aria-hidden="true"></i>
+    </button>
+    <button class="quick-action-btn" id="mobileContact" type="button" aria-label="Contact">
+      <i class="fas fa-envelope" aria-hidden="true"></i>
+    </button>
+    <button class="quick-action-btn" id="mobileStatus" type="button" aria-label="System status">
+      <i class="fas fa-signal" aria-hidden="true"></i>
+    </button>
+    <button class="quick-action-btn" id="mobileSettings" type="button" aria-label="Settings">
+      <i class="fas fa-cog" aria-hidden="true"></i>
+    </button>
+  </div>
 </footer>
-
-<style>
-/* PMERIT Footer Styles */
-.pmerit-footer {
-  background: var(--bg-secondary);
-  border-top: 1px solid var(--border);
-  margin-top: auto;
-  padding: var(--spacing-xl) 0 var(--spacing-lg);
-}
-
-.footer-container {
-  max-width: var(--content-max-width);
-  margin: 0 auto;
-  padding: 0 var(--spacing-md);
-}
-
-/* Footer Main Content */
-.footer-main {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: var(--spacing-xl);
-  margin-bottom: var(--spacing-lg);
-}
-
-/* System Status */
-.footer-status {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-}
-
-.status-indicator,
-.connection-status {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  font-size: var(--font-size-sm);
-}
-
-.status-icon,
-.connection-icon {
-  font-size: var(--font-size-sm);
-}
-
-.status-text,
-.connection-text {
-  color: var(--text-secondary);
-  font-weight: 500;
-}
-
-.status-indicator.error .status-icon {
-  content: '🔴';
-}
-
-.status-indicator.warning .status-icon {
-  content: '🟡';
-}
-
-.connection-status.disconnected .connection-icon {
-  content: '📡';
-  opacity: 0.5;
-}
-
-/* Footer Navigation */
-.footer-nav {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: var(--spacing-lg);
-}
-
-.footer-section {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-}
-
-.footer-heading {
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  color: var(--text-primary);
-  margin: 0;
-}
-
-.footer-links {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
-}
-
-.footer-link {
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-size: var(--font-size-sm);
-  transition: var(--transition-base);
-  padding: 2px 0;
-}
-
-.footer-link:hover {
-  color: var(--primary);
-  text-decoration: underline;
-}
-
-/* Footer Bottom */
-.footer-bottom {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: var(--spacing-lg);
-  align-items: center;
-  padding-top: var(--spacing-lg);
-  border-top: 1px solid var(--border);
-}
-
-/* Copyright */
-.footer-copyright {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
-}
-
-.copyright-text {
-  font-size: var(--font-size-sm);
-  color: var(--text-secondary);
-}
-
-.attribution {
-  font-style: italic;
-  color: var(--text-muted);
-}
-
-.version-info {
-  font-size: var(--font-size-xs);
-  color: var(--text-muted);
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-}
-
-/* External Links */
-.footer-external {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-lg);
-}
-
-/* Region Selector */
-.region-selector {
-  position: relative;
-}
-
-.region-btn {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  padding: var(--spacing-xs) var(--spacing-sm);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  background: var(--card-bg);
-  color: var(--text-secondary);
-  font-size: var(--font-size-sm);
-  cursor: pointer;
-  transition: var(--transition-base);
-}
-
-.region-btn:hover {
-  border-color: var(--primary);
-  color: var(--text-primary);
-}
-
-.region-arrow {
-  font-size: var(--font-size-xs);
-  transition: var(--transition-base);
-}
-
-.region-btn[aria-expanded="true"] .region-arrow {
-  transform: rotate(180deg);
-}
-
-.region-dropdown {
-  position: absolute;
-  bottom: calc(100% + var(--spacing-xs));
-  right: 0;
-  min-width: 150px;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg);
-  z-index: 1000;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(8px);
-  transition: var(--transition-base);
-}
-
-.region-dropdown.show {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.region-option {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-sm) var(--spacing-md);
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-size: var(--font-size-sm);
-  transition: var(--transition-base);
-}
-
-.region-option:hover {
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-}
-
-.region-option.active {
-  background: var(--bg-accent);
-  color: var(--primary);
-  font-weight: 500;
-}
-
-/* External Links */
-.external-links {
-  display: flex;
-  gap: var(--spacing-md);
-}
-
-.external-link {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-size: var(--font-size-sm);
-  transition: var(--transition-base);
-}
-
-.external-link:hover {
-  color: var(--primary);
-}
-
-.external-icon {
-  font-size: var(--font-size-sm);
-}
-
-/* Debug Information */
-.footer-debug {
-  margin-top: var(--spacing-lg);
-  padding-top: var(--spacing-md);
-  border-top: 1px dashed var(--border);
-}
-
-.debug-details {
-  font-size: var(--font-size-xs);
-  color: var(--text-muted);
-}
-
-.debug-summary {
-  cursor: pointer;
-  font-weight: 500;
-  color: var(--text-secondary);
-  margin-bottom: var(--spacing-sm);
-}
-
-.debug-content {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--spacing-sm);
-  padding: var(--spacing-sm);
-  background: var(--bg-primary);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-}
-
-.debug-item {
-  display: flex;
-  gap: var(--spacing-xs);
-}
-
-.debug-label {
-  font-weight: 600;
-  min-width: 100px;
-}
-
-.debug-value {
-  color: var(--text-primary);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .footer-main {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-lg);
-  }
-  
-  .footer-nav {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-md);
-  }
-  
-  .footer-bottom {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-md);
-    text-align: center;
-  }
-  
-  .footer-external {
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  
-  .external-links {
-    gap: var(--spacing-sm);
-  }
-}
-
-@media (max-width: 480px) {
-  .footer-nav {
-    grid-template-columns: 1fr;
-  }
-  
-  .footer-status {
-    align-items: center;
-    text-align: center;
-  }
-  
-  .external-link {
-    font-size: var(--font-size-xs);
-  }
-}
-</style>
-
-<script>
-// Footer Component JavaScript
-(function() {
-  'use strict';
-  
-  // Initialize footer when DOM is ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initFooter);
-  } else {
-    initFooter();
-  }
-  
-  function initFooter() {
-    updateCopyrightYear();
-    initializeRegionSelector();
-    updateSystemStatus();
-    initializeDebugInfo();
-    
-    // Update status periodically
-    setInterval(updateSystemStatus, 30000); // Every 30 seconds
-  }
-  
-  function updateCopyrightYear() {
-    const yearElement = document.getElementById('currentYear');
-    if (yearElement) {
-      yearElement.textContent = new Date().getFullYear();
-    }
-  }
-  
-  function initializeRegionSelector() {
-    const regionBtn = document.getElementById('regionSelector');
-    const regionDropdown = document.getElementById('regionDropdown');
-    
-    if (!regionBtn || !regionDropdown) return;
-    
-    // Handle region selector click
-    regionBtn.addEventListener('click', function() {
-      const isExpanded = regionBtn.getAttribute('aria-expanded') === 'true';
-      regionBtn.setAttribute('aria-expanded', !isExpanded);
-      regionDropdown.classList.toggle('show');
-    });
-    
-    // Handle region selection
-    regionDropdown.addEventListener('click', function(event) {
-      if (event.target.classList.contains('region-option')) {
-        event.preventDefault();
-        const selectedRegion = event.target.getAttribute('data-region');
-        selectRegion(selectedRegion);
-        
-        // Close dropdown
-        regionBtn.setAttribute('aria-expanded', 'false');
-        regionDropdown.classList.remove('show');
-      }
-    });
-    
-    // Close dropdown when clicking outside
-    document.addEventListener('click', function(event) {
-      if (!regionBtn.contains(event.target) && !regionDropdown.contains(event.target)) {
-        regionBtn.setAttribute('aria-expanded', 'false');
-        regionDropdown.classList.remove('show');
-      }
-    });
-    
-    // Set current region
-    setCurrentRegion();
-  }
-  
-  function selectRegion(region) {
-    // Update URL with region parameter
-    const url = new URL(window.location);
-    url.searchParams.set('region', region);
-    window.history.pushState({}, '', url);
-    
-    // Update region display
-    setCurrentRegion();
-    
-    // Dispatch region change event
-    document.dispatchEvent(new CustomEvent('region:changed', {
-      detail: { region }
-    }));
-  }
-  
-  function setCurrentRegion() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const currentRegion = urlParams.get('region') || 'ng';
-    
-    // Update button display
-    const regionBtn = document.getElementById('regionSelector');
-    const regionText = regionBtn.querySelector('.region-text');
-    const regionFlag = regionBtn.querySelector('.region-flag');
-    
-    const regions = {
-      'ng': { flag: '🇳🇬', text: 'Nigeria' },
-      'us': { flag: '🇺🇸', text: 'United States' },
-      'global': { flag: '🌍', text: 'Global' }
-    };
-    
-    if (regions[currentRegion]) {
-      regionFlag.textContent = regions[currentRegion].flag;
-      regionText.textContent = regions[currentRegion].text;
-    }
-    
-    // Update active option in dropdown
-    const options = document.querySelectorAll('.region-option');
-    options.forEach(option => {
-      option.classList.toggle('active', option.getAttribute('data-region') === currentRegion);
-    });
-  }
-  
-  function updateSystemStatus() {
-    // Check system status
-    checkSystemHealth().then(status => {
-      updateStatusDisplay(status);
-    }).catch(error => {
-      console.warn('Failed to check system status:', error);
-      updateStatusDisplay({ overall: 'unknown', services: {} });
-    });
-  }
-  
-  async function checkSystemHealth() {
-    try {
-      // Check various system components
-      const checks = await Promise.allSettled([
-        checkDatabaseConnection(),
-        checkAIService(),
-        checkAPIEndpoints()
-      ]);
-      
-      const results = {
-        database: checks[0].status === 'fulfilled' && checks[0].value,
-        ai: checks[1].status === 'fulfilled' && checks[1].value,
-        api: checks[2].status === 'fulfilled' && checks[2].value
-      };
-      
-      // Determine overall status
-      const allOperational = Object.values(results).every(status => status === true);
-      const anyDown = Object.values(results).some(status => status === false);
-      
-      return {
-        overall: allOperational ? 'operational' : anyDown ? 'degraded' : 'unknown',
-        services: results
-      };
-    } catch (error) {
-      return { overall: 'error', services: {} };
-    }
-  }
-  
-  async function checkDatabaseConnection() {
-    // Placeholder for database health check
-    return true; // Would implement actual health check
-  }
-  
-  async function checkAIService() {
-    // Placeholder for AI service health check
-    return true; // Would implement actual health check
-  }
-  
-  async function checkAPIEndpoints() {
-    // Placeholder for API endpoints health check
-    return true; // Would implement actual health check
-  }
-  
-  function updateStatusDisplay(status) {
-    const statusIndicator = document.getElementById('systemStatus');
-    const statusText = document.getElementById('statusText');
-    const statusIcon = statusIndicator.querySelector('.status-icon');
-    
-    // Remove existing status classes
-    statusIndicator.classList.remove('error', 'warning');
-    
-    switch (status.overall) {
-      case 'operational':
-        statusIcon.textContent = '🟢';
-        statusText.textContent = 'All Systems Operational';
-        break;
-      case 'degraded':
-        statusIcon.textContent = '🟡';
-        statusText.textContent = 'Some Services Degraded';
-        statusIndicator.classList.add('warning');
-        break;
-      case 'error':
-        statusIcon.textContent = '🔴';
-        statusText.textContent = 'System Issues Detected';
-        statusIndicator.classList.add('error');
-        break;
-      default:
-        statusIcon.textContent = '⚪';
-        statusText.textContent = 'Status Unknown';
-        break;
-    }
-  }
-  
-  function initializeDebugInfo() {
-    // Show debug info in development
-    const isProduction = window.location.hostname !== 'localhost' && 
-                         !window.location.hostname.includes('127.0.0.1');
-    
-    if (!isProduction) {
-      const debugSection = document.getElementById('footerDebug');
-      if (debugSection) {
-        debugSection.style.display = 'block';
-        updateDebugInfo();
-      }
-    }
-  }
-  
-  function updateDebugInfo() {
-    const debugEnv = document.getElementById('debugEnv');
-    const debugDb = document.getElementById('debugDb');
-    const debugAi = document.getElementById('debugAi');
-    const debugUserAgent = document.getElementById('debugUserAgent');
-    
-    if (debugEnv) debugEnv.textContent = process?.env?.NODE_ENV || 'development';
-    if (debugDb) debugDb.textContent = 'connected'; // Would check actual status
-    if (debugAi) debugAi.textContent = 'operational'; // Would check actual status
-    if (debugUserAgent) debugUserAgent.textContent = navigator.userAgent.substring(0, 50) + '...';
-  }
-  
-  // Export footer utilities to global scope
-  window.PMERITFooter = {
-    updateSystemStatus,
-    selectRegion,
-    setCurrentRegion
-  };
-})();
-</script>
