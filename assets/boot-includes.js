@@ -1,642 +1,789 @@
 /**
- * PMERIT Platform - Boot Includes
- * Dynamic Partial Loader & Core Application Bootstrap
- * ================================================
- * Version: 3.0.0
- * Purpose: Load shared template partials and initialize core functionality
+ * PMERIT AI Platform - Boot Includes System
+ * Dynamic partial loader and core application functionality
+ * Follows Frontend Implementation Strategy.txt - DRY Principle
+ * Version: 1.0.0
  */
 
 (function() {
   'use strict';
   
-  // Configuration
+  // ===== GLOBAL CONFIGURATION =====
+  
   const CONFIG = {
+    version: '1.0.0',
+    buildDate: '2025-09-06',
+    apiEndpoint: 'https://ai.pmerit.com',
+    debug: localStorage.getItem('pmerit_debug') === 'true',
     partials: {
       header: '/partials/header.html',
       nav: '/partials/nav.html', 
       footer: '/partials/footer.html'
     },
-    containers: {
-      header: '#header-container',
-      nav: '#nav-container', 
-      footer: '#footer-container'
-    },
-    debug: window.location.hostname === 'localhost' || window.location.hostname.includes('127.0.0.1'),
+    loadTimeout: 10000, // 10 seconds
     retryAttempts: 3,
-    retryDelay: 1000
+    retryDelay: 1000 // 1 second
   };
   
-  // Global PMERIT namespace
-  window.PMERIT = window.PMERIT || {
-    version: '3.0.0',
-    build: '2025.09.04',
-    config: CONFIG,
-    state: {
-      partialsLoaded: false,
-      userAuthenticated: false,
-      userRole: null,
-      currentPage: null
-    },
-    utils: {},
-    components: {},
-    events: new EventTarget()
+  // ===== UTILITY FUNCTIONS =====
+  
+  /**
+   * Logging utility with debug support
+   */
+  const log = {
+    info: (msg, data) => CONFIG.debug && console.log(`[PMERIT] ${msg}`, data || ''),
+    warn: (msg, data) => console.warn(`[PMERIT] ${msg}`, data || ''),
+    error: (msg, error) => console.error(`[PMERIT] ${msg}`, error || ''),
+    debug: (msg, data) => CONFIG.debug && console.debug(`[PMERIT] ${msg}`, data || '')
   };
   
-  // Utility Functions
-  const utils = {
-    /**
-     * Fetch HTML content with retry logic
-     */
-    async fetchWithRetry(url, retries = CONFIG.retryAttempts) {
-      for (let i = 0; i < retries; i++) {
-        try {
-          const response = await fetch(url);
-          if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-          }
-          return await response.text();
-        } catch (error) {
-          console.warn(`Attempt ${i + 1} failed for ${url}:`, error.message);
-          if (i === retries - 1) {
-            throw error;
-          }
-          await new Promise(resolve => setTimeout(resolve, CONFIG.retryDelay));
-        }
+  /**
+   * Performance measurement utility
+   */
+  const perf = {
+    start: (name) => CONFIG.debug && performance.mark(`${name}-start`),
+    end: (name) => {
+      if (!CONFIG.debug) return;
+      performance.mark(`${name}-end`);
+      try {
+        performance.measure(name, `${name}-start`, `${name}-end`);
+        const measure = performance.getEntriesByName(name)[0];
+        log.debug(`Performance: ${name}`, `${measure.duration.toFixed(2)}ms`);
+      } catch (e) {
+        log.debug(`Performance: ${name}`, 'measurement failed');
       }
-    },
+    }
+  };
+  
+  /**
+   * Fetch with retry logic and timeout
+   */
+  async function fetchWithRetry(url, options = {}, attempts = CONFIG.retryAttempts) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), CONFIG.loadTimeout);
     
-    /**
-     * Safely inject HTML content
-     */
-    injectHTML(container, html) {
-      if (typeof container === 'string') {
-        container = document.querySelector(container);
-      }
-      
-      if (!container) {
-        throw new Error('Container element not found');
-      }
-      
-      // Create a temporary container to parse HTML
-      const temp = document.createElement('div');
-      temp.innerHTML = html;
-      
-      // Move all child nodes to the target container
-      while (temp.firstChild) {
-        container.appendChild(temp.firstChild);
-      }
-    },
-    
-    /**
-     * Execute scripts in injected HTML
-     */
-    executeScripts(container) {
-      const scripts = container.querySelectorAll('script');
-      scripts.forEach(script => {
-        const newScript = document.createElement('script');
-        
-        // Copy attributes
-        Array.from(script.attributes).forEach(attr => {
-          newScript.setAttribute(attr.name, attr.value);
-        });
-        
-        // Copy content
-        newScript.textContent = script.textContent;
-        
-        // Replace old script with new one
-        script.parentNode.replaceChild(newScript, script);
+    try {
+      const response = await fetch(url, {
+        ...options,
+        signal: controller.signal
       });
-    },
+      
+      clearTimeout(timeoutId);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      return response;
+    } catch (error) {
+      clearTimeout(timeoutId);
+      
+      if (attempts > 1 && !controller.signal.aborted) {
+        log.warn(`Fetch failed for ${url}, retrying... (${attempts - 1} attempts left)`);
+        await new Promise(resolve => setTimeout(resolve, CONFIG.retryDelay));
+        return fetchWithRetry(url, options, attempts - 1);
+      }
+      
+      throw error;
+    }
+  }
+  
+  /**
+   * DOM ready utility
+   */
+  function domReady(callback) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', callback);
+    } else {
+      callback();
+    }
+  }
+  
+  /**
+   * Debounce utility
+   */
+  function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+  
+  // ===== PARTIAL LOADER SYSTEM =====
+  
+  /**
+   * Load and inject HTML partial
+   */
+  async function loadPartial(partialName, targetSelector) {
+    const startTime = `load-partial-${partialName}`;
+    perf.start(startTime);
     
-    /**
-     * Get current page identifier
-     */
-    getCurrentPage() {
-      const path = window.location.pathname;
-      const page = path.split('/').pop().replace('.html', '') || 'home';
-      return page === 'index' ? 'home' : page;
-    },
-    
-    /**
-     * Show loading state
-     */
-    showLoading(message = 'Loading...') {
-      const loader = document.createElement('div');
-      loader.id = 'pmerit-loader';
-      loader.className = 'pmerit-loader';
-      loader.innerHTML = `
-        <div class="loader-content">
-          <div class="loader-spinner"></div>
-          <div class="loader-message">${message}</div>
+    try {
+      log.info(`Loading partial: ${partialName}`);
+      
+      const target = document.querySelector(targetSelector);
+      if (!target) {
+        throw new Error(`Target element not found: ${targetSelector}`);
+      }
+      
+      // Show loading state
+      target.innerHTML = `
+        <div class="partial-loading" role="status" aria-live="polite">
+          <div class="loading-spinner"></div>
+          <span class="sr-only">Loading ${partialName}...</span>
         </div>
       `;
       
-      // Add loader styles if not present
-      if (!document.querySelector('#pmerit-loader-styles')) {
-        const styles = document.createElement('style');
-        styles.id = 'pmerit-loader-styles';
-        styles.textContent = `
-          .pmerit-loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(4px);
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-          .loader-content {
-            text-align: center;
-            color: var(--text-secondary);
-          }
-          .loader-spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--border);
-            border-top: 3px solid var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-          }
-          .loader-message {
-            font-size: var(--font-size-sm);
-            font-weight: var(--font-weight-medium);
-          }
-          @keyframes spin {
-            to { transform: rotate(360deg); }
-          }
-        `;
-        document.head.appendChild(styles);
+      const partialUrl = CONFIG.partials[partialName];
+      if (!partialUrl) {
+        throw new Error(`Unknown partial: ${partialName}`);
       }
       
-      document.body.appendChild(loader);
-      return loader;
-    },
-    
-    /**
-     * Hide loading state
-     */
-    hideLoading() {
-      const loader = document.getElementById('pmerit-loader');
-      if (loader) {
-        loader.remove();
-      }
-    },
-    
-    /**
-     * Debounce function
-     */
-    debounce(func, wait) {
-      let timeout;
-      return function executedFunction(...args) {
-        const later = () => {
-          clearTimeout(timeout);
-          func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-      };
-    },
-    
-    /**
-     * Log with debug flag
-     */
-    log(...args) {
-      if (CONFIG.debug) {
-        console.log('[PMERIT]', ...args);
-      }
-    },
-    
-    /**
-     * Error logging
-     */
-    error(...args) {
-      console.error('[PMERIT ERROR]', ...args);
-    }
-  };
-  
-  // Add utils to global namespace
-  window.PMERIT.utils = utils;
-  
-  // Partial Loader
-  class PartialLoader {
-    constructor() {
-      this.loadedPartials = new Set();
-      this.loadingPromises = new Map();
-    }
-    
-    /**
-     * Load a single partial
-     */
-    async loadPartial(name, url, container) {
-      // Return existing promise if already loading
-      if (this.loadingPromises.has(name)) {
-        return this.loadingPromises.get(name);
-      }
+      const response = await fetchWithRetry(partialUrl);
+      const html = await response.text();
       
-      // Return immediately if already loaded
-      if (this.loadedPartials.has(name)) {
-        utils.log(`Partial '${name}' already loaded`);
-        return;
-      }
+      // Inject the HTML
+      target.innerHTML = html;
       
-      utils.log(`Loading partial: ${name} from ${url}`);
-      
-      const promise = this._doLoadPartial(name, url, container);
-      this.loadingPromises.set(name, promise);
-      
-      try {
-        await promise;
-        this.loadedPartials.add(name);
-        this.loadingPromises.delete(name);
-        utils.log(`Partial '${name}' loaded successfully`);
-      } catch (error) {
-        this.loadingPromises.delete(name);
-        throw error;
-      }
-    }
-    
-    /**
-     * Internal partial loading logic
-     */
-    async _doLoadPartial(name, url, containerSelector) {
-      try {
-        const html = await utils.fetchWithRetry(url);
-        const container = document.querySelector(containerSelector);
-        
-        if (!container) {
-          throw new Error(`Container '${containerSelector}' not found for partial '${name}'`);
+      // Execute any scripts in the partial
+      const scripts = target.querySelectorAll('script');
+      scripts.forEach(script => {
+        const newScript = document.createElement('script');
+        if (script.src) {
+          newScript.src = script.src;
+        } else {
+          newScript.textContent = script.textContent;
         }
-        
-        // Clear existing content
-        container.innerHTML = '';
-        
-        // Inject new content
-        utils.injectHTML(container, html);
-        
-        // Execute any scripts
-        utils.executeScripts(container);
-        
-        // Dispatch event
-        window.PMERIT.events.dispatchEvent(new CustomEvent('partial:loaded', {
-          detail: { name, container: containerSelector }
-        }));
-        
-      } catch (error) {
-        utils.error(`Failed to load partial '${name}':`, error);
-        this._showPartialError(name, containerSelector, error);
-        throw error;
-      }
-    }
-    
-    /**
-     * Show error message for failed partial
-     */
-    _showPartialError(name, containerSelector, error) {
-      const container = document.querySelector(containerSelector);
-      if (container) {
-        container.innerHTML = `
-          <div class="partial-error" style="padding: 1rem; border: 1px solid var(--border-error); border-radius: var(--radius-md); background: var(--error-light); color: var(--error);">
-            <strong>Failed to load ${name}</strong><br>
-            <small>${error.message}</small>
+        script.parentNode.replaceChild(newScript, script);
+      });
+      
+      // Dispatch loaded event
+      const event = new CustomEvent('partialLoaded', {
+        detail: { partialName, targetSelector, element: target }
+      });
+      document.dispatchEvent(event);
+      
+      log.info(`Partial loaded successfully: ${partialName}`);
+      perf.end(startTime);
+      
+      return target;
+      
+    } catch (error) {
+      log.error(`Failed to load partial: ${partialName}`, error);
+      
+      // Show error state
+      const target = document.querySelector(targetSelector);
+      if (target) {
+        target.innerHTML = `
+          <div class="partial-error" role="alert">
+            <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+            <span>Failed to load ${partialName}</span>
+            <button type="button" class="btn btn-sm btn-outline" onclick="PMERIT.reloadPartial('${partialName}', '${targetSelector}')">
+              Retry
+            </button>
           </div>
         `;
       }
-    }
-    
-    /**
-     * Load all configured partials
-     */
-    async loadAllPartials() {
-      const loadPromises = Object.entries(CONFIG.partials).map(([name, url]) => {
-        const container = CONFIG.containers[name];
-        if (container) {
-          return this.loadPartial(name, url, container);
-        } else {
-          utils.error(`No container configured for partial '${name}'`);
-          return Promise.resolve();
-        }
-      });
       
-      try {
-        await Promise.all(loadPromises);
-        window.PMERIT.state.partialsLoaded = true;
-        
-        // Dispatch global event
-        window.PMERIT.events.dispatchEvent(new CustomEvent('partials:allLoaded'));
-        
-        utils.log('All partials loaded successfully');
-      } catch (error) {
-        utils.error('Failed to load some partials:', error);
-        throw error;
-      }
+      perf.end(startTime);
+      throw error;
     }
   }
   
-  // Application Initializer
-  class PMERITApp {
-    constructor() {
-      this.loader = new PartialLoader();
-      this.initialized = false;
-    }
+  /**
+   * Load all configured partials
+   */
+  async function loadAllPartials() {
+    const startTime = 'load-all-partials';
+    perf.start(startTime);
     
-    /**
-     * Initialize the application
-     */
-    async init() {
-      if (this.initialized) {
-        utils.log('App already initialized');
-        return;
+    log.info('Loading all partials...');
+    
+    const partialTargets = [
+      { name: 'header', selector: '#header-container, header-container' },
+      { name: 'nav', selector: '#nav-container, nav-container' },
+      { name: 'footer', selector: '#footer-container, footer-container' }
+    ];
+    
+    const loadPromises = partialTargets.map(async ({ name, selector }) => {
+      const targets = document.querySelectorAll(selector);
+      if (targets.length === 0) {
+        log.warn(`No target found for partial: ${name} (selector: ${selector})`);
+        return null;
       }
       
-      utils.log('Initializing PMERIT application...');
-      
+      // Load into first matching target
       try {
-        // Show loading state
-        const loadingEl = utils.showLoading('Loading PMERIT Platform...');
-        
-        // Set current page
-        window.PMERIT.state.currentPage = utils.getCurrentPage();
-        
-        // Load partials
-        await this.loader.loadAllPartials();
-        
-        // Initialize core functionality
-        await this.initializeCore();
-        
-        // Hide loading state
-        utils.hideLoading();
-        
-        this.initialized = true;
-        
-        // Dispatch app ready event
-        window.PMERIT.events.dispatchEvent(new CustomEvent('app:ready'));
-        
-        utils.log('PMERIT application initialized successfully');
-        
+        await loadPartial(name, selector);
+        return { name, success: true };
       } catch (error) {
-        utils.hideLoading();
-        utils.error('Failed to initialize application:', error);
-        this.showInitError(error);
+        return { name, success: false, error };
       }
-    }
+    });
     
-    /**
-     * Initialize core functionality
-     */
-    async initializeCore() {
-      // Load navigation configuration
-      await this.loadNavConfig();
-      
-      // Initialize authentication state
-      this.initializeAuth();
-      
-      // Initialize page-specific functionality
-      this.initializePageFeatures();
-      
-      // Initialize global event listeners
-      this.initializeEventListeners();
-      
-      // Initialize accessibility features
-      this.initializeA11y();
-    }
+    const results = await Promise.allSettled(loadPromises);
+    const successful = results.filter(r => r.status === 'fulfilled' && r.value?.success).length;
+    const failed = results.filter(r => r.status === 'rejected' || !r.value?.success).length;
     
-    /**
-     * Load navigation configuration
-     */
-    async loadNavConfig() {
-      try {
-        // Load nav-config.js if it exists
-        const script = document.createElement('script');
-        script.src = '/assets/nav-config.js';
-        script.onerror = () => {
-          utils.log('nav-config.js not found, using default navigation');
-        };
-        document.head.appendChild(script);
-      } catch (error) {
-        utils.log('Failed to load navigation config:', error);
-      }
-    }
+    log.info(`Partials loaded: ${successful} successful, ${failed} failed`);
+    perf.end(startTime);
     
-    /**
-     * Initialize authentication state
-     */
-    initializeAuth() {
-      // Check for stored authentication
-      try {
-        const authData = localStorage.getItem('pmerit_auth');
-        if (authData) {
-          const auth = JSON.parse(authData);
-          window.PMERIT.state.userAuthenticated = auth.authenticated || false;
-          window.PMERIT.state.userRole = auth.role || null;
+    // Dispatch global event
+    document.dispatchEvent(new CustomEvent('allPartialsLoaded', {
+      detail: { successful, failed, results }
+    }));
+  }
+  
+  // ===== CORE APPLICATION SYSTEM =====
+  
+  /**
+   * State management system
+   */
+  const StateManager = {
+    state: new Proxy({}, {
+      set(target, key, value) {
+        const oldValue = target[key];
+        target[key] = value;
+        
+        // Dispatch state change event
+        document.dispatchEvent(new CustomEvent('stateChanged', {
+          detail: { key, value, oldValue }
+        }));
+        
+        // Save to localStorage if it's a persistent key
+        if (key.startsWith('pmerit_')) {
+          try {
+            localStorage.setItem(key, JSON.stringify(value));
+          } catch (e) {
+            log.warn(`Failed to save state to localStorage: ${key}`, e);
+          }
         }
-      } catch (error) {
-        utils.log('Failed to load auth state:', error);
+        
+        return true;
       }
+    }),
+    
+    get(key, defaultValue = null) {
+      if (this.state[key] !== undefined) {
+        return this.state[key];
+      }
+      
+      // Try loading from localStorage
+      if (key.startsWith('pmerit_')) {
+        try {
+          const stored = localStorage.getItem(key);
+          if (stored !== null) {
+            const value = JSON.parse(stored);
+            this.state[key] = value;
+            return value;
+          }
+        } catch (e) {
+          log.warn(`Failed to load state from localStorage: ${key}`, e);
+        }
+      }
+      
+      return defaultValue;
+    },
+    
+    set(key, value) {
+      this.state[key] = value;
+    },
+    
+    subscribe(key, callback) {
+      const handler = (event) => {
+        if (event.detail.key === key) {
+          callback(event.detail.value, event.detail.oldValue);
+        }
+      };
+      document.addEventListener('stateChanged', handler);
+      return () => document.removeEventListener('stateChanged', handler);
+    }
+  };
+  
+  /**
+   * Authentication system
+   */
+  const AuthSystem = {
+    init() {
+      // Load authentication state
+      const isAuth = StateManager.get('pmerit_auth', false);
+      const userData = StateManager.get('pmerit_user', null);
+      
+      this.updateAuthState(isAuth, userData);
+      
+      // Listen for auth state changes
+      StateManager.subscribe('pmerit_auth', (isAuth) => {
+        this.updateAuthState(isAuth);
+      });
+    },
+    
+    updateAuthState(isAuthenticated, userData = null) {
+      log.debug('Auth state updated', { isAuthenticated, userData });
       
       // Dispatch auth state change
-      window.PMERIT.events.dispatchEvent(new CustomEvent('auth:stateChanged', {
-        detail: {
-          isAuthenticated: window.PMERIT.state.userAuthenticated,
-          userRole: window.PMERIT.state.userRole
-        }
+      document.dispatchEvent(new CustomEvent('authStateChanged', {
+        detail: { authenticated: isAuthenticated, user: userData }
       }));
-    }
-    
-    /**
-     * Initialize page-specific features
-     */
-    initializePageFeatures() {
-      const page = window.PMERIT.state.currentPage;
       
-      // Page-specific initializations
-      switch (page) {
-        case 'home':
-          this.initializeHomePage();
-          break;
-        case 'assessment':
-          this.initializeAssessmentPage();
-          break;
-        case 'courses':
-          this.initializeCoursesPage();
-          break;
-        case 'dashboard':
-          this.initializeDashboardPage();
-          break;
-        case 'classroom':
-          this.initializeClassroomPage();
-          break;
-        default:
-          utils.log(`No specific initialization for page: ${page}`);
-      }
-      
-      // Dispatch page ready event
-      window.PMERIT.events.dispatchEvent(new CustomEvent('page:ready', {
-        detail: { page }
-      }));
-    }
+      // Update UI elements
+      this.updateAuthUI(isAuthenticated, userData);
+    },
     
-    /**
-     * Initialize global event listeners
-     */
-    initializeEventListeners() {
-      // Handle navigation changes
-      window.addEventListener('popstate', () => {
-        const newPage = utils.getCurrentPage();
-        if (newPage !== window.PMERIT.state.currentPage) {
-          window.PMERIT.state.currentPage = newPage;
-          window.PMERIT.events.dispatchEvent(new CustomEvent('page:changed', {
-            detail: { page: newPage }
-          }));
+    updateAuthUI(isAuthenticated, userData = null) {
+      // Update header buttons
+      const signInBtn = document.getElementById('signInBtn');
+      const startBtn = document.getElementById('startBtn');
+      const dashBtn = document.getElementById('dashBtn');
+      
+      if (signInBtn) {
+        if (isAuthenticated) {
+          signInBtn.innerHTML = '<i class="fas fa-gauge-high" aria-hidden="true"></i><span>Dashboard</span>';
+        } else {
+          signInBtn.innerHTML = '<i class="fas fa-right-to-bracket" aria-hidden="true"></i><span>Sign In</span>';
         }
-      });
-      
-      // Handle online/offline status
-      window.addEventListener('online', () => {
-        window.PMERIT.events.dispatchEvent(new CustomEvent('connection:online'));
-      });
-      
-      window.addEventListener('offline', () => {
-        window.PMERIT.events.dispatchEvent(new CustomEvent('connection:offline'));
-      });
-      
-      // Handle visibility changes
-      document.addEventListener('visibilitychange', () => {
-        window.PMERIT.events.dispatchEvent(new CustomEvent('page:visibilityChanged', {
-          detail: { hidden: document.hidden }
-        }));
-      });
-    }
-    
-    /**
-     * Initialize accessibility features
-     */
-    initializeA11y() {
-      // Add skip link if not present
-      this.addSkipLink();
-      
-      // Announce page changes to screen readers
-      this.initializeAriaLive();
-      
-      // Handle keyboard navigation
-      this.initializeKeyboardNav();
-    }
-    
-    /**
-     * Add skip link for keyboard users
-     */
-    addSkipLink() {
-      if (!document.querySelector('.skip-link')) {
-        const skipLink = document.createElement('a');
-        skipLink.className = 'skip-link';
-        skipLink.href = '#main-content';
-        skipLink.textContent = 'Skip to main content';
-        document.body.insertAdjacentElement('afterbegin', skipLink);
       }
-    }
-    
-    /**
-     * Initialize ARIA live region for announcements
-     */
-    initializeAriaLive() {
-      if (!document.querySelector('#aria-live-region')) {
-        const liveRegion = document.createElement('div');
-        liveRegion.id = 'aria-live-region';
-        liveRegion.setAttribute('aria-live', 'polite');
-        liveRegion.setAttribute('aria-atomic', 'true');
-        liveRegion.style.cssText = 'position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden;';
-        document.body.appendChild(liveRegion);
+      
+      if (startBtn && isAuthenticated) {
+        startBtn.innerHTML = '<i class="fas fa-graduation-cap" aria-hidden="true"></i><span>Continue Learning</span>';
       }
-    }
-    
-    /**
-     * Initialize keyboard navigation
-     */
-    initializeKeyboardNav() {
-      // Add keyboard support for interactive elements
-      document.addEventListener('keydown', (event) => {
-        // Handle Escape key for modals/dropdowns
-        if (event.key === 'Escape') {
-          window.PMERIT.events.dispatchEvent(new CustomEvent('keyboard:escape'));
+      
+      if (dashBtn) {
+        dashBtn.classList.toggle('guest', !isAuthenticated);
+        if (!isAuthenticated) {
+          dashBtn.innerHTML = '<i class="fas fa-user-plus" aria-hidden="true"></i><span>Get Started</span>';
+        } else {
+          dashBtn.innerHTML = '<i class="fas fa-gauge-high" aria-hidden="true"></i><span>Dashboard</span>';
         }
+      }
+      
+      // Update user profile in nav
+      const userProfile = document.getElementById('userProfile');
+      const userName = document.getElementById('userName');
+      
+      if (userProfile) {
+        userProfile.style.display = isAuthenticated ? 'flex' : 'none';
+        userProfile.setAttribute('aria-hidden', !isAuthenticated);
+      }
+      
+      if (userName && userData?.name) {
+        userName.textContent = userData.name;
+      }
+    },
+    
+    signIn(userData) {
+      StateManager.set('pmerit_auth', true);
+      StateManager.set('pmerit_user', userData);
+      this.updateAuthState(true, userData);
+      log.info('User signed in', userData?.email || 'unknown');
+    },
+    
+    signOut() {
+      StateManager.set('pmerit_auth', false);
+      StateManager.set('pmerit_user', null);
+      this.updateAuthState(false);
+      log.info('User signed out');
+    }
+  };
+  
+  /**
+   * API integration system
+   */
+  const APISystem = {
+    async call(endpoint, options = {}) {
+      const url = endpoint.startsWith('http') ? endpoint : `${CONFIG.apiEndpoint}${endpoint}`;
+      
+      const defaultOptions = {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-PMERIT-Version': CONFIG.version
+        }
+      };
+      
+      // Add auth token if available
+      const authToken = StateManager.get('pmerit_token');
+      if (authToken) {
+        defaultOptions.headers['Authorization'] = `Bearer ${authToken}`;
+      }
+      
+      const mergedOptions = {
+        ...defaultOptions,
+        ...options,
+        headers: { ...defaultOptions.headers, ...options.headers }
+      };
+      
+      try {
+        log.debug(`API call: ${endpoint}`, mergedOptions);
+        const response = await fetchWithRetry(url, mergedOptions);
+        const data = await response.json();
         
-        // Handle Enter/Space for custom buttons
-        if ((event.key === 'Enter' || event.key === ' ') && 
-            event.target.hasAttribute('data-keyboard-action')) {
-          event.preventDefault();
-          event.target.click();
-        }
+        log.debug(`API response: ${endpoint}`, data);
+        return data;
+      } catch (error) {
+        log.error(`API error: ${endpoint}`, error);
+        throw error;
+      }
+    },
+    
+    async healthCheck() {
+      try {
+        const response = await this.call('/api/health');
+        return response.status === 'ok';
+      } catch (error) {
+        return false;
+      }
+    },
+    
+    // Assessment API methods
+    async startAssessment(type = 'personality') {
+      return this.call('/api/assessment/start', {
+        method: 'POST',
+        body: JSON.stringify({ type })
+      });
+    },
+    
+    async submitAnswer(assessmentId, questionId, answer) {
+      return this.call('/api/assessment/answer', {
+        method: 'POST',
+        body: JSON.stringify({ assessmentId, questionId, answer })
+      });
+    },
+    
+    async finishAssessment(assessmentId) {
+      return this.call('/api/assessment/finish', {
+        method: 'POST',
+        body: JSON.stringify({ assessmentId })
+      });
+    },
+    
+    // AI Chat methods
+    async sendMessage(message, context = {}) {
+      return this.call('/api/generate', {
+        method: 'POST',
+        body: JSON.stringify({
+          model: 'phi3:mini',
+          prompt: message,
+          context,
+          stream: false
+        })
       });
     }
+  };
+  
+  /**
+   * Chat system integration
+   */
+  const ChatSystem = {
+    messages: [],
     
-    /**
-     * Page-specific initializers
-     */
-    initializeHomePage() {
-      utils.log('Initializing home page features');
-      // Home page specific code will go here
-    }
+    init() {
+      this.setupChatInput();
+      this.loadChatHistory();
+    },
     
-    initializeAssessmentPage() {
-      utils.log('Initializing assessment page features');
-      // Assessment page specific code will go here
-    }
+    setupChatInput() {
+      const chatInput = document.getElementById('chatInput');
+      const sendBtn = document.getElementById('sendBtn');
+      const counter = document.getElementById('count');
+      
+      if (chatInput) {
+        // Character counter
+        chatInput.addEventListener('input', () => {
+          if (counter) {
+            counter.textContent = `${chatInput.value.length}/${chatInput.maxLength}`;
+          }
+        });
+        
+        // Enter to send
+        chatInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            this.sendMessage();
+          }
+        });
+      }
+      
+      if (sendBtn) {
+        sendBtn.addEventListener('click', () => this.sendMessage());
+      }
+    },
     
-    initializeCoursesPage() {
-      utils.log('Initializing courses page features');
-      // Courses page specific code will go here
-    }
+    async sendMessage() {
+      const chatInput = document.getElementById('chatInput');
+      const counter = document.getElementById('count');
+      
+      if (!chatInput) return;
+      
+      const message = chatInput.value.trim();
+      if (!message) return;
+      
+      // Clear input
+      chatInput.value = '';
+      if (counter) counter.textContent = '0/1000';
+      
+      // Add user message
+      this.addMessage('You', message, true);
+      
+      try {
+        // Send to API
+        const response = await APISystem.sendMessage(message);
+        
+        // Add AI response
+        this.addMessage('PMERIT AI', response.response || response.text || 'I apologize, but I encountered an issue processing your message. Please try again.');
+      } catch (error) {
+        log.error('Chat error', error);
+        this.addMessage('PMERIT AI', 'I apologize, but I\'m currently experiencing technical difficulties. Please try again in a moment.');
+      }
+    },
     
-    initializeDashboardPage() {
-      utils.log('Initializing dashboard page features');
-      // Dashboard page specific code will go here
-    }
-    
-    initializeClassroomPage() {
-      utils.log('Initializing classroom page features');
-      // Classroom page specific code will go here
-    }
-    
-    /**
-     * Show initialization error
-     */
-    showInitError(error) {
-      const errorEl = document.createElement('div');
-      errorEl.className = 'init-error';
-      errorEl.innerHTML = `
-        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg-primary); z-index: 10000; display: flex; align-items: center; justify-content: center; flex-direction: column; text-align: center; padding: 2rem;">
-          <h1 style="color: var(--error); margin-bottom: 1rem;">Failed to Load PMERIT Platform</h1>
-          <p style="color: var(--text-secondary); margin-bottom: 2rem; max-width: 500px;">
-            We're having trouble loading the platform. Please check your internet connection and try refreshing the page.
-          </p>
-          <button onclick="window.location.reload()" style="padding: 0.75rem 1.5rem; background: var(--primary); color: white; border: none; border-radius: var(--radius-md); cursor: pointer;">
-            Refresh Page
-          </button>
-          ${CONFIG.debug ? `<details style="margin-top: 2rem; max-width: 600px;"><summary>Error Details</summary><pre style="text-align: left; padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-md); margin-top: 1rem; overflow: auto;">${error.stack || error.message}</pre></details>` : ''}
+    addMessage(sender, text, isUser = false) {
+      const chatBody = document.getElementById('chatBody');
+      if (!chatBody) return;
+      
+      // Remove welcome message if it exists
+      const welcomeMsg = document.getElementById('welcomeMsg');
+      if (welcomeMsg) {
+        welcomeMsg.remove();
+      }
+      
+      const messageEl = document.createElement('article');
+      messageEl.className = 'chat-bubble';
+      messageEl.innerHTML = `
+        <div class="chat-avatar">
+          <i class="fas ${isUser ? 'fa-user' : 'fa-user-circle'}"></i>
+        </div>
+        <div class="chat-content">
+          <h3>${sender}</h3>
+          <p>${text}</p>
         </div>
       `;
-      document.body.appendChild(errorEl);
+      
+      chatBody.appendChild(messageEl);
+      chatBody.scrollTop = chatBody.scrollHeight;
+      
+      // Store message
+      this.messages.push({ sender, text, isUser, timestamp: Date.now() });
+      this.saveChatHistory();
+      
+      // TTS if enabled and it's an AI message
+      const ttsEnabled = StateManager.get('pmerit_tts', false);
+      if (ttsEnabled && !isUser && 'speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        speechSynthesis.speak(utterance);
+      }
+      
+      // Dispatch chat event
+      document.dispatchEvent(new CustomEvent('messageAdded', {
+        detail: { sender, text, isUser }
+      }));
+    },
+    
+    loadChatHistory() {
+      try {
+        const history = localStorage.getItem('pmerit_chat_history');
+        if (history) {
+          this.messages = JSON.parse(history);
+          // Restore recent messages (last 10)
+          this.messages.slice(-10).forEach(msg => {
+            if (msg.sender && msg.text) {
+              this.addMessage(msg.sender, msg.text, msg.isUser);
+            }
+          });
+        }
+      } catch (error) {
+        log.warn('Failed to load chat history', error);
+      }
+    },
+    
+    saveChatHistory() {
+      try {
+        // Keep only last 50 messages
+        const recentMessages = this.messages.slice(-50);
+        localStorage.setItem('pmerit_chat_history', JSON.stringify(recentMessages));
+      } catch (error) {
+        log.warn('Failed to save chat history', error);
+      }
+    },
+    
+    clearHistory() {
+      this.messages = [];
+      localStorage.removeItem('pmerit_chat_history');
+      const chatBody = document.getElementById('chatBody');
+      if (chatBody) {
+        chatBody.innerHTML = '';
+      }
+    }
+  };
+  
+  /**
+   * Theme system
+   */
+  const ThemeSystem = {
+    init() {
+      // Load saved theme
+      const isDark = StateManager.get('pmerit_dark_mode', false);
+      this.setTheme(isDark ? 'dark' : 'light');
+      
+      // Listen for theme changes
+      StateManager.subscribe('pmerit_dark_mode', (isDark) => {
+        this.setTheme(isDark ? 'dark' : 'light');
+      });
+    },
+    
+    setTheme(theme) {
+      document.body.classList.toggle('dark', theme === 'dark');
+      
+      // Update meta theme-color
+      let metaTheme = document.querySelector('meta[name="theme-color"]');
+      if (!metaTheme) {
+        metaTheme = document.createElement('meta');
+        metaTheme.name = 'theme-color';
+        document.head.appendChild(metaTheme);
+      }
+      
+      metaTheme.content = theme === 'dark' ? '#1E293B' : '#FFFFFF';
+      
+      log.debug('Theme changed', theme);
+    }
+  };
+  
+  /**
+   * Error handling system
+   */
+  const ErrorHandler = {
+    init() {
+      // Global error handler
+      window.addEventListener('error', (event) => {
+        log.error('Global error', {
+          message: event.error?.message || event.message,
+          filename: event.filename,
+          lineno: event.lineno,
+          colno: event.colno,
+          error: event.error
+        });
+      });
+      
+      // Unhandled promise rejections
+      window.addEventListener('unhandledrejection', (event) => {
+        log.error('Unhandled promise rejection', event.reason);
+      });
+    },
+    
+    showUserError(message, type = 'error') {
+      // You can implement a toast notification system here
+      console.error(`[User Error] ${message}`);
+    }
+  };
+  
+  // ===== INITIALIZATION SYSTEM =====
+  
+  /**
+   * Main initialization function
+   */
+  async function initialize() {
+    const startTime = 'app-initialization';
+    perf.start(startTime);
+    
+    log.info(`PMERIT Platform v${CONFIG.version} initializing...`);
+    
+    try {
+      // Initialize error handling first
+      ErrorHandler.init();
+      
+      // Load partials
+      await loadAllPartials();
+      
+      // Initialize core systems
+      StateManager.state = StateManager.state; // Initialize proxy
+      AuthSystem.init();
+      ThemeSystem.init();
+      
+      // Wait for DOM to be fully ready
+      await new Promise(resolve => domReady(resolve));
+      
+      // Initialize interactive systems
+      ChatSystem.init();
+      
+      // Health check
+      const isHealthy = await APISystem.healthCheck();
+      log.info('API health check', isHealthy ? 'passed' : 'failed');
+      
+      // Dispatch app ready event
+      document.dispatchEvent(new CustomEvent('appReady', {
+        detail: { version: CONFIG.version, healthy: isHealthy }
+      }));
+      
+      perf.end(startTime);
+      log.info('PMERIT Platform initialized successfully');
+      
+    } catch (error) {
+      log.error('Initialization failed', error);
+      throw error;
     }
   }
   
-  // Create global app instance
-  window.PMERIT.app = new PMERITApp();
+  // ===== GLOBAL API =====
+  
+  /**
+   * Global PMERIT namespace
+   */
+  window.PMERIT = {
+    // Configuration
+    version: CONFIG.version,
+    config: CONFIG,
+    
+    // Core systems
+    state: StateManager,
+    auth: AuthSystem,
+    api: APISystem,
+    chat: ChatSystem,
+    theme: ThemeSystem,
+    
+    // Utility functions
+    log,
+    perf,
+    
+    // Partial management
+    loadPartial,
+    reloadPartial: (name, selector) => loadPartial(name, selector),
+    
+    // Initialization
+    init: initialize,
+    
+    // Event system
+    on: (event, callback) => document.addEventListener(event, callback),
+    off: (event, callback) => document.removeEventListener(event, callback),
+    emit: (event, detail) => document.dispatchEvent(new CustomEvent(event, { detail })),
+    
+    // Convenience methods
+    addMessage: (sender, text, isUser = false) => ChatSystem.addMessage(sender, text, isUser),
+    setLanguage: (lang) => StateManager.set('pmerit_lang', lang),
+    setTheme: (theme) => ThemeSystem.setTheme(theme),
+    
+    // Debug helpers
+    debugInfo: () => ({
+      version: CONFIG.version,
+      state: StateManager.state,
+      messages: ChatSystem.messages.length,
+      performance: performance.getEntriesByType('measure')
+    })
+  };
+  
+  // ===== AUTO-INITIALIZATION =====
   
   // Auto-initialize when DOM is ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      window.PMERIT.app.init();
-    });
-  } else {
-    // DOM is already ready
-    window.PMERIT.app.init();
-  }
+  domReady(() => {
+    // Small delay to ensure all external resources are loaded
+    setTimeout(initialize, 100);
+  });
   
-  // Export for manual initialization if needed
-  window.PMERIT.init = () => window.PMERIT.app.init();
+  // Expose for manual initialization if needed
+  window.PMERIT.manualInit = initialize;
+  
+  log.info('Boot includes system loaded');
   
 })();
