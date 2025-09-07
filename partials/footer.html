@@ -1,119 +1,60 @@
-<!-- PMERIT Platform Footer - Shared Partial -->
-<!-- Follows Frontend Implementation Strategy.txt - DRY Principle -->
-<!-- Styles: /assets/base.css | Scripts: /assets/boot-includes.js -->
-
-<footer class="site-footer" role="contentinfo">
-  <!-- System Status Section -->
-  <div class="footer-status">
-    <div class="status-indicator" id="statusIndicator" tabindex="0" aria-describedby="status-desc">
-      <i class="fas fa-circle-check status-icon" aria-hidden="true"></i>
-      <span class="status-text" id="systemStatus">Connected to Educational Services</span>
-    </div>
-    <div id="status-desc" class="sr-only">Click to view detailed system status</div>
-    
-    <!-- Real-time Status Details (hidden by default) -->
-    <div class="status-details" id="statusDetails" aria-hidden="true">
-      <div class="status-item">
-        <span class="status-label">Database:</span>
-        <span class="status-value" id="dbStatus">
-          <i class="fas fa-circle status-dot online" aria-hidden="true"></i>
-          Online
-        </span>
+<footer class="footer" role="contentinfo">
+  <div class="footer-content">
+    <!-- System Status -->
+    <div class="system-status">
+      <div class="status-indicators">
+        <div class="status-item">
+          <i class="fas fa-circle-check status-icon" aria-hidden="true"></i>
+          <span class="status-text">Connected to Educational Services</span>
+        </div>
+        <div class="status-item">
+          <i class="fas fa-database status-icon" aria-hidden="true"></i>
+          <span class="status-text">Database: Online</span>
+        </div>
+        <div class="status-item">
+          <i class="fas fa-brain status-icon" aria-hidden="true"></i>
+          <span class="status-text">AI Services: Available</span>
+        </div>
       </div>
-      <div class="status-item">
-        <span class="status-label">AI Services:</span>
-        <span class="status-value" id="aiStatus">
-          <i class="fas fa-circle status-dot online" aria-hidden="true"></i>
-          Available
-        </span>
-      </div>
-      <div class="status-item">
-        <span class="status-label">Assessment API:</span>
-        <span class="status-value" id="assessmentStatus">
-          <i class="fas fa-circle status-dot online" aria-hidden="true"></i>
-          Ready
-        </span>
-      </div>
-      <div class="status-item">
-        <span class="status-label">Job Market Data:</span>
-        <span class="status-value" id="jobDataStatus">
-          <i class="fas fa-circle status-dot online" aria-hidden="true"></i>
-          Updated
-        </span>
+      <div class="platform-info">
+        <span class="platform-version">PMERIT AI Platform v1.0.0 Build 2024.09</span>
       </div>
     </div>
-  </div>
 
-  <!-- Footer Links Section -->
-  <nav class="footer-links" role="navigation" aria-label="Footer navigation">
-    <!-- Primary Support Links -->
-    <div class="link-group primary-links">
-      <button class="footer-btn" id="supportBtn" type="button" aria-describedby="support-desc">
-        <i class="fas fa-life-ring" aria-hidden="true"></i>
-        <span>Support</span>
-      </button>
-      <div id="support-desc" class="sr-only">Get help with platform issues and questions</div>
+    <!-- Footer Links -->
+    <div class="footer-links">
+      <div class="link-group">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="/help" class="footer-link">Help Center</a></li>
+          <li><a href="/contact" class="footer-link">Contact</a></li>
+          <li><button class="footer-link-btn" id="feedbackBtn">Send Feedback</button></li>
+        </ul>
+      </div>
 
-      <button class="footer-btn" id="contactBtn" type="button" aria-describedby="contact-desc">
-        <i class="fas fa-envelope" aria-hidden="true"></i>
-        <span>Contact</span>
-      </button>
-      <div id="contact-desc" class="sr-only">Contact PMERIT team</div>
+      <div class="link-group">
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="#" class="footer-link" id="partnershipsLink">Partnerships</a></li>
+          <li><a href="#" class="footer-link" id="careersLink">Careers</a></li>
+          <li><a href="#" class="footer-link" id="aboutLink">About</a></li>
+        </ul>
+      </div>
 
-      <button class="footer-btn" id="privacyBtn" type="button" aria-describedby="privacy-desc">
-        <i class="fas fa-shield-halved" aria-hidden="true"></i>
-        <span>Privacy & Terms</span>
-      </button>
-      <div id="privacy-desc" class="sr-only">View privacy policy and terms of service</div>
+      <div class="link-group">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/privacy" class="footer-link">Privacy & Terms</a></li>
+        </ul>
+      </div>
     </div>
 
-    <!-- Secondary Links -->
-    <div class="link-group secondary-links">
-      <button class="footer-btn" id="partnershipsBtn" type="button" aria-describedby="partnerships-desc">
-        <i class="fas fa-handshake" aria-hidden="true"></i>
-        <span>Partnerships</span>
-      </button>
-      <div id="partnerships-desc" class="sr-only">Learn about partnership opportunities</div>
-
-      <button class="footer-btn" id="careersBtn" type="button" aria-describedby="careers-desc">
-        <i class="fas fa-briefcase" aria-hidden="true"></i>
-        <span>Careers</span>
-      </button>
-      <div id="careers-desc" class="sr-only">Join the PMERIT team</div>
-
-      <button class="footer-btn" id="aboutBtn" type="button" aria-describedby="about-desc">
-        <i class="fas fa-info-circle" aria-hidden="true"></i>
-        <span>About</span>
-      </button>
-      <div id="about-desc" class="sr-only">Learn about PMERIT's mission</div>
+    <!-- Mission Statement -->
+    <div class="footer-mission">
+      <p class="mission-text">
+        <strong>Accessible Global Education</strong> - 
+        Breaking poverty cycles through high-quality, accessible education for all.
+      </p>
     </div>
-  </nav>
-
-  <!-- Platform Info -->
-  <div class="platform-info">
-    <div class="platform-tagline">
-      <span class="tagline-text">Accessible Global Education</span>
-      <span class="tagline-emoji" role="img" aria-label="Education">🎓</span>
-    </div>
-    <div class="platform-version">
-      <span class="version-text" id="platformVersion">v1.0.0</span>
-      <span class="build-info" id="buildInfo">Build 2024.09</span>
-    </div>
-  </div>
-
-  <!-- Mobile Quick Actions (shown on mobile) -->
-  <div class="mobile-quick-actions" aria-label="Quick actions">
-    <button class="quick-action-btn" id="mobileSupport" type="button" aria-label="Support">
-      <i class="fas fa-life-ring" aria-hidden="true"></i>
-    </button>
-    <button class="quick-action-btn" id="mobileContact" type="button" aria-label="Contact">
-      <i class="fas fa-envelope" aria-hidden="true"></i>
-    </button>
-    <button class="quick-action-btn" id="mobileStatus" type="button" aria-label="System status">
-      <i class="fas fa-signal" aria-hidden="true"></i>
-    </button>
-    <button class="quick-action-btn" id="mobileSettings" type="button" aria-label="Settings">
-      <i class="fas fa-cog" aria-hidden="true"></i>
-    </button>
   </div>
 </footer>
