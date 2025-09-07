@@ -1,215 +1,214 @@
-<!-- PMERIT Navigation Sidebar - Sample.jpg Compliant -->
-<!-- Clean HTML, follows DRY principle - No embedded CSS/JS -->
+<!-- PMERIT Navigation Sidebar - Corrected for base.css Integration -->
+<!-- Uses EXACT classes from base.css - No custom classes -->
 <!-- Styles: /assets/base.css | Scripts: /assets/boot-includes.js -->
-<!-- Logic: /assets/nav-config.js -->
 
-<nav class="sidebar-nav" role="navigation" aria-label="Main navigation">
+<nav class="sidebar" role="navigation" aria-label="Main navigation">
   
-  <!-- Quick Actions Section (Always Visible) -->
-  <section class="nav-section" aria-labelledby="quick-actions-heading">
-    <h3 id="quick-actions-heading" class="nav-section-title">
-      <i class="fas fa-bolt" aria-hidden="true"></i>
-      <span>Quick Actions</span>
-    </h3>
+  <!-- Quick Actions Section -->
+  <section class="nav-section">
+    <header class="nav-section-header">
+      <h3>
+        <i class="fas fa-bolt" aria-hidden="true"></i>
+        Quick Actions
+      </h3>
+    </header>
     
     <div class="nav-actions">
       <!-- Virtual Human Mode Toggle -->
-      <button class="nav-action-btn toggle-action" id="vhToggle" type="button" 
-              aria-describedby="vh-desc" data-feature="virtualHuman">
+      <button class="nav-action-btn" id="vhToggleBtn" type="button" aria-describedby="vhToggleDesc">
         <div class="action-icon">
           <i class="fas fa-user-astronaut" aria-hidden="true"></i>
         </div>
         <div class="action-content">
           <span class="action-title">Virtual Human Mode</span>
-          <span class="action-desc">Immersive AI experience</span>
+          <span class="action-subtitle">Immersive AI experience</span>
         </div>
         <div class="action-toggle">
-          <div class="switch" role="switch" aria-checked="false"></div>
+          <div class="switch" role="switch" aria-checked="false" id="vhSwitch">
+            <!-- Switch styled by base.css -->
+          </div>
         </div>
       </button>
-      <div id="vh-desc" class="sr-only">Toggle virtual human mode for immersive learning</div>
+      <div id="vhToggleDesc" class="sr-only">Toggle virtual human mode for immersive learning</div>
 
       <!-- Career Track & Explore Paths -->
-      <button class="nav-action-btn" id="careerPaths" type="button" 
-              aria-describedby="career-desc" data-feature="careerExplorer">
+      <button class="nav-action-btn" id="careerPathsBtn" type="button">
         <div class="action-icon">
           <i class="fas fa-compass" aria-hidden="true"></i>
         </div>
         <div class="action-content">
           <span class="action-title">Career Track & Explore Paths</span>
-          <span class="action-desc">Discover career opportunities</span>
+          <span class="action-subtitle">Discover career opportunities</span>
         </div>
-        <div class="action-arrow">
+        <div class="action-indicator">
           <i class="fas fa-chevron-right" aria-hidden="true"></i>
         </div>
       </button>
-      <div id="career-desc" class="sr-only">Explore career paths with real-time job market data</div>
 
       <!-- Customer Service Mode Toggle -->
-      <button class="nav-action-btn toggle-action" id="supportToggle" type="button" 
-              aria-describedby="support-desc" data-feature="customerService">
+      <button class="nav-action-btn" id="customerServiceToggle" type="button" aria-describedby="customerServiceDesc">
         <div class="action-icon">
           <i class="fas fa-headset" aria-hidden="true"></i>
         </div>
         <div class="action-content">
           <span class="action-title">Customer Service Mode</span>
-          <span class="action-desc">AI support assistance</span>
+          <span class="action-subtitle">AI support assistance</span>
         </div>
         <div class="action-toggle">
-          <div class="switch" role="switch" aria-checked="false"></div>
+          <div class="switch" role="switch" aria-checked="false" id="customerServiceSwitch">
+            <!-- Switch styled by base.css -->
+          </div>
         </div>
       </button>
-      <div id="support-desc" class="sr-only">Toggle customer service mode for platform support</div>
+      <div id="customerServiceDesc" class="sr-only">Toggle customer service mode for platform support</div>
     </div>
   </section>
 
-  <!-- Settings Section (Collapsible like Sample.jpg) -->
-  <section class="nav-section collapsible" aria-labelledby="settings-heading">
-    <button class="nav-section-toggle" id="settingsToggle" 
-            aria-expanded="false" aria-controls="settings-content">
-      <div class="section-header">
+  <!-- Settings Section (Collapsible) -->
+  <section class="nav-section">
+    <header class="nav-section-header">
+      <h3>
         <i class="fas fa-cog" aria-hidden="true"></i>
-        <span id="settings-heading">Settings</span>
-      </div>
-      <div class="section-arrow">
+        Settings
+      </h3>
+      <button class="section-toggle" aria-expanded="false" aria-controls="settingsContent" id="settingsToggle">
         <i class="fas fa-chevron-down" aria-hidden="true"></i>
-      </div>
-    </button>
+      </button>
+    </header>
     
-    <div class="nav-section-content" id="settings-content" aria-hidden="true">
+    <div class="nav-content" id="settingsContent" style="display: none;">
       <!-- Dark Mode -->
       <div class="setting-item">
-        <button class="setting-toggle" id="darkModeToggle" 
-                aria-pressed="false" data-setting="darkMode">
-          <div class="setting-icon">
-            <i class="fas fa-moon" aria-hidden="true"></i>
+        <label class="setting-label">
+          <span class="setting-text">Dark Mode</span>
+          <div class="switch" id="darkModeSwitch" role="switch" aria-checked="false">
+            <!-- Switch styled by base.css -->
           </div>
-          <span class="setting-label">Dark Mode</span>
-          <div class="setting-switch">
-            <div class="switch" role="switch" aria-checked="false"></div>
-          </div>
-        </button>
+        </label>
       </div>
-
+      
       <!-- Text-to-Speech -->
       <div class="setting-item">
-        <button class="setting-toggle" id="ttsToggle" 
-                aria-pressed="false" data-setting="textToSpeech">
-          <div class="setting-icon">
-            <i class="fas fa-volume-up" aria-hidden="true"></i>
+        <label class="setting-label">
+          <span class="setting-text">Text-to-Speech</span>
+          <div class="switch" id="ttsSwitch" role="switch" aria-checked="false">
+            <!-- Switch styled by base.css -->
           </div>
-          <span class="setting-label">Text-to-Speech</span>
-          <div class="setting-switch">
-            <div class="switch" role="switch" aria-checked="false"></div>
-          </div>
-        </button>
+        </label>
       </div>
 
       <!-- Preview Voices -->
       <div class="setting-item">
-        <button class="setting-action" id="previewVoices" type="button">
-          <div class="setting-icon">
-            <i class="fas fa-headphones" aria-hidden="true"></i>
-          </div>
-          <span class="setting-label">Preview Voices</span>
-          <div class="setting-arrow">
-            <i class="fas fa-chevron-right" aria-hidden="true"></i>
-          </div>
+        <button class="setting-action" id="previewVoicesBtn" type="button">
+          <span class="setting-text">Preview Voices</span>
+          <i class="fas fa-chevron-right" aria-hidden="true"></i>
         </button>
       </div>
     </div>
   </section>
 
   <!-- Main Navigation Section -->
-  <section class="nav-section main-nav" aria-labelledby="main-nav-heading">
-    <h3 id="main-nav-heading" class="sr-only">Main Navigation</h3>
+  <section class="nav-section">
+    <header class="nav-section-header">
+      <h3>
+        <i class="fas fa-compass" aria-hidden="true"></i>
+        Navigation
+      </h3>
+    </header>
     
-    <!-- Dashboard Button (Role-based) -->
-    <div class="nav-primary-action">
-      <!-- For Authenticated Users -->
-      <button class="dashboard-btn authenticated-only" id="dashboardBtn" 
-              type="button" style="display: none;">
-        <i class="fas fa-gauge-high" aria-hidden="true"></i>
-        <span>Dashboard</span>
-      </button>
-      
-      <!-- For Guest Users -->
-      <button class="dashboard-btn guest-only" id="getStartedBtn" 
-              type="button" data-action="signup">
-        <i class="fas fa-user-plus" aria-hidden="true"></i>
-        <span>Get Started</span>
-      </button>
-    </div>
+    <div class="nav-content">
+      <!-- Dashboard Button (Role-based) -->
+      <div class="nav-primary-action">
+        <!-- For Guest Users -->
+        <button class="btn btn-primary guest-only" id="getStartedBtn" type="button" data-action="signup">
+          <i class="fas fa-user-plus" aria-hidden="true"></i>
+          Get Started
+        </button>
+        
+        <!-- For Authenticated Users -->
+        <button class="btn btn-primary authenticated-only" id="dashboardBtn" type="button" style="display: none;">
+          <i class="fas fa-gauge-high" aria-hidden="true"></i>
+          Dashboard
+        </button>
+      </div>
 
-    <!-- User Navigation Links (Authenticated Only) -->
-    <div class="nav-links authenticated-only" style="display: none;">
-      <a href="/courses.html" class="nav-link" data-page="courses">
-        <i class="fas fa-book-open" aria-hidden="true"></i>
-        <span>My Courses</span>
-      </a>
-      
-      <a href="/library.html" class="nav-link" data-page="library">
-        <i class="fas fa-university" aria-hidden="true"></i>
-        <span>Library</span>
-      </a>
-      
-      <a href="/career.html" class="nav-link" data-page="career">
-        <i class="fas fa-briefcase" aria-hidden="true"></i>
-        <span>Career Center</span>
-      </a>
-      
-      <a href="/classroom.html" class="nav-link" data-page="classroom">
-        <i class="fas fa-chalkboard-teacher" aria-hidden="true"></i>
-        <span>Classroom</span>
-      </a>
-    </div>
+      <!-- User Navigation Links (Authenticated Only) -->
+      <ul class="nav-menu authenticated-only" style="display: none;">
+        <li class="nav-item">
+          <a href="/courses.html" class="nav-link">
+            <i class="fas fa-book-open" aria-hidden="true"></i>
+            My Courses
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/library.html" class="nav-link">
+            <i class="fas fa-university" aria-hidden="true"></i>
+            Library
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/career.html" class="nav-link">
+            <i class="fas fa-briefcase" aria-hidden="true"></i>
+            Career Center
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/classroom.html" class="nav-link">
+            <i class="fas fa-chalkboard-teacher" aria-hidden="true"></i>
+            Classroom
+          </a>
+        </li>
+      </ul>
 
-    <!-- About PMERIT Pricing (Always Visible) -->
-    <div class="nav-secondary">
-      <button class="nav-link-btn" id="aboutPricingBtn" type="button" data-action="pricing">
-        <i class="fas fa-info-circle" aria-hidden="true"></i>
-        <span>About PMERIT Pricing</span>
-      </button>
+      <!-- About PMERIT Pricing (Always Visible) -->
+      <div class="nav-secondary">
+        <button class="nav-link" id="aboutPricingBtn" type="button" data-action="pricing">
+          <i class="fas fa-info-circle" aria-hidden="true"></i>
+          About PMERIT Pricing
+        </button>
+      </div>
     </div>
   </section>
 
   <!-- Help & Support Section -->
-  <section class="nav-section help-section" aria-labelledby="help-heading">
-    <h3 id="help-heading" class="nav-section-title">
-      <i class="fas fa-life-ring" aria-hidden="true"></i>
-      <span>Help & Support</span>
-    </h3>
+  <section class="nav-section">
+    <header class="nav-section-header">
+      <h3>
+        <i class="fas fa-life-ring" aria-hidden="true"></i>
+        Help & Support
+      </h3>
+    </header>
     
-    <div class="nav-help-links">
-      <button class="nav-help-btn" id="helpCenterBtn" type="button" data-action="help">
-        <i class="fas fa-question-circle" aria-hidden="true"></i>
-        <span>Help Center</span>
+    <div class="nav-actions">
+      <button class="nav-action-btn support-btn" id="helpCenterBtn" type="button">
+        <div class="action-icon">
+          <i class="fas fa-question-circle" aria-hidden="true"></i>
+        </div>
+        <div class="action-content">
+          <span class="action-title">Help Center</span>
+        </div>
       </button>
-      
-      <button class="nav-help-btn" id="feedbackBtn" type="button" data-action="feedback">
-        <i class="fas fa-comment-alt" aria-hidden="true"></i>
-        <span>Send Feedback</span>
+
+      <button class="nav-action-btn support-btn" id="sendFeedbackBtn" type="button">
+        <div class="action-icon">
+          <i class="fas fa-comment-alt" aria-hidden="true"></i>
+        </div>
+        <div class="action-content">
+          <span class="action-title">Send Feedback</span>
+        </div>
       </button>
     </div>
   </section>
 
   <!-- User Status (Authenticated Only) -->
   <div class="nav-user-status authenticated-only" style="display: none;">
-    <div class="user-plan">
-      <i class="fas fa-star" aria-hidden="true"></i>
-      <span class="plan-name">Free Plan</span>
-    </div>
-    <div class="user-type">
+    <div class="user-tier">
       <i class="fas fa-graduation-cap" aria-hidden="true"></i>
-      <span class="user-role">Student</span>
+      <span>Student</span>
     </div>
-  </div>
-
-  <!-- Connection Status (For Authenticated Users Only) -->
-  <div class="nav-footer authenticated-only" style="display: none;">
-    <div class="connection-status">
-      <span class="status-indicator online"></span>
-      <span class="status-text">Connected to Educational Services</span>
+    <div class="plan-status">
+      <i class="fas fa-star" aria-hidden="true"></i>
+      <span>Free Plan</span>
     </div>
   </div>
 
