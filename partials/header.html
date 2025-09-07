@@ -1,39 +1,483 @@
-<header class="header" role="banner">
+<!-- PMERIT Platform Header -->
+<header class="app-header" role="banner">
   <div class="header-content">
-    <!-- Brand Section -->
+    <!-- Left Section: Logo and Brand -->
     <div class="header-brand">
-      <div class="brand-logo">
-        <span class="brand-icon">🎓</span>
+      <a href="/" class="brand-link" aria-label="PMERIT Home">
+        <div class="brand-logo">
+          <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+        </div>
         <div class="brand-text">
           <h1 class="brand-name">PMERIT</h1>
           <span class="brand-tagline">Accessible Global Education</span>
         </div>
-      </div>
+      </a>
     </div>
 
-    <!-- Language Selector -->
-    <div class="header-controls">
+    <!-- Center Section: Main Navigation (Desktop) -->
+    <nav class="header-nav" role="navigation" aria-label="Main navigation">
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="/dashboard.html" class="nav-link" id="navDashboard">
+            <i class="fas fa-home" aria-hidden="true"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/courses.html" class="nav-link" id="navCourses">
+            <i class="fas fa-book" aria-hidden="true"></i>
+            <span>Courses</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/career.html" class="nav-link" id="navCareer">
+            <i class="fas fa-compass" aria-hidden="true"></i>
+            <span>Career</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/library.html" class="nav-link" id="navLibrary">
+            <i class="fas fa-library" aria-hidden="true"></i>
+            <span>Library</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Right Section: Language Selector and Auth -->
+    <div class="header-actions">
+      <!-- Language Selector -->
       <div class="language-selector">
-        <label for="languageSelect" class="sr-only">Select Language</label>
-        <select id="languageSelect" class="language-select" aria-label="Choose your language">
-          <option value="en">English</option>
-          <option value="yo">Yorùbá</option>
-          <option value="ig">Igbo</option>
-          <option value="ha">Hausa</option>
-        </select>
+        <button class="lang-btn" id="languageToggle" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Select language">
+          <i class="fas fa-globe" aria-hidden="true"></i>
+          <span class="lang-current" id="currentLanguage">English</span>
+          <i class="fas fa-chevron-down" aria-hidden="true"></i>
+        </button>
+        
+        <div class="lang-dropdown" id="languageDropdown" role="menu" aria-label="Language options">
+          <button class="lang-option" role="menuitem" data-lang="en" data-name="English">
+            <span class="flag">🇺🇸</span>
+            <span>English</span>
+          </button>
+          <button class="lang-option" role="menuitem" data-lang="yo" data-name="Yorùbá">
+            <span class="flag">🇳🇬</span>
+            <span>Yorùbá</span>
+          </button>
+          <button class="lang-option" role="menuitem" data-lang="ig" data-name="Igbo">
+            <span class="flag">🇳🇬</span>
+            <span>Igbo</span>
+          </button>
+          <button class="lang-option" role="menuitem" data-lang="ha" data-name="Hausa">
+            <span class="flag">🇳🇬</span>
+            <span>Hausa</span>
+          </button>
+        </div>
       </div>
 
       <!-- Authentication Buttons -->
-      <div class="header-actions">
-        <button class="btn btn-outline" id="signInBtn" type="button">
-          <i class="fas fa-user" aria-hidden="true"></i>
-          Sign In
-        </button>
-        <button class="btn btn-primary" id="startLearningBtn" type="button">
-          <i class="fas fa-rocket" aria-hidden="true"></i>
-          Start Learning
-        </button>
+      <div class="auth-actions" id="authActions">
+        <!-- Guest State (Default) -->
+        <div class="guest-actions" id="guestActions">
+          <button class="btn btn-outline btn-sm" id="signInBtn" type="button">
+            <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+            <span>Sign In</span>
+          </button>
+          <button class="btn btn-primary btn-sm" id="startLearningBtn" type="button">
+            <i class="fas fa-rocket" aria-hidden="true"></i>
+            <span>Start Learning</span>
+          </button>
+        </div>
+
+        <!-- Authenticated State (Hidden by default) -->
+        <div class="user-actions" id="userActions" style="display: none;">
+          <button class="btn btn-outline btn-sm" id="userMenuBtn" type="button" aria-haspopup="true" aria-expanded="false">
+            <div class="user-avatar" id="userAvatar">
+              <i class="fas fa-user" aria-hidden="true"></i>
+            </div>
+            <span class="user-name" id="userName">User</span>
+            <i class="fas fa-chevron-down" aria-hidden="true"></i>
+          </button>
+          
+          <div class="user-dropdown" id="userDropdown" role="menu">
+            <a href="/dashboard.html" class="dropdown-item" role="menuitem">
+              <i class="fas fa-home" aria-hidden="true"></i>
+              <span>Dashboard</span>
+            </a>
+            <a href="/profile.html" class="dropdown-item" role="menuitem">
+              <i class="fas fa-user-circle" aria-hidden="true"></i>
+              <span>Profile</span>
+            </a>
+            <a href="/settings.html" class="dropdown-item" role="menuitem">
+              <i class="fas fa-cog" aria-hidden="true"></i>
+              <span>Settings</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <button class="dropdown-item" role="menuitem" id="signOutBtn" type="button">
+              <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+              <span>Sign Out</span>
+            </button>
+          </div>
+        </div>
       </div>
+
+      <!-- Mobile Menu Toggle -->
+      <button class="mobile-menu-toggle" id="mobileMenuToggle" type="button" aria-expanded="false" aria-label="Toggle mobile menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Navigation Menu (Hidden by default) -->
+  <div class="mobile-nav" id="mobileNav" role="navigation" aria-label="Mobile navigation" aria-hidden="true">
+    <div class="mobile-nav-content">
+      <ul class="mobile-nav-list">
+        <li class="mobile-nav-item">
+          <a href="/dashboard.html" class="mobile-nav-link">
+            <i class="fas fa-home" aria-hidden="true"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="mobile-nav-item">
+          <a href="/courses.html" class="mobile-nav-link">
+            <i class="fas fa-book" aria-hidden="true"></i>
+            <span>Courses</span>
+          </a>
+        </li>
+        <li class="mobile-nav-item">
+          <a href="/career.html" class="mobile-nav-link">
+            <i class="fas fa-compass" aria-hidden="true"></i>
+            <span>Career</span>
+          </a>
+        </li>
+        <li class="mobile-nav-item">
+          <a href="/library.html" class="mobile-nav-link">
+            <i class="fas fa-library" aria-hidden="true"></i>
+            <span>Library</span>
+          </a>
+        </li>
+        <li class="mobile-nav-divider"></li>
+        <li class="mobile-nav-item">
+          <a href="/support.html" class="mobile-nav-link">
+            <i class="fas fa-headset" aria-hidden="true"></i>
+            <span>Support</span>
+          </a>
+        </li>
+        <li class="mobile-nav-item">
+          <a href="/about.html" class="mobile-nav-link">
+            <i class="fas fa-info-circle" aria-hidden="true"></i>
+            <span>About</span>
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </header>
+
+<!-- Authentication Modal (Hidden by default) -->
+<div class="modal-overlay" id="authModal" role="dialog" aria-labelledby="authModalTitle" aria-hidden="true">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title" id="authModalTitle">Welcome to PMERIT</h2>
+      <button class="modal-close" id="closeAuthModal" type="button" aria-label="Close modal">
+        <i class="fas fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    
+    <div class="modal-body">
+      <!-- Sign In Form -->
+      <form class="auth-form" id="signInForm">
+        <div class="form-group">
+          <label for="signInEmail">Email Address</label>
+          <input type="email" id="signInEmail" class="form-input" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="signInPassword">Password</label>
+          <input type="password" id="signInPassword" class="form-input" required>
+        </div>
+        
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+          <button type="button" class="btn btn-link" id="showSignUpForm">Create Account</button>
+        </div>
+      </form>
+      
+      <!-- Sign Up Form (Hidden by default) -->
+      <form class="auth-form" id="signUpForm" style="display: none;">
+        <div class="form-group">
+          <label for="signUpName">Full Name</label>
+          <input type="text" id="signUpName" class="form-input" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="signUpEmail">Email Address</label>
+          <input type="email" id="signUpEmail" class="form-input" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="signUpPassword">Password</label>
+          <input type="password" id="signUpPassword" class="form-input" minlength="8" required>
+        </div>
+        
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="agreeTerms" required>
+            <span class="checkbox-custom"></span>
+            I agree to the <a href="/legal.html" target="_blank">Terms of Service</a> and <a href="/privacy.html" target="_blank">Privacy Policy</a>
+          </label>
+        </div>
+        
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+          <button type="button" class="btn btn-link" id="showSignInForm">Already have an account?</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+// Header functionality initialization
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize header components
+  initializeLanguageSelector();
+  initializeAuthentication();
+  initializeMobileMenu();
+  initializeUserMenu();
+});
+
+function initializeLanguageSelector() {
+  const languageToggle = document.getElementById('languageToggle');
+  const languageDropdown = document.getElementById('languageDropdown');
+  const currentLanguage = document.getElementById('currentLanguage');
+  
+  if (languageToggle && languageDropdown) {
+    languageToggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const isExpanded = languageToggle.getAttribute('aria-expanded') === 'true';
+      languageToggle.setAttribute('aria-expanded', !isExpanded);
+      languageDropdown.style.display = isExpanded ? 'none' : 'block';
+    });
+    
+    // Language option selection
+    languageDropdown.addEventListener('click', function(e) {
+      const option = e.target.closest('.lang-option');
+      if (option) {
+        const langName = option.dataset.name;
+        const langCode = option.dataset.lang;
+        
+        currentLanguage.textContent = langName;
+        languageToggle.setAttribute('aria-expanded', 'false');
+        languageDropdown.style.display = 'none';
+        
+        // Store language preference
+        localStorage.setItem('pmerit_language', langCode);
+        
+        // Dispatch language change event
+        window.dispatchEvent(new CustomEvent('pmerit:languageChanged', {
+          detail: { code: langCode, name: langName }
+        }));
+      }
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function() {
+      languageToggle.setAttribute('aria-expanded', 'false');
+      languageDropdown.style.display = 'none';
+    });
+    
+    // Load saved language preference
+    const savedLang = localStorage.getItem('pmerit_language');
+    if (savedLang) {
+      const savedOption = languageDropdown.querySelector(`[data-lang="${savedLang}"]`);
+      if (savedOption) {
+        currentLanguage.textContent = savedOption.dataset.name;
+      }
+    }
+  }
+}
+
+function initializeAuthentication() {
+  const signInBtn = document.getElementById('signInBtn');
+  const startLearningBtn = document.getElementById('startLearningBtn');
+  const authModal = document.getElementById('authModal');
+  const closeAuthModal = document.getElementById('closeAuthModal');
+  const signInForm = document.getElementById('signInForm');
+  const signUpForm = document.getElementById('signUpForm');
+  const showSignUpForm = document.getElementById('showSignUpForm');
+  const showSignInForm = document.getElementById('showSignInForm');
+  
+  // Show authentication modal
+  function showAuthModal() {
+    authModal.style.display = 'flex';
+    authModal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open');
+  }
+  
+  // Hide authentication modal
+  function hideAuthModal() {
+    authModal.style.display = 'none';
+    authModal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
+  }
+  
+  // Event listeners
+  if (signInBtn) {
+    signInBtn.addEventListener('click', showAuthModal);
+  }
+  
+  if (startLearningBtn) {
+    startLearningBtn.addEventListener('click', showAuthModal);
+  }
+  
+  if (closeAuthModal) {
+    closeAuthModal.addEventListener('click', hideAuthModal);
+  }
+  
+  // Form switching
+  if (showSignUpForm) {
+    showSignUpForm.addEventListener('click', function() {
+      signInForm.style.display = 'none';
+      signUpForm.style.display = 'block';
+      document.getElementById('authModalTitle').textContent = 'Create Account';
+    });
+  }
+  
+  if (showSignInForm) {
+    showSignInForm.addEventListener('click', function() {
+      signUpForm.style.display = 'none';
+      signInForm.style.display = 'block';
+      document.getElementById('authModalTitle').textContent = 'Welcome Back';
+    });
+  }
+  
+  // Close modal when clicking overlay
+  authModal?.addEventListener('click', function(e) {
+    if (e.target === authModal) {
+      hideAuthModal();
+    }
+  });
+  
+  // Check authentication state
+  checkAuthenticationState();
+}
+
+function checkAuthenticationState() {
+  const guestActions = document.getElementById('guestActions');
+  const userActions = document.getElementById('userActions');
+  const userName = document.getElementById('userName');
+  
+  // Check for stored authentication
+  const authToken = localStorage.getItem('pmerit_auth_token');
+  const userInfo = localStorage.getItem('pmerit_user_info');
+  
+  if (authToken && userInfo) {
+    try {
+      const user = JSON.parse(userInfo);
+      
+      // Show authenticated state
+      if (guestActions) guestActions.style.display = 'none';
+      if (userActions) userActions.style.display = 'flex';
+      if (userName) userName.textContent = user.firstName || user.name || 'User';
+      
+      // Update navigation for authenticated users
+      updateNavigationForAuth(true);
+      
+    } catch (error) {
+      console.warn('[PMERIT] Invalid user info in storage:', error);
+      // Clear invalid data
+      localStorage.removeItem('pmerit_auth_token');
+      localStorage.removeItem('pmerit_user_info');
+    }
+  } else {
+    // Show guest state
+    if (guestActions) guestActions.style.display = 'flex';
+    if (userActions) userActions.style.display = 'none';
+    updateNavigationForAuth(false);
+  }
+}
+
+function updateNavigationForAuth(isAuthenticated) {
+  const navDashboard = document.getElementById('navDashboard');
+  
+  if (isAuthenticated) {
+    // Show authenticated navigation items
+    if (navDashboard) navDashboard.style.display = 'block';
+  } else {
+    // Hide authenticated navigation items for guests
+    if (navDashboard) navDashboard.style.display = 'none';
+  }
+}
+
+function initializeMobileMenu() {
+  const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+  const mobileNav = document.getElementById('mobileNav');
+  
+  if (mobileMenuToggle && mobileNav) {
+    mobileMenuToggle.addEventListener('click', function() {
+      const isExpanded = mobileMenuToggle.getAttribute('aria-expanded') === 'true';
+      
+      mobileMenuToggle.setAttribute('aria-expanded', !isExpanded);
+      mobileMenuToggle.classList.toggle('active');
+      mobileNav.setAttribute('aria-hidden', isExpanded);
+      mobileNav.style.display = isExpanded ? 'none' : 'block';
+      
+      // Prevent body scroll when menu is open
+      if (!isExpanded) {
+        document.body.classList.add('mobile-menu-open');
+      } else {
+        document.body.classList.remove('mobile-menu-open');
+      }
+    });
+    
+    // Close mobile menu when clicking nav links
+    mobileNav.addEventListener('click', function(e) {
+      if (e.target.closest('.mobile-nav-link')) {
+        mobileMenuToggle.setAttribute('aria-expanded', 'false');
+        mobileMenuToggle.classList.remove('active');
+        mobileNav.setAttribute('aria-hidden', 'true');
+        mobileNav.style.display = 'none';
+        document.body.classList.remove('mobile-menu-open');
+      }
+    });
+  }
+}
+
+function initializeUserMenu() {
+  const userMenuBtn = document.getElementById('userMenuBtn');
+  const userDropdown = document.getElementById('userDropdown');
+  const signOutBtn = document.getElementById('signOutBtn');
+  
+  if (userMenuBtn && userDropdown) {
+    userMenuBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const isExpanded = userMenuBtn.getAttribute('aria-expanded') === 'true';
+      userMenuBtn.setAttribute('aria-expanded', !isExpanded);
+      userDropdown.style.display = isExpanded ? 'none' : 'block';
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function() {
+      userMenuBtn.setAttribute('aria-expanded', 'false');
+      userDropdown.style.display = 'none';
+    });
+  }
+  
+  // Sign out functionality
+  if (signOutBtn) {
+    signOutBtn.addEventListener('click', function() {
+      // Clear authentication data
+      localStorage.removeItem('pmerit_auth_token');
+      localStorage.removeItem('pmerit_user_info');
+      
+      // Dispatch sign out event
+      window.dispatchEvent(new CustomEvent('pmerit:signOut'));
+      
+      // Refresh the page or redirect to home
+      window.location.reload();
+    });
+  }
+}
+</script>
