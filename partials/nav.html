@@ -1,81 +1,68 @@
-<!--
-  PMERIT Sidebar Navigation (Role-based logic handled by boot-includes.js)
-  Includes: Quick Actions, Navigation, Collapsible Settings (Dark Mode, TTS, Voice Preview)
-  Accessibility: ARIA, keyboard navigation, proper labels
-  Brand: PMERIT AI, 🎓 emoji
--->
-<nav class="sidebar-nav" aria-label="Main sidebar">
-  <!-- PMERIT Brand & Quick Actions -->
-  <div class="sidebar-head">
-    <span class="brand-logo" aria-label="PMERIT AI Logo">🎓</span>
-    <span class="brand-title">PMERIT AI</span>
-  </div>
-
-  <div class="quick-actions" role="region" aria-label="Quick Actions">
-    <button class="sidebar-action" id="vhToggle" type="button" aria-pressed="false">
-      <i class="fas fa-user-astronaut"></i>
-      Virtual Human
+<!-- PMERIT Sidebar Navigation - Left Panel -->
+<nav class="sidebar" aria-label="Main">
+  <!-- Quick Actions -->
+  <section class="quick-actions" aria-label="Quick Actions">
+    <button class="sidebar-btn" id="vhToggle" type="button">
+      <i class="fas fa-user-astronaut" aria-hidden="true"></i>
+      <span>Virtual Human</span>
     </button>
-    <button class="sidebar-action" id="careerPathsBtn" type="button">
-      <i class="fas fa-compass"></i>
-      Career Paths
+    <button class="sidebar-btn" id="careerPathsBtn" type="button">
+      <i class="fas fa-compass" aria-hidden="true"></i>
+      <span>Career Paths</span>
     </button>
-    <button class="sidebar-action" id="customerServiceBtn" type="button">
-      <i class="fas fa-headset"></i>
-      Customer Service
+    <button class="sidebar-btn" id="supportToggle" type="button">
+      <i class="fas fa-headset" aria-hidden="true"></i>
+      <span>Customer Service</span>
     </button>
-    <a class="sidebar-action" id="dashboardBtn" href="/dashboard.html">
-      <i class="fas fa-gauge"></i>
-      Dashboard
-    </a>
-  </div>
+    <button class="sidebar-btn" id="dashboardBtn" type="button">
+      <i class="fas fa-gauge" aria-hidden="true"></i>
+      <span>Dashboard</span>
+    </button>
+  </section>
 
-  <!-- Main Navigation (populated dynamically per role) -->
-  <div id="nav-links" class="nav-links"></div>
-
-  <!-- Settings Collapsible -->
+  <!-- Settings Collapsible (Fixed Structure) -->
   <details class="nav-dropdown" id="settingsDropdown">
-    <summary class="nav-dropdown-toggle" id="settings-heading" aria-expanded="false">
-      <span><i class="fas fa-gear"></i> Settings</span>
+    <summary class="nav-dropdown-toggle" id="settings-heading" aria-expanded="false" aria-controls="settings-panel">
+      <span>
+        <i class="fas fa-gear" aria-hidden="true"></i>
+        Settings
+      </span>
       <span class="dropdown-arrow"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
     </summary>
-    <div class="nav-dropdown-content" role="region" aria-label="Settings Panel">
-      <div class="setting-row">
-        <span id="darkModeLabel">Dark Mode</span>
-        <button
-          class="toggle-switch"
-          id="darkModeToggle"
-          role="switch"
-          aria-checked="false"
-          aria-labelledby="darkModeLabel"
-        >
-          <span class="switch-slider"></span>
+    <div class="nav-dropdown-content" id="settings-panel" aria-label="Accessibility & Preferences">
+      <!-- Dark Mode Toggle -->
+      <div class="settings-row">
+        <span>
+          <i class="fas fa-moon" aria-hidden="true"></i>
+          Dark Mode
+        </span>
+        <button class="toggle-switch" id="darkModeToggle" aria-checked="false" aria-label="Toggle dark mode" role="switch"></button>
+      </div>
+      <!-- Text-to-Speech Toggle -->
+      <div class="settings-row">
+        <span>
+          <i class="fas fa-volume-high" aria-hidden="true"></i>
+          Text-to-Speech
+        </span>
+        <button class="toggle-switch" id="ttsToggle" aria-checked="false" aria-label="Toggle text-to-speech" role="switch"></button>
+      </div>
+      <!-- Preview Voices -->
+      <div class="settings-row">
+        <span>
+          <i class="fas fa-headphones" aria-hidden="true"></i>
+          Preview Voices
+        </span>
+        <button class="btn btn-sm btn-outline" id="previewVoicesBtn" type="button" aria-label="Preview AI voices">
+          <i class="fas fa-play" aria-hidden="true"></i>
         </button>
       </div>
-      <div class="setting-row">
-        <span id="ttsLabel">Text-to-Speech</span>
-        <button
-          class="toggle-switch"
-          id="ttsToggle"
-          role="switch"
-          aria-checked="false"
-          aria-labelledby="ttsLabel"
-        >
-          <span class="switch-slider"></span>
-        </button>
-        <button
-          class="btn btn-xs preview-voice"
-          id="previewVoiceBtn"
-          type="button"
-          aria-label="Preview Voice"
-          title="Preview Voice"
-        >
-          <i class="fas fa-volume-up"></i>
-        </button>
-      </div>
-      <div class="setting-row">
-        <label for="languageSelect" id="languageSelectLabel">Language</label>
-        <select id="languageSelect" aria-labelledby="languageSelectLabel">
+      <!-- Language Selector -->
+      <div class="settings-row">
+        <span>
+          <i class="fas fa-language" aria-hidden="true"></i>
+          Language
+        </span>
+        <select id="sidebarLangSelect" aria-label="Select language">
           <option value="en">English</option>
           <option value="yo">Yorùbá</option>
           <option value="ig">Igbo</option>
