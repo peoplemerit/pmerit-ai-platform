@@ -721,3 +721,19 @@ body {
   position: relative; 
   z-index: 10; 
 }
+/* Header Content Constraint */
+.header {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  max-height: var(--header-height);
+  overflow: hidden;
+}
+
+.header-content {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var(--space-4);
+}
