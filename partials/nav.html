@@ -1,42 +1,36 @@
-<!-- PMERIT Navigation Sidebar - Corrected for base.css Integration -->
-<!-- Uses EXACT classes from base.css - No custom classes -->
+<!-- PMERIT Navigation Sidebar - Sample.jpg Compliant -->
+<!-- Clean HTML, follows DRY principle - No embedded CSS/JS -->
 <!-- Styles: /assets/base.css | Scripts: /assets/boot-includes.js -->
+<!-- Logic: /assets/nav-config.js -->
 
 <nav class="sidebar" role="navigation" aria-label="Main navigation">
   
   <!-- Quick Actions Section -->
   <section class="nav-section">
-    <header class="nav-section-header">
-      <h3>
-        <i class="fas fa-bolt" aria-hidden="true"></i>
-        Quick Actions
-      </h3>
-    </header>
+    <h3 class="nav-section-title">
+      <i class="fas fa-bolt" aria-hidden="true"></i>
+      Quick Actions
+    </h3>
     
     <div class="nav-actions">
       <!-- Virtual Human Mode Toggle -->
-      <button class="nav-action-btn" id="vhToggleBtn" type="button" aria-describedby="vhToggleDesc">
-        <div class="action-icon">
-          <i class="fas fa-user-astronaut" aria-hidden="true"></i>
-        </div>
+      <div class="nav-action-item">
         <div class="action-content">
+          <i class="fas fa-user-astronaut action-icon" aria-hidden="true"></i>
           <span class="action-title">Virtual Human Mode</span>
           <span class="action-subtitle">Immersive AI experience</span>
         </div>
         <div class="action-toggle">
-          <div class="switch" role="switch" aria-checked="false" id="vhSwitch">
-            <!-- Switch styled by base.css -->
-          </div>
+          <input type="checkbox" id="vhModeToggle" class="toggle-switch" aria-describedby="vhModeDesc">
+          <label for="vhModeToggle" class="toggle-label" aria-hidden="true"></label>
         </div>
-      </button>
-      <div id="vhToggleDesc" class="sr-only">Toggle virtual human mode for immersive learning</div>
+      </div>
+      <div id="vhModeDesc" class="sr-only">Toggle virtual human mode for immersive learning</div>
 
       <!-- Career Track & Explore Paths -->
-      <button class="nav-action-btn" id="careerPathsBtn" type="button">
-        <div class="action-icon">
-          <i class="fas fa-compass" aria-hidden="true"></i>
-        </div>
+      <button class="nav-action-item action-button" type="button" id="careerPathsBtn">
         <div class="action-content">
+          <i class="fas fa-compass action-icon" aria-hidden="true"></i>
           <span class="action-title">Career Track & Explore Paths</span>
           <span class="action-subtitle">Discover career opportunities</span>
         </div>
@@ -46,89 +40,97 @@
       </button>
 
       <!-- Customer Service Mode Toggle -->
-      <button class="nav-action-btn" id="customerServiceToggle" type="button" aria-describedby="customerServiceDesc">
-        <div class="action-icon">
-          <i class="fas fa-headset" aria-hidden="true"></i>
-        </div>
+      <div class="nav-action-item">
         <div class="action-content">
+          <i class="fas fa-headset action-icon" aria-hidden="true"></i>
           <span class="action-title">Customer Service Mode</span>
           <span class="action-subtitle">AI support assistance</span>
         </div>
         <div class="action-toggle">
-          <div class="switch" role="switch" aria-checked="false" id="customerServiceSwitch">
-            <!-- Switch styled by base.css -->
-          </div>
+          <input type="checkbox" id="customerServiceToggle" class="toggle-switch" aria-describedby="customerServiceDesc">
+          <label for="customerServiceToggle" class="toggle-label" aria-hidden="true"></label>
         </div>
-      </button>
+      </div>
       <div id="customerServiceDesc" class="sr-only">Toggle customer service mode for platform support</div>
     </div>
   </section>
 
   <!-- Settings Section (Collapsible) -->
   <section class="nav-section">
-    <header class="nav-section-header">
-      <h3>
+    <button class="nav-section-header collapsible" type="button" aria-expanded="false" aria-controls="settingsContent" id="settingsToggle">
+      <h3 class="nav-section-title">
         <i class="fas fa-cog" aria-hidden="true"></i>
         Settings
       </h3>
-      <button class="section-toggle" aria-expanded="false" aria-controls="settingsContent" id="settingsToggle">
-        <i class="fas fa-chevron-down" aria-hidden="true"></i>
-      </button>
-    </header>
+      <i class="fas fa-chevron-down toggle-icon" aria-hidden="true"></i>
+    </button>
     
-    <div class="nav-content" id="settingsContent" style="display: none;">
+    <div class="nav-content collapse" id="settingsContent">
       <!-- Dark Mode -->
       <div class="setting-item">
-        <label class="setting-label">
-          <span class="setting-text">Dark Mode</span>
-          <div class="switch" id="darkModeSwitch" role="switch" aria-checked="false">
-            <!-- Switch styled by base.css -->
-          </div>
-        </label>
+        <div class="setting-content">
+          <i class="fas fa-moon setting-icon" aria-hidden="true"></i>
+          <span class="setting-title">Dark Mode</span>
+        </div>
+        <div class="setting-toggle">
+          <input type="checkbox" id="darkModeToggle" class="toggle-switch">
+          <label for="darkModeToggle" class="toggle-label" aria-hidden="true"></label>
+        </div>
       </div>
       
       <!-- Text-to-Speech -->
       <div class="setting-item">
-        <label class="setting-label">
-          <span class="setting-text">Text-to-Speech</span>
-          <div class="switch" id="ttsSwitch" role="switch" aria-checked="false">
-            <!-- Switch styled by base.css -->
-          </div>
-        </label>
+        <div class="setting-content">
+          <i class="fas fa-volume-up setting-icon" aria-hidden="true"></i>
+          <span class="setting-title">Text-to-Speech</span>
+        </div>
+        <div class="setting-toggle">
+          <input type="checkbox" id="ttsToggle" class="toggle-switch">
+          <label for="ttsToggle" class="toggle-label" aria-hidden="true"></label>
+        </div>
       </div>
 
       <!-- Preview Voices -->
-      <div class="setting-item">
-        <button class="setting-action" id="previewVoicesBtn" type="button">
-          <span class="setting-text">Preview Voices</span>
+      <button class="setting-item setting-button" type="button" id="previewVoicesBtn">
+        <div class="setting-content">
+          <i class="fas fa-play-circle setting-icon" aria-hidden="true"></i>
+          <span class="setting-title">Preview Voices</span>
+        </div>
+        <div class="setting-indicator">
           <i class="fas fa-chevron-right" aria-hidden="true"></i>
-        </button>
-      </div>
+        </div>
+      </button>
     </div>
   </section>
 
-  <!-- Main Navigation Section -->
+  <!-- Navigation Section -->
   <section class="nav-section">
-    <header class="nav-section-header">
-      <h3>
-        <i class="fas fa-compass" aria-hidden="true"></i>
-        Navigation
-      </h3>
-    </header>
+    <h3 class="nav-section-title">
+      <i class="fas fa-compass" aria-hidden="true"></i>
+      Navigation
+    </h3>
     
     <div class="nav-content">
       <!-- Dashboard Button (Role-based) -->
       <div class="nav-primary-action">
         <!-- For Guest Users -->
-        <button class="btn btn-primary guest-only" id="getStartedBtn" type="button" data-action="signup">
+        <button class="btn btn-primary guest-only" id="getStartedBtn" type="button" data-action="signup" style="display: block;">
           <i class="fas fa-user-plus" aria-hidden="true"></i>
           Get Started
         </button>
         
         <!-- For Authenticated Users -->
-        <button class="btn btn-primary authenticated-only" id="dashboardBtn" type="button" style="display: none;">
+        <button class="btn btn-primary authenticated-only" id="dashboardBtn" type="button" data-action="dashboard" style="display: none;">
           <i class="fas fa-gauge-high" aria-hidden="true"></i>
           Dashboard
+        </button>
+      </div>
+
+      <!-- About PMERIT Pricing -->
+      <div class="nav-secondary-action">
+        <button class="nav-link secondary" type="button" id="aboutPricingBtn" data-action="pricing">
+          <i class="fas fa-info-circle" aria-hidden="true"></i>
+          About PMERIT Pricing
         </button>
       </div>
 
@@ -159,57 +161,129 @@
           </a>
         </li>
       </ul>
-
-      <!-- About PMERIT Pricing (Always Visible) -->
-      <div class="nav-secondary">
-        <button class="nav-link" id="aboutPricingBtn" type="button" data-action="pricing">
-          <i class="fas fa-info-circle" aria-hidden="true"></i>
-          About PMERIT Pricing
-        </button>
-      </div>
     </div>
   </section>
 
   <!-- Help & Support Section -->
   <section class="nav-section">
-    <header class="nav-section-header">
-      <h3>
-        <i class="fas fa-life-ring" aria-hidden="true"></i>
-        Help & Support
-      </h3>
-    </header>
+    <h3 class="nav-section-title">
+      <i class="fas fa-life-ring" aria-hidden="true"></i>
+      Help & Support
+    </h3>
     
-    <div class="nav-actions">
-      <button class="nav-action-btn support-btn" id="helpCenterBtn" type="button">
-        <div class="action-icon">
-          <i class="fas fa-question-circle" aria-hidden="true"></i>
-        </div>
-        <div class="action-content">
-          <span class="action-title">Help Center</span>
-        </div>
+    <div class="nav-content">
+      <button class="nav-link support" type="button" id="helpCenterBtn" data-action="help">
+        <i class="fas fa-question-circle" aria-hidden="true"></i>
+        Help Center
       </button>
 
-      <button class="nav-action-btn support-btn" id="sendFeedbackBtn" type="button">
-        <div class="action-icon">
-          <i class="fas fa-comment-alt" aria-hidden="true"></i>
-        </div>
-        <div class="action-content">
-          <span class="action-title">Send Feedback</span>
-        </div>
+      <button class="nav-link support" type="button" id="sendFeedbackBtn" data-action="feedback">
+        <i class="fas fa-comment-alt" aria-hidden="true"></i>
+        Send Feedback
       </button>
     </div>
   </section>
 
   <!-- User Status (Authenticated Only) -->
   <div class="nav-user-status authenticated-only" style="display: none;">
-    <div class="user-tier">
-      <i class="fas fa-graduation-cap" aria-hidden="true"></i>
-      <span>Student</span>
-    </div>
-    <div class="plan-status">
-      <i class="fas fa-star" aria-hidden="true"></i>
-      <span>Free Plan</span>
+    <div class="user-info">
+      <div class="user-avatar">
+        <i class="fas fa-user-circle" aria-hidden="true"></i>
+      </div>
+      <div class="user-details">
+        <span class="user-name" id="userName">Student</span>
+        <span class="user-plan" id="userPlan">Free Plan</span>
+      </div>
     </div>
   </div>
 
 </nav>
+
+<!-- JavaScript for Navigation Functionality -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Settings Collapsible
+  const settingsToggle = document.getElementById('settingsToggle');
+  const settingsContent = document.getElementById('settingsContent');
+  
+  if (settingsToggle && settingsContent) {
+    settingsToggle.addEventListener('click', function() {
+      const isExpanded = this.getAttribute('aria-expanded') === 'true';
+      
+      this.setAttribute('aria-expanded', !isExpanded);
+      settingsContent.classList.toggle('show');
+      
+      const icon = this.querySelector('.toggle-icon');
+      if (icon) {
+        icon.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(180deg)';
+      }
+    });
+  }
+
+  // Dashboard Button Logic
+  const getStartedBtn = document.getElementById('getStartedBtn');
+  const dashboardBtn = document.getElementById('dashboardBtn');
+  
+  if (getStartedBtn) {
+    getStartedBtn.addEventListener('click', function() {
+      // For guest users - show sign-up modal or redirect
+      if (window.PMERIT && window.PMERIT.auth) {
+        window.PMERIT.auth.showSignUp();
+      } else {
+        // Fallback: show basic sign-up message
+        alert('Please sign up to access your personalized dashboard with courses, career center, and learning progress.');
+        window.location.href = '/signup.html';
+      }
+    });
+  }
+  
+  if (dashboardBtn) {
+    dashboardBtn.addEventListener('click', function() {
+      // For authenticated users - navigate to dashboard
+      window.location.href = '/dashboard.html';
+    });
+  }
+
+  // Toggle Switches
+  document.querySelectorAll('.toggle-switch').forEach(toggle => {
+    toggle.addEventListener('change', function() {
+      // Store setting in localStorage
+      if (this.id) {
+        localStorage.setItem(`pmerit_${this.id}`, this.checked);
+      }
+      
+      // Handle specific toggles
+      if (this.id === 'darkModeToggle') {
+        document.body.classList.toggle('dark-mode', this.checked);
+      }
+    });
+    
+    // Load saved state
+    if (toggle.id) {
+      const saved = localStorage.getItem(`pmerit_${toggle.id}`);
+      if (saved !== null) {
+        toggle.checked = saved === 'true';
+      }
+    }
+  });
+
+  // Role-based Visibility
+  function updateRoleVisibility() {
+    const isAuthenticated = localStorage.getItem('pmerit_authenticated') === 'true';
+    
+    document.querySelectorAll('.guest-only').forEach(el => {
+      el.style.display = isAuthenticated ? 'none' : 'block';
+    });
+    
+    document.querySelectorAll('.authenticated-only').forEach(el => {
+      el.style.display = isAuthenticated ? 'block' : 'none';
+    });
+  }
+  
+  // Initialize role visibility
+  updateRoleVisibility();
+  
+  // Listen for authentication changes
+  window.addEventListener('pmerit:authChanged', updateRoleVisibility);
+});
+</script>
