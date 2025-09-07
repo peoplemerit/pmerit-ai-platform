@@ -1,36 +1,35 @@
-<!-- PMERIT Navigation Sidebar - Sample.jpg Compliant -->
-<!-- Clean HTML, follows DRY principle - No embedded CSS/JS -->
-<!-- Styles: /assets/base.css | Scripts: /assets/boot-includes.js -->
-<!-- Logic: /assets/nav-config.js -->
+<!-- PMERIT Navigation Sidebar - Blueprint Implementation -->
+<!-- Follows exact blueprint images provided by user -->
+<!-- Styles: /assets/base.css | Functionality: Embedded JS -->
 
 <nav class="sidebar" role="navigation" aria-label="Main navigation">
   
   <!-- Quick Actions Section -->
   <section class="nav-section">
-    <h3 class="nav-section-title">
+    <h3 class="section-title">
       <i class="fas fa-bolt" aria-hidden="true"></i>
       Quick Actions
     </h3>
     
     <div class="nav-actions">
       <!-- Virtual Human Mode Toggle -->
-      <div class="nav-action-item">
+      <div class="action-item">
         <div class="action-content">
-          <i class="fas fa-user-astronaut action-icon" aria-hidden="true"></i>
+          <i class="fas fa-user-astronaut" aria-hidden="true"></i>
           <span class="action-title">Virtual Human Mode</span>
           <span class="action-subtitle">Immersive AI experience</span>
         </div>
-        <div class="action-toggle">
-          <input type="checkbox" id="vhModeToggle" class="toggle-switch" aria-describedby="vhModeDesc">
-          <label for="vhModeToggle" class="toggle-label" aria-hidden="true"></label>
+        <div class="toggle-wrapper">
+          <div class="switch" id="vhModeSwitch" role="switch" aria-checked="false" tabindex="0">
+            <div class="switch-thumb"></div>
+          </div>
         </div>
       </div>
-      <div id="vhModeDesc" class="sr-only">Toggle virtual human mode for immersive learning</div>
 
       <!-- Career Track & Explore Paths -->
-      <button class="nav-action-item action-button" type="button" id="careerPathsBtn">
+      <button class="action-item action-button" type="button" id="careerTracksBtn">
         <div class="action-content">
-          <i class="fas fa-compass action-icon" aria-hidden="true"></i>
+          <i class="fas fa-compass" aria-hidden="true"></i>
           <span class="action-title">Career Track & Explore Paths</span>
           <span class="action-subtitle">Discover career opportunities</span>
         </div>
@@ -40,250 +39,645 @@
       </button>
 
       <!-- Customer Service Mode Toggle -->
-      <div class="nav-action-item">
+      <div class="action-item">
         <div class="action-content">
-          <i class="fas fa-headset action-icon" aria-hidden="true"></i>
+          <i class="fas fa-headset" aria-hidden="true"></i>
           <span class="action-title">Customer Service Mode</span>
           <span class="action-subtitle">AI support assistance</span>
         </div>
-        <div class="action-toggle">
-          <input type="checkbox" id="customerServiceToggle" class="toggle-switch" aria-describedby="customerServiceDesc">
-          <label for="customerServiceToggle" class="toggle-label" aria-hidden="true"></label>
+        <div class="toggle-wrapper">
+          <div class="switch" id="customerServiceSwitch" role="switch" aria-checked="false" tabindex="0">
+            <div class="switch-thumb"></div>
+          </div>
         </div>
       </div>
-      <div id="customerServiceDesc" class="sr-only">Toggle customer service mode for platform support</div>
     </div>
   </section>
 
   <!-- Settings Section (Collapsible) -->
   <section class="nav-section">
-    <button class="nav-section-header collapsible" type="button" aria-expanded="false" aria-controls="settingsContent" id="settingsToggle">
-      <h3 class="nav-section-title">
+    <button class="section-header" type="button" id="settingsToggle" aria-expanded="false" aria-controls="settingsContent">
+      <h3 class="section-title">
         <i class="fas fa-cog" aria-hidden="true"></i>
         Settings
       </h3>
       <i class="fas fa-chevron-down toggle-icon" aria-hidden="true"></i>
     </button>
     
-    <div class="nav-content collapse" id="settingsContent">
+    <div class="settings-content" id="settingsContent" style="display: none;">
       <!-- Dark Mode -->
       <div class="setting-item">
         <div class="setting-content">
-          <i class="fas fa-moon setting-icon" aria-hidden="true"></i>
+          <i class="fas fa-moon" aria-hidden="true"></i>
           <span class="setting-title">Dark Mode</span>
         </div>
-        <div class="setting-toggle">
-          <input type="checkbox" id="darkModeToggle" class="toggle-switch">
-          <label for="darkModeToggle" class="toggle-label" aria-hidden="true"></label>
+        <div class="toggle-wrapper">
+          <div class="switch" id="darkModeSwitch" role="switch" aria-checked="false" tabindex="0">
+            <div class="switch-thumb"></div>
+          </div>
         </div>
       </div>
       
       <!-- Text-to-Speech -->
       <div class="setting-item">
         <div class="setting-content">
-          <i class="fas fa-volume-up setting-icon" aria-hidden="true"></i>
+          <i class="fas fa-volume-up" aria-hidden="true"></i>
           <span class="setting-title">Text-to-Speech</span>
         </div>
-        <div class="setting-toggle">
-          <input type="checkbox" id="ttsToggle" class="toggle-switch">
-          <label for="ttsToggle" class="toggle-label" aria-hidden="true"></label>
+        <div class="toggle-wrapper">
+          <div class="switch" id="ttsSwitch" role="switch" aria-checked="false" tabindex="0">
+            <div class="switch-thumb"></div>
+          </div>
         </div>
       </div>
 
       <!-- Preview Voices -->
       <button class="setting-item setting-button" type="button" id="previewVoicesBtn">
         <div class="setting-content">
-          <i class="fas fa-play-circle setting-icon" aria-hidden="true"></i>
+          <i class="fas fa-play-circle" aria-hidden="true"></i>
           <span class="setting-title">Preview Voices</span>
         </div>
-        <div class="setting-indicator">
+        <div class="action-indicator">
           <i class="fas fa-chevron-right" aria-hidden="true"></i>
         </div>
       </button>
     </div>
   </section>
 
-  <!-- Navigation Section -->
+  <!-- Dashboard Section -->
   <section class="nav-section">
-    <h3 class="nav-section-title">
-      <i class="fas fa-compass" aria-hidden="true"></i>
-      Navigation
-    </h3>
-    
-    <div class="nav-content">
-      <!-- Dashboard Button (Role-based) -->
-      <div class="nav-primary-action">
-        <!-- For Guest Users -->
-        <button class="btn btn-primary guest-only" id="getStartedBtn" type="button" data-action="signup" style="display: block;">
-          <i class="fas fa-user-plus" aria-hidden="true"></i>
-          Get Started
-        </button>
-        
-        <!-- For Authenticated Users -->
-        <button class="btn btn-primary authenticated-only" id="dashboardBtn" type="button" data-action="dashboard" style="display: none;">
-          <i class="fas fa-gauge-high" aria-hidden="true"></i>
-          Dashboard
-        </button>
-      </div>
-
-      <!-- About PMERIT Pricing -->
-      <div class="nav-secondary-action">
-        <button class="nav-link secondary" type="button" id="aboutPricingBtn" data-action="pricing">
-          <i class="fas fa-info-circle" aria-hidden="true"></i>
-          About PMERIT Pricing
-        </button>
-      </div>
-
-      <!-- User Navigation Links (Authenticated Only) -->
-      <ul class="nav-menu authenticated-only" style="display: none;">
-        <li class="nav-item">
-          <a href="/courses.html" class="nav-link">
-            <i class="fas fa-book-open" aria-hidden="true"></i>
-            My Courses
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="/library.html" class="nav-link">
-            <i class="fas fa-university" aria-hidden="true"></i>
-            Library
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="/career.html" class="nav-link">
-            <i class="fas fa-briefcase" aria-hidden="true"></i>
-            Career Center
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="/classroom.html" class="nav-link">
-            <i class="fas fa-chalkboard-teacher" aria-hidden="true"></i>
-            Classroom
-          </a>
-        </li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- Help & Support Section -->
-  <section class="nav-section">
-    <h3 class="nav-section-title">
-      <i class="fas fa-life-ring" aria-hidden="true"></i>
-      Help & Support
-    </h3>
-    
-    <div class="nav-content">
-      <button class="nav-link support" type="button" id="helpCenterBtn" data-action="help">
-        <i class="fas fa-question-circle" aria-hidden="true"></i>
-        Help Center
-      </button>
-
-      <button class="nav-link support" type="button" id="sendFeedbackBtn" data-action="feedback">
-        <i class="fas fa-comment-alt" aria-hidden="true"></i>
-        Send Feedback
+    <div class="dashboard-wrapper">
+      <button class="btn btn-primary dashboard-btn" type="button" id="dashboardBtn">
+        <i class="fas fa-gauge-high" aria-hidden="true"></i>
+        Dashboard
       </button>
     </div>
   </section>
-
-  <!-- User Status (Authenticated Only) -->
-  <div class="nav-user-status authenticated-only" style="display: none;">
-    <div class="user-info">
-      <div class="user-avatar">
-        <i class="fas fa-user-circle" aria-hidden="true"></i>
-      </div>
-      <div class="user-details">
-        <span class="user-name" id="userName">Student</span>
-        <span class="user-plan" id="userPlan">Free Plan</span>
-      </div>
-    </div>
-  </div>
 
 </nav>
 
-<!-- JavaScript for Navigation Functionality -->
+<!-- Mode Badges (Hidden by default) -->
+<div id="modeBadges" class="mode-badges">
+  <div id="virtualHumanBadge" class="mode-badge virtual-human" style="display: none;">
+    <i class="fas fa-user-astronaut" aria-hidden="true"></i>
+    Virtual Human
+  </div>
+  <div id="supportAssistantBadge" class="mode-badge support-assistant" style="display: none;">
+    <i class="fas fa-headset" aria-hidden="true"></i>
+    Support Assistant
+  </div>
+</div>
+
+<!-- Career Tracks Overlay (Hidden by default) -->
+<div id="careerTracksOverlay" class="career-overlay" style="display: none;">
+  <div class="career-tracks-panel">
+    <header class="career-header">
+      <h2><i class="fas fa-route" aria-hidden="true"></i> Explore Career Tracks</h2>
+      <button class="close-btn" id="closeCareerTracks" aria-label="Close career tracks">
+        <i class="fas fa-times" aria-hidden="true"></i>
+      </button>
+    </header>
+    
+    <div class="career-tracks-list">
+      <div class="career-track">
+        <h3>Software Development (Full-stack)</h3>
+        <p>Front-end + back-end foundations with project practice.</p>
+      </div>
+      
+      <div class="career-track">
+        <h3>Data Analytics</h3>
+        <p>Spreadsheets → SQL → dashboards for real insights.</p>
+      </div>
+      
+      <div class="career-track">
+        <h3>UI/UX Design</h3>
+        <p>Design thinking, wireframes, prototypes, usability.</p>
+      </div>
+      
+      <div class="career-track">
+        <h3>Digital Marketing</h3>
+        <p>SEO, content, ads, analytics for growth.</p>
+      </div>
+      
+      <div class="career-track">
+        <h3>Customer Support (Remote)</h3>
+        <p>Ticketing, empathy, SLAs, tooling.</p>
+      </div>
+      
+      <div class="career-track">
+        <h3>Virtual Assistance / Operations</h3>
+        <p>Scheduling, docs, communication, tooling.</p>
+      </div>
+      
+      <div class="career-track">
+        <h3>Cloud & DevOps (Intro)</h3>
+        <p>Cloud basics, CI/CD, containers overview.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Virtual Human Interface (Hidden by default) -->
+<div id="virtualHumanInterface" class="virtual-human-interface" style="display: none;">
+  <div class="vh-container">
+    <div class="vh-avatar">
+      <i class="fas fa-user-circle" aria-hidden="true"></i>
+    </div>
+    <p class="vh-status">Virtual Human is ready.</p>
+  </div>
+</div>
+
+<style>
+/* Navigation Styles */
+.sidebar {
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  background: var(--bg-secondary, #f8fafc);
+  overflow-y: auto;
+}
+
+.nav-section {
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--primary, #4f46e5);
+  margin: 0 0 0.75rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-header {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 0.75rem;
+}
+
+.toggle-icon {
+  transition: transform 0.2s ease;
+}
+
+.toggle-icon.rotated {
+  transform: rotate(180deg);
+}
+
+/* Quick Actions */
+.nav-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.action-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  background: white;
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 60px;
+}
+
+.action-item:hover {
+  border-color: var(--primary, #4f46e5);
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.1);
+}
+
+.action-button {
+  border: none;
+  background: white;
+  width: 100%;
+}
+
+.action-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.action-content i {
+  color: var(--primary, #4f46e5);
+  margin-bottom: 0.25rem;
+}
+
+.action-title {
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--text-primary, #1f2937);
+}
+
+.action-subtitle {
+  font-size: 0.75rem;
+  color: var(--text-secondary, #6b7280);
+}
+
+/* Toggle Switches */
+.toggle-wrapper {
+  margin-left: 0.5rem;
+}
+
+.switch {
+  width: 40px;
+  height: 20px;
+  background: #cbd5e0;
+  border-radius: 20px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.switch.active {
+  background: var(--primary, #4f46e5);
+}
+
+.switch-thumb {
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.switch.active .switch-thumb {
+  transform: translateX(20px);
+}
+
+/* Settings */
+.settings-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.setting-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  background: white;
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 6px;
+  min-height: 44px;
+}
+
+.setting-button {
+  border: none;
+  background: white;
+  width: 100%;
+  cursor: pointer;
+}
+
+.setting-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.setting-content i {
+  color: var(--primary, #4f46e5);
+}
+
+.setting-title {
+  font-size: 0.875rem;
+  color: var(--text-primary, #1f2937);
+}
+
+/* Dashboard */
+.dashboard-wrapper {
+  margin-top: 1rem;
+}
+
+.dashboard-btn {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: #6b7280;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+}
+
+/* Mode Badges */
+.mode-badges {
+  position: fixed;
+  top: 80px;
+  left: 280px;
+  z-index: 1000;
+}
+
+.mode-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.mode-badge.virtual-human {
+  background: var(--accent, #7c3aed);
+}
+
+.mode-badge.support-assistant {
+  background: var(--success, #10b981);
+}
+
+/* Career Tracks Overlay */
+.career-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.career-tracks-panel {
+  background: white;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.career-header {
+  padding: 1.5rem;
+  background: var(--primary, #4f46e5);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.career-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+.career-tracks-list {
+  padding: 1.5rem;
+  overflow-y: auto;
+  max-height: 60vh;
+}
+
+.career-track {
+  padding: 1rem;
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.career-track:hover {
+  border-color: var(--primary, #4f46e5);
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.1);
+}
+
+.career-track h3 {
+  margin: 0 0 0.5rem 0;
+  color: var(--primary, #4f46e5);
+  font-size: 1rem;
+}
+
+.career-track p {
+  margin: 0;
+  color: var(--text-secondary, #6b7280);
+  font-size: 0.875rem;
+}
+
+/* Virtual Human Interface */
+.virtual-human-interface {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1500;
+  background: white;
+  border: 2px solid var(--primary, #4f46e5);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 10px 40px rgba(79, 70, 229, 0.2);
+  min-width: 300px;
+  text-align: center;
+}
+
+.vh-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.vh-avatar {
+  font-size: 4rem;
+  color: var(--primary, #4f46e5);
+}
+
+.vh-status {
+  margin: 0;
+  color: var(--text-primary, #1f2937);
+  font-weight: 500;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .mode-badges {
+    left: 1rem;
+    top: 140px;
+  }
+  
+  .career-tracks-panel {
+    width: 95%;
+    margin: 1rem;
+  }
+  
+  .virtual-human-interface {
+    width: 90%;
+    margin: 1rem;
+  }
+}
+</style>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Settings Collapsible
-  const settingsToggle = document.getElementById('settingsToggle');
-  const settingsContent = document.getElementById('settingsContent');
+  // Toggle switches functionality
+  function initToggleSwitches() {
+    const switches = document.querySelectorAll('.switch');
+    
+    switches.forEach(switchEl => {
+      switchEl.addEventListener('click', function() {
+        const isActive = this.classList.contains('active');
+        this.classList.toggle('active');
+        this.setAttribute('aria-checked', !isActive);
+        
+        // Handle specific toggle actions
+        if (this.id === 'vhModeSwitch') {
+          toggleVirtualHuman(!isActive);
+        } else if (this.id === 'customerServiceSwitch') {
+          toggleCustomerService(!isActive);
+        } else if (this.id === 'darkModeSwitch') {
+          toggleDarkMode(!isActive);
+        } else if (this.id === 'ttsSwitch') {
+          toggleTTS(!isActive);
+        }
+        
+        // Save state
+        localStorage.setItem(this.id, !isActive);
+      });
+      
+      // Load saved state
+      const saved = localStorage.getItem(switchEl.id);
+      if (saved === 'true') {
+        switchEl.classList.add('active');
+        switchEl.setAttribute('aria-checked', 'true');
+      }
+    });
+  }
   
-  if (settingsToggle && settingsContent) {
+  // Settings collapsible
+  function initSettingsToggle() {
+    const settingsToggle = document.getElementById('settingsToggle');
+    const settingsContent = document.getElementById('settingsContent');
+    const toggleIcon = settingsToggle.querySelector('.toggle-icon');
+    
     settingsToggle.addEventListener('click', function() {
       const isExpanded = this.getAttribute('aria-expanded') === 'true';
       
       this.setAttribute('aria-expanded', !isExpanded);
-      settingsContent.classList.toggle('show');
-      
-      const icon = this.querySelector('.toggle-icon');
-      if (icon) {
-        icon.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(180deg)';
-      }
-    });
-  }
-
-  // Dashboard Button Logic
-  const getStartedBtn = document.getElementById('getStartedBtn');
-  const dashboardBtn = document.getElementById('dashboardBtn');
-  
-  if (getStartedBtn) {
-    getStartedBtn.addEventListener('click', function() {
-      // For guest users - show sign-up modal or redirect
-      if (window.PMERIT && window.PMERIT.auth) {
-        window.PMERIT.auth.showSignUp();
-      } else {
-        // Fallback: show basic sign-up message
-        alert('Please sign up to access your personalized dashboard with courses, career center, and learning progress.');
-        window.location.href = '/signup.html';
-      }
+      settingsContent.style.display = isExpanded ? 'none' : 'block';
+      toggleIcon.classList.toggle('rotated', !isExpanded);
     });
   }
   
-  if (dashboardBtn) {
-    dashboardBtn.addEventListener('click', function() {
-      // For authenticated users - navigate to dashboard
-      window.location.href = '/dashboard.html';
-    });
-  }
-
-  // Toggle Switches
-  document.querySelectorAll('.toggle-switch').forEach(toggle => {
-    toggle.addEventListener('change', function() {
-      // Store setting in localStorage
-      if (this.id) {
-        localStorage.setItem(`pmerit_${this.id}`, this.checked);
-      }
-      
-      // Handle specific toggles
-      if (this.id === 'darkModeToggle') {
-        document.body.classList.toggle('dark-mode', this.checked);
-      }
+  // Career tracks overlay
+  function initCareerTracks() {
+    const careerBtn = document.getElementById('careerTracksBtn');
+    const overlay = document.getElementById('careerTracksOverlay');
+    const closeBtn = document.getElementById('closeCareerTracks');
+    
+    careerBtn.addEventListener('click', function() {
+      overlay.style.display = 'flex';
     });
     
-    // Load saved state
-    if (toggle.id) {
-      const saved = localStorage.getItem(`pmerit_${toggle.id}`);
-      if (saved !== null) {
-        toggle.checked = saved === 'true';
+    closeBtn.addEventListener('click', function() {
+      overlay.style.display = 'none';
+    });
+    
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) {
+        overlay.style.display = 'none';
+      }
+    });
+  }
+  
+  // Virtual Human Mode
+  function toggleVirtualHuman(active) {
+    const badge = document.getElementById('virtualHumanBadge');
+    const interface = document.getElementById('virtualHumanInterface');
+    const chatArea = document.querySelector('.chat-container') || document.querySelector('#chat-container');
+    
+    if (active) {
+      badge.style.display = 'flex';
+      interface.style.display = 'block';
+      if (chatArea) {
+        chatArea.style.display = 'none';
+      }
+    } else {
+      badge.style.display = 'none';
+      interface.style.display = 'none';
+      if (chatArea) {
+        chatArea.style.display = 'block';
       }
     }
-  });
-
-  // Role-based Visibility
-  function updateRoleVisibility() {
-    const isAuthenticated = localStorage.getItem('pmerit_authenticated') === 'true';
-    
-    document.querySelectorAll('.guest-only').forEach(el => {
-      el.style.display = isAuthenticated ? 'none' : 'block';
-    });
-    
-    document.querySelectorAll('.authenticated-only').forEach(el => {
-      el.style.display = isAuthenticated ? 'block' : 'none';
-    });
   }
   
-  // Initialize role visibility
-  updateRoleVisibility();
+  // Customer Service Mode
+  function toggleCustomerService(active) {
+    const badge = document.getElementById('supportAssistantBadge');
+    const aiGreeting = document.querySelector('.ai-message') || document.querySelector('.chat-message');
+    
+    if (active) {
+      badge.style.display = 'flex';
+      if (aiGreeting) {
+        aiGreeting.textContent = 'Welcome to PMERIT Support. I can help with accounts, enrollment, and technical issues. How can I assist you today?';
+      }
+    } else {
+      badge.style.display = 'none';
+      if (aiGreeting) {
+        aiGreeting.textContent = 'Welcome to PMERIT! I\'m here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?';
+      }
+    }
+  }
   
-  // Listen for authentication changes
-  window.addEventListener('pmerit:authChanged', updateRoleVisibility);
+  // Dark Mode Toggle
+  function toggleDarkMode(active) {
+    document.body.classList.toggle('dark-mode', active);
+  }
+  
+  // Text-to-Speech Toggle
+  function toggleTTS(active) {
+    // TTS functionality would be implemented here
+    console.log('TTS toggled:', active);
+  }
+  
+  // Initialize all functionality
+  initToggleSwitches();
+  initSettingsToggle();
+  initCareerTracks();
+  
+  // Load saved toggle states on page load
+  const savedVH = localStorage.getItem('vhModeSwitch') === 'true';
+  const savedCS = localStorage.getItem('customerServiceSwitch') === 'true';
+  
+  if (savedVH) toggleVirtualHuman(true);
+  if (savedCS) toggleCustomerService(true);
 });
 </script>
