@@ -2,7 +2,7 @@
  * PMERIT AI Platform - Navigation Configuration
  * Role-based navigation logic and access control
  * Follows Frontend Implementation Strategy.txt - DRY Principle
- * Version: 1.0.0
+ * Version: 1.1.0 - Enhanced Toggle Integration
  */
 
 (function() {
@@ -56,17 +56,20 @@
     'system-config.html': [USER_ROLES.ADMIN_TIER_1, USER_ROLES.SUPER_ADMIN],
     'content-moderation.html': [USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
     'analytics.html': [USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
-    'reports.html': [USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN]
+    'reports.html': [USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+    'ai-police.html': [USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+    'incident-response.html': [USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN]
   };
   
   /**
    * Navigation menu structure with role-based visibility
+   * Updated IDs to match actual nav.html elements
    */
   const NAVIGATION_MENU = {
     // Quick Actions (always visible in sidebar)
     quickActions: {
       virtualHuman: {
-        id: 'vhToggle',
+        id: 'vhModeSwitch',           // Updated to match nav.html
         label: 'Virtual Human Mode',
         icon: 'fas fa-user-astronaut',
         type: 'toggle',
@@ -74,7 +77,7 @@
         description: 'Toggle immersive virtual human interface'
       },
       careerPaths: {
-        id: 'careerPaths',
+        id: 'careerTracksBtn',        // Updated to match nav.html
         label: 'Career Track & Explore Paths',
         icon: 'fas fa-compass',
         type: 'action',
@@ -82,7 +85,7 @@
         description: 'Explore career paths aligned with job market data'
       },
       customerService: {
-        id: 'supportToggle',
+        id: 'customerServiceSwitch',  // Updated to match nav.html
         label: 'Customer Service Mode',
         icon: 'fas fa-headset',
         type: 'toggle',
@@ -94,7 +97,7 @@
     // Main navigation items
     main: {
       dashboard: {
-        id: 'dashBtn',
+        id: 'dashboardBtn',           // Updated to match nav.html
         label: 'Dashboard',
         icon: 'fas fa-gauge-high',
         url: '/dashboard.html',
@@ -130,6 +133,34 @@
         type: 'link',
         roles: [USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
         description: 'Explore career opportunities and job market data'
+      }
+    },
+    
+    // Settings items
+    settings: {
+      darkMode: {
+        id: 'darkModeSwitch',         // Added settings toggles
+        label: 'Dark Mode',
+        icon: 'fas fa-moon',
+        type: 'toggle',
+        roles: [USER_ROLES.GUEST, USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+        description: 'Toggle dark mode theme'
+      },
+      textToSpeech: {
+        id: 'ttsSwitch',              // Added TTS toggle
+        label: 'Text-to-Speech',
+        icon: 'fas fa-volume-up',
+        type: 'toggle',
+        roles: [USER_ROLES.GUEST, USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+        description: 'Enable text-to-speech functionality'
+      },
+      previewVoices: {
+        id: 'previewVoicesBtn',       // Added preview voices
+        label: 'Preview Voices',
+        icon: 'fas fa-play-circle',
+        type: 'action',
+        roles: [USER_ROLES.GUEST, USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+        description: 'Preview available voice options'
       }
     },
     
@@ -192,6 +223,24 @@
         type: 'link',
         roles: [USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
         description: 'View platform usage and performance metrics'
+      },
+      aiPolice: {
+        id: 'aiPoliceLink',
+        label: 'AI Police',
+        icon: 'fas fa-shield-virus',
+        url: '/ai-police.html',
+        type: 'link',
+        roles: [USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+        description: 'Security monitoring and AI police dashboard'
+      },
+      incidentResponse: {
+        id: 'incidentResponseLink',
+        label: 'Incident Response',
+        icon: 'fas fa-exclamation-triangle',
+        url: '/incident-response.html',
+        type: 'link',
+        roles: [USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN],
+        description: 'Security incident timeline and response'
       }
     }
   };
@@ -212,6 +261,16 @@
       roles: [USER_ROLES.GUEST, USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN]
     },
     aiChat: {
+      enabled: true,
+      guestAccess: true,
+      roles: [USER_ROLES.GUEST, USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN]
+    },
+    careerTracks: {
+      enabled: true,
+      guestAccess: true,
+      roles: [USER_ROLES.GUEST, USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN]
+    },
+    customerService: {
       enabled: true,
       guestAccess: true,
       roles: [USER_ROLES.GUEST, USER_ROLES.STUDENT, USER_ROLES.INSTRUCTOR, USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN]
@@ -268,6 +327,11 @@
       enabled: true,
       guestAccess: false,
       roles: [USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN]
+    },
+    aiPolice: {
+      enabled: true,
+      guestAccess: false,
+      roles: [USER_ROLES.ADMIN_TIER_1, USER_ROLES.ADMIN_TIER_2, USER_ROLES.SUPER_ADMIN]
     }
   };
   
@@ -281,6 +345,7 @@
       this.currentUser = null;
       this.currentRole = USER_ROLES.GUEST;
       this.currentPage = this.getCurrentPage();
+      this.toggleStates = {};
       this.init();
     }
     
@@ -291,6 +356,9 @@
       // Load user data from state
       this.updateUserContext();
       
+      // Initialize toggle functionality
+      this.initializeToggles();
+      
       // Listen for authentication changes
       if (window.PMERIT) {
         window.PMERIT.on('authStateChanged', (event) => {
@@ -300,6 +368,7 @@
         window.PMERIT.on('partialLoaded', (event) => {
           if (event.detail.partialName === 'nav') {
             this.updateNavigationVisibility();
+            this.initializeToggles();
           }
         });
       }
@@ -307,6 +376,297 @@
       // Update navigation when DOM is ready
       document.addEventListener('DOMContentLoaded', () => {
         this.updateNavigationVisibility();
+        this.initializeToggles();
+      });
+      
+      // Listen for PMERIT initialization
+      window.addEventListener('pmerit:initialized', () => {
+        setTimeout(() => {
+          this.updateNavigationVisibility();
+          this.initializeToggles();
+        }, 200);
+      });
+    }
+    
+    /**
+     * Initialize toggle functionality
+     */
+    initializeToggles() {
+      console.log('[PMERIT] Navigation Config: Initializing toggles...');
+      
+      // Settings toggle
+      this.initSettingsToggle();
+      
+      // Switch toggles
+      this.initSwitchToggles();
+      
+      // Action buttons
+      this.initActionButtons();
+      
+      // Dashboard button
+      this.initDashboardButton();
+      
+      // Load saved states
+      this.loadSavedToggleStates();
+      
+      console.log('[PMERIT] Navigation Config: Toggles initialized');
+    }
+    
+    /**
+     * Initialize settings collapsible toggle
+     */
+    initSettingsToggle() {
+      const settingsToggle = document.getElementById('settingsToggle');
+      const settingsContent = document.getElementById('settingsContent');
+      
+      if (settingsToggle && settingsContent) {
+        // Remove existing listeners
+        settingsToggle.replaceWith(settingsToggle.cloneNode(true));
+        const newSettingsToggle = document.getElementById('settingsToggle');
+        
+        newSettingsToggle.addEventListener('click', (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          
+          const isExpanded = newSettingsToggle.getAttribute('aria-expanded') === 'true';
+          
+          newSettingsToggle.setAttribute('aria-expanded', !isExpanded);
+          settingsContent.style.display = isExpanded ? 'none' : 'block';
+          
+          const toggleIcon = newSettingsToggle.querySelector('.toggle-icon');
+          if (toggleIcon) {
+            toggleIcon.classList.toggle('rotated', !isExpanded);
+          }
+          
+          console.log(`[PMERIT] Settings: ${!isExpanded ? 'expanded' : 'collapsed'}`);
+        });
+      }
+    }
+    
+    /**
+     * Initialize switch toggles
+     */
+    initSwitchToggles() {
+      const switches = document.querySelectorAll('.switch');
+      
+      switches.forEach(switchEl => {
+        // Remove existing listeners by cloning
+        const newSwitch = switchEl.cloneNode(true);
+        switchEl.parentNode.replaceChild(newSwitch, switchEl);
+        
+        newSwitch.addEventListener('click', (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          
+          const isActive = newSwitch.classList.contains('active');
+          newSwitch.classList.toggle('active');
+          newSwitch.setAttribute('aria-checked', !isActive);
+          
+          // Handle specific toggle actions
+          this.handleToggleAction(newSwitch.id, !isActive);
+          
+          // Save state
+          this.toggleStates[newSwitch.id] = !isActive;
+          localStorage.setItem(`pmerit_${newSwitch.id}`, !isActive);
+          
+          console.log(`[PMERIT] Toggle ${newSwitch.id}: ${!isActive}`);
+        });
+      });
+    }
+    
+    /**
+     * Handle specific toggle actions
+     */
+    handleToggleAction(toggleId, isActive) {
+      switch (toggleId) {
+        case 'vhModeSwitch':
+          this.toggleVirtualHuman(isActive);
+          break;
+        case 'customerServiceSwitch':
+          this.toggleCustomerService(isActive);
+          break;
+        case 'darkModeSwitch':
+          this.toggleDarkMode(isActive);
+          break;
+        case 'ttsSwitch':
+          this.toggleTTS(isActive);
+          break;
+      }
+    }
+    
+    /**
+     * Toggle Virtual Human Mode
+     */
+    toggleVirtualHuman(active) {
+      const badge = document.getElementById('virtualHumanBadge');
+      const interface = document.getElementById('virtualHumanInterface');
+      const chatArea = document.querySelector('.chat-container') || document.querySelector('#chat-container');
+      
+      if (active) {
+        if (badge) badge.style.display = 'flex';
+        if (interface) interface.style.display = 'block';
+        if (chatArea) chatArea.style.display = 'none';
+        
+        console.log('[PMERIT] Virtual Human Mode activated');
+      } else {
+        if (badge) badge.style.display = 'none';
+        if (interface) interface.style.display = 'none';
+        if (chatArea) chatArea.style.display = 'block';
+        
+        console.log('[PMERIT] Virtual Human Mode deactivated');
+      }
+    }
+    
+    /**
+     * Toggle Customer Service Mode
+     */
+    toggleCustomerService(active) {
+      const badge = document.getElementById('supportAssistantBadge');
+      const aiGreeting = document.querySelector('.ai-message') || document.querySelector('.chat-message');
+      
+      if (active) {
+        if (badge) badge.style.display = 'flex';
+        if (aiGreeting) {
+          aiGreeting.textContent = 'Welcome to PMERIT Support. I can help with accounts, enrollment, and technical issues. How can I assist you today?';
+        }
+        
+        console.log('[PMERIT] Customer Service Mode activated');
+      } else {
+        if (badge) badge.style.display = 'none';
+        if (aiGreeting) {
+          aiGreeting.textContent = 'Welcome to PMERIT! I\'m here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?';
+        }
+        
+        console.log('[PMERIT] Customer Service Mode deactivated');
+      }
+    }
+    
+    /**
+     * Toggle Dark Mode
+     */
+    toggleDarkMode(active) {
+      document.body.classList.toggle('dark-mode', active);
+      console.log(`[PMERIT] Dark Mode: ${active ? 'enabled' : 'disabled'}`);
+    }
+    
+    /**
+     * Toggle Text-to-Speech
+     */
+    toggleTTS(active) {
+      // TTS functionality would be implemented here
+      console.log(`[PMERIT] Text-to-Speech: ${active ? 'enabled' : 'disabled'}`);
+    }
+    
+    /**
+     * Initialize action buttons
+     */
+    initActionButtons() {
+      // Career tracks button
+      const careerBtn = document.getElementById('careerTracksBtn');
+      const overlay = document.getElementById('careerTracksOverlay');
+      const closeBtn = document.getElementById('closeCareerTracks');
+      
+      if (careerBtn) {
+        careerBtn.replaceWith(careerBtn.cloneNode(true));
+        const newCareerBtn = document.getElementById('careerTracksBtn');
+        
+        newCareerBtn.addEventListener('click', (event) => {
+          event.preventDefault();
+          if (overlay) {
+            overlay.style.display = 'flex';
+            console.log('[PMERIT] Career tracks overlay opened');
+          }
+        });
+      }
+      
+      if (closeBtn) {
+        closeBtn.addEventListener('click', (event) => {
+          event.preventDefault();
+          if (overlay) {
+            overlay.style.display = 'none';
+            console.log('[PMERIT] Career tracks overlay closed');
+          }
+        });
+      }
+      
+      if (overlay) {
+        overlay.addEventListener('click', (event) => {
+          if (event.target === overlay) {
+            overlay.style.display = 'none';
+            console.log('[PMERIT] Career tracks overlay closed (backdrop)');
+          }
+        });
+      }
+      
+      // Preview voices button
+      const previewVoicesBtn = document.getElementById('previewVoicesBtn');
+      if (previewVoicesBtn) {
+        previewVoicesBtn.addEventListener('click', (event) => {
+          event.preventDefault();
+          console.log('[PMERIT] Preview voices clicked');
+          // Voice preview functionality would be implemented here
+        });
+      }
+    }
+    
+    /**
+     * Initialize dashboard button
+     */
+    initDashboardButton() {
+      const dashboardBtn = document.getElementById('dashboardBtn');
+      
+      if (dashboardBtn) {
+        dashboardBtn.replaceWith(dashboardBtn.cloneNode(true));
+        const newDashboardBtn = document.getElementById('dashboardBtn');
+        
+        newDashboardBtn.addEventListener('click', (event) => {
+          event.preventDefault();
+          
+          const isAuthenticated = localStorage.getItem('pmerit_authenticated') === 'true';
+          
+          if (isAuthenticated) {
+            // Navigate to dashboard
+            this.navigateToPage('dashboard.html');
+          } else {
+            // Show sign-up prompt for guest users
+            this.showSignUpPrompt();
+          }
+        });
+      }
+    }
+    
+    /**
+     * Show sign-up prompt
+     */
+    showSignUpPrompt() {
+      const message = 'Please sign up to access your personalized dashboard with courses, career center, and learning progress.';
+      
+      // Try to use existing modal system first
+      if (window.PMERIT && window.PMERIT.auth && window.PMERIT.auth.showSignUp) {
+        window.PMERIT.auth.showSignUp();
+      } else {
+        // Fallback to alert and redirect
+        alert(message);
+        window.location.href = '/signup.html';
+      }
+    }
+    
+    /**
+     * Load saved toggle states
+     */
+    loadSavedToggleStates() {
+      const switches = document.querySelectorAll('.switch');
+      
+      switches.forEach(switchEl => {
+        const savedState = localStorage.getItem(`pmerit_${switchEl.id}`);
+        if (savedState === 'true') {
+          switchEl.classList.add('active');
+          switchEl.setAttribute('aria-checked', 'true');
+          this.toggleStates[switchEl.id] = true;
+          
+          // Apply the saved state
+          this.handleToggleAction(switchEl.id, true);
+        }
       });
     }
     
@@ -454,24 +814,16 @@
      * Update main navigation visibility
      */
     updateMainNavigation(mainNav) {
-      // Quick navigation links
-      const quickNav = document.getElementById('quickNav');
-      if (quickNav) {
-        const hasVisibleItems = Object.values(mainNav).some(item => item.visible);
-        quickNav.style.display = hasVisibleItems ? 'flex' : 'none';
-        quickNav.setAttribute('aria-hidden', !hasVisibleItems);
+      // Update individual navigation elements
+      Object.keys(mainNav).forEach(navKey => {
+        const nav = mainNav[navKey];
+        const element = document.getElementById(nav.id);
         
-        // Update individual links
-        Object.keys(mainNav).forEach(navKey => {
-          const nav = mainNav[navKey];
-          const element = document.getElementById(nav.id);
-          
-          if (element) {
-            element.style.display = nav.visible ? 'flex' : 'none';
-            element.setAttribute('aria-hidden', !nav.visible);
-          }
-        });
-      }
+        if (element) {
+          element.style.display = nav.visible ? 'flex' : 'none';
+          element.setAttribute('aria-hidden', !nav.visible);
+        }
+      });
     }
     
     /**
@@ -480,19 +832,15 @@
     updateRoleSpecificNavigation(visibleItems) {
       // Instructor navigation
       const instructorItems = visibleItems.instructor || {};
-      const hasInstructorItems = Object.keys(instructorItems).length > 0;
       
       // Admin navigation  
       const adminItems = visibleItems.admin || {};
-      const hasAdminItems = Object.keys(adminItems).length > 0;
       
-      // You can create specific instructor/admin navigation containers
-      // and show/hide them based on role
+      // Update visibility based on role
       if (this.currentRole === USER_ROLES.INSTRUCTOR || 
           this.currentRole === USER_ROLES.ADMIN_TIER_1 || 
           this.currentRole === USER_ROLES.ADMIN_TIER_2 ||
           this.currentRole === USER_ROLES.SUPER_ADMIN) {
-        // Show advanced features
         this.showAdvancedFeatures();
       } else {
         this.hideAdvancedFeatures();
@@ -503,22 +851,17 @@
      * Update dashboard button appearance
      */
     updateDashboardButton() {
-      const dashBtn = document.getElementById('dashBtn');
-      const mDashBtn = document.getElementById('m_dashBtn');
+      const dashBtn = document.getElementById('dashboardBtn');
       
-      [dashBtn, mDashBtn].forEach(btn => {
-        if (btn) {
-          if (this.currentRole === USER_ROLES.GUEST) {
-            btn.classList.add('guest');
-            btn.innerHTML = '<i class="fas fa-user-plus" aria-hidden="true"></i><span class="dashboard-text">Get Started</span>';
-            btn.setAttribute('aria-label', 'Get started with PMERIT');
-          } else {
-            btn.classList.remove('guest');
-            btn.innerHTML = '<i class="fas fa-gauge-high" aria-hidden="true"></i><span class="dashboard-text">Dashboard</span>';
-            btn.setAttribute('aria-label', 'Go to your dashboard');
-          }
+      if (dashBtn) {
+        if (this.currentRole === USER_ROLES.GUEST) {
+          dashBtn.innerHTML = '<i class="fas fa-user-plus" aria-hidden="true"></i> Get Started';
+          dashBtn.setAttribute('aria-label', 'Get started with PMERIT');
+        } else {
+          dashBtn.innerHTML = '<i class="fas fa-gauge-high" aria-hidden="true"></i> Dashboard';
+          dashBtn.setAttribute('aria-label', 'Go to your dashboard');
         }
-      });
+      }
     }
     
     /**
@@ -527,32 +870,14 @@
     updateAuthenticationSections() {
       const isAuthenticated = this.currentRole !== USER_ROLES.GUEST;
       
-      // User profile section
-      const userProfile = document.getElementById('userProfile');
-      if (userProfile) {
-        userProfile.style.display = isAuthenticated ? 'flex' : 'none';
-        userProfile.setAttribute('aria-hidden', !isAuthenticated);
-      }
+      // Update role-based visibility classes
+      document.querySelectorAll('.guest-only').forEach(el => {
+        el.style.display = isAuthenticated ? 'none' : 'block';
+      });
       
-      // Learning progress
-      const learningProgress = document.getElementById('learningProgress');
-      if (learningProgress) {
-        learningProgress.style.display = isAuthenticated ? 'block' : 'none';
-        learningProgress.setAttribute('aria-hidden', !isAuthenticated);
-      }
-      
-      // Update user name if available
-      const userName = document.getElementById('userName');
-      if (userName && this.currentUser) {
-        userName.textContent = this.currentUser.name || 'Student';
-      }
-      
-      // Update user status/plan
-      const userStatus = document.getElementById('userStatus');
-      if (userStatus && this.currentUser) {
-        const plan = this.currentUser.plan || 'free';
-        userStatus.textContent = plan.charAt(0).toUpperCase() + plan.slice(1) + ' Plan';
-      }
+      document.querySelectorAll('.authenticated-only').forEach(el => {
+        el.style.display = isAuthenticated ? 'block' : 'none';
+      });
     }
     
     /**
@@ -560,7 +885,6 @@
      */
     showAdvancedFeatures() {
       // Add any instructor/admin specific UI elements
-      // This could include additional buttons, sections, etc.
     }
     
     /**
@@ -587,10 +911,7 @@
           }
         } else {
           // Show access denied message
-          if (window.PMERIT?.chat) {
-            window.PMERIT.chat.addMessage('PMERIT AI', 
-              'Access denied. You don\'t have permission to access this page. Please contact your administrator if you believe this is an error.');
-          }
+          console.warn(`[PMERIT] Access denied to ${page} for role ${this.currentRole}`);
         }
       }
     }
@@ -637,6 +958,12 @@
     getCurrentUser: () => navigationConfig.currentUser,
     updateNavigation: () => navigationConfig.updateNavigationVisibility(),
     
+    // Toggle methods
+    toggleVirtualHuman: (active) => navigationConfig.toggleVirtualHuman(active),
+    toggleCustomerService: (active) => navigationConfig.toggleCustomerService(active),
+    toggleDarkMode: (active) => navigationConfig.toggleDarkMode(active),
+    toggleTTS: (active) => navigationConfig.toggleTTS(active),
+    
     // Role management
     setUserRole: (role) => {
       navigationConfig.currentRole = role;
@@ -652,7 +979,10 @@
   
   // Auto-update navigation when page loads
   document.addEventListener('DOMContentLoaded', () => {
-    navigationConfig.updateNavigationVisibility();
+    setTimeout(() => {
+      navigationConfig.updateNavigationVisibility();
+      navigationConfig.initializeToggles();
+    }, 300);
   });
   
   // Export for module systems
@@ -666,6 +996,6 @@
     };
   }
   
-  console.log('[PMERIT] Navigation configuration loaded');
+  console.log('[PMERIT] Navigation configuration loaded with toggle integration');
   
 })();
