@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PMERIT AI Career Assessment - Discover your ideal career path through personality analysis and AI-powered recommendations">
+  <meta name="keywords" content="career assessment, personality test, Big Five, career matching, AI career guidance, PMERIT">
+  <meta name="author" content="PMERIT AI Platform">
+  <meta name="theme-color" content="#4F46E5">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pmerit.com/assessment.html">
+  <meta property="og:title" content="Discover Your Path (AI) - PMERIT Career Assessment">
+  <meta property="og:description" content="Take our AI-powered personality assessment to discover career paths aligned with your unique traits and interests.">
+  <meta property="og:image" content="https://pmerit.com/assets/images/assessment-og.png">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://pmerit.com/assessment.html">
+  <meta property="twitter:title" content="Discover Your Path (AI) - PMERIT Career Assessment">
+  <meta property="twitter:description" content="Take our AI-powered personality assessment to discover career paths aligned with your unique traits and interests.">
+  <meta property="twitter:image" content="https://pmerit.com/assets/images/assessment-twitter.png">
+
+  <title>Discover Your Path (AI) - PMERIT Assessment</title>
+  
+  <!-- Preconnect to external domains -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://ai.pmerit.com">
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QkAfRGJA+Ysg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  
+  <!-- Base CSS - Design System -->
+  <link rel="stylesheet" href="/assets/base.css">
+  
+  <!-- Assessment-specific styles -->
+  <style>
+    /* Assessment specific styling */
+    .assessment-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-6);
+    }
+    
+    .assessment-progress {
+      background: var(--bg-secondary);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      margin-bottom: var(--space-6);
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      background: var(--border-color);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin-top: var(--space-2);
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+      transition: width 0.3s ease;
+      border-radius: var(--radius-md);
+    }
+    
+    .question-card {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      margin-bottom: var(--space-4);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .question-card.active {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+    
+    .question-title {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: var(--space-3);
+    }
+    
+    .question-subtitle {
+      font-size: var(--font-size-sm);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-4);
+    }
+    
+    .likert-scale {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--space-2);
+      margin: var(--space-4) 0;
+    }
+    
+    .likert-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: var(--space-3);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      text-align: center;
+    }
+    
+    .likert-option:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+    
+    .likert-option.selected {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: var(--text-inverse);
+    }
+    
+    .likert-number {
+      font-size: var(--font-size-xl);
+      font-weight: 700;
+      margin-bottom: var(--space-1);
+    }
+    
+    .likert-label {
+      font-size: var(--font-size-xs);
+      text-align: center;
+    }
+    
+    .multiple-choice-options {
+      display: grid;
+      gap: var(--space-2);
+      margin: var(--space-4) 0;
+    }
+    
+    .choice-option {
+      display: flex;
+      align-items: center;
+      padding: var(--space-3);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    
+    .choice-option:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+    
+    .choice-option.selected {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: var(--text-inverse);
+    }
+    
+    .choice-radio {
+      margin-right: var(--space-3);
+    }
+    
+    .open-ended-textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: var(--space-3);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      font-family: var(--font-family);
+      font-size: var(--font-size-base);
+      resize: vertical;
+      transition: border-color var(--transition-fast);
+    }
+    
+    .open-ended-textarea:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+    
+    .assessment-navigation {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: var(--space-6);
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--border-color);
+    }
+    
+    .mode-selector {
+      display: flex;
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+      justify-content: center;
+    }
+    
+    .mode-card {
+      flex: 1;
+      max-width: 320px;
+      background: var(--bg-primary);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      text-align: center;
+    }
+    
+    .mode-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .mode-card.selected {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+    
+    .mode-icon {
+      font-size: 3rem;
+      margin-bottom: var(--space-3);
+      color: var(--primary);
+    }
+    
+    .mode-title {
+      font-size: var(--font-size-xl);
+      font-weight: 600;
+      margin-bottom: var(--space-2);
+      color: var(--text-primary);
+    }
+    
+    .mode-description {
+      color: var(--text-secondary);
+      margin-bottom: var(--space-3);
+    }
+    
+    .mode-duration {
+      font-size: var(--font-size-sm);
+      color: var(--primary);
+      font-weight: 600;
+    }
+    
+    .welcome-section {
+      text-align: center;
+      padding: var(--space-8) var(--space-4);
+      background: linear-gradient(135deg, var(--primary-light) 0%, var(--bg-primary) 100%);
+      border-radius: var(--radius-xl);
+      margin-bottom: var(--space-6);
+    }
+    
+    .welcome-title {
+      font-size: var(--font-size-4xl);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: var(--space-4);
+    }
+    
+    .welcome-subtitle {
+      font-size: var(--font-size-lg);
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto var(--space-6) auto;
+      line-height: var(--leading-relaxed);
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--space-4);
+      margin: var(--space-6) 0;
+    }
+    
+    .feature-card {
+      background: var(--bg-secondary);
+      padding: var(--space-4);
+      border-radius: var(--radius-lg);
+      text-align: center;
+    }
+    
+    .feature-icon {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: var(--space-2);
+    }
+    
+    .feature-title {
+      font-weight: 600;
+      margin-bottom: var(--space-2);
+      color: var(--text-primary);
+    }
+    
+    .feature-description {
+      font-size: var(--font-size-sm);
+      color: var(--text-secondary);
+    }
+    
+    .results-section {
+      display: none;
+      text-align: center;
+      padding: var(--space-8);
+    }
+    
+    .results-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-4);
+    }
+    
+    .loading-spinner {
+      width: 60px;
+      height: 60px;
+      border: 4px solid var(--border-color);
+      border-top: 4px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .ai-analysis-indicator {
+      background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+      color: var(--text-inverse);
+      padding: var(--space-2) var(--space-4);
+      border-radius: var(--radius-lg);
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      margin-top: var(--space-2);
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .assessment-container {
+        padding: var(--space-4);
+      }
+      
+      .likert-scale {
+        grid-template-columns: 1fr;
+        gap: var(--space-1);
+      }
+      
+      .likert-option {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: var(--space-2);
+      }
+      
+      .mode-selector {
+        flex-direction: column;
+      }
+      
+      .welcome-title {
+        font-size: var(--font-size-3xl);
+      }
+    }
+  </style>
+  
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Assessment",
+    "name": "PMERIT AI Career Personality Assessment",
+    "description": "AI-powered personality assessment using Big Five model to match users with ideal career paths",
+    "provider": {
+      "@type": "EducationalOrganization",
+      "name": "PMERIT",
+      "url": "https://pmerit.com"
+    },
+    "assesses": "Career personality traits and preferences",
+    "educationalLevel": "Adult",
+    "timeRequired": "PT15M"
+  }
+  </script>
+</head>
+
+<body class="app-layout">
+  <!-- Skip Navigation Link for Accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  
+  <!-- Header Container - Loaded via boot-includes.js -->
+  <div id="header-container" role="banner"></div>
+
+  <!-- Main Application Layout -->
+  <div class="estate">
+    <!-- Left Navigation Sidebar - Loaded via boot-includes.js -->
+    <div id="nav-container" role="navigation" aria-label="Main navigation"></div>
+
+    <!-- Main Content Area -->
+    <main id="main-content" role="main" tabindex="-1">
+      <div class="assessment-container">
+        
+        <!-- Welcome Section -->
+        <section class="welcome-section" id="welcomeSection">
+          <h1 class="welcome-title">
+            <i class="fas fa-brain" aria-hidden="true"></i>
+            Discover Your Path (AI)
+          </h1>
+          <p class="welcome-subtitle">
+            Take our scientifically-backed personality assessment powered by AI to discover career paths 
+            perfectly aligned with your unique traits, interests, and goals.
+          </p>
+          
+          <!-- Features Grid -->
+          <div class="features-grid">
+            <div class="feature-card">
+              <i class="fas fa-microscope feature-icon" aria-hidden="true"></i>
+              <h3 class="feature-title">Big Five Science</h3>
+              <p class="feature-description">Based on the most validated personality model in psychology</p>
+            </div>
+            <div class="feature-card">
+              <i class="fas fa-robot feature-icon" aria-hidden="true"></i>
+              <h3 class="feature-title">AI-Powered Analysis</h3>
+              <p class="feature-description">Advanced NLP analyzes your responses for deeper insights</p>
+            </div>
+            <div class="feature-card">
+              <i class="fas fa-bullseye feature-icon" aria-hidden="true"></i>
+              <h3 class="feature-title">Personalized Matches</h3>
+              <p class="feature-description">Get 3 tailored career recommendations with clear explanations</p>
+            </div>
+            <div class="feature-card">
+              <i class="fas fa-chart-line feature-icon" aria-hidden="true"></i>
+              <h3 class="feature-title">Growth Pathway</h3>
+              <p class="feature-description">Skill gap analysis and time-to-job estimates included</p>
+            </div>
+          </div>
+          
+          <!-- Mode Selection -->
+          <div class="mode-selector" id="modeSelector">
+            <div class="mode-card" data-mode="quickstart">
+              <i class="fas fa-bolt mode-icon" aria-hidden="true"></i>
+              <h3 class="mode-title">Quickstart</h3>
+              <p class="mode-description">Essential questions focusing on core personality traits and preferences</p>
+              <div class="mode-duration">
+                <i class="fas fa-clock" aria-hidden="true"></i>
+                10-15 minutes
+              </div>
+            </div>
+            
+            <div class="mode-card" data-mode="comprehensive">
+              <i class="fas fa-microscope mode-icon" aria-hidden="true"></i>
+              <h3 class="mode-title">Comprehensive</h3>
+              <p class="mode-description">In-depth analysis including open-ended responses and detailed sub-traits</p>
+              <div class="mode-duration">
+                <i class="fas fa-clock" aria-hidden="true"></i>
+                20-25 minutes
+              </div>
+            </div>
+          </div>
+          
+          <button class="btn btn-primary btn-lg" id="beginAssessment" disabled>
+            <i class="fas fa-play" aria-hidden="true"></i>
+            Begin Assessment
+          </button>
+        </section>
+
+        <!-- Assessment Progress -->
+        <div class="assessment-progress" id="assessmentProgress" style="display: none;">
+          <div class="progress-info">
+            <h3>Assessment Progress</h3>
+            <p id="progressText">Section 1 of 5: Personality Profile</p>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- Assessment Sections -->
+        <div id="assessmentSections" style="display: none;">
+          <!-- Sections will be dynamically loaded here -->
+        </div>
+
+        <!-- Assessment Navigation -->
+        <div class="assessment-navigation" id="assessmentNavigation" style="display: none;">
+          <button class="btn btn-outline" id="previousSection" disabled>
+            <i class="fas fa-chevron-left" aria-hidden="true"></i>
+            Previous
+          </button>
+          
+          <div class="nav-info">
+            <span id="sectionIndicator">1 / 5</span>
+          </div>
+          
+          <button class="btn btn-primary" id="nextSection">
+            Next
+            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <!-- Results Processing Section -->
+        <section class="results-section" id="resultsSection">
+          <div class="results-loading">
+            <div class="loading-spinner"></div>
+            <h2>Analyzing Your Responses</h2>
+            <p>Our AI is processing your personality profile and matching you with optimal career paths...</p>
+            <div class="ai-analysis-indicator">
+              <i class="fas fa-brain" aria-hidden="true"></i>
+              AI Analysis in Progress
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Right Panel - Assessment Context -->
+    <aside id="right-panel" role="complementary" aria-label="Assessment information">
+      <!-- Assessment Info Section -->
+      <section class="assessment-info">
+        <h4>
+          <i class="fas fa-info-circle" aria-hidden="true"></i>
+          About This Assessment
+        </h4>
+        <div class="info-content">
+          <div class="info-item">
+            <h5>Scientific Foundation</h5>
+            <p>Based on the Big Five personality model (OCEAN), the most researched and validated personality framework.</p>
+          </div>
+          
+          <div class="info-item">
+            <h5>AI Enhancement</h5>
+            <p>Natural Language Processing analyzes your written responses to provide deeper career insights.</p>
+          </div>
+          
+          <div class="info-item">
+            <h5>Career Database</h5>
+            <p>Matches against O*NET's comprehensive occupational database with 900+ career profiles.</p>
+          </div>
+          
+          <div class="info-item">
+            <h5>Privacy Promise</h5>
+            <p>Your responses are securely stored and never shared. Delete your data anytime.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Progress Tracker -->
+      <section class="progress-tracker" id="progressTracker" style="display: none;">
+        <h4>
+          <i class="fas fa-tasks" aria-hidden="true"></i>
+          Sections
+        </h4>
+        <div class="section-list">
+          <div class="section-item" data-section="personality">
+            <i class="fas fa-user" aria-hidden="true"></i>
+            <span>Personality Profile</span>
+            <div class="section-status">
+              <i class="fas fa-circle" aria-hidden="true"></i>
+            </div>
+          </div>
+          <div class="section-item" data-section="preferences">
+            <i class="fas fa-heart" aria-hidden="true"></i>
+            <span>Work Preferences</span>
+            <div class="section-status">
+              <i class="fas fa-circle" aria-hidden="true"></i>
+            </div>
+          </div>
+          <div class="section-item" data-section="motivations">
+            <i class="fas fa-flag" aria-hidden="true"></i>
+            <span>Motivations & Values</span>
+            <div class="section-status">
+              <i class="fas fa-circle" aria-hidden="true"></i>
+            </div>
+          </div>
+          <div class="section-item" data-section="skills">
+            <i class="fas fa-tools" aria-hidden="true"></i>
+            <span>Skills & Experience</span>
+            <div class="section-status">
+              <i class="fas fa-circle" aria-hidden="true"></i>
+            </div>
+          </div>
+          <div class="section-item" data-section="context">
+            <i class="fas fa-cog" aria-hidden="true"></i>
+            <span>Work Context</span>
+            <div class="section-status">
+              <i class="fas fa-circle" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Support Section -->
+      <section class="support-section">
+        <h4>
+          <i class="fas fa-question-circle" aria-hidden="true"></i>
+          Need Help?
+        </h4>
+        <p>Having trouble with the assessment? Our AI assistant is here to help.</p>
+        <div class="support-actions">
+          <button class="btn btn-sm btn-outline" id="assessmentHelp">
+            <i class="fas fa-comments" aria-hidden="true"></i>
+            Chat Support
+          </button>
+          <button class="btn btn-sm btn-outline" id="saveProgress">
+            <i class="fas fa-save" aria-hidden="true"></i>
+            Save Progress
+          </button>
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <!-- Footer Container - Loaded via boot-includes.js -->
+  <div id="footer-container" role="contentinfo"></div>
+
+  <!-- Core JavaScript - Assessment specific -->
+  <script>
+    /**
+     * PMERIT Assessment Handler
+     * Manages the complete assessment flow from start to results
+     */
+    class PMERITAssessment {
+      constructor() {
+        this.currentSession = null;
+        this.selectedMode = null;
+        this.currentSectionIndex = 0;
+        this.sections = [];
+        this.responses = {};
+        this.initialized = false;
+        
+        // Wait for boot system to complete
+        window.addEventListener('pmerit:initialized', () => {
+          this.initialize();
+        });
+        
+        // Fallback initialization
+        setTimeout(() => {
+          if (!this.initialized) {
+            this.initialize();
+          }
+        }, 2000);
+      }
+
+      initialize() {
+        if (this.initialized) return;
+        
+        console.log('[PMERIT] Initializing assessment...');
+        
+        this.setupModeSelection();
+        this.setupNavigation();
+        this.setupProgressSaving();
+        this.loadSavedProgress();
+        
+        this.initialized = true;
+        console.log('[PMERIT] ✓ Assessment initialized');
+      }
+
+      /**
+       * Setup mode selection interface
+       */
+      setupModeSelection() {
+        const modeCards = document.querySelectorAll('.mode-card');
+        const beginBtn = document.getElementById('beginAssessment');
+
+        modeCards.forEach(card => {
+          card.addEventListener('click', () => {
+            // Remove previous selection
+            modeCards.forEach(c => c.classList.remove('selected'));
+            
+            // Select current
+            card.classList.add('selected');
+            this.selectedMode = card.dataset.mode;
+            
+            // Enable begin button
+            beginBtn.disabled = false;
+            
+            console.log(`[PMERIT] Mode selected: ${this.selectedMode}`);
+          });
+        });
+
+        beginBtn.addEventListener('click', () => {
+          if (this.selectedMode) {
+            this.startAssessment();
+          }
+        });
+      }
+
+      /**
+       * Start the assessment process
+       */
+      async startAssessment() {
+        try {
+          console.log('[PMERIT] Starting assessment...');
+          
+          // Hide welcome, show progress
+          document.getElementById('welcomeSection').style.display = 'none';
+          document.getElementById('assessmentProgress').style.display = 'block';
+          document.getElementById('progressTracker').style.display = 'block';
+          
+          // Call API to start assessment
+          const response = await fetch('/api/assessment/start', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              mode: this.selectedMode,
+              user_agent: navigator.userAgent,
+              timestamp: new Date().toISOString()
+            })
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          }
+
+          const data = await response.json();
+          this.currentSession = data.session_id;
+          this.sections = data.sections || this.getDefaultSections();
+          
+          // Initialize responses storage
+          this.sections.forEach(section => {
+            this.responses[section.id] = {};
+          });
+          
+          // Render first section
+          this.renderCurrentSection();
+          this.showAssessmentInterface();
+          
+        } catch (error) {
+          console.error('[PMERIT] Assessment start error:', error);
+          this.showError('Failed to start assessment. Please try again.');
+        }
+      }
+
+      /**
+       * Get default sections if API fails
+       */
+      getDefaultSections() {
+        return [
+          {
+            id: 'personality',
+            title: 'Personality Profile',
+            type: 'big_five',
+            questions: this.getBigFiveQuestions()
+          },
+          {
+            id: 'preferences',
+            title: 'Work Preferences',
+            type: 'multiple_choice',
+            questions: this.getPreferenceQuestions()
+          },
+          {
+            id: 'motivations',
+            title: 'Motivations & Values',
+            type: 'open_ended',
+            questions: this.getMotivationQuestions()
+          },
+          {
+            id: 'skills',
+            title: 'Skills & Experience',
+            type: 'mixed',
+            questions: this.getSkillsQuestions()
+          },
+          {
+            id: 'context',
+            title: 'Work Context',
+            type: 'multiple_choice',
+            questions: this.getContextQuestions()
+          }
+        ];
+      }
+
+      /**
+       * Render current section
+       */
+      renderCurrentSection() {
+        const container = document.getElementById('assessmentSections');
+        const section = this.sections[this.currentSectionIndex];
+        
+        if (!section) return;
+        
+        container.innerHTML = '';
+        container.style.display = 'block';
+        
+        const sectionElement = this.createSectionElement(section);
+        container.appendChild(sectionElement);
+        
+        // Update progress
+        this.updateProgress();
+        this.updateNavigation();
+        
+        // Scroll to top
+        container.scrollIntoView({ behavior: 'smooth' });
+      }
+
+      /**
+       * Create section element based on type
+       */
+      createSectionElement(section) {
+        const sectionDiv = document.createElement('div');
+        sectionDiv.className = 'question-card active';
+        
+        let innerHTML = `
+          <h2 class="question-title">${section.title}</h2>
+          <p class="question-subtitle">${section.description || this.getSectionDescription(section.type)}</p>
+        `;
+        
+        section.questions.forEach((question, index) => {
+          innerHTML += this.createQuestionHTML(question, section.id, index);
+        });
+        
+        sectionDiv.innerHTML = innerHTML;
+        
+        // Add event listeners
+        this.attachQuestionListeners(sectionDiv, section.id);
+        
+        return sectionDiv;
+      }
+
+      /**
+       * Create HTML for different question types
+       */
+      createQuestionHTML(question, sectionId, questionIndex) {
+        const questionId = `${sectionId}_${questionIndex}`;
+        
+        switch (question.type) {
+          case 'likert':
+            return this.createLikertHTML(question, questionId);
+          case 'multiple_choice':
+            return this.createMultipleChoiceHTML(question, questionId);
+          case 'open_ended':
+            return this.createOpenEndedHTML(question, questionId);
+          default:
+            return `<p>Unsupported question type: ${question.type}</p>`;
+        }
+      }
+
+      /**
+       * Create Likert scale question HTML
+       */
+      createLikertHTML(question, questionId) {
+        return `
+          <div class="question-item" data-question-id="${questionId}">
+            <p class="question-text">${question.text}</p>
+            <div class="likert-scale" role="radiogroup" aria-labelledby="${questionId}-label">
+              ${[1, 2, 3, 4, 5].map(value => `
+                <div class="likert-option" data-value="${value}" role="radio" tabindex="0">
+                  <div class="likert-number">${value}</div>
+                  <div class="likert-label">${this.getLikertLabel(value)}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      /**
+       * Create multiple choice question HTML
+       */
+      createMultipleChoiceHTML(question, questionId) {
+        return `
+          <div class="question-item" data-question-id="${questionId}">
+            <p class="question-text">${question.text}</p>
+            <div class="multiple-choice-options" role="radiogroup">
+              ${question.options.map((option, index) => `
+                <div class="choice-option" data-value="${option.value}" role="radio" tabindex="0">
+                  <input type="radio" name="${questionId}" value="${option.value}" class="choice-radio">
+                  <span>${option.text}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      /**
+       * Create open-ended question HTML
+       */
+      createOpenEndedHTML(question, questionId) {
+        return `
+          <div class="question-item" data-question-id="${questionId}">
+            <label for="${questionId}-textarea" class="question-text">${question.text}</label>
+            <textarea 
+              id="${questionId}-textarea"
+              class="open-ended-textarea" 
+              placeholder="${question.placeholder || 'Share your thoughts...'}"
+              maxlength="${question.maxLength || 1000}"
+              rows="5">
+            </textarea>
+            <div class="textarea-info">
+              <span class="char-count">0 / ${question.maxLength || 1000}</span>
+            </div>
+          </div>
+        `;
+      }
+
+      /**
+       * Attach event listeners to questions
+       */
+      attachQuestionListeners(sectionElement, sectionId) {
+        // Likert scale listeners
+        const likertOptions = sectionElement.querySelectorAll('.likert-option');
+        likertOptions.forEach(option => {
+          option.addEventListener('click', (e) => {
+            const questionItem = e.target.closest('.question-item');
+            const questionId = questionItem.dataset.questionId;
+            const value = parseInt(e.target.closest('.likert-option').dataset.value);
+            
+            // Update UI
+            questionItem.querySelectorAll('.likert-option').forEach(opt => opt.classList.remove('selected'));
+            e.target.closest('.likert-option').classList.add('selected');
+            
+            // Store response
+            this.responses[sectionId][questionId] = value;
+            
+            this.saveProgress();
+          });
+        });
+
+        // Multiple choice listeners
+        const choiceOptions = sectionElement.querySelectorAll('.choice-option');
+        choiceOptions.forEach(option => {
+          option.addEventListener('click', (e) => {
+            const questionItem = e.target.closest('.question-item');
+            const questionId = questionItem.dataset.questionId;
+            const value = e.target.closest('.choice-option').dataset.value;
+            
+            // Update UI
+            questionItem.querySelectorAll('.choice-option').forEach(opt => opt.classList.remove('selected'));
+            e.target.closest('.choice-option').classList.add('selected');
+            
+            // Store response
+            this.responses[sectionId][questionId] = value;
+            
+            this.saveProgress();
+          });
+        });
+
+        // Textarea listeners
+        const textareas = sectionElement.querySelectorAll('.open-ended-textarea');
+        textareas.forEach(textarea => {
+          const questionItem = textarea.closest('.question-item');
+          const questionId = questionItem.dataset.questionId;
+          const charCount = questionItem.querySelector('.char-count');
+          
+          textarea.addEventListener('input', (e) => {
+            const length = e.target.value.length;
+            const maxLength = e.target.getAttribute('maxlength') || 1000;
+            
+            charCount.textContent = `${length} / ${maxLength}`;
+            
+            // Store response
+            this.responses[sectionId][questionId] = e.target.value;
+            
+            // Debounced save
+            clearTimeout(this.saveTimeout);
+            this.saveTimeout = setTimeout(() => this.saveProgress(), 1000);
+          });
+        });
+      }
+
+      /**
+       * Navigation setup
+       */
+      setupNavigation() {
+        const prevBtn = document.getElementById('previousSection');
+        const nextBtn = document.getElementById('nextSection');
+
+        prevBtn.addEventListener('click', () => {
+          if (this.currentSectionIndex > 0) {
+            this.currentSectionIndex--;
+            this.renderCurrentSection();
+          }
+        });
+
+        nextBtn.addEventListener('click', () => {
+          if (this.currentSectionIndex < this.sections.length - 1) {
+            this.currentSectionIndex++;
+            this.renderCurrentSection();
+          } else {
+            // Finish assessment
+            this.finishAssessment();
+          }
+        });
+      }
+
+      /**
+       * Update progress indicators
+       */
+      updateProgress() {
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const sectionIndicator = document.getElementById('sectionIndicator');
+        
+        const progress = ((this.currentSectionIndex + 1) / this.sections.length) * 100;
+        progressFill.style.width = `${progress}%`;
+        
+        const currentSection = this.sections[this.currentSectionIndex];
+        progressText.textContent = `Section ${this.currentSectionIndex + 1} of ${this.sections.length}: ${currentSection.title}`;
+        sectionIndicator.textContent = `${this.currentSectionIndex + 1} / ${this.sections.length}`;
+        
+        // Update progress tracker
+        this.updateProgressTracker();
+      }
+
+      /**
+       * Update navigation buttons
+       */
+      updateNavigation() {
+        const prevBtn = document.getElementById('previousSection');
+        const nextBtn = document.getElementById('nextSection');
+        
+        prevBtn.disabled = this.currentSectionIndex === 0;
+        
+        if (this.currentSectionIndex === this.sections.length - 1) {
+          nextBtn.innerHTML = '<i class="fas fa-flag-checkered" aria-hidden="true"></i> Finish Assessment';
+        } else {
+          nextBtn.innerHTML = 'Next <i class="fas fa-chevron-right" aria-hidden="true"></i>';
+        }
+      }
+
+      /**
+       * Update progress tracker in right panel
+       */
+      updateProgressTracker() {
+        const sectionItems = document.querySelectorAll('.section-item');
+        sectionItems.forEach((item, index) => {
+          const status = item.querySelector('.section-status i');
+          
+          if (index < this.currentSectionIndex) {
+            status.className = 'fas fa-check-circle';
+            status.style.color = 'var(--success)';
+          } else if (index === this.currentSectionIndex) {
+            status.className = 'fas fa-circle';
+            status.style.color = 'var(--primary)';
+          } else {
+            status.className = 'fas fa-circle';
+            status.style.color = 'var(--border-color)';
+          }
+        });
+      }
+
+      /**
+       * Show assessment interface
+       */
+      showAssessmentInterface() {
+        document.getElementById('assessmentSections').style.display = 'block';
+        document.getElementById('assessmentNavigation').style.display = 'flex';
+      }
+
+      /**
+       * Finish assessment and get results
+       */
+      async finishAssessment() {
+        try {
+          // Show results loading
+          document.getElementById('assessmentSections').style.display = 'none';
+          document.getElementById('assessmentNavigation').style.display = 'none';
+          document.getElementById('resultsSection').style.display = 'block';
+          
+          // Submit final responses
+          await this.submitResponses();
+          
+          // Call finish API
+          const response = await fetch('/api/assessment/finish', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              session_id: this.currentSession,
+              mode: this.selectedMode,
+              completed_at: new Date().toISOString()
+            })
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          }
+
+          const results = await response.json();
+          
+          // Redirect to results page
+          setTimeout(() => {
+            const resultsUrl = `/results.html?session=${this.currentSession}`;
+            window.location.href = resultsUrl;
+          }, 3000);
+          
+        } catch (error) {
+          console.error('[PMERIT] Assessment finish error:', error);
+          this.showError('Failed to process assessment results. Please try again.');
+        }
+      }
+
+      /**
+       * Submit responses to API
+       */
+      async submitResponses() {
+        for (const [sectionId, sectionResponses] of Object.entries(this.responses)) {
+          if (Object.keys(sectionResponses).length > 0) {
+            try {
+              await fetch('/api/assessment/answer', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  session_id: this.currentSession,
+                  section_id: sectionId,
+                  answers: sectionResponses,
+                  timestamp: new Date().toISOString()
+                })
+              });
+            } catch (error) {
+              console.error(`[PMERIT] Failed to submit section ${sectionId}:`, error);
+            }
+          }
+        }
+      }
+
+      /**
+       * Save progress locally and to server
+       */
+      async saveProgress() {
+        // Save to localStorage
+        const progressData = {
+          session_id: this.currentSession,
+          mode: this.selectedMode,
+          current_section: this.currentSectionIndex,
+          responses: this.responses,
+          timestamp: Date.now()
+        };
+        
+        localStorage.setItem('pmerit_assessment_progress', JSON.stringify(progressData));
+        
+        // Auto-save to server if session exists
+        if (this.currentSession) {
+          this.submitResponses();
+        }
+      }
+
+      /**
+       * Load saved progress
+       */
+      loadSavedProgress() {
+        const saved = localStorage.getItem('pmerit_assessment_progress');
+        if (saved) {
+          try {
+            const progressData = JSON.parse(saved);
+            
+            // Check if progress is recent (within 24 hours)
+            if (Date.now() - progressData.timestamp < 24 * 60 * 60 * 1000) {
+              // Show resume option
+              this.showResumeOption(progressData);
+            }
+          } catch (error) {
+            console.error('[PMERIT] Failed to load saved progress:', error);
+          }
+        }
+      }
+
+      /**
+       * Show resume option for saved progress
+       */
+      showResumeOption(progressData) {
+        const welcomeSection = document.getElementById('welcomeSection');
+        
+        const resumeAlert = document.createElement('div');
+        resumeAlert.className = 'resume-alert';
+        resumeAlert.innerHTML = `
+          <div class="alert alert-info">
+            <i class="fas fa-info-circle" aria-hidden="true"></i>
+            <div>
+              <strong>Resume Previous Session?</strong>
+              <p>We found a saved assessment from ${new Date(progressData.timestamp).toLocaleDateString()}. 
+              You were on section ${progressData.current_section + 1} of ${progressData.responses ? Object.keys(progressData.responses).length : 5}.</p>
+              <div class="alert-actions">
+                <button class="btn btn-sm btn-primary" id="resumeAssessment">Resume</button>
+                <button class="btn btn-sm btn-outline" id="startFresh">Start Fresh</button>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        welcomeSection.insertBefore(resumeAlert, welcomeSection.firstChild);
+        
+        // Add event listeners
+        document.getElementById('resumeAssessment').addEventListener('click', () => {
+          this.resumeAssessment(progressData);
+        });
+        
+        document.getElementById('startFresh').addEventListener('click', () => {
+          localStorage.removeItem('pmerit_assessment_progress');
+          resumeAlert.remove();
+        });
+      }
+
+      /**
+       * Resume saved assessment
+       */
+      resumeAssessment(progressData) {
+        this.currentSession = progressData.session_id;
+        this.selectedMode = progressData.mode;
+        this.currentSectionIndex = progressData.current_section;
+        this.responses = progressData.responses;
+        this.sections = this.getDefaultSections(); // Will be replaced by API call in production
+        
+        // Update UI to show resumed state
+        document.querySelector(`.mode-card[data-mode="${this.selectedMode}"]`).classList.add('selected');
+        document.getElementById('beginAssessment').disabled = false;
+        
+        // Remove resume alert
+        document.querySelector('.resume-alert').remove();
+        
+        // Continue from where left off
+        this.showAssessmentInterface();
+        this.renderCurrentSection();
+      }
+
+      /**
+       * Setup additional features
+       */
+      setupProgressSaving() {
+        // Auto-save every 30 seconds
+        setInterval(() => {
+          if (this.currentSession) {
+            this.saveProgress();
+          }
+        }, 30000);
+        
+        // Save on page unload
+        window.addEventListener('beforeunload', () => {
+          if (this.currentSession) {
+            this.saveProgress();
+          }
+        });
+        
+        // Manual save button
+        document.getElementById('saveProgress')?.addEventListener('click', () => {
+          this.saveProgress();
+          this.showToast('Progress saved successfully');
+        });
+      }
+
+      /**
+       * Utility methods
+       */
+      getLikertLabel(value) {
+        const labels = {
+          1: 'Strongly Disagree',
+          2: 'Disagree',
+          3: 'Neutral',
+          4: 'Agree',
+          5: 'Strongly Agree'
+        };
+        return labels[value];
+      }
+
+      getSectionDescription(type) {
+        const descriptions = {
+          'big_five': 'Rate how well each statement describes you',
+          'multiple_choice': 'Select the option that best describes your preferences',
+          'open_ended': 'Share your thoughts and experiences in your own words',
+          'mixed': 'Combination of questions to understand your background'
+        };
+        return descriptions[type] || 'Please answer the following questions';
+      }
+
+      showError(message) {
+        // Implementation for error display
+        console.error('[PMERIT] Assessment error:', message);
+        alert(message); // Temporary - should be replaced with proper error UI
+      }
+
+      showToast(message) {
+        // Implementation for toast notification
+        console.log('[PMERIT] Toast:', message);
+      }
+
+      // Question data methods (would be loaded from API in production)
+      getBigFiveQuestions() {
+        return [
+          { type: 'likert', text: 'I am the life of the party.', trait: 'extraversion' },
+          { type: 'likert', text: 'I feel little concern for others.', trait: 'agreeableness', reverse: true },
+          { type: 'likert', text: 'I am always prepared.', trait: 'conscientiousness' },
+          { type: 'likert', text: 'I get stressed out easily.', trait: 'neuroticism' },
+          { type: 'likert', text: 'I have a rich vocabulary.', trait: 'openness' }
+          // ... more questions would be loaded from API
+        ];
+      }
+
+      getPreferenceQuestions() {
+        return [
+          {
+            type: 'multiple_choice',
+            text: 'What type of work environment do you prefer?',
+            options: [
+              { value: 'remote', text: 'Fully Remote' },
+              { value: 'hybrid', text: 'Hybrid (Office + Remote)' },
+              { value: 'office', text: 'Traditional Office' },
+              { value: 'no_preference', text: 'No Strong Preference' }
+            ]
+          }
+          // ... more questions
+        ];
+      }
+
+      getMotivationQuestions() {
+        return [
+          {
+            type: 'open_ended',
+            text: 'Describe a time when you felt truly successful and fulfilled at work or on a project. What made it meaningful?',
+            placeholder: 'Think about what energized you and made you feel accomplished...',
+            maxLength: 500
+          }
+          // ... more questions
+        ];
+      }
+
+      getSkillsQuestions() {
+        return [
+          {
+            type: 'open_ended',
+            text: 'List 3-5 skills you most enjoy using and consider to be your strengths.',
+            placeholder: 'Include both technical skills (e.g., Python, design) and soft skills (e.g., leadership, problem-solving)...',
+            maxLength: 300
+          }
+          // ... more questions
+        ];
+      }
+
+      getContextQuestions() {
+        return [
+          {
+            type: 'multiple_choice',
+            text: 'How many hours per week can you realistically dedicate to career development?',
+            options: [
+              { value: '1-5', text: '1-5 hours per week' },
+              { value: '6-10', text: '6-10 hours per week' },
+              { value: '11-20', text: '11-20 hours per week' },
+              { value: '20+', text: 'More than 20 hours per week' }
+            ]
+          }
+          // ... more questions
+        ];
+      }
+    }
+
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        new PMERITAssessment();
+      });
+    } else {
+      new PMERITAssessment();
+    }
+  </script>
+
+  <!-- Core JavaScript - Shared Assets -->
+  <script src="/assets/nav-config.js"></script>
+  <script src="/assets/boot-includes.js"></script>
+</body>
+</html>
