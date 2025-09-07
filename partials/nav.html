@@ -55,7 +55,272 @@
       <div id="customerServiceDesc" class="sr-only">Toggle customer service mode for platform support</div>
     </div>
   </section>
+  <!-- begining of new Settings Section -->
+  <!-- ==============================================
+     PMERIT Settings Section - Fixed HTML Structure  
+     Use this structure in partials/nav.html
+     ============================================== -->
 
+<!-- Settings Section with Proper Collapsible Structure -->
+<section class="nav-section" aria-labelledby="settings-heading">
+  <details class="nav-dropdown" id="settingsDropdown">
+    <summary class="nav-dropdown-toggle" id="settings-heading" role="button" aria-expanded="false">
+      <div class="dropdown-icon">
+        <i class="fas fa-cog" aria-hidden="true"></i>
+      </div>
+      <span class="dropdown-title">Settings</span>
+      <div class="dropdown-arrow">
+        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+      </div>
+    </summary>
+    
+    <div class="nav-dropdown-content" role="region" aria-labelledby="settings-heading">
+      
+      <!-- Language Selection -->
+      <div class="setting-item">
+        <label for="languageSelect" class="setting-label">
+          <i class="fas fa-globe" aria-hidden="true"></i>
+          <span>Language</span>
+        </label>
+        <div class="setting-control">
+          <select id="languageSelect" class="form-control" aria-label="Select language">
+            <option value="en">English</option>
+            <option value="yo">Yorùbá</option>
+            <option value="ig">Igbo</option>
+            <option value="ha">Hausa</option>
+            <option value="sw">Swahili</option>
+            <option value="fr">Français</option>
+            <option value="es">Español</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Dark Mode Toggle -->
+      <div class="setting-item">
+        <label for="darkModeSwitch" class="setting-label">
+          <i class="fas fa-moon" aria-hidden="true"></i>
+          <span>Dark Mode</span>
+        </label>
+        <div class="setting-control">
+          <button type="button" 
+                  class="switch" 
+                  id="darkModeSwitch" 
+                  role="switch" 
+                  aria-checked="false"
+                  aria-label="Toggle dark mode">
+            <span class="sr-only">Toggle dark mode</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Text-to-Speech Toggle -->
+      <div class="setting-item">
+        <label for="ttsSwitch" class="setting-label">
+          <i class="fas fa-volume-up" aria-hidden="true"></i>
+          <span>Text-to-Speech</span>
+        </label>
+        <div class="setting-control">
+          <button type="button" 
+                  class="switch" 
+                  id="ttsSwitch" 
+                  role="switch" 
+                  aria-checked="false"
+                  aria-label="Toggle text-to-speech">
+            <span class="sr-only">Toggle text-to-speech</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Voice Preview Button -->
+      <div class="setting-item">
+        <button type="button" class="setting-action" id="voicesBtn" aria-label="Preview available voices">
+          <div class="setting-label">
+            <i class="fas fa-headphones" aria-hidden="true"></i>
+            <span>Preview Voices</span>
+          </div>
+          <div class="setting-arrow">
+            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+          </div>
+        </button>
+      </div>
+
+      <!-- Notification Settings -->
+      <div class="setting-item">
+        <label for="notificationSwitch" class="setting-label">
+          <i class="fas fa-bell" aria-hidden="true"></i>
+          <span>Notifications</span>
+        </label>
+        <div class="setting-control">
+          <button type="button" 
+                  class="switch" 
+                  id="notificationSwitch" 
+                  role="switch" 
+                  aria-checked="true"
+                  aria-label="Toggle notifications">
+            <span class="sr-only">Toggle notifications</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Auto-Save Settings -->
+      <div class="setting-item">
+        <label for="autoSaveSwitch" class="setting-label">
+          <i class="fas fa-save" aria-hidden="true"></i>
+          <span>Auto-Save Progress</span>
+        </label>
+        <div class="setting-control">
+          <button type="button" 
+                  class="switch active" 
+                  id="autoSaveSwitch" 
+                  role="switch" 
+                  aria-checked="true"
+                  aria-label="Toggle auto-save">
+            <span class="sr-only">Toggle auto-save</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </details>
+</section>
+
+<!-- Alternative: If <details> doesn't work, use this div-based structure -->
+<!--
+<section class="nav-section" aria-labelledby="settings-heading-alt">
+  <div class="nav-dropdown" id="settingsDropdownAlt">
+    <button type="button" class="nav-dropdown-toggle" id="settings-heading-alt" aria-expanded="false">
+      <div class="dropdown-icon">
+        <i class="fas fa-cog" aria-hidden="true"></i>
+      </div>
+      <span class="dropdown-title">Settings</span>
+      <div class="dropdown-arrow">
+        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+      </div>
+    </button>
+    
+    <div class="nav-dropdown-content" 
+         role="region" 
+         aria-labelledby="settings-heading-alt"
+         style="display: none;">
+      
+      [Same content as above]
+      
+    </div>
+  </div>
+</section>
+-->
+
+<style>
+/* Additional CSS for setting-action buttons */
+.setting-action {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-radius: var(--radius-md, 0.375rem);
+}
+
+.setting-action:hover {
+  background-color: var(--bg-secondary, #F8FAFC);
+}
+
+.setting-action:focus {
+  outline: none;
+  background-color: var(--bg-secondary, #F8FAFC);
+  box-shadow: 0 0 0 2px var(--primary, #4F46E5);
+}
+
+.setting-arrow {
+  color: var(--text-tertiary, #94A3B8);
+  transition: color 0.2s ease;
+}
+
+.setting-action:hover .setting-arrow {
+  color: var(--primary, #4F46E5);
+}
+
+.dark .setting-action:hover,
+.dark .setting-action:focus {
+  background-color: var(--bg-tertiary, #334155);
+}
+
+/* Custom select styling */
+.setting-control select.form-control {
+  padding: var(--space-1, 0.25rem) var(--space-2, 0.5rem);
+  font-size: var(--font-size-xs, 0.75rem);
+  border-radius: var(--radius-md, 0.375rem);
+  border: 1px solid var(--border-color, #E5E7EB);
+  background-color: var(--card-bg, #FFFFFF);
+  color: var(--text-primary, #1F2937);
+  cursor: pointer;
+}
+
+.setting-control select.form-control:focus {
+  border-color: var(--primary, #4F46E5);
+  box-shadow: 0 0 0 1px var(--primary, #4F46E5);
+}
+
+.dark .setting-control select.form-control {
+  background-color: var(--bg-tertiary, #334155);
+  border-color: var(--border-dark, #475569);
+  color: var(--text-primary, #F1F5F9);
+}
+</style>
+
+<script>
+// Enhanced JavaScript for this specific structure
+document.addEventListener('DOMContentLoaded', function() {
+  const settingsDropdown = document.getElementById('settingsDropdown');
+  const settingsToggle = document.getElementById('settings-heading');
+  
+  if (settingsDropdown && settingsToggle) {
+    // Update aria-expanded when details state changes
+    settingsDropdown.addEventListener('toggle', function() {
+      const isOpen = this.open;
+      settingsToggle.setAttribute('aria-expanded', isOpen.toString());
+      
+      // Update switch states based on localStorage
+      updateSwitchStates();
+    });
+    
+    // Function to update switch states
+    function updateSwitchStates() {
+      // Dark mode
+      const darkModeSwitch = document.getElementById('darkModeSwitch');
+      const isDarkMode = localStorage.getItem('pmerit_dark_mode') === 'true';
+      if (darkModeSwitch) {
+        darkModeSwitch.classList.toggle('active', isDarkMode);
+        darkModeSwitch.setAttribute('aria-checked', isDarkMode.toString());
+      }
+      
+      // TTS
+      const ttsSwitch = document.getElementById('ttsSwitch');
+      const isTTSEnabled = localStorage.getItem('pmerit_tts') === 'true';
+      if (ttsSwitch) {
+        ttsSwitch.classList.toggle('active', isTTSEnabled);
+        ttsSwitch.setAttribute('aria-checked', isTTSEnabled.toString());
+      }
+      
+      // Notifications (default true)
+      const notificationSwitch = document.getElementById('notificationSwitch');
+      const areNotificationsEnabled = localStorage.getItem('pmerit_notifications') !== 'false';
+      if (notificationSwitch) {
+        notificationSwitch.classList.toggle('active', areNotificationsEnabled);
+        notificationSwitch.setAttribute('aria-checked', areNotificationsEnabled.toString());
+      }
+    }
+    
+    // Initialize switch states
+    updateSwitchStates();
+  }
+});
+</script>
+  <!-- end of new Settings Section -->
   <!-- Settings Section -->
  <!-- <section class="nav-section">
     <header class="nav-section-header">
