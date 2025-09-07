@@ -347,3 +347,50 @@ if (document.readyState === 'loading') {
 
 // Export for global access
 window.PMERIT = PMERIT;
+
+// Settings Collapsible
+document.getElementById('settingsToggle')?.addEventListener('click', function() {
+  const content = document.getElementById('settingsContent');
+  const isExpanded = this.getAttribute('aria-expanded') === 'true';
+  
+  this.setAttribute('aria-expanded', !isExpanded);
+  content.style.display = isExpanded ? 'none' : 'block';
+  
+  const icon = this.querySelector('i');
+  icon.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(180deg)';
+});
+
+// Switch Toggle Functionality
+function initSwitches() {
+  document.querySelectorAll('.switch').forEach(switchEl => {
+    switchEl.addEventListener('click', function() {
+      const isActive = this.classList.contains('active');
+      this.classList.toggle('active');
+      this.setAttribute('aria-checked', !isActive);
+      
+      // Store setting in localStorage
+      if (this.id) {
+        localStorage.setItem(`pmerit_${this.id}`, !isActive);
+      }
+    });
+  });
+}
+
+// Role-based Visibility
+function updateRoleVisibility() {
+  const isAuthenticated = localStorage.getItem('pmerit_authenticated') === 'true';
+  
+  document.querySelectorAll('.guest-only').forEach(el => {
+    el.style.display = isAuthenticated ? 'none' : 'block';
+  });
+  
+  document.querySelectorAll('.authenticated-only').forEach(el => {
+    el.style.display = isAuthenticated ? 'block' : 'none';
+  });
+}
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', function() {
+  initSwitches();
+  updateRoleVisibility();
+});
