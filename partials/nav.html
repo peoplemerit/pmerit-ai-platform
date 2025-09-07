@@ -1,338 +1,185 @@
-<!-- PMERIT Platform Navigation Sidebar - Shared Partial -->
-<!-- Follows Frontend Implementation Strategy.txt - DRY Principle -->
-<!-- Styles: /assets/base.css | Scripts: /assets/boot-includes.js -->
-<!-- Navigation Logic: /assets/nav-config.js -->
-
-<nav class="sidebar-nav" role="navigation" aria-label="Main navigation">
+<nav class="sidebar" role="navigation" aria-label="Main navigation">
   <!-- Quick Actions Section -->
-  <section class="nav-section" aria-labelledby="quick-actions-heading">
-    <h3 id="quick-actions-heading" class="nav-section-title">
-      <i class="fas fa-bolt" aria-hidden="true"></i>
-      <span>Quick Actions</span>
-    </h3>
+  <section class="nav-section">
+    <header class="nav-section-header">
+      <h3>
+        <i class="fas fa-bolt" aria-hidden="true"></i>
+        Quick Actions
+      </h3>
+    </header>
     
-    <div class="nav-actions" id="quickActions">
-      <!-- Virtual Human Mode Toggle -->
-      <button class="nav-action-btn" id="vhToggle" type="button" aria-describedby="vh-desc">
+    <div class="nav-actions">
+      <button class="nav-action-btn" id="vhToggleBtn" type="button" aria-describedby="vhToggleDesc">
         <div class="action-icon">
           <i class="fas fa-user-astronaut" aria-hidden="true"></i>
         </div>
         <div class="action-content">
           <span class="action-title">Virtual Human Mode</span>
-          <span class="action-desc">Immersive AI experience</span>
+          <span class="action-subtitle">Immersive AI experience</span>
         </div>
         <div class="action-toggle">
-          <div class="switch" id="vhSwitch" aria-label="Toggle Virtual Human Mode"></div>
+          <div class="toggle-switch" role="switch" aria-checked="false" aria-labelledby="vhToggleBtn">
+            <div class="toggle-indicator"></div>
+          </div>
         </div>
       </button>
-      <div id="vh-desc" class="sr-only">Toggle between standard and immersive virtual human interface</div>
+      <div id="vhToggleDesc" class="sr-only">Toggle virtual human mode for immersive learning</div>
 
-      <!-- Career Track & Explore Paths -->
-      <button class="nav-action-btn" id="careerPaths" type="button" aria-describedby="career-desc">
+      <button class="nav-action-btn" id="careerPathsBtn" type="button">
         <div class="action-icon">
           <i class="fas fa-compass" aria-hidden="true"></i>
         </div>
         <div class="action-content">
           <span class="action-title">Career Track & Explore Paths</span>
-          <span class="action-desc">Discover career opportunities</span>
+          <span class="action-subtitle">Discover career opportunities</span>
         </div>
-        <div class="action-arrow">
+        <div class="action-indicator">
           <i class="fas fa-chevron-right" aria-hidden="true"></i>
         </div>
       </button>
-      <div id="career-desc" class="sr-only">Explore career paths aligned with current job market data</div>
 
-      <!-- Customer Service Mode Toggle -->
-      <button class="nav-action-btn" id="supportToggle" type="button" aria-describedby="support-desc">
+      <button class="nav-action-btn" id="customerServiceToggle" type="button" aria-describedby="customerServiceDesc">
         <div class="action-icon">
           <i class="fas fa-headset" aria-hidden="true"></i>
         </div>
         <div class="action-content">
           <span class="action-title">Customer Service Mode</span>
-          <span class="action-desc">AI support assistance</span>
+          <span class="action-subtitle">AI support assistance</span>
         </div>
         <div class="action-toggle">
-          <div class="switch" id="supportSwitch" aria-label="Toggle Customer Service Mode"></div>
+          <div class="toggle-switch" role="switch" aria-checked="false" aria-labelledby="customerServiceToggle">
+            <div class="toggle-indicator"></div>
+          </div>
         </div>
       </button>
-      <div id="support-desc" class="sr-only">Switch AI to specialized customer service support mode</div>
+      <div id="customerServiceDesc" class="sr-only">Toggle customer service mode for platform support</div>
     </div>
   </section>
 
   <!-- Settings Section -->
-  <section class="nav-section" aria-labelledby="settings-heading">
-    <details class="nav-dropdown" id="settingsDropdown">
-      <summary class="nav-dropdown-toggle" id="settings-heading">
-        <div class="dropdown-icon">
-          <i class="fas fa-cog" aria-hidden="true"></i>
-        </div>
-        <span class="dropdown-title">Settings</span>
-        <div class="dropdown-arrow">
-          <i class="fas fa-chevron-down" aria-hidden="true"></i>
-        </div>
-      </summary>
-      
-      <div class="nav-dropdown-content">
-        <!-- Language Selection -->
-        <div class="setting-item">
-          <label for="languageSelect" class="setting-label">
-            <i class="fas fa-globe" aria-hidden="true"></i>
-            <span>Language</span>
-          </label>
-          <select id="languageSelect" class="setting-control" aria-label="Select language">
-            <option value="en">English</option>
-            <option value="yo">Yorùbá</option>
-            <option value="ig">Igbo</option>
-            <option value="ha">Hausa</option>
-            <option value="sw">Swahili</option>
-            <option value="fr">Français</option>
-            <option value="es">Español</option>
-          </select>
-        </div>
-
-        <!-- Dark Mode Toggle -->
-        <div class="setting-item">
-          <label for="darkModeToggle" class="setting-label">
-            <i class="fas fa-moon" aria-hidden="true"></i>
-            <span>Dark Mode</span>
-          </label>
-          <div class="setting-control">
-            <div class="switch" id="darkModeSwitch" aria-label="Toggle dark mode"></div>
-          </div>
-        </div>
-
-        <!-- Text-to-Speech -->
-        <div class="setting-item">
-          <label for="ttsToggle" class="setting-label">
-            <i class="fas fa-volume-up" aria-hidden="true"></i>
-            <span>Text-to-Speech</span>
-          </label>
-          <div class="setting-control">
-            <div class="switch" id="ttsSwitch" aria-label="Toggle text-to-speech"></div>
-          </div>
-        </div>
-
-        <!-- Notifications -->
-        <div class="setting-item">
-          <label for="notificationsToggle" class="setting-label">
-            <i class="fas fa-bell" aria-hidden="true"></i>
-            <span>Notifications</span>
-          </label>
-          <div class="setting-control">
-            <div class="switch" id="notificationsSwitch" aria-label="Toggle notifications"></div>
-          </div>
-        </div>
-      </div>
-    </details>
-  </section>
-
-  <!-- Main Navigation Section -->
-  <section class="nav-section" aria-labelledby="main-nav-heading">
-    <h3 id="main-nav-heading" class="nav-section-title">
-      <i class="fas fa-compass" aria-hidden="true"></i>
-      <span>Navigation</span>
-    </h3>
-    
-    <div class="nav-links" id="quickNav">
-      <!-- Dashboard -->
-      <button class="nav-link-btn primary" id="dashBtn" type="button" aria-describedby="dash-desc">
-        <div class="link-icon">
-          <i class="fas fa-gauge-high" aria-hidden="true"></i>
-        </div>
-        <div class="link-content">
-          <span class="link-title dashboard-text">Dashboard</span>
-        </div>
-      </button>
-      <div id="dash-desc" class="sr-only">Access your personalized learning dashboard</div>
-
-      <!-- My Courses -->
-      <a href="/courses.html" class="nav-link-btn" id="coursesLink" aria-describedby="courses-desc">
-        <div class="link-icon">
-          <i class="fas fa-book-open" aria-hidden="true"></i>
-        </div>
-        <div class="link-content">
-          <span class="link-title">My Courses</span>
-        </div>
-      </a>
-      <div id="courses-desc" class="sr-only">View and manage your enrolled courses</div>
-
-      <!-- Library -->
-      <a href="/library.html" class="nav-link-btn" id="libraryLink" aria-describedby="library-desc">
-        <div class="link-icon">
-          <i class="fas fa-library" aria-hidden="true"></i>
-        </div>
-        <div class="link-content">
-          <span class="link-title">Library</span>
-        </div>
-      </a>
-      <div id="library-desc" class="sr-only">Access educational resources and documentation</div>
-
-      <!-- Career Center -->
-      <a href="/career.html" class="nav-link-btn" id="careerLink" aria-describedby="career-center-desc">
-        <div class="link-icon">
-          <i class="fas fa-briefcase" aria-hidden="true"></i>
-        </div>
-        <div class="link-content">
-          <span class="link-title">Career Center</span>
-        </div>
-      </a>
-      <div id="career-center-desc" class="sr-only">Explore career opportunities and job market data</div>
-    </div>
-  </section>
-
-  <!-- User Profile Section (shown when authenticated) -->
-  <section class="nav-section user-section" id="userProfile" style="display: none;" aria-labelledby="user-profile-heading">
-    <div class="user-profile-card">
-      <div class="user-avatar">
-        <i class="fas fa-user-circle" aria-hidden="true"></i>
-      </div>
-      <div class="user-info">
-        <h4 id="userName" class="user-name">Student</h4>
-        <span id="userStatus" class="user-status">Free Plan</span>
-      </div>
-      <button class="user-menu-btn" id="userMenuBtn" type="button" aria-label="User menu">
-        <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
-      </button>
-    </div>
-    
-    <!-- User Menu Dropdown -->
-    <div class="user-menu-dropdown" id="userMenuDropdown" style="display: none;">
-      <a href="/profile.html" class="user-menu-item">
-        <i class="fas fa-user" aria-hidden="true"></i>
-        <span>Profile</span>
-      </a>
-      <a href="/settings.html" class="user-menu-item">
+  <section class="nav-section">
+    <header class="nav-section-header">
+      <h3>
         <i class="fas fa-cog" aria-hidden="true"></i>
-        <span>Account Settings</span>
-      </a>
-      <a href="/billing.html" class="user-menu-item">
-        <i class="fas fa-credit-card" aria-hidden="true"></i>
-        <span>Billing</span>
-      </a>
-      <hr class="user-menu-divider">
-      <button class="user-menu-item" id="signOutBtn" type="button">
-        <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
-        <span>Sign Out</span>
+        Settings
+      </h3>
+      <button class="section-toggle" aria-expanded="true" aria-controls="settingsContent">
+        <i class="fas fa-chevron-down" aria-hidden="true"></i>
       </button>
+    </header>
+    
+    <div class="nav-content" id="settingsContent">
+      <div class="setting-item">
+        <label class="setting-label">
+          <input type="checkbox" id="darkModeToggle" class="setting-checkbox">
+          <span class="setting-text">Dark Mode</span>
+        </label>
+      </div>
+      
+      <div class="setting-item">
+        <label class="setting-label">
+          <input type="checkbox" id="ttsToggle" class="setting-checkbox">
+          <span class="setting-text">Text-to-Speech</span>
+        </label>
+      </div>
     </div>
   </section>
 
-  <!-- Learning Progress Section (shown when authenticated) -->
-  <section class="nav-section progress-section" id="learningProgress" style="display: none;" aria-labelledby="progress-heading">
-    <h4 id="progress-heading" class="progress-title">
-      <i class="fas fa-chart-line" aria-hidden="true"></i>
-      <span>Progress</span>
-    </h4>
+  <!-- Navigation Section -->
+  <section class="nav-section">
+    <header class="nav-section-header">
+      <h3>
+        <i class="fas fa-compass" aria-hidden="true"></i>
+        Navigation
+      </h3>
+      <button class="section-toggle" aria-expanded="true" aria-controls="navigationContent">
+        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+      </button>
+    </header>
     
-    <div class="progress-stats">
-      <div class="progress-stat">
-        <span class="stat-label">Courses Completed</span>
-        <span class="stat-value" id="completedCourses">0</span>
-      </div>
-      <div class="progress-stat">
-        <span class="stat-label">Learning Streak</span>
-        <span class="stat-value" id="learningStreak">0 days</span>
-      </div>
-      <div class="progress-stat">
-        <span class="stat-label">Skill Level</span>
-        <span class="stat-value" id="skillLevel">Beginner</span>
-      </div>
-    </div>
+    <div class="nav-content" id="navigationContent">
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <button class="nav-link" id="dashboardBtn" type="button">
+            <i class="fas fa-tachometer-alt" aria-hidden="true"></i>
+            Dashboard
+          </button>
+        </li>
+        <li class="nav-item">
+          <a href="/courses.html" class="nav-link">
+            <i class="fas fa-book-open" aria-hidden="true"></i>
+            My Courses
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/library.html" class="nav-link">
+            <i class="fas fa-university" aria-hidden="true"></i>
+            Library
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/career.html" class="nav-link">
+            <i class="fas fa-briefcase" aria-hidden="true"></i>
+            Career Center
+          </a>
+        </li>
+      </ul>
 
-    <!-- Current Goal Progress -->
-    <div class="current-goal" id="currentGoal">
-      <div class="goal-header">
-        <span class="goal-title">Current Goal</span>
-        <span class="goal-progress">65%</span>
+      <!-- User Status -->
+      <div class="nav-user-status">
+        <div class="user-tier">
+          <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+          <span>Student</span>
+        </div>
+        <div class="plan-status">
+          <i class="fas fa-star" aria-hidden="true"></i>
+          <span>Free Plan</span>
+        </div>
       </div>
-      <div class="progress">
-        <div class="progress-fill" style="width: 65%"></div>
-      </div>
-      <span class="goal-description">Complete JavaScript Fundamentals</span>
-    </div>
-  </section>
-
-  <!-- Admin/Instructor Navigation (conditionally shown) -->
-  <section class="nav-section admin-section" id="adminNavigation" style="display: none;" aria-labelledby="admin-nav-heading">
-    <h4 id="admin-nav-heading" class="nav-section-title">
-      <i class="fas fa-tools" aria-hidden="true"></i>
-      <span>Management</span>
-    </h4>
-    
-    <div class="admin-nav-links">
-      <!-- Create Course (Instructors+) -->
-      <a href="/create-course.html" class="nav-link-btn" id="createCourseLink" style="display: none;" aria-describedby="create-course-desc">
-        <div class="link-icon">
-          <i class="fas fa-plus-circle" aria-hidden="true"></i>
-        </div>
-        <div class="link-content">
-          <span class="link-title">Create Course</span>
-        </div>
-      </a>
-      <div id="create-course-desc" class="sr-only">Create new educational content</div>
-
-      <!-- Manage Students (Instructors+) -->
-      <a href="/manage-students.html" class="nav-link-btn" id="manageStudentsLink" style="display: none;" aria-describedby="manage-students-desc">
-        <div class="link-icon">
-          <i class="fas fa-users" aria-hidden="true"></i>
-        </div>
-        <div class="link-content">
-          <span class="link-title">Manage Students</span>
-        </div>
-      </a>
-      <div id="manage-students-desc" class="sr-only">View and manage student progress</div>
-
-      <!-- Admin Panel (Admins only) -->
-      <a href="/admin.html" class="nav-link-btn" id="adminLink" style="display: none;" aria-describedby="admin-panel-desc">
-        <div class="link-icon">
-          <i class="fas fa-shield-alt" aria-hidden="true"></i>
-        </div>
-        <div class="link-content">
-          <span class="link-title">Admin Panel</span>
-        </div>
-      </a>
-      <div id="admin-panel-desc" class="sr-only">Administrative controls and settings</div>
-
-      <!-- Analytics (Admins only) -->
-      <a href="/analytics.html" class="nav-link-btn" id="analyticsLink" style="display: none;" aria-describedby="analytics-desc">
-        <div class="link-icon">
-          <i class="fas fa-chart-bar" aria-hidden="true"></i>
-        </div>
-        <div class="link-content">
-          <span class="link-title">Analytics</span>
-        </div>
-      </a>
-      <div id="analytics-desc" class="sr-only">View platform usage and performance metrics</div>
     </div>
   </section>
 
   <!-- Help & Support Section -->
-  <section class="nav-section support-section" aria-labelledby="support-section-heading">
-    <h4 id="support-section-heading" class="nav-section-title">
-      <i class="fas fa-life-ring" aria-hidden="true"></i>
-      <span>Help & Support</span>
-    </h4>
+  <section class="nav-section">
+    <header class="nav-section-header">
+      <h3>
+        <i class="fas fa-life-ring" aria-hidden="true"></i>
+        Help & Support
+      </h3>
+    </header>
     
-    <div class="support-links">
-      <button class="nav-link-btn" id="helpBtn" type="button" aria-describedby="help-desc">
-        <div class="link-icon">
+    <div class="nav-actions">
+      <button class="nav-action-btn support-btn" id="helpCenterBtn" type="button">
+        <div class="action-icon">
           <i class="fas fa-question-circle" aria-hidden="true"></i>
         </div>
-        <div class="link-content">
-          <span class="link-title">Help Center</span>
+        <div class="action-content">
+          <span class="action-title">Help Center</span>
         </div>
       </button>
-      <div id="help-desc" class="sr-only">Access help documentation and tutorials</div>
 
-      <button class="nav-link-btn" id="feedbackBtn" type="button" aria-describedby="feedback-desc">
-        <div class="link-icon">
-          <i class="fas fa-comment" aria-hidden="true"></i>
+      <button class="nav-action-btn support-btn" id="sendFeedbackBtn" type="button">
+        <div class="action-icon">
+          <i class="fas fa-comment-alt" aria-hidden="true"></i>
         </div>
-        <div class="link-content">
-          <span class="link-title">Send Feedback</span>
+        <div class="action-content">
+          <span class="action-title">Send Feedback</span>
         </div>
       </button>
-      <div id="feedback-desc" class="sr-only">Share feedback to help improve PMERIT</div>
     </div>
   </section>
+
+  <!-- Footer Status -->
+  <div class="nav-footer">
+    <div class="connection-status">
+      <i class="fas fa-circle-check" aria-hidden="true"></i>
+      <span>Connected to Educational Services</span>
+    </div>
+    <div class="system-info">
+      <small>Database: <span class="status-indicator online">●</span> Online</small>
+      <small>AI Services: <span class="status-indicator online">●</span> Available</small>
+      <small>Assessment API: <span class="status-indicator online">●</span> Ready</small>
+      <small>Job Market Data: <span class="status-indicator online">●</span> Updated</small>
+    </div>
+  </div>
 </nav>
