@@ -928,3 +928,105 @@ body {
     overflow: visible;
   }
 }
+/* PMERIT Core Design System ... (existing styles) */
+
+/* Collapsible (Settings) Styles */
+.nav-dropdown {
+  border: none;
+  background: none;
+  margin: 1.5rem 0 0 0;
+  padding: 0;
+  width: 100%;
+}
+
+.nav-dropdown-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.75rem 1.25rem;
+  background: none;
+  border: none;
+  outline: none;
+  width: 100%;
+  color: var(--text-primary, #1E293B);
+  transition: background 0.1s;
+}
+.nav-dropdown-toggle:hover, .nav-dropdown-toggle:focus {
+  background: rgba(79, 70, 229, 0.06);
+}
+
+.dropdown-arrow {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.25em;
+  transition: transform 0.3s ease;
+}
+.nav-dropdown[open] .dropdown-arrow i {
+  transform: rotate(180deg);
+}
+
+.nav-dropdown-content {
+  padding: 0.75rem 1.25rem 1rem 1.25rem;
+  background: #F6F8FC;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.07);
+  transition: all 0.3s cubic-bezier(.4,0,.2,1);
+  overflow: hidden;
+  font-size: 0.96rem;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0.5rem 0;
+  gap: 1rem;
+}
+
+.toggle-switch {
+  width: 36px;
+  height: 20px;
+  background: #E5E7EB;
+  border-radius: 12px;
+  position: relative;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+  outline: none;
+}
+.toggle-switch[aria-checked="true"] {
+  background: var(--primary, #4F46E5);
+}
+.toggle-switch::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+.toggle-switch[aria-checked="true"]::before {
+  transform: translateX(16px);
+}
+
+#sidebarLangSelect {
+  min-width: 90px;
+  padding: 0.2em 0.6em;
+  border-radius: 6px;
+  border: 1px solid #E5E7EB;
+  background: #FFF;
+  color: var(--text-primary, #1E293B);
+  font-size: 0.97rem;
+}
+
+@media (max-width: 1100px) {
+  .nav-dropdown-content {
+    padding: 0.75rem 0.75rem 1rem 0.75rem;
+  }
+}
