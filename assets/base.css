@@ -1,8 +1,7 @@
 /**
  * PMERIT AI Platform - Base CSS Design System
- * Complete CSS Grid layout with proper container isolation
- * Fixes footer displacement and missing right panel issues
- * Version: 1.0.0 - Critical Layout Fix
+ * Complete CSS Grid layout with proper header/footer integration
+ * Version: 1.1.0 - Header/Footer Layout Fix
  */
 
 /* ===== CSS CUSTOM PROPERTIES (DESIGN TOKENS) ===== */
@@ -201,7 +200,7 @@ body {
   background-color: var(--bg-primary);
   border-bottom: 1px solid var(--border-color);
   z-index: var(--z-sticky);
-  isolation: isolate; /* Prevent partial loading conflicts */
+  isolation: isolate;
 }
 
 /* Main Estate - Three Panel CSS Grid Layout */
@@ -213,7 +212,7 @@ body {
   overflow: hidden;
   gap: 0;
   position: relative;
-  isolation: isolate; /* Critical: Prevents partial content bleeding */
+  isolation: isolate;
 }
 
 /* CORRECTED SELECTORS - Exact HTML structure match */
@@ -227,7 +226,7 @@ body {
   background-color: var(--bg-secondary);
   padding: var(--space-4);
   position: relative;
-  z-index: 1; /* Ensure proper stacking */
+  z-index: 1;
 }
 
 /* Main Content Area - #main-content */
@@ -236,7 +235,7 @@ body {
   overflow: hidden;
   background-color: var(--bg-primary);
   position: relative;
-  z-index: 1; /* Ensure proper stacking */
+  z-index: 1;
 }
 
 /* Right Panel - #right-panel */
@@ -248,7 +247,7 @@ body {
   background-color: var(--bg-secondary);
   padding: var(--space-4);
   position: relative;
-  z-index: 1; /* Ensure proper stacking */
+  z-index: 1;
 }
 
 /* Footer Container - Isolated positioning */
@@ -256,9 +255,205 @@ body {
   height: var(--footer-height);
   background-color: var(--bg-secondary);
   border-top: 1px solid var(--border-color);
-  flex-shrink: 0; /* Prevent footer from shrinking */
-  isolation: isolate; /* Prevent partial loading conflicts */
+  flex-shrink: 0;
+  isolation: isolate;
   z-index: var(--z-fixed);
+}
+
+/* ===== HEADER CONTENT STYLES ===== */
+.header {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  max-height: var(--header-height);
+  overflow: hidden;
+}
+
+.header-content {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var(--space-4);
+  max-height: var(--header-height);
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.brand-icon {
+  font-size: var(--font-size-2xl);
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-name {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+.brand-tagline {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  line-height: 1.2;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.language-selector {
+  display: flex;
+  align-items: center;
+}
+
+.language-select {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+}
+
+.language-select:focus {
+  border-color: var(--primary);
+  outline: none;
+}
+
+.header-actions {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+/* ===== FOOTER CONTENT STYLES ===== */
+.footer {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  max-height: var(--footer-height);
+  overflow: hidden;
+}
+
+.footer-content {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var(--space-4);
+  gap: var(--space-4);
+}
+
+.system-status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.status-indicators {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.status-icon {
+  color: var(--success);
+  font-size: var(--font-size-xs);
+}
+
+.status-text {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.platform-info {
+  display: flex;
+  align-items: center;
+}
+
+.platform-version {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+
+.footer-links {
+  display: flex;
+  gap: var(--space-6);
+  align-items: center;
+}
+
+.link-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.link-group h4 {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.link-group ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.footer-link,
+.footer-link-btn {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.footer-link:hover,
+.footer-link-btn:hover {
+  color: var(--primary);
+}
+
+.footer-mission {
+  flex-shrink: 0;
+}
+
+.mission-text {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  margin: 0;
+  white-space: nowrap;
 }
 
 /* ===== PARTIAL LOADING SYSTEM ISOLATION ===== */
@@ -325,6 +520,32 @@ body {
   /* Show mobile accordions */
   #mobileAccordions {
     display: block !important;
+  }
+  
+  /* Mobile header adjustments */
+  .header-controls {
+    gap: var(--space-2);
+  }
+  
+  .language-selector {
+    display: none;
+  }
+  
+  /* Mobile footer adjustments */
+  .footer-links {
+    display: none;
+  }
+  
+  .footer-mission {
+    display: none;
+  }
+  
+  .status-indicators {
+    gap: var(--space-2);
+  }
+  
+  .status-text {
+    display: none;
   }
 }
 
@@ -706,34 +927,4 @@ body {
     grid-column: 1;
     overflow: visible;
   }
-}
-/* Add this section to your /assets/base.css file */
-
-/* Header & Footer Container Positioning Fix */
-#header-container { 
-  width: 100%; 
-  position: relative; 
-  z-index: 10; 
-}
-
-#footer-container { 
-  width: 100%; 
-  position: relative; 
-  z-index: 10; 
-}
-/* Header Content Constraint */
-.header {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  max-height: var(--header-height);
-  overflow: hidden;
-}
-
-.header-content {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 var(--space-4);
 }
