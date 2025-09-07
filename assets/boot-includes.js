@@ -347,10 +347,9 @@ if (document.readyState === 'loading') {
 
 // Export for global access
 window.PMERIT = PMERIT;
+// ... existing PMERIT boot-includes logic ...
 
-// ... existing boot-includes.js code ...
-
-// Settings Collapsible: Fix toggle, ARIA, and state
+// SETTINGS COLLAPSIBLE - FIXED EVENT HANDLER
 document.addEventListener('DOMContentLoaded', function() {
   const settingsDropdown = document.getElementById('settingsDropdown');
   const settingsToggle = document.getElementById('settings-heading');
@@ -361,70 +360,67 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Dark mode toggle
-  const darkToggle = document.getElementById('darkModeToggle');
-  if (darkToggle) {
-    // Restore state
-    const darkPref = localStorage.getItem('pmerit_dark_mode') === 'true';
-    setDarkMode(darkPref);
-    darkToggle.setAttribute('aria-checked', darkPref.toString());
-
-    darkToggle.addEventListener('click', function() {
-      const current = darkToggle.getAttribute('aria-checked') === 'true';
-      setDarkMode(!current);
-      localStorage.setItem('pmerit_dark_mode', !current);
-      darkToggle.setAttribute('aria-checked', (!current).toString());
+  // DARK MODE TOGGLE
+  const darkModeToggle = document.getElementById('darkModeToggle');
+  if (darkModeToggle) {
+    // Set toggle state from localStorage
+    if (localStorage.getItem('pmerit_dark_mode') === 'true') {
+      darkModeToggle.setAttribute('aria-checked', 'true');
+      document.documentElement.classList.add('dark');
+    } else {
+      darkModeToggle.setAttribute('aria-checked', 'false');
+      document.documentElement.classList.remove('dark');
+    }
+    darkModeToggle.addEventListener('click', function() {
+      const enabled = darkModeToggle.getAttribute('aria-checked') !== 'true';
+      darkModeToggle.setAttribute('aria-checked', enabled.toString());
+      localStorage.setItem('pmerit_dark_mode', enabled);
+      document.documentElement.classList.toggle('dark', enabled);
     });
   }
-  function setDarkMode(on) {
-    document.documentElement.classList.toggle('dark', !!on);
-  }
 
-  // TTS toggle
+  // TEXT-TO-SPEECH TOGGLE
   const ttsToggle = document.getElementById('ttsToggle');
   if (ttsToggle) {
-    const ttsPref = localStorage.getItem('pmerit_tts') === 'true';
-    ttsToggle.setAttribute('aria-checked', ttsPref.toString());
-    ttsToggle.addEventListener('click', function() {
-      const curr = ttsToggle.getAttribute('aria-checked') === 'true';
-      localStorage.setItem('pmerit_tts', (!curr).toString());
-      ttsToggle.setAttribute('aria-checked', (!curr).toString());
-    });
-  }
-
-  // Preview Voice
-  const previewBtn = document.getElementById('previewVoiceBtn');
-  if (previewBtn) {
-    previewBtn.addEventListener('click', function() {
-      if ('speechSynthesis' in window) {
-        const utter = new window.SpeechSynthesisUtterance('Welcome to PMERIT. This is your sample voice.');
-        utter.lang = getSelectedLang() || 'en-US';
-        window.speechSynthesis.speak(utter);
-      }
-    });
-  }
-
-  // Language selector
-  const langSelect = document.getElementById('languageSelect');
-  if (langSelect) {
-    // Restore state
-    const savedLang = localStorage.getItem('pmerit_lang') || 'en';
-    langSelect.value = savedLang;
-    langSelect.addEventListener('change', function() {
-      localStorage.setItem('pmerit_lang', langSelect.value);
-      // Optionally, trigger UI language reload here
-    });
-  }
-  function getSelectedLang() {
-    const langSelect = document.getElementById('languageSelect');
-    if (langSelect) {
-      switch (langSelect.value) {
-        case 'yo': return 'yo-NG';
-        case 'ig': return 'ig-NG';
-        case 'ha': return 'ha-NG';
-        default: return 'en-US';
-      }
+    // Set toggle state from localStorage
+    if (localStorage.getItem('pmerit_tts') === 'true') {
+      ttsToggle.setAttribute('aria-checked', 'true');
+    } else {
+      ttsToggle.setAttribute('aria-checked', 'false');
     }
-    return 'en-US';
+    ttsToggle.addEventListener('click', function() {
+      const enabled = ttsToggle.getAttribute('aria-checked') !== 'true';
+      ttsToggle.setAttribute('aria-checked', enabled.toString());
+      localStorage.setItem('pmerit_tts', enabled);
+      // Optionally: trigger TTS enable/disable globally
+    });
+  }
+
+  // PREVIEW VOICES
+  const previewVoicesBtn = document.getElementById('previewVoicesBtn');
+  if (previewVoicesBtn) {
+    previewVoicesBtn.addEventListener('click', function() {
+      // Example: play a sample phrase using SpeechSynthesis
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance("Welcome to PMERIT. This is a preview of our AI voice.");
+        const lang = document.getElementById('sidebarLangSelect')?.value || 'en';
+        utterance.lang = lang === 'en' ? 'en-US' : (lang === 'yo' ? 'yo-NG' : (lang === 'ig' ? 'ig-NG' : (lang === 'ha' ? 'ha-NE' : 'en-US')));
+        window.speechSynthesis.speak(utterance);
+      }
+    });
+  }
+
+  // SIDEBAR LANGUAGE SELECTOR
+  const sidebarLangSelect = document.getElementById('sidebarLangSelect');
+  if (sidebarLangSelect) {
+    // Default to English or restore from localStorage
+    const savedLang = localStorage.getItem('pmerit_lang');
+    if (savedLang) sidebarLangSelect.value = savedLang;
+    sidebarLangSelect.addEventListener('change', function() {
+      localStorage.setItem('pmerit_lang', this.value);
+      // Optionally: trigger language update in-app
+    });
   }
 });
+
+// ... rest of boot-includes.js logic ...
