@@ -1,50 +1,26 @@
-/* PMERIT Brand Color Updates - Replace in style.css */
-
 :root {
-  /* OFFICIAL PMERIT BRAND COLORS */
-  --primary: #4F46E5;           /* PMERIT brand blue (was #2563EB) */
-  --primary-dark: #3730A3;      /* Darker PMERIT blue */
-  --accent: #7C3AED;            /* PMERIT purple accent (was #7E22CE) */
-  --success: #10B981;           /* PMERIT success green (was #059669) */
-  
-  /* UNIFIED TEXT COLORS */
-  --text-primary: #1F2937;      /* Main text - consistent across modes */
-  --text-secondary: #6B7280;    /* Secondary text - unified gray */
-  --text-tertiary: #9CA3AF;     /* Tertiary text - lighter gray */
-  --text-inverse: #F9FAFB;      /* Light text for dark backgrounds */
-  
-  /* CLEAN BACKGROUND SYSTEM */
-  --bg-primary: #FFFFFF;        /* Clean white background */
-  --bg-secondary: #F8FAFC;      /* Light gray panels */
-  --bg-tertiary: #F1F5F9;       /* Even lighter gray */
-  --bg-dark: #111827;           /* Dark mode background */
-  --card-bg: #FFFFFF;           /* Card backgrounds */
-  
-  /* UNIFIED BORDER & EFFECTS */
-  --border-color: #E5E7EB;      /* Subtle borders */
-  --border-light: #F3F4F6;      /* Very light borders */
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  
-  /* LAYOUT CONSISTENCY */
-  --header-height: 70px;
-  --footer-height: 60px;
-  --transition: all 0.2s ease-in-out;
-}
+  /* BRAND COLORS */
+  --primary: #7A8FFF;
+  --primary-dark: #6D6ADA;
+  --accent: #A374E8;
+  --accent-light: #B7A8FF;
+  --success: #10B981;
+  --warning: #FFC043;
 
-/* DARK MODE - UNIFIED COLORS */
-.dark {
-  --text-primary: #F9FAFB;      /* Light text in dark mode */
-  --text-secondary: #D1D5DB;    /* Secondary light text */
-  --text-tertiary: #9CA3AF;     /* Tertiary stays consistent */
-  --bg-primary: #111827;        /* Dark background */
-  --bg-secondary: #1F2937;      /* Dark panels */
-  --bg-tertiary: #374151;       /* Darker panels */
-  --card-bg: #1F2937;           /* Dark card backgrounds */
-  --border-color: #374151;      /* Dark borders */
-  --border-light: #4B5563;      /* Lighter dark borders */
-  --shadow: 0 8px 28px rgba(0,0,0,.45);
-  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  /* GRAYS & BACKGROUNDS */
+  --header-bg: #F7F8FA;
+  --panel-bg: #F3F3FB;
+  --bg-main: #E9EAF6;
+  --bg-primary: #FFFFFF;
+  --border-color: #E0E6F0;
+
+  /* TEXT */
+  --text-primary: #23233C;
+  --text-secondary: #4F4F68;
+  --text-tertiary: #9CA3AF;
+
+  /* GRADIENTS */
+  --panel-gradient: linear-gradient(135deg, #7A8FFF 0%, #A374E8 100%);
 }
 * {
   margin: 0;
