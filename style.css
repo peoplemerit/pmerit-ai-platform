@@ -1,12 +1,12 @@
-/* PMERIT Brand Color Updates - Replace in style.css */
+/* Complete PMERIT style.css - Working Layout + Brand Colors */
 
 :root {
   /* OFFICIAL PMERIT BRAND COLORS */
-  --primary: #4F46E5;           /* PMERIT brand blue (was #2563EB) */
+  --primary: #4F46E5;           /* PMERIT brand blue */
   --primary-dark: #3730A3;      /* Darker PMERIT blue */
-  --accent: #7C3AED;            /* PMERIT purple accent (was #7E22CE) */
+  --accent: #7C3AED;            /* PMERIT purple accent */
   --accent-light: #A855F7;      /* Light purple for gradients */
-  --success: #10B981;           /* PMERIT green (was #059669) */
+  --success: #10B981;           /* PMERIT green */
   --warning: #F59E0B;           /* Amber warning */
   --error: #EF4444;             /* Red error */
   
@@ -31,7 +31,12 @@
   --hover-bg: #F3F4F6;          /* Hover backgrounds */
   --active-bg: #E5E7EB;         /* Active/pressed backgrounds */
   
-  /* DARK MODE OVERRIDES */
+  /* LAYOUT VARIABLES */
+  --header-height: 70px;
+  --footer-height: 60px;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --transition: all 0.2s ease-in-out;
 }
 
 .dark {
@@ -49,84 +54,8 @@
   --border-color: #374151;      /* Dark borders */
   --hover-bg: #374151;          /* Dark hover backgrounds */
   --active-bg: #4B5563;         /* Dark active backgrounds */
-}
-
-/* SPECIFIC PMERIT COMPONENT UPDATES */
-
-/* Virtual Human Toggle - PMERIT Purple */
-.virtual-human-toggle.active {
-  background-color: var(--accent);
-  color: white;
-}
-
-/* Primary Buttons - PMERIT Blue */
-.btn-primary, 
-.start-learning-btn,
-.begin-assessment-btn {
-  background-color: var(--primary);
-  border-color: var(--primary);
-  color: white;
-}
-
-.btn-primary:hover {
-  background-color: var(--primary-dark);
-  border-color: var(--primary-dark);
-}
-
-/* Assessment Panel - PMERIT Accent */
-.discover-path-section {
-  border-left: 4px solid var(--accent);
-}
-
-.discover-path-title {
-  color: var(--accent);
-}
-
-/* Logo and Brand Elements */
-.logo-text {
-  color: var(--primary);
-  font-weight: 600;
-}
-
-/* Success Elements */
-.success-indicator,
-.connection-status.connected {
-  color: var(--success);
-}
-
-/* Links */
-a {
-  color: var(--text-link);
-  transition: color 0.2s ease;
-}
-
-a:hover {
-  color: var(--text-link-hover);
-}
-
-/* Form Elements */
-input:focus,
-textarea:focus,
-select:focus {
-  border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-}
-
-/* Navigation Active States */
-.nav-item.active {
-  background-color: rgba(79, 70, 229, 0.1);
-  border-left: 3px solid var(--primary);
-}
-
-/* Chat Interface */
-.chat-message.ai {
-  background-color: var(--bg-secondary);
-  border-left: 3px solid var(--accent);
-}
-
-.chat-message.user {
-  background-color: rgba(79, 70, 229, 0.05);
-  border-left: 3px solid var(--primary);
+  --shadow: 0 8px 28px rgba(0,0,0,.45);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
 }
 
 * {
@@ -146,7 +75,7 @@ html, body {
 body {
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* Non-scrollable like Google homepage */
+  overflow: hidden;
 }
 
 /* Header Styles */
@@ -290,6 +219,16 @@ nav {
   transform: translateX(20px);
 }
 
+/* Virtual Human Toggle - PMERIT Purple */
+.virtual-human-toggle.active {
+  background-color: var(--accent);
+  color: white;
+}
+
+.virtual-human-toggle.active .switch {
+  background-color: var(--accent);
+}
+
 .dashboard {
   justify-content: center;
   font-weight: 600;
@@ -337,6 +276,10 @@ nav {
   padding: 0.75rem;
   background-color: var(--card-bg);
   border-top: 1px solid var(--border-color);
+}
+
+.collapsible.open .body {
+  display: block;
 }
 
 .avatar {
@@ -429,8 +372,8 @@ main {
   display: flex;
   gap: 0.65rem;
   align-items: flex-start;
-  background-color: rgba(37, 99, 235, 0.06);
-  border: 1px solid rgba(37, 99, 235, 0.18);
+  background-color: rgba(79, 70, 229, 0.06);
+  border: 1px solid rgba(79, 70, 229, 0.18);
   border-radius: 0.75rem;
   padding: 1rem;
 }
@@ -476,7 +419,7 @@ textarea {
 
 textarea:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
   border-color: var(--primary);
 }
 
@@ -533,6 +476,10 @@ textarea:focus {
   display: none;
   flex-direction: column;
   height: 100%;
+}
+
+#vhStage.active {
+  display: flex;
 }
 
 .stage {
@@ -639,6 +586,15 @@ textarea:focus {
   gap: 0.75rem;
 }
 
+/* Assessment Panel - PMERIT Accent */
+.discover-path-section {
+  border-left: 4px solid var(--accent);
+}
+
+.discover-path-title {
+  color: var(--accent);
+}
+
 .discover h4 {
   margin: 0.25rem 0;
   font-weight: 600;
@@ -656,6 +612,31 @@ textarea:focus {
   font-size: 0.95rem;
   min-height: 2.2em;
   font-style: italic;
+}
+
+/* Primary Buttons - PMERIT Blue */
+.btn-primary, 
+.start-learning-btn,
+.begin-assessment-btn {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.btn-primary:hover,
+.start-learning-btn:hover,
+.begin-assessment-btn:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
 }
 
 /* Footer Styles */
@@ -706,7 +687,7 @@ footer {
     overflow-y: auto;
   }
   
-  aside {
+  #left, #right {
     display: none;
   }
   
@@ -725,70 +706,6 @@ footer {
   
   main {
     min-height: calc(100vh - var(--header-height) - var(--footer-height) - 2rem);
-  }
-  
-  #mobileAccordions {
-    display: block;
-    margin: 0 1rem 1rem;
-  }
-
-  .mobile-accordion {
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    box-shadow: var(--shadow);
-    margin-bottom: 1rem;
-    overflow: hidden;
-  }
-
-  .mobile-accordion summary {
-    padding: 1.25rem;
-    cursor: pointer;
-    font-weight: 600;
-    color: var(--text-primary);
-    background-color: var(--bg-secondary);
-    border-bottom: 1px solid var(--border-color);
-    list-style: none;
-    transition: var(--transition);
-  }
-
-  .mobile-accordion summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .mobile-accordion summary:hover {
-    background-color: var(--border-color);
-  }
-
-  .mobile-accordion-content {
-    padding: 1.25rem;
-  }
-
-  .mobile-grid {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .mobile-card {
-    background-color: rgba(37, 99, 235, 0.06);
-    border: 1px solid rgba(37, 99, 235, 0.18);
-    border-radius: 8px;
-    padding: 1rem;
-    text-align: center;
-    cursor: pointer;
-    transition: var(--transition);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    min-height: 80px;
-    justify-content: center;
-  }
-
-  .mobile-card:hover {
-    background-color: rgba(37, 99, 235, 0.1);
-    transform: translateY(-1px);
   }
   
   footer {
@@ -814,10 +731,52 @@ footer {
   }
 }
 
-@media (min-width: 1101px) {
-  #mobileAccordions {
-    display: none;
-  }
+/* Logo and Brand Elements */
+.logo-text {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Success Elements */
+.success-indicator,
+.connection-status.connected {
+  color: var(--success);
+}
+
+/* Links */
+a {
+  color: var(--text-link);
+  transition: color 0.2s ease;
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--text-link-hover);
+}
+
+/* Form Elements */
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+/* Navigation Active States */
+.nav-item.active {
+  background-color: rgba(79, 70, 229, 0.1);
+  border-left: 3px solid var(--primary);
+}
+
+/* Chat Interface */
+.chat-message.ai {
+  background-color: var(--bg-secondary);
+  border-left: 3px solid var(--accent);
+}
+
+.chat-message.user {
+  background-color: rgba(79, 70, 229, 0.05);
+  border-left: 3px solid var(--primary);
 }
 
 /* Focus Styles */
@@ -826,96 +785,15 @@ footer {
   outline-offset: 2px;
 }
 
-/* Modal Styles */
-dialog {
-  border: none;
-  border-radius: 12px;
-  max-width: 560px;
-  width: 92%;
-  box-shadow: var(--shadow-lg);
-  background-color: var(--card-bg);
-  color: var(--text-primary);
-  padding: 0;
-}
-
-dialog::backdrop {
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-dialog form {
-  margin: 0;
-  padding: 1.5rem;
-}
-
-dialog h3 {
-  margin: 0 0 1rem;
-  color: var(--primary);
+/* Hidden by default, shown when active */
+#textChat.active {
   display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  font-size: 1.25rem;
 }
 
-dialog label {
-  display: grid;
-  gap: 0.4rem;
-  margin-bottom: 1rem;
+#vhStage {
+  display: none;
 }
 
-dialog input {
-  padding: 0.75rem;
-  border: 1px solid var(--border-color);
-  border-radius: 0.5rem;
-  background-color: var(--card-bg);
-  color: var(--text-primary);
-  font-family: inherit;
-}
-
-dialog input:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-}
-
-dialog .button-group {
+#vhStage.active {
   display: flex;
-  justify-content: flex-end;
-  gap: 0.75rem;
-  margin-top: 1.5rem;
-}
-
-/* Career Tracks Grid */
-.tracks-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1rem;
-  margin: 1rem 0;
-}
-
-.track-card {
-  background-color: rgba(37, 99, 235, 0.06);
-  border: 1px solid rgba(37, 99, 235, 0.18);
-  border-radius: 8px;
-  padding: 1.25rem;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.track-card:hover {
-  background-color: rgba(37, 99, 235, 0.1);
-  border-color: var(--primary);
-  transform: translateY(-1px);
-}
-
-.track-card h4 {
-  margin: 0 0 0.5rem;
-  color: var(--primary);
-  font-weight: 600;
-}
-
-.track-card p {
-  margin: 0;
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  line-height: 1.4;
 }
