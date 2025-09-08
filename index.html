@@ -1,1 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" data-page="home">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PMERIT • Learn • Build • Work</title>
 
+  <!-- Keep your existing CSS; no color/theme changes -->
+  <link rel="preload" href="/assets/base.css" as="style" />
+  <link rel="stylesheet" href="/assets/base.css" />
+
+  <!-- Favicons / Meta -->
+  <link rel="icon" href="/assets/favicon.ico" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="PMERIT — global remote career-aligned learning, assessments, and classrooms." />
+
+  <!-- Minimal boot options (read by your existing JS) -->
+  <script>
+    window.PMERIT_BOOT_OPTS = {
+      pageId: "home",
+      partials: {
+        nav: "/partials/nav.html",
+        footer: "/partials/footer.html"
+      }
+    };
+  </script>
+
+  <!-- Use defer so the DOM exists before any init code runs -->
+  <script src="/assets/nav-config.js" defer></script>
+  <script src="/assets/boot-includes.js" defer></script>
+  <script src="/assets/home.js" defer></script>
+</head>
+
+<!-- Important: .estate wrapper so rules like `.estate > #nav-container` apply -->
+<body class="estate">
+  <noscript>
+    <div class="noscript-warning" role="alert">
+      JavaScript is required for PMERIT’s navigation and dynamic content to load.
+    </div>
+  </noscript>
+
+  <!-- Left rail / primary navigation (loaded by boot-includes.js) -->
+  <nav id="nav-container" data-partial="/partials/nav.html" role="navigation" aria-label="Primary"></nav>
+
+  <!-- Main content area -->
+  <main id="main-content" role="main" tabindex="-1" aria-labelledby="home-title">
+    <!-- Mobile accordions container (kept for existing CSS/JS hooks) -->
+    <section id="mobileAccordions" class="mobile-only" aria-label="Mobile navigation"></section>
+
+    <!-- Hero: keep structure; styling handled by your CSS -->
+    <section class="hero">
+      <h1 id="home-title">Learn Skills. Build Projects. Get Hired Globally.</h1>
+      <p class="subtitle">Assess strengths, enroll in courses, and join classrooms—guided by PMERIT AI.</p>
+
+      <div class="cta-row" role="group" aria-label="Primary actions">
+        <a class="btn primary" href="/assessment.html" id="beginAssessmentBtn">Begin Assessment</a>
+        <a class="btn" href="/courses.html" id="browseCoursesBtn">Browse Courses</a>
+        <a class="btn" href="/classroom.html" id="enterClassroomBtn">Enter Classroom</a>
+      </div>
+    </section>
+
+    <!-- Feature tiles: IDs/classes stable for your scripts -->
+    <section class="feature-grid" aria-label="Featured modules">
+      <article class="tile" id="careerTracksTile">
+        <h2>Career Tracks</h2>
+        <p>Choose a path aligned to remote-first roles and local opportunities.</p>
+        <a class="link" href="/career.html" id="careerTracksBtn">Explore tracks</a>
+      </article>
+
+      <article class="tile" id="libraryTile">
+        <h2>Library</h2>
+        <p>Guides, templates, and resources for learning and job-ready projects.</p>
+        <a class="link" href="/library.html" id="libraryBtn">Open library</a>
+      </article>
+
+      <article class="tile" id="dashboardTile">
+        <h2>Dashboard</h2>
+        <p>See your progress, classes, grades, and recommendations in one place.</p>
+        <a class="link" href="/dashboard.html" id="dashboardBtn">Go to dashboard</a>
+      </article>
+    </section>
+
+    <!-- System status / announcements: placeholders your JS can hydrate -->
+    <section class="status-section" aria-label="System status">
+      <div id="systemStatus"></div>
+      <div id="announcements"></div>
+    </section>
+  </main>
+
+  <!-- Right rail (desktop only; CSS controls visibility at breakpoints) -->
+  <aside id="right-panel" aria-label="Contextual panel">
+    <section class="panel-block">
+      <h2 class="sr-only">Assistant</h2>
+      <div id="assistantPanel"></div>
+    </section>
+    <section class="panel-block">
+      <h2 class="sr-only">Quick Links</h2>
+      <ul id="quickLinks" class="unstyled"></ul>
+    </section>
+  </aside>
+
+  <!-- Footer (loaded dynamically) -->
+  <footer id="footer-container" data-partial="/partials/footer.html" role="contentinfo" aria-label="Site footer"></footer>
+</body>
+</html>
