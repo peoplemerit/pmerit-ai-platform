@@ -1,242 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="PMERIT - Breaking poverty cycles through accessible, high-quality education. AI-powered learning platform with personalized career paths.">
-  <meta name="keywords" content="education, AI learning, career development, accessible education, online courses, PMERIT">
-  <meta name="author" content="PMERIT AI Platform">
-  <meta name="theme-color" content="#4F46E5">
-  
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://pmerit.com/">
-  <meta property="og:title" content="PMERIT - Accessible Global Education">
-  <meta property="og:description" content="Breaking poverty cycles through accessible, high-quality education. AI-powered learning with personalized career paths.">
-  <meta property="og:image" content="https://pmerit.com/assets/images/og-image.png">
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  />
+  <meta name="description" content="PMERIT — Learn, get certified, and launch a global remote career." />
+  <title>PMERIT • Home</title>
 
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://pmerit.com/">
-  <meta property="twitter:title" content="PMERIT - Accessible Global Education">
-  <meta property="twitter:description" content="Breaking poverty cycles through accessible, high-quality education. AI-powered learning with personalized career paths.">
-  <meta property="twitter:image" content="https://pmerit.com/assets/images/twitter-image.png">
+  <!-- Core CSS (structure only; colors come from base.css tokens) -->
+  <link rel="preload" href="/assets/base.css" as="style" />
+  <link rel="stylesheet" href="/assets/base.css" />
 
-  <title>PMERIT - Accessible Global Education</title>
-  
-  <!-- Preconnect to external domains -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://ai.pmerit.com">
-  
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  
-  <!-- Base CSS - Design System -->
-  <link rel="stylesheet" href="/assets/base.css">
-  
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "EducationalOrganization",
-    "name": "PMERIT",
-    "description": "Accessible Global Education - Breaking poverty cycles through high-quality education",
-    "url": "https://pmerit.com",
-    "logo": "https://pmerit.com/assets/images/logo.png",
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "telephone": "+1-555-PMERIT",
-      "contactType": "customer service",
-      "email": "support@pmerit.com"
-    }
-  }
-  </script>
+  <!-- Canonical icons & manifest (optional but recommended) -->
+  <link rel="icon" href="/assets/favicon.ico" />
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+  <link rel="manifest" href="/assets/site.webmanifest" />
 </head>
 
-<!--<body class="app-layout"> (Remove any 'dark' class) -->
-  <!-- Skip Navigation Link for Accessibility -->
-  <a href="#main-content" class="skip-link">Skip to main content</a>
-  
-  <!-- Header Container - Loaded via boot-includes.js -->
-  <div id="header-container" role="banner"></div>
+<body data-app="pmerit" data-page="home">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
-  <!-- Main Application Layout -->
-  <div class="estate">
-    <!-- Left Navigation Sidebar - Loaded via boot-includes.js -->
-    <div id="nav-container" role="navigation" aria-label="Main navigation"></div>
+  <!-- App Shell -->
+  <div id="app" class="estate">
+    <!-- Header / Branding (partial) -->
+    <header
+      id="header-container"
+      data-partial="/partials/header.html"
+      role="banner"
+      aria-label="Site header"
+    >
+      <!-- Fallback if partial fails to load -->
+      <div class="fallback-header">
+        <a href="/" class="brand" aria-label="PMERIT Home">PMERIT</a>
+      </div>
+    </header>
 
-    <!-- Main Content Area -->
+    <!-- Primary Navigation (partial) -->
+    <nav
+      id="nav-container"
+      data-partial="/partials/nav.html"
+      role="navigation"
+      aria-label="Primary"
+    >
+      <!-- Fallback minimal nav -->
+      <ul class="fallback-nav" role="list">
+        <li><a id="dashboardBtn" href="/dashboard.html">Dashboard</a></li>
+        <li><a id="careerTracksBtn" href="/career.html">Career</a></li>
+        <li><a href="/courses.html">Courses</a></li>
+        <li><a href="/assessment.html">Assessment</a></li>
+        <li><a href="/library.html">Library</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Content -->
     <main id="main-content" role="main" tabindex="-1">
-      <!-- Welcome Section -->
-      <section class="panel" aria-label="Welcome to PMERIT">
-        <div class="panel-head">
-          <h1>Empowering Learning Through Innovation</h1>
-          <p>Accessible, high-quality education for global opportunities</p>
-        </div>
-        
-        <div class="panel-body">
-          <!-- AI Chat Interface -->
-          <div class="chat-container" role="region" aria-live="polite" aria-label="Chat with PMERIT AI">
-            <!-- Chat Messages -->
-            <div class="chat-messages" id="chatBody">
-              <!-- Welcome Message -->
-              <article class="chat-bubble">
-                <div class="chat-avatar">
-                  <i class="fas fa-graduation-cap" aria-hidden="true"></i>
-                </div>
-                <div class="chat-content">
-                  <h3>PMERIT AI</h3>
-                  <p>Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?</p>
-                </div>
-              </article>
-            </div>
-
-            <!-- Chat Input -->
-            <div class="chat-input-container">
-              <label for="chatInput" class="sr-only">Type your message</label>
-              <textarea 
-                id="chatInput" 
-                class="chat-input" 
-                maxlength="1000" 
-                placeholder="Ask about courses, learning paths, or your goals..."
-                rows="3"></textarea>
-              
-              <!-- Input Controls -->
-              <div class="chat-input-controls">
-                <span class="chat-counter" id="chatCounter">0/1000</span>
-                
-                <div class="chat-actions">
-                  <button class="btn btn-sm btn-outline" id="vhModeBtn" type="button">
-                    <i class="fas fa-user-astronaut" aria-hidden="true"></i>
-                    VH Mode
-                  </button>
-                  
-                  <button class="btn btn-sm btn-outline" id="readAboutBtn" type="button">
-                    <i class="fas fa-book" aria-hidden="true"></i>
-                    Read About
-                  </button>
-                  
-                  <div class="connection-status">
-                    <i class="fas fa-circle-check" aria-hidden="true"></i>
-                    Connected to Educational Services
-                  </div>
-                </div>
-                
-                <button class="btn btn-primary" id="sendBtn" type="button">
-                  <span>Send</span>
-                  <i class="fas fa-paper-plane" aria-hidden="true"></i>
-                </button>
-              </div>
-            </div>
-          </div>
+      <!-- Hero (text taken from blueprint; no color styling here) -->
+      <section class="hero" aria-labelledby="hero-title">
+        <h1 id="hero-title">Build skills. Earn credentials. Work globally.</h1>
+        <p class="hero-kicker">
+          A unified learning platform to discover your path, take courses, and launch a remote career with PMERIT AI support.
+        </p>
+        <div class="hero-ctas" role="group" aria-label="Primary actions">
+          <a class="btn primary" id="beginAssessmentBtn" href="/assessment.html">Begin Assessment</a>
+          <a class="btn" id="exploreCoursesBtn" href="/courses.html">Explore Courses</a>
+          <a class="btn" id="viewDashboardBtn" href="/dashboard.html">Go to Dashboard</a>
         </div>
       </section>
 
-      <!-- Mobile Accordions (shown only on mobile) -->
-      <div id="mobileAccordions" style="display: none;" role="region" aria-label="Mobile navigation">
-        <!-- Quick Actions Accordion -->
-        <details class="mobile-accordion">
-          <summary class="mobile-accordion-summary">
-            <i class="fas fa-bolt" aria-hidden="true"></i>
-            <span>Quick Actions</span>
-            <i class="fas fa-chevron-down" aria-hidden="true"></i>
-          </summary>
-          <div class="mobile-accordion-content">
-            <div class="mobile-actions-grid">
-              <button class="mobile-action-card" id="mobileVHToggle" type="button">
-                <i class="fas fa-user-astronaut" aria-hidden="true"></i>
-                <span>Virtual Human Mode</span>
-              </button>
-              
-              <button class="mobile-action-card" id="mobileCareerPaths" type="button">
-                <i class="fas fa-compass" aria-hidden="true"></i>
-                <span>Career Paths</span>
-              </button>
-              
-              <button class="mobile-action-card" id="mobileSupportToggle" type="button">
-                <i class="fas fa-headset" aria-hidden="true"></i>
-                <span>Customer Service</span>
-              </button>
-            </div>
-          </div>
-        </details>
+      <!-- Feature Pillars (structure only) -->
+      <section class="pillars" aria-label="Platform pillars">
+        <article class="pillar">
+          <h2>Discover Your Path</h2>
+          <p>Personalized diagnostics align your strengths with in-demand global roles.</p>
+          <a class="link" href="/assessment.html">Start</a>
+        </article>
+        <article class="pillar">
+          <h2>Courses & Classroom</h2>
+          <p>Modular courses with hands-on practice and AI tutoring built-in.</p>
+          <a class="link" href="/courses.html">Browse courses</a>
+        </article>
+        <article class="pillar">
+          <h2>Career & Credentials</h2>
+          <p>Track progress, earn certificates, and match to global job opportunities.</p>
+          <a class="link" href="/career.html">Explore careers</a>
+        </article>
+      </section>
 
-        <!-- Assessment Accordion -->
-        <details class="mobile-accordion">
-          <summary class="mobile-accordion-summary">
-            <i class="fas fa-graduation-cap" aria-hidden="true"></i>
-            <span>Discover Your Path</span>
-            <i class="fas fa-chevron-down" aria-hidden="true"></i>
-          </summary>
-          <div class="mobile-accordion-content">
-            <div class="discover">
-              <h4>Personalized learning plan</h4>
-              <p>Start a short flow that blends learning style, interests, and skills into a plan.</p>
-              <button class="btn btn-primary" id="mobileBeginAssessment">Begin Assessment</button>
-            </div>
-          </div>
-        </details>
-      </div>
+      <!-- System Notices (safe, non-blocking) -->
+      <section id="system-notices" aria-live="polite" aria-atomic="true"></section>
     </main>
 
-    <!-- Right Panel - Loaded via boot-includes.js -->
-    <aside id="right-panel" role="complementary" aria-label="Assessment and support">
-      <!-- Support Assistant Section -->
-      <section class="support-section">
-        <h4>
-          <i class="fas fa-headset" aria-hidden="true"></i>
-          Support Assistant
-        </h4>
-        <p>Ask me about PMERIT</p>
-        
-        <div class="support-actions">
-          <button class="btn btn-sm btn-outline" id="vhSupportBtn" type="button">
-            <i class="fas fa-user-astronaut" aria-hidden="true"></i>
+    <!-- Right Panel (Assistant / status / quick links) -->
+    <aside id="right-panel" aria-label="Assistant panel">
+      <section class="assistant-card" aria-labelledby="assistant-title">
+        <h2 id="assistant-title">PMERIT AI</h2>
+        <div id="ai-assistant" data-assistant="general"></div>
+        <!-- Optional quick toggles (IDs here to align with existing JS) -->
+        <div class="toggles" role="group" aria-label="Quick settings">
+          <label>
+            <input type="checkbox" id="vhModeSwitch" />
             Virtual Human
-          </button>
-          
-          <button class="btn btn-sm btn-outline" id="supportModeBtn" type="button">
-            <i class="fas fa-headset" aria-hidden="true"></i>
-            Support
-          </button>
+          </label>
+          <label>
+            <input type="checkbox" id="customerServiceSwitch" />
+            Customer Service Mode
+          </label>
         </div>
       </section>
 
-      <!-- Assessment Section -->
-      <section class="assessment-section">
-        <h3>Discover Your Path (AI)</h3>
-        
-        <div class="discover">
-          <h4>Personalized learning plan</h4>
-          <p>Start a short flow that blends learning style, interests, and skills into a plan.</p>
-          
-          <button class="btn btn-primary btn-lg" id="beginAssessment" type="button">
-            <i class="fas fa-rocket" aria-hidden="true"></i>
-            Begin Assessment
-          </button>
-          
-          <div class="insights" id="assessmentInsights">
-            Relate new concepts to things you already understand for better retention.
-          </div>
-        </div>
+      <section class="quick-links" aria-label="Quick links">
+        <ul role="list">
+          <li><a href="/classroom.html">Open Classroom</a></li>
+          <li><a href="/library.html">Open Library</a></li>
+          <li><a href="/monitoring.html">System Monitoring</a></li>
+        </ul>
       </section>
     </aside>
+
+    <!-- Footer (partial) -->
+    <footer
+      id="footer-container"
+      data-partial="/partials/footer.html"
+      role="contentinfo"
+      aria-label="Site footer"
+    >
+      <div class="fallback-footer">
+        <small>&copy; <span id="year"></span> PMERIT</small>
+      </div>
+    </footer>
   </div>
 
-  <!-- Footer Container - Loaded via boot-includes.js -->
-  <div id="footer-container" role="contentinfo"></div>
+  <!-- Mobile Accordions (used under ~1100px if CSS hides sidebars) -->
+  <section id="mobileAccordions" aria-label="Mobile navigation">
+    <details>
+      <summary>Navigation</summary>
+      <div id="mobile-nav-proxy"></div>
+    </details>
+    <details>
+      <summary>Assistant</summary>
+      <div id="mobile-assistant-proxy"></div>
+    </details>
+  </section>
 
-  <!-- Core JavaScript - Shared Assets Only -->
-  <script src="/assets/nav-config.js"></script>
-  <script src="/assets/boot-includes.js"></script>
-  <script src="/assets/home.js"></script>
+  <!-- Core JS: order matters (config before boot; page script last if needed) -->
+  <script src="/assets/nav-config.js" defer></script>
+  <script src="/assets/boot-includes.js" defer></script>
+  <script src="/assets/home.js" defer></script>
+
+  <!-- Tiny progressive enhancement for year + robust noscript experience -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var y = document.getElementById('year');
+      if (y) y.textContent = new Date().getFullYear();
+    });
+  </script>
+
+  <noscript>
+    <div class="no-js-warning" role="alert">
+      JavaScript is disabled. Some features (dynamic navigation, assistant, and partial loading) may not appear.
+    </div>
+  </noscript>
 </body>
 </html>
