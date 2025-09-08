@@ -1,26 +1,13 @@
 :root {
-  /* BRAND COLORS */
-  --primary: #7A8FFF;
-  --primary-dark: #6D6ADA;
-  --accent: #A374E8;
-  --accent-light: #B7A8FF;
-  --success: #10B981;
-  --warning: #FFC043;
-
-  /* GRAYS & BACKGROUNDS */
-  --header-bg: #F7F8FA;
-  --panel-bg: #F3F3FB;
-  --bg-main: #E9EAF6;
-  --bg-primary: #FFFFFF;
-  --border-color: #E0E6F0;
-
-  /* TEXT */
-  --text-primary: #23233C;
-  --text-secondary: #4F4F68;
-  --text-tertiary: #9CA3AF;
-
-  /* GRADIENTS */
-  --panel-gradient: linear-gradient(135deg, #7A8FFF 0%, #A374E8 100%);
+  /* ACTUAL PMERIT BRAND COLORS */
+  --primary: #7C3AED;           /* Purple as PRIMARY (not accent) */
+  --primary-gradient: linear-gradient(135deg, #7C3AED 0%, #A855F7 100%);
+  --secondary: #4F46E5;         /* Blue as secondary (not primary) */
+  --background-gradient: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #A855F7 100%);
+  
+  /* White cards on purple background */
+  --card-bg: #FFFFFF;
+  --panel-bg: #FFFFFF;
 }
 * {
   margin: 0;
