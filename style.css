@@ -1,33 +1,132 @@
+/* PMERIT Brand Color Updates - Replace in style.css */
+
 :root {
-  /* Color Scheme based on Home Page Redesign */
-  --primary: #2563EB;       /* Primary blue */
-  --primary-dark: #1D4ED8;
-  --accent: #7E22CE;        /* Accent purple */
-  --success: #059669;       /* Success green */
-  --text-primary: #1F2937;  /* Almost black */
-  --text-secondary: #6B7280;/* Gray text */
-  --text-inverse: #F9FAFB;  /* Light text for dark backgrounds */
-  --bg-primary: #FFFFFF;    /* White background */
-  --bg-secondary: #F3F4F6;  /* Light gray background */
-  --bg-dark: #111827;       /* Dark background */
-  --card-bg: #FFFFFF;       /* Card background */
-  --border-color: #E5E7EB;  /* Border color */
-  --header-height: 70px;
-  --footer-height: 60px;
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --transition: all 0.2s ease-in-out;
+  /* OFFICIAL PMERIT BRAND COLORS */
+  --primary: #4F46E5;           /* PMERIT brand blue (was #2563EB) */
+  --primary-dark: #3730A3;      /* Darker PMERIT blue */
+  --accent: #7C3AED;            /* PMERIT purple accent (was #7E22CE) */
+  --accent-light: #A855F7;      /* Light purple for gradients */
+  --success: #10B981;           /* PMERIT green (was #059669) */
+  --warning: #F59E0B;           /* Amber warning */
+  --error: #EF4444;             /* Red error */
+  
+  /* TYPOGRAPHY COLORS - UNIFIED */
+  --text-primary: #1F2937;      /* Main text - dark gray */
+  --text-secondary: #6B7280;    /* Secondary text - medium gray */
+  --text-tertiary: #9CA3AF;     /* Subtle text - light gray */
+  --text-inverse: #FFFFFF;      /* Text on dark backgrounds */
+  --text-link: var(--primary);  /* Links use PMERIT blue */
+  --text-link-hover: var(--primary-dark);
+  
+  /* BACKGROUND COLORS */
+  --bg-primary: #FFFFFF;        /* Main white background */
+  --bg-secondary: #F8FAFC;      /* Light gray backgrounds */
+  --bg-tertiary: #F1F5F9;       /* Even lighter gray */
+  --card-bg: #FFFFFF;           /* Card backgrounds */
+  --modal-bg: #FFFFFF;          /* Modal backgrounds */
+  
+  /* INTERACTIVE ELEMENTS */
+  --border-color: #E5E7EB;      /* Default borders */
+  --border-focus: var(--primary); /* Focus borders */
+  --hover-bg: #F3F4F6;          /* Hover backgrounds */
+  --active-bg: #E5E7EB;         /* Active/pressed backgrounds */
+  
+  /* DARK MODE OVERRIDES */
 }
 
 .dark {
-  --text-primary: #F9FAFB;
-  --text-secondary: #D1D5DB;
-  --bg-primary: #111827;
-  --bg-secondary: #1F2937;
-  --card-bg: #1F2937;
-  --border-color: #374151;
-  --shadow: 0 8px 28px rgba(0,0,0,.45);
-  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  --text-primary: #F9FAFB;      /* Light text in dark mode */
+  --text-secondary: #D1D5DB;    /* Secondary text in dark mode */
+  --text-tertiary: #9CA3AF;     /* Tertiary text in dark mode */
+  --text-inverse: #1F2937;      /* Dark text on light backgrounds */
+  
+  --bg-primary: #111827;        /* Dark background */
+  --bg-secondary: #1F2937;      /* Darker gray backgrounds */
+  --bg-tertiary: #374151;       /* Even darker gray */
+  --card-bg: #1F2937;           /* Dark card backgrounds */
+  --modal-bg: #1F2937;          /* Dark modal backgrounds */
+  
+  --border-color: #374151;      /* Dark borders */
+  --hover-bg: #374151;          /* Dark hover backgrounds */
+  --active-bg: #4B5563;         /* Dark active backgrounds */
+}
+
+/* SPECIFIC PMERIT COMPONENT UPDATES */
+
+/* Virtual Human Toggle - PMERIT Purple */
+.virtual-human-toggle.active {
+  background-color: var(--accent);
+  color: white;
+}
+
+/* Primary Buttons - PMERIT Blue */
+.btn-primary, 
+.start-learning-btn,
+.begin-assessment-btn {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
+}
+
+/* Assessment Panel - PMERIT Accent */
+.discover-path-section {
+  border-left: 4px solid var(--accent);
+}
+
+.discover-path-title {
+  color: var(--accent);
+}
+
+/* Logo and Brand Elements */
+.logo-text {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Success Elements */
+.success-indicator,
+.connection-status.connected {
+  color: var(--success);
+}
+
+/* Links */
+a {
+  color: var(--text-link);
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--text-link-hover);
+}
+
+/* Form Elements */
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+/* Navigation Active States */
+.nav-item.active {
+  background-color: rgba(79, 70, 229, 0.1);
+  border-left: 3px solid var(--primary);
+}
+
+/* Chat Interface */
+.chat-message.ai {
+  background-color: var(--bg-secondary);
+  border-left: 3px solid var(--accent);
+}
+
+.chat-message.user {
+  background-color: rgba(79, 70, 229, 0.05);
+  border-left: 3px solid var(--primary);
 }
 
 * {
