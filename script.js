@@ -164,9 +164,7 @@ function goDashboard() {
 
 // Open assessment modal
 function openAssessment() {
-  if (typeof assessmentModal.showModal === 'function') {
-    assessmentModal.showModal();
-  }
+  window.location.href = '/assessment.html';
 }
 
 // Add message to chat
