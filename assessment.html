@@ -1366,5 +1366,14 @@
   <!-- Core JavaScript - Shared Assets -->
   <script src="/assets/nav-config.js"></script>
   <script src="/assets/boot-includes.js"></script>
+  <script>
+  async function loadIncludes() {
+    const header = await fetch('/partials/header.html').then(res => res.text());
+    const footer = await fetch('/partials/footer.html').then(res => res.text());
+    document.getElementById('header-container').innerHTML = header;
+    document.getElementById('footer-container').innerHTML = footer;
+  }
+  loadIncludes();
+</script>
 </body>
 </html>
