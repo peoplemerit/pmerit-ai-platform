@@ -38,6 +38,40 @@
   --shadow: 0 8px 28px rgba(0,0,0,.45);
   --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
 }
+/* Shared styles for left panel items */
+.sidebar-button,
+.quick-actions-item,
+.dashboard-button {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+  background-color: transparent;
+  border: none;
+  border-radius: 6px;
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+/* Hover effect */
+.sidebar-button:hover,
+.quick-actions-item:hover,
+.dashboard-button:hover {
+  background-color: var(--bg-secondary);
+  color: var(--accent);
+}
+
+/* Optional: active state */
+.sidebar-button.active,
+.quick-actions-item.active,
+.dashboard-button.active {
+  background-color: var(--accent);
+  color: var(--text-inverse);
+}
+
 
 background-color: var(--bg-primary);
 color: var(--text-primary);
