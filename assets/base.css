@@ -1,15 +1,1 @@
-:root {
-  --global: #2563EB;       /* Primary blue */
-  --local: #16A34A;        /* Local green */
-  --accent: #7C3AED;       /* Purple accent */
-  --bg: #FFFFFF;           /* Background white */
-  --bg2: #F8FAFC;          /* Light gray */
-  --card: #FFFFFF;         /* Card background */
-  --ink: #1E293B;          /* Primary text */
-  --muted: #64748B;        /* Muted text */
-  --border: #E2E8F0;       /* Border color */
-  --shadow: 0 4px 6px -1px rgba(0,0,0,.08), 0 2px 4px -1px rgba(0,0,0,.06);
-  --trans: all .23s cubic-bezier(.4,0,.2,1);
-  --header-h: 70px;
-  --footer-h: 50px;
-}
+
