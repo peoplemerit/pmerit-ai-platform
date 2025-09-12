@@ -1,131 +1,72 @@
-:root {
-  /* PMERIT Brand Colors */
-  --primary: #6A1B9A;       /* Purple */
-  --primary-dark: #4A148C;  /* Darker Purple for hover states */
-  --accent: #2196F3;        /* Blue accent */
-  --success: #059669;       /* Success green (unchanged) */
-
-  /* Text Colors */
-  --text-primary: #1F2937;  /* Deep gray for readability */
-  --text-secondary: #6B7280;/* Muted gray */
-  --text-inverse: #F9FAFB;  /* Light text for dark backgrounds */
-
-  /* Backgrounds */
-  --bg-primary: #FFFFFF;    /* Light mode background */
-  --bg-secondary: #F3F4F6;  /* Light gray panels */
-  --bg-dark: #121212;       /* Dark mode background */
-
-  /* Cards and Borders */
-  --card-bg: #FFFFFF;
-  --border-color: #E5E7EB;
-
-  /* Layout */
-  --header-height: 70px;
-  --footer-height: 60px;
-
-  /* Effects */
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --transition: all 0.2s ease-in-out;
-}
-.dark {
-  --text-primary: #F9FAFB;
-  --text-secondary: #D1D5DB;
-  --bg-primary: #121212;
-  --bg-secondary: #1F2937;
-  --card-bg: #1F2937;
-  --border-color: #374151;
-  --shadow: 0 8px 28px rgba(0,0,0,.45);
-  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-}
-
-/* Header Styles */
-header {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  height: var(--header-height);
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: var(--footer-h);
+  z-index: 1000;
+  border-top: 1px solid var(--border);
+  background: var(--bg2);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
-  box-shadow: var(--shadow-lg);
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  box-sizing: border-box;
 }
 
-.nav-btn {
-  background: none;
-  border: none;
-  color: var(--text-primary);
-  font-weight: 500;
-  margin-left: 16px;
-  cursor: pointer;
-  transition: var(--transition);
+.footer-status {
+  font-size: 0.93em;
+  color: var(--global);
+  font-weight: 600;
+  margin-right: 2em;
+  letter-spacing: 0.02em;
 }
 
-.nav-btn:hover {
-  color: var(--accent);
+footer a {
+  color: var(--muted);
+  text-decoration: none;
 }
 
-/* Footer Styles */
-footer {
-  background-color: var(--bg-secondary);
-  color: var(--text-secondary);
-  height: var(--footer-height);
+footer a:hover {
+  color: var(--global);
+}
+
+.mobile-footer {
+  position: fixed;
+  bottom: var(--footer-h);
+  left: 0;
+  width: 100%;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  padding: 0.5rem;
   display: flex;
+  justify-content: space-around;
+  z-index: 999;
+  height: 50px;
+  box-sizing: border-box;
+}
+
+.mobile-footer button {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 12px;
+  color: var(--muted);
+  min-height: 40px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 12px 24px;
-  box-shadow: var(--shadow);
+  gap: 0.25rem;
 }
 
-.footer-button {
-  background: none;
-  border: none;
-  color: var(--text-secondary);
-  margin: 0 8px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: var(--transition);
+.mobile-footer button:hover {
+  color: var(--global);
 }
 
-.footer-button:hover {
-  color: var(--accent);
+.mobile-footer button i {
+  font-size: 1.2em;
 }
-
-/* Shared styles for left panel items */
-.sidebar-button,
-.quick-actions-item,
-.dashboard-button {
-  display: flex;
-  align-items: center;
-  padding: 10px 16px;
-  margin-bottom: 8px;
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--text-primary);
-  background-color: transparent;
-  border: none;
-  border-radius: 6px;
-  transition: var(--transition);
-  cursor: pointer;
-}
-
-/* Hover effect */
-.sidebar-button:hover,
-.quick-actions-item:hover,
-.dashboard-button:hover {
-  background-color: var(--bg-secondary);
-  color: var(--accent);
-}
-
-/* Optional: active state */
-.sidebar-button.active,
-.quick-actions-item.active,
-.dashboard-button.active {
-  background-color: var(--accent);
-  color: var(--text-inverse);
-}
-
-
-background-color: var(--bg-primary);
-color: var(--text-primary);
-border-color: var(--border-color);
