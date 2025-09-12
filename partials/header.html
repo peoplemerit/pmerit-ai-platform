@@ -29,58 +29,17 @@ Integration:
 Result:
 - Provides a recognizable and accessible entry point to the platform, maintaining brand consistency and supporting multilingual access.
 -->
-<nav class="header" role="navigation" aria-label="Main header" style="height:70px;display:flex;align-items:center;justify-content:space-between;background:var(--bg-primary);border-bottom:1px solid var(--border);font-family:Inter,sans-serif;position:sticky;top:0;z-index:1000;">
-  <!-- Skip to Content for Accessibility -->
-  <a href="#page-content" class="skip-link sr-only" tabindex="0">Skip to main content</a>
-  <!-- Left: Logo and Branding -->
-  <div class="header-left" style="display:flex;align-items:center;gap:1rem;">
-    <span class="brand-logo" aria-label="PMERIT AI" style="font-weight:700;font-size:2rem;color:var(--primary);line-height:1;">
-      🎓
-    </span>
-    <div style="display:flex;flex-direction:column;">
-      <span class="brand-title" style="font-weight:700;font-size:1.3rem;color:var(--primary);letter-spacing:-1px;">
-        PMERIT AI
-      </span>
-      <span class="brand-tagline" style="font-size:0.85rem;color:var(--text-primary);font-weight:400;">
-        Accessible Global Education
-      </span>
-    </div>
-  </div>
-  <!-- Center: Placeholder for nav or title (can be filled via JS if needed) -->
-  <div class="header-center" id="header-center" style="flex:1;display:flex;justify-content:center;align-items:center;">
-    <!-- Optional: Page title or navigation injected here -->
-  </div>
-  <!-- Right: Language Selector and Auth Buttons -->
-  <div class="header-right" style="display:flex;align-items:center;gap:1rem;">
-    <!-- Language Selector -->
-    <label for="lang-select" class="sr-only">Select Language</label>
-    <select id="lang-select" aria-label="Select language" style="border:1px solid var(--border);background:var(--bg-primary);color:var(--text-primary);padding:0.4em 1em;border-radius:6px;font-size:1rem;outline:none;">
+<header>
+  <div class="logo">P<span>MERIT</span></div>
+  <nav>
+    <button class="link" id="donateLink">Donate</button>
+    <select id="lang">
       <option value="en">English</option>
       <option value="yo">Yorùbá</option>
       <option value="ig">Igbo</option>
       <option value="ha">Hausa</option>
     </select>
-    <!-- Auth Buttons (populated dynamically) -->
-    <div id="header-auth-buttons" style="display:flex;gap:0.5rem;">
-      <!--
-        JS (boot-includes.js) will fill with:
-        - For guests: "Sign In" and "Start Learning"
-        - For authenticated: Avatar/name + dropdown with "Dashboard", "Profile", "Sign Out"
-      -->
-      <button class="btn btn-primary" id="header-signin-btn" style="display:none;">Sign In</button>
-      <button class="btn btn-accent" id="header-startlearning-btn" style="display:none;">Start Learning</button>
-      <div id="header-user-dropdown" style="display:none;position:relative;">
-        <button class="btn" id="header-user-btn" aria-haspopup="true" aria-expanded="false">
-          <span id="header-user-avatar" style="border-radius:50%;width:32px;height:32px;display:inline-block;background:var(--border);vertical-align:middle;"></span>
-          <span id="header-user-name" style="margin-left:0.5em;vertical-align:middle;"></span>
-          <svg aria-hidden="true" width="16" height="16" style="margin-left:0.3em;vertical-align:middle;" viewBox="0 0 20 20"><path fill="currentColor" d="M7 7l3 3 3-3"/></svg>
-        </button>
-        <ul id="header-user-menu" class="dropdown-menu" style="display:none;position:absolute;right:0;top:100%;background:var(--card-bg);box-shadow:0 2px 12px rgba(0,0,0,0.08);border-radius:6px;min-width:160px;padding:0.5em 0;z-index:2000;">
-          <li><a href="/dashboard.html" tabindex="0">Dashboard</a></li>
-          <li><a href="/profile.html" tabindex="0">Profile</a></li>
-          <li><button id="header-signout-btn" style="width:100%;text-align:left;background:none;border:none;padding:0.5em 1em;color:var(--text-primary);font:inherit;cursor:pointer;">Sign Out</button></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</nav>
+    <button class="btn" id="signInBtn">Sign In</button>
+    <button class="btn primary" id="startBtn">Start Learning</button>
+  </nav>
+</header>
