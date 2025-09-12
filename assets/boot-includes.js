@@ -1,3 +1,4 @@
+// boot-includes.js
 fetch('/partials/header.html')
   .then(res => res.text())
   .then(html => document.getElementById('headerContainer').innerHTML = html);
