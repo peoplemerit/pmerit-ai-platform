@@ -1,1 +1,39 @@
+/*
+PMERIT AI PLATFORM: COMPONENTS CSS NARRATIVE
 
+This file defines the reusable component-level CSS rules for the PMERIT educational platform. 
+It is intended to supplement the core design system (/assets/base.css) and brand colors (/assets/css/brand.css) by providing encapsulated styles for UI widgets, controls, and layout elements shared across partials and main pages.
+
+SPECIFIC FUNCTION:
+- Implements styles for generic, DRY-friendly UI components such as cards, panels, badges, modals, buttons, toggles, bubbles, avatars, and progress indicators.
+- Establishes a unified look and feel for interactive and informational elements, reducing redundancy and ensuring visual consistency.
+- Supports both desktop and mobile layouts, including proper spacing, font usage, and accessible focus states.
+
+TEMPLATE-SPECIFIC CONSTRAINT:
+- Contains only component-level CSS (no CSS resets, no base layout/grid rules, no color variable definitions).
+- All selectors are class-based or element-based for components (e.g., .card, .badge, .panel, .toggle, .bubble, .avatar, .cta, .modal, .collapsible, .dashboard).
+- Designed to integrate seamlessly with PMERIT's DRY partials, grid layout, and mobile responsive breakpoints.
+
+SPECIFIC REQUIREMENTS:
+- All components are styled with reference to PMERIT brand tokens (from brand.css), supporting both light and dark modes via CSS variables.
+- Buttons: .btn, .btn-primary, .btn-accent, .btn-ghost, .cta, .toggle; large hit areas, keyboard and screen reader accessible, visible focus.
+- Cards: .card, .cards; soft shadow, rounded corners, consistent padding, background from --card-bg.
+- Panels: .panel, .panel-head, .panel-header-tagline; spaced, flexible for chat/assessment/dashboard use.
+- Bubbles: .bubble; for chat dialogue, alternating backgrounds, speech pointer.
+- Badges: .badge; colored labels for AI modes/status.
+- Modals: .modal, .modal-overlay, .modal-header; centered, scrollable, accessible.
+- Avatars: .avatar, .human-face; circular, scalable for virtual human or user profile.
+- Toggles: .toggle, .switch; visually distinct on/off, ARIA roles and focusable.
+- Collapsible: .collapsible, .collapsible .head, .collapsible .body; smooth transition on open/close.
+- Progress: .progress, .progress-bar; clear feedback for assessments and uploads.
+- Responsive: All components adapt gracefully to mobile breakpoints, stacking and resizing as needed.
+- Accessibility: All interactive elements provide :focus-visible, aria attributes, and high-contrast states.
+
+INTEGRATION:
+- This file is imported in all main and partial HTML templates.
+- Classes are referenced by all PMERIT partials (header, nav, footer, body) and dynamic content rendered by JS.
+- No JavaScript is required for static styling, but transition classes and ARIA attributes should be compatible with PMERIT.api JS logic.
+
+RESULT:
+- Delivers a cohesive, modern, and accessible UI kit for the PMERIT platform, enabling rapid and maintainable frontend development, and ensuring a seamless experience across the user journey regardless of user status or device.
+*/
