@@ -1,3 +1,49 @@
+<!--
+PMERIT AI PLATFORM: BODY PARTIAL NARRATIVE
+
+This file defines the main three-panel estate layout for the core PMERIT student and guest experience, exclusive of the header and footer. It is meant to be injected into the <body> of main HTML templates (such as index.html, dashboard.html, assessment.html), and does not itself include <html>, <head>, or <body> tags.
+
+SPECIFIC FUNCTION:
+- Establishes the primary three-column responsive grid layout for the application: 
+  - Left Sidebar (Quick Actions, Avatar, Brand, Dashboard)
+  - Center Panel (AI chat, Virtual Human, dynamic learning content)
+  - Right Panel (Support assistant, assessment cards, additional actions)
+
+TEMPLATE-SPECIFIC CONSTRAINT:
+- Contains only the body content of the estate, not the header or footer.
+- Must be fully compatible with <!DOCTYPE html> pages, and styled to work with /assets/base.css and /assets/css/brand.css.
+- Panels and UI blocks are organized for both desktop and mobile, using CSS grid: .estate { grid-template-columns: 280px 1fr 320px } and mobile breakpoint @media (max-width: 1100px) { grid-template-columns: 1fr }.
+
+SPECIFIC REQUIREMENTS:
+- Left Sidebar: 
+  - Quick Actions (Virtual Human toggle, Career Track Explorer, Customer Service Mode)
+  - Collapsible Settings (Dark Mode, TTS, Voice Preview)
+  - Dashboard button (guest and authenticated state support)
+  - Virtual Human avatar
+  - PMERIT AI brand block with tagline
+- Center Panel:
+  - Badges for current AI mode (Virtual Human, Support Assistant)
+  - AI Chat interface with message bubbles, input, and mode controls
+  - Virtual Human stage for avatar/video and captions
+- Right Panel:
+  - Support Assistant prompt and mode toggles
+  - "Discover Your Path" assessment cards (Learning Style, Interest Profiler, Skills Assessment), each with clear call-to-action buttons
+- All icons use Font Awesome classes and are accessible via aria-labels.
+- Main chat interface supports keyboard and screen reader navigation, including ARIA roles and live region updates for AI responses.
+- All elements are styled with Inter, sans-serif and use design tokens from brand.css and base.css.
+- Mobile: Panels collapse to a single column, sidebar and right panel become accordion or slide-out panels.
+- All action buttons and toggles are large, accessible, and equipped with visible focus states.
+
+INTEGRATION:
+- This partial is loaded via boot-includes.js and is compatible with authenticated and guest user states.
+- Interactive elements are wired to the PMERIT.api namespace for toggling modes, dashboard transitions, assessment initiation, and chat.
+- Assessment CTAs are connected to the assessment system APIs (/api/assessment/start, etc).
+- The layout and classes are designed for full DRY compatibility with PMERIT's CSS and JS template system.
+
+RESULT:
+- Delivers a flexible, accessible, and highly interactive estate layout that powers the PMERIT platform's main learning, support, and assessment journeys, supporting both desktop and mobile user experiences, while preserving the project's DRY, scalable frontend architecture.
+-->
+
 <div class="estate">
   <!-- LEFT SIDEBAR -->
   <aside class="left">
