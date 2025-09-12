@@ -1,1 +1,70 @@
+:root {
+  /* Brand Colors */
+  --global: #2563EB;
+  --local: #16A34A;
+  --accent: #7C3AED;
 
+  /* Backgrounds & Surfaces */
+  --bg: #FFFFFF;
+  --bg2: #F8FAFC;
+  --card: #FFFFFF;
+
+  /* Text & Typography */
+  --ink: #1E293B;
+  --muted: #64748B;
+
+  /* Borders & Shadows */
+  --border: #E2E8F0;
+  --shadow: 0 4px 6px -1px rgba(0,0,0,.08), 0 2px 4px -1px rgba(0,0,0,.06);
+
+  /* Transitions */
+  --trans: all 0.23s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Layout Dimensions */
+  --header-h: 70px;
+  --footer-h: 50px;
+}
+
+/* Dark Mode Overrides */
+.dark {
+  --bg: #0F172A;
+  --bg2: #1F2937;
+  --card: #1E293B;
+  --ink: #F8FAFC;
+  --muted: #94A3B8;
+  --border: #334155;
+  --shadow: 0 4px 14px rgba(0,0,0,.39);
+}
+
+/* Base Layout */
+html, body {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, Noto Sans;
+  transition: var(--trans);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Utility Classes */
+.hidden { display: none; }
+.visible { display: block; }
+.no-scroll { overflow: hidden !important; }
+.non-scrollable-content { overflow-y: auto; }
+
+/* Focus States */
+.btn:focus,
+.action:focus,
+.toggle:focus,
+.dashboard:focus,
+.cta:focus,
+textarea:focus,
+select:focus,
+.btn-ghost:focus {
+  outline: 2px dashed var(--global);
+  outline-offset: 2px;
+}
