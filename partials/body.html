@@ -1,0 +1,150 @@
+<div class="estate">
+  <!-- LEFT SIDEBAR -->
+  <aside class="left">
+    <section id="page1">
+      <div>
+        <div class="pane-title">Quick Actions</div>
+        <button class="toggle" id="vhToggle">
+          <span><i class="fas fa-user icon"></i> Virtual Human Mode</span>
+          <span class="switch"></span>
+        </button>
+        <button class="action" id="careerPaths">
+          <span><i class="fas fa-compass icon"></i> Career Track & Explore Paths</span>
+          <i class="fas fa-chevron-right" aria-hidden="true"></i>
+        </button>
+        <button class="toggle" id="supportToggle">
+          <span><i class="fas fa-headset icon"></i> Customer Service Mode</span>
+          <span class="switch"></span>
+        </button>
+      </div>
+
+      <div class="collapsible" id="settingsBox">
+        <div class="head">
+          <h4><i class="fas fa-sliders-h"></i> Settings</h4>
+          <i class="fas fa-chevron-down" aria-hidden="true"></i>
+        </div>
+        <div class="body" style="display: none;">
+          <button class="toggle" id="darkToggle">
+            <span><i class="fas fa-moon icon"></i> Dark Mode</span>
+            <span class="switch"></span>
+          </button>
+          <button class="toggle" id="ttsToggle">
+            <span><i class="fas fa-volume-up icon"></i> Text-to-Speech</span>
+            <span class="switch"></span>
+          </button>
+          <button class="action" id="voicesBtn">
+            <span><i class="fas fa-headphones icon"></i> Preview Voices</span>
+            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <button class="dashboard guest" id="dashBtn">
+        <i class="fas fa-gauge-high"></i>&nbsp;Dashboard
+      </button>
+
+      <div class="avatar" id="vhAvatar" title="Virtual Human">
+        <i class="fas fa-user-circle"></i>
+      </div>
+
+      <div class="ai-brand-block" id="sideBrandBlock">
+        <div class="ai-title"><i class="fas fa-robot"></i> PMERIT AI</div>
+        <div class="ai-tagline">
+          Empowering Learning Through Innovation<br/>
+          Accessible, high-quality education for global opportunities
+        </div>
+      </div>
+    </section>
+  </aside>
+
+  <!-- MAIN CENTER -->
+  <main class="center">
+    <section id="page2" class="panel">
+      <div class="panel-head">
+        <div class="badges">
+          <span class="badge" id="vhBadge" style="display:none">
+            <i class="fas fa-user-astronaut"></i> Virtual Human
+          </span>
+          <span class="badge support" id="supportBadge" style="display:none">
+            <i class="fas fa-headset"></i> Support Assistant
+          </span>
+        </div>
+      </div>
+
+      <div id="textChat">
+        <div class="chat-body non-scrollable-content" id="chatBody">
+          <article class="bubble" id="welcomeMessageContainer">
+            <div class="ava"><i class="fas fa-user-circle"></i></div>
+            <div>
+              <h3>PMERIT AI:</h3>
+              <p id="welcomeMessage">
+                Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?
+              </p>
+            </div>
+          </article>
+        </div>
+
+        <div class="chat-input">
+          <textarea id="chatInput" maxlength="1000" placeholder="Ask about courses, learning paths, or your goals..."></textarea>
+          <div class="input-bar">
+            <span class="count" id="count">0/1000</span>
+            <div class="input-options">
+              <button class="btn-ghost"><i class="fas fa-user-astronaut"></i> VH Mode</button>
+              <button class="btn-ghost"><i class="fas fa-book"></i> Read</button>
+              <button class="btn-ghost"><i class="fas fa-network-wired"></i> Connected</button>
+            </div>
+            <button class="send" id="sendBtn" aria-label="Send">
+              <span>Send</span> <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="vhStage" class="hidden">
+        <div class="stage">
+          <div class="human-frame">
+            <div class="human-face"><i class="fas fa-user-circle"></i></div>
+          </div>
+        </div>
+        <div class="captions" id="captions">Virtual Human is speaking…</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- RIGHT PANE -->
+  <aside class="right" id="rightPane">
+    <section id="page3">
+      <div class="support-assistant" id="supportAssistantPane">
+        <h4><i class="fas fa-headset"></i> Support Assistant</h4>
+        <p class="panel-header-tagline">Ask me About Pmerit</p>
+        <div style="display:flex;gap:0.5rem;margin-top:0.5rem;">
+          <button class="btn-ghost" style="border-color:var(--accent);color:var(--accent);">
+            <i class="fas fa-user-astronaut"></i> Virtual Human
+          </button>
+          <button class="btn-ghost" style="border-color:var(--local);color:var(--local);">
+            <i class="fas fa-headset"></i> Support Relates
+          </button>
+        </div>
+      </div>
+
+      <h3>Discover Your Path</h3>
+      <div class="cards">
+        <div class="card">
+          <h4><i class="fas fa-graduation-cap"></i> Learning Style Assessment</h4>
+          <p>Find how you learn best and personalize your experience to maximize outcomes.</p>
+          <button class="cta" data-link="#todo-assessment">Start Assessment</button>
+        </div>
+        <div class="card">
+          <h4><i class="fas fa-heart"></i> Interest Profiler</h4>
+          <p>Explore subjects and fields that match your natural interests.</p>
+          <button class="cta" data-link="#todo-interest">Discover Interests</button>
+        </div>
+        <div class="card">
+          <h4><i class="fas fa-chart-line"></i> Skills Assessment</h4>
+          <p>Assess your current abilities and identify growth opportunities.</p>
+          <button class="cta" data-link="#todo-skills">Evaluate Skills</button>
+        </div>
+      </div>
+    </section>
+  </aside>
+</div>
