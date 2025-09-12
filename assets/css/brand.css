@@ -1,3 +1,49 @@
+/*
+PMERIT AI PLATFORM: BRAND CSS NARRATIVE
+
+This file defines the core brand color variables and base visual style rules for the PMERIT Educational Platform.
+It establishes the foundational color system, layout dimensions, and key shared component styles for all frontend templates.
+
+SPECIFIC FUNCTION:
+- Provides a central, maintainable source of CSS custom properties (variables) for colors, backgrounds, borders, and effects.
+- Implements color theming support for both light and dark modes using the .dark class.
+- Sets visual standards for header, footer, sidebar, and common action/button elements.
+
+DESIGN BASELINE & REQUIREMENTS:
+- Color tokens are designed to match PMERIT’s brand identity and are referenced throughout all partials and main templates.
+  --primary:      #6A1B9A    (brand purple)
+  --primary-dark: #4A148C    (hover/active purple)
+  --accent:       #2196F3    (blue accent)
+  --success:      #059669    (success green)
+  --bg-primary:   #FFFFFF    (main background)
+  --bg-secondary: #F3F4F6    (panel backgrounds)
+  --bg-dark:      #121212    (dark mode)
+  --text-primary: #1F2937    (deep gray)
+  --text-secondary: #6B7280  (muted gray)
+  --text-inverse: #F9FAFB    (for use on dark backgrounds)
+  --card-bg:      #FFFFFF    (card surface)
+  --border-color: #E5E7EB    (subtle border)
+- Layout tokens set header and footer heights for consistency.
+- Effects tokens (shadow, transition) provide consistent hover and focus behavior across the UI.
+- .dark class overrides variables for dark mode, supporting user preference and accessibility.
+
+COMPONENT STYLES:
+- Header: Styled for 70px height, horizontal flex layout, brand color and shadow.
+- Navigation/Buttons: Shared .nav-btn, .sidebar-button, .dashboard-button classes for role-based navigation and sidebar actions.
+- Footer: Styled for 60px height, muted color, horizontally centered.
+- Quick actions, sidebar and dashboard buttons use variables for consistent interaction feedback (hover, active states).
+- All interactive elements styled for accessibility, visible focus, and large touch/click targets.
+
+INTEGRATION:
+- This file is loaded globally in all PMERIT HTML templates.
+- All other CSS files and inline styles should reference these variables for color and layout consistency.
+- Design tokens here must match those referenced in /assets/base.css and in the project design system documentation.
+
+RESULT:
+- Ensures a visually unified, modern, and accessible interface for all users and all device types.
+- Enables rapid brand-wide updates by changing variable values in one location.
+*/
+
 :root {
   /* 🎯 Brand Colors */
   --global: #2563EB;        /* Primary blue */
