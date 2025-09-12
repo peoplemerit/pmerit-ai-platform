@@ -1,72 +1,49 @@
-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: var(--footer-h);
-  z-index: 1000;
-  border-top: 1px solid var(--border);
-  background: var(--bg2);
-  padding: 0.5rem 0.75rem;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  box-sizing: border-box;
-}
+:root {
+  /* 🎯 Brand Colors */
+  --global: #2563EB;        /* Primary blue */
+  --local: #16A34A;         /* Local green */
+  --accent: #7C3AED;        /* Purple accent */
 
-.footer-status {
-  font-size: 0.93em;
-  color: var(--global);
-  font-weight: 600;
-  margin-right: 2em;
-  letter-spacing: 0.02em;
-}
+  /* 🎨 Backgrounds & Surfaces */
+  --bg: #FFFFFF;            /* Main background */
+  --bg2: #F8FAFC;           /* Secondary background */
+  --card: #FFFFFF;          /* Card background */
 
-footer a {
-  color: var(--muted);
-  text-decoration: none;
-}
+  /* 🖋️ Text & Typography */
+  --ink: #1E293B;           /* Primary text */
+  --muted: #64748B;         /* Muted text */
+  --text-primary: var(--ink); /* Alias for clarity */
 
-footer a:hover {
-  color: var(--global);
-}
+  /* 📐 Borders & Shadows */
+  --border: #E2E8F0;        /* Border color */
+  --shadow: 0 4px 6px -1px rgba(0,0,0,.08), 0 2px 4px -1px rgba(0,0,0,.06);
 
-.mobile-footer {
-  position: fixed;
-  bottom: var(--footer-h);
-  left: 0;
-  width: 100%;
-  background: var(--bg2);
-  border-top: 1px solid var(--border);
-  padding: 0.5rem;
-  display: flex;
-  justify-content: space-around;
-  z-index: 999;
-  height: 50px;
-  box-sizing: border-box;
-}
+  /* 🧭 Layout Dimensions */
+  --header-h: 70px;
+  --footer-h: 50px;
 
-.mobile-footer button {
-  flex: 1;
-  border: none;
-  background: transparent;
-  font-size: 12px;
-  color: var(--muted);
-  min-height: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-}
+  /* 🎬 Transitions */
+  --trans: all 0.23s cubic-bezier(0.4, 0, 0.2, 1);
 
-.mobile-footer button:hover {
-  color: var(--global);
-}
+  /* 🧠 Button Styles */
+  --btn-bg: var(--global);
+  --btn-text: #FFFFFF;
+  --btn-border: var(--global);
+  --btn-hover-bg: #1D4ED8; /* Slightly darker blue */
+  --btn-muted-bg: var(--muted);
+  --btn-muted-text: #FFFFFF;
 
-.mobile-footer button i {
-  font-size: 1.2em;
+  /* 🧩 Ghost Button */
+  --ghost-border: var(--border);
+  --ghost-text: var(--muted);
+  --ghost-hover: var(--global);
+
+  /* 🕶️ Dark Mode Overrides */
+  --dark-bg: #0F172A;
+  --dark-bg2: #1E293B;
+  --dark-card: #1F2937;
+  --dark-ink: #E5E7EB;
+  --dark-muted: #94A3B8;
+  --dark-border: #334155;
+  --dark-shadow: 0 4px 14px rgba(0,0,0,.39);
 }
