@@ -1,3 +1,48 @@
+/*
+PMERIT AI PLATFORM: BASE CSS NARRATIVE
+
+This file defines the design system and foundational CSS for the PMERIT platform, supporting all pages and components.
+
+Function:
+- Implements CSS variables for colors, spacings, and typography.
+- Establishes CSS grid layout for the three-panel estate: left sidebar (280px), main content (1fr), right panel (320px).
+- Provides responsive breakpoints, font styles, button and form styling, and accessibility enhancements.
+
+Design Elements:
+- Color Tokens:
+  --primary: #4F46E5 (brand blue)
+  --accent: #7C3AED (purple accent)
+  --success: #10B981 (status green)
+  --bg-primary: #FFFFFF (main background)
+  --bg-secondary: #F8FAFC (panel backgrounds)
+  --text-primary: #1E293B (main text)
+  --card-bg: #FFFFFF
+  --border: #E5E7EB
+- Font: Inter, sans-serif; fallback: Arial, system-ui.
+- Layout:
+  .estate { display: grid; grid-template-columns: 280px 1fr 320px; min-height: 100vh; }
+  Responsive: @media (max-width: 1100px) { .estate { grid-template-columns: 1fr; } }
+- Header (.header): 70px height, sticky/fixed at top, white background, shadow.
+- Footer (.footer): 60px height, sticky/fixed at bottom, light background, border-top.
+- Sidebar (.sidebar): 280px width, collapses to drawer/accordion on mobile.
+- Accessibility:
+  - Focus states for all interactive elements.
+  - Skip-to-content styles.
+  - High color contrast for text and icons.
+- Buttons: .btn, .btn-primary, .btn-accent, large hit areas.
+- Forms: Accessible labels, error states.
+- Cards: .card, box-shadow, rounded corners.
+- Utility classes: .sr-only, .visually-hidden, .status-indicator (for system status).
+
+Integration:
+- Used by all pages and partials.
+- Variables support easy theming and future dark mode.
+- All components and layouts must reference these tokens for consistency.
+
+Result:
+- Delivers a clean, modern, and accessible design foundation for the PMERIT platform, ensuring visual and experiential consistency.
+*/
+
 :root {
   /* Brand Colors */
   --global: #2563EB;
