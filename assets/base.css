@@ -43,44 +43,6 @@ Result:
 - Delivers a clean, modern, and accessible design foundation for the PMERIT platform, ensuring visual and experiential consistency.
 */
 
-:root {
-  /* Brand Colors */
-  --global: #2563EB;
-  --local: #16A34A;
-  --accent: #7C3AED;
-
-  /* Backgrounds & Surfaces */
-  --bg: #FFFFFF;
-  --bg2: #F8FAFC;
-  --card: #FFFFFF;
-
-  /* Text & Typography */
-  --ink: #1E293B;
-  --muted: #64748B;
-
-  /* Borders & Shadows */
-  --border: #E2E8F0;
-  --shadow: 0 4px 6px -1px rgba(0,0,0,.08), 0 2px 4px -1px rgba(0,0,0,.06);
-
-  /* Transitions */
-  --trans: all 0.23s cubic-bezier(0.4, 0, 0.2, 1);
-
-  /* Layout Dimensions */
-  --header-h: 70px;
-  --footer-h: 50px;
-}
-
-/* Dark Mode Overrides */
-.dark {
-  --bg: #0F172A;
-  --bg2: #1F2937;
-  --card: #1E293B;
-  --ink: #F8FAFC;
-  --muted: #94A3B8;
-  --border: #334155;
-  --shadow: 0 4px 14px rgba(0,0,0,.39);
-}
-
 /* Base Layout */
 html, body {
   height: 100vh;
@@ -93,6 +55,134 @@ html, body {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+}
+
+/* HEADER */
+header {
+  flex: 0 0 auto;
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  padding: .75rem 1rem;
+  background: var(--bg2);
+  box-shadow: var(--shadow);
+  z-index: 1000;
+}
+
+.logo {
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: var(--global);
+  margin-right: auto;
+  letter-spacing: .01em;
+}
+
+.logo span {
+  color: var(--local);
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+
+select, .btn {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--ink);
+  padding: .5rem .75rem;
+  border-radius: .5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--trans);
+  min-height: 44px;
+}
+
+.btn:hover {
+  border-color: var(--global);
+  color: var(--global);
+}
+
+.btn.primary {
+  background: var(--global);
+  color: #fff;
+  border-color: var(--global);
+}
+
+.btn.primary:hover {
+  filter: brightness(.96);
+}
+
+.link {
+  background: none;
+  border: none;
+  color: var(--ink);
+  cursor: pointer;
+  font-weight: 600;
+  min-height: 44px;
+}
+
+.link:hover {
+  color: var(--global);
+}
+
+/* LAYOUT - Fixed height calculations */
+.estate {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: 280px minmax(560px, 1fr) 340px;
+  gap: 0;
+  height: calc(100vh - var(--header-h) - var(--footer-h));
+  max-height: calc(100vh - var(--header-h) - var(--footer-h));
+  overflow: hidden;
+}
+
+aside.left, main.center, aside.right {
+  height: 100%;
+  background: var(--bg);
+  overflow-y: auto;
+}
+
+/* FOOTER - Fixed positioning and spacing */
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: var(--footer-h);
+  z-index: 1000;
+  border-top: 1px solid var(--border);
+  background: var(--bg2);
+  padding: .5rem .75rem;
+  font-size: .9rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+
+.footer-status {
+  display: inline-block;
+  font-size: 0.93em;
+  color: var(--global);
+  margin-right: 2em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+footer a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: var(--global);
 }
 
 /* Utility Classes */
