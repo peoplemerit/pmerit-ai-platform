@@ -29,22 +29,27 @@ Result:
 // boot-includes.js
 
 // Load header
-fetch('/partials/header.html')
-  .then(res => res.text())
-  .then(html => {
-    document.getElementById('headerContainer').innerHTML = html;
-  });
+// boot-includes.js
 
-// Load body
-fetch('/partials/body.html')
-  .then(res => res.text())
-  .then(html => {
-    document.getElementById('bodyContainer').innerHTML = html;
-  });
+// Helper to fetch and inject partials into their containers
+function loadPartial(url, containerId) {
+  fetch(url)
+    .then(res => {
+      if (!res.ok) throw new Error(`Failed to load ${url}`);
+      return res.text();
+    })
+    .then(html => {
+      const container = document.getElementById(containerId);
+      if (container) container.innerHTML = html;
+    })
+    .catch(err => {
+      console.error(err);
+      const container = document.getElementById(containerId);
+      if (container) container.innerHTML = `<div style="color:red;">Error loading ${url}</div>`;
+    });
+}
 
-// Load footer
-fetch('/partials/footer.html')
-  .then(res => res.text())
-  .then(html => {
-    document.getElementById('footerContainer').innerHTML = html;
-  });
+// Load header, body, and footer
+loadPartial('/partials/header.html', 'headerContainer');
+loadPartial('/partials/body.html', 'bodyContainer');
+loadPartial('/partials/footer.html', 'footerContainer');
