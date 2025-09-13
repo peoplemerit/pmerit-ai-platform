@@ -1,9 +1,9 @@
 /**
-PMERIT AI PLATFORM: MAIN.JS — EXPORT ALL HANDLERS, FIX BOOT-INCLUDES INTEGRATION
-
-- Ensures ALL handler functions (including renderTracks) are attached to window before boot-includes.js runs.
-- All button/events robust and blueprint-accurate.
-**/
+ * PMERIT MAIN.JS: Blueprint-accurate, DRY, modular, and with all sidebar/settings/career track functionality.
+ * - Settings accordion is fully accessible and matches blueprint.
+ * - Dark Mode, TTS, Preview Voices: all functional.
+ * - "Career Track & Explore Paths": opens modal with blueprint look.
+ */
 
 const state = {
   auth: false,
@@ -11,7 +11,7 @@ const state = {
   vh: false,
   support: false,
   tts: false,
-  lang: 'en'
+  lang: 'en',
 };
 
 function $(id) { return document.getElementById(id); }
@@ -36,14 +36,20 @@ function updateDashboardVisual() {
 }
 function setDark(on) {
   const darkToggle = $('darkToggle');
-  if (darkToggle) darkToggle.classList.toggle('active', on);
+  if (darkToggle) {
+    darkToggle.classList.toggle('active', on);
+    darkToggle.setAttribute('aria-pressed', !!on);
+  }
   state.dark = on;
   document.body.classList.toggle('dark', on);
   save('pmerit_dark', on);
 }
 function setTTS(on) {
   const ttsToggle = $('ttsToggle');
-  if (ttsToggle) ttsToggle.classList.toggle('active', on);
+  if (ttsToggle) {
+    ttsToggle.classList.toggle('active', on);
+    ttsToggle.setAttribute('aria-pressed', !!on);
+  }
   state.tts = on;
   save('pmerit_tts', on);
   if (!on && 'speechSynthesis' in window) {
@@ -52,9 +58,15 @@ function setTTS(on) {
 }
 function setSupport(on) {
   const supportToggle = $('supportToggle');
-  if (supportToggle) supportToggle.classList.toggle('active', on);
+  if (supportToggle) {
+    supportToggle.classList.toggle('active', on);
+    supportToggle.setAttribute('aria-pressed', !!on);
+  }
   const mSupportToggle = $('m_supportToggle');
-  if (mSupportToggle) mSupportToggle.classList.toggle('active', on);
+  if (mSupportToggle) {
+    mSupportToggle.classList.toggle('active', on);
+    mSupportToggle.setAttribute('aria-pressed', !!on);
+  }
   state.support = on;
   const supportBadge = $('supportBadge');
   if (supportBadge) supportBadge.style.display = on ? 'inline-flex' : 'none';
@@ -67,9 +79,15 @@ function setSupport(on) {
 }
 function setVH(on) {
   const vhToggle = $('vhToggle');
-  if (vhToggle) vhToggle.classList.toggle('active', on);
+  if (vhToggle) {
+    vhToggle.classList.toggle('active', on);
+    vhToggle.setAttribute('aria-pressed', !!on);
+  }
   const mVhToggle = $('m_vhToggle');
-  if (mVhToggle) mVhToggle.classList.toggle('active', on);
+  if (mVhToggle) {
+    mVhToggle.classList.toggle('active', on);
+    mVhToggle.setAttribute('aria-pressed', !!on);
+  }
   state.vh = on;
   const textChat = $('textChat');
   const vhStage = $('vhStage');
@@ -123,6 +141,8 @@ function renderTracks() {
   TRACKS.forEach(t => {
     const card = document.createElement('div');
     card.className = 'track-card';
+    card.tabIndex = 0;
+    card.setAttribute('role', 'button');
     card.innerHTML = `<h4>${t.name}</h4><p>${t.blurb}</p>`;
     card.addEventListener('click', () => {
       trackDetail.style.display = 'block';
@@ -136,74 +156,29 @@ function renderTracks() {
         openAssessment();
       });
     });
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') card.click();
+    });
     tracksList.appendChild(card);
   });
 }
 
-// --- Rotating Tips ---
-const tips = [
-  "Pro tip: Keep notes in your own words for better recall.",
-  "Short, frequent study sessions are more effective than long cramming sessions.",
-  "Relate new concepts to things you already understand for better retention.",
-  "Teach what you've learned to someone else to solidify your understanding.",
-  "Take breaks during study sessions to improve focus and retention."
-];
-function rotateInsights(el) {
-  if (!el) return;
-  let i = 0;
-  el.textContent = tips[0];
-  setInterval(() => {
-    i = (i + 1) % tips.length;
-    el.textContent = tips[i];
-  }, 5000);
-}
-
-// --- BOOT-INCLUDES HANDLERS ---
-function handleLanguageChange(e) {
-  state.lang = e.target.value;
-  save('pmerit_lang', state.lang);
-  addMessage('PMERIT AI', `Language changed to ${e.target.options[e.target.selectedIndex].text}. In a full implementation, the entire interface would be translated to your selected language.`);
-}
-function handleReadAbout() {
-  addMessage('PMERIT AI', 'PMERIT is a platform for accessible, high-quality global education. You can explore our courses, certifications, and personalized career tracks, or chat with our AI for guidance.');
-}
-function handlePricingClick() {
-  addMessage('PMERIT AI', 'PMERIT offers flexible pricing plans to make education accessible to everyone. We have free courses available, as well as premium plans with additional features and personalized support.');
-}
-function handlePrivacyClick() {
-  addMessage('PMERIT AI', 'Our Privacy & Terms page provides detailed information about how we protect your data and our terms of service. We prioritize your privacy and transparency in all our educational offerings.');
-}
-function handleContactClick() {
-  addMessage('PMERIT AI', 'You can contact our support team through this chat interface, or reach out via email at support@pmerit.com. We typically respond within 24 hours during business days.');
-}
-function handlePartnershipsClick() {
-  addMessage('PMERIT AI', 'PMERIT partners with leading educational institutions and industry organizations to provide comprehensive learning opportunities. Contact us to learn about partnership opportunities.');
-}
-function handleMobileSettings() {
-  const settingsBox = $('settingsBox');
-  if (settingsBox) {
-    const body = settingsBox.querySelector('.body');
-    if (body) body.style.display = body.style.display === 'block' ? 'none' : 'block';
-  }
-}
-
-// --- Collapsible/Accordion Logic ---
+// --- Settings Collapsible (accordion) ---
 function setupSettingsCollapsible() {
   const settingsBox = $('settingsBox');
   if (!settingsBox) return;
   const settingsHead = settingsBox.querySelector('.head');
   const settingsBody = settingsBox.querySelector('.body');
-  if (!settingsHead || !settingsBody) return;
-  settingsBody.style.display = 'none';
-  settingsHead.querySelector('i.fas').className = 'fas fa-chevron-down';
-  settingsHead.onclick = () => {
-    const isOpen = settingsBody.style.display === 'block';
-    settingsBody.style.display = isOpen ? 'none' : 'block';
-    settingsHead.querySelector('i.fas').className = isOpen ? 'fas fa-chevron-down' : 'fas fa-sliders-h';
+  function setExpanded(expanded) {
+    settingsBox.classList.toggle('expanded', expanded);
+    settingsHead.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    settingsBody.style.display = expanded ? 'block' : 'none';
+  }
+  setExpanded(false);
+  settingsHead.onclick = () => setExpanded(settingsBody.style.display !== 'block');
+  settingsHead.onkeydown = e => {
+    if (e.key === 'Enter' || e.key === ' ') settingsHead.click();
   };
-}
-function setupMobileAccordions() {
-  // Optionally: add auto-close logic or other enhancements
 }
 
 // --- Modal Cancel Button Handlers ---
@@ -240,19 +215,88 @@ function setupModalCancel() {
   }
 }
 
+// --- Sidebar Toggles & Actions ---
+function setupSidebarToggles() {
+  // VH Toggle
+  const vhToggle = $('vhToggle');
+  if (vhToggle) {
+    vhToggle.onclick = () => setVH(!state.vh);
+    vhToggle.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') vhToggle.click(); };
+  }
+  // Support Toggle
+  const supportToggle = $('supportToggle');
+  if (supportToggle) {
+    supportToggle.onclick = () => setSupport(!state.support);
+    supportToggle.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') supportToggle.click(); };
+  }
+  // Dark Mode Toggle
+  const darkToggle = $('darkToggle');
+  if (darkToggle) {
+    darkToggle.onclick = () => setDark(!state.dark);
+    darkToggle.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') darkToggle.click(); };
+  }
+  // TTS Toggle
+  const ttsToggle = $('ttsToggle');
+  if (ttsToggle) {
+    ttsToggle.onclick = () => setTTS(!state.tts);
+    ttsToggle.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') ttsToggle.click(); };
+  }
+  // Preview Voices
+  const voicesBtn = $('voicesBtn');
+  if (voicesBtn) {
+    voicesBtn.onclick = () => {
+      const modal = $('voicesModal');
+      if (modal && typeof modal.showModal === 'function') modal.showModal();
+    };
+    voicesBtn.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') voicesBtn.click(); };
+  }
+  // Dashboard
+  const dashBtn = $('dashBtn');
+  if (dashBtn) {
+    dashBtn.onclick = goDashboard;
+    dashBtn.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') dashBtn.click(); };
+  }
+  // Career Paths
+  const careerPaths = $('careerPaths');
+  if (careerPaths) {
+    careerPaths.onclick = () => {
+      renderTracks();
+      const tracksModal = $('tracksModal');
+      if (tracksModal && typeof tracksModal.showModal === 'function') tracksModal.showModal();
+    };
+    careerPaths.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') careerPaths.click(); };
+  }
+}
+
+// --- Rotating Tips Example ---
+const tips = [
+  "Pro tip: Keep notes in your own words for better recall.",
+  "Short, frequent study sessions are more effective than long cramming sessions.",
+  "Relate new concepts to things you already understand for better retention.",
+  "Teach what you've learned to someone else to solidify your understanding.",
+  "Take breaks during study sessions to improve focus and retention."
+];
+function rotateInsights(el) {
+  if (!el) return;
+  let i = 0;
+  el.textContent = tips[0];
+  setInterval(() => {
+    i = (i + 1) % tips.length;
+    el.textContent = tips[i];
+  }, 5000);
+}
+
 // --- Full Initialization (after partials load) ---
 function mainInitAfterPartials() {
   initState();
-  const langSel = $('lang');
-  if (langSel) langSel.value = state.lang;
   if (state.dark) setDark(true);
   if (state.tts) setTTS(true);
   updateDashboardVisual();
   setupSettingsCollapsible();
-  setupMobileAccordions();
+  setupSidebarToggles();
+  setupModalCancel();
   rotateInsights($('insights'));
   rotateInsights($('m_insights'));
-  setupModalCancel();
 }
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', mainInitAfterPartials);
@@ -260,7 +304,7 @@ if (document.readyState === 'loading') {
   mainInitAfterPartials();
 }
 
-// --- Export all handlers to window for boot-includes.js ---
+// --- Export handlers for boot-includes.js ---
 window.setVH = setVH;
 window.setSupport = setSupport;
 window.setDark = setDark;
@@ -268,11 +312,4 @@ window.setTTS = setTTS;
 window.goDashboard = goDashboard;
 window.openAssessment = openAssessment;
 window.renderTracks = renderTracks;
-window.handleLanguageChange = handleLanguageChange;
-window.handleReadAbout = handleReadAbout;
-window.handlePrivacyClick = handlePrivacyClick;
-window.handleContactClick = handleContactClick;
-window.handlePartnershipsClick = handlePartnershipsClick;
-window.handlePricingClick = handlePricingClick;
-window.handleMobileSettings = handleMobileSettings;
 window.state = state;
