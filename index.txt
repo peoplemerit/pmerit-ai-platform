@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PMERIT — Accessible Global Education</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!--
+    ==========================================================
+      PMERIT Home Simulation - Footer Overlap Fix Applied
+      - Fixed footer height calculations
+      - Proper chat area spacing
+      - Mobile layout improvements
+    ==========================================================
+  -->
+  <style>
+    :root{
+      --global:#2563EB;
+      --local:#16A34A;
+      --accent:#7C3AED;
+      --bg:#fff;
+      --bg2:#f8fafc;
+      --card:#fff;
+      --ink:#1e293b;
+      --muted:#64748b;
+      --border:#e2e8f0;
+      --shadow:0 4px 6px -1px rgba(0,0,0,.08),0 2px 4px -1px rgba(0,0,0,.06);
+      --trans:all .23s cubic-bezier(.4,0,.2,1);
+      --header-h: 70px;
+      --footer-h: 50px;
+    }
+    .dark{ --bg:#0f172a; --bg2:#1e293b; --card:#1f2937; --ink:#e5e7eb; --muted:#94a3b8; --border:#334155; --shadow:0 4px 14px rgba(0,0,0,.39);}
+    html,body{height:100vh;margin:0;padding:0;}
+    body{
+      background:var(--bg); color:var(--ink);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, Noto Sans;
+      transition:var(--trans); overflow:hidden; display:flex; flex-direction:column;
+    }
+    /* HEADER */
+    header{
+      flex:0 0 auto;
+      height:var(--header-h);
+      display:flex;align-items:center;justify-content:space-between; 
+      gap:.75rem;padding:.75rem 1rem;
+      background:var(--bg2); 
+      box-shadow:var(--shadow);
+      z-index:1000;
+    }
+    .logo{font-weight:800;font-size:1.25rem;color:var(--global);margin-right:auto;letter-spacing:.01em;}
+    .logo span{color:var(--local);}
+    nav{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;}
+    select,.btn{border:1px solid var(--border);background:transparent;color:var(--ink);padding:.5rem .75rem;border-radius:.5rem;font-weight:600;cursor:pointer;transition:var(--trans);min-height:44px;}
+    .btn:hover{border-color:var(--global);color:var(--global);}
+    .btn.primary{background:var(--global);color:#fff;border-color:var(--global);}
+    .btn.primary:hover{filter:brightness(.96);}
+    .link{background:none;border:none;color:var(--ink);cursor:pointer;font-weight:600;min-height:44px;} 
+    .link:hover{color:var(--global);}
+    
+    /* LAYOUT - Fixed height calculations */
+    .estate{
+      flex:1 1 auto;
+      display:grid;
+      grid-template-columns:280px minmax(560px,1fr) 340px;
+      gap:0;
+      height:calc(100vh - var(--header-h) - var(--footer-h));
+      max-height:calc(100vh - var(--header-h) - var(--footer-h));
+      overflow:hidden;
+    }
+    aside.left, main.center, aside.right{
+      height:100%;
+      background:var(--bg);
+      overflow-y:auto;
+    }
+    
+    /* SIDEBAR */
+    #page1{
+      background:var(--bg2);
+      border-right:1px solid var(--border);
+      padding:1rem;
+      display:flex;
+      flex-direction:column;
+      gap:.85rem;
+      height:100%;
+      overflow-y:auto;
+    }
+    .pane-title{font-weight:800;color:var(--global);margin:.25rem 0;}
+    .action,.toggle{display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:.6rem .75rem;border:1px solid var(--border);border-radius:.65rem;background:transparent;color:var(--ink);cursor:pointer;transition:var(--trans);min-height:44px;text-align:left;}
+    .action:hover,.toggle:hover{border-color:var(--global);}
+    .icon{color:var(--global);margin-right:.5rem;}
+    .toggle span{flex-grow:1;}
+    .collapsible{border:1px solid var(--border);border-radius:.75rem;background:var(--card);overflow:hidden;display:flex;flex-direction:column;}
+    .collapsible > .head{display:flex;align-items:center;justify-content:space-between;gap:.5rem;padding:.65rem .75rem;cursor:pointer;background:var(--bg);}
+    .collapsible > .head h4{margin:0;font-size:.97rem;color:var(--global);}
+    .collapsible .body{padding:.6rem;display:grid;gap:.5rem;}
+    .switch{width:42px;height:22px;background:#cbd5e1;border-radius:999px;position:relative;flex:0 0 auto;}
+    .switch::after{content:"";position:absolute;left:2px;top:2px;width:18px;height:18px;background:#fff;border-radius:999px;transition:var(--trans);}
+    .toggle.active .switch{background:var(--global);}
+    .toggle.active .switch::after{left:22px;}
+    .dashboard{margin-top:.25rem;display:flex;gap:.5rem;align-items:center;justify-content:center;padding:.75rem .9rem;border:none;border-radius:.75rem;background:var(--global);color:#fff;font-weight:800;box-shadow:var(--shadow);min-height:44px;}
+    .dashboard.guest{background:#64748b;}
+    .avatar{width:100px;height:100px;border-radius:999px;margin-top:auto;background:linear-gradient(135deg, var(--global), var(--local));display:grid;place-items:center;color:#fff;font-size:2rem;border:3px solid var(--border);display:none;}
+    .avatar.active{display:grid;}
+    
+    /* PMERIT AI BRAND BLOCK */
+    .ai-brand-block {margin: 1.2rem 0 0.2rem 0; text-align: left;}
+    .ai-title {font-weight: 700; color: var(--global); font-size: 1.1rem; margin-bottom: 0.22em;}
+    .ai-tagline {font-size: 0.92rem; color: var(--muted);}
+    
+    /* MAIN CENTER (CHAT) - Fixed spacing */
+    #page2{
+      padding:1rem;
+      display:flex;
+      flex-direction:column;
+      gap:.75rem;
+      height:100%;
+      overflow:hidden;
+    }
+    .panel{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:1rem;
+      box-shadow:var(--shadow);
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+    }
+    .panel-head{
+      background:var(--bg2);
+      border-bottom:1px solid var(--border);
+      padding:1rem;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex:0 0 auto;
+    }
+    .badges{display:flex;gap:.4rem;flex-wrap:wrap;}
+    .badge{background:var(--global);color:#fff;font-size:.75rem;padding:.25rem .6rem;border-radius:999px;display:inline-flex;align-items:center;gap:.3rem;}
+    .badge.support{background:var(--local);}
+    
+    /* CHAT AREA - Fixed layout */
+    #textChat{
+      display:flex;
+      flex-direction:column;
+      height:100%;
+      flex:1 1 auto;
+    }
+    .chat-body{
+      flex:1 1 auto;
+      overflow-y:auto;
+      padding:1rem;
+      display:flex;
+      flex-direction:column;
+      gap:.9rem;
+    }
+    .bubble{display:flex;gap:.65rem;align-items:flex-start;background:rgba(37,99,235,.06);border:1px solid rgba(37,99,235,.18);border-radius:.75rem;padding:1rem;}
+    .ava{min-width:36px;height:36px;border-radius:999px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg, var(--global), var(--local));}
+    .bubble h3{margin:.1rem 0 .35rem;color:var(--global);font-size:1rem;}
+    .bubble p{margin:.3rem 0;line-height:1.55;}
+    .bubble ul, .bubble ol{margin:.5rem 0 .5rem 1.25rem;}
+    
+    /* CHAT INPUT - Fixed positioning */
+    .chat-input{
+      flex:0 0 auto;
+      border-top:1px solid var(--border);
+      padding:.75rem;
+      background:var(--bg2);
+    }
+    textarea{width:100%;min-height:80px;resize:none;background:var(--bg);color:var(--ink);border:1px solid var(--border);border-radius:.65rem;padding:.7rem;box-sizing:border-box;}
+    textarea:focus{outline:none;box-shadow:0 0 0 3px rgba(37,99,235,.18);border-color:var(--global);}
+    .input-bar{display:flex;align-items:center;justify-content:space-between;margin-top:.45rem;gap:.5rem;}
+    .count{font-size:.9rem;color:var(--muted);}
+    .send{border:none;background:var(--global);color:#fff;padding:.55rem 1rem;border-radius:.5rem;font-weight:700;cursor:pointer;flex:0 0 auto;}
+    .input-options{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;}
+    .input-options .btn-ghost{font-size:.93em;}
+    
+    /* Virtual Human Stage */
+    #vhStage{display:none;flex-direction:column;height:100%;}
+    .stage{flex:1 1 auto;display:grid;place-items:center;background:var(--bg);padding:1rem;overflow:hidden;}
+    .human-frame{width:min(680px,90%);height:min(420px,55vh);border:2px solid var(--global);border-radius:1rem;box-shadow:var(--shadow);display:grid;place-items:center;background:linear-gradient(135deg,#e2e8f0,#f8fafc);position:relative;}
+    .human-face{width:120px;height:120px;border-radius:999px;background:linear-gradient(135deg,var(--global),var(--local));display:grid;place-items:center;color:#fff;font-size:3rem;border:4px solid #fff;box-shadow:var(--shadow);}
+    .captions{border-top:1px solid var(--border);background:var(--bg2);padding:.75rem 1rem;color:var(--muted);font-size:.95rem;}
+    
+    /* RIGHT PANE */
+    #page3{
+      background:var(--bg2);
+      border-left:1px solid var(--border);
+      padding:1rem;
+      height:100%;
+      overflow-y:auto;
+    }
+    .support-assistant{background:var(--card);border:1px solid var(--border);border-radius:1rem;padding:1rem;margin-bottom:1rem;display:flex;flex-direction:column;align-items:center;text-align:center;}
+    .support-assistant h4{color:var(--local);margin:0;}
+    #page3 h3{margin:.25rem 0 .75rem;position:relative;padding-bottom:.35rem;}
+    #page3 h3::after{content:"";position:absolute;left:0;bottom:0;width:48px;height:3px;background:var(--global);border-radius:2px;}
+    .cards{display:grid;gap:.6rem;grid-auto-rows:1fr;}
+    .card{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--global);border-radius:.75rem;padding:.9rem;box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:space-between;min-height:120px;}
+    .card:nth-of-type(2){border-left-color:var(--local);}
+    .card:nth-of-type(3){border-left-color:var(--accent);}
+    .card h4{margin:.1rem 0 .35rem;display:flex;gap:.5rem;align-items:center;font-size:1rem;}
+    .card p{margin:0 0 .6rem;color:var(--muted);font-size:.92rem;line-height:1.35;}
+    .cta{width:100%;border:none;border-radius:.5rem;padding:.5rem .8rem;background:var(--global);color:#fff;font-weight:700;min-height:44px;}
+    
+    /* FOOTER - Fixed positioning and spacing */
+    footer{
+      position:fixed;
+      bottom:0;
+      left:0;
+      width:100%;
+      height:var(--footer-h);
+      z-index:1000;
+      border-top:1px solid var(--border);
+      background:var(--bg2);
+      padding:.5rem .75rem;
+      font-size:.9rem;
+      display:flex;
+      align-items:center;
+      gap:1rem;
+      justify-content:center;
+      flex-wrap:wrap;
+      box-sizing:border-box;
+    }
+    .footer-status {
+      display: inline-block;
+      font-size: 0.93em;
+      color: var(--global);
+      margin-right: 2em;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    footer a{color:var(--muted);text-decoration:none;}
+    footer a:hover{color:var(--global);}
+    .btn-ghost{border:1px solid var(--border);border-radius:.5rem;padding:.25rem .6rem;background:transparent;cursor:pointer;}
+    
+    /* MOBILE/RESPONSIVE - Improved mobile layout */
+    @media (max-width:1100px){
+      :root{
+        --header-h: 80px;
+        --footer-h: 60px;
+      }
+      .estate{
+        grid-template-columns:1fr;
+        grid-template-rows:auto;
+        height:calc(100vh - var(--header-h) - var(--footer-h));
+        overflow-y:auto;
+      }
+      body{overflow-y:auto;overflow-x:hidden;}
+      header{flex-wrap:wrap;gap:.75rem;height:var(--header-h);}
+      .logo{margin-right:0;width:100%;text-align:center;order:0;}
+      nav{width:100%;justify-content:center;order:1;gap:0.25rem;}
+      aside.left{order:1;display:none;} 
+      main.center{order:2;height:auto;min-height:calc(100vh - var(--header-h) - var(--footer-h) - 2rem);} 
+      aside.right{order:3;display:none;}
+      
+      /* Mobile footer navigation */
+      .mobile-footer{
+        position:fixed;
+        bottom:var(--footer-h);
+        left:0;
+        width:100%;
+        background:var(--bg);
+        border-top:1px solid var(--border);
+        padding:.5rem;
+        display:flex;
+        justify-content:space-around;
+        z-index:999;
+        height:50px;
+        box-sizing:border-box;
+      }
+      .mobile-footer button{
+        flex:1;
+        border:none;
+        background:transparent;
+        font-size:12px;
+        color:var(--muted);
+        min-height:40px;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        gap:.25rem;
+      }
+      .mobile-footer button:hover{color:var(--global);}
+      .mobile-footer button i{font-size:1.2em;}
+      
+      /* Adjust content padding for mobile footer */
+      #page2{
+        padding-bottom:60px;
+      }
+    }
+    
+    @media (min-width:1101px){
+      .mobile-footer{display:none;}
+      aside.right{display:block;}
+    }
+    
+    /* Focus states */
+    .btn:focus,.action:focus,.toggle:focus,.dashboard:focus,.cta:focus,textarea:focus,select:focus,.btn-ghost:focus{outline:2px dashed var(--global);outline-offset:2px;}
+    .no-scroll{overflow:hidden !important;}
+    .non-scrollable-content{overflow-y:auto;}
+    .hidden{display:none;}
+    .visible{display:block;}
+    
+    /* DARK MODE OVERRIDES */
+    .dark{background:#0f172a;--bg:#0f172a;--bg2:#1f2937;--card:#1e293b;--ink:#f8fafc;--muted:#94a3b8;--border:#334155;--shadow:0 4px 14px rgba(0,0,0,.39);}
+    .dark header,.dark #page1,.dark footer{background:var(--bg2);}
+    .dark .panel,.dark .collapsible,.dark .cards .card,.dark #page3 .support-assistant{background:var(--card);}
+    .dark .panel-head,.dark .chat-input{background:var(--bg2);}
+    .dark .bubble{background:rgba(37,99,235,.15);border-color:rgba(37,99,235,.3);}
+    .dark .bubble p,.dark .bubble h3,.dark .badge,.dark .ai-title,.dark .ai-tagline,.dark .cta,.dark .dashboard,.dark .action,.dark .toggle,.dark .pane-title,.dark .collapsible .head h4,.dark .cards h4,.dark .cards p,.dark .footer a{color:var(--ink);}
+    .dark .badge{color:var(--ink)!important;}
+    .dark a{color:var(--muted);}
+    .dark a:hover{color:var(--global);}
+    .dark .switch::after{background:var(--bg);}
+    .dark .toggle.active .switch::after{background:var(--ink);}
+    .dark .dashboard{color:#fff;}
+    .dark .support-assistant{color:var(--ink);}
+  </style>
+</head>
+<body class="no-scroll">
+  <!-- HEADER -->
+  <header>
+    <div class="logo">P<span>MERIT</span></div>
+    <nav>
+      <button class="link" id="donateLink">Donate</button>
+      <select id="lang">
+        <option value="en">English</option>
+        <option value="yo">Yorùbá</option>
+        <option value="ig">Igbo</option>
+        <option value="ha">Hausa</option>
+      </select>
+      <button class="btn" id="signInBtn">Sign In</button>
+      <button class="btn primary" id="startBtn">Start Learning</button>
+    </nav>
+  </header>
+  <div class="estate">
+    <!-- SIDEBAR (LEFT) -->
+    <aside class="left">
+      <section id="page1">
+        <div>
+          <div class="pane-title">Quick Actions</div>
+          <button class="toggle" id="vhToggle">
+            <span><i class="fas fa-user icon"></i> Virtual Human Mode</span>
+            <span class="switch"></span>
+          </button>
+          <button class="action" id="careerPaths">
+            <span><i class="fas fa-compass icon"></i> Career Track & Explore Paths</span>
+            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+          </button>
+          <button class="toggle" id="supportToggle">
+            <span><i class="fas fa-headset icon"></i> Customer Service Mode</span>
+            <span class="switch"></span>
+          </button>
+        </div>
+        <div class="collapsible" id="settingsBox">
+          <div class="head">
+            <h4><i class="fas fa-sliders-h"></i> Settings</h4>
+            <i class="fas fa-chevron-down" aria-hidden="true"></i>
+          </div>
+          <div class="body" style="display: none;">
+            <button class="toggle" id="darkToggle">
+              <span><i class="fas fa-moon icon"></i> Dark Mode</span>
+              <span class="switch"></span>
+            </button>
+            <button class="toggle" id="ttsToggle">
+              <span><i class="fas fa-volume-up icon"></i> Text-to-Speech</span>
+              <span class="switch"></span>
+            </button>
+            <button class="action" id="voicesBtn">
+              <span><i class="fas fa-headphones icon"></i> Preview Voices</span>
+              <i class="fas fa-chevron-right" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <button class="dashboard guest" id="dashBtn"><i class="fas fa-gauge-high"></i>&nbsp;Dashboard</button>
+        <div class="avatar" id="vhAvatar" title="Virtual Human">
+          <i class="fas fa-user-circle"></i>
+        </div>
+        <!-- PMERIT AI Branding/Tagline Block -->
+        <div class="ai-brand-block" id="sideBrandBlock">
+          <div class="ai-title"><i class="fas fa-robot"></i> PMERIT AI</div>
+          <div class="ai-tagline">Empowering Learning Through Innovation<br/>Accessible, high-quality education for global opportunities</div>
+        </div>
+      </section>
+    </aside>
+    <!-- MAIN CENTER (CHAT) -->
+    <main class="center">
+      <section id="page2" class="panel">
+        <div class="panel-head">
+          <!-- Only badges, NO big title/tagline here! -->
+          <div class="badges">
+            <span class="badge" id="vhBadge" style="display:none"><i class="fas fa-user-astronaut"></i> Virtual Human</span>
+            <span class="badge support" id="supportBadge" style="display:none"><i class="fas fa-headset"></i> Support Assistant</span>
+          </div>
+        </div>
+        <div id="textChat">
+          <div class="chat-body non-scrollable-content" id="chatBody">
+            <article class="bubble" id="welcomeMessageContainer">
+              <div class="ava"><i class="fas fa-user-circle"></i></div>
+              <div>
+                <h3>PMERIT AI:</h3>
+                <p id="welcomeMessage">Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?</p>
+              </div>
+            </article>
+          </div>
+          <div class="chat-input">
+            <textarea id="chatInput" maxlength="1000" placeholder="Ask about courses, learning paths, or your goals..."></textarea>
+            <div class="input-bar">
+              <span class="count" id="count">0/1000</span>
+              <div class="input-options">
+                <button class="btn-ghost"><i class="fas fa-user-astronaut"></i> VH Mode</button>
+                <button class="btn-ghost"><i class="fas fa-book"></i> Read</button>
+                <button class="btn-ghost"><i class="fas fa-network-wired"></i> Connected</button>
+              </div>
+              <button class="send" id="sendBtn" aria-label="Send"><span>Send</span> <i class="fas fa-paper-plane"></i></button>
+            </div>
+          </div>
+        </div>
+        <div id="vhStage" class="hidden">
+          <div class="stage">
+            <div class="human-frame">
+              <div class="human-face"><i class="fas fa-user-circle"></i></div>
+            </div>
+          </div>
+          <div class="captions" id="captions">Virtual Human is speaking…</div>
+        </div>
+      </section>
+    </main>
+    <!-- RIGHT PANE -->
+    <aside class="right" id="rightPane">
+      <section id="page3">
+        <div class="support-assistant" id="supportAssistantPane">
+          <h4><i class="fas fa-headset"></i> Support Assistant</h4>
+          <p class="panel-header-tagline">Ask me About Pmerit</p>
+          <div style="display:flex;gap:0.5rem;margin-top:0.5rem;">
+            <button class="btn-ghost" style="border-color:var(--accent);color:var(--accent);"><i class="fas fa-user-astronaut"></i> Virtual Human</button>
+            <button class="btn-ghost" style="border-color:var(--local);color:var(--local);"><i class="fas fa-headset"></i> Support Relates</button>
+          </div>
+        </div>
+        <h3>Discover Your Path</h3>
+        <div class="cards">
+          <div class="card">
+            <h4><i class="fas fa-graduation-cap"></i> Learning Style Assessment</h4>
+            <p>Find how you learn best and personalize your experience to maximize outcomes.</p>
+            <button class="cta" data-link="#todo-assessment">Start Assessment</button>
+          </div>
+          <div class="card">
+            <h4><i class="fas fa-heart"></i> Interest Profiler</h4>
+            <p>Explore subjects and fields that match your natural interests.</p>
+            <button class="cta" data-link="#todo-interest">Discover Interests</button>
+          </div>
+          <div class="card">
+            <h4><i class="fas fa-chart-line"></i> Skills Assessment</h4>
+            <p>Assess your current abilities and identify growth opportunities.</p>
+            <button class="cta" data-link="#todo-skills">Evaluate Skills</button>
+          </div>
+        </div>
+      </section>
+    </aside>
+  </div>
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-status" id="footerStatus">Connected to Educational Services</span>
+    <a href="#privacy">Privacy & Terms</a>
+    <a href="#contact">Contact</a>
+    <a href="#partners">Partnerships</a>
+    <a href="#support">Support</a>
+  </footer>
+  <!-- MOBILE FOOTER -->
+  <div class="mobile-footer" id="mobileFooter">
+    <button id="toggleLeft"><i class="fas fa-bars"></i><span>Menu</span></button>
+    <button id="toggleRight"><i class="fas fa-chart-bar"></i><span>Tools</span></button>
+  </div>
+  <!-- PAGE 4–48 Placeholders for modular simulation -->
+  <section id="page4" style="display:none"></section>
+  <section id="page5" style="display:none"></section>
+  <section id="page6" style="display:none"></section>
+  <section id="page7" style="display:none"></section>
+  <section id="page8" style="display:none"></section>
+  <section id="page9" style="display:none"></section>
+  <section id="page10" style="display:none"></section>
+  <section id="page11" style="display:none"></section>
+  <section id="page12" style="display:none"></section>
+  <section id="page13" style="display:none"></section>
+  <section id="page14" style="display:none"></section>
+  <section id="page15" style="display:none"></section>
+  <section id="page16" style="display:none"></section>
+  <section id="page17" style="display:none"></section>
+  <section id="page18" style="display:none"></section>
+  <section id="page19" style="display:none"></section>
+  <section id="page20" style="display:none"></section>
+  <section id="page21" style="display:none"></section>
+  <section id="page22" style="display:none"></section>
+  <section id="page23" style="display:none"></section>
+  <section id="page24" style="display:none"></section>
+  <section id="page25" style="display:none"></section>
+  <section id="page26" style="display:none"></section>
+  <section id="page27" style="display:none"></section>
+  <section id="page28" style="display:none"></section>
+  <section id="page29" style="display:none"></section>
+  <section id="page30" style="display:none"></section>
+  <section id="page31" style="display:none"></section>
+  <section id="page32" style="display:none"></section>
+  <section id="page33" style="display:none"></section>
+  <section id="page34" style="display:none"></section>
+  <section id="page35" style="display:none"></section>
+  <section id="page36" style="display:none"></section>
+  <section id="page37" style="display:none"></section>
+  <section id="page38" style="display:none"></section>
+  <section id="page39" style="display:none"></section>
+  <section id="page40" style="display:none"></section>
+  <section id="page41" style="display:none"></section>
+  <section id="page42" style="display:none"></section>
+  <section id="page43" style="display:none"></section>
+  <section id="page44" style="display:none"></section>
+  <section id="page45" style="display:none"></section>
+  <section id="page46" style="display:none"></section>
+  <section id="page47" style="display:none"></section>
+  <section id="page48" style="display:none"></section>
+  <!-- MODALS (CareerTrack, Voices) -->
+  <dialog id="tracksModal" style="border:none;border-radius:12px;max-width:560px;width:92%;box-shadow:var(--shadow);background:var(--card);color:var(--ink)">
+    <form method="dialog" style="margin:0;padding:1rem 1rem 1.1rem;">
+      <h3 style="margin:.25rem 0 1rem;color:var(--global);display:flex;gap:.5rem;align-items:center"><i class="fas fa-compass"></i> Explore Career Tracks</h3>
+      <div id="tracksList" style="display:grid;gap:.5rem;"></div>
+      <div style="display:flex;justify-content:flex-end;gap:.5rem;margin-top:1rem">
+        <button class="btn" value="cancel">Close</button>
+      </div>
+    </form>
+  </dialog>
+  <dialog id="voicesModal" style="border:none;border-radius:12px;max-width:640px;width:92%;box-shadow:var(--shadow);background:var(--card);color:var(--ink)">
+    <form method="dialog" style="margin:0;padding:1rem 1.1rem">
+      <h3 style="margin:.25rem 0 1rem;color:var(--global);display:flex;gap:.5rem;align-items:center">
+        <i class="fas fa-headphones"></i> Voice Sampler
+      </h3>
+      <label style="display:grid;gap:.35rem">
+        <span style="font-weight:600">Sample text</span>
+        <textarea id="voiceSampleText" rows="3" style="border:1px solid var(--border);border-radius:.65rem;padding:.6rem">
+Welcome to PMERIT. Empowering learning through innovation.
+        </textarea>
+      </label>
+      <div id="voiceTabs" style="display:flex;gap:.4rem;margin-bottom:.6rem;">
+        <button type="button" class="btn active" data-tab="opensource">Open-source</button>
+        <button type="button" class="btn" data-tab="premium">Premium</button>
+      </div>
+      <div id="voicePanels" style="display:grid;gap:.6rem;">
+        <section data-panel="opensource">
+          <div class="voice-row">
+            <div class="voice-meta"><strong>Coqui XTTS</strong><br/><span class="muted">Multilingual, expressive</span></div>
+            <audio controls preload="none" src="" data-src="https://huggingface.co/spaces/coqui/xtts/resolve/main/samples/en-US.wav"></audio>
+          </div>
+          <div class="voice-row">
+            <div class="voice-meta"><strong>Piper TTS</strong><br/><span class="muted">Lightweight, fast (CPU)</span></div>
+            <audio controls preload="none" src="" data-src="https://huggingface.co/datasets/coqui/vctk/resolve/main/audio/p225/p225_001.wav"></audio>
+          </div>
+          <div class="voice-row">
+            <div class="voice-meta"><strong>MeloTTS</strong><br/><span class="muted">Multilingual, natural</span></div>
+            <audio controls preload="none" src="" data-src="https://cdn.jsdelivr.net/gh/Myshell-AI/MeloTTS@main/melo_tts_example.wav"></audio>
+          </div>
+        </section>
+        <section data-panel="premium" style="display:none">
+          <div class="voice-row">
+            <div class="voice-meta"><strong>ElevenLabs</strong><br/><span class="muted">AI Voice 1 (Male)</span></div>
+            <audio controls preload="none" src="" data-src="https://cdn.elevenlabs.io/api/v1/voices/21m00wZ9gJ79fH0U8UqV/samples/u99U4H9oO2A.mp3"></audio>
+          </div>
+          <div class="voice-row">
+            <div class="voice-meta"><strong>ElevenLabs</strong><br/><span class="muted">AI Voice 2 (Female)</span></div>
+            <audio controls preload="none" src="" data-src="https://cdn.elevenlabs.io/api/v1/voices/21m00wZ9gJ79fH0U8UqV/samples/G13iGk9oR2A.mp3"></audio>
+          </div>
+        </section>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:.5rem;margin-top:1rem">
+        <button class="btn" id="browserTtsBtn" type="button">Browser TTS (fallback)</button>
+        <div style="display:flex;gap:.5rem">
+          <button class="btn" value="cancel">Close</button>
+        </div>
+      </div>
+      <audio id="voicePlayer" preload="auto"></audio>
+    </form>
+  </dialog>
+  <!-- JS (scoped to modular pages, future extract) -->
+  <script>
+    const $ = (s,r=document)=>r.querySelector(s); const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
+    const body = document.body;
+    const vhToggle = $('#vhToggle'), vhAvatar = $('#vhAvatar'), vhBadge = $('#vhBadge'), supportToggle = $('#supportToggle'), supportBadge = $('#supportBadge'), dashBtn = $('#dashBtn'), settingsBox = $('#settingsBox'), settingsHead = settingsBox.querySelector('.head'), settingsBody = settingsBox.querySelector('.body'), darkToggle = $('#darkToggle'), ttsToggle = $('#ttsToggle'), textChat = $('#textChat'), vhStage = $('#vhStage'), chatInput = $('#chatInput'), count = $('#count'), sendBtn = $('#sendBtn'), chatBody = $('#chatBody'), careerPathsBtn = $('#careerPaths'), tracksModal = $('#tracksModal'), tracksList = $('#tracksList'), leftPane = $('aside.left'), rightPane = $('aside.right'), toggleLeftBtn = $('#toggleLeft'), toggleRightBtn = $('#toggleRight'), signInBtn = $('#signInBtn'), welcomeMessageContainer = $('#welcomeMessageContainer'), voicesBtn  = $('#voicesBtn'), voicesDlg  = $('#voicesModal'), voiceTabs  = $('#voiceTabs'), voicePanels= $('#voicePanels'), browserTtsBtn = $('#browserTtsBtn'), voiceSampleText = $('#voiceSampleText'), supportAssistantPane = $('#supportAssistantPane'), mobileFooter = $('#mobileFooter');
+    const state = {auth: false, dark: false, vhMode: false, supportMode: false, tts: false};
+    const CAREER_TRACKS = [
+      "Software Development (Full-stack)",
+      "Data Analytics",
+      "UI/UX Design",
+      "Digital Marketing",
+      "Customer Support (Remote)",
+      "Virtual Assistance / Operations",
+      "Cloud & DevOps (Intro)"
+    ];
+    function init() {
+      try {state.dark = localStorage.getItem('pmerit_dark') === 'true';state.auth = localStorage.getItem('pmerit_auth') === 'true';state.tts = localStorage.getItem('pmerit_tts') === 'true';}catch{}
+      body.classList.toggle('dark', state.dark);
+      if(state.dark) darkToggle.classList.add('active');
+      if(state.tts) ttsToggle.classList.add('active');
+      dashBtn.classList.toggle('guest', !state.auth);
+      rightPane.prepend(supportAssistantPane);
+      tracksList.innerHTML = CAREER_TRACKS.map((t,i)=>`<button class="action" value="${i}" style="justify-content:flex-start"><i class="fas fa-arrow-right icon"></i><span>${t}</span></button>`).join('');
+      if(window.innerWidth<=1100){leftPane.style.display='none';rightPane.style.display='none';mobileFooter.style.display='flex';}else{leftPane.style.display='flex';rightPane.style.display='block';mobileFooter.style.display='none';}
+      updateChatView(); updateCount(); updateDashboardButton();
+    }
+    function save(k,v){try{localStorage.setItem(k,String(v));}catch{}}
+    function updateCount(){count.textContent=(chatInput.value||'').length+'/1000';}
+    function speak(text){if(!state.tts)return;if(!('speechSynthesis'in window)){return;}const u=new SpeechSynthesisUtterance(text);speechSynthesis.speak(u);}
+    function updateDashboardButton(){if(state.auth){dashBtn.innerHTML='<i class="fas fa-gauge-high"></i>&nbsp;Dashboard';dashBtn.classList.remove('guest');}else{dashBtn.innerHTML='<i class="fas fa-gauge-high"></i>&nbsp;Dashboard';dashBtn.classList.add('guest');}}
+    settingsHead.addEventListener('click',()=>{const open=settingsBody.style.display==='block';settingsBody.style.display=open?'none':'block';settingsHead.querySelector('i.fas').className=open?'fas fa-sliders-h':'fas fa-chevron-down';});
+    darkToggle.addEventListener('click',()=>{darkToggle.classList.toggle('active');state.dark=darkToggle.classList.contains('active');body.classList.toggle('dark',state.dark);save('pmerit_dark',state.dark);});
+    ttsToggle.addEventListener('click',()=>{ttsToggle.classList.toggle('active');state.tts=ttsToggle.classList.contains('active');save('pmerit_tts',state.tts);if(!state.tts)speechSynthesis.cancel();});
+    supportToggle.addEventListener('click',()=>{supportToggle.classList.toggle('active');state.supportMode=supportToggle.classList.contains('active');supportBadge.style.display=state.supportMode?'inline-flex':'none';});
+    vhToggle.addEventListener('click',()=>{vhToggle.classList.toggle('active');state.vhMode=vhToggle.classList.contains('active');updateChatView();});
+    function updateChatView(){if(state.vhMode){textChat.style.display='none';vhStage.classList.add('visible');vhStage.classList.remove('hidden');vhAvatar.classList.add('active');vhBadge.style.display='inline-flex';}else{textChat.style.display='flex';vhStage.classList.remove('visible');vhStage.classList.add('hidden');vhAvatar.classList.remove('active');vhBadge.style.display='none';}}
+    dashBtn.addEventListener('click',()=>{if(state.auth){window.location.href='dashboard.html';}else{alert('Please sign up to access your dashboard.');}});
+    signInBtn.addEventListener('click',()=>{state.auth=!state.auth;save('pmerit_auth',state.auth);updateDashboardButton();alert(state.auth?'Signed in (demo). Dashboard enabled.':'Signed out (demo).');});
+    $('#startBtn').addEventListener('click',()=>alert('Starting learning journey…'));
+    chatInput.addEventListener('input',updateCount);
+    sendBtn.addEventListener('click',()=>{
+      const text=(chatInput.value||'').trim();if(!text)return;
+      if(welcomeMessageContainer){welcomeMessageContainer.style.display='none';}
+      const me=document.createElement('article');me.className='bubble';me.innerHTML='<div class="ava" style="background:#4f46e5"><i class="fas fa-user-circle"></i></div><div><h3>You</h3><p></p></div>';me.querySelector('p').textContent=text;chatBody.appendChild(me);chatBody.scrollTop=chatBody.scrollHeight;
+      setTimeout(()=>{const aiResponse=state.supportMode?"Thank you for your inquiry. A support agent will get back to you shortly.":"Based on your goals, I recommend exploring our `UI/UX Design` career track. Would you like me to tell you more about it?";const ai=document.createElement('article');ai.className='bubble';ai.innerHTML='<div class="ava"><i class="fas fa-user-circle"></i></div><div><h3>PMERIT AI:</h3><p></p></div>';ai.querySelector('p').textContent=aiResponse;chatBody.appendChild(ai);chatBody.scrollTop=chatBody.scrollHeight;if(state.tts)speak(aiResponse);},600);
+      chatInput.value='';updateCount();
+    });
+    careerPathsBtn.addEventListener('click',()=>{if(typeof tracksModal.showModal==='function'){tracksModal.showModal();}else{alert('Tracks:\n- '+CAREER_TRACKS.join('\n- '));}});
+    tracksList.addEventListener('click',e=>{const btn=e.target.closest('button.action');if(!btn)return;const idx=Number(btn.value);alert('Selected: '+CAREER_TRACKS[idx]);});
+    function setVoiceTab(name){$$('[data-tab]',voiceTabs).forEach(b=>{b.classList.toggle('active',b.dataset.tab===name);});$$('[data-panel]',voicePanels).forEach(p=>{const isActive=p.dataset.panel===name;p.style.display=isActive?'block':'none';if(isActive){p.querySelectorAll('audio[data-src]').forEach(a=>{if(!a.src||a.src.endsWith('#')){a.src=a.dataset.src||'#';}});}});}
+    voicesBtn.addEventListener('click',()=>{if(typeof voicesDlg.showModal==='function'){voicesDlg.showModal();}else{alert('Voice Sampler requires a modern browser.');}setVoiceTab('opensource');});
+    voiceTabs.addEventListener('click',(e)=>{const btn=e.target.closest('button.btn');if(!btn)return;setVoiceTab(btn.dataset.tab);});
+    voicesDlg.addEventListener('play',(e)=>{if(e.target.tagName!=='AUDIO')return;voicesDlg.querySelectorAll('audio').forEach(a=>{if(a!==e.target)a.pause();});},true);
+    browserTtsBtn.addEventListener('click',()=>{const text=(voiceSampleText?.value||'').trim();if(!text)return;if(!('speechSynthesis'in window)){alert('Browser TTS not supported here.');return;}voicesDlg.querySelectorAll('audio').forEach(a=>a.pause());const u=new SpeechSynthesisUtterance(text);u.rate=.95;u.pitch=1;u.volume=1;speechSynthesis.cancel();speechSynthesis.speak(u);});
+    toggleLeftBtn.addEventListener('click',()=>{leftPane.style.display=(leftPane.style.display==='none'||leftPane.style.display==='')?'flex':'none';rightPane.style.display='none';});
+    toggleRightBtn.addEventListener('click',()=>{rightPane.style.display=(rightPane.style.display==='none'||rightPane.style.display==='')?'block':'none';leftPane.style.display='none';});
+    window.addEventListener('resize',()=>{if(window.innerWidth>1100){body.classList.add('no-scroll');leftPane.style.display='flex';rightPane.style.display='block';mobileFooter.style.display='none';}else{body.classList.remove('no-scroll');leftPane.style.display='none';rightPane.style.display='none';mobileFooter.style.display='flex';}});
+    init();
+  </script>
+</body>
+</html>
