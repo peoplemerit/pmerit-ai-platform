@@ -30,128 +30,36 @@ Result:
 - Delivers a welcoming, accessible, and highly functional homepage, driving user engagement and guiding guests through onboarding.
 -->
 <!-- index.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PMERIT — Accessible Global Education</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PMERIT AI Platform</title>
 
-  <!-- Icons & Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <!-- Brand Styles -->
+  <link rel="stylesheet" href="assets/css/brand.css" />
+  <!-- Base Styles -->
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <!-- Component Styles -->
+  <link rel="stylesheet" href="assets/css/components.css" />
 
-  <!-- CSS Files -->
-  <link rel="stylesheet" href="assets/css/brand.css">
-  <link rel="stylesheet" href="assets/base.css">
-  <link rel="stylesheet" href="assets/css/components.css">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 </head>
-<body>
+<body style="margin:0;padding:0;overflow:hidden;">
+
   <!-- Modular Containers -->
   <div id="headerContainer"></div>
   <div id="bodyContainer"></div>
   <div id="footerContainer"></div>
 
-  <!-- Modals -->
-  <!-- Sign Up Modal -->
-  <dialog id="signUpModal">
-    <form method="dialog">
-      <h3><i class="fas fa-user-plus"></i> Create your PMERIT account</h3>
-      <label>
-        <span>Full name</span>
-        <input id="su_name" required placeholder="Your name"/>
-      </label>
-      <label>
-        <span>Email</span>
-        <input id="su_email" type="email" required placeholder="you@example.com"/>
-      </label>
-      <label>
-        <span>Password</span>
-        <input id="su_pwd" type="password" required placeholder="••••••••"/>
-      </label>
-      <p style="font-size:0.9rem;color:var(--text-secondary);margin:1rem 0">
-        By continuing you agree to our terms.
-      </p>
-      <div class="button-group">
-        <button class="nav-btn" id="signUpCancel" type="button">Cancel</button>
-        <button class="nav-btn primary" id="signUpCreate" type="button">Create account</button>
-      </div>
-    </form>
-  </dialog>
-
-  <!-- Sign In Modal -->
-  <dialog id="signInModal">
-    <form method="dialog">
-      <h3><i class="fas fa-right-to-bracket"></i> Sign in to PMERIT</h3>
-      <label>
-        <span>Email</span>
-        <input id="si_email" type="email" required placeholder="you@example.com"/>
-      </label>
-      <label>
-        <span>Password</span>
-        <input id="si_pwd" type="password" required placeholder="••••••••"/>
-      </label>
-      <div style="margin-top:1rem">
-        <a href="#forgot" style="font-size:0.9rem; color: var(--primary);">Forgot password?</a>
-      </div>
-      <div class="button-group">
-        <button class="nav-btn" id="signInCancel" type="button">Cancel</button>
-        <button class="nav-btn primary" id="signInGo" type="button">Sign In</button>
-      </div>
-    </form>
-  </dialog>
-
-  <!-- Voices Modal -->
-  <dialog id="voicesModal">
-    <form method="dialog">
-      <h3><i class="fas fa-headphones"></i> Voice Sampler</h3>
-      <label>
-        <span>Sample text</span>
-        <textarea id="voiceText" rows="3" style="border:1px solid var(--border-color);border-radius:0.5rem;padding:0.75rem;font-family:inherit;">Welcome to PMERIT. Empowering learning through innovation.</textarea>
-      </label>
-      <div class="button-group" style="margin-top: 1rem;">
-        <button class="nav-btn" id="browserTts" type="button">Browser TTS</button>
-        <button class="nav-btn" id="voicesClose" type="button">Close</button>
-      </div>
-    </form>
-  </dialog>
-
-  <!-- Career Tracks Modal -->
-  <dialog id="tracksModal">
-    <div style="margin:0;padding:1.5rem">
-      <h3><i class="fas fa-compass"></i> Explore Career Tracks</h3>
-      <div class="tracks-grid" id="tracksList"></div>
-      <div id="trackDetail" style="margin-top:1rem;display:none;border-top:1px solid var(--border-color);padding-top:1rem"></div>
-      <div class="button-group">
-        <button class="nav-btn" id="tracksClose" type="button">Close</button>
-      </div>
-    </div>
-  </dialog>
-
-  <!-- Assessment Modal -->
-  <dialog id="assessmentModal">
-    <div style="margin:0;padding:1.5rem">
-      <h3><i class="fas fa-graduation-cap"></i> Discover Your Path — Quick Assessment</h3>
-      <ol style="line-height:1.6;margin:0 0 1rem 1.25rem">
-        <li><strong>Learning style:</strong> a few preferences.</li>
-        <li><strong>Interests:</strong> choose areas you enjoy.</li>
-        <li><strong>Skills:</strong> rate comfort with common tools.</li>
-      </ol>
-      <p style="color:var(--text-secondary);margin:0 0 1rem">
-        This assessment will help us create a personalized learning plan based on your preferences.
-      </p>
-      <div class="button-group">
-        <button class="nav-btn" id="assessmentCancel" type="button">Cancel</button>
-        <button class="nav-btn primary" id="assessmentStart" type="button">Start</button>
-      </div>
-    </div>
-  </dialog>
-
-  <!-- JS Files -->
-  <script type="module" src="assets/js/boot-includes.js"></script>
+  <!-- JS Loader -->
+  <script src="assets/js/boot-includes.js"></script>
+  <!-- Main JavaScript -->
   <script src="assets/js/main.js"></script>
+  <!-- Chat JavaScript -->
   <script src="assets/js/chat.js"></script>
 </body>
 </html>
