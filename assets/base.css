@@ -44,162 +44,33 @@ Result:
 */
 
 /* Base Layout */
-html, body {
-  height: 100vh;
+* {
   margin: 0;
   padding: 0;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, Noto Sans;
-  transition: var(--trans);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-/* HEADER */
-header {
-  flex: 0 0 auto;
-  height: var(--header-h);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: .75rem;
-  padding: .75rem 1rem;
-  background: var(--bg2);
-  box-shadow: var(--shadow);
-  z-index: 1000;
-}
-
-.logo {
-  font-weight: 800;
-  font-size: 1.25rem;
-  color: var(--global);
-  margin-right: auto;
-  letter-spacing: .01em;
-}
-
-.logo span {
-  color: var(--local);
-}
-
-nav {
-  display: flex;
-  align-items: center;
-  gap: .5rem;
-  flex-wrap: wrap;
-}
-
-select, .btn {
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--ink);
-  padding: .5rem .75rem;
-  border-radius: .5rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: var(--trans);
-  min-height: 44px;
-}
-
-.btn:hover {
-  border-color: var(--global);
-  color: var(--global);
-}
-
-.btn.primary {
-  background: var(--global);
-  color: #fff;
-  border-color: var(--global);
-}
-
-.btn.primary:hover {
-  filter: brightness(.96);
-}
-
-.link {
-  background: none;
-  border: none;
-  color: var(--ink);
-  cursor: pointer;
-  font-weight: 600;
-  min-height: 44px;
-}
-
-.link:hover {
-  color: var(--global);
-}
-
-/* LAYOUT - Fixed height calculations */
-.estate {
-  flex: 1 1 auto;
-  display: grid;
-  grid-template-columns: 280px minmax(560px, 1fr) 340px;
-  gap: 0;
-  height: calc(100vh - var(--header-h) - var(--footer-h));
-  max-height: calc(100vh - var(--header-h) - var(--footer-h));
-  overflow: hidden;
-}
-
-aside.left, main.center, aside.right {
-  height: 100%;
-  background: var(--bg);
-  overflow-y: auto;
-}
-
-/* FOOTER - Fixed positioning and spacing */
-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: var(--footer-h);
-  z-index: 1000;
-  border-top: 1px solid var(--border);
-  background: var(--bg2);
-  padding: .5rem .75rem;
-  font-size: .9rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
   box-sizing: border-box;
 }
 
-.footer-status {
-  display: inline-block;
-  font-size: 0.93em;
-  color: var(--global);
-  margin-right: 2em;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+html, body {
+  height: 100%;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: var(--transition);
 }
 
-footer a {
-  color: var(--muted);
-  text-decoration: none;
+body {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Non-scrollable like Google homepage */
 }
 
-footer a:hover {
-  color: var(--global);
+/* Focus Styles */
+.nav-btn:focus, .action:focus, .toggle:focus, .dashboard:focus, textarea:focus, select:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
 }
 
 /* Utility Classes */
 .hidden { display: none; }
 .visible { display: block; }
 .no-scroll { overflow: hidden !important; }
-.non-scrollable-content { overflow-y: auto; }
-
-/* Focus States */
-.btn:focus,
-.action:focus,
-.toggle:focus,
-.dashboard:focus,
-.cta:focus,
-textarea:focus,
-select:focus,
-.btn-ghost:focus {
-  outline: 2px dashed var(--global);
-  outline-offset: 2px;
-}
