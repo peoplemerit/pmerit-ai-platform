@@ -2,7 +2,7 @@
 PMERIT AI PLATFORM: MAIN.JS — EXPORT ALL HANDLERS, FIX BOOT-INCLUDES INTEGRATION
 
 - Ensures ALL handler functions (including renderTracks) are attached to window before boot-includes.js runs.
-- All button/events are robust and blueprint-accurate.
+- All button/events robust and blueprint-accurate.
 **/
 
 const state = {
@@ -62,7 +62,7 @@ function setSupport(on) {
   if (welcomeCopy) {
     welcomeCopy.textContent = on
       ? "Welcome to PMERIT Support. I can help with accounts, enrollment, and technical issues. How can I assist you today?"
-      : "Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your path?";
+      : "Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your best path?";
   }
 }
 function setVH(on) {
@@ -171,7 +171,7 @@ function handlePricingClick() {
   addMessage('PMERIT AI', 'PMERIT offers flexible pricing plans to make education accessible to everyone. We have free courses available, as well as premium plans with additional features and personalized support.');
 }
 function handlePrivacyClick() {
-  addMessage('PMERIT AI', 'Our Privacy & Terms page provides detailed information about how we protect your data and our terms of service. We prioritize your privacy and transparency in all our educational services.');
+  addMessage('PMERIT AI', 'Our Privacy & Terms page provides detailed information about how we protect your data and our terms of service. We prioritize your privacy and transparency in all our educational offerings.');
 }
 function handleContactClick() {
   addMessage('PMERIT AI', 'You can contact our support team through this chat interface, or reach out via email at support@pmerit.com. We typically respond within 24 hours during business days.');
@@ -206,6 +206,40 @@ function setupMobileAccordions() {
   // Optionally: add auto-close logic or other enhancements
 }
 
+// --- Modal Cancel Button Handlers ---
+function setupModalCancel() {
+  // Sign Up Cancel
+  const signUpCancel = $('signUpCancel');
+  const signUpModal = $('signUpModal');
+  if (signUpCancel && signUpModal) {
+    signUpCancel.onclick = () => signUpModal.close();
+  }
+  // Sign In Cancel
+  const signInCancel = $('signInCancel');
+  const signInModal = $('signInModal');
+  if (signInCancel && signInModal) {
+    signInCancel.onclick = () => signInModal.close();
+  }
+  // Assessment Cancel
+  const assessmentCancel = $('assessmentCancel');
+  const assessmentModal = $('assessmentModal');
+  if (assessmentCancel && assessmentModal) {
+    assessmentCancel.onclick = () => assessmentModal.close();
+  }
+  // Tracks Close
+  const tracksClose = $('tracksClose');
+  const tracksModal = $('tracksModal');
+  if (tracksClose && tracksModal) {
+    tracksClose.onclick = () => tracksModal.close();
+  }
+  // Voices Close
+  const voicesClose = $('voicesClose');
+  const voicesModal = $('voicesModal');
+  if (voicesClose && voicesModal) {
+    voicesClose.onclick = () => voicesModal.close();
+  }
+}
+
 // --- Full Initialization (after partials load) ---
 function mainInitAfterPartials() {
   initState();
@@ -218,6 +252,7 @@ function mainInitAfterPartials() {
   setupMobileAccordions();
   rotateInsights($('insights'));
   rotateInsights($('m_insights'));
+  setupModalCancel();
 }
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', mainInitAfterPartials);
