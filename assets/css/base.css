@@ -1,1 +1,46 @@
+/*
+PMERIT AI PLATFORM: BASE CSS — RESPONSIVE, BLUEPRINT-ACCURATE
 
+This is the canonical base CSS for all layouts and partials. It must be loaded before components.css.
+It ensures a DRY, responsive, and fully blueprint-accurate UI for desktop, tablet, and mobile.
+
+- Responsive 3-column grid: .estate { grid-template-columns: 280px 1fr 320px; }
+- Uses CSS variables from brand.css for all colors, spacing, and effects.
+- Mobile: Collapses sidebars, shows mobile accordions, stacks footer/buttons.
+- Ensures header/footer/sidebars are visually identical to blueprint-index.html.
+- No component-specific rules here (see components.css).
+
+DO NOT REMOVE OR RENAME core CSS variables or breakpoints.
+*/
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: var(--transition);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Non-scrollable like Google homepage */
+}
+
+/* Focus Styles */
+.nav-btn:focus, .action:focus, .toggle:focus, .dashboard:focus, textarea:focus, select:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Utility Classes */
+.hidden { display: none; }
+.visible { display: block; }
+.no-scroll { overflow: hidden !important; }
+.non-scrollable-content { overflow-y: auto; }
