@@ -34,49 +34,21 @@ Result:
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PMERIT AI Platform</title>
-
-  <!-- Brand Styles -->
-  <link rel="stylesheet" href="/assets/css/brand.css" />
-
-  <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PMERIT — Accessible Global Education</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/assets/css/brand.css">
+  <link rel="stylesheet" href="/assets/base.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
 </head>
-<body style="margin:0;padding:0;overflow:hidden;">
-
+<body class="no-scroll">
   <!-- Modular Containers -->
   <div id="headerContainer"></div>
   <div id="bodyContainer"></div>
   <div id="footerContainer"></div>
 
   <!-- JS Loader -->
-  <script>
-    // Load header
-    fetch('/partials/header.html')
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById('headerContainer').innerHTML = html;
-      });
-
-    // Load body
-    fetch('/partials/body.html')
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById('bodyContainer').innerHTML = html;
-      });
-
-    // Load footer
-    fetch('/partials/footer.html')
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById('footerContainer').innerHTML = html;
-      });
-  </script>
   <script src="/assets/js/boot-includes.js"></script>
-<script src="/assets/js/main.js"></script>
-<link rel="stylesheet" href="/assets/css/components.css">
-
+  <script src="/assets/js/main.js"></script>
 </body>
 </html>
-
