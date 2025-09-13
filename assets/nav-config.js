@@ -38,17 +38,20 @@ RESULT:
 
 export const navConfig = {
   header: [
-    { label: "Home", href: "#home", icon: "fas fa-home" },
-    { label: "Track & Explore Paths", href: "#careerPaths", icon: "fas fa-compass" },
-    { label: "Customer Service Mode", href: "#supportToggle", icon: "fas fa-headset" },
-    { label: "Donate", href: "#donate", icon: "fas fa-hand-holding-heart" },
-    { label: "Sign In", href: "#signin", icon: "fas fa-user" },
-    { label: "Start Learning", href: "#start", icon: "fas fa-graduation-cap" }
+    { label: "Language", id: "lang", type: "select", options: [
+      { value: "en", label: "English" },
+      { value: "yo", label: "Yorùbá" },
+      { value: "ig", label: "Igbo" },
+      { value: "ha", label: "Hausa" }
+    ]},
+    { label: "Pricing", id: "pricingBtn", type: "button" },
+    { label: "Sign In", id: "signInBtn", type: "button" },
+    { label: "Start Learning", id: "startBtn", type: "button", primary: true }
   ],
 
   sidebar: {
     quickActions: [
-      { label: "Virtual Human Mode", id: "vhToggle", type: "toggle", icon: "fas fa-user" },
+      { label: "Virtual Human Mode", id: "vhToggle", type: "toggle", icon: "fas fa-user-astronaut" },
       { label: "Career Track & Explore Paths", id: "careerPaths", type: "action", icon: "fas fa-compass" },
       { label: "Customer Service Mode", id: "supportToggle", type: "toggle", icon: "fas fa-headset" }
     ],
@@ -61,15 +64,9 @@ export const navConfig = {
   },
 
   footer: [
-    { label: "About PMERIT", href: "#about" },
-    { label: "Privacy & Terms", href: "#privacy" },
-    { label: "Contact", href: "#contact" },
-    { label: "Partnerships", href: "#partners" },
-    { label: "Support", href: "#support" }
-  ],
-
-  mobileFooter: [
-    { label: "Menu", id: "toggleLeft", icon: "fas fa-bars" },
-    { label: "Tools", id: "toggleRight", icon: "fas fa-chart-bar" }
+    { label: "Privacy & Terms", id: "privacyBtn" },
+    { label: "Contact", id: "contactBtn" },
+    { label: "Partnerships", id: "partnershipsBtn" },
+    { label: "Support", id: "supportBtn" }
   ]
 };
