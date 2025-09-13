@@ -83,13 +83,15 @@ RESULT:
   --ghost-border: var(--border);
   --ghost-text: var(--muted);
   --ghost-hover: var(--global);
+}
 
-  /* 🕶️ Dark Mode Overrides */
-  --dark-bg: #0F172A;
-  --dark-bg2: #1E293B;
-  --dark-card: #1F2937;
-  --dark-ink: #E5E7EB;
-  --dark-muted: #94A3B8;
-  --dark-border: #334155;
-  --dark-shadow: 0 4px 14px rgba(0,0,0,.39);
+/* Dark Mode Overrides */
+.dark {
+  --bg: #0F172A;
+  --bg2: #1E293B;
+  --card: #1F2937;
+  --ink: #E5E7EB;
+  --muted: #94A3B8;
+  --border: #334155;
+  --shadow: 0 4px 14px rgba(0,0,0,.39);
 }
