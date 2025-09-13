@@ -1,10 +1,8 @@
 /**
-PMERIT AI PLATFORM: MAIN.JS — FULLY ROBUST WITH HANDLER EXPORTS AND IMPROVED MOBILE/SETTINGS LOGIC
+PMERIT AI PLATFORM: MAIN.JS — EXPORT ALL HANDLERS, FIX BOOT-INCLUDES INTEGRATION
 
-- Exports all required handler functions needed by boot-includes.js (including handlePricingClick).
-- Robustly initializes all settings toggles, dropdowns, accordions for desktop and mobile.
-- All DOM element queries and event bindings are safe for dynamic partial injection.
-- Ensures mobile/desktop state sync and button responsiveness.
+- Ensures ALL handler functions (including renderTracks) are attached to window before boot-includes.js runs.
+- All button/events are robust and blueprint-accurate.
 **/
 
 const state = {
@@ -16,10 +14,9 @@ const state = {
   lang: 'en'
 };
 
-// Helper
 function $(id) { return document.getElementById(id); }
 
-// Init persistent state
+// --- Persistent State ---
 function initState() {
   try {
     state.dark = localStorage.getItem('pmerit_dark') === 'true';
@@ -28,21 +25,15 @@ function initState() {
     state.lang = localStorage.getItem('pmerit_lang') || 'en';
   } catch (e) { console.error('Error loading state from localStorage:', e); }
 }
-
-// Save to localStorage
 function save(key, value) {
   try { localStorage.setItem(key, String(value)); } catch (e) {}
 }
-
-// Set dashboard visual
 function updateDashboardVisual() {
   const dashBtn = $('dashBtn');
   if (dashBtn) dashBtn.classList.toggle('guest', !state.auth);
   const mDashBtn = $('m_dashBtn');
   if (mDashBtn) mDashBtn.classList.toggle('guest', !state.auth);
 }
-
-// Set dark mode
 function setDark(on) {
   const darkToggle = $('darkToggle');
   if (darkToggle) darkToggle.classList.toggle('active', on);
@@ -50,8 +41,6 @@ function setDark(on) {
   document.body.classList.toggle('dark', on);
   save('pmerit_dark', on);
 }
-
-// Set TTS
 function setTTS(on) {
   const ttsToggle = $('ttsToggle');
   if (ttsToggle) ttsToggle.classList.toggle('active', on);
@@ -61,8 +50,6 @@ function setTTS(on) {
     speechSynthesis.cancel();
   }
 }
-
-// Set support mode
 function setSupport(on) {
   const supportToggle = $('supportToggle');
   if (supportToggle) supportToggle.classList.toggle('active', on);
@@ -78,15 +65,12 @@ function setSupport(on) {
       : "Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your path?";
   }
 }
-
-// Set virtual human mode
 function setVH(on) {
   const vhToggle = $('vhToggle');
   if (vhToggle) vhToggle.classList.toggle('active', on);
   const mVhToggle = $('m_vhToggle');
   if (mVhToggle) mVhToggle.classList.toggle('active', on);
   state.vh = on;
-
   const textChat = $('textChat');
   const vhStage = $('vhStage');
   const vhAvatar = $('vhAvatar');
@@ -105,7 +89,6 @@ function setVH(on) {
     if (vhBadge) vhBadge.style.display = 'none';
   }
 }
-
 function goDashboard() {
   if (state.auth) {
     window.location.href = 'dashboard.html';
@@ -116,15 +99,48 @@ function goDashboard() {
     }
   }
 }
-
 function openAssessment() {
   const assessmentModal = $('assessmentModal');
   if (assessmentModal && typeof assessmentModal.showModal === 'function') {
     assessmentModal.showModal();
   }
 }
+const TRACKS = [
+  {k:'fullstack', name:'Software Development (Full-stack)', blurb:'Front-end + back-end foundations with project practice.'},
+  {k:'data', name:'Data Analytics', blurb:'Spreadsheets → SQL → dashboards for real insights.'},
+  {k:'uiux', name:'UI/UX Design', blurb:'Design thinking, wireframes, prototypes, usability.'},
+  {k:'marketing', name:'Digital Marketing', blurb:'SEO, content, ads, analytics for growth.'},
+  {k:'support', name:'Customer Support (Remote)', blurb:'Ticketing, empathy, SLAs, tooling.'},
+  {k:'va', name:'Virtual Assistance / Operations', blurb:'Scheduling, docs, communication, tooling.'},
+  {k:'cloud', name:'Cloud & DevOps (Intro)', blurb:'Cloud basics, CI/CD, containers overview.'},
+];
+function renderTracks() {
+  const tracksList = $('tracksList');
+  const trackDetail = $('trackDetail');
+  if (!tracksList || !trackDetail) return;
+  tracksList.innerHTML = '';
+  trackDetail.style.display = 'none';
+  TRACKS.forEach(t => {
+    const card = document.createElement('div');
+    card.className = 'track-card';
+    card.innerHTML = `<h4>${t.name}</h4><p>${t.blurb}</p>`;
+    card.addEventListener('click', () => {
+      trackDetail.style.display = 'block';
+      trackDetail.innerHTML = `
+        <h4 style="margin:0.25rem 0">${t.name}</h4>
+        <p style="color:var(--text-secondary);margin:0.5rem 0">${t.blurb}</p>
+        <button class="nav-btn primary" type="button" id="trackCta">See sample plan</button>
+      `;
+      $('trackCta').addEventListener('click', () => {
+        $('tracksModal').close();
+        openAssessment();
+      });
+    });
+    tracksList.appendChild(card);
+  });
+}
 
-// Rotating tips for insights
+// --- Rotating Tips ---
 const tips = [
   "Pro tip: Keep notes in your own words for better recall.",
   "Short, frequent study sessions are more effective than long cramming sessions.",
@@ -142,34 +158,27 @@ function rotateInsights(el) {
   }, 5000);
 }
 
-// --------- HANDLERS FOR BOOT-INCLUDES ---------
-// Language
+// --- BOOT-INCLUDES HANDLERS ---
 function handleLanguageChange(e) {
   state.lang = e.target.value;
   save('pmerit_lang', state.lang);
   addMessage('PMERIT AI', `Language changed to ${e.target.options[e.target.selectedIndex].text}. In a full implementation, the entire interface would be translated to your selected language.`);
 }
-// Read About
 function handleReadAbout() {
   addMessage('PMERIT AI', 'PMERIT is a platform for accessible, high-quality global education. You can explore our courses, certifications, and personalized career tracks, or chat with our AI for guidance.');
 }
-// Pricing
 function handlePricingClick() {
   addMessage('PMERIT AI', 'PMERIT offers flexible pricing plans to make education accessible to everyone. We have free courses available, as well as premium plans with additional features and personalized support.');
 }
-// Privacy
 function handlePrivacyClick() {
   addMessage('PMERIT AI', 'Our Privacy & Terms page provides detailed information about how we protect your data and our terms of service. We prioritize your privacy and transparency in all our educational services.');
 }
-// Contact
 function handleContactClick() {
   addMessage('PMERIT AI', 'You can contact our support team through this chat interface, or reach out via email at support@pmerit.com. We typically respond within 24 hours during business days.');
 }
-// Partnerships
 function handlePartnershipsClick() {
   addMessage('PMERIT AI', 'PMERIT partners with leading educational institutions and industry organizations to provide comprehensive learning opportunities. Contact us to learn about partnership opportunities.');
 }
-// Mobile settings accordion
 function handleMobileSettings() {
   const settingsBox = $('settingsBox');
   if (settingsBox) {
@@ -178,68 +187,52 @@ function handleMobileSettings() {
   }
 }
 
-// --------- SETTINGS COLLAPSIBLE/ACCORDION LOGIC ---------
+// --- Collapsible/Accordion Logic ---
 function setupSettingsCollapsible() {
   const settingsBox = $('settingsBox');
   if (!settingsBox) return;
   const settingsHead = settingsBox.querySelector('.head');
   const settingsBody = settingsBox.querySelector('.body');
   if (!settingsHead || !settingsBody) return;
-
-  // Always collapse on init
   settingsBody.style.display = 'none';
   settingsHead.querySelector('i.fas').className = 'fas fa-chevron-down';
-
   settingsHead.onclick = () => {
     const isOpen = settingsBody.style.display === 'block';
     settingsBody.style.display = isOpen ? 'none' : 'block';
     settingsHead.querySelector('i.fas').className = isOpen ? 'fas fa-chevron-down' : 'fas fa-sliders-h';
   };
 }
-
-// --------- MOBILE ACCORDION LOGIC ---------
 function setupMobileAccordions() {
-  // Optionally enhance for mobile (expand/collapse all, sync states, etc)
-  // If you want to auto-close other accordions when one opens, implement here
+  // Optionally: add auto-close logic or other enhancements
 }
 
-// Full initialization (after partials loaded)
+// --- Full Initialization (after partials load) ---
 function mainInitAfterPartials() {
   initState();
-
-  // Set defaults for language selector if present
   const langSel = $('lang');
   if (langSel) langSel.value = state.lang;
-
-  // Set dark/tts toggles
   if (state.dark) setDark(true);
   if (state.tts) setTTS(true);
-
   updateDashboardVisual();
-
-  // Set up settings collapsible and mobile accordions
   setupSettingsCollapsible();
   setupMobileAccordions();
-
-  // Insights tips
   rotateInsights($('insights'));
   rotateInsights($('m_insights'));
 }
-
-// Ensure mainInitAfterPartials runs after DOM and partials loaded
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', mainInitAfterPartials);
 } else {
   mainInitAfterPartials();
 }
 
-// Expose handlers for boot-includes.js
+// --- Export all handlers to window for boot-includes.js ---
 window.setVH = setVH;
 window.setSupport = setSupport;
 window.setDark = setDark;
 window.setTTS = setTTS;
 window.goDashboard = goDashboard;
 window.openAssessment = openAssessment;
+window.renderTracks = renderTracks;
 window.handleLanguageChange = handleLanguageChange;
 window.handleReadAbout = handleReadAbout;
 window.handlePrivacyClick = handlePrivacyClick;
