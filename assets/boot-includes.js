@@ -4,7 +4,7 @@ PMERIT AI PLATFORM: DYNAMIC PARTIAL LOADER NARRATIVE
 This file provides the bootstrapping logic for loading shared partials (header, nav, footer) into each page at runtime.
 
 Function:
-- Dynamically fetches and injects partial HTML content into designated containers (#header-container, #nav-container, #footer-container).
+- Dynamically fetches and injects partial HTML content into designated containers (#headerContainer, #navContainer, #footerContainer).
 - Ensures that shared UI elements are consistent and centrally managed.
 - Initializes page-level scripts after partials are loaded.
 
@@ -27,27 +27,21 @@ Result:
 */
 
 // boot-includes.js
-fetch('/partials/header.html')
-  .then(res => res.text())
-  .then(html => document.getElementById('headerContainer').innerHTML = html);
 
-fetch('/partials/body.html')
-  .then(res => res.text())
-  .then(html => document.getElementById('bodyContainer').innerHTML = html);
+function loadPartial(containerId, partialPath, fallback = '') {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  fetch(partialPath)
+    .then(res => {
+      if (!res.ok) throw new Error('Failed to load: ' + partialPath);
+      return res.text();
+    })
+    .then(html => { container.innerHTML = html; })
+    .catch(() => { container.innerHTML = fallback; });
+}
 
-fetch('/partials/footer.html')
-  .then(res => res.text())
-  .then(html => document.getElementById('footerContainer').innerHTML = html);
 document.addEventListener("DOMContentLoaded", () => {
-  fetch('/partials/header.html')
-    .then(res => res.text())
-    .then(html => document.getElementById('headerContainer').innerHTML = html);
-
-  fetch('/partials/body.html')
-    .then(res => res.text())
-    .then(html => document.getElementById('bodyContainer').innerHTML = html);
-
-  fetch('/partials/footer.html')
-    .then(res => res.text())
-    .then(html => document.getElementById('footerContainer').innerHTML = html);
+  loadPartial('headerContainer', '/partials/header.html', '<div>Header unavailable</div>');
+  loadPartial('navContainer', '/partials/nav.html', '<nav>Navigation unavailable</nav>');
+  loadPartial('footerContainer', '/partials/footer.html', '<div>Footer unavailable</div>');
 });
