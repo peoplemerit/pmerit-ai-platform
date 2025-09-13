@@ -28,20 +28,23 @@ Result:
 
 // boot-includes.js
 
-function loadPartial(containerId, partialPath, fallback = '') {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-  fetch(partialPath)
-    .then(res => {
-      if (!res.ok) throw new Error('Failed to load: ' + partialPath);
-      return res.text();
-    })
-    .then(html => { container.innerHTML = html; })
-    .catch(() => { container.innerHTML = fallback; });
-}
+// Load header
+fetch('/partials/header.html')
+  .then(res => res.text())
+  .then(html => {
+    document.getElementById('headerContainer').innerHTML = html;
+  });
 
-document.addEventListener("DOMContentLoaded", () => {
-  loadPartial('headerContainer', '/partials/header.html', '<div>Header unavailable</div>');
-  loadPartial('navContainer', '/partials/nav.html', '<nav>Navigation unavailable</nav>');
-  loadPartial('footerContainer', '/partials/footer.html', '<div>Footer unavailable</div>');
-});
+// Load body
+fetch('/partials/body.html')
+  .then(res => res.text())
+  .then(html => {
+    document.getElementById('bodyContainer').innerHTML = html;
+  });
+
+// Load footer
+fetch('/partials/footer.html')
+  .then(res => res.text())
+  .then(html => {
+    document.getElementById('footerContainer').innerHTML = html;
+  });
