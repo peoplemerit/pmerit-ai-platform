@@ -46,52 +46,32 @@ RESULT:
 
 :root {
   /* 🎯 Brand Colors */
-  --global: #2563EB;        /* Primary blue */
-  --local: #16A34A;         /* Local green */
-  --accent: #7C3AED;        /* Purple accent */
-
-  /* 🎨 Backgrounds & Surfaces */
-  --bg: #FFFFFF;            /* Main background */
-  --bg2: #F8FAFC;           /* Secondary background */
-  --card: #FFFFFF;          /* Card background */
-
-  /* 🖋️ Text & Typography */
-  --ink: #1E293B;           /* Primary text */
-  --muted: #64748B;         /* Muted text */
-  --text-primary: var(--ink); /* Alias for clarity */
-
-  /* 📐 Borders & Shadows */
-  --border: #E2E8F0;        /* Border color */
-  --shadow: 0 4px 6px -1px rgba(0,0,0,.08), 0 2px 4px -1px rgba(0,0,0,.06);
-
-  /* 🧭 Layout Dimensions */
-  --header-h: 70px;
-  --footer-h: 50px;
-
-  /* 🎬 Transitions */
-  --trans: all 0.23s cubic-bezier(0.4, 0, 0.2, 1);
-
-  /* 🧠 Button Styles */
-  --btn-bg: var(--global);
-  --btn-text: #FFFFFF;
-  --btn-border: var(--global);
-  --btn-hover-bg: #1D4ED8; /* Slightly darker blue */
-  --btn-muted-bg: var(--muted);
-  --btn-muted-text: #FFFFFF;
-
-  /* 🧩 Ghost Button */
-  --ghost-border: var(--border);
-  --ghost-text: var(--muted);
-  --ghost-hover: var(--global);
+  --primary: #2563EB;       /* Primary blue */
+  --primary-dark: #1D4ED8;
+  --accent: #7E22CE;        /* Accent purple */
+  --success: #059669;       /* Success green */
+  --text-primary: #1F2937;  /* Almost black */
+  --text-secondary: #6B7280;/* Gray text */
+  --text-inverse: #F9FAFB;  /* Light text for dark backgrounds */
+  --bg-primary: #FFFFFF;    /* White background */
+  --bg-secondary: #F3F4F6;  /* Light gray background */
+  --bg-dark: #111827;       /* Dark background */
+  --card-bg: #FFFFFF;       /* Card background */
+  --border-color: #E5E7EB;  /* Border color */
+  --header-height: 70px;
+  --footer-height: 60px;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --transition: all 0.2s ease-in-out;
 }
 
-/* Dark Mode Overrides */
 .dark {
-  --bg: #0F172A;
-  --bg2: #1E293B;
-  --card: #1F2937;
-  --ink: #E5E7EB;
-  --muted: #94A3B8;
-  --border: #334155;
-  --shadow: 0 4px 14px rgba(0,0,0,.39);
+  --text-primary: #F9FAFB;
+  --text-secondary: #D1D5DB;
+  --bg-primary: #111827;
+  --bg-secondary: #1F2937;
+  --card-bg: #1F2937;
+  --border-color: #374151;
+  --shadow: 0 8px 28px rgba(0,0,0,.45);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
 }
