@@ -1,1 +1,41 @@
+/* PMERIT Brand Styles */
+.pmerit-brand {
+  --brand-primary: #2563EB;
+  --brand-accent: #7E22CE;
+  --brand-success: #059669;
+}
 
+.logo {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.brand-gradient {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.pmerit-card {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.06), rgba(126, 34, 206, 0.06));
+  border: 1px solid rgba(37, 99, 235, 0.18);
+}
+
+.pmerit-shadow {
+  box-shadow: 0 8px 28px rgba(37, 99, 235, 0.15);
+}
+
+/* Educational Theme Colors */
+.education-primary {
+  color: var(--primary);
+}
+
+.education-secondary {
+  color: var(--accent);
+}
+
+.success-accent {
+  color: var(--success);
+}
