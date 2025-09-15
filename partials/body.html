@@ -1,1 +1,216 @@
+<div class="estate">
+  <!-- Left Pane -->
+  <aside id="left" aria-label="Quick actions sidebar">
+    <section>
+      <div class="pane-title">Quick Actions</div>
 
+      <button class="toggle" id="vhToggle">
+        <span><i class="fas fa-user-astronaut icon"></i> Virtual Human Mode</span>
+        <span class="switch" aria-hidden="true"></span>
+      </button>
+
+      <button class="action" id="careerPaths">
+        <span><i class="fas fa-compass icon"></i> Career Track & Explore Paths</span>
+        <i class="fas fa-chevron-right" aria-hidden="true"></i>
+      </button>
+
+      <button class="toggle" id="supportToggle">
+        <span><i class="fas fa-headset icon"></i> Customer Service Mode</span>
+        <span class="switch" aria-hidden="true"></span>
+      </button>
+
+      <div class="collapsible" id="settingsBox">
+        <div class="head">
+          <strong><i class="fas fa-sliders-h"></i> Settings</strong>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="body">
+          <button class="toggle" id="darkToggle">
+            <span><i class="fas fa-moon icon"></i> Dark Mode</span>
+            <span class="switch" aria-hidden="true"></span>
+          </button>
+          <button class="toggle" id="ttsToggle">
+            <span><i class="fas fa-volume-up icon"></i> Text-to-Speech</span>
+            <span class="switch" aria-hidden="true"></span>
+          </button>
+          <button class="action" id="voicesBtn">
+            <span><i class="fas fa-headphones icon"></i> Preview Voices</span>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Single Dashboard button -->
+      <button class="dashboard guest" id="dashBtn">
+        <i class="fas fa-gauge-high"></i> Dashboard
+      </button>
+
+      <div class="avatar" id="vhAvatar" title="Virtual Human">
+        <i class="fas fa-user-circle" aria-hidden="true"></i>
+      </div>
+    </section>
+  </aside>
+
+  <!-- Center -->
+  <main>
+    <section class="panel" aria-label="Chat panel">
+      <div class="panel-head">
+        <div class="badges">
+          <span class="badge vh" id="vhBadge" style="display:none">
+            <i class="fas fa-user-astronaut"></i> Virtual Human
+          </span>
+          <span class="badge support" id="supportBadge" style="display:none">
+            <i class="fas fa-headset"></i> Support Assistant
+          </span>
+        </div>
+      </div>
+
+      <div id="textChat" role="region" aria-live="polite">
+        <div class="chat-body" id="chatBody">
+          <article class="bubble" id="welcomeMsg">
+            <div class="ava"><i class="fas fa-user-circle"></i></div>
+            <div>
+              <h3>PMERIT AI:</h3>
+              <p id="welcomeCopy">Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you today?</p>
+            </div>
+          </article>
+        </div>
+        <div class="chat-input">
+          <textarea id="chatInput" maxlength="1000" placeholder="Ask about courses, learning paths, or your goals..." aria-label="Message"></textarea>
+          <div class="input-bar">
+            <span class="count" id="count">0/1000</span>
+            <div class="input-actions">
+              <button class="nav-btn" id="vhQuick">
+                <i class="fas fa-user-astronaut"></i> VH Mode
+              </button>
+              <button class="nav-btn" id="readAbout">
+                <i class="fas fa-book"></i> Read About
+              </button>
+              <span class="footer-status">
+                <i class="fas fa-circle-check"></i> Connected to Educational Services
+              </span>
+            </div>
+            <button class="send" id="sendBtn">Send <i class="fas fa-paper-plane"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Virtual Human stage -->
+      <div id="vhStage" role="region" aria-live="polite">
+        <div class="stage">
+          <div class="human-frame">
+            <div class="human-face"><i class="fas fa-user-circle"></i></div>
+          </div>
+        </div>
+        <div class="captions" id="captions">Virtual Human is speaking…</div>
+      </div>
+    </section>
+
+    <!-- Mobile accordions -->
+    <div id="mobileAccordions" aria-label="Mobile sections">
+      <details class="mobile-accordion">
+        <summary>📱 Quick Actions — Virtual Human toggle, Career Paths, Support Mode</summary>
+        <div class="mobile-accordion-content">
+          <div class="mobile-grid">
+            <button class="mobile-card" id="m_vhToggle">
+              <i class="fas fa-user-astronaut"></i>
+              <span>Virtual Human</span>
+              <div class="switch"></div>
+            </button>
+            <button class="mobile-card" id="m_careerPaths">
+              <i class="fas fa-compass"></i>
+              <span>Career Paths</span>
+            </button>
+            <button class="mobile-card" id="m_supportToggle">
+              <i class="fas fa-headset"></i>
+              <span>Support Mode</span>
+              <div class="switch"></div>
+            </button>
+            <button class="mobile-card" id="m_dashboard">
+              <i class="fas fa-gauge-high"></i>
+              <span>Dashboard</span>
+            </button>
+          </div>
+        </div>
+      </details>
+
+      <details class="mobile-accordion">
+        <summary>⚙️ Settings — Dark Mode toggle, Text-to-Speech, Voice Preview</summary>
+        <div class="mobile-accordion-content">
+          <div class="mobile-grid">
+            <button class="mobile-card" id="m_darkToggle">
+              <i class="fas fa-moon"></i>
+              <span>Dark Mode</span>
+              <div class="switch"></div>
+            </button>
+            <button class="mobile-card" id="m_ttsToggle">
+              <i class="fas fa-volume-up"></i>
+              <span>Text-to-Speech</span>
+              <div class="switch"></div>
+            </button>
+            <button class="mobile-card" id="m_voicesBtn">
+              <i class="fas fa-headphones"></i>
+              <span>Voice Preview</span>
+            </button>
+            <button class="mobile-card" id="m_settings">
+              <i class="fas fa-cog"></i>
+              <span>More Settings</span>
+            </button>
+          </div>
+        </div>
+      </details>
+
+      <details class="mobile-accordion">
+        <summary>🧠 Assessments — Begin Assessment, View Progress, Personalized Plan</summary>
+        <div class="mobile-accordion-content">
+          <div class="mobile-grid">
+            <button class="mobile-card" id="m_beginAssessment">
+              <i class="fas fa-play-circle"></i>
+              <span>Begin Assessment</span>
+            </button>
+            <button class="mobile-card" id="m_viewProgress">
+              <i class="fas fa-chart-line"></i>
+              <span>View Progress</span>
+            </button>
+            <button class="mobile-card" id="m_personalizedPlan">
+              <i class="fas fa-route"></i>
+              <span>Personalized Plan</span>
+            </button>
+            <button class="mobile-card" id="m_insights">
+              <i class="fas fa-lightbulb"></i>
+              <span>Learning Insights</span>
+            </button>
+          </div>
+        </div>
+      </details>
+    </div>
+  </main>
+
+  <!-- Right Pane -->
+  <aside id="right" aria-label="Support and discovery sidebar">
+    <div class="support-assistant">
+      <h4><i class="fas fa-headset"></i> Support Assistant</h4>
+    </div>
+
+    <div class="discover">
+      <h3>Discover Learning Paths</h3>
+      <div>
+        <h4>🎯 Recommended for You</h4>
+        <p>Based on your interests and goals</p>
+        <div class="insights">Explore personalized learning recommendations...</div>
+      </div>
+      
+      <div>
+        <h4>📈 Popular Courses</h4>
+        <p>What others are learning right now</p>
+        <div class="insights">Trending topics in technology and business...</div>
+      </div>
+      
+      <div>
+        <h4>🌟 Featured Programs</h4>
+        <p>Comprehensive learning experiences</p>
+        <div class="insights">Certificate programs and skill tracks...</div>
+      </div>
+    </div>
+  </aside>
+</div>
