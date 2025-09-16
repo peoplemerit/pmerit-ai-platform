@@ -1,4 +1,11 @@
+<!-- Mobile Hero Section -->
+<div class="mobile-hero">
+  <h2>Empowering Learning Through Innovation</h2>
+  <p>Accessible, high-quality education for global opportunities</p>
+</div>
+
 <div class="estate">
+  <!-- Left Pane -->
   <aside id="left" aria-label="Quick actions sidebar">
     <section>
       <div class="pane-title">Quick Actions</div>
@@ -39,135 +46,265 @@
         </div>
       </div>
 
+      <!-- Single Dashboard button -->
       <button class="dashboard guest" id="dashBtn">
         <i class="fas fa-gauge-high"></i> Dashboard
       </button>
 
-      <div class="avatar" id="vhAvatar" title="Virtual Human">
-        <i class="fas fa-user-circle" aria-hidden="true"></i>
+      <!-- Avatar -->
+      <div class="avatar" id="userAvatar">
+        <i class="fas fa-user"></i>
       </div>
     </section>
   </aside>
 
+  <!-- Mobile Accordions -->
+  <div id="mobileAccordions">
+    <details class="mobile-accordion">
+      <summary><i class="fas fa-bolt"></i> Quick Actions</summary>
+      <div class="mobile-accordion-content">
+        <div class="mobile-grid">
+          <div class="mobile-card" data-action="vh">
+            <i class="fas fa-user-astronaut"></i>
+            <span>Virtual Human</span>
+            <div class="switch" id="mobileVhSwitch"></div>
+          </div>
+          <div class="mobile-card" data-action="career">
+            <i class="fas fa-compass"></i>
+            <span>Career Track</span>
+          </div>
+          <div class="mobile-card" data-action="support">
+            <i class="fas fa-headset"></i>
+            <span>Support Mode</span>
+            <div class="switch" id="mobileSupportSwitch"></div>
+          </div>
+          <div class="mobile-card" data-action="dashboard">
+            <i class="fas fa-gauge-high"></i>
+            <span>Dashboard</span>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <details class="mobile-accordion">
+      <summary><i class="fas fa-sliders-h"></i> Settings</summary>
+      <div class="mobile-accordion-content">
+        <div class="mobile-grid">
+          <div class="mobile-card" data-action="dark">
+            <i class="fas fa-moon"></i>
+            <span>Dark Mode</span>
+            <div class="switch" id="mobileDarkSwitch"></div>
+          </div>
+          <div class="mobile-card" data-action="tts">
+            <i class="fas fa-volume-up"></i>
+            <span>Text-to-Speech</span>
+            <div class="switch" id="mobileTtsSwitch"></div>
+          </div>
+          <div class="mobile-card" data-action="voices">
+            <i class="fas fa-headphones"></i>
+            <span>Preview Voices</span>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- Main Chat Area -->
   <main>
-    <section class="panel" aria-label="Chat panel">
+    <div class="panel">
       <div class="panel-head">
         <div class="badges">
-          <span class="badge vh" id="vhBadge" style="display:none">
-            <i class="fas fa-user-astronaut"></i> Virtual Human
-          </span>
-          <span class="badge support" id="supportBadge" style="display:none">
-            <i class="fas fa-headset"></i> Support Assistant
-          </span>
+          <span class="badge"><i class="fas fa-robot"></i> AI Assistant</span>
+          <span class="badge support" id="supportBadge" style="display: none;"><i class="fas fa-headset"></i> Support Mode</span>
+          <span class="badge vh" id="vhBadge" style="display: none;"><i class="fas fa-user-astronaut"></i> Virtual Human</span>
         </div>
       </div>
 
-      <div id="textChat" role="region" aria-live="polite">
+      <!-- Text Chat Interface -->
+      <div id="textChat">
         <div class="chat-body" id="chatBody">
-          <article class="bubble" id="welcomeMsg">
-            <div class="ava"><i class="fas fa-user-circle"></i></div>
+          <div class="bubble">
+            <div class="ava">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
             <div>
-              <h3>PMERIT AI:</h3>
-              <p id="welcomeCopy">Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?</p>
+              <h3>PMERIT AI Assistant</h3>
+              <p>Welcome to PMERIT! I'm your AI learning companion, ready to help you explore educational opportunities and career paths. How can I assist you today?</p>
             </div>
-          </article>
+          </div>
         </div>
+
         <div class="chat-input">
-          <textarea id="chatInput" maxlength="1000" placeholder="Ask about courses, learning paths, or your goals..." aria-label="Message"></textarea>
+          <textarea placeholder="Ask me anything about education, careers, or learning opportunities..." id="userInput" rows="3"></textarea>
           <div class="input-bar">
-            <span class="count" id="count">0/1000</span>
+            <span class="count" id="charCount">0 / 2000</span>
             <div class="input-actions">
-              <button class="nav-btn" id="vhQuick">
-                <i class="fas fa-user-astronaut"></i> VH Mode
+              <button class="send" id="sendBtn">
+                <i class="fas fa-paper-plane"></i>
+                Send
               </button>
-              <button class="nav-btn" id="readAbout">
-                <i class="fas fa-book"></i> Read About
-              </button>
-              <span class="footer-status">
-                <i class="fas fa-circle-check"></i> Connected to Educational Services
-              </span>
             </div>
-            <button class="send" id="sendBtn">Send <i class="fas fa-paper-plane"></i></button>
+          </div>
+          <div class="footer-status">
+            <i class="fas fa-circle" style="color: #059669;"></i>
+            <span>AI Assistant Ready</span>
           </div>
         </div>
       </div>
 
-      <div id="vhStage" role="region" aria-live="polite">
+      <!-- Virtual Human Stage -->
+      <div id="vhStage">
         <div class="stage">
           <div class="human-frame">
-            <div class="human-face"><i class="fas fa-user-circle"></i></div>
-          </div>
-        </div>
-        <div class="captions" id="captions">Virtual Human is speaking…</div>
-      </div>
-    </section>
-
-    <div id="mobileAccordions" aria-label="Mobile sections">
-      <details class="mobile-accordion">
-        <summary><i class="fas fa-bolt"></i> Quick Actions - Tap to expand ▼</summary>
-        <div class="mobile-accordion-content">
-          <div class="mobile-grid">
-            <button class="mobile-card" id="m_vhToggle">
+            <div class="human-face">
               <i class="fas fa-user-astronaut"></i>
-              <span>Virtual Human</span>
-              <div class="switch"></div>
-            </button>
-            <button class="mobile-card" id="m_careerPaths">
-              <i class="fas fa-compass"></i>
-              <span>Career Paths</span>
-            </button>
-            <button class="mobile-card" id="m_supportToggle">
-              <i class="fas fa-headset"></i>
-              <span>Support Mode</span>
-              <div class="switch"></div>
-            </button>
-            <button class="mobile-card" id="m_settings">
-              <i class="fas fa-cog"></i>
-              <span>Settings</span>
-            </button>
-          </div>
-          <button class="dashboard guest nav-btn" id="m_dashBtn" style="margin-top:1rem;width:100%">
-            <i class="fas fa-gauge-high"></i> Dashboard
-          </button>
-        </div>
-      </details>
-
-      <details class="mobile-accordion">
-        <summary><i class="fas fa-graduation-cap"></i> Discover Your Path - Tap to expand ▼</summary>
-        <div class="mobile-accordion-content">
-          <div class="discover" style="margin:0">
-            <h4>Personalized learning plan</h4>
-            <p>Start a short flow that blends learning style, interests, and skills into a plan.</p>
-            <button class="nav-btn primary" id="m_beginAssessment">Begin Assessment</button>
-            <div class="insights" id="m_insights">Tip: Short, daily practice beats long, rare sessions.</div>
+            </div>
           </div>
         </div>
-      </details>
+        <div class="captions">
+          <p id="vhCaption">Virtual Human is ready to assist you...</p>
+        </div>
+      </div>
     </div>
   </main>
 
-  <aside id="right" aria-label="Support and discover sidebar">
-    <section>
-      <div class="support-assistant">
-        <h4><i class="fas fa-headset"></i> Support Assistant</h4>
-        <p style="color: var(--text-secondary); margin: 0.5rem 0;">Ask me about PMERIT</p>
-        <div style="display:flex;gap:.5rem;justify-content:center;margin-top:.75rem">
-          <button class="nav-btn" style="border-color:var(--accent)" id="vhShort">
-            <i class="fas fa-user-astronaut"></i> Virtual Human
-          </button>
-          <button class="nav-btn" style="border-color:var(--success)" id="supportShort">
-            <i class="fas fa-headset"></i> Support
-          </button>
+  <!-- Right Pane -->
+  <aside id="right" aria-label="Discovery and insights">
+    <div class="support-assistant" id="supportAssistant" style="display: none;">
+      <h4><i class="fas fa-headset"></i> Support Assistant Active</h4>
+      <p>I'm here to help with technical issues, account questions, and platform guidance.</p>
+    </div>
+
+    <div class="discover">
+      <h3>Discover</h3>
+      <div>
+        <h4>Featured Career Tracks</h4>
+        <p>Explore high-demand career paths with structured learning journeys.</p>
+
+        <div class="tracks-grid">
+          <div class="track-card" data-track="tech">
+            <h4>Technology & Software</h4>
+            <p>Web development, data science, AI/ML, and cybersecurity tracks.</p>
+          </div>
+          <div class="track-card" data-track="business">
+            <h4>Business & Entrepreneurship</h4>
+            <p>Digital marketing, project management, and startup essentials.</p>
+          </div>
+          <div class="track-card" data-track="creative">
+            <h4>Creative & Design</h4>
+            <p>Graphic design, UI/UX, content creation, and digital arts.</p>
+          </div>
+          <div class="track-card" data-track="health">
+            <h4>Healthcare & Wellness</h4>
+            <p>Public health, nutrition, mental health, and medical technology.</p>
+          </div>
+        </div>
+
+        <div class="insights">
+          Personalized recommendations will appear here based on your learning progress and interests.
         </div>
       </div>
-
-      <h3>Discover Your Path (AI)</h3>
-      <div class="discover">
-        <h4>Personalized learning plan</h4>
-        <p>Start a short flow that blends learning style, interests, and skills into a plan.</p>
-        <button class="nav-btn primary" id="beginAssessment">Begin Assessment</button>
-        <div class="insights" id="insights">Pro tip: Keep notes in your own words for better recall.</div>
-      </div>
-    </section>
+    </div>
   </aside>
 </div>
+
+<!-- Modals -->
+<dialog id="signInModal">
+  <form method="dialog">
+    <h3><i class="fas fa-sign-in-alt"></i> Sign In to PMERIT</h3>
+    <label>
+      <strong>Email or Username</strong>
+      <input type="text" required placeholder="Enter your email or username">
+    </label>
+    <label>
+      <strong>Password</strong>
+      <input type="password" required placeholder="Enter your password">
+    </label>
+    <div class="button-group">
+      <button type="button" class="nav-btn" onclick="this.closest('dialog').close()">Cancel</button>
+      <button type="submit" class="nav-btn primary">Sign In</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="careerModal">
+  <form method="dialog">
+    <h3><i class="fas fa-compass"></i> Career Track Explorer</h3>
+    <p>Choose a career track to explore structured learning paths and opportunities:</p>
+    
+    <div class="tracks-grid">
+      <div class="track-card" data-track="tech">
+        <h4>Technology & Software</h4>
+        <p>Full-stack development, data science, AI/ML, cybersecurity, and cloud computing.</p>
+      </div>
+      <div class="track-card" data-track="business">
+        <h4>Business & Entrepreneurship</h4>
+        <p>Digital marketing, project management, business analysis, and startup essentials.</p>
+      </div>
+      <div class="track-card" data-track="creative">
+        <h4>Creative & Design</h4>
+        <p>Graphic design, UI/UX, content creation, video editing, and digital arts.</p>
+      </div>
+      <div class="track-card" data-track="health">
+        <h4>Healthcare & Wellness</h4>
+        <p>Public health, nutrition, mental health counseling, and medical technology.</p>
+      </div>
+      <div class="track-card" data-track="education">
+        <h4>Education & Training</h4>
+        <p>Online teaching, curriculum development, educational technology, and training design.</p>
+      </div>
+      <div class="track-card" data-track="trades">
+        <h4>Skilled Trades & Technical</h4>
+        <p>Renewable energy, automotive technology, construction management, and technical skills.</p>
+      </div>
+    </div>
+    
+    <div class="button-group">
+      <button type="button" class="nav-btn" onclick="this.closest('dialog').close()">Close</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="voicesModal">
+  <form method="dialog">
+    <h3><i class="fas fa-headphones"></i> Voice Preview</h3>
+    <p>Choose and preview different AI voices:</p>
+    
+    <div style="display: grid; gap: 1rem; margin: 1rem 0;">
+      <label style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 0.5rem; cursor: pointer;">
+        <input type="radio" name="voice" value="sarah" checked>
+        <div>
+          <strong>Sarah</strong> - Professional, clear female voice
+          <button type="button" class="nav-btn" style="margin-left: 0.5rem; padding: 0.25rem 0.5rem;" onclick="playVoicePreview('sarah')">
+            <i class="fas fa-play"></i>
+          </button>
+        </div>
+      </label>
+      
+      <label style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 0.5rem; cursor: pointer;">
+        <input type="radio" name="voice" value="david">
+        <div>
+          <strong>David</strong> - Warm, engaging male voice
+          <button type="button" class="nav-btn" style="margin-left: 0.5rem; padding: 0.25rem 0.5rem;" onclick="playVoicePreview('david')">
+            <i class="fas fa-play"></i>
+          </button>
+        </div>
+      </label>
+      
+      <label style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 0.5rem; cursor: pointer;">
+        <input type="radio" name="voice" value="alex">
+        <div>
+          <strong>Alex</strong> - Neutral, versatile voice
+          <button type="button" class="nav-btn" style="margin-left: 0.5rem; padding: 0.25rem 0.5rem;" onclick="playVoicePreview('alex')">
+            <i class="fas fa-play"></i>
+          </button>
+        </div>
+      </label>
+    </div>
+    
+    <div class="button-group">
+      <button type="button" class="nav-btn" onclick="this.closest('dialog').close()">Cancel</button>
+      <button type="submit" class="nav-btn primary">Save Selection</button>
+    </div>
+  </form>
+</dialog>
