@@ -1,10 +1,3 @@
-<!-- 
-PMERIT HOMEPAGE BLUEPRINT 
-This file contains the original single-file implementation before modularization.
-Use this as a reference for design consistency across all pages.
-DO NOT USE THIS FILE IN PRODUCTION - it's for reference only.
--->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -68,7 +61,6 @@ DO NOT USE THIS FILE IN PRODUCTION - it's for reference only.
     body {
       display: flex;
       flex-direction: column;
-      overflow: hidden; /* Non-scrollable like Google homepage */
     }
 
     /* Header Styles */
@@ -283,6 +275,9 @@ DO NOT USE THIS FILE IN PRODUCTION - it's for reference only.
     main {
       background-color: var(--bg-primary);
       overflow: hidden;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
     }
 
     .panel {
@@ -295,6 +290,7 @@ DO NOT USE THIS FILE IN PRODUCTION - it's for reference only.
       margin: 1rem;
       box-shadow: var(--shadow-lg);
       overflow: hidden;
+      flex: 1;
     }
 
     .panel-head {
@@ -624,7 +620,7 @@ DO NOT USE THIS FILE IN PRODUCTION - it's for reference only.
     @media (max-width: 1100px) {
       .estate {
         grid-template-columns: 1fr;
-        height: calc(100vh - var(--header-height) - var(--footer-height));
+        height: auto;
         overflow-y: auto;
       }
       
@@ -643,15 +639,23 @@ DO NOT USE THIS FILE IN PRODUCTION - it's for reference only.
       .logo {
         width: 100%;
         justify-content: center;
+        font-size: 1.3rem;
       }
       
-      main {
-        min-height: calc(100vh - var(--header-height) - var(--footer-height) - 2rem);
+      nav {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      
+      .panel {
+        margin: 0.75rem;
+        border-radius: 8px;
       }
       
       #mobileAccordions {
         display: block;
-        margin: 0 1rem 1rem;
+        margin: 0 0.75rem 1rem;
       }
 
       .mobile-accordion {
@@ -672,6 +676,9 @@ DO NOT USE THIS FILE IN PRODUCTION - it's for reference only.
         border-bottom: 1px solid var(--border-color);
         list-style: none;
         transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
       }
 
       .mobile-accordion summary::-webkit-details-marker {
@@ -680,6 +687,10 @@ DO NOT USE THIS FILE IN PRODUCTION - it's for reference only.
 
       .mobile-accordion summary:hover {
         background-color: var(--border-color);
+      }
+
+      .mobile-accordion[open] summary {
+        border-bottom: 1px solid var(--border-color);
       }
 
       .mobile-accordion-content {
@@ -712,6 +723,10 @@ DO NOT USE THIS FILE IN PRODUCTION - it's for reference only.
         background-color: rgba(37, 99, 235, 0.1);
         transform: translateY(-1px);
       }
+
+      .mobile-card .switch {
+        margin-top: 0.5rem;
+      }
       
       footer {
         flex-direction: column;
@@ -719,6 +734,7 @@ DO NOT USE THIS FILE IN PRODUCTION - it's for reference only.
         height: auto;
         min-height: var(--footer-height);
         padding: 1rem;
+        text-align: center;
       }
       
       .footer-links {
@@ -734,10 +750,75 @@ DO NOT USE THIS FILE IN PRODUCTION - it's for reference only.
       .footer-links {
         order: 1;
       }
+
+      /* Chat input adjustments */
+      .input-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .input-actions {
+        order: 1;
+        justify-content: center;
+        margin-bottom: 0.5rem;
+      }
+
+      .send {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .count {
+        order: 2;
+        text-align: center;
+        margin: 0.5rem 0;
+      }
+
+      /* Hero section for mobile */
+      .mobile-hero {
+        text-align: center;
+        padding: 1.5rem 1rem;
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        color: white;
+        border-radius: 0 0 12px 12px;
+        margin-bottom: 1rem;
+      }
+
+      .mobile-hero h2 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .mobile-hero p {
+        opacity: 0.9;
+        font-size: 0.95rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .mobile-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-btn, select {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
+      }
+
+      .bubble {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+      }
+
+      .ava {
+        align-self: center;
+      }
     }
 
     @media (min-width: 1101px) {
-      #mobileAccordions {
+      #mobileAccordions, .mobile-hero {
         display: none;
       }
     }
@@ -841,6 +922,11 @@ DO NOT USE THIS FILE IN PRODUCTION - it's for reference only.
       font-size: 0.9rem;
       line-height: 1.4;
     }
+
+    /* Mobile Hero Section */
+    .mobile-hero {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -854,11 +940,17 @@ DO NOT USE THIS FILE IN PRODUCTION - it's for reference only.
         <option value="ig">Igbo</option>
         <option value="ha">Hausa</option>
       </select>
-      <button class="nav-btn" id="pricingBtn">Pricing</button>
+      <button class="nav-btn" id="pricingBtn">Donate</button>
       <button class="nav-btn" id="signInBtn">Sign In</button>
       <button class="nav-btn primary" id="startBtn">Start Learning</button>
     </nav>
   </header>
+
+  <!-- Mobile Hero Section -->
+  <div class="mobile-hero">
+    <h2>Empowering Learning Through Innovation</h2>
+    <p>Accessible, high-quality education for global opportunities</p>
+  </div>
 
   <div class="estate">
     <!-- Left Pane -->
@@ -1050,6 +1142,7 @@ DO NOT USE THIS FILE IN PRODUCTION - it's for reference only.
       <button class="nav-btn" id="contactBtn">Contact</button>
       <button class="nav-btn" id="partnershipsBtn">Partnerships</button>
       <button class="nav-btn" id="supportBtn">Support</button>
+      <button class="nav-btn" id="aboutBtn">About PMERIT</button>
     </div>
   </footer>
 
@@ -1250,6 +1343,8 @@ DO NOT USE THIS FILE IN PRODUCTION - it's for reference only.
     // Set dark mode
     function setDark(on) {
       darkToggle.classList.toggle('active', on);
+      const mDarkToggle = document.getElementById('m_darkToggle');
+      if (mDarkToggle) mDarkToggle.classList.toggle('active', on);
       state.dark = on;
       body.classList.toggle('dark', on);
       save('pmerit_dark', on);
@@ -1258,6 +1353,8 @@ DO NOT USE THIS FILE IN PRODUCTION - it's for reference only.
     // Set TTS
     function setTTS(on) {
       ttsToggle.classList.toggle('active', on);
+      const mTtsToggle = document.getElementById('m_ttsToggle');
+      if (mTtsToggle) mTtsToggle.classList.toggle('active', on);
       state.tts = on;
       save('pmerit_tts', on);
       if (!on && 'speechSynthesis' in window) {
@@ -1437,12 +1534,18 @@ DO NOT USE THIS FILE IN PRODUCTION - it's for reference only.
       const mVhToggle = document.getElementById('m_vhToggle');
       const mSupportToggle = document.getElementById('m_supportToggle');
       const mSettings = document.getElementById('m_settings');
+      const mDarkToggle = document.getElementById('m_darkToggle');
+      const mTtsToggle = document.getElementById('m_ttsToggle');
+      const mVoicesBtn = document.getElementById('m_voicesBtn');
       
       if (mVhToggle) mVhToggle.addEventListener('click', () => setVH(!state.vh));
       if (mSupportToggle) mSupportToggle.addEventListener('click', () => setSupport(!state.support));
+      if (mDarkToggle) mDarkToggle.addEventListener('click', () => setDark(!state.dark));
+      if (mTtsToggle) mTtsToggle.addEventListener('click', () => setTTS(!state.tts));
       if (mSettings) mSettings.addEventListener('click', () => {
-        alert(`Settings: Dark Mode: ${state.dark ? 'On' : 'Off'}, TTS: ${state.tts ? 'On' : 'Off'}`);
+        settingsBody.style.display = settingsBody.style.display === 'block' ? 'none' : 'block';
       });
+      if (mVoicesBtn) mVoicesBtn.addEventListener('click', () => voicesModal.showModal());
       
       // Settings collapsible
       settingsHead.addEventListener('click', () => {
@@ -1569,6 +1672,10 @@ DO NOT USE THIS FILE IN PRODUCTION - it's for reference only.
       document.getElementById('supportBtn').addEventListener('click', () => {
         setSupport(true);
         addMessage('PMERIT AI', 'Support mode activated! I\'m now ready to help you with any technical issues, account questions, or general platform inquiries. How can I assist you?');
+      });
+      
+      document.getElementById('aboutBtn').addEventListener('click', () => {
+        addMessage('PMERIT AI', 'PMERIT is dedicated to providing accessible, high-quality education to learners worldwide. Our mission is to bridge educational gaps and create opportunities for personal and professional growth through innovative learning solutions.');
       });
       
       // Initialize rotating tips
