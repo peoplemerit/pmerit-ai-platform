@@ -1,24 +1,26 @@
+<!-- Mobile Hero Section -->
+<div class="mobile-hero">
+  <h2>Empowering Learning Through Innovation</h2>
+  <p>Accessible, high-quality education for global opportunities</p>
+</div>
+
 <div class="estate">
-  <!-- Left Pane -->
+  <!-- Left Pane (Desktop Only) -->
   <aside id="left" aria-label="Quick actions sidebar">
     <section>
       <div class="pane-title">Quick Actions</div>
-
       <button class="toggle" id="vhToggle">
         <span><i class="fas fa-user-astronaut icon"></i> Virtual Human Mode</span>
         <span class="switch" aria-hidden="true"></span>
       </button>
-
       <button class="action" id="careerPaths">
         <span><i class="fas fa-compass icon"></i> Career Track & Explore Paths</span>
         <i class="fas fa-chevron-right" aria-hidden="true"></i>
       </button>
-
       <button class="toggle" id="supportToggle">
         <span><i class="fas fa-headset icon"></i> Customer Service Mode</span>
         <span class="switch" aria-hidden="true"></span>
       </button>
-
       <div class="collapsible" id="settingsBox">
         <div class="head">
           <strong><i class="fas fa-sliders-h"></i> Settings</strong>
@@ -39,178 +41,124 @@
           </button>
         </div>
       </div>
-
-      <!-- Single Dashboard button -->
       <button class="dashboard guest" id="dashBtn">
         <i class="fas fa-gauge-high"></i> Dashboard
       </button>
-
-      <div class="avatar" id="vhAvatar" title="Virtual Human">
-        <i class="fas fa-user-circle" aria-hidden="true"></i>
-      </div>
     </section>
   </aside>
-
-  <!-- Center -->
+  
+  <!-- Main Panel -->
   <main>
-    <section class="panel" aria-label="Chat panel">
+    <div class="panel">
       <div class="panel-head">
         <div class="badges">
-          <span class="badge vh" id="vhBadge" style="display:none">
-            <i class="fas fa-user-astronaut"></i> Virtual Human
-          </span>
-          <span class="badge support" id="supportBadge" style="display:none">
-            <i class="fas fa-headset"></i> Support Assistant
-          </span>
+          <span class="badge support"><i class="fas fa-headset"></i> Support Mode</span>
+          <span class="badge vh"><i class="fas fa-user-astronaut"></i> Virtual Human</span>
         </div>
       </div>
-
-      <div id="textChat" role="region" aria-live="polite">
-        <div class="chat-body" id="chatBody">
-          <article class="bubble" id="welcomeMsg">
-            <div class="ava"><i class="fas fa-user-circle"></i></div>
+      <div id="textChat">
+        <div class="chat-body" aria-live="polite">
+          <div class="bubble">
+            <span class="ava"><i class="fas fa-robot"></i></span>
             <div>
-              <h3>PMERIT AI:</h3>
-              <p id="welcomeCopy">Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you today?</p>
+              <h3>Welcome to PMERIT!</h3>
+              <p>How can we help you learn or grow your career today?</p>
             </div>
-          </article>
+          </div>
         </div>
         <div class="chat-input">
-          <textarea id="chatInput" maxlength="1000" placeholder="Ask about courses, learning paths, or your goals..." aria-label="Message"></textarea>
+          <textarea aria-label="Type your message" placeholder="Ask anything or say 'help'..."></textarea>
           <div class="input-bar">
-            <span class="count" id="count">0/1000</span>
             <div class="input-actions">
-              <button class="nav-btn" id="vhQuick">
-                <i class="fas fa-user-astronaut"></i> VH Mode
-              </button>
-              <button class="nav-btn" id="readAbout">
-                <i class="fas fa-book"></i> Read About
-              </button>
-              <span class="footer-status">
-                <i class="fas fa-circle-check"></i> Connected to Educational Services
-              </span>
+              <button class="nav-btn" aria-label="Attach file"><i class="fas fa-paperclip"></i></button>
+              <button class="nav-btn" aria-label="Record voice"><i class="fas fa-microphone"></i></button>
             </div>
-            <button class="send" id="sendBtn">Send <i class="fas fa-paper-plane"></i></button>
+            <span class="count" aria-live="polite">0/500</span>
+            <button class="send" id="sendBtn"><i class="fas fa-arrow-up"></i> Send</button>
           </div>
         </div>
       </div>
-
-      <!-- Virtual Human stage -->
-      <div id="vhStage" role="region" aria-live="polite">
+      <div id="vhStage" style="display:none;">
         <div class="stage">
           <div class="human-frame">
-            <div class="human-face"><i class="fas fa-user-circle"></i></div>
+            <div class="human-face">🤖</div>
           </div>
         </div>
-        <div class="captions" id="captions">Virtual Human is speaking…</div>
+        <div class="captions" aria-live="polite"></div>
       </div>
-    </section>
-
-    <!-- Mobile accordions -->
-    <div id="mobileAccordions" aria-label="Mobile sections">
-      <details class="mobile-accordion">
-        <summary>📱 Quick Actions — Virtual Human toggle, Career Paths, Support Mode</summary>
-        <div class="mobile-accordion-content">
-          <div class="mobile-grid">
-            <button class="mobile-card" id="m_vhToggle">
-              <i class="fas fa-user-astronaut"></i>
-              <span>Virtual Human</span>
-              <div class="switch"></div>
-            </button>
-            <button class="mobile-card" id="m_careerPaths">
-              <i class="fas fa-compass"></i>
-              <span>Career Paths</span>
-            </button>
-            <button class="mobile-card" id="m_supportToggle">
-              <i class="fas fa-headset"></i>
-              <span>Support Mode</span>
-              <div class="switch"></div>
-            </button>
-            <button class="mobile-card" id="m_dashboard">
-              <i class="fas fa-gauge-high"></i>
-              <span>Dashboard</span>
-            </button>
-          </div>
-        </div>
-      </details>
-
-      <details class="mobile-accordion">
-        <summary>⚙️ Settings — Dark Mode toggle, Text-to-Speech, Voice Preview</summary>
-        <div class="mobile-accordion-content">
-          <div class="mobile-grid">
-            <button class="mobile-card" id="m_darkToggle">
-              <i class="fas fa-moon"></i>
-              <span>Dark Mode</span>
-              <div class="switch"></div>
-            </button>
-            <button class="mobile-card" id="m_ttsToggle">
-              <i class="fas fa-volume-up"></i>
-              <span>Text-to-Speech</span>
-              <div class="switch"></div>
-            </button>
-            <button class="mobile-card" id="m_voicesBtn">
-              <i class="fas fa-headphones"></i>
-              <span>Voice Preview</span>
-            </button>
-            <button class="mobile-card" id="m_settings">
-              <i class="fas fa-cog"></i>
-              <span>More Settings</span>
-            </button>
-          </div>
-        </div>
-      </details>
-
-      <details class="mobile-accordion">
-        <summary>🧠 Assessments — Begin Assessment, View Progress, Personalized Plan</summary>
-        <div class="mobile-accordion-content">
-          <div class="mobile-grid">
-            <button class="mobile-card" id="m_beginAssessment">
-              <i class="fas fa-play-circle"></i>
-              <span>Begin Assessment</span>
-            </button>
-            <button class="mobile-card" id="m_viewProgress">
-              <i class="fas fa-chart-line"></i>
-              <span>View Progress</span>
-            </button>
-            <button class="mobile-card" id="m_personalizedPlan">
-              <i class="fas fa-route"></i>
-              <span>Personalized Plan</span>
-            </button>
-            <button class="mobile-card" id="m_insights">
-              <i class="fas fa-lightbulb"></i>
-              <span>Learning Insights</span>
-            </button>
-          </div>
-        </div>
-      </details>
     </div>
   </main>
-
-  <!-- Right Pane -->
-  <aside id="right" aria-label="Support and discovery sidebar">
+  
+  <!-- Right Pane (Desktop Only) -->
+  <aside id="right">
     <div class="support-assistant">
-      <h4><i class="fas fa-headset"></i> Support Assistant</h4>
+      <h4><i class="fas fa-circle-question"></i> Need help?</h4>
+      <p>Ask the Virtual Human or explore support options in the Quick Actions panel.</p>
     </div>
-
+    <h3>Discover</h3>
     <div class="discover">
-      <h3>Discover Learning Paths</h3>
-      <div>
-        <h4>🎯 Recommended for You</h4>
-        <p>Based on your interests and goals</p>
-        <div class="insights">Explore personalized learning recommendations...</div>
-      </div>
-      
-      <div>
-        <h4>📈 Popular Courses</h4>
-        <p>What others are learning right now</p>
-        <div class="insights">Trending topics in technology and business...</div>
-      </div>
-      
-      <div>
-        <h4>🌟 Featured Programs</h4>
-        <p>Comprehensive learning experiences</p>
-        <div class="insights">Certificate programs and skill tracks...</div>
-      </div>
+      <h4>Career Paths</h4>
+      <p>Explore personalized tracks and unlock new opportunities.</p>
+      <div class="insights">Top trending fields: Data Science, AI, Cloud Engineering</div>
     </div>
   </aside>
 </div>
+
+<!-- Mobile Accordions -->
+<section id="mobileAccordions" aria-label="Mobile Quick Actions">
+  <details class="mobile-accordion" id="accordion-quick">
+    <summary><span>📱</span> <span>Quick Actions</span></summary>
+    <div class="mobile-accordion-content mobile-grid">
+      <div class="mobile-card" tabindex="0" id="vhToggle-mobile" aria-label="Toggle Virtual Human Mode">
+        <i class="fas fa-user-astronaut"></i>
+        Virtual Human
+        <span class="switch" aria-hidden="true"></span>
+      </div>
+      <div class="mobile-card" tabindex="0" id="careerPaths-mobile" aria-label="Career Paths">
+        <i class="fas fa-compass"></i>
+        Career Paths
+      </div>
+      <div class="mobile-card" tabindex="0" id="supportToggle-mobile" aria-label="Toggle Support Mode">
+        <i class="fas fa-headset"></i>
+        Support Mode
+        <span class="switch" aria-hidden="true"></span>
+      </div>
+    </div>
+  </details>
+  <details class="mobile-accordion" id="accordion-settings">
+    <summary><span>⚙️</span> <span>Settings</span></summary>
+    <div class="mobile-accordion-content mobile-grid">
+      <div class="mobile-card" tabindex="0" id="darkToggle-mobile" aria-label="Toggle Dark Mode">
+        <i class="fas fa-moon"></i>
+        Dark Mode
+        <span class="switch" aria-hidden="true"></span>
+      </div>
+      <div class="mobile-card" tabindex="0" id="ttsToggle-mobile" aria-label="Text to Speech">
+        <i class="fas fa-volume-up"></i>
+        Text-to-Speech
+        <span class="switch" aria-hidden="true"></span>
+      </div>
+      <div class="mobile-card" tabindex="0" id="voicesBtn-mobile" aria-label="Preview Voices">
+        <i class="fas fa-headphones"></i>
+        Voice Preview
+      </div>
+    </div>
+  </details>
+  <details class="mobile-accordion" id="accordion-assessments">
+    <summary><span>🧠</span> <span>Assessments</span></summary>
+    <div class="mobile-accordion-content mobile-grid">
+      <div class="mobile-card" tabindex="0" id="startAssessment-mobile" aria-label="Begin Assessment">
+        <i class="fas fa-flag-checkered"></i>
+        Begin Assessment
+      </div>
+      <div class="mobile-card" tabindex="0" id="viewProgress-mobile" aria-label="View Progress">
+        <i class="fas fa-chart-line"></i>
+        View Progress
+      </div>
+      <div class="mobile-card" tabindex="0" id="personalPlan-mobile" aria-label="Personalized Plan">
+        <i class="fas fa-user-cog"></i>
+        Personalized Plan
+      </div>
+    </div>
+  </details>
+</section>
