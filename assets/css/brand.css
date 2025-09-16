@@ -30,6 +30,7 @@
   --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
 }
 
+/* Logo Styles */
 .logo {
   font-weight: 700;
   font-size: 1.5rem;
@@ -44,11 +45,7 @@
   font-size: 1.5rem;
 }
 
-.icon {
-  color: var(--primary);
-  margin-right: 0.5rem;
-}
-
+/* Badge Styles */
 .badge {
   background-color: var(--primary);
   color: white;
@@ -68,70 +65,23 @@
   background-color: var(--accent);
 }
 
-.ava {
-  min-width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  color: white;
+/* Mobile Hero Section */
+.mobile-hero {
+  display: none;
+  text-align: center;
+  padding: 1.5rem 1rem;
   background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: white;
+  border-radius: 0 0 12px 12px;
+  margin-bottom: 1rem;
 }
 
-.bubble h3 {
-  margin: 0.1rem 0 0.35rem;
-  color: var(--primary);
-  font-size: 1rem;
+.mobile-hero h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 
-.footer-status-main {
-  font-weight: 600;
-  color: var(--primary);
-  font-size: 0.94rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.footer-status {
-  font-size: 0.8rem;
-  color: var(--primary);
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.support-assistant h4 {
-  margin: 0;
-  color: var(--success);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-#right h3 {
-  margin: 0.25rem 0 0.75rem;
-  position: relative;
-  padding-bottom: 0.35rem;
-  font-weight: 600;
-  font-size: 1.1rem;
-  color: var(--primary);
-}
-
-#right h3::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 40px;
-  height: 3px;
-  background-color: var(--primary);
-  border-radius: 2px;
-}
-
-.track-card h4 {
-  margin: 0 0 0.5rem;
-  color: var(--primary);
-  font-weight: 600;
+.mobile-hero p {
+  opacity: 0.9;
+  font-size: 0.95rem;
 }
