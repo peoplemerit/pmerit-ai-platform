@@ -1,4 +1,3 @@
-// Add message to chat
 function addMessage(sender, text, isUser = false) {
   if (document.getElementById('welcomeMsg')) {
     welcomeMsg.remove();
@@ -20,30 +19,25 @@ function addMessage(sender, text, isUser = false) {
   chatBody.appendChild(messageEl);
   chatBody.scrollTop = chatBody.scrollHeight;
   
-  // If TTS is enabled and it's an AI message, speak it
   if (state.tts && !isUser && 'speechSynthesis' in window) {
     const utterance = new SpeechSynthesisUtterance(text);
     speechSynthesis.speak(utterance);
   }
   
-  // If VH mode is active, update captions
   if (state.vh && !isUser) {
     document.getElementById('captions').textContent = text;
   }
 }
 
-// Send message function
 function sendMessage() {
   const text = chatInput.value.trim();
   if (!text) return;
   
   addMessage('You', text, true);
   
-  // Clear input
   chatInput.value = '';
   count.textContent = '0/1000';
   
-  // Simulate AI response
   setTimeout(() => {
     const reply = state.support
       ? "Thanks for reaching out! I'm here to help with any questions about PMERIT - accounts, courses, technical issues, or platform features. What do you need assistance with?"
