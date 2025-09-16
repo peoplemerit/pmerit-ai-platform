@@ -1,1 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PMERIT — Accessible Global Education</title>
+  <!-- Icons & Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <!-- Modular Stylesheets -->
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/brand.css">
+</head>
+<body>
+  <!-- Header Include -->
+  <div id="header-include"></div>
+  <!-- Main Body Include -->
+  <div id="body-include"></div>
+  <!-- Footer Include -->
+  <div id="footer-include"></div>
 
+  <!-- Modular Scripts -->
+  <script src="assets/js/boot-includes.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/chat.js"></script>
+  <!-- Simple JS include loader (client-side for demo; replace with server-side includes in production) -->
+  <script>
+    // Very basic HTML partial loader (for static/demo use)
+    async function loadPartial(id, url) {
+      const el = document.getElementById(id);
+      if (el) {
+        const resp = await fetch(url);
+        el.innerHTML = await resp.text();
+      }
+    }
+    loadPartial('header-include', 'partials/header.html');
+    loadPartial('body-include', 'partials/body.html');
+    loadPartial('footer-include', 'partials/footer.html');
+  </script>
+</body>
+</html>
