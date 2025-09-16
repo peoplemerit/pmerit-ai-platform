@@ -1,41 +1,23 @@
-/* PMERIT Brand Styles */
-.pmerit-brand {
-  --brand-primary: #2563EB;
-  --brand-accent: #7E22CE;
-  --brand-success: #059669;
-}
+/* Brand accent and utility classes */
+.bg-primary { background-color: var(--primary) !important; }
+.bg-accent { background-color: var(--accent) !important; }
+.text-primary { color: var(--primary) !important; }
+.text-accent { color: var(--accent) !important; }
+.text-success { color: var(--success) !important; }
+.text-inverse { color: var(--text-inverse) !important; }
+.bg-dark { background-color: var(--bg-dark) !important; }
+.shadow { box-shadow: var(--shadow) !important; }
+.shadow-lg { box-shadow: var(--shadow-lg) !important; }
 
-.logo {
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  letter-spacing: -0.025em;
+/* Button color overrides for brand */
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
 }
-
-.brand-gradient {
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.btn-primary:hover {
+  background: var(--primary-dark);
 }
-
-.pmerit-card {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.06), rgba(126, 34, 206, 0.06));
-  border: 1px solid rgba(37, 99, 235, 0.18);
-}
-
-.pmerit-shadow {
-  box-shadow: 0 8px 28px rgba(37, 99, 235, 0.15);
-}
-
-/* Educational Theme Colors */
-.education-primary {
-  color: var(--primary);
-}
-
-.education-secondary {
-  color: var(--accent);
-}
-
-.success-accent {
-  color: var(--success);
+.btn-accent {
+  background: var(--accent);
+  color: #fff;
 }
