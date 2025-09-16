@@ -1,39 +1,44 @@
-// DOM Elements
-const body = document.body;
-const darkToggle = document.getElementById('darkToggle');
-const vhToggle = document.getElementById('vhToggle');
-const supportToggle = document.getElementById('supportToggle');
-const ttsToggle = document.getElementById('ttsToggle');
-const vhAvatar = document.getElementById('vhAvatar');
-const vhBadge = document.getElementById('vhBadge');
-const vhStage = document.getElementById('vhStage');
-const textChat = document.getElementById('textChat');
-const supportBadge = document.getElementById('supportBadge');
-const chatInput = document.getElementById('chatInput');
-const count = document.getElementById('count');
-const sendBtn = document.getElementById('sendBtn');
-const chatBody = document.getElementById('chatBody');
-const welcomeCopy = document.getElementById('welcomeCopy');
-const welcomeMsg = document.getElementById('welcomeMsg');
-const settingsBox = document.getElementById('settingsBox');
-const settingsHead = settingsBox.querySelector('.head');
-const settingsBody = settingsBox.querySelector('.body');
-const dashBtn = document.getElementById('dashBtn');
-const signInBtn = document.getElementById('signInBtn');
-const startBtn = document.getElementById('startBtn');
-const pricingBtn = document.getElementById('pricingBtn');
-const careerPaths = document.getElementById('careerPaths');
-const beginBtn = document.getElementById('beginAssessment');
-const vhQuick = document.getElementById('vhQuick');
-const vhShort = document.getElementById('vhShort');
-const supportShort = document.getElementById('supportShort');
-const signInModal = document.getElementById('signInModal');
-const signUpModal = document.getElementById('signUpModal');
-const assessmentModal = document.getElementById('assessmentModal');
-const tracksModal = document.getElementById('tracksModal');
-const voicesModal = document.getElementById('voicesModal');
-const insights = document.getElementById('insights');
-const m_insights = document.getElementById('m_insights');
+// This file handles main application logic and event listeners
+
+// Initialize state from localStorage
+function initState() {
+  try {
+    state.dark = localStorage.getItem('pmerit_dark') === 'true';
+    state.auth = localStorage.getItem('pmerit_auth') === 'true';
+    state.tts = localStorage.getItem('pmerit_tts') === 'true';
+    state.lang = localStorage.getItem('pmerit_lang') || 'en';
+  } catch (e) {
+    console.error('Error loading state from localStorage:', e);
+  }
+  
+  // Apply initial state
+  body.classList.toggle('dark', state.dark);
+  if (state.dark) {
+    darkToggle.classList.add('active');
+  }
+  if (state.tts) {
+    ttsToggle.classList.add('active');
+  }
+  
+  document.getElementById('lang').value = state.lang;
+  updateDashboardVisual();
+}
+
+// Save state to localStorage
+function save(key, value) {
+  try {
+    localStorage.setItem(key, String(value));
+  } catch (e) {
+    console.error('Error saving to localStorage:', e);
+  }
+}
+
+// Update dashboard visual based on auth state
+function updateDashboardVisual() {
+  dashBtn.classList.toggle('guest', !state.auth);
+  const mDashBtn = document.getElementById('m_dashBtn');
+  if (mDashBtn) mDashBtn.classList.toggle('guest', !state.auth);
+}
 
 // Set dark mode
 function setDark(on) {
@@ -139,14 +144,6 @@ function renderTracks() {
 }
 
 // Rotating tips for insights
-const tips = [
-  "Pro tip: Keep notes in your own words for better recall.",
-  "Short, frequent study sessions are more effective than long cramming sessions.",
-  "Relate new concepts to things you already understand for better retention.",
-  "Teach what you've learned to someone else to solidify your understanding.",
-  "Take breaks during study sessions to improve focus and retention."
-];
-
 function rotateInsights(el) {
   if (!el) return;
   let i = 0;
@@ -161,18 +158,6 @@ function rotateInsights(el) {
 function init() {
   // Initialize state
   initState();
-  
-  // Apply initial state
-  body.classList.toggle('dark', state.dark);
-  if (state.dark) {
-    darkToggle.classList.add('active');
-  }
-  if (state.tts) {
-    ttsToggle.classList.add('active');
-  }
-  
-  document.getElementById('lang').value = state.lang;
-  updateDashboardVisual();
   
   // Set up event listeners
   darkToggle.addEventListener('click', () => setDark(!state.dark));
@@ -263,20 +248,6 @@ function init() {
     ];
     const randomResult = results[Math.floor(Math.random() * results.length)];
     addMessage('PMERIT AI', randomResult);
-  });
-  
-  // Chat functionality
-  chatInput.addEventListener('input', () => {
-    count.textContent = `${chatInput.value.length}/1000`;
-  });
-  
-  sendBtn.addEventListener('click', sendMessage);
-  
-  chatInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
   });
   
   // Career paths
