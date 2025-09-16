@@ -1,9 +1,8 @@
+// This file handles all chat-related logic
+
 // Add message to chat
 function addMessage(sender, text, isUser = false) {
-  const chatBody = document.getElementById('chatBody');
-  const welcomeMsg = document.getElementById('welcomeMsg');
-  
-  if (welcomeMsg) {
+  if (document.getElementById('welcomeMsg')) {
     welcomeMsg.remove();
   }
 
@@ -37,8 +36,6 @@ function addMessage(sender, text, isUser = false) {
 
 // Send message function
 function sendMessage() {
-  const chatInput = document.getElementById('chatInput');
-  const count = document.getElementById('count');
   const text = chatInput.value.trim();
   if (!text) return;
   
@@ -56,3 +53,17 @@ function sendMessage() {
     addMessage('PMERIT AI', reply);
   }, 1000);
 }
+
+// Set up event listeners for chat
+chatInput.addEventListener('input', () => {
+  count.textContent = `${chatInput.value.length}/1000`;
+});
+
+sendBtn.addEventListener('click', sendMessage);
+
+chatInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+});
