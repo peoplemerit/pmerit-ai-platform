@@ -139,9 +139,9 @@
         </div>
       </section>
 
-      <div id="mobileAccordions" aria-label="Mobile sections">
-        <details class="mobile-accordion">
-          <summary><i class="fas fa-bolt"></i> Quick Actions - Tap to expand ▼</summary>
+      <div id="mobileSections" aria-label="Mobile sections">
+        <div class="mobile-accordion-button">
+          <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
           <div class="mobile-accordion-content">
             <div class="mobile-grid">
               <button class="mobile-card" id="m_vhToggle">
@@ -167,19 +167,11 @@
               <i class="fas fa-gauge-high"></i> Dashboard
             </button>
           </div>
-        </details>
+        </div>
 
-        <details class="mobile-accordion">
-          <summary><i class="fas fa-graduation-cap"></i> Discover Your Path - Tap to expand ▼</summary>
-          <div class="mobile-accordion-content">
-            <div class="discover" style="margin:0">
-              <h4>Personalized learning plan</h4>
-              <p>Start a short flow that blends learning style, interests, and skills into a plan.</p>
-              <button class="nav-btn primary" id="m_beginAssessment">Begin Assessment</button>
-              <div class="insights" id="m_insights">Tip: Short, daily practice beats long, rare sessions.</div>
-            </div>
-          </div>
-        </details>
+        <button class="mobile-accordion-button" id="m_beginAssessment">
+          <h3><i class="fas fa-graduation-cap"></i> Assessments</h3>
+        </button>
       </div>
     </main>
 
