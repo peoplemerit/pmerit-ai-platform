@@ -78,8 +78,8 @@ function init() {
   
   startBtn.addEventListener('click', openAssessment);
   beginBtn.addEventListener('click', openAssessment);
-  const mBeginBtn = document.getElementById('m_beginAssessment');
-  if (mBeginBtn) mBeginBtn.addEventListener('click', openAssessment);
+  // Add this new line for the updated button
+  document.getElementById('m_beginAssessment').addEventListener('click', openAssessment);
   
   document.getElementById('assessmentCancel').addEventListener('click', () => assessmentModal.close());
   document.getElementById('assessmentStart').addEventListener('click', () => {
