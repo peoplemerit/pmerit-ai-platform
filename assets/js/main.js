@@ -28,6 +28,27 @@ function init() {
   });
   if (mVoicesBtn) mVoicesBtn.addEventListener('click', () => voicesModal.showModal());
   
+  // Mobile accordion functionality
+  const quickActionsHeader = document.getElementById('quickActionsHeader');
+  const quickActionsContent = document.getElementById('quickActionsContent');
+  
+  if (quickActionsHeader && quickActionsContent) {
+    quickActionsHeader.addEventListener('click', () => {
+      const isOpen = quickActionsContent.classList.contains('open');
+      quickActionsContent.classList.toggle('open');
+      
+      const icon = quickActionsHeader.querySelector('.accordion-icon');
+      if (icon) {
+        icon.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+      }
+    });
+    
+    // Start with accordion closed on mobile
+    if (window.innerWidth <= 1100) {
+      quickActionsContent.classList.remove('open');
+    }
+  }
+  
   // Settings collapsible
   settingsHead.addEventListener('click', () => {
     const isOpen = settingsBody.style.display === 'block';
@@ -76,7 +97,15 @@ function init() {
     addMessage('PMERIT AI', `Welcome to PMERIT, ${name}! Your account has been created successfully. You now have access to personalized learning paths and can track your progress.`);
   });
   
-  startBtn.addEventListener('click', openAssessment);
+  startBtn.addEventListener('click', () => {
+    if (state.auth) {
+      openAssessment();
+    } else {
+      if (typeof signUpModal.showModal === 'function') {
+        signUpModal.showModal();
+      }
+    }
+  });
   beginBtn.addEventListener('click', openAssessment);
   // Add this new line for the updated button
   document.getElementById('m_beginAssessment').addEventListener('click', openAssessment);
