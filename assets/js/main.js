@@ -56,6 +56,8 @@ function init() {
     state.auth = true;
     save('pmerit_auth', true);
     updateDashboardVisual();
+    updateStartButtonLabel();
+    updateWelcomeMessage();
     signInModal.close();
     addMessage('PMERIT AI', `Welcome back! Your account has been successfully signed in. You now have access to your personal dashboard and can track your learning progress.`);
   });
@@ -72,11 +74,13 @@ function init() {
     state.auth = true;
     save('pmerit_auth', true);
     updateDashboardVisual();
+    updateStartButtonLabel();
+    updateWelcomeMessage();
     signUpModal.close();
     addMessage('PMERIT AI', `Welcome to PMERIT, ${name}! Your account has been created successfully. You now have access to personalized learning paths and can track your progress.`);
   });
   
-  startBtn.addEventListener('click', openAssessment);
+  startBtn.addEventListener('click', handleStartButtonClick);
   beginBtn.addEventListener('click', openAssessment);
   const mBeginBtn = document.getElementById('m_beginAssessment');
   if (mBeginBtn) mBeginBtn.addEventListener('click', openAssessment);
@@ -84,6 +88,12 @@ function init() {
   document.getElementById('assessmentCancel').addEventListener('click', () => assessmentModal.close());
   document.getElementById('assessmentStart').addEventListener('click', () => {
     assessmentModal.close();
+    // Mark user as assessed
+    state.assessed = true;
+    save('pmerit_assessed', true);
+    updateStartButtonLabel();
+    updateWelcomeMessage();
+    
     const results = [
       "Excellent! Based on your assessment, you have a strong analytical mindset and prefer visual learning. I recommend the Data Analytics track - it combines problem-solving with visual insights through dashboards and reports.",
       "Great results! Your assessment shows you're creative and detail-oriented with strong communication skills. The UI/UX Design track would be perfect for combining creativity with user-centered problem solving.",
