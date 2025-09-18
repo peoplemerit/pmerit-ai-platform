@@ -97,6 +97,8 @@ nav {
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
   min-height: 44px;
+  color: var(--text-primary);
+  font-weight: 500;
 }
 
 .toggle:hover, .action:hover, .dashboard:hover {
@@ -313,6 +315,9 @@ main {
   border-top: 1px solid var(--border-color);
   background-color: var(--bg-secondary);
   padding: 0.75rem;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
 }
 
 textarea {
