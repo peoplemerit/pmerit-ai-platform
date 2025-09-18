@@ -2,6 +2,25 @@ function init() {
   // Initialize state
   initState();
   
+  // Hamburger menu functionality
+  const hamburgerMenu = document.getElementById('hamburgerMenu');
+  const navItems = document.getElementById('navItems');
+  
+  if (hamburgerMenu && navItems) {
+    hamburgerMenu.addEventListener('click', () => {
+      hamburgerMenu.classList.toggle('active');
+      navItems.classList.toggle('open');
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!hamburgerMenu.contains(e.target) && !navItems.contains(e.target)) {
+        hamburgerMenu.classList.remove('active');
+        navItems.classList.remove('open');
+      }
+    });
+  }
+  
   // Set up event listeners
   darkToggle.addEventListener('click', () => setDark(!state.dark));
   ttsToggle.addEventListener('click', () => setTTS(!state.tts));
