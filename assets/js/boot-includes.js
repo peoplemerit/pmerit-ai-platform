@@ -1,5 +1,6 @@
 const state = {
   auth: false,
+  assessed: false,
   dark: false,
   vh: false,
   support: false,
@@ -57,6 +58,7 @@ function initState() {
   try {
     state.dark = localStorage.getItem('pmerit_dark') === 'true';
     state.auth = localStorage.getItem('pmerit_auth') === 'true';
+    state.assessed = localStorage.getItem('pmerit_assessed') === 'true';
     state.tts = localStorage.getItem('pmerit_tts') === 'true';
     state.lang = localStorage.getItem('pmerit_lang') || 'en';
   } catch (e) {
@@ -73,6 +75,8 @@ function initState() {
   
   document.getElementById('lang').value = state.lang;
   updateDashboardVisual();
+  updateStartButtonLabel();
+  updateWelcomeMessage();
 }
 
 function save(key, value) {
@@ -87,6 +91,36 @@ function updateDashboardVisual() {
   dashBtn.classList.toggle('guest', !state.auth);
   const mDashBtn = document.getElementById('m_dashBtn');
   if (mDashBtn) mDashBtn.classList.toggle('guest', !state.auth);
+}
+
+function updateStartButtonLabel() {
+  let buttonText;
+  if (!state.auth) {
+    buttonText = "Sign Up";
+  } else if (state.auth && !state.assessed) {
+    buttonText = "Begin Assessment";
+  } else {
+    buttonText = "View Learning Plan";
+  }
+  
+  startBtn.textContent = buttonText;
+}
+
+function handleStartButtonClick() {
+  if (!state.auth) {
+    // Open sign up modal
+    if (typeof signUpModal.showModal === 'function') {
+      signUpModal.showModal();
+    }
+  } else if (state.auth && !state.assessed) {
+    // Open assessment modal
+    if (typeof assessmentModal.showModal === 'function') {
+      assessmentModal.showModal();
+    }
+  } else {
+    // Redirect to learner portal
+    window.location.href = 'learner-portal.html';
+  }
 }
 
 function setDark(on) {
@@ -109,18 +143,30 @@ function setTTS(on) {
   }
 }
 
+function updateWelcomeMessage() {
+  if (!welcomeCopy) return;
+  
+  let greeting;
+  if (state.support) {
+    greeting = "Welcome to PMERIT Support. I can help with accounts, enrollment, and technical issues. How can I assist you today?";
+  } else if (!state.auth) {
+    greeting = "Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?";
+  } else if (state.auth && !state.assessed) {
+    greeting = "Welcome back! Ready to discover your perfect learning path? Let's start with a quick assessment to personalize your experience.";
+  } else {
+    greeting = "Welcome back, Merit! Ready to continue your learning path? I'm here to help you achieve your goals.";
+  }
+  
+  welcomeCopy.textContent = greeting;
+}
+
 function setSupport(on) {
   supportToggle.classList.toggle('active', on);
   const mSupportToggle = document.getElementById('m_supportToggle');
   if (mSupportToggle) mSupportToggle.classList.toggle('active', on);
   state.support = on;
   supportBadge.style.display = on ? 'inline-flex' : 'none';
-  
-  if (welcomeCopy) {
-    welcomeCopy.textContent = on
-      ? "Welcome to PMERIT Support. I can help with accounts, enrollment, and technical issues. How can I assist you today?"
-      : "Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?";
-  }
+  updateWelcomeMessage();
 }
 
 function setVH(on) {
@@ -145,7 +191,7 @@ function setVH(on) {
 
 function goDashboard() {
   if (state.auth) {
-    window.location.href = 'dashboard.html';
+    window.location.href = 'learner-portal.html';
   } else {
     if (typeof signUpModal.showModal === 'function') {
       signUpModal.showModal();
