@@ -17,18 +17,25 @@
 
 </head>
 <body>
-  <header>
+  <header role="banner">
     <div class="logo">PMERIT</div>
-    <nav>
-      <select class="nav-btn" id="lang" aria-label="Language">
-        <option value="en">English</option>
-        <option value="yo">Yorùbá</option>
-        <option value="ig">Igbo</option>
-        <option value="ha">Hausa</option>
-      </select>
-      <button class="nav-btn" id="pricingBtn">Donate</button>
-      <button class="nav-btn" id="signInBtn">Sign In</button>
-      <button class="nav-btn primary" id="startBtn">Start Learning</button>
+    <nav role="navigation">
+      <button class="hamburger-menu" id="hamburgerMenu" aria-label="Open navigation menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="nav-items" id="navItems">
+        <select class="nav-btn" id="lang" aria-label="Language">
+          <option value="en">English</option>
+          <option value="yo">Yorùbá</option>
+          <option value="ig">Igbo</option>
+          <option value="ha">Hausa</option>
+        </select>
+        <button class="nav-btn" id="pricingBtn">Donate</button>
+        <button class="nav-btn" id="signInBtn">Sign In</button>
+        <button class="nav-btn primary" id="startBtn">Start Learning</button>
+      </div>
     </nav>
   </header>
 
@@ -43,7 +50,7 @@
         <div class="pane-title">Quick Actions</div>
 
         <button class="toggle" id="vhToggle">
-          <span><i class="fas fa-user-astronaut icon"></i> Virtual Human Mode</span>
+          <span><i class="fas fa-user-astronaut icon"></i> Virtual Human Support</span>
           <span class="switch" aria-hidden="true"></span>
         </button>
 
@@ -110,6 +117,14 @@
                 <p id="welcomeCopy">Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?</p>
               </div>
             </article>
+            <div class="typing-indicator" id="typingIndicator" style="display: none;">
+              <div class="ava"><i class="fas fa-user-circle"></i></div>
+              <div class="typing-dots">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+              </div>
+            </div>
           </div>
           <div class="chat-input">
             <textarea id="chatInput" maxlength="1000" placeholder="Ask about courses, learning paths, or your goals..." aria-label="Message"></textarea>
@@ -117,13 +132,13 @@
               <span class="count" id="count">0/1000</span>
               <div class="input-actions">
                 <button class="nav-btn" id="vhQuick">
-                  <i class="fas fa-user-astronaut"></i> VH Mode
+                  <i class="fas fa-user-astronaut"></i> Virtual Human Support
                 </button>
                 <button class="nav-btn" id="readAbout">
-                  <i class="fas fa-book"></i> Read About
+                  <i class="fas fa-book"></i> Learn About PMERIT
                 </button>
                 <span class="footer-status">
-                  <i class="fas fa-circle-check"></i> Connected to Educational Services
+                  <i class="fas fa-circle-check"></i> Education Services Portal
                 </span>
               </div>
               <button class="send" id="sendBtn">Send <i class="fas fa-paper-plane"></i></button>
@@ -148,7 +163,7 @@
             <div class="mobile-grid">
               <button class="mobile-card" id="m_vhToggle">
                 <i class="fas fa-user-astronaut"></i>
-                <span>Virtual Human</span>
+                <span>Virtual Human Support</span>
                 <div class="switch"></div>
               </button>
               <button class="mobile-card" id="m_careerPaths">
@@ -192,7 +207,7 @@
           <p style="color: var(--text-secondary); margin: 0.5rem 0;">Ask me about PMERIT</p>
           <div style="display:flex;gap:.5rem;justify-content:center;margin-top:.75rem">
             <button class="nav-btn" style="border-color:var(--accent)" id="vhShort">
-              <i class="fas fa-user-astronaut"></i> Virtual Human
+              <i class="fas fa-user-astronaut"></i> Virtual Human Support
             </button>
             <button class="nav-btn" style="border-color:var(--success)" id="supportShort">
               <i class="fas fa-headset"></i> Support
@@ -211,9 +226,9 @@
     </aside>
   </div>
 
-  <footer>
+  <footer role="contentinfo">
     <span class="footer-status-main">
-      <i class="fas fa-signal"></i> Connected to Educational Services
+      <i class="fas fa-signal"></i> Education Services Portal
     </span>
     <div class="footer-links">
       <button class="nav-btn" id="privacyBtn">Privacy & Terms</button>
