@@ -20,15 +20,22 @@
   <header role="banner">
     <div class="logo">PMERIT</div>
     <nav role="navigation">
-      <select class="nav-btn" id="lang" aria-label="Language">
-        <option value="en">English</option>
-        <option value="yo">Yorùbá</option>
-        <option value="ig">Igbo</option>
-        <option value="ha">Hausa</option>
-      </select>
-      <button class="nav-btn" id="pricingBtn">Donate</button>
-      <button class="nav-btn" id="signInBtn">Sign In</button>
-      <button class="nav-btn primary" id="startBtn">Start Learning</button>
+      <button class="hamburger-menu" id="hamburgerMenu" aria-label="Open navigation menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="nav-items" id="navItems">
+        <select class="nav-btn" id="lang" aria-label="Language">
+          <option value="en">English</option>
+          <option value="yo">Yorùbá</option>
+          <option value="ig">Igbo</option>
+          <option value="ha">Hausa</option>
+        </select>
+        <button class="nav-btn" id="pricingBtn">Donate</button>
+        <button class="nav-btn" id="signInBtn">Sign In</button>
+        <button class="nav-btn primary" id="startBtn">Start Learning</button>
+      </div>
     </nav>
   </header>
 
@@ -110,6 +117,14 @@
                 <p id="welcomeCopy">Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?</p>
               </div>
             </article>
+            <div class="typing-indicator" id="typingIndicator" style="display: none;">
+              <div class="ava"><i class="fas fa-user-circle"></i></div>
+              <div class="typing-dots">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+              </div>
+            </div>
           </div>
           <div class="chat-input">
             <textarea id="chatInput" maxlength="1000" placeholder="Ask about courses, learning paths, or your goals..." aria-label="Message"></textarea>
