@@ -636,19 +636,24 @@ footer {
     margin: 0 0.75rem 1rem;
   }
 
+  .mobile-accordion {
+    margin-bottom: 1rem;
+  }
+
   .mobile-accordion-button {
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
-    border-radius: 99px; /* This creates the pill shape */
+    border-radius: 12px;
     box-shadow: var(--shadow);
-    margin-bottom: 1rem;
     overflow: hidden;
     cursor: pointer;
     padding: 1rem 1.25rem;
     transition: var(--transition);
-    text-align: center;
-    display: block;
+    text-align: left;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .mobile-accordion-button:hover {
@@ -662,12 +667,25 @@ footer {
     color: var(--text-primary);
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 0.5rem;
   }
 
+  .accordion-icon {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    transition: var(--transition);
+  }
+
   .mobile-accordion-content {
-    padding: 1.25rem 0 0;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+  }
+
+  .mobile-accordion-content.open {
+    padding: 1.25rem 1rem;
+    max-height: 500px;
   }
 
   .mobile-grid {

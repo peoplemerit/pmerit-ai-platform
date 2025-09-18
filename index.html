@@ -141,9 +141,12 @@
       </section>
 
       <div id="mobileSections" aria-label="Mobile sections">
-        <div class="mobile-accordion-button">
-          <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
-          <div class="mobile-accordion-content">
+        <div class="mobile-accordion" id="quickActionsAccordion">
+          <button class="mobile-accordion-button" id="quickActionsHeader">
+            <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+            <i class="fas fa-chevron-down accordion-icon"></i>
+          </button>
+          <div class="mobile-accordion-content" id="quickActionsContent">
             <div class="mobile-grid">
               <button class="mobile-card" id="m_vhToggle" title="Toggle virtual human assistant">
                 <i class="fas fa-user-astronaut"></i>
@@ -164,14 +167,14 @@
                 <span>Settings</span>
               </button>
             </div>
-            <button class="dashboard guest nav-btn" id="m_dashBtn" style="margin-top:1rem;width:100%">
+            <button class="dashboard guest nav-btn" id="m_dashBtn" style="margin-top:1rem;width:100%" title="Access your learning dashboard">
               <i class="fas fa-gauge-high"></i> Dashboard
             </button>
           </div>
         </div>
 
-        <button class="mobile-accordion-button" id="m_beginAssessment">
-          <h3><i class="fas fa-graduation-cap"></i> Assessments</h3>
+        <button class="mobile-accordion-button" id="m_beginAssessment" title="Start your learning assessment">
+          <h3><i class="fas fa-graduation-cap"></i> Start Assessment</h3>
         </button>
       </div>
     </main>
