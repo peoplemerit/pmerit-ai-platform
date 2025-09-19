@@ -138,6 +138,8 @@ nav {
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
   min-height: 44px;
+  color: var(--text-primary);
+  font-weight: 500;
 }
 
 .toggle:hover, .action:hover, .dashboard:hover {
@@ -675,6 +677,7 @@ footer {
 }
 
 /* Mobile Styles */
+/* Mobile Styles - UPDATED */
 @media (max-width: 1100px) {
   .estate {
     grid-template-columns: 1fr;
@@ -736,48 +739,61 @@ footer {
     border-radius: 8px;
   }
   
-  #mobileAccordions {
+  #mobileSections {
     display: block;
     margin: 0 0.75rem 1rem;
   }
 
   .mobile-accordion {
+    margin-bottom: 1rem;
+  }
+
+  .mobile-accordion-button {
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: 12px;
     box-shadow: var(--shadow);
-    margin-bottom: 1rem;
     overflow: hidden;
+    cursor: pointer;
+    padding: 1rem 1.25rem;
+    transition: var(--transition);
+    text-align: left;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
-  .mobile-accordion summary {
-    padding: 1.25rem;
-    cursor: pointer;
-    font-weight: 600;
-    color: var(--text-primary);
+  .mobile-accordion-button:hover {
     background-color: var(--bg-secondary);
-    border-bottom: 1px solid var(--border-color);
-    list-style: none;
-    transition: var(--transition);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .mobile-accordion-button h4, .mobile-accordion-button h3 {
+    margin: 0;
+    color: var(--text-primary);
     display: flex;
     align-items: center;
     gap: 0.5rem;
   }
 
-  .mobile-accordion summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .mobile-accordion summary:hover {
-    background-color: var(--border-color);
-  }
-
-  .mobile-accordion[open] summary {
-    border-bottom: 1px solid var(--border-color);
+  .accordion-icon {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    transition: var(--transition);
   }
 
   .mobile-accordion-content {
-    padding: 1.25rem;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+  }
+
+  .mobile-accordion-content.open {
+    padding: 1.25rem 1rem;
+    max-height: 500px;
   }
 
   .mobile-grid {
@@ -901,76 +917,7 @@ footer {
 }
 
 @media (min-width: 1101px) {
-  #mobileAccordions, .mobile-hero {
+  #mobileSections, .mobile-hero {
     display: none;
   }
-}
-
-/* Focus Styles */
-.nav-btn:focus, .action:focus, .toggle:focus, .dashboard:focus, textarea:focus, select:focus {
-  outline: 2px solid var(--primary);
-  outline-offset: 2px;
-}
-
-/* Modal Styles */
-dialog {
-  border: none;
-  border-radius: 12px;
-  max-width: 560px;
-  width: 92%;
-  box-shadow: var(--shadow-lg);
-  background-color: var(--card-bg);
-  color: var(--text-primary);
-  padding: 0;
-}
-
-dialog::backdrop {
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-dialog form {
-  margin: 0;
-  padding: 1.5rem;
-}
-
-dialog h3 {
-  margin: 0 0 1rem;
-  color: var(--primary);
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  font-size: 1.25rem;
-}
-
-dialog label {
-  display: grid;
-  gap: 0.4rem;
-  margin-bottom: 1rem;
-}
-
-dialog input {
-  padding: 0.75rem;
-  border: 1px solid var(--border-color);
-  border-radius: 0.5rem;
-  background-color: var(--card-bg);
-  color: var(--text-primary);
-  font-family: inherit;
-}
-
-dialog input:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-}
-
-dialog .button-group {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.75rem;
-  margin-top: 1.5rem;
-}
-
-/* Mobile Hero Section */
-.mobile-hero {
-  display: none;
 }

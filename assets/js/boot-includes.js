@@ -91,6 +91,19 @@ function updateDashboardVisual() {
   dashBtn.classList.toggle('guest', !state.auth);
   const mDashBtn = document.getElementById('m_dashBtn');
   if (mDashBtn) mDashBtn.classList.toggle('guest', !state.auth);
+  
+  // Update start button based on auth state
+  updateStartButton();
+}
+
+function updateStartButton() {
+  if (state.auth) {
+    startBtn.textContent = 'Begin Assessment';
+    startBtn.title = 'Start your personalized learning assessment';
+  } else {
+    startBtn.textContent = 'Sign Up';
+    startBtn.title = 'Create your PMERIT account to get started';
+  }
 }
 
 function updateStartButtonLabel() {
