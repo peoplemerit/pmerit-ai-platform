@@ -19,23 +19,7 @@
 <body>
   <header role="banner">
     <div class="logo">PMERIT</div>
-    <nav role="navigation">
-      <button class="hamburger-menu" id="hamburgerMenu" aria-label="Open navigation menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <div class="nav-items" id="navItems">
-        <select class="nav-btn" id="lang" aria-label="Language">
-          <option value="en">English</option>
-          <option value="yo">Yorùbá</option>
-          <option value="ig">Igbo</option>
-          <option value="ha">Hausa</option>
-        </select>
-        <button class="nav-btn" id="pricingBtn">Donate</button>
-        <button class="nav-btn" id="signInBtn">Sign In</button>
-        <button class="nav-btn primary" id="startBtn">Start Learning</button>
-      </div>
+
     </nav>
   </header>
 
@@ -49,18 +33,17 @@
       <section>
         <div class="pane-title">Quick Actions</div>
 
-        <button class="toggle" id="vhToggle">
           <span><i class="fas fa-user-astronaut icon"></i> Virtual Human Support</span>
           <span class="switch" aria-hidden="true"></span>
         </button>
 
-        <button class="action" id="careerPaths">
-          <span><i class="fas fa-compass icon"></i> Career Track & Explore Paths</span>
+        <button class="action" id="careerPaths" title="Explore different career paths and learning opportunities">
+          <span><i class="fas fa-compass icon"></i> Explore Career Paths</span>
           <i class="fas fa-chevron-right" aria-hidden="true"></i>
         </button>
 
-        <button class="toggle" id="supportToggle">
-          <span><i class="fas fa-headset icon"></i> Customer Service Mode</span>
+        <button class="toggle" id="supportToggle" title="Enable support assistant mode for enhanced help">
+          <span><i class="fas fa-headset icon"></i> Support Assistant Mode</span>
           <span class="switch" aria-hidden="true"></span>
         </button>
 
@@ -131,13 +114,7 @@
             <div class="input-bar">
               <span class="count" id="count">0/1000</span>
               <div class="input-actions">
-                <button class="nav-btn" id="vhQuick">
-                  <i class="fas fa-user-astronaut"></i> Virtual Human Support
-                </button>
-                <button class="nav-btn" id="readAbout">
-                  <i class="fas fa-book"></i> Learn About PMERIT
-                </button>
-                <span class="footer-status">
+
                   <i class="fas fa-circle-check"></i> Education Services Portal
                 </span>
               </div>
@@ -156,47 +133,42 @@
         </div>
       </section>
 
-      <div id="mobileAccordions" aria-label="Mobile sections">
-        <details class="mobile-accordion">
-          <summary><i class="fas fa-bolt"></i> Quick Actions - Tap to expand ▼</summary>
-          <div class="mobile-accordion-content">
+      <div id="mobileSections" aria-label="Mobile sections">
+        <div class="mobile-accordion" id="quickActionsAccordion">
+          <button class="mobile-accordion-button" id="quickActionsHeader">
+            <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+            <i class="fas fa-chevron-down accordion-icon"></i>
+          </button>
+          <div class="mobile-accordion-content" id="quickActionsContent">
             <div class="mobile-grid">
-              <button class="mobile-card" id="m_vhToggle">
+              <button class="mobile-card" id="m_vhToggle" title="Toggle virtual human assistant">
                 <i class="fas fa-user-astronaut"></i>
                 <span>Virtual Human Support</span>
                 <div class="switch"></div>
               </button>
-              <button class="mobile-card" id="m_careerPaths">
+              <button class="mobile-card" id="m_careerPaths" title="Explore career paths and opportunities">
                 <i class="fas fa-compass"></i>
                 <span>Career Paths</span>
               </button>
-              <button class="mobile-card" id="m_supportToggle">
+              <button class="mobile-card" id="m_supportToggle" title="Enable support assistant mode">
                 <i class="fas fa-headset"></i>
-                <span>Support Mode</span>
+                <span>Support Assistant</span>
                 <div class="switch"></div>
               </button>
-              <button class="mobile-card" id="m_settings">
+              <button class="mobile-card" id="m_settings" title="Access platform settings and preferences">
                 <i class="fas fa-cog"></i>
                 <span>Settings</span>
               </button>
             </div>
-            <button class="dashboard guest nav-btn" id="m_dashBtn" style="margin-top:1rem;width:100%">
+            <button class="dashboard guest nav-btn" id="m_dashBtn" style="margin-top:1rem;width:100%" title="Access your learning dashboard">
               <i class="fas fa-gauge-high"></i> Dashboard
             </button>
           </div>
-        </details>
+        </div>
 
-        <details class="mobile-accordion">
-          <summary><i class="fas fa-graduation-cap"></i> Discover Your Path - Tap to expand ▼</summary>
-          <div class="mobile-accordion-content">
-            <div class="discover" style="margin:0">
-              <h4>Personalized learning plan</h4>
-              <p>Start a short flow that blends learning style, interests, and skills into a plan.</p>
-              <button class="nav-btn primary" id="m_beginAssessment">Begin Assessment</button>
-              <div class="insights" id="m_insights">Tip: Short, daily practice beats long, rare sessions.</div>
-            </div>
-          </div>
-        </details>
+        <button class="mobile-accordion-button" id="m_beginAssessment" title="Start your learning assessment">
+          <h3><i class="fas fa-graduation-cap"></i> Start Assessment</h3>
+        </button>
       </div>
     </main>
 
@@ -226,16 +198,14 @@
     </aside>
   </div>
 
-  <footer role="contentinfo">
-    <span class="footer-status-main">
       <i class="fas fa-signal"></i> Education Services Portal
     </span>
     <div class="footer-links">
-      <button class="nav-btn" id="privacyBtn">Privacy & Terms</button>
-      <button class="nav-btn" id="contactBtn">Contact</button>
-      <button class="nav-btn" id="partnershipsBtn">Partnerships</button>
-      <button class="nav-btn" id="supportBtn">Support</button>
-      <button class="nav-btn" id="aboutBtn">About PMERIT</button>
+      <button class="nav-btn" id="privacyBtn" title="View privacy policy and terms">Privacy & Terms</button>
+      <button class="nav-btn" id="contactBtn" title="Contact support team">Contact</button>
+      <button class="nav-btn" id="partnershipsBtn" title="Learn about partnerships">Partnerships</button>
+      <button class="nav-btn" id="supportBtn" title="Get help and support">Support</button>
+      <button class="nav-btn" id="aboutBtn" title="Learn more about PMERIT">About PMERIT</button>
     </div>
   </footer>
 
