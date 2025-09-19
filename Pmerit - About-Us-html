@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Pmerit - Breaking Poverty Cycles Through Education</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .hero-section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 80px 0;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-section h1 {
+            font-size: 3.5em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .hero-section .subtitle {
+            font-size: 1.3em;
+            color: #7f8c8d;
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+
+        .section {
+            background: white;
+            margin: 40px 0;
+            padding: 60px 0;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .section h2::after {
+            content: '';
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .origin-story {
+            font-size: 1.2em;
+            line-height: 1.8;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .mission-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .mission-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 40px;
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .mission-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .mission-card h3 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .service-card {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 5px solid #667eea;
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateX(10px);
+        }
+
+        .service-card h4 {
+            color: #2c3e50;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+        }
+
+        .stat-number {
+            font-size: 3em;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 50px auto;
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 40px;
+            align-items: center;
+        }
+
+        .timeline-marker {
+            width: 20px;
+            height: 20px;
+            background: #667eea;
+            border-radius: 50%;
+            margin-right: 30px;
+            flex-shrink: 0;
+        }
+
+        .timeline-content {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            flex: 1;
+        }
+
+        .social-proof {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .testimonial {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            border-top: 5px solid #667eea;
+        }
+
+        .testimonial-quote {
+            font-style: italic;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 80px 0;
+            margin-top: 0;
+            border-radius: 0;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 18px 40px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-top: 30px;
+            transition: transform 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .tech-badge {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 2.5em;
+            }
+            
+            .section h2 {
+                font-size: 2em;
+            }
+            
+            .container {
+                padding: 0 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container">
+            <h1>🎓 PMERIT</h1>
+            <p class="subtitle">Breaking Poverty Cycles Through Accessible, AI-Powered Education</p>
+            <div class="tech-stack">
+                <span class="tech-badge">21 Operational Containers</span>
+                <span class="tech-badge">AI-Powered Learning</span>
+                <span class="tech-badge">Global Infrastructure</span>
+                <span class="tech-badge">3+ Billion Target Learners</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Origin Story Section -->
+    <div class="section">
+        <div class="container">
+            <h2>The Origin Story</h2>
+            <div class="origin-story">
+                <p><strong>"My people perish for lack of knowledge"</strong> (Hosea 4:6) - This biblical truth isn't just PMERIT's founding principle, it's the lived experience of our founder that drives our mission to transform lives globally.</p>
+                
+                <p><strong>From Abandonment to Achievement:</strong> Born as the 14th of 15 children in a polygamous Christian home in Nigeria, our founder's journey embodies the very struggles PMERIT seeks to address. Despite his father's wealth as a sawmiller, educational support came with conditions - children had to serve the family business for years in exchange for schooling.</p>
+                
+                <p><strong>Walking the Path of Resilience:</strong> Every morning during secondary school, he walked 3.4 kilometers from Ogbun Village near Oluwo to Orile Igbore Grammar School, racing back by 3:30 PM to work on the farm and sawmill. When he couldn't meet his father's demanding expectations at age 11, he was disowned and cast out - forced to navigate life alone while continuing his education through sheer determination and faith.</p>
+                
+                <p><strong>The Power of Knowledge:</strong> Working countless jobs to survive and fund his education, he passed his WAEC examination and eventually earned admission to college through his siblings' help. His life transformed when he won the US visa lottery, leading to a BSc in Accounting from the University of North Carolina Greensboro, a Master's in Accounting and Finance from Purdue University, and four years of service in the US National Guard.</p>
+                
+                <p><strong>From Personal Pain to Global Purpose:</strong> This journey from abandonment to achievement in both Nigeria and the US revealed a universal truth: millions of brilliant minds are trapped not by lack of potential, but by lack of accessible, quality education. Having lived the struggle in Nigerian villages and witnessed similar challenges in underserved American communities, our founder envisioned AI-powered education as the bridge to break these poverty cycles.</p>
+                
+                <p><strong>Today's Mission:</strong> What began as one child's fight for education has evolved into PMERIT's mission to serve 3+ billion underserved learners worldwide. Our dual-market strategy leverages deep Nigerian cultural understanding and American educational innovation to create a platform that speaks to every learner's context while providing world-class educational opportunities.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mission, Vision & Values Section -->
+    <div class="section">
+        <div class="container">
+            <h2>Mission, Vision & Values</h2>
+            <div class="mission-grid">
+                <div class="mission-card">
+                    <h3>🌍 Our Mission</h3>
+                    <p>Deploy a bulletproof, enterprise-grade educational ecosystem capable of serving global learners through AI-powered personalized education, career development, and economic empowerment—breaking poverty cycles one learner at a time.</p>
+                </div>
+                
+                <div class="mission-card">
+                    <h3>🚀 Our Vision</h3>
+                    <p>To become the world's leading platform for accessible education, serving 3+ billion underserved learners globally through culturally intelligent, AI-powered learning experiences that transform communities and economies.</p>
+                </div>
+                
+                <div class="mission-card">
+                    <h3>💎 Our Values</h3>
+                    <p><strong>Knowledge as Liberation:</strong> Education should liberate, not indebt. We believe in accessible learning with accountability, where students pay for failed attempts while keeping first access free.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- What We Do & Who We Serve Section -->
+    <div class="section">
+        <div class="container">
+            <h2>What We Do & Who We Serve</h2>
+            <p style="text-align: center; font-size: 1.2em; margin-bottom: 40px; color: #7f8c8d;">
+                Our AI-powered platform provides comprehensive educational solutions tailored to underserved communities worldwide.
+            </p>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <h4>🤖 Gabriel AI Tutoring</h4>
+                    <p>Personal AI tutor providing 24/7 support, adaptive learning paths, and intelligent assessment across multiple languages and cultural contexts.</p>
+                </div>
+                
+                <div class="service-card">
+                    <h4>📊 Career Assessment & Development</h4>
+                    <p>Comprehensive career profiling, skills assessment, and personalized career pathway recommendations aligned with local and global job markets.</p>
+                </div>
+                
+                <div class="service-card">
+                    <h4>🎯 Dual Career Tracks</h4>
+                    <p><strong>Remote Career Track:</strong> Digital skills, remote work preparation<br>
+                    <strong>Local Career Track:</strong> Community-based skills, local entrepreneurship</p>
+                </div>
+                
+                <div class="service-card">
+                    <h4>🔍 OCR & Document Processing</h4>
+                    <p>Advanced document scanning and processing capabilities for learners with limited digital resources.</p>
+                </div>
+                
+                <div class="service-card">
+                    <h4>💳 Flexible Payment Solutions</h4>
+                    <p>Innovative "pay-for-failure" model ensuring accessibility while promoting accountability and completion.</p>
+                </div>
+                
+                <div class="service-card">
+                    <h4>📈 Analytics & Progress Tracking</h4>
+                    <p>Real-time learning analytics, progress monitoring, and employment outcome tracking for continuous improvement.</p>
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">3B+</span>
+                    <span class="stat-label">Target Learners Globally</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">21</span>
+                    <span class="stat-label">Operational Containers</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">2</span>
+                    <span class="stat-label">Primary Markets (NG + US)</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">24/7</span>
+                    <span class="stat-label">AI Support Available</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Meet the Team Section -->
+    <div class="section">
+        <div class="container">
+            <h2>Meet the Team</h2>
+            <p style="text-align: center; font-size: 1.2em; margin-bottom: 40px; color: #7f8c8d;">
+                Led by a founder who has lived the struggle and achieved the dream, our team combines lived experience with world-class expertise.
+            </p>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <h4>👨‍💼 Founder & Visionary</h4>
+                    <p><strong>Nigerian-American Leader:</strong> BSc Accounting (UNC Greensboro), Master's Accounting & Finance (Purdue University), US National Guard Veteran (4 years). From walking 3.4km to school daily in Ogbun Village to building AI-powered education platforms - embodying the transformation PMERIT creates.</p>
+                </div>
+                
+                <div class="service-card">
+                    <h4>💻 Technical Excellence</h4>
+                    <p>World-class engineering team specializing in AI, cloud infrastructure, and scalable educational technology. 21 operational containers, global Cloudflare deployment, and enterprise-grade architecture serving millions.</p>
+                </div>
+                
+                <div class="service-card">
+                    <h4>🌍 Strategic Partners</h4>
+                    <p>TD Africa (African market expertise), Cloudflare (global infrastructure), Andela (talent development) - partnerships that amplify our mission to serve 3+ billion underserved learners worldwide.</p>
+                </div>
+                
+                <div class="service-card">
+                    <h4>🎓 Cultural Intelligence</h4>
+                    <p>Deep understanding of both Nigerian village life and American underserved communities. Biblical foundation meets cutting-edge technology, ensuring culturally relevant education that respects diverse learner contexts.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Company Timeline Section -->
+    <div class="section">
+        <div class="container">
+            <h2>Company Timeline & Milestones</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h4>Foundation & Vision (Early Stage)</h4>
+                        <p>Biblical inspiration drives mission to serve underserved learners globally, focusing on breaking poverty cycles through accessible education.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h4>Infrastructure Development</h4>
+                        <p>Built comprehensive technical foundation with 21 operational containers, complete admin interface, and global Cloudflare deployment.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h4>Dual-Market Strategy Launch</h4>
+                        <p>Established Nigeria as cultural testing ground and US underserved communities as primary markets, setting foundation for global expansion.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h4>AI & Platform Integration</h4>
+                        <p>Deployed Gabriel AI tutoring system, career assessment tools, and comprehensive learning management capabilities.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h4>Global Expansion Ready</h4>
+                        <p>Platform architecture complete and ready to serve 3+ billion learners across Africa, South Asia, Latin America, and global rural communities.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Social Proof Section -->
+    <div class="section">
+        <div class="container">
+            <h2>Social Proof & Impact</h2>
+            <div class="social-proof">
+                <div class="testimonial">
+                    <p class="testimonial-quote">"The vision to break poverty cycles through accessible education resonates with our mission to empower underserved communities globally."</p>
+                    <p class="testimonial-author">– Strategic Partner, TD Africa</p>
+                </div>
+                
+                <div class="testimonial">
+                    <p class="testimonial-quote">"PMERIT's innovative approach to AI-powered education represents the future of democratized learning for billions worldwide."</p>
+                    <p class="testimonial-author">– Technology Partner, Cloudflare</p>
+                </div>
+                
+                <div class="testimonial">
+                    <p class="testimonial-quote">"The dual-market strategy and cultural intelligence framework demonstrates deep understanding of global educational challenges."</p>
+                    <p class="testimonial-author">– Development Partner, Andela</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visuals & Technology Section -->
+    <div class="section">
+        <div class="container">
+            <h2>Cutting-Edge Technology Stack</h2>
+            <p style="text-align: center; font-size: 1.2em; margin-bottom: 40px; color: #7f8c8d;">
+                Built on enterprise-grade infrastructure designed for global scale and reliability.
+            </p>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <h4>🚀 21 Operational Containers</h4>
+                    <p>Comprehensive microservices architecture including core API, user management, AI tutoring, assessments, career tools, and analytics.</p>
+                </div>
+                
+                <div class="service-card">
+                    <h4>☁️ Global Cloud Infrastructure</h4>
+                    <p>Powered by Cloudflare's global edge network ensuring 0.3ms response times and 99.9% uptime worldwide.</p>
+                </div>
+                
+                <div class="service-card">
+                    <h4>🤖 AI-Powered Learning</h4>
+                    <p>Gabriel AI provides personalized tutoring, adaptive assessments, and intelligent career guidance across multiple languages.</p>
+                </div>
+                
+                <div class="service-card">
+                    <h4>📊 Real-Time Monitoring</h4>
+                    <p>Comprehensive monitoring stack with Grafana, Prometheus, and custom analytics for performance and impact tracking.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action Section -->
+    <div class="cta-section">
+        <div class="container">
+            <h2 style="color: white; margin-bottom: 20px;">Join Our Mission to Transform Lives</h2>
+            <p style="font-size: 1.3em; margin-bottom: 20px; opacity: 0.9;">
+                Ready to be part of breaking poverty cycles through accessible education?
+            </p>
+            <p style="font-size: 1.1em; margin-bottom: 30px; opacity: 0.8;">
+                Whether you're a learner seeking transformation, an educator passionate about impact, or an organization wanting to contribute to global change—we invite you to join the PMERIT community.
+            </p>
+            <a href="https://pmerit-ai-platform.pages.dev" class="cta-button">Start Your Learning Journey</a>
+            <a href="https://admin.pmerit.com" class="cta-button" style="margin-left: 20px;">Partner With Us</a>
+        </div>
+    </div>
+</body>
+</html>
