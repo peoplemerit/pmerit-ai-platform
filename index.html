@@ -19,7 +19,16 @@
 <body>
   <header role="banner">
     <div class="logo">PMERIT</div>
-
+    <nav>
+      <select class="nav-btn" id="lang" aria-label="Select Language" title="Choose your preferred language">
+        <option value="en">🇺🇸 English</option>
+        <option value="yo">🇳🇬 Yorùbá</option>
+        <option value="ig">🇳🇬 Igbo</option>
+        <option value="ha">🇳🇬 Hausa</option>
+      </select>
+      <button class="nav-btn" id="pricingBtn">Donate</button>
+      <button class="nav-btn" id="signInBtn">Sign In</button>
+      <button class="nav-btn primary" id="startBtn">Sign Up</button>
     </nav>
   </header>
 
@@ -33,6 +42,7 @@
       <section>
         <div class="pane-title">Quick Actions</div>
 
+        <button class="toggle" id="vhToggle" title="Toggle virtual human assistant for interactive support">
           <span><i class="fas fa-user-astronaut icon"></i> Virtual Human Support</span>
           <span class="switch" aria-hidden="true"></span>
         </button>
@@ -114,7 +124,13 @@
             <div class="input-bar">
               <span class="count" id="count">0/1000</span>
               <div class="input-actions">
-
+                <button class="nav-btn" id="vhQuick" title="Switch to virtual human interaction mode">
+                  <i class="fas fa-user-astronaut"></i> Virtual Human
+                </button>
+                <button class="nav-btn" id="readAbout" title="Learn more about PMERIT platform">
+                  <i class="fas fa-book"></i> Learn About PMERIT
+                </button>
+                <span class="footer-status" title="Connected to educational services and resources">
                   <i class="fas fa-circle-check"></i> Education Services Portal
                 </span>
               </div>
@@ -198,6 +214,8 @@
     </aside>
   </div>
 
+  <footer>
+    <span class="footer-status-main" title="Platform connection status">
       <i class="fas fa-signal"></i> Education Services Portal
     </span>
     <div class="footer-links">

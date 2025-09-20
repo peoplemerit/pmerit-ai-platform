@@ -120,6 +120,15 @@ function init() {
     addMessage('PMERIT AI', `Welcome to PMERIT, ${name}! Your account has been created successfully. You now have access to personalized learning paths and can track your progress.`);
   });
   
+  startBtn.addEventListener('click', () => {
+    if (state.auth) {
+      openAssessment();
+    } else {
+      if (typeof signUpModal.showModal === 'function') {
+        signUpModal.showModal();
+      }
+    }
+  });
   beginBtn.addEventListener('click', openAssessment);
   // Add this new line for the updated button
   document.getElementById('m_beginAssessment').addEventListener('click', openAssessment);
