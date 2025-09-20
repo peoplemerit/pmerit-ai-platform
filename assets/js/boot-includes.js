@@ -106,36 +106,6 @@ function updateStartButton() {
   }
 }
 
-function updateStartButtonLabel() {
-  let buttonText;
-  if (!state.auth) {
-    buttonText = "Sign Up";
-  } else if (state.auth && !state.assessed) {
-    buttonText = "Begin Assessment";
-  } else {
-    buttonText = "View Learning Plan";
-  }
-  
-  startBtn.textContent = buttonText;
-}
-
-function handleStartButtonClick() {
-  if (!state.auth) {
-    // Open sign up modal
-    if (typeof signUpModal.showModal === 'function') {
-      signUpModal.showModal();
-    }
-  } else if (state.auth && !state.assessed) {
-    // Open assessment modal
-    if (typeof assessmentModal.showModal === 'function') {
-      assessmentModal.showModal();
-    }
-  } else {
-    // Redirect to learner portal
-    window.location.href = 'learner-portal.html';
-  }
-}
-
 function setDark(on) {
   darkToggle.classList.toggle('active', on);
   const mDarkToggle = document.getElementById('m_darkToggle');
