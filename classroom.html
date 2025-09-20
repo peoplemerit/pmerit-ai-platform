@@ -1,5 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PMERIT Classroom</title>
+  <link rel="stylesheet" href="/assets/css/base.css">
+  <link rel="stylesheet" href="/assets/css/brand.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0b0c10; color: #e8eef8; line-height: 1.6; overflow-x: hidden; }
+    .app-container { display: grid; grid-template-columns: 280px 1fr 320px; height: 100vh; gap: 1px; background-color: #1f2833; }
+    .panel { background-color: #0b0c10; padding: 15px; overflow-y: auto; }
+    .panel-title { font-weight: bold; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 1px solid #45a29e; color: #66fcf1; }
+    .outline-item { padding: 10px; border-left: 3px solid transparent; cursor: pointer; transition: all 0.2s; }
+    .outline-item:hover { background-color: #1f2833; border-left-color: #45a29e; }
+    .outline-item.active { background-color: #1f2833; border-left-color: #66fcf1; font-weight: bold; }
+    textarea { width: 100%; min-height: 120px; background-color: #1f2833; color: #e8eef8; border: 1px solid #45a29e; border-radius: 4px; padding: 10px; margin-bottom: 10px; resize: vertical; }
+    button { background-color: #45a29e; color: #0b0c10; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background-color 0.2s; }
+    button:hover { background-color: #66fcf1; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #45a29e; }
+    .player-area { background-color: #1f2833; border-radius: 8px; padding: 15px; margin-bottom: 15px; min-height: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .avatar-placeholder { width: 200px; height: 200px; background: linear-gradient(135deg, #45a29e 0%, #1f2833 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+    .messages-container { height: 70vh; overflow-y: auto; margin-bottom: 15px; padding: 10px; background-color: #1f2833; border-radius: 8px; }
+    .message { padding: 10px; border-radius: 8px; margin-bottom: 10px; max-width: 90%; }
+    .message.user { background-color: #1d3557; margin-left: auto; }
+    .message.ai { background-color: #2d3142; }
+    .chat-form { display: flex; gap: 10px; }
+    .chat-form input { flex-grow: 1; padding: 10px; background-color: #1f2833; color: #e8eef8; border: 1px solid #45a29e; border-radius: 4px; }
+    @media (max-width: 1024px) { .app-container { grid-template-columns: 220px 1fr 280px; } }
+    @media (max-width: 768px) { .app-container { grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; } .panel { max-height: 300px; } }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <aside class="panel left-panel">
+      <div class="panel-title">Class Outline</div>
+      <div id="outline-container"></div>
+      <div class="panel-title">Notes</div>
+      <textarea id="notes-text" placeholder="Write your notes here..."></textarea>
+      <button id="save-notes">Save Notes</button>
+      <div class="panel-title">Resources</div>
+      <input type="file" id="file-upload" accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg" multiple style="margin-top: 10px;">
+      <div id="resources-container"></div>
+    </aside>
+    <main class="panel main-panel">
+      <div class="topbar">
+        <h1 id="lesson-title">Introduction to PMERIT Classroom</h1>
+        <button id="end-class">End Class</button>
+      </div>
+      <div class="player-area">
+        <div class="avatar-placeholder">
+          <i class="fas fa-play" style="font-size: 3rem; color: #66fcf1;"></i>
+        </div>
+        <p style="text-align: center; margin-top: 20px;">Welcome to your PMERIT Classroom! Select a lesson from the outline to begin.</p>
+      </div>
+    </main>
+    <aside class="panel right-panel">
+      <div class="panel-title">AI Tutor Chat</div>
+      <div class="messages-container" id="chat-messages"></div>
+      <form class="chat-form" id="chat-form">
+        <input type="text" id="chat-input" placeholder="Ask your AI tutor...">
+        <button type="submit">Send</button>
+      </form>
+    </aside>
+  </div>
+  <script>
+    const config = { LESSON_ID: 'demo-lesson-001' };
+    const state = { courseData: null, notes: { content: "", timestamp: null }, resources: [] };
+    const dom = {
+      lessonTitle: document.getElementById('lesson-title'),
+      outlineContainer: document.getElementById('outline-container'),
+      notesText: document.getElementById('notes-text'),
+      saveNotesBtn: document.getElementById('save-notes'),
+      resourcesContainer: document.getElementById('resources-container'),
+      fileUpload: document.getElementById('file-upload'),
+      endClassBtn: document.getElementById('end-class'),
+      chatMessages: document.getElementById('chat-messages'),
+      chatForm: document.getElementById('chat-form'),
+      chatInput: document.getElementById('chat-input')
+    };
+    function init() {
+      bindEvents();
+      loadLessonData();
+      loadUserNotes();
+      initializeChat();
+      renderOutline();
+      console.log("PMERIT Classroom initialized successfully");
+    }
+    function bindEvents() {
+      dom.saveNotesBtn.addEventListener('click', saveNotes);
+      dom.fileUpload.addEventListener('change', handleFileUpload);
+      dom.endClassBtn.addEventListener('click', endClass);
+      dom.chatForm.addEventListener('submit', handleChatSubmit);
+    }
+    function loadLessonData() {
+      const demoData = {
+        title: "Introduction to PMERIT Classroom",
+        modules: [
+          { title: "Module 1: Getting Started", lessons: [ { title: "Welcome to PMERIT", type: "video", duration: "2:30" }, { title: "How to Use This Platform", type: "video", duration: "5:15" } ] },
+          { title: "Module 2: Core Concepts", lessons: [ { title: "Basic Principles", type: "video", duration: "7:20" }, { title: "Advanced Techniques", type: "reading", duration: "10:00" } ] }
+        ]
+      };
+      dom.lessonTitle.textContent = demoData.title;
+      state.courseData = demoData;
+    }
+    function loadUserNotes() {
+      const savedNotes = localStorage.getItem(`pmerit_notes_${config.LESSON_ID}`);
+      if (savedNotes) {
+        state.notes = JSON.parse(savedNotes);
+        dom.notesText.value = state.notes.content || "";
+      }
+    }
+    function initializeChat() {
+      addChatMessage("ai", "Hello! I'm your AI tutor. How can I help you today?");
+    }
+    function renderOutline() {
+      if (!state.courseData || !state.courseData.modules) return;
+      let outlineHTML = '';
+      state.courseData.modules.forEach((module, moduleIndex) => {
+        outlineHTML += `<div class="outline-item module">${module.title}</div>`;
+        if (module.lessons) {
+          module.lessons.forEach((lesson, lessonIndex) => {
+            outlineHTML += `<div class="outline-item lesson" style="padding-left: 20px;">${lesson.title} (${lesson.duration})</div>`;
+          });
+        }
+      });
+      dom.outlineContainer.innerHTML = outlineHTML;
+    }
+    function saveNotes() {
+      state.notes.content = dom.notesText.value;
+      state.notes.timestamp = new Date().toISOString();
+      localStorage.setItem(`pmerit_notes_${config.LESSON_ID}`, JSON.stringify(state.notes));
+      alert('Notes saved successfully!');
+    }
+    function handleFileUpload(event) {
+      const files = Array.from(event.target.files);
+      files.forEach(file => {
+        state.resources.push({ name: file.name, size: file.size, type: file.type });
+      });
+      renderResources();
+    }
+    function renderResources() {
+      let resourcesHTML = '';
+      state.resources.forEach(resource => {
+        resourcesHTML += `<div class="resource-item"><strong>${resource.name}</strong> <small>(${formatFileSize(resource.size)})</small></div>`;
+      });
+      dom.resourcesContainer.innerHTML = resourcesHTML || '<p>No resources uploaded yet.</p>';
+    }
+    function formatFileSize(bytes) {
+      if (bytes < 1024) return bytes + ' bytes';
+      else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+      else return (bytes / 1048576).toFixed(1) + ' MB';
+    }
+    function handleChatSubmit(event) {
+      event.preventDefault();
+      const message = dom.chatInput.value.trim();
+      if (!message) return;
+      addChatMessage('user', message);
+      dom.chatInput.value = '';
+      setTimeout(() => {
+        const responses = [
+          "That's a great question! Based on what we've covered, the key concept is...",
+          "I'd be happy to explain that. The main idea here is...",
+          "Let me break that down for you. First, consider...",
+          "Good observation! This relates to what we discussed earlier about..."
+        ];
+        const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+        addChatMessage('ai', randomResponse);
+      }, 1000);
+    }
+    function addChatMessage(sender, message) {
+      const messageDiv = document.createElement('div');
+      messageDiv.classList.add('message', sender);
+      messageDiv.textContent = message;
+      dom.chatMessages.appendChild(messageDiv);
+      dom.chatMessages.scrollTop = dom.chatMessages.scrollHeight;
+    }
+    function endClass() {
+      if (confirm('Are you sure you want to end this class session?')) {
+        window.location.href = '/dashboard.html';
+      }
+    }
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
 </body>
 </html>
