@@ -1,0 +1,319 @@
+/* Mobile-First Responsive Design for PMERIT */
+
+/* Base: Mobile (320px - 767px) */
+.container {
+  padding: 0.5rem;
+  max-width: 100%;
+}
+
+.hamburger-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg-primary);
+  z-index: 1000;
+  padding: var(--space-lg);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+.hamburger-menu.open {
+  transform: translateX(0);
+}
+
+.hamburger-toggle {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-primary);
+  display: block;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+}
+
+.menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-lg);
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  text-decoration: none;
+  color: var(--text-primary);
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.menu-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.menu-item .icon {
+  font-size: 2rem;
+  margin-bottom: var(--space-sm);
+}
+
+.menu-item .label {
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Language switcher and action buttons */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.language-switcher {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-size-sm);
+}
+
+.cta-primary {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.cta-primary:hover {
+  background: var(--accent);
+}
+
+/* Help section styles */
+.help-section {
+  margin-top: var(--space-xl);
+  border-top: 1px solid var(--border-color);
+  padding-top: var(--space-lg);
+}
+
+.help-section summary {
+  font-weight: 600;
+  cursor: pointer;
+  padding: var(--space-sm) 0;
+}
+
+.help-section ul {
+  list-style: none;
+  margin-top: var(--space-sm);
+}
+
+.help-section li {
+  margin-bottom: var(--space-xs);
+}
+
+.help-section a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: var(--space-xs) 0;
+  display: block;
+}
+
+.help-section a:hover {
+  color: var(--primary);
+}
+
+/* Portrait orientation (mobile) */
+@media (orientation: portrait) and (max-width: 767px) {
+  .main-content {
+    padding: var(--space-sm);
+  }
+  
+  .assessment-card {
+    margin-bottom: var(--space-lg);
+  }
+  
+  .chat-container {
+    height: 50vh; /* Leave room for keyboard */
+  }
+  
+  .menu-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Landscape orientation (mobile) */
+@media (orientation: landscape) and (max-width: 767px) {
+  .nav-primary {
+    padding: var(--space-xs) var(--space-md);
+  }
+  
+  .main-content {
+    padding: var(--space-xs) var(--space-sm);
+  }
+  
+  .menu-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-sm);
+  }
+  
+  .menu-item {
+    padding: var(--space-sm);
+    font-size: var(--font-size-sm);
+  }
+  
+  .menu-item .icon {
+    font-size: 1.5rem;
+  }
+}
+
+/* Tablet (768px - 1023px) */
+@media (min-width: 768px) {
+  .page-container {
+    grid-template-columns: auto 1fr;
+    grid-template-areas: 
+      "header header"
+      "sidebar main";
+  }
+  
+  .hamburger-toggle {
+    display: none;
+  }
+  
+  .hamburger-menu {
+    position: static;
+    transform: none;
+    width: 280px;
+    height: auto;
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border-color);
+    grid-area: sidebar;
+  }
+  
+  .menu-grid {
+    grid-template-columns: 1fr;
+    margin-top: var(--space-md);
+  }
+  
+  .menu-item {
+    flex-direction: row;
+    justify-content: flex-start;
+    text-align: left;
+    padding: var(--space-md);
+  }
+  
+  .menu-item .icon {
+    margin-bottom: 0;
+    margin-right: var(--space-md);
+    font-size: 1.25rem;
+  }
+  
+  .mobile-hero {
+    display: none;
+  }
+}
+
+/* Landscape tablets and small laptops */
+@media (orientation: landscape) and (min-width: 768px) and (max-height: 600px) {
+  .page-container {
+    grid-template-rows: auto 1fr;
+  }
+  
+  .nav-primary {
+    height: 48px;
+  }
+  
+  .hamburger-menu {
+    padding: var(--space-md);
+  }
+}
+
+/* Desktop (1024px+) */
+@media (min-width: 1024px) {
+  .page-container {
+    grid-template-columns: 280px 1fr 320px;
+    grid-template-areas: 
+      "header header header"
+      "sidebar main aside";
+  }
+  
+  .main-content {
+    padding: var(--space-lg) var(--space-xl);
+  }
+  
+  .hamburger-menu {
+    width: 280px;
+  }
+  
+  /* Additional sidebar for desktop */
+  .right-sidebar {
+    grid-area: aside;
+    background: var(--bg-secondary);
+    border-left: 1px solid var(--border-color);
+    padding: var(--space-lg);
+  }
+}
+
+/* Large Desktop (1440px+) */
+@media (min-width: 1440px) {
+  .page-container {
+    grid-template-columns: 320px 1fr 360px;
+  }
+  
+  .hamburger-menu {
+    width: 320px;
+  }
+  
+  .main-content {
+    padding: var(--space-xl);
+  }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+  .menu-item {
+    border: 0.5px solid var(--border-color);
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .hamburger-menu,
+  .menu-item,
+  .cta-primary {
+    transition: none;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: #0F172A;
+    --bg-secondary: #1E293B;
+    --card-bg: #334155;
+    --text-primary: #F8FAFC;
+    --text-secondary: #94A3B8;
+    --border-color: #475569;
+  }
+}
+
+/* Print styles */
+@media print {
+  .hamburger-menu,
+  .nav-actions,
+  .hamburger-toggle {
+    display: none;
+  }
+  
+  .page-container {
+    height: auto;
+    overflow: visible;
+  }
+}
