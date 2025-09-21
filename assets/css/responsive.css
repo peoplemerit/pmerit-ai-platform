@@ -74,6 +74,16 @@
   gap: var(--space-sm);
 }
 
+/* Hide some nav buttons on mobile to save space */
+@media (max-width: 767px) {
+  .nav-actions .nav-btn:not(.primary) {
+    display: none;
+  }
+  .nav-actions {
+    gap: var(--space-xs);
+  }
+}
+
 .language-switcher {
   background: var(--card-bg);
   border: 1px solid var(--border-color);
