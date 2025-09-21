@@ -14,30 +14,22 @@
   <link rel="stylesheet" href="assets/css/brand.css">
   <link rel="stylesheet" href="assets/css/components.css">
   <link rel="stylesheet" href="assets/css/theme-pmerit.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
 
 </head>
 <body>
-  <header role="banner">
-    <div class="logo">PMERIT</div>
-    <nav>
-      <select class="nav-btn" id="lang" aria-label="Select Language" title="Choose your preferred language">
-        <option value="en">🇺🇸 English</option>
-        <option value="yo">🇳🇬 Yorùbá</option>
-        <option value="ig">🇳🇬 Igbo</option>
-        <option value="ha">🇳🇬 Hausa</option>
-      </select>
-      <button class="nav-btn" id="pricingBtn">Donate</button>
-      <button class="nav-btn" id="signInBtn">Sign In</button>
-      <button class="nav-btn primary" id="startBtn">Sign Up</button>
-    </nav>
-  </header>
+  <!-- Mobile-first page structure -->
+  <div class="page-container">
+    <!-- Include mobile-first navigation -->
+    <div id="navigation-container"></div>
 
-  <div class="mobile-hero">
-    <h2>Empowering Learning Through Innovation</h2>
-    <p>Accessible, high-quality education for global opportunities</p>
-  </div>
+    <div class="mobile-hero">
+      <h2>Empowering Learning Through Innovation</h2>
+      <p>Accessible, high-quality education for global opportunities</p>
+    </div>
 
-  <div class="estate">
+    <div class="main-content">
+      <div class="estate">
     <aside id="left" aria-label="Quick actions sidebar">
       <section>
         <div class="pane-title">Quick Actions</div>
@@ -316,7 +308,11 @@
     </div>
   </dialog>
 
+      </div> <!-- Close main-content -->
+    </div> <!-- Close page-container -->
+
   <script src="assets/js/boot-includes.js"></script>
+  <script src="assets/js/router.js"></script>
   <script src="assets/js/chat.js"></script>
   <script src="assets/js/main.js"></script>
 </body>

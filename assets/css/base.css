@@ -80,7 +80,104 @@ dialog .button-group {
   outline-offset: 2px;
 }
 
+/* Mobile-first base styles with PMERIT brand colors */
+:root {
+  --primary: #4F46E5;
+  --accent: #7C3AED;
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F8FAFC;
+  --card-bg: #FFFFFF;
+  --text-primary: #1E293B;
+  --text-secondary: #64748B;
+  --border-color: #E2E8F0;
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --transition: all 0.2s ease-in-out;
+  
+  /* Fluid spacing */
+  --space-xs: clamp(0.25rem, 1vw, 0.5rem);
+  --space-sm: clamp(0.5rem, 2vw, 1rem);
+  --space-md: clamp(1rem, 3vw, 1.5rem);
+  --space-lg: clamp(1.5rem, 4vw, 2rem);
+  --space-xl: clamp(2rem, 5vw, 3rem);
+  
+  /* Fluid typography */
+  --font-size-sm: clamp(0.875rem, 2.5vw, 1rem);
+  --font-size-base: clamp(1rem, 2.5vw, 1.125rem);
+  --font-size-lg: clamp(1.125rem, 3vw, 1.25rem);
+  
+  --border-radius: 0.5rem;
+  --container-max: 1200px;
+}
+
+/* Fluid typography */
+html {
+  font-size: clamp(14px, 2.5vw, 18px);
+}
+
+/* Mobile-first viewport-fit layout */
+.page-container {
+  height: 100vh;
+  height: 100dvh; /* Dynamic viewport height for mobile */
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas: 
+    "header"
+    "main"
+    "footer";
+  overflow: hidden; /* Prevent page scroll */
+}
+
+.nav-primary {
+  grid-area: header;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.main-content {
+  grid-area: main;
+  overflow-y: auto; /* Content scrolls within container */
+  padding: var(--space-md);
+}
+
+.bottom-nav {
+  grid-area: footer;
+  /* Bottom navigation for key actions */
+}
+
+/* Flexible media */
+img, video, iframe, svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Fluid containers */
+.fluid-container {
+  width: min(90vw, var(--container-max, 1200px));
+  margin: 0 auto;
+}
+
+/* Touch targets (minimum 44px) */
+button, .btn, .menu-item {
+  min-height: 44px;
+  min-width: 44px;
+}
+
 /* Mobile Hero Section */
 .mobile-hero {
-  display: none;
+  display: block;
+  text-align: center;
+  padding: var(--space-lg);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  color: white;
+}
+
+@media (min-width: 768px) {
+  .mobile-hero {
+    display: none;
+  }
 }
