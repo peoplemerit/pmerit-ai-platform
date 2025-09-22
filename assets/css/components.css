@@ -182,7 +182,7 @@ nav {
 /* Google-style Page Container */
 .page-container {
   min-height: 100vh;
-  padding-bottom: 100px; /* Account for fixed footer */
+  padding-bottom: 90px; /* Account for fixed footer - reduced to match Google's footer height */
   position: relative;
 }
 
@@ -675,59 +675,92 @@ textarea:focus {
   font-style: italic;
 }
 
-/* Google-style Footer */
+/* Google-style Footer - Exact Match */
 .google-footer {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  background: var(--bg-primary);
-  border-top: 1px solid var(--border-color);
+  background: #f2f2f2;
   z-index: 100;
+  font-family: arial,sans-serif;
 }
 
 .footer-row {
   display: flex;
   padding: 0 20px;
   font-size: 14px;
+  line-height: 1.3;
 }
 
 .footer-center {
   justify-content: center;
-  padding: 15px 20px;
-  border-bottom: 1px solid var(--border-color);
+  padding: 12px 20px;
+  border-bottom: 1px solid #dadce0;
 }
 
 .footer-status {
-  color: var(--text-secondary);
+  color: #70757a;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .footer-links {
   justify-content: space-between;
-  padding: 15px 20px;
+  padding: 14px 20px;
+  background: #f2f2f2;
 }
 
 .footer-left,
 .footer-right {
   display: flex;
-  gap: 27px;
+  gap: 30px;
+  align-items: center;
 }
 
 .footer-link {
   background: none;
   border: none;
-  color: var(--text-secondary);
+  color: #70757a;
   font-size: 14px;
+  font-weight: 400;
   cursor: pointer;
   text-decoration: none;
   padding: 0;
+  font-family: arial,sans-serif;
+  line-height: 1.3;
 }
 
 .footer-link:hover {
-  color: var(--text-primary);
+  text-decoration: underline;
+  color: #70757a;
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .google-footer {
+    background: #171717;
+  }
+  
+  .footer-center {
+    border-bottom: 1px solid #3c4043;
+  }
+  
+  .footer-links {
+    background: #171717;
+  }
+  
+  .footer-status,
+  .footer-link {
+    color: #bdc1c6;
+  }
+  
+  .footer-link:hover {
+    color: #bdc1c6;
+  }
 }
 
 /* Legacy Footer Styles (if needed) */
