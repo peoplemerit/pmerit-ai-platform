@@ -17,7 +17,7 @@ class NavigationManager {
       }
       const html = await response.text();
       
-      const container = document.getElementById('navigation-container');
+      const container = document.getElementById('header-container');
       if (container) {
         container.innerHTML = html;
         this.initializeHamburgerMenu();
@@ -105,9 +105,9 @@ class NavigationManager {
 
   // Fallback navigation if partial loading fails
   createFallbackNavigation() {
-    const container = document.getElementById('navigation-container');
+    const container = document.getElementById('header-container');
     if (container) {
-      container.innerHTML = '<nav class="mobile-nav"><div class="nav-primary"><div class="logo">PMERIT</div><div class="nav-actions"><select class="language-switcher" aria-label="Select Language"><option value="en">English</option><option value="yo">Yorùbá</option><option value="ig">Igbo</option><option value="ha">Hausa</option></select><button class="cta-primary">Sign Up</button><button class="hamburger-toggle" aria-label="Menu"></button></div></div></nav>';
+      container.innerHTML = '<nav class="mobile-nav"><div class="nav-primary"><div class="logo">PMERIT</div><div class="nav-actions"><select class="language-switcher" aria-label="Select Language"><option value="en">English</option><option value="yo">Yorï¿½bï¿½</option><option value="ig">Igbo</option><option value="ha">Hausa</option></select><button class="cta-primary">Sign Up</button><button class="hamburger-toggle" aria-label="Menu"></button></div></div></nav>';
       this.initializeHamburgerMenu();
     }
   }
