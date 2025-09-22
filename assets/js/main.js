@@ -2,6 +2,9 @@ function init() {
   // Initialize state
   initState();
   
+  // Initialize chat interface buttons
+  initChatInterface();
+  
   // Hamburger menu functionality
   const hamburgerMenu = document.getElementById('hamburgerMenu');
   const navItems = document.getElementById('navItems');
@@ -232,6 +235,106 @@ function init() {
   pricingBtn.addEventListener('click', () => {
     addMessage('PMERIT AI', 'PMERIT offers flexible pricing plans to make education accessible to everyone. We have free courses available, as well as premium plans with additional features and personalized support. Would you like to learn more about our pricing options?');
   });
+}
+
+// Simple message display function
+function addMessage(sender, message) {
+  console.log(`${sender}: ${message}`);
+  // In a full implementation, this would add messages to a chat history display
+}
+
+// Chat Interface Initialization
+function initChatInterface() {
+  // Add button for file uploads
+  const addBtn = document.querySelector('.add-btn');
+  const micBtn = document.querySelector('.mic-btn');
+  const voiceBtn = document.querySelector('.voice-btn');
+  const chatInput = document.querySelector('.chat-input');
+  const sendBtn = document.querySelector('.send-btn');
+  
+  if (addBtn) {
+    addBtn.addEventListener('click', () => {
+      // Create hidden file input
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = 'image/*,video/*,audio/*,.pdf,.doc,.docx,.txt';
+      fileInput.multiple = true;
+      
+      fileInput.addEventListener('change', (e) => {
+        const files = Array.from(e.target.files);
+        if (files.length > 0) {
+          const fileNames = files.map(f => f.name).join(', ');
+          addMessage('You', `Uploaded files: ${fileNames}`);
+          addMessage('PMERIT AI', `I can see you've uploaded ${files.length} file(s): ${fileNames}. I can help analyze documents, images, and other content to support your learning. What would you like me to help you with regarding these files?`);
+        }
+      });
+      
+      fileInput.click();
+    });
+  }
+  
+  if (micBtn) {
+    let isRecording = false;
+    micBtn.addEventListener('click', () => {
+      if (!isRecording) {
+        // Start voice recording
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+          navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(stream => {
+              isRecording = true;
+              micBtn.style.color = '#ea4335'; // Red color when recording
+              micBtn.innerHTML = '<i class="fas fa-stop"></i>';
+              addMessage('PMERIT AI', 'Listening... Speak your question or message.');
+              
+              // Stop recording after 10 seconds (demo)
+              setTimeout(() => {
+                stream.getTracks().forEach(track => track.stop());
+                isRecording = false;
+                micBtn.style.color = '#5f6368';
+                micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                addMessage('PMERIT AI', 'Voice input received. In a full implementation, I would process your speech and respond accordingly.');
+              }, 3000);
+            })
+            .catch(err => {
+              addMessage('PMERIT AI', 'Sorry, I need microphone permission to use voice input. Please enable microphone access in your browser settings.');
+            });
+        } else {
+          addMessage('PMERIT AI', 'Voice input is not supported in your browser. Please type your message instead.');
+        }
+      }
+    });
+  }
+  
+  if (voiceBtn) {
+    voiceBtn.addEventListener('click', () => {
+      addMessage('PMERIT AI', 'Voice settings: Here you can adjust text-to-speech options, voice speed, and language preferences. Would you like me to read my responses aloud?');
+    });
+  }
+  
+  // Enhanced chat input functionality
+  if (chatInput && sendBtn) {
+    chatInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+    
+    sendBtn.addEventListener('click', sendMessage);
+    
+    function sendMessage() {
+      const message = chatInput.value.trim();
+      if (message) {
+        addMessage('You', message);
+        chatInput.value = '';
+        
+        // Simulate AI response
+        setTimeout(() => {
+          addMessage('PMERIT AI', `Thank you for your message: "${message}". I'm here to help with your learning journey. What specific topic or skill would you like to explore today?`);
+        }, 1000);
+      }
+    }
+  }
 }
 
 if (document.readyState === 'loading') {
