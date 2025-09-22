@@ -133,7 +133,7 @@ function updateWelcomeMessage() {
   if (state.support) {
     greeting = "Welcome to PMERIT Support. I can help with accounts, enrollment, and technical issues. How can I assist you today?";
   } else if (!state.auth) {
-    greeting = "Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?";
+    greeting = "Hi there! I'm your learning companion, empowering your education through innovation. PMERIT provides accessible, high-quality education that opens doors to endless opportunities worldwide. Ready to discover your potential and start your learning journey?";
   } else if (state.auth && !state.assessed) {
     greeting = "Welcome back! Ready to discover your perfect learning path? Let's start with a quick assessment to personalize your experience.";
   } else {

@@ -214,7 +214,7 @@ function init() {
   });
   
   document.getElementById('aboutBtn').addEventListener('click', () => {
-    addMessage('PMERIT AI', 'PMERIT is dedicated to providing accessible, high-quality education to learners worldwide. Our mission is to bridge educational gaps and create opportunities for personal and professional growth through innovative learning solutions.');
+    addMessage('PMERIT AI', 'Hi! I\'m empowering your education through innovation. PMERIT bridges educational gaps with accessible, high-quality learning that opens doors to endless opportunities worldwide. Let\'s create your personalized path to success!');
   });
   
   // Initialize rotating tips
