@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>{{PAGE_TITLE}} - PMERIT Platform</title>
+  <meta name="description" content="{{PAGE_DESCRIPTION}}">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  
+  <!-- PMERIT Unified Design System -->
+  <link rel="stylesheet" href="assets/css/unified-design-system.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  
+  <!-- Page-specific styles -->
+  {{PAGE_STYLES}}
+</head>
+<body class="page-layout">
+  <!-- Header -->
+  <div class="page-header" id="header-container">
+    <!-- Loaded dynamically via JavaScript -->
+  </div>
+  
+  <!-- Main Content -->
+  <main class="page-main">
+    <div class="container">
+      {{PAGE_CONTENT}}
+    </div>
+  </main>
+  
+  <!-- Footer -->
+  <div class="page-footer" id="footer-container">
+    <!-- Loaded dynamically via JavaScript -->
+  </div>
+
+  <!-- Modals and Dialogs (from footer.html) -->
+  <dialog id="signUpModal">
+    <form method="dialog">
+      <h3><i class="fas fa-user-plus"></i> Create your PMERIT account</h3>
+      <label>
+        <span>Full name</span>
+        <input id="su_name" required placeholder="Your name" class="input"/>
+      </label>
+      <label>
+        <span>Email</span>
+        <input id="su_email" type="email" required placeholder="you@example.com" class="input"/>
+      </label>
+      <label>
+        <span>Password</span>
+        <input id="su_pwd" type="password" required placeholder="••••••••" class="input"/>
+      </label>
+      <p style="font-size:0.9rem;color:var(--text-secondary);margin:1rem 0">
+        By continuing you agree to our terms.
+      </p>
+      <div class="button-group">
+        <button class="btn btn-secondary" id="signUpCancel" type="button">Cancel</button>
+        <button class="btn btn-primary" id="signUpCreate" type="button">Create account</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="signInModal">
+    <form method="dialog">
+      <h3><i class="fas fa-right-to-bracket"></i> Sign in to PMERIT</h3>
+      <label>
+        <span>Email</span>
+        <input id="si_email" type="email" required placeholder="you@example.com" class="input"/>
+      </label>
+      <label>
+        <span>Password</span>
+        <input id="si_pwd" type="password" required placeholder="••••••••" class="input"/>
+      </label>
+      <div style="margin-top:1rem">
+        <a href="#forgot" style="font-size:0.9rem; color: var(--accent);">Forgot password?</a>
+      </div>
+      <div class="button-group">
+        <button class="btn btn-secondary" id="signInCancel" type="button">Cancel</button>
+        <button class="btn btn-primary" id="signInGo" type="button">Sign In</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- JavaScript -->
+  <script src="assets/js/boot-includes.js"></script>
+  <script src="assets/js/router.js"></script>
+  <script src="assets/js/main.js"></script>
+  {{PAGE_SCRIPTS}}
+</body>
+</html>

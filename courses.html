@@ -3,15 +3,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Courses - PMERIT Platform</title>
-  
-  <!-- Core Styles -->
-  <link rel="stylesheet" href="/assets/base.css">
+  <meta name="description" content="Explore PMERIT courses designed for accessible, high-quality education worldwide.">
+
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  
+  <!-- PMERIT Unified Design System -->
+  <link rel="stylesheet" href="assets/css/unified-design-system.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
   
   <!-- Courses-specific styles -->
   <style>
@@ -500,15 +508,15 @@
     }
   </style>
 </head>
-<body>
-  <!-- Header will be loaded by boot-includes.js -->
-  <div id="header-container"></div>
+<body class="page-layout">
+  <!-- Header -->
+  <div class="page-header" id="header-container">
+    <!-- Loaded dynamically via JavaScript -->
+  </div>
   
-  <!-- Navigation will be loaded by boot-includes.js -->
-  <div id="nav-container"></div>
-  
-  <main role="main">
-    <div class="courses-container">
+  <!-- Main Content -->
+  <main class="page-main" role="main">
+    <div class="container courses-container">
       <!-- Page Header -->
       <div class="courses-header">
         <h1 class="courses-title">Explore Courses</h1>
@@ -1114,5 +1122,15 @@
       window.PMERIT.Courses.init();
     });
   </script>
+  
+  <!-- Footer -->
+  <div class="page-footer" id="footer-container">
+    <!-- Loaded dynamically via JavaScript -->
+  </div>
+
+  <!-- JavaScript -->
+  <script src="assets/js/boot-includes.js"></script>
+  <script src="assets/js/router.js"></script>
+  <script src="assets/js/main.js"></script>
 </body>
 </html>
