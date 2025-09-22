@@ -35,8 +35,8 @@ const chatBody = document.getElementById('chatBody');
 const welcomeCopy = document.getElementById('welcomeCopy');
 const welcomeMsg = document.getElementById('welcomeMsg');
 const settingsBox = document.getElementById('settingsBox');
-const settingsHead = settingsBox.querySelector('.head');
-const settingsBody = settingsBox.querySelector('.body');
+const settingsHead = settingsBox ? settingsBox.querySelector('.head') : null;
+const settingsBody = settingsBox ? settingsBox.querySelector('.body') : null;
 const dashBtn = document.getElementById('dashBtn');
 const signInBtn = document.getElementById('signInBtn');
 const startBtn = document.getElementById('startBtn');
@@ -66,10 +66,10 @@ function initState() {
   }
   
   body.classList.toggle('dark', state.dark);
-  if (state.dark) {
+  if (state.dark && darkToggle) {
     darkToggle.classList.add('active');
   }
-  if (state.tts) {
+  if (state.tts && ttsToggle) {
     ttsToggle.classList.add('active');
   }
   
@@ -107,7 +107,7 @@ function updateStartButton() {
 }
 
 function setDark(on) {
-  darkToggle.classList.toggle('active', on);
+  if (darkToggle) darkToggle.classList.toggle('active', on);
   const mDarkToggle = document.getElementById('m_darkToggle');
   if (mDarkToggle) mDarkToggle.classList.toggle('active', on);
   state.dark = on;
@@ -116,7 +116,7 @@ function setDark(on) {
 }
 
 function setTTS(on) {
-  ttsToggle.classList.toggle('active', on);
+  if (ttsToggle) ttsToggle.classList.toggle('active', on);
   const mTtsToggle = document.getElementById('m_ttsToggle');
   if (mTtsToggle) mTtsToggle.classList.toggle('active', on);
   state.tts = on;
@@ -144,31 +144,32 @@ function updateWelcomeMessage() {
 }
 
 function setSupport(on) {
-  supportToggle.classList.toggle('active', on);
+  if (supportToggle) supportToggle.classList.toggle('active', on);
   const mSupportToggle = document.getElementById('m_supportToggle');
   if (mSupportToggle) mSupportToggle.classList.toggle('active', on);
   state.support = on;
-  supportBadge.style.display = on ? 'inline-flex' : 'none';
+  if (supportBadge) supportBadge.style.display = on ? 'inline-flex' : 'none';
   updateWelcomeMessage();
 }
 
 function setVH(on) {
-  vhToggle.classList.toggle('active', on);
+  if (vhToggle) vhToggle.classList.toggle('active', on);
   const mVhToggle = document.getElementById('m_vhToggle');
   if (mVhToggle) mVhToggle.classList.toggle('active', on);
   state.vh = on;
   
   if (on) {
-    textChat.style.display = 'none';
-    vhStage.style.display = 'flex';
-    vhAvatar.classList.add('active');
-    vhBadge.style.display = 'inline-flex';
-    document.getElementById('captions').textContent = "Virtual Human is ready.";
+    if (textChat) textChat.style.display = 'none';
+    if (vhStage) vhStage.style.display = 'flex';
+    if (vhAvatar) vhAvatar.classList.add('active');
+    if (vhBadge) vhBadge.style.display = 'inline-flex';
+    const captions = document.getElementById('captions');
+    if (captions) captions.textContent = "Virtual Human is ready.";
   } else {
-    vhStage.style.display = 'none';
-    textChat.style.display = 'flex';
-    vhAvatar.classList.remove('active');
-    vhBadge.style.display = 'none';
+    if (vhStage) vhStage.style.display = 'none';
+    if (textChat) textChat.style.display = 'flex';
+    if (vhAvatar) vhAvatar.classList.remove('active');
+    if (vhBadge) vhBadge.style.display = 'none';
   }
 }
 
