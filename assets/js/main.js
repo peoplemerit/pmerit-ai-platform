@@ -199,25 +199,31 @@ function init() {
     });
   }
   
-  // Chat functionality
-  chatInput.addEventListener('input', () => {
-    count.textContent = `${chatInput.value.length}/1000`;
-  });
+  // Chat functionality - Add null checks
+  if (chatInput) {
+    chatInput.addEventListener('input', () => {
+      count.textContent = `${chatInput.value.length}/1000`;
+    });
+    
+    chatInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+  }
   
-  sendBtn.addEventListener('click', sendMessage);
-  
-  chatInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
-  });
+  if (sendBtn) {
+    sendBtn.addEventListener('click', sendMessage);
+  }
   
   // Career paths
-  careerPaths.addEventListener('click', () => {
-    renderTracks();
-    tracksModal.showModal();
-  });
+  if (careerPaths) {
+    careerPaths.addEventListener('click', () => {
+      renderTracks();
+      tracksModal.showModal();
+    });
+  }
   
   const mCareerPaths = document.getElementById('m_careerPaths');
   if (mCareerPaths) {
@@ -227,59 +233,97 @@ function init() {
     });
   }
   
-  document.getElementById('tracksClose').addEventListener('click', () => tracksModal.close());
+  const tracksClose = document.getElementById('tracksClose');
+  if (tracksClose && tracksModal) {
+    tracksClose.addEventListener('click', () => tracksModal.close());
+  }
   
   // Voices
-  document.getElementById('voicesBtn').addEventListener('click', () => voicesModal.showModal());
-  document.getElementById('voicesClose').addEventListener('click', () => voicesModal.close());
-  document.getElementById('browserTts').addEventListener('click', () => {
-    const text = document.getElementById('voiceText').value.trim();
-    if (!text) return;
-    if (!('speechSynthesis' in window)) {
-      alert('Browser TTS not supported.');
-      return;
-    }
-    speechSynthesis.cancel();
-    speechSynthesis.speak(new SpeechSynthesisUtterance(text));
-  });
+  const voicesBtn = document.getElementById('voicesBtn');
+  if (voicesBtn && voicesModal) {
+    voicesBtn.addEventListener('click', () => voicesModal.showModal());
+  }
+  
+  const voicesClose = document.getElementById('voicesClose');
+  if (voicesClose && voicesModal) {
+    voicesClose.addEventListener('click', () => voicesModal.close());
+  }
+  
+  const browserTts = document.getElementById('browserTts');
+  if (browserTts) {
+    browserTts.addEventListener('click', () => {
+      const voiceText = document.getElementById('voiceText');
+      if (!voiceText) return;
+      const text = voiceText.value.trim();
+      if (!text) return;
+      if (!('speechSynthesis' in window)) {
+        alert('Browser TTS not supported.');
+        return;
+      }
+      speechSynthesis.cancel();
+      speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+    });
+  }
   
   // Footer buttons
-  document.getElementById('privacyBtn').addEventListener('click', () => {
-    addMessage('PMERIT AI', 'Our Privacy & Terms page provides detailed information about how we protect your data and our terms of service. We prioritize your privacy and transparency in all our educational services.');
-  });
+  const privacyBtn = document.getElementById('privacyBtn');
+  if (privacyBtn) {
+    privacyBtn.addEventListener('click', () => {
+      addMessage('PMERIT AI', 'Our Privacy & Terms page provides detailed information about how we protect your data and our terms of service. We prioritize your privacy and transparency in all our educational services.');
+    });
+  }
   
-  document.getElementById('contactBtn').addEventListener('click', () => {
-    addMessage('PMERIT AI', 'You can contact our support team through this chat interface, or reach out via email at support@pmerit.com. We typically respond within 24 hours during business days.');
-  });
+  const contactBtn = document.getElementById('contactBtn');
+  if (contactBtn) {
+    contactBtn.addEventListener('click', () => {
+      addMessage('PMERIT AI', 'You can contact our support team through this chat interface, or reach out via email at support@pmerit.com. We typically respond within 24 hours during business days.');
+    });
+  }
   
-  document.getElementById('partnershipsBtn').addEventListener('click', () => {
-    addMessage('PMERIT AI', 'PMERIT partners with leading educational institutions and industry organizations to provide comprehensive learning opportunities. Contact us to learn about partnership opportunities.');
-  });
+  const partnershipsBtn = document.getElementById('partnershipsBtn');
+  if (partnershipsBtn) {
+    partnershipsBtn.addEventListener('click', () => {
+      addMessage('PMERIT AI', 'PMERIT partners with leading educational institutions and industry organizations to provide comprehensive learning opportunities. Contact us to learn about partnership opportunities.');
+    });
+  }
   
-  document.getElementById('supportBtn').addEventListener('click', () => {
-    setSupport(true);
-    addMessage('PMERIT AI', 'Support mode activated! I\'m now ready to help you with any technical issues, account questions, or general platform inquiries. How can I assist you?');
-  });
+  const supportBtn = document.getElementById('supportBtn');
+  if (supportBtn) {
+    supportBtn.addEventListener('click', () => {
+      setSupport(true);
+      addMessage('PMERIT AI', 'Support mode activated! I\'m now ready to help you with any technical issues, account questions, or general platform inquiries. How can I assist you?');
+    });
+  }
   
-  document.getElementById('aboutBtn').addEventListener('click', () => {
-    addMessage('PMERIT AI', 'Hi! I\'m empowering your education through innovation. PMERIT bridges educational gaps with accessible, high-quality learning that opens doors to endless opportunities worldwide. Let\'s create your personalized path to success!');
-  });
+  const aboutBtn = document.getElementById('aboutBtn');
+  if (aboutBtn) {
+    aboutBtn.addEventListener('click', () => {
+      addMessage('PMERIT AI', 'Hi! I\'m empowering your education through innovation. PMERIT bridges educational gaps with accessible, high-quality learning that opens doors to endless opportunities worldwide. Let\'s create your personalized path to success!');
+    });
+  }
   
   // Initialize rotating tips
-  rotateInsights(insights);
-  rotateInsights(m_insights);
+  if (typeof rotateInsights === 'function') {
+    rotateInsights(insights);
+    rotateInsights(m_insights);
+  }
   
   // Language selector
-  document.getElementById('lang').addEventListener('change', function() {
-    state.lang = this.value;
-    save('pmerit_lang', state.lang);
-    addMessage('PMERIT AI', `Language changed to ${this.options[this.selectedIndex].text}. In a full implementation, the entire interface would be translated to your selected language.`);
-  });
+  const langSelector = document.getElementById('lang');
+  if (langSelector) {
+    langSelector.addEventListener('change', function() {
+      state.lang = this.value;
+      save('pmerit_lang', state.lang);
+      addMessage('PMERIT AI', `Language changed to ${this.options[this.selectedIndex].text}. In a full implementation, the entire interface would be translated to your selected language.`);
+    });
+  }
 
   // Pricing button
-  pricingBtn.addEventListener('click', () => {
-    addMessage('PMERIT AI', 'PMERIT offers flexible pricing plans to make education accessible to everyone. We have free courses available, as well as premium plans with additional features and personalized support. Would you like to learn more about our pricing options?');
-  });
+  if (pricingBtn) {
+    pricingBtn.addEventListener('click', () => {
+      addMessage('PMERIT AI', 'PMERIT offers flexible pricing plans to make education accessible to everyone. We have free courses available, as well as premium plans with additional features and personalized support. Would you like to learn more about our pricing options?');
+    });
+  }
 }
 
 // Simple message display function
