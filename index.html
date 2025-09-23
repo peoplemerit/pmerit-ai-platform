@@ -31,11 +31,15 @@
           </div>
           
           <div class="chat-interface">
+            <div class="chat-header">
+              <h2>Ask Your Learning Companion</h2>
+              <p class="chat-description">Get personalized guidance on courses, career paths, and learning objectives</p>
+            </div>
             <div class="input-container">
               <button class="add-btn" title="Add files, images, or take photo" aria-label="Add content">
                 <i class="fas fa-plus"></i>
               </button>
-              <input type="text" placeholder="Ask about courses, learning paths, or your goals..." class="chat-input">
+              <input type="text" placeholder="Try: 'What programming courses do you recommend for beginners?'" class="chat-input">
               <button class="mic-btn" title="Voice input" aria-label="Voice input">
                 <i class="fas fa-microphone"></i>
               </button>
@@ -43,19 +47,54 @@
                 <i class="fas fa-volume-up"></i>
               </button>
             </div>
-            <button class="send-btn">Send</button>
+            <button class="send-btn">
+              <i class="fas fa-paper-plane"></i>
+              Send Message
+            </button>
           </div>
           
           <div class="quick-actions">
-            <button class="action-btn primary">Begin Assessment</button>
-            <button class="action-btn">Explore Career Paths</button>
+            <button class="action-btn primary">
+              <i class="fas fa-rocket"></i>
+              Begin Assessment
+            </button>
+            <button class="action-btn secondary">
+              <i class="fas fa-compass"></i>
+              Explore Career Paths
+            </button>
+            <button class="action-btn tertiary">
+              <i class="fas fa-book-open"></i>
+              Browse Courses
+            </button>
           </div>
         </div>
         
         <div class="content-right">
           <div class="hero-illustration">
-            <div class="illustration-placeholder">
-              <i class="fas fa-graduation-cap" style="font-size: 8rem; color: var(--primary); opacity: 0.3;"></i>
+            <div class="illustration-content">
+              <div class="floating-elements">
+                <div class="float-item graduation">
+                  <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div class="float-item book">
+                  <i class="fas fa-book-open"></i>
+                </div>
+                <div class="float-item rocket">
+                  <i class="fas fa-rocket"></i>
+                </div>
+                <div class="float-item lightbulb">
+                  <i class="fas fa-lightbulb"></i>
+                </div>
+                <div class="float-item chart">
+                  <i class="fas fa-chart-line"></i>
+                </div>
+              </div>
+              <div class="main-illustration">
+                <div class="ai-brain">
+                  <i class="fas fa-brain"></i>
+                </div>
+                <div class="connection-lines"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -73,12 +112,15 @@
         <button class="footer-link" id="aboutBtn">About PMERIT</button>
         <span class="footer-separator">|</span>
         <button class="footer-link" id="partnershipsBtn">Partnerships</button>
-        <span class="footer-separator">|</span>
+      </div>
+      <div class="footer-center">
         <button class="footer-link" id="supportBtn">Support</button>
+        <span class="footer-separator">|</span>
+        <button class="footer-link" id="privacyBtn">Privacy</button>
+        <span class="footer-separator">|</span>
+        <button class="footer-link" id="termsBtn">Terms</button>
       </div>
       <div class="footer-right">
-        <button class="footer-link" id="privacyBtn">Privacy & Terms</button>
-        <span class="footer-separator">|</span>
         <button class="footer-link" id="contactBtn">Contact</button>
         <span class="footer-separator">|</span>
         <button class="footer-link" id="settingsBtn">Settings</button>
