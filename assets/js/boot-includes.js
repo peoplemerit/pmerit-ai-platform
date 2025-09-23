@@ -48,6 +48,12 @@ const vhShort = document.getElementById('vhShort');
 const supportShort = document.getElementById('supportShort');
 const signInModal = document.getElementById('signInModal');
 const signUpModal = document.getElementById('signUpModal');
+
+// Mobile menu elements
+const hamburgerToggle = document.querySelector('.hamburger-toggle');
+const mobileMenu = document.getElementById('mobileMenu');
+const menuClose = document.querySelector('.menu-close');
+const menuBackdrop = document.querySelector('.menu-backdrop');
 const assessmentModal = document.getElementById('assessmentModal');
 const tracksModal = document.getElementById('tracksModal');
 const voicesModal = document.getElementById('voicesModal');
@@ -231,3 +237,95 @@ function rotateInsights(el) {
     el.textContent = tips[i];
   }, 5000);
 }
+
+// Mobile Menu Functions
+function openMobileMenu() {
+  if (mobileMenu) {
+    mobileMenu.classList.add('open');
+    mobileMenu.setAttribute('aria-hidden', 'false');
+    hamburgerToggle?.setAttribute('aria-expanded', 'true');
+    
+    // Create backdrop if it doesn't exist
+    if (!document.querySelector('.menu-backdrop')) {
+      const backdrop = document.createElement('div');
+      backdrop.className = 'menu-backdrop';
+      backdrop.addEventListener('click', closeMobileMenu);
+      document.body.appendChild(backdrop);
+    }
+    
+    const backdrop = document.querySelector('.menu-backdrop');
+    if (backdrop) {
+      backdrop.classList.add('active');
+    }
+    
+    // Prevent body scroll
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeMobileMenu() {
+  if (mobileMenu) {
+    mobileMenu.classList.remove('open');
+    mobileMenu.setAttribute('aria-hidden', 'true');
+    hamburgerToggle?.setAttribute('aria-expanded', 'false');
+    
+    const backdrop = document.querySelector('.menu-backdrop');
+    if (backdrop) {
+      backdrop.classList.remove('active');
+    }
+    
+    // Restore body scroll
+    document.body.style.overflow = '';
+  }
+}
+
+// Initialize mobile menu event listeners
+document.addEventListener('DOMContentLoaded', function() {
+  // Hamburger toggle
+  if (hamburgerToggle) {
+    hamburgerToggle.addEventListener('click', function() {
+      const isOpen = mobileMenu?.classList.contains('open');
+      if (isOpen) {
+        closeMobileMenu();
+      } else {
+        openMobileMenu();
+      }
+    });
+  }
+  
+  // Close button
+  if (menuClose) {
+    menuClose.addEventListener('click', closeMobileMenu);
+  }
+  
+  // Close on escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && mobileMenu?.classList.contains('open')) {
+      closeMobileMenu();
+    }
+  });
+  
+  // Close menu when clicking menu items
+  const menuItems = document.querySelectorAll('.menu-item');
+  menuItems.forEach(item => {
+    item.addEventListener('click', closeMobileMenu);
+  });
+  
+  // Sync mobile menu actions with main buttons
+  const menuSignUp = document.getElementById('menuSignUp');
+  const menuSignIn = document.getElementById('menuSignIn');
+  
+  if (menuSignUp && startBtn) {
+    menuSignUp.addEventListener('click', function() {
+      closeMobileMenu();
+      startBtn.click();
+    });
+  }
+  
+  if (menuSignIn && signInBtn) {
+    menuSignIn.addEventListener('click', function() {
+      closeMobileMenu();
+      signInBtn.click();
+    });
+  }
+});
