@@ -13,6 +13,8 @@ html, body {
 }
 
 body {
+  font-size: var(--font-base); /* 16px with 62.5% base */
+  line-height: 1.6;
   display: flex;
   flex-direction: column;
 }
@@ -94,25 +96,32 @@ dialog .button-group {
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --transition: all 0.2s ease-in-out;
   
-  /* Fluid spacing */
-  --space-xs: clamp(0.25rem, 1vw, 0.5rem);
-  --space-sm: clamp(0.5rem, 2vw, 1rem);
-  --space-md: clamp(1rem, 3vw, 1.5rem);
-  --space-lg: clamp(1.5rem, 4vw, 2rem);
-  --space-xl: clamp(2rem, 5vw, 3rem);
+  /* Spacing using em units for proportional scaling */
+  --space-xs: 0.5em;
+  --space-sm: 1em;
+  --space-md: 1.5em;
+  --space-lg: 2.5em;
+  --space-xl: 4em;
   
-  /* Fluid typography */
-  --font-size-sm: clamp(0.875rem, 2.5vw, 1rem);
-  --font-size-base: clamp(1rem, 2.5vw, 1.125rem);
-  --font-size-lg: clamp(1.125rem, 3vw, 1.25rem);
+  /* Typography using rem units with 62.5% base */
+  --font-xs: 1.2rem;    /* 12px */
+  --font-sm: 1.4rem;    /* 14px */
+  --font-base: 1.6rem;  /* 16px */
+  --font-lg: 1.8rem;    /* 18px */
+  --font-xl: 2.4rem;    /* 24px */
+  --font-2xl: 3.2rem;   /* 32px */
   
-  --border-radius: 0.5rem;
+  --border-radius: 0.8rem;
   --container-max: 1200px;
+  
+  /* Mobile-first responsive spacing */
+  --container-padding: 5%;
+  --section-spacing: 4em;
 }
 
-/* Fluid typography */
+/* 62.5% base for easy rem calculations (1rem = 10px) */
 html {
-  font-size: clamp(14px, 2.5vw, 18px);
+  font-size: 62.5%;
 }
 
 /* Mobile-first viewport-fit layout */
@@ -150,21 +159,34 @@ html {
 }
 
 /* Flexible media */
-img, video, iframe, svg {
+img, video, iframe, svg, picture {
   max-width: 100%;
   height: auto;
+  display: block;
 }
 
 /* Fluid containers */
 .fluid-container {
-  width: min(90vw, var(--container-max, 1200px));
+  width: min(95vw, var(--container-max));
   margin: 0 auto;
+  padding: 0 var(--container-padding);
 }
 
-/* Touch targets (minimum 44px) */
-button, .btn, .menu-item {
-  min-height: 44px;
-  min-width: 44px;
+/* Touch targets (minimum 44px for accessibility) */
+button, .btn, .menu-item, input, select, textarea, a {
+  min-height: 4.4rem; /* 44px */
+  min-width: 4.4rem;
+}
+
+/* Improved focus indicators */
+button:focus-visible, 
+input:focus-visible, 
+select:focus-visible, 
+textarea:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 3px;
 }
 
 /* Mobile Hero Section */
