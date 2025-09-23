@@ -239,7 +239,6 @@ function init() {
 
 // Simple message display function
 function addMessage(sender, message) {
-  console.log(`${sender}: ${message}`);
   // In a full implementation, this would add messages to a chat history display
 }
 

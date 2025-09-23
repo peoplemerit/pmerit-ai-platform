@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In - PMERIT Platform</title>
+  <link rel="stylesheet" href="assets/css/unified-design-system.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+</head>
+<body class="page-layout">
+  <div id="nav-container"></div>
+  
+  <main class="main-content">
+    <section class="hero-section">
+      <div class="container">
+        <h1>Sign In</h1>
+        <p>Welcome back to PMERIT</p>
+      </div>
+    </section>
+    
+    <section class="content-section">
+      <div class="container">
+        <div class="auth-container">
+          <div class="auth-form">
+            <h2>Sign In to Your Account</h2>
+            
+            <form>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+              </div>
+              
+              <div class="form-group">
+                <label class="checkbox-label">
+                  <input type="checkbox" name="remember"> Remember me
+                </label>
+              </div>
+              
+              <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+            </form>
+            
+            <div class="auth-links">
+              <a href="#" class="link">Forgot password?</a>
+              <p>Don't have an account? <a href="#" class="link">Sign up here</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <div id="footer-container"></div>
+  
+  <script src="assets/js/boot-includes.js"></script>
+</body>
+</html>

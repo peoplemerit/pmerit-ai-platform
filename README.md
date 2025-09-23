@@ -1,4 +1,4 @@
-# Gabriel AI Educational Platform
+# PMERIT AI Educational Platform
 
 > Empowering learning through accessible, high-quality education
 
@@ -9,7 +9,7 @@ Breaking poverty cycles through accessible education and remote career opportuni
 ## ✨ Features
 
 - **Beautiful Responsive Design**: Works perfectly on desktop and mobile
-- **Gabriel AI Chat**: Educational guidance and learning support
+- **PMERIT AI Chat**: Educational guidance and learning support
 - **Mobile-First**: Collapsible sidebars and touch-friendly interactions
 - **Modular Architecture**: Clean CSS and JavaScript structure
 - **Educational Focus**: Mission-driven content and messaging
@@ -35,4 +35,4 @@ Breaking poverty cycles through accessible education and remote career opportuni
 
 ---
 
-**Gabriel AI Educational Platform - Empowering learning through innovation**
+**PMERIT AI Educational Platform - Empowering learning through innovation**
