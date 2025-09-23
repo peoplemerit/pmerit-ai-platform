@@ -340,4 +340,22 @@ document.addEventListener('DOMContentLoaded', function() {
       signInBtn.click();
     });
   }
+
+  // Footer button functionality
+  const privacyBtn = document.getElementById('privacyBtn');
+  const settingsBtn = document.getElementById('settingsBtn');
+
+  if (privacyBtn) {
+    privacyBtn.addEventListener('click', function() {
+      window.location.href = 'privacy.html';
+    });
+  }
+
+  if (settingsBtn) {
+    settingsBtn.addEventListener('click', function() {
+      // Open settings modal or navigate to settings page
+      // For now, we'll just show an alert - you can customize this
+      alert('Settings functionality will be implemented here');
+    });
+  }
 });

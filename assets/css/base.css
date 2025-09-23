@@ -82,6 +82,27 @@ dialog .button-group {
   margin-top: 1.5rem;
 }
 
+/* Footer Link Button Base Styles */
+.footer-link {
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+  touch-action: manipulation; /* Improve touch responsiveness */
+  -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 4px;
+  text-align: center;
+  min-height: 44px; /* Touch target */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-link:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
 /* Focus Styles */
 .nav-btn:focus, .action:focus, .toggle:focus, .dashboard:focus, textarea:focus, select:focus {
   outline: 2px solid var(--primary);
