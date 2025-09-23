@@ -21,33 +21,43 @@
   <div class="page-container">
     <div id="header-container"></div>
     <main class="main-content">
-      <!-- Single center conversation area -->
+      <!-- Responsive conversation area -->
       <div class="conversation-container">
-        <div class="ai-greeting">
-          <div class="ai-avatar">🤖</div>
-          <h1>PMERIT AI</h1>
-          <p class="greeting-text">Hi there! I'm your learning companion, empowering your education through innovation. PMERIT provides accessible, high-quality education that opens doors to endless opportunities worldwide. Ready to discover your potential and start your learning journey?</p>
-        </div>
-        
-        <div class="chat-interface">
-          <div class="input-container">
-            <button class="add-btn" title="Add files, images, or take photo" aria-label="Add content">
-              <i class="fas fa-plus"></i>
-            </button>
-            <input type="text" placeholder="Ask about courses, learning paths, or your goals..." class="chat-input">
-            <button class="mic-btn" title="Voice input" aria-label="Voice input">
-              <i class="fas fa-microphone"></i>
-            </button>
-            <button class="voice-btn" title="Voice settings" aria-label="Voice settings">
-              <i class="fas fa-volume-up"></i>
-            </button>
+        <div class="content-left">
+          <div class="ai-greeting">
+            <div class="ai-avatar">🤖</div>
+            <h1>PMERIT AI</h1>
+            <p class="greeting-text">Hi there! I'm your learning companion, empowering your education through innovation. PMERIT provides accessible, high-quality education that opens doors to endless opportunities worldwide. Ready to discover your potential and start your learning journey?</p>
           </div>
-          <button class="send-btn">Send</button>
+          
+          <div class="chat-interface">
+            <div class="input-container">
+              <button class="add-btn" title="Add files, images, or take photo" aria-label="Add content">
+                <i class="fas fa-plus"></i>
+              </button>
+              <input type="text" placeholder="Ask about courses, learning paths, or your goals..." class="chat-input">
+              <button class="mic-btn" title="Voice input" aria-label="Voice input">
+                <i class="fas fa-microphone"></i>
+              </button>
+              <button class="voice-btn" title="Voice settings" aria-label="Voice settings">
+                <i class="fas fa-volume-up"></i>
+              </button>
+            </div>
+            <button class="send-btn">Send</button>
+          </div>
+          
+          <div class="quick-actions">
+            <button class="action-btn primary">Begin Assessment</button>
+            <button class="action-btn">Explore Career Paths</button>
+          </div>
         </div>
         
-        <div class="quick-actions">
-          <button class="action-btn primary">Begin Assessment</button>
-          <button class="action-btn">Explore Career Paths</button>
+        <div class="content-right">
+          <div class="hero-illustration">
+            <div class="illustration-placeholder">
+              <i class="fas fa-graduation-cap" style="font-size: 8rem; color: var(--primary); opacity: 0.3;"></i>
+            </div>
+          </div>
         </div>
       </div>
     </main>
@@ -61,12 +71,16 @@
     <div class="footer-row footer-links">
       <div class="footer-left">
         <button class="footer-link" id="aboutBtn">About PMERIT</button>
+        <span class="footer-separator">|</span>
         <button class="footer-link" id="partnershipsBtn">Partnerships</button>
+        <span class="footer-separator">|</span>
         <button class="footer-link" id="supportBtn">Support</button>
       </div>
       <div class="footer-right">
         <button class="footer-link" id="privacyBtn">Privacy & Terms</button>
+        <span class="footer-separator">|</span>
         <button class="footer-link" id="contactBtn">Contact</button>
+        <span class="footer-separator">|</span>
         <button class="footer-link" id="settingsBtn">Settings</button>
       </div>
     </div>
