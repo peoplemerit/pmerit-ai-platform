@@ -88,7 +88,6 @@ function initState() {
     mobileLangSelect.value = state.lang;
   }
   updateDashboardVisual();
-  updateStartButton();
   updateWelcomeMessage();
 }
 
@@ -104,9 +103,6 @@ function updateDashboardVisual() {
   if (dashBtn) dashBtn.classList.toggle('guest', !state.auth);
   const mDashBtn = document.getElementById('m_dashBtn');
   if (mDashBtn) mDashBtn.classList.toggle('guest', !state.auth);
-  
-  // Update start button based on auth state
-  updateStartButton();
 }
 
 function updateStartButton() {
