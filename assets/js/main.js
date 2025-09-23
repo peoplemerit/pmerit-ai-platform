@@ -1,6 +1,8 @@
 function init() {
-  // Initialize state
-  initState();
+  // Initialize state (check if function exists first)
+  if (typeof initState === 'function') {
+    initState();
+  }
   
   // Initialize chat interface buttons
   initChatInterface();
