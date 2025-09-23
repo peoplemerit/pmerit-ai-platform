@@ -53,6 +53,11 @@ const signUpModal = document.getElementById('signUpModal');
 const hamburgerToggle = document.querySelector('.hamburger-toggle');
 const mobileMenu = document.getElementById('mobileMenu');
 const menuClose = document.querySelector('.menu-close');
+
+// Mobile menu elements
+const hamburgerToggle = document.querySelector('.hamburger-toggle');
+const mobileMenu = document.getElementById('mobileMenu');
+const menuClose = document.querySelector('.menu-close');
 const menuBackdrop = document.querySelector('.menu-backdrop');
 const assessmentModal = document.getElementById('assessmentModal');
 const tracksModal = document.getElementById('tracksModal');
@@ -79,7 +84,14 @@ function initState() {
     ttsToggle.classList.add('active');
   }
   
-  document.getElementById('lang').value = state.lang;
+  const langSelect = document.getElementById('lang');
+  if (langSelect) {
+    langSelect.value = state.lang;
+  }
+  const mobileLangSelect = document.getElementById('mobileLang');
+  if (mobileLangSelect) {
+    mobileLangSelect.value = state.lang;
+  }
   updateDashboardVisual();
   updateStartButtonLabel();
   updateWelcomeMessage();
