@@ -26,14 +26,14 @@ function init() {
     });
   }
   
-  // Set up event listeners
-  darkToggle.addEventListener('click', () => setDark(!state.dark));
-  ttsToggle.addEventListener('click', () => setTTS(!state.tts));
-  supportToggle.addEventListener('click', () => setSupport(!state.support));
-  supportShort.addEventListener('click', () => setSupport(true));
-  vhToggle.addEventListener('click', () => setVH(!state.vh));
-  vhQuick.addEventListener('click', () => setVH(true));
-  vhShort.addEventListener('click', () => setVH(true));
+  // Set up event listeners with null safety checks
+  if (darkToggle) darkToggle.addEventListener('click', () => setDark(!state.dark));
+  if (ttsToggle) ttsToggle.addEventListener('click', () => setTTS(!state.tts));
+  if (supportToggle) supportToggle.addEventListener('click', () => setSupport(!state.support));
+  if (supportShort) supportShort.addEventListener('click', () => setSupport(true));
+  if (vhToggle) vhToggle.addEventListener('click', () => setVH(!state.vh));
+  if (vhQuick) vhQuick.addEventListener('click', () => setVH(true));
+  if (vhShort) vhShort.addEventListener('click', () => setVH(true));
   
   // Mobile toggles
   const mVhToggle = document.getElementById('m_vhToggle');
@@ -47,7 +47,7 @@ function init() {
   if (mSupportToggle) mSupportToggle.addEventListener('click', () => setSupport(!state.support));
   if (mDarkToggle) mDarkToggle.addEventListener('click', () => setDark(!state.dark));
   if (mTtsToggle) mTtsToggle.addEventListener('click', () => setTTS(!state.tts));
-  if (mSettings) mSettings.addEventListener('click', () => {
+  if (mSettings && settingsBody) mSettings.addEventListener('click', () => {
     settingsBody.style.display = settingsBody.style.display === 'block' ? 'none' : 'block';
   });
   if (mVoicesBtn) mVoicesBtn.addEventListener('click', () => voicesModal.showModal());
@@ -74,41 +74,64 @@ function init() {
   }
   
   // Settings collapsible
-  settingsHead.addEventListener('click', () => {
-    const isOpen = settingsBody.style.display === 'block';
-    settingsBody.style.display = isOpen ? 'none' : 'block';
-    settingsHead.querySelector('i.fas').className = isOpen ? 'fas fa-sliders-h' : 'fas fa-chevron-down';
-  });
+  if (settingsHead && settingsBody) {
+    settingsHead.addEventListener('click', () => {
+      const isOpen = settingsBody.style.display === 'block';
+      settingsBody.style.display = isOpen ? 'none' : 'block';
+      const icon = settingsHead.querySelector('i.fas');
+      if (icon) {
+        icon.className = isOpen ? 'fas fa-sliders-h' : 'fas fa-chevron-down';
+      }
+    });
+  }
   
   // Dashboard button
-  dashBtn.addEventListener('click', goDashboard);
+  if (dashBtn) dashBtn.addEventListener('click', goDashboard);
   const mDashBtn = document.getElementById('m_dashBtn');
   if (mDashBtn) mDashBtn.addEventListener('click', goDashboard);
   
   // Auth buttons
-  signInBtn.addEventListener('click', () => {
-    if (typeof signInModal.showModal === 'function') signInModal.showModal();
-  });
+  if (signInBtn && signInModal) {
+    signInBtn.addEventListener('click', () => {
+      if (typeof signInModal.showModal === 'function') signInModal.showModal();
+    });
+  }
   
-  document.getElementById('signInCancel').addEventListener('click', () => signInModal.close());
-  document.getElementById('signInGo').addEventListener('click', () => {
-    const email = document.getElementById('si_email').value.trim();
-    const password = document.getElementById('si_pwd').value.trim();
-    if (!email || !password) {
-      alert('Please enter your email and password.');
-      return;
-    }
-    state.auth = true;
-    save('pmerit_auth', true);
-    updateDashboardVisual();
-    updateStartButtonLabel();
-    updateWelcomeMessage();
-    signInModal.close();
-    addMessage('PMERIT AI', `Welcome back! Your account has been successfully signed in. You now have access to your personal dashboard and can track your learning progress.`);
-  });
+  const signInCancel = document.getElementById('signInCancel');
+  const signInGo = document.getElementById('signInGo');
   
-  document.getElementById('signUpCancel').addEventListener('click', () => signUpModal.close());
-  document.getElementById('signUpCreate').addEventListener('click', () => {
+  if (signInCancel && signInModal) {
+    signInCancel.addEventListener('click', () => signInModal.close());
+  }
+  
+  if (signInGo) {
+    signInGo.addEventListener('click', () => {
+      const email = document.getElementById('si_email').value.trim();
+      const password = document.getElementById('si_pwd').value.trim();
+      if (!email || !password) {
+        alert('Please enter your email and password.');
+        return;
+      }
+      state.auth = true;
+      save('pmerit_auth', true);
+      updateDashboardVisual();
+      updateWelcomeMessage();
+      signInModal.close();
+      if (typeof addMessage === 'function') {
+        addMessage('PMERIT AI', `Welcome back! Your account has been successfully signed in. You now have access to your personal dashboard and can track your learning progress.`);
+      }
+    });
+  }
+  
+  const signUpCancel = document.getElementById('signUpCancel');
+  const signUpCreate = document.getElementById('signUpCreate');
+  
+  if (signUpCancel && signUpModal) {
+    signUpCancel.addEventListener('click', () => signUpModal.close());
+  }
+  
+  if (signUpCreate && signUpModal) {
+    signUpCreate.addEventListener('click', () => {
     const name = document.getElementById('su_name').value.trim();
     const email = document.getElementById('su_email').value.trim();
     const password = document.getElementById('su_pwd').value.trim();
@@ -116,45 +139,65 @@ function init() {
       alert('Please complete all fields.');
       return;
     }
-    state.auth = true;
-    save('pmerit_auth', true);
-    updateDashboardVisual();
-    updateStartButtonLabel();
-    updateWelcomeMessage();
-    signUpModal.close();
-    addMessage('PMERIT AI', `Welcome to PMERIT, ${name}! Your account has been created successfully. You now have access to personalized learning paths and can track your progress.`);
-  });
-  
-  startBtn.addEventListener('click', () => {
-    if (state.auth) {
-      openAssessment();
-    } else {
-      if (typeof signUpModal.showModal === 'function') {
-        signUpModal.showModal();
+      state.auth = true;
+      save('pmerit_auth', true);
+      updateDashboardVisual();
+      updateWelcomeMessage();
+      signUpModal.close();
+      if (typeof addMessage === 'function') {
+        addMessage('PMERIT AI', `Welcome to PMERIT, ${name}! Your account has been created successfully. You now have access to personalized learning paths and can track your progress.`);
       }
-    }
-  });
-  beginBtn.addEventListener('click', openAssessment);
-  // Add this new line for the updated button
-  document.getElementById('m_beginAssessment').addEventListener('click', openAssessment);
+    });
+  }
   
-  document.getElementById('assessmentCancel').addEventListener('click', () => assessmentModal.close());
-  document.getElementById('assessmentStart').addEventListener('click', () => {
-    assessmentModal.close();
-    // Mark user as assessed
-    state.assessed = true;
-    save('pmerit_assessed', true);
-    updateStartButtonLabel();
-    updateWelcomeMessage();
-    
-    const results = [
-      "Excellent! Based on your assessment, you have a strong analytical mindset and prefer visual learning. I recommend the Data Analytics track - it combines problem-solving with visual insights through dashboards and reports.",
-      "Great results! Your assessment shows you're creative and detail-oriented with strong communication skills. The UI/UX Design track would be perfect for combining creativity with user-centered problem solving.",
-      "Wonderful! Your assessment indicates you're people-focused with strong organizational skills. I'd recommend either Customer Support or Digital Marketing - both offer excellent remote opportunities and match your interpersonal strengths."
-    ];
-    const randomResult = results[Math.floor(Math.random() * results.length)];
-    addMessage('PMERIT AI', randomResult);
-  });
+  if (startBtn) {
+    startBtn.addEventListener('click', () => {
+      if (state.auth) {
+        if (typeof openAssessment === 'function') openAssessment();
+      } else {
+        if (signUpModal && typeof signUpModal.showModal === 'function') {
+          signUpModal.showModal();
+        }
+      }
+    });
+  }
+  
+  if (beginBtn && typeof openAssessment === 'function') {
+    beginBtn.addEventListener('click', openAssessment);
+  }
+  
+  // Mobile assessment button
+  const mBeginAssessment = document.getElementById('m_beginAssessment');
+  if (mBeginAssessment && typeof openAssessment === 'function') {
+    mBeginAssessment.addEventListener('click', openAssessment);
+  }
+  
+  const assessmentCancel = document.getElementById('assessmentCancel');
+  const assessmentStart = document.getElementById('assessmentStart');
+  
+  if (assessmentCancel && assessmentModal) {
+    assessmentCancel.addEventListener('click', () => assessmentModal.close());
+  }
+  
+  if (assessmentStart && assessmentModal) {
+    assessmentStart.addEventListener('click', () => {
+      assessmentModal.close();
+      // Mark user as assessed
+      state.assessed = true;
+      save('pmerit_assessed', true);
+      updateWelcomeMessage();
+      
+      const results = [
+        "Excellent! Based on your assessment, you have a strong analytical mindset and prefer visual learning. I recommend the Data Analytics track - it combines problem-solving with visual insights through dashboards and reports.",
+        "Great results! Your assessment shows you're creative and detail-oriented with strong communication skills. The UI/UX Design track would be perfect for combining creativity with user-centered problem solving.",
+        "Wonderful! Your assessment indicates you're people-focused with strong organizational skills. I'd recommend either Customer Support or Digital Marketing - both offer excellent remote opportunities and match your interpersonal strengths."
+      ];
+      const randomResult = results[Math.floor(Math.random() * results.length)];
+      if (typeof addMessage === 'function') {
+        addMessage('PMERIT AI', randomResult);
+      }
+    });
+  }
   
   // Chat functionality
   chatInput.addEventListener('input', () => {
