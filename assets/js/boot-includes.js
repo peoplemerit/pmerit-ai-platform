@@ -88,7 +88,7 @@ function initState() {
     mobileLangSelect.value = state.lang;
   }
   updateDashboardVisual();
-  updateStartButtonLabel();
+  updateStartButton();
   updateWelcomeMessage();
 }
 
@@ -110,6 +110,7 @@ function updateDashboardVisual() {
 }
 
 function updateStartButton() {
+  if (!startBtn) return; // Safety check
   if (state.auth) {
     startBtn.textContent = 'Begin Assessment';
     startBtn.title = 'Start your personalized learning assessment';
@@ -153,7 +154,7 @@ function updateWelcomeMessage() {
     greeting = "Welcome back, Merit! Ready to continue your learning path? I'm here to help you achieve your goals.";
   }
   
-  welcomeCopy.textContent = greeting;
+  if (welcomeCopy) welcomeCopy.textContent = greeting;
 }
 
 function setSupport(on) {

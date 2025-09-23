@@ -1,6 +1,162 @@
-/* Mobile-First Responsive Design for PMERIT */
+/* Mobile-First Responsive Layout for PMERIT AI */
 
-/* Base: Mobile (320px+) - Default styles */
+/* ===== MOBILE LAYOUT STRUCTURE ===== */
+.mobile-first-layout {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header: 15% viewport height */
+.app-header {
+  height: var(--header-height);
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 100;
+}
+
+.header-container {
+  padding: var(--space-lg) var(--space-md) var(--space-md) var(--space-md);
+  text-align: center;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+}
+
+.logo-container .ai-avatar {
+  font-size: 2rem;
+}
+
+.logo-container h1 {
+  font-size: var(--font-xl);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* Main Content: 65% viewport height */
+.app-main {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-md);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.main-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero-content {
+  text-align: center;
+}
+
+.greeting-text {
+  font-size: var(--font-lg);
+  line-height: 1.6;
+  margin-bottom: var(--space-lg);
+  max-width: 65ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta-section {
+  margin-top: var(--space-lg);
+}
+
+.chat-preview h2 {
+  font-size: var(--font-xl);
+  margin-bottom: var(--space-sm);
+}
+
+.chat-description {
+  font-size: var(--font-base);
+  opacity: 0.9;
+  margin-bottom: var(--space-lg);
+}
+
+/* Fixed Chat Input: Above footer */
+.chat-input-fixed {
+  position: fixed;
+  bottom: var(--footer-height);
+  left: 0;
+  right: 0;
+  height: var(--chat-height);
+  background: var(--bg-primary);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-md);
+  z-index: 50;
+}
+
+.input-container {
+  display: flex;
+  gap: var(--space-md);
+  width: 100%;
+  align-items: center;
+}
+
+.chat-input {
+  flex: 1;
+  min-width: 0; /* Allow shrinking */
+  width: 70%;
+  height: 44px; /* Touch target */
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  font-size: var(--font-base);
+  outline: none;
+  transition: var(--transition);
+}
+
+.chat-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.send-btn {
+  width: 25%;
+  max-width: 120px;
+  height: 44px; /* Touch target */
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 24px;
+  font-size: var(--font-base);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+}
+
+.send-btn:hover {
+  background: var(--accent);
+}
+
+.send-btn:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Legacy compatibility */
 .page-container {
   min-height: 100vh;
   display: grid;
@@ -14,11 +170,107 @@
   width: 100%;
 }
 
-/* Ensure main content gets proper space */
 .main-content {
   grid-area: main;
-  min-height: 0; /* Allow shrinking */
-  overflow-y: auto; /* Scroll if needed */
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Footer: Single line, 5% viewport height */
+.app-footer {
+  height: var(--footer-height);
+  background: var(--bg-primary);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+}
+
+.footer-content {
+  font-size: var(--font-sm);
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 0 var(--space-md);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===== TABLET ADJUSTMENTS (768px+) ===== */
+@media (min-width: 768px) {
+  .header-container {
+    padding: var(--space-xl) var(--space-lg) var(--space-lg) var(--space-lg);
+  }
+  
+  .logo-container h1 {
+    font-size: var(--font-2xl);
+  }
+  
+  .app-main {
+    padding: var(--space-xl);
+  }
+  
+  .greeting-text {
+    font-size: var(--font-xl);
+  }
+  
+  .chat-input-fixed {
+    padding: 0 var(--space-xl);
+  }
+  
+  .input-container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .chat-input {
+    width: 75%;
+  }
+  
+  .send-btn {
+    width: 20%;
+  }
+}
+
+/* ===== DESKTOP LAYOUT (1024px+) ===== */
+@media (min-width: 1024px) {
+  .header-container {
+    padding: var(--space-2xl) var(--space-xl) var(--space-xl) var(--space-xl);
+  }
+  
+  .logo-container h1 {
+    font-size: var(--font-3xl);
+  }
+  
+  .app-main {
+    padding: var(--space-2xl);
+  }
+  
+  .main-container {
+    max-width: 1000px;
+  }
+  
+  .greeting-text {
+    font-size: var(--font-2xl);
+    max-width: 70ch;
+  }
+  
+  .input-container {
+    max-width: 700px;
+  }
+  
+  .chat-input {
+    width: 80%;
+  }
+  
+  .send-btn {
+    width: 15%;
+  }
 }
 
 .container, .fluid-container {
