@@ -20,89 +20,42 @@
   <link rel="stylesheet" href="assets/css/responsive.css">
 
 </head>
-<body>
-  <div class="page-container">
-    <div id="header-container"></div>
-    <main class="main-content">
-      <!-- Responsive conversation area -->
-      <div class="conversation-container">
-        <div class="content-left">
-          <div class="ai-greeting">
-            <div class="ai-avatar">🤖</div>
-            <h1>PMERIT AI</h1>
-            <p class="greeting-text">Hi there! I'm your learning companion, empowering your education through innovation. PMERIT provides accessible, high-quality education that opens doors to endless opportunities worldwide. Ready to discover your potential and start your learning journey?</p>
-          </div>
-          
-          <div class="chat-interface">
-            <div class="chat-header">
-              <h2>Ask Your Learning Companion</h2>
-              <p class="chat-description">Get personalized guidance on courses, career paths, and learning objectives</p>
-            </div>
-            <div class="input-container">
-              <button class="add-btn" title="Add files, images, or take photo" aria-label="Add content">
-                <i class="fas fa-plus"></i>
-              </button>
-              <input type="text" placeholder="Try: 'What programming courses do you recommend for beginners?'" class="chat-input">
-              <button class="mic-btn" title="Voice input" aria-label="Voice input">
-                <i class="fas fa-microphone"></i>
-              </button>
-              <button class="voice-btn" title="Voice settings" aria-label="Voice settings">
-                <i class="fas fa-volume-up"></i>
-              </button>
-            </div>
-            <button class="send-btn">
-              <i class="fas fa-paper-plane"></i>
-              Send Message
-            </button>
-          </div>
-          
-          <div class="quick-actions">
-            <button class="action-btn primary">
-              <i class="fas fa-rocket"></i>
-              Begin Assessment
-            </button>
-            <button class="action-btn secondary">
-              <i class="fas fa-compass"></i>
-              Explore Career Paths
-            </button>
-            <button class="action-btn tertiary">
-              <i class="fas fa-book-open"></i>
-              Browse Courses
-            </button>
-          </div>
-        </div>
+<body class="mobile-first-layout">
+  <!-- Header: 15% viewport height -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="logo-container">
+        <div class="ai-avatar">🤖</div>
+        <h1>PMERIT AI</h1>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content: 65% viewport height -->
+  <main class="app-main">
+    <div class="main-container">
+      <div class="hero-content">
+        <p class="greeting-text">Hi there! I'm your learning companion, empowering your education through innovation. PMERIT provides accessible, high-quality education that opens doors to endless opportunities worldwide. Ready to discover your potential and start your learning journey?</p>
         
-        <div class="content-right">
-          <div class="hero-illustration">
-            <div class="illustration-content">
-              <div class="floating-elements">
-                <div class="float-item graduation">
-                  <i class="fas fa-graduation-cap"></i>
-                </div>
-                <div class="float-item book">
-                  <i class="fas fa-book-open"></i>
-                </div>
-                <div class="float-item rocket">
-                  <i class="fas fa-rocket"></i>
-                </div>
-                <div class="float-item lightbulb">
-                  <i class="fas fa-lightbulb"></i>
-                </div>
-                <div class="float-item chart">
-                  <i class="fas fa-chart-line"></i>
-                </div>
-              </div>
-              <div class="main-illustration">
-                <div class="ai-brain">
-                  <i class="fas fa-brain"></i>
-                </div>
-                <div class="connection-lines"></div>
-              </div>
-            </div>
+        <div class="cta-section">
+          <div class="chat-preview">
+            <h2>Ask Your Learning Companion</h2>
+            <p class="chat-description">Get personalized guidance on courses, career paths, and learning objectives</p>
           </div>
         </div>
       </div>
-    </main>
+    </div>
+  </main>
+
+  <!-- Fixed Chat Input: Above footer -->
+  <div class="chat-input-fixed">
+    <div class="input-container">
+      <input type="text" placeholder="Try: 'What programming courses do you recommend for beginners?'" class="chat-input">
+      <button class="send-btn" title="Send message" aria-label="Send">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
 
   <!-- PMERIT Minimal Footer - Google Style -->
   <footer class="minimal-footer">
