@@ -3,11 +3,12 @@
 
 /* === DESIGN TOKENS === */
 :root {
-  /* Google-Style Colors */
-  --primary: #1A2A4F;              /* Navy Blue (PMERIT brand) */
-  --primary-dark: #0F1729;         /* Darker navy for hovers */
+  /* Blueprint-Style Colors */
+  --primary: #2563EB;              /* Blueprint Primary Blue */
+  --primary-dark: #1D4ED8;         /* Darker blue for hovers */
   --secondary: #5f6368;            /* Google gray for icons/secondary text */
-  --accent: #1a73e8;               /* Google blue for actions */
+  --accent: #7E22CE;               /* Blueprint Accent Purple */
+  --success: #059669;              /* Blueprint Success Green */
   
   /* Background Colors */
   --bg-primary: #ffffff;           /* White background */

@@ -1389,7 +1389,7 @@
 
 /* Clickable Links - Google Blue */
 .footer-link {
-  color: #1a73e8; /* Google blue for links */
+  color: var(--primary); /* Blueprint primary blue for links */
   text-decoration: none;
   font-size: 14px;
   font-weight: 400;
@@ -2284,7 +2284,7 @@ body.dark .footer-status {
 .auth-modal .create-account-link:focus,
 .modal-close:focus,
 .menu-item:focus {
-  outline: 2px solid #1a73e8;
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
 
@@ -2299,8 +2299,8 @@ body.dark .footer-status {
 }
 
 .toggle-switch.active {
-  color: #1a73e8;
-  text-shadow: 0 0 8px rgba(26, 115, 232, 0.3);
+  color: var(--primary);
+  text-shadow: 0 0 8px rgba(37, 99, 235, 0.3);
 }
 
 /* Blueprint Mode States */
