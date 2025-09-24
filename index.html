@@ -21,15 +21,107 @@
 
 </head>
 <body class="mobile-first-layout">
-  <!-- Header: 15% viewport height -->
-  <header class="app-header">
-    <div class="header-container">
-      <div class="logo-container">
-        <div class="ai-avatar">🤖</div>
-        <h1>PMERIT AI</h1>
-      </div>
+  <!-- Clean Google-Inspired Header -->
+  <header class="pmerit-header">
+    <!-- Hamburger Menu -->
+    <button class="hamburger-btn" id="menuToggle" aria-label="Main menu">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+    
+    <!-- Center Brand -->
+    <div class="brand">PMERIT</div>
+    
+    <!-- Right Actions -->
+    <div class="header-actions">
+      <button class="sign-in-btn" id="signInBtn">Sign In</button>
     </div>
   </header>
+
+  <!-- Menu Overlay -->
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <!-- Hamburger Side Menu -->
+  <nav class="side-menu" id="sideMenu">
+    <!-- Menu Header -->
+    <div class="menu-header">
+      <div class="menu-title">PMERIT Platform</div>
+    </div>
+
+    <!-- Language Section -->
+    <div class="menu-section">
+      <h4 class="section-title">Language</h4>
+      <select class="language-select" id="languageSelect">
+        <option value="en">English</option>
+        <option value="yo">Yorùbá</option>
+        <option value="ig">Igbo</option>
+        <option value="ha">Hausa</option>
+        <option value="fr">Français</option>
+        <option value="es">Español</option>
+      </select>
+    </div>
+
+    <!-- Platform Settings -->
+    <div class="menu-section">
+      <h4 class="section-title">Platform Settings</h4>
+      
+      <div class="toggle-item">
+        <span>🌙 Dark Mode</span>
+        <div class="toggle-switch" id="darkModeToggle"></div>
+      </div>
+      
+      <div class="toggle-item">
+        <span>🤖 AI Assistant</span>
+        <div class="toggle-switch" id="aiAssistantToggle"></div>
+      </div>
+
+      <button class="menu-item">
+        <span class="menu-item-icon">📊</span>
+        Learning Mode
+      </button>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="menu-section">
+      <h4 class="section-title">Quick Actions</h4>
+      
+      <button class="menu-item" onclick="window.location.href='donate.html'">
+        <span class="menu-item-icon">💰</span>
+        Donate
+      </button>
+
+      <button class="menu-item" onclick="startLearning()">
+        <span class="menu-item-icon">🚀</span>
+        Start Learning
+      </button>
+
+      <button class="menu-item" onclick="window.location.href='career.html'">
+        <span class="menu-item-icon">🎯</span>
+        Career Paths
+      </button>
+    </div>
+
+    <!-- Help & Support -->
+    <div class="menu-section">
+      <h4 class="section-title">Help & Support</h4>
+      
+      <button class="menu-item" onclick="window.location.href='help.html'">
+        <span class="menu-item-icon">❓</span>
+        Help Center
+      </button>
+
+      <button class="menu-item" onclick="window.location.href='library.html'">
+        <span class="menu-item-icon">📚</span>
+        Learning Library
+      </button>
+
+      <button class="menu-item" onclick="window.location.href='contact.html'">
+        <span class="menu-item-icon">💬</span>
+        Contact Us
+      </button>
+    </div>
+  </nav>
 
   <!-- Main Content: 65% viewport height -->
   <main class="app-main">
