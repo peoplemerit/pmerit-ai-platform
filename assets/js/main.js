@@ -297,6 +297,116 @@ function init() {
     showToast('Voice Preview: Coming soon - multiple AI voices available');
   }
 
+  // Blueprint Sidebar Functionality
+  function initializeBlueprintSidebar() {
+    // Left Sidebar Toggle Handlers
+    const leftVhToggle = document.getElementById('vhToggle');
+    const leftSupportToggle = document.getElementById('supportToggle');
+    const leftDarkToggle = document.getElementById('darkToggle');
+    const leftTtsToggle = document.getElementById('ttsToggle');
+    const settingsBox = document.getElementById('settingsBox');
+    const careerPathsBtn = document.getElementById('careerPaths');
+    const dashBtn = document.getElementById('dashBtn');
+    const beginAssessmentBtn = document.getElementById('beginAssessment');
+
+    // Settings Collapsible
+    if (settingsBox) {
+      const head = settingsBox.querySelector('.head');
+      const body = settingsBox.querySelector('.body');
+      const chevron = head.querySelector('i.fa-chevron-down');
+
+      head.addEventListener('click', function() {
+        const isOpen = body.style.display === 'block';
+        body.style.display = isOpen ? 'none' : 'block';
+        chevron.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+      });
+    }
+
+    // Blueprint Toggle Handlers
+    if (leftVhToggle) {
+      leftVhToggle.addEventListener('click', function() {
+        this.classList.toggle('active');
+        const isActive = this.classList.contains('active');
+        toggleVirtualHumanMode(isActive);
+        updateVirtualHumanUI(isActive);
+      });
+    }
+
+    if (leftSupportToggle) {
+      leftSupportToggle.addEventListener('click', function() {
+        this.classList.toggle('active');
+        const isActive = this.classList.contains('active');
+        toggleCustomerServiceMode(isActive);
+        updateSupportUI(isActive);
+      });
+    }
+
+    if (leftDarkToggle) {
+      leftDarkToggle.addEventListener('click', function() {
+        this.classList.toggle('active');
+        const isActive = this.classList.contains('active');
+        document.body.classList.toggle('dark', isActive);
+        showToast(`Dark mode ${isActive ? 'enabled' : 'disabled'}`);
+      });
+    }
+
+    if (leftTtsToggle) {
+      leftTtsToggle.addEventListener('click', function() {
+        this.classList.toggle('active');
+        const isActive = this.classList.contains('active');
+        toggleTextToSpeech(isActive);
+      });
+    }
+
+    if (careerPathsBtn) {
+      careerPathsBtn.addEventListener('click', showCareerTracks);
+    }
+
+    if (dashBtn) {
+      dashBtn.addEventListener('click', function() {
+        showToast('Dashboard: Coming soon - comprehensive learning analytics');
+      });
+    }
+
+    if (beginAssessmentBtn) {
+      beginAssessmentBtn.addEventListener('click', startAssessment);
+    }
+  }
+
+  function updateVirtualHumanUI(isActive) {
+    const vhStage = document.getElementById('vhStage');
+    const textChat = document.getElementById('textChat');
+    const vhBadge = document.getElementById('vhBadge');
+    const vhAvatar = document.getElementById('vhAvatar');
+
+    if (isActive) {
+      if (vhStage) vhStage.style.display = 'flex';
+      if (textChat) textChat.style.display = 'none';
+      if (vhBadge) vhBadge.style.display = 'inline-flex';
+      if (vhAvatar) vhAvatar.classList.add('active');
+    } else {
+      if (vhStage) vhStage.style.display = 'none';
+      if (textChat) textChat.style.display = 'flex';
+      if (vhBadge) vhBadge.style.display = 'none';
+      if (vhAvatar) vhAvatar.classList.remove('active');
+    }
+  }
+
+  function updateSupportUI(isActive) {
+    const supportBadge = document.getElementById('supportBadge');
+
+    if (isActive) {
+      if (supportBadge) supportBadge.style.display = 'inline-flex';
+    } else {
+      if (supportBadge) supportBadge.style.display = 'none';
+    }
+  }
+
+  // Initialize blueprint sidebar on load
+  if (window.innerWidth > 1100) {
+    initializeBlueprintSidebar();
+  }
+
   // Toast Notification System
   function showToast(message, duration = 3000) {
     // Create toast element if it doesn't exist
@@ -308,7 +418,7 @@ function init() {
         position: fixed;
         top: 80px;
         right: 20px;
-        background: #1a73e8;
+        background: var(--primary);
         color: white;
         padding: 12px 20px;
         border-radius: 6px;
