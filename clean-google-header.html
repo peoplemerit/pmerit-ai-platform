@@ -54,7 +54,7 @@
       cursor: pointer;
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      gap: 4px;
       min-width: 48px;
       min-height: 48px;
       justify-content: center;
@@ -67,14 +67,13 @@
       background-color: var(--google-light-gray);
     }
 
-    .hamburger-line {
-      width: 18px;
-      height: 2px;
-      background: var(--google-gray);
-      transition: var(--transition);
-    }
-
-    /* Brand Logo */
+  .hamburger-line {
+    width: 20px;
+    height: 1.5px;
+    background: var(--google-gray);
+    transition: var(--transition);
+    border-radius: 1px;
+  }    /* Brand Logo */
     .brand {
       font-size: 22px;
       font-weight: 400;
@@ -84,14 +83,12 @@
       text-align: center;
     }
 
-/* Header Actions */
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* Grid Menu Button */
+  /* Header Actions */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }/* Grid Menu Button */
 .grid-menu-btn {
   background: none;
   border: none;
@@ -328,7 +325,15 @@
     <div class="header-actions">
       <button class="grid-menu-btn" id="gridMenuBtn" aria-label="Google apps">
         <svg class="grid-icon" viewBox="0 0 24 24" width="20" height="20">
-          <path fill="currentColor" d="M6,8c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM12,20c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM6,20c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM6,14c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM12,14c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM16,6c0,1.1 0.9,2 2,2s2,-0.9 2,-2 -0.9,-2 -2,-2 -2,0.9 -2,6zM12,8c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM18,14c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2zM18,20c1.1,0 2,-0.9 2,-2s-0.9,-2 -2,-2 -2,0.9 -2,2 0.9,2 2,2z"/>
+          <circle cx="5" cy="5" r="2" fill="currentColor"/>
+          <circle cx="12" cy="5" r="2" fill="currentColor"/>
+          <circle cx="19" cy="5" r="2" fill="currentColor"/>
+          <circle cx="5" cy="12" r="2" fill="currentColor"/>
+          <circle cx="12" cy="12" r="2" fill="currentColor"/>
+          <circle cx="19" cy="12" r="2" fill="currentColor"/>
+          <circle cx="5" cy="19" r="2" fill="currentColor"/>
+          <circle cx="12" cy="19" r="2" fill="currentColor"/>
+          <circle cx="19" cy="19" r="2" fill="currentColor"/>
         </svg>
       </button>
       <button class="sign-in-btn" id="signInBtn">Sign In</button>
