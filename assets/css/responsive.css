@@ -800,16 +800,16 @@
   font-weight: 600;
 }
 
-/* Google-Style Footer */
+/* Google-Style Footer with Visual Differentiation */
 .google-footer {
   grid-area: footer;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
-  border-top: 1px solid var(--border-color);
-  height: 56px; /* Google standard height */
+  border-top: 1px solid #e0e0e8; /* Google's border color */
+  height: 48px; /* Google standard footer height */
   display: flex;
   align-items: center;
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.08);
   position: relative;
   z-index: 100;
 }
@@ -817,155 +817,96 @@
 .footer-content {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
-  padding: 0 var(--space-sm);
+  padding: 0 var(--space-md);
   max-width: var(--container-max);
   margin: 0 auto;
+  gap: 20px; /* Google-style spacing */
 }
 
-.footer-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  padding: var(--space-xs);
-  background: none;
-  border: none;
+/* Clickable Links - Google Blue */
+.footer-link {
+  color: #1a73e8; /* Google blue for links */
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 400;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
   cursor: pointer;
-  transition: all 0.2s ease;
-  border-radius: 8px;
-  min-width: 60px;
-  position: relative;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-.footer-item i {
-  font-size: 18px;
-  color: var(--text-secondary);
-  transition: all 0.2s ease;
+.footer-link:hover {
+  background: rgba(26, 115, 232, 0.08); /* Light blue hover */
+  text-decoration: underline;
 }
 
-.footer-item span {
-  font-size: 10px;
-  color: var(--text-secondary);
-  font-weight: 500;
-  text-align: center;
-  line-height: 1.1;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.footer-left, .footer-right {
-  flex-shrink: 0;
-}
-
-.footer-center {
-  flex: 1;
-  max-width: 140px;
-}
-
-/* Footer Active and Hover States */
-.footer-item:hover:not(.active) {
-  background: rgba(var(--primary-rgb), 0.08);
-}
-
-.footer-item:hover:not(.active) i,
-.footer-item:hover:not(.active) span {
-  color: var(--primary);
-}
-
-/* Active State for Interactive Elements */
-.footer-item:not(.status-indicator).active {
-  background: rgba(var(--primary-rgb), 0.12);
-}
-
-.footer-item:not(.status-indicator).active i {
-  color: var(--primary);
-  font-weight: 600;
-}
-
-.footer-item:not(.status-indicator).active span {
-  color: var(--primary);
-  font-weight: 600;
-}
-
-/* Status Indicator Styling */
-.footer-item.status-indicator {
-  position: relative;
-  cursor: default; /* Not clickable */
-}
-
-.footer-item.status-indicator:hover {
-  background: none; /* No hover effect for status */
+/* Status Indicator - Google Gray (Non-clickable) */
+.footer-status {
+  color: #5f6368; /* Google gray for non-clickable status */
+  font-size: 14px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: default;
+  padding: 8px 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .status-dot {
-  position: absolute;
-  top: 4px;
-  right: 8px;
-  width: 8px;
-  height: 8px;
-  background: #34d399; /* Green for connected */
-  border-radius: 50%;
-  border: 2px solid white;
-  box-shadow: 0 0 4px rgba(52, 211, 153, 0.4);
+  font-size: 8px !important;
+  color: #34d399; /* Green for connected status */
+  animation: pulse 2s infinite;
 }
 
-/* Enhanced Touch Targets */
-.footer-item {
-  min-height: 48px; /* 48px minimum touch target */
-  min-width: 48px;
-  padding: 6px 8px;
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
 }
 
-/* Dark theme support */
+/* Dark theme support for Google-style footer */
 body.dark .google-footer {
   background: rgba(33, 33, 33, 0.95);
   border-top: 1px solid #3c4043;
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.2);
 }
 
-body.dark .footer-item:hover:not(.active) {
-  background: rgba(var(--primary-rgb), 0.15);
+body.dark .footer-link {
+  color: #8ab4f8; /* Google blue for dark mode */
 }
 
-/* Mobile Footer Optimization - Enhanced */
+body.dark .footer-link:hover {
+  background: rgba(138, 180, 248, 0.08);
+}
+
+body.dark .footer-status {
+  color: #9aa0a6; /* Google gray for dark mode */
+}
+
+/* Mobile Footer Optimization */
 @media (max-width: 767px) {
-  .google-footer {
-    height: 56px; /* Standard mobile touch target height */
-    padding: 4px 0;
-  }
-  
   .footer-content {
-    padding: 0 4px; /* Minimal edge padding */
+    gap: 16px; /* Reduced spacing on mobile */
+    padding: 0 var(--space-sm);
+    flex-wrap: wrap;
+    justify-content: center;
   }
   
-  .footer-item {
-    min-height: 48px; /* Touch target size */
-    min-width: 48px;
-    padding: 4px 6px;
-    gap: 2px;
+  .footer-link,
+  .footer-status {
+    font-size: 13px; /* Slightly smaller on mobile */
+    padding: 6px 10px;
   }
   
-  .footer-item i {
-    font-size: 18px; /* Optimal mobile icon size */
-  }
-  
-  .footer-item span {
-    font-size: 10px; /* Readable mobile text */
-    line-height: 1.2;
-  }
-  
-  .footer-center {
-    max-width: 130px; /* Optimized for mobile */
+  .footer-status {
+    gap: 4px;
   }
   
   .status-dot {
-    width: 6px;
-    height: 6px;
-    top: 2px;
-    right: 6px;
+    font-size: 6px !important;
   }
 }
 

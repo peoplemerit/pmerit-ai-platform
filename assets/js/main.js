@@ -329,49 +329,79 @@ function init() {
   initFooterInteractivity();
 }
 
-// Footer Interactivity - Enhanced Active State Management
+// Footer Interactivity - Google-style Link Management
 function initFooterInteractivity() {
-  const footerButtons = document.querySelectorAll('.footer-item:not(.status-indicator)');
+  const footerLinks = document.querySelectorAll('.footer-link');
+  const statusElement = document.querySelector('.footer-status');
   
-  footerButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      // Remove active class from all interactive footer items
-      footerButtons.forEach(btn => {
-        btn.classList.remove('active');
-        btn.removeAttribute('aria-current');
+  // Enhanced link interactions
+  footerLinks.forEach(link => {
+    if (!link) return;
+    
+    // Click handlers
+    link.addEventListener('click', function(e) {
+      // Remove active state from all links
+      footerLinks.forEach(l => {
+        l.classList.remove('active');
+        l.removeAttribute('aria-current');
       });
       
-      // Add active class to clicked item
+      // Set current link as active
       this.classList.add('active');
       this.setAttribute('aria-current', 'page');
-      
-      // Update status indicator based on context
-      updateStatusIndicator(this.id);
+    });
+    
+    // Keyboard navigation
+    link.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        link.click();
+      }
+    });
+    
+    // Visual feedback
+    link.addEventListener('mouseenter', function() {
+      this.style.transform = 'translateY(-1px)';
+    });
+    
+    link.addEventListener('mouseleave', function() {
+      this.style.transform = 'translateY(0)';
     });
   });
+  
+  // Initialize status indicator
+  if (statusElement) {
+    updateConnectionStatus(navigator.onLine);
+    
+    // Auto-update connection status every 30 seconds
+    setInterval(() => {
+      updateConnectionStatus(navigator.onLine);
+    }, 30000);
+    
+    // Update on network change
+    window.addEventListener('online', () => updateConnectionStatus(true));
+    window.addEventListener('offline', () => updateConnectionStatus(false));
+  }
 }
 
-// Update Status Indicator Based on Active Section
-function updateStatusIndicator(activeSection) {
-  const statusDot = document.querySelector('.status-dot');
-  const statusText = document.querySelector('.status-indicator span');
+// Connection Status Management for Google-style Footer
+function updateConnectionStatus(isConnected) {
+  const statusElement = document.querySelector('.footer-status');
+  if (!statusElement) return;
   
-  if (!statusDot || !statusText) return;
+  const dot = statusElement.querySelector('.status-dot');
+  const text = statusElement.querySelector('.status-text');
   
-  // Update status based on active section
-  switch(activeSection) {
-    case 'privacyBtn':
-      statusDot.style.background = '#f59e0b'; // Orange for legal/policy
-      statusText.textContent = 'Privacy & Legal Portal';
-      break;
-    case 'settingsBtn':
-      statusDot.style.background = '#8b5cf6'; // Purple for settings
-      statusText.textContent = 'Platform Settings Portal';
-      break;
-    default:
-      statusDot.style.background = '#34d399'; // Green for connected
-      statusText.textContent = 'Education Services Portal';
+  if (dot) {
+    dot.style.color = isConnected ? '#34a853' : '#ea4335'; // Google green/red
   }
+  
+  if (text) {
+    text.textContent = isConnected ? 'Connected to Educational Services' : 'Offline';
+  }
+  
+  statusElement.setAttribute('aria-label', 
+    isConnected ? 'Status: Connected to Educational Services' : 'Status: Offline');
 }
 
 // Simple message display function
