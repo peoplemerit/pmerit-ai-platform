@@ -55,86 +55,129 @@
   <!-- Menu Overlay -->
   <div class="menu-overlay" id="menuOverlay"></div>
 
-  <!-- Hamburger Side Menu -->
+  <!-- Enhanced Hamburger Side Menu -->
   <nav class="side-menu" id="sideMenu">
-    <!-- Menu Header -->
-    <div class="menu-header">
-      <div class="menu-title">PMERIT Platform</div>
-    </div>
-
-    <!-- Language Section -->
-    <div class="menu-section">
-      <h4 class="section-title">Language</h4>
-      <select class="language-select" id="languageSelect">
-        <option value="en">English</option>
-        <option value="yo">Yorùbá</option>
-        <option value="ig">Igbo</option>
-        <option value="ha">Hausa</option>
-        <option value="fr">Français</option>
-        <option value="es">Español</option>
-      </select>
-    </div>
-
-    <!-- Platform Settings -->
-    <div class="menu-section">
-      <h4 class="section-title">Platform Settings</h4>
-      
-      <div class="toggle-item">
-        <span>🌙 Dark Mode</span>
-        <div class="toggle-switch" id="darkModeToggle"></div>
-      </div>
-      
-      <div class="toggle-item">
-        <span>🤖 AI Assistant</span>
-        <div class="toggle-switch" id="aiAssistantToggle"></div>
-      </div>
-
-      <button class="menu-item">
-        <span class="menu-item-icon">📊</span>
-        Learning Mode
-      </button>
+    <!-- User Section -->
+    <div class="menu-section user-section">
+      <div class="user-status">Welcome to PMERIT</div>
+      <button class="menu-sign-in-btn" id="menuSignInBtn">Sign In</button>
     </div>
 
     <!-- Quick Actions -->
     <div class="menu-section">
-      <h4 class="section-title">Quick Actions</h4>
-      
-      <button class="menu-item" onclick="window.location.href='donate.html'">
-        <span class="menu-item-icon">💰</span>
-        Donate
-      </button>
-
-      <button class="menu-item" onclick="startLearning()">
-        <span class="menu-item-icon">🚀</span>
-        Start Learning
-      </button>
-
+      <h4 class="section-title">🔄 Quick Actions</h4>
+      <div class="toggle-item">
+        <span>Virtual Human Mode</span>
+        <span class="toggle-switch active" id="virtualHumanToggle" data-mode="vh">●</span>
+      </div>
+      <div class="toggle-item">
+        <span>Customer Service Mode</span>
+        <span class="toggle-switch" id="customerServiceToggle" data-mode="cs">○</span>
+      </div>
       <button class="menu-item" onclick="window.location.href='career.html'">
         <span class="menu-item-icon">🎯</span>
-        Career Paths
+        Career Track & Explore Paths
+        <span class="menu-arrow">→</span>
       </button>
     </div>
 
-    <!-- Help & Support -->
+    <!-- Learning Tools -->
     <div class="menu-section">
-      <h4 class="section-title">Help & Support</h4>
-      
+      <h4 class="section-title">🎯 Learning Tools</h4>
+      <button class="menu-item primary-action" onclick="window.location.href='assessment.html'">
+        <span class="menu-item-icon">�</span>
+        Begin Assessment
+      </button>
+      <button class="menu-item" onclick="startAIDiscovery()">
+        <span class="menu-item-icon">🤖</span>
+        Discover Your Path (AI)
+      </button>
+      <button class="menu-item" onclick="window.location.href='learner-portal.html'">
+        <span class="menu-item-icon">📚</span>
+        Personalized Learning Plan
+      </button>
+    </div>
+
+    <!-- Settings -->
+    <div class="menu-section">
+      <h4 class="section-title">⚙️ Settings</h4>
+      <div class="toggle-item">
+        <span>🌙 Dark Mode</span>
+        <span class="toggle-switch" id="darkModeToggle" data-mode="dark">○</span>
+      </div>
+      <div class="toggle-item">
+        <span>🔊 Text-to-Speech</span>
+        <span class="toggle-switch" id="ttsToggle" data-mode="tts">○</span>
+      </div>
+      <div class="toggle-item">
+        <span>🎥 Preview Videos</span>
+        <span class="toggle-switch" id="previewVideoToggle" data-mode="video">○</span>
+      </div>
+    </div>
+
+    <!-- Language & Support -->
+    <div class="menu-section">
+      <h4 class="section-title">🌐 Language & Support</h4>
+      <select class="language-select" id="languageSelect">
+        <option value="en">English</option>
+        <option value="es">Español</option>
+        <option value="fr">Français</option>
+        <option value="yo">Yorùbá</option>
+        <option value="ig">Igbo</option>
+        <option value="ha">Hausa</option>
+      </select>
       <button class="menu-item" onclick="window.location.href='help.html'">
         <span class="menu-item-icon">❓</span>
         Help Center
       </button>
-
-      <button class="menu-item" onclick="window.location.href='library.html'">
-        <span class="menu-item-icon">📚</span>
-        Learning Library
-      </button>
-
       <button class="menu-item" onclick="window.location.href='contact.html'">
         <span class="menu-item-icon">💬</span>
-        Contact Us
+        Contact Support
       </button>
     </div>
   </nav>
+
+  <!-- Google-Style Sign In Modal -->
+  <div class="auth-modal hidden" id="authModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Sign in</h2>
+        <p class="modal-subtitle">Use your PMERIT Account</p>
+      </div>
+      
+      <form class="auth-form" id="authForm">
+        <div class="input-group">
+          <input type="text" placeholder="Email or phone" class="email-input" id="emailInput" required>
+          <a href="#" class="forgot-link">Forgot email?</a>
+        </div>
+        
+        <div class="security-notice">
+          <span>Not your computer? Use Private Browsing windows to sign in.</span>
+          <a href="#" class="learn-more">Learn more about using Guest mode</a>
+        </div>
+        
+        <div class="auth-actions">
+          <a href="#" class="create-account" id="createAccountLink">Create account</a>
+          <button type="button" class="next-btn" id="nextBtn">Next</button>
+        </div>
+      </form>
+      
+      <div class="auth-footer">
+        <select class="footer-language" id="footerLanguage">
+          <option value="en">English (United States)</option>
+          <option value="es">Español</option>
+          <option value="fr">Français</option>
+        </select>
+        <div class="footer-links">
+          <a href="help.html">Help</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="#">Terms</a>
+        </div>
+      </div>
+      
+      <button class="modal-close" id="modalClose" aria-label="Close modal">×</button>
+    </div>
+  </div>
 
   <!-- Main Content: 65% viewport height -->
   <main class="app-main">

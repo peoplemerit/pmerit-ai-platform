@@ -71,6 +71,118 @@ function init() {
     });
   });
 
+  // Enhanced Authentication System
+  const authModal = document.getElementById('authModal');
+  const menuSignInBtn = document.getElementById('menuSignInBtn');
+  const modalClose = document.getElementById('modalClose');
+  const nextBtn = document.getElementById('nextBtn');
+  const emailInput = document.getElementById('emailInput');
+  const createAccountLink = document.getElementById('createAccountLink');
+
+  // Sign In Modal Functions
+  function showAuthModal() {
+    if (authModal) {
+      authModal.classList.remove('hidden');
+      if (emailInput) emailInput.focus();
+    }
+  }
+
+  function hideAuthModal() {
+    if (authModal) {
+      authModal.classList.add('hidden');
+    }
+  }
+
+  // Sign In Button Events
+  if (signInBtn) signInBtn.addEventListener('click', showAuthModal);
+  if (menuSignInBtn) menuSignInBtn.addEventListener('click', () => {
+    closeMenu();
+    setTimeout(showAuthModal, 300); // Wait for menu to close
+  });
+
+  // Modal Close Events
+  if (modalClose) modalClose.addEventListener('click', hideAuthModal);
+  if (authModal) {
+    authModal.addEventListener('click', function(e) {
+      if (e.target === authModal) hideAuthModal();
+    });
+  }
+
+  // Email Validation and Next Button
+  if (nextBtn && emailInput) {
+    nextBtn.addEventListener('click', function() {
+      const email = emailInput.value.trim();
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      
+      if (email && (emailRegex.test(email) || /^\+?[\d\s-()]+$/.test(email))) {
+        // Valid email or phone - proceed to next step
+        console.log('Valid credentials, proceeding to password step');
+        // Here you would typically show password input or redirect
+        hideAuthModal();
+        // For demo, show success message
+        setTimeout(() => {
+          alert('Authentication flow would continue here with password input.');
+        }, 300);
+      } else {
+        // Invalid input - show error
+        emailInput.classList.add('error');
+        emailInput.focus();
+        setTimeout(() => {
+          emailInput.classList.remove('error');
+        }, 3000);
+      }
+    });
+
+    // Remove error styling on input
+    emailInput.addEventListener('input', function() {
+      this.classList.remove('error');
+    });
+  }
+
+  // Enhanced Toggle Switches
+  const toggleSwitches = document.querySelectorAll('.toggle-switch');
+  
+  toggleSwitches.forEach(toggleSwitch => {
+    toggleSwitch.addEventListener('click', function() {
+      const isActive = this.classList.contains('active');
+      const mode = this.dataset.mode;
+      
+      if (isActive) {
+        this.classList.remove('active');
+        this.textContent = '○';
+      } else {
+        this.classList.add('active');
+        this.textContent = '●';
+      }
+      
+      // Handle specific toggle actions
+      switch(mode) {
+        case 'dark':
+          if (typeof setDark === 'function') {
+            setDark(!isActive);
+          }
+          console.log('Dark mode:', !isActive);
+          break;
+        case 'vh':
+          console.log('Virtual Human mode:', !isActive);
+          // Add virtual human logic here
+          break;
+        case 'cs':
+          console.log('Customer Service mode:', !isActive);
+          // Add customer service logic here
+          break;
+        case 'tts':
+          console.log('Text-to-Speech mode:', !isActive);
+          // Add TTS logic here
+          break;
+        case 'video':
+          console.log('Preview Videos mode:', !isActive);
+          // Add video preview logic here
+          break;
+      }
+    });
+  });
+
   // Grid Menu Button
   if (gridMenuBtn) {
     gridMenuBtn.addEventListener('click', function() {
