@@ -55,6 +55,10 @@
   <!-- Menu Overlay -->
   <div class="menu-overlay" id="menuOverlay"></div>
 
+  <!-- Mode Indicators -->
+  <div class="mode-indicator vh" id="vhModeIndicator">🤖 Virtual Human Active</div>
+  <div class="mode-indicator cs" id="csModeIndicator">🎧 Customer Service Active</div>
+
   <!-- Enhanced Hamburger Side Menu -->
   <nav class="side-menu" id="sideMenu">
     <!-- User Section -->
@@ -113,6 +117,11 @@
         <span>🎥 Preview Videos</span>
         <span class="toggle-switch" id="previewVideoToggle" data-mode="video">○</span>
       </div>
+      <button class="menu-item" onclick="previewVoices()">
+        <span class="menu-item-icon">🎤</span>
+        Preview Voices
+        <span class="menu-arrow">→</span>
+      </button>
     </div>
 
     <!-- Language & Support -->

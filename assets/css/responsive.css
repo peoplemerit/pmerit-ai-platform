@@ -2303,6 +2303,66 @@ body.dark .footer-status {
   text-shadow: 0 0 8px rgba(26, 115, 232, 0.3);
 }
 
+/* Blueprint Mode States */
+/* Virtual Human Mode */
+body.vh-mode {
+  --primary: #7E22CE; /* Purple accent for VH mode */
+}
+
+body.vh-mode .pmerit-header {
+  border-bottom-color: rgba(126, 34, 206, 0.3);
+}
+
+/* Customer Service Mode */
+body.cs-mode {
+  --primary: #059669; /* Green for customer service */
+}
+
+body.cs-mode .pmerit-header {
+  border-bottom-color: rgba(5, 150, 105, 0.3);
+}
+
+/* Toast Notifications */
+#toast {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  background: var(--primary);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 10000;
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0;
+  transition: all 0.3s ease;
+  max-width: 300px;
+  transform: translateX(100%);
+}
+
+/* Mode Indicators */
+.mode-indicator {
+  display: none;
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  z-index: 999;
+  opacity: 0.9;
+}
+
+body.vh-mode .mode-indicator.vh,
+body.cs-mode .mode-indicator.cs {
+  display: block;
+}
+
 /* Dark mode support */
 @media (prefers-color-scheme: dark) {
   :root {

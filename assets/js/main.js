@@ -64,10 +64,26 @@ function init() {
   // Menu Items Click Handler
   const menuItems = document.querySelectorAll('.menu-item');
   menuItems.forEach(item => {
-    item.addEventListener('click', function() {
+    item.addEventListener('click', function(e) {
+      // Prevent default if it has an onclick attribute
+      const hasOnclick = this.hasAttribute('onclick');
+      if (!hasOnclick) {
+        e.preventDefault();
+      }
+      
       const text = this.textContent.trim();
       console.log(`Menu item clicked: ${text}`);
-      closeMenu();
+      
+      // Handle specific blueprint behaviors
+      if (text.includes('Career Track')) {
+        showCareerTracks();
+      } else if (text.includes('Begin Assessment')) {
+        startAssessment();
+      } else if (text.includes('Preview Voices')) {
+        previewVoices();
+      } else {
+        closeMenu();
+      }
     });
   });
 
@@ -160,24 +176,32 @@ function init() {
         case 'dark':
           if (typeof setDark === 'function') {
             setDark(!isActive);
+          } else {
+            // Fallback dark mode implementation
+            document.body.classList.toggle('dark', !isActive);
           }
           console.log('Dark mode:', !isActive);
+          showToast(`Dark mode ${!isActive ? 'enabled' : 'disabled'}`);
           break;
         case 'vh':
+          toggleVirtualHumanMode(!isActive);
           console.log('Virtual Human mode:', !isActive);
-          // Add virtual human logic here
+          showToast(`Virtual Human ${!isActive ? 'activated' : 'deactivated'}`);
           break;
         case 'cs':
+          toggleCustomerServiceMode(!isActive);
           console.log('Customer Service mode:', !isActive);
-          // Add customer service logic here
+          showToast(`Customer Service ${!isActive ? 'activated' : 'deactivated'}`);
           break;
         case 'tts':
+          toggleTextToSpeech(!isActive);
           console.log('Text-to-Speech mode:', !isActive);
-          // Add TTS logic here
+          showToast(`Text-to-Speech ${!isActive ? 'enabled' : 'disabled'}`);
           break;
         case 'video':
+          togglePreviewVideos(!isActive);
           console.log('Preview Videos mode:', !isActive);
-          // Add video preview logic here
+          showToast(`Preview Videos ${!isActive ? 'enabled' : 'disabled'}`);
           break;
       }
     });
@@ -195,6 +219,118 @@ function init() {
       // Optional: Could implement a dedicated app grid dropdown here
       // showAppGrid();
     });
+  }
+
+  // Blueprint Behavior Functions
+  function toggleVirtualHumanMode(enabled) {
+    // Virtual Human Mode Implementation
+    if (enabled) {
+      // Show Virtual Human interface elements
+      document.body.classList.add('vh-mode');
+      console.log('Virtual Human Mode: Activating 3D avatar interface');
+      // Add VH-specific UI changes here
+    } else {
+      document.body.classList.remove('vh-mode');
+      console.log('Virtual Human Mode: Returning to text chat');
+    }
+  }
+
+  function toggleCustomerServiceMode(enabled) {
+    // Customer Service Mode Implementation
+    if (enabled) {
+      document.body.classList.add('cs-mode');
+      console.log('Customer Service Mode: Connecting to support team');
+      // Show support badges, change chat behavior
+    } else {
+      document.body.classList.remove('cs-mode');
+      console.log('Customer Service Mode: Returning to AI assistance');
+    }
+  }
+
+  function toggleTextToSpeech(enabled) {
+    // Text-to-Speech Implementation
+    if (enabled) {
+      document.body.classList.add('tts-enabled');
+      console.log('Text-to-Speech: Enabled - messages will be spoken');
+      // Initialize TTS engine
+    } else {
+      document.body.classList.remove('tts-enabled');
+      console.log('Text-to-Speech: Disabled');
+    }
+  }
+
+  function togglePreviewVideos(enabled) {
+    // Preview Videos Implementation
+    if (enabled) {
+      document.body.classList.add('video-previews-enabled');
+      console.log('Preview Videos: Enabled - showing video thumbnails');
+    } else {
+      document.body.classList.remove('video-previews-enabled');
+      console.log('Preview Videos: Disabled');
+    }
+  }
+
+  function showCareerTracks() {
+    // Career Track Exploration Implementation
+    console.log('Showing Career Track samples and exploration options');
+    // This could open a modal, navigate to career page, or show inline content
+    closeMenu();
+    setTimeout(() => {
+      showToast('Opening Career Track Explorer...');
+      // window.location.href = 'career.html';
+    }, 300);
+  }
+
+  function startAssessment() {
+    // Begin Assessment Implementation
+    console.log('Starting career assessment flow');
+    closeMenu();
+    setTimeout(() => {
+      showToast('Launching Career Assessment...');
+      // window.location.href = 'assessment.html';
+    }, 300);
+  }
+
+  function previewVoices() {
+    // Preview Voices Implementation
+    console.log('Opening voice preview interface');
+    showToast('Voice Preview: Coming soon - multiple AI voices available');
+  }
+
+  // Toast Notification System
+  function showToast(message, duration = 3000) {
+    // Create toast element if it doesn't exist
+    let toast = document.getElementById('toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'toast';
+      toast.style.cssText = `
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        background: #1a73e8;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 10000;
+        font-size: 14px;
+        font-weight: 500;
+        opacity: 0;
+        transition: all 0.3s ease;
+        max-width: 300px;
+      `;
+      document.body.appendChild(toast);
+    }
+
+    toast.textContent = message;
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateX(0)';
+
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateX(100%)';
+    }, duration);
   }
 
   // Language Selection
