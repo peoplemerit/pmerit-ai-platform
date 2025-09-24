@@ -875,18 +875,48 @@
   color: var(--primary);
 }
 
-.footer-item.active {
+/* Active State for Interactive Elements */
+.footer-item:not(.status-indicator).active {
   background: rgba(var(--primary-rgb), 0.12);
 }
 
-.footer-item.active i {
+.footer-item:not(.status-indicator).active i {
   color: var(--primary);
   font-weight: 600;
 }
 
-.footer-item.active span {
+.footer-item:not(.status-indicator).active span {
   color: var(--primary);
   font-weight: 600;
+}
+
+/* Status Indicator Styling */
+.footer-item.status-indicator {
+  position: relative;
+  cursor: default; /* Not clickable */
+}
+
+.footer-item.status-indicator:hover {
+  background: none; /* No hover effect for status */
+}
+
+.status-dot {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  background: #34d399; /* Green for connected */
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 0 4px rgba(52, 211, 153, 0.4);
+}
+
+/* Enhanced Touch Targets */
+.footer-item {
+  min-height: 48px; /* 48px minimum touch target */
+  min-width: 48px;
+  padding: 6px 8px;
 }
 
 /* Dark theme support */
@@ -900,31 +930,42 @@ body.dark .footer-item:hover:not(.active) {
   background: rgba(var(--primary-rgb), 0.15);
 }
 
-/* Mobile Footer Optimization */
+/* Mobile Footer Optimization - Enhanced */
 @media (max-width: 767px) {
   .google-footer {
-    height: 52px; /* Slightly smaller on mobile */
+    height: 56px; /* Standard mobile touch target height */
+    padding: 4px 0;
   }
   
   .footer-content {
-    padding: 0 var(--space-xs);
+    padding: 0 4px; /* Minimal edge padding */
   }
   
   .footer-item {
-    min-width: 50px;
-    padding: 4px;
+    min-height: 48px; /* Touch target size */
+    min-width: 48px;
+    padding: 4px 6px;
+    gap: 2px;
   }
   
   .footer-item i {
-    font-size: 16px; /* Slightly smaller icons on mobile */
+    font-size: 18px; /* Optimal mobile icon size */
   }
   
   .footer-item span {
-    font-size: 9px; /* Smaller text on mobile */
+    font-size: 10px; /* Readable mobile text */
+    line-height: 1.2;
   }
   
   .footer-center {
-    max-width: 120px; /* Adjust center width for mobile */
+    max-width: 130px; /* Optimized for mobile */
+  }
+  
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    top: 2px;
+    right: 6px;
   }
 }
 
