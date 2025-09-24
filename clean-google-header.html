@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PMERIT — Clean Google-Inspired Header</title>
+  <style>
+    /* Clean Google-Inspired Design System */
+    :root {
+      --google-blue: #1a73e8;
+      --google-blue-dark: #1557b0;
+      --google-gray: #5f6368;
+      --google-light-gray: #f8f9fa;
+      --google-border: #dadce0;
+      --google-text: #202124;
+      --white: #ffffff;
+      --shadow: 0 1px 6px 0 rgba(32,33,36,.28);
+      --shadow-hover: 0 2px 8px 0 rgba(32,33,36,.28);
+      --transition: all 0.2s cubic-bezier(0.4,0.0,0.2,1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--white);
+      color: var(--google-text);
+    }
+
+    /* ========== CLEAN GOOGLE-INSPIRED HEADER ========== */
+    .pmerit-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: var(--white);
+      border-bottom: 1px solid var(--google-border);
+      height: 60px;
+      box-sizing: border-box;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    /* Hamburger Menu Button */
+    .hamburger-btn {
+      background: none;
+      border: none;
+      padding: 12px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 48px;
+      min-height: 48px;
+      justify-content: center;
+      align-items: center;
+      border-radius: 4px;
+      transition: var(--transition);
+    }
+
+    .hamburger-btn:hover {
+      background-color: var(--google-light-gray);
+    }
+
+    .hamburger-line {
+      width: 18px;
+      height: 2px;
+      background: var(--google-gray);
+      transition: var(--transition);
+    }
+
+    /* Brand Logo */
+    .brand {
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--google-text);
+      letter-spacing: -0.5px;
+      flex-grow: 1;
+      text-align: center;
+    }
+
+    /* Sign In Button */
+    .header-actions {
+      display: flex;
+      align-items: center;
+    }
+
+    .sign-in-btn {
+      background: var(--google-blue);
+      color: var(--white);
+      border: none;
+      padding: 8px 24px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      min-width: 48px;
+      min-height: 36px;
+      transition: var(--transition);
+    }
+
+    .sign-in-btn:hover {
+      background: var(--google-blue-dark);
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* ========== HAMBURGER SIDE MENU ========== */
+    .menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+      z-index: 999;
+    }
+
+    .menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .side-menu {
+      position: fixed;
+      top: 0;
+      left: -320px;
+      width: 320px;
+      height: 100vh;
+      background: var(--white);
+      box-shadow: var(--shadow);
+      transition: left 0.3s cubic-bezier(0.4,0.0,0.2,1);
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .side-menu.active {
+      left: 0;
+    }
+
+    .menu-header {
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--google-border);
+    }
+
+    .menu-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--google-text);
+    }
+
+    .menu-section {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--google-border);
+    }
+
+    .menu-section:last-child {
+      border-bottom: none;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--google-gray);
+      padding: 0 24px 8px;
+      margin: 0;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 12px 24px;
+      background: none;
+      border: none;
+      text-align: left;
+      font-size: 14px;
+      color: var(--google-text);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .menu-item:hover {
+      background-color: var(--google-light-gray);
+    }
+
+    .menu-item-icon {
+      margin-right: 16px;
+      font-size: 16px;
+      width: 20px;
+      text-align: center;
+    }
+
+    /* Language Selector */
+    .language-select {
+      width: 100%;
+      padding: 12px 24px;
+      border: 1px solid var(--google-border);
+      border-radius: 4px;
+      font-size: 14px;
+      color: var(--google-text);
+      background: var(--white);
+      margin: 0 24px;
+      width: calc(100% - 48px);
+    }
+
+    .language-select:focus {
+      outline: 2px solid var(--google-blue);
+      border-color: var(--google-blue);
+    }
+
+    /* Toggle Switch */
+    .toggle-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 36px;
+      height: 20px;
+      background: var(--google-border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .toggle-switch::before {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      background: var(--white);
+      border-radius: 50%;
+      transition: var(--transition);
+    }
+
+    .toggle-switch.active {
+      background: var(--google-blue);
+    }
+
+    .toggle-switch.active::before {
+      transform: translateX(16px);
+    }
+
+    /* Demo Content */
+    .demo-content {
+      padding: 40px 24px;
+      text-align: center;
+      color: var(--google-gray);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .pmerit-header {
+        padding: 8px 12px;
+      }
+
+      .side-menu {
+        width: 280px;
+        left: -280px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Clean Google-Inspired Header -->
+  <header class="pmerit-header">
+    <!-- Hamburger Menu -->
+    <button class="hamburger-btn" id="menuToggle" aria-label="Main menu">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+    
+    <!-- Center Brand -->
+    <div class="brand">PMERIT</div>
+    
+    <!-- Right Actions -->
+    <div class="header-actions">
+      <button class="sign-in-btn" id="signInBtn">Sign In</button>
+    </div>
+  </header>
+
+  <!-- Menu Overlay -->
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <!-- Hamburger Side Menu -->
+  <nav class="side-menu" id="sideMenu">
+    <!-- Menu Header -->
+    <div class="menu-header">
+      <div class="menu-title">PMERIT Platform</div>
+    </div>
+
+    <!-- Language Section -->
+    <div class="menu-section">
+      <h4 class="section-title">Language</h4>
+      <select class="language-select" id="languageSelect">
+        <option value="en">English</option>
+        <option value="yo">Yorùbá</option>
+        <option value="ig">Igbo</option>
+        <option value="ha">Hausa</option>
+        <option value="fr">Français</option>
+        <option value="es">Español</option>
+      </select>
+    </div>
+
+    <!-- Platform Settings -->
+    <div class="menu-section">
+      <h4 class="section-title">Platform Settings</h4>
+      
+      <div class="toggle-item">
+        <span>🌙 Dark Mode</span>
+        <div class="toggle-switch" id="darkModeToggle"></div>
+      </div>
+      
+      <div class="toggle-item">
+        <span>👤 Virtual Human</span>
+        <div class="toggle-switch" id="virtualHumanToggle"></div>
+      </div>
+
+      <button class="menu-item">
+        <span class="menu-item-icon">📊</span>
+        Learning Mode
+      </button>
+    </div>
+
+    <!-- Navigation Links -->
+    <div class="menu-section">
+      <h4 class="section-title">Quick Links</h4>
+      
+      <button class="menu-item">
+        <span class="menu-item-icon">💰</span>
+        Donate
+      </button>
+
+      <button class="menu-item">
+        <span class="menu-item-icon">🚀</span>
+        Start Learning
+      </button>
+
+      <button class="menu-item">
+        <span class="menu-item-icon">🎯</span>
+        Career Paths
+      </button>
+    </div>
+
+    <!-- Help & Support -->
+    <div class="menu-section">
+      <h4 class="section-title">Help & Support</h4>
+      
+      <button class="menu-item">
+        <span class="menu-item-icon">❓</span>
+        Help Center
+      </button>
+
+      <button class="menu-item">
+        <span class="menu-item-icon">📚</span>
+        Tutorials
+      </button>
+
+      <button class="menu-item">
+        <span class="menu-item-icon">💬</span>
+        Feedback
+      </button>
+
+      <button class="menu-item">
+        <span class="menu-item-icon">📞</span>
+        Contact Us
+      </button>
+    </div>
+  </nav>
+
+  <!-- Demo Content -->
+  <main class="demo-content">
+    <h2>Clean Google-Inspired Header Demo</h2>
+    <p>Click the hamburger menu (☰) to access all platform features</p>
+    <br>
+    <p><strong>Key Features:</strong></p>
+    <ul style="text-align: left; max-width: 400px; margin: 20px auto;">
+      <li>✨ Ultra-clean minimalist design</li>
+      <li>🎨 Google's color palette and spacing</li>
+      <li>📱 Mobile-responsive with proper touch targets</li>
+      <li>🔧 Organized settings in hamburger menu</li>
+      <li>🌐 Easy language switching</li>
+      <li>🌙 Dark mode toggle</li>
+      <li>👤 Virtual human settings</li>
+      <li>❓ Comprehensive help section</li>
+    </ul>
+  </main>
+
+  <script>
+    // Clean JavaScript for Header Functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuToggle = document.getElementById('menuToggle');
+      const sideMenu = document.getElementById('sideMenu');
+      const menuOverlay = document.getElementById('menuOverlay');
+      const signInBtn = document.getElementById('signInBtn');
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      const virtualHumanToggle = document.getElementById('virtualHumanToggle');
+
+      // Hamburger Menu Toggle
+      function toggleMenu() {
+        sideMenu.classList.toggle('active');
+        menuOverlay.classList.toggle('active');
+      }
+
+      function closeMenu() {
+        sideMenu.classList.remove('active');
+        menuOverlay.classList.remove('active');
+      }
+
+      // Event Listeners
+      menuToggle.addEventListener('click', toggleMenu);
+      menuOverlay.addEventListener('click', closeMenu);
+
+      // Close menu on Escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          closeMenu();
+        }
+      });
+
+      // Toggle Switches
+      darkModeToggle.addEventListener('click', function() {
+        this.classList.toggle('active');
+        // Add dark mode logic here
+        console.log('Dark mode toggled');
+      });
+
+      virtualHumanToggle.addEventListener('click', function() {
+        this.classList.toggle('active');
+        // Add virtual human logic here
+        console.log('Virtual Human toggled');
+      });
+
+      // Sign In Button
+      signInBtn.addEventListener('click', function() {
+        console.log('Sign In clicked');
+        // Add sign in logic here
+      });
+
+      // Menu Items Click Handler
+      const menuItems = document.querySelectorAll('.menu-item');
+      menuItems.forEach(item => {
+        item.addEventListener('click', function() {
+          const text = this.textContent.trim();
+          console.log(`Menu item clicked: ${text}`);
+          // Add specific navigation logic here
+          closeMenu();
+        });
+      });
+
+      // Language Selection
+      const languageSelect = document.getElementById('languageSelect');
+      languageSelect.addEventListener('change', function() {
+        console.log(`Language changed to: ${this.value}`);
+        // Add language switching logic here
+      });
+    });
+  </script>
+</body>
+</html>
