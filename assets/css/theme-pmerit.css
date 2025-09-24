@@ -1,8 +1,33 @@
 :root {
-  --primary: #1A2A4F;       /* Navy Blue */
-  --primary-rgb: 26, 42, 79; /* RGB values for rgba() usage */
-  --accent: #D4A937;        /* Mustard Yellow */
-  --bg-primary: #F5F1E6;    /* Light Beige */
-  --text-primary: #2C2C2C;
-  --text-secondary: #888;
+  /* Blueprint Color Scheme */
+  --primary: #2563EB;         /* Blueprint Primary Blue */
+  --primary-dark: #1D4ED8;    /* Darker primary for hover states */
+  --primary-rgb: 37, 99, 235; /* RGB values for rgba() usage */
+  --accent: #7E22CE;          /* Blueprint Accent Purple */
+  --success: #059669;         /* Blueprint Success Green */
+  --text-primary: #1F2937;    /* Almost black */
+  --text-secondary: #6B7280;  /* Gray text */
+  --text-inverse: #F9FAFB;    /* Light text for dark backgrounds */
+  --bg-primary: #FFFFFF;      /* White background */
+  --bg-secondary: #F3F4F6;    /* Light gray background */
+  --bg-dark: #111827;         /* Dark background */
+  --card-bg: #FFFFFF;         /* Card background */
+  --border-color: #E5E7EB;    /* Border color */
+  --header-height: 70px;
+  --footer-height: 60px;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --transition: all 0.2s ease-in-out;
+}
+
+/* Dark Theme Support */
+.dark {
+  --text-primary: #F9FAFB;
+  --text-secondary: #D1D5DB;
+  --bg-primary: #111827;
+  --bg-secondary: #1F2937;
+  --card-bg: #1F2937;
+  --border-color: #374151;
+  --shadow: 0 8px 28px rgba(0,0,0,.45);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
 }
