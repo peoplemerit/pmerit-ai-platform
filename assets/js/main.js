@@ -7,7 +7,79 @@ function init() {
   // Initialize chat interface buttons
   initChatInterface();
   
-  // Hamburger menu functionality
+  // Clean Google-Inspired Header Functionality
+  const menuToggle = document.getElementById('menuToggle');
+  const sideMenu = document.getElementById('sideMenu');
+  const menuOverlay = document.getElementById('menuOverlay');
+  const signInBtn = document.getElementById('signInBtn');
+  const darkModeToggle = document.getElementById('darkModeToggle');
+  const aiAssistantToggle = document.getElementById('aiAssistantToggle');
+  
+  // Hamburger Menu Toggle
+  function toggleMenu() {
+    if (sideMenu && menuOverlay) {
+      sideMenu.classList.toggle('active');
+      menuOverlay.classList.toggle('active');
+    }
+  }
+
+  function closeMenu() {
+    if (sideMenu && menuOverlay) {
+      sideMenu.classList.remove('active');
+      menuOverlay.classList.remove('active');
+    }
+  }
+
+  // Event Listeners for Header
+  if (menuToggle) menuToggle.addEventListener('click', toggleMenu);
+  if (menuOverlay) menuOverlay.addEventListener('click', closeMenu);
+
+  // Close menu on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closeMenu();
+    }
+  });
+
+  // Toggle Switches
+  if (darkModeToggle) {
+    darkModeToggle.addEventListener('click', function() {
+      this.classList.toggle('active');
+      // Integrate with existing dark mode functionality
+      if (typeof setDark === 'function') {
+        setDark(!state.dark);
+      }
+    });
+  }
+
+  if (aiAssistantToggle) {
+    aiAssistantToggle.addEventListener('click', function() {
+      this.classList.toggle('active');
+      // Add AI assistant toggle logic here
+      console.log('AI Assistant toggled');
+    });
+  }
+
+  // Menu Items Click Handler
+  const menuItems = document.querySelectorAll('.menu-item');
+  menuItems.forEach(item => {
+    item.addEventListener('click', function() {
+      const text = this.textContent.trim();
+      console.log(`Menu item clicked: ${text}`);
+      closeMenu();
+    });
+  });
+
+  // Language Selection
+  const languageSelect = document.getElementById('languageSelect');
+  if (languageSelect) {
+    languageSelect.addEventListener('change', function() {
+      console.log(`Language changed to: ${this.value}`);
+      // Add language switching logic here
+    });
+  }
+  
+  // Legacy hamburger menu functionality (keeping for compatibility)
   const hamburgerMenu = document.getElementById('hamburgerMenu');
   const navItems = document.getElementById('navItems');
   
@@ -501,6 +573,17 @@ function initChatInterface() {
       }
     }
   }
+}
+
+// Helper function for Start Learning action
+function startLearning() {
+  // Focus on the chat input to start the learning conversation
+  const chatInput = document.getElementById('chatInput') || document.querySelector('textarea[placeholder*="Ask"]');
+  if (chatInput) {
+    chatInput.focus();
+    chatInput.value = "I'm ready to start learning! What courses or topics do you recommend for me?";
+  }
+  console.log('Start Learning activated');
 }
 
 if (document.readyState === 'loading') {
