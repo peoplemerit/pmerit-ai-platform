@@ -324,6 +324,54 @@ function init() {
       addMessage('PMERIT AI', 'PMERIT offers flexible pricing plans to make education accessible to everyone. We have free courses available, as well as premium plans with additional features and personalized support. Would you like to learn more about our pricing options?');
     });
   }
+  
+  // Footer Active State Management
+  initFooterInteractivity();
+}
+
+// Footer Interactivity - Enhanced Active State Management
+function initFooterInteractivity() {
+  const footerButtons = document.querySelectorAll('.footer-item:not(.status-indicator)');
+  
+  footerButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      // Remove active class from all interactive footer items
+      footerButtons.forEach(btn => {
+        btn.classList.remove('active');
+        btn.removeAttribute('aria-current');
+      });
+      
+      // Add active class to clicked item
+      this.classList.add('active');
+      this.setAttribute('aria-current', 'page');
+      
+      // Update status indicator based on context
+      updateStatusIndicator(this.id);
+    });
+  });
+}
+
+// Update Status Indicator Based on Active Section
+function updateStatusIndicator(activeSection) {
+  const statusDot = document.querySelector('.status-dot');
+  const statusText = document.querySelector('.status-indicator span');
+  
+  if (!statusDot || !statusText) return;
+  
+  // Update status based on active section
+  switch(activeSection) {
+    case 'privacyBtn':
+      statusDot.style.background = '#f59e0b'; // Orange for legal/policy
+      statusText.textContent = 'Privacy & Legal Portal';
+      break;
+    case 'settingsBtn':
+      statusDot.style.background = '#8b5cf6'; // Purple for settings
+      statusText.textContent = 'Platform Settings Portal';
+      break;
+    default:
+      statusDot.style.background = '#34d399'; // Green for connected
+      statusText.textContent = 'Education Services Portal';
+  }
 }
 
 // Simple message display function
