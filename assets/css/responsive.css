@@ -61,12 +61,40 @@
   text-align: center;
 }
 
-/* Sign In Button */
+/* Header Actions */
 .header-actions {
   display: flex;
   align-items: center;
+  gap: 8px;
 }
 
+/* Grid Menu Button */
+.grid-menu-btn {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 50%;
+  min-width: 40px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  color: var(--text-secondary);
+}
+
+.grid-menu-btn:hover {
+  background-color: var(--bg-secondary);
+}
+
+.grid-icon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+/* Sign In Button */
 .sign-in-btn {
   background: var(--primary);
   color: var(--text-inverse);
@@ -250,6 +278,17 @@
   .hamburger-btn {
     min-width: 44px;
     min-height: 44px;
+  }
+
+  .grid-menu-btn {
+    min-width: 36px;
+    min-height: 36px;
+    padding: 6px;
+  }
+
+  .grid-icon {
+    width: 18px;
+    height: 18px;
   }
 
   .sign-in-btn {

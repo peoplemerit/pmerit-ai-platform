@@ -12,6 +12,7 @@ function init() {
   const sideMenu = document.getElementById('sideMenu');
   const menuOverlay = document.getElementById('menuOverlay');
   const signInBtn = document.getElementById('signInBtn');
+  const gridMenuBtn = document.getElementById('gridMenuBtn');
   const darkModeToggle = document.getElementById('darkModeToggle');
   const aiAssistantToggle = document.getElementById('aiAssistantToggle');
   
@@ -69,6 +70,20 @@ function init() {
       closeMenu();
     });
   });
+
+  // Grid Menu Button
+  if (gridMenuBtn) {
+    gridMenuBtn.addEventListener('click', function() {
+      // For now, show available platform sections - can be expanded to show app grid
+      console.log('Grid menu clicked - showing platform apps');
+      
+      // Open hamburger menu as fallback to show platform features
+      toggleMenu();
+      
+      // Optional: Could implement a dedicated app grid dropdown here
+      // showAppGrid();
+    });
+  }
 
   // Language Selection
   const languageSelect = document.getElementById('languageSelect');
