@@ -188,31 +188,137 @@
     </div>
   </div>
 
-  <!-- Main Content: 65% viewport height -->
-  <main class="app-main">
-    <div class="main-container">
-      <div class="hero-content">
-        <p class="greeting-text">Hi there! I'm your learning companion, empowering your education through innovation. PMERIT provides accessible, high-quality education that opens doors to endless opportunities worldwide. Ready to discover your potential and start your learning journey?</p>
-        
-        <div class="cta-section">
-          <div class="chat-preview">
-            <h2>Ask Your Learning Companion</h2>
-            <p class="chat-description">Get personalized guidance on courses, career paths, and learning objectives</p>
+  <!-- Blueprint Three-Pane Layout Structure -->
+  <div class="estate">
+    <!-- Left Sidebar: Quick Actions -->
+    <aside id="left" class="left-sidebar" aria-label="Quick actions sidebar">
+      <section>
+        <div class="pane-title">Quick Actions</div>
+
+        <button class="toggle" id="vhToggle">
+          <span><i class="fas fa-user-astronaut icon"></i> Virtual Human Mode</span>
+          <span class="switch" aria-hidden="true"></span>
+        </button>
+
+        <button class="action" id="careerPaths">
+          <span><i class="fas fa-compass icon"></i> Career Track & Explore Paths</span>
+          <i class="fas fa-chevron-right" aria-hidden="true"></i>
+        </button>
+
+        <button class="toggle" id="supportToggle">
+          <span><i class="fas fa-headset icon"></i> Customer Service Mode</span>
+          <span class="switch" aria-hidden="true"></span>
+        </button>
+
+        <div class="collapsible" id="settingsBox">
+          <div class="head">
+            <strong><i class="fas fa-sliders-h"></i> Settings</strong>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="body">
+            <button class="toggle" id="darkToggle">
+              <span><i class="fas fa-moon icon"></i> Dark Mode</span>
+              <span class="switch" aria-hidden="true"></span>
+            </button>
+            <button class="toggle" id="ttsToggle">
+              <span><i class="fas fa-volume-up icon"></i> Text-to-Speech</span>
+              <span class="switch" aria-hidden="true"></span>
+            </button>
+            <button class="action" id="voicesBtn">
+              <span><i class="fas fa-headphones icon"></i> Preview Voices</span>
+              <i class="fas fa-chevron-right"></i>
+            </button>
           </div>
         </div>
-      </div>
-    </div>
-  </main>
 
-  <!-- Fixed Chat Input: Above footer -->
-  <div class="chat-input-fixed">
-    <div class="input-container">
-      <input type="text" placeholder="Try: 'What programming courses do you recommend for beginners?'" class="chat-input">
-      <button class="send-btn" title="Send message" aria-label="Send">
-        <i class="fas fa-paper-plane"></i>
-      </button>
-    </div>
+        <!-- Dashboard Button -->
+        <button class="dashboard guest" id="dashBtn">
+          <i class="fas fa-gauge-high"></i> Dashboard
+        </button>
+
+        <div class="avatar" id="vhAvatar" title="Virtual Human">
+          <i class="fas fa-user-circle" aria-hidden="true"></i>
+        </div>
+      </section>
+    </aside>
+
+    <!-- Center Chat Panel -->
+    <main class="center-panel">
+      <section class="panel" aria-label="Chat panel">
+        <div class="panel-head">
+          <div class="badges">
+            <span class="badge vh" id="vhBadge" style="display:none">
+              <i class="fas fa-user-astronaut"></i> Virtual Human
+            </span>
+            <span class="badge support" id="supportBadge" style="display:none">
+              <i class="fas fa-headset"></i> Support Assistant
+            </span>
+          </div>
+        </div>
+
+        <div id="textChat" role="region" aria-live="polite">
+          <div class="chat-body" id="chatBody">
+            <article class="bubble" id="welcomeMsg">
+              <div class="ava"><i class="fas fa-user-circle"></i></div>
+              <div>
+                <h3>PMERIT AI:</h3>
+                <p id="welcomeCopy">Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?</p>
+              </div>
+            </article>
+          </div>
+          <div class="chat-input">
+            <textarea id="chatInput" maxlength="1000" placeholder="Ask about courses, learning paths, or your goals..." aria-label="Message"></textarea>
+            <div class="input-bar">
+              <span class="count" id="count">0/1000</span>
+              <div class="input-actions">
+                <button class="nav-btn" id="vhQuick">
+                  <i class="fas fa-user-astronaut"></i> VH Mode
+                </button>
+                <button class="nav-btn" id="readAbout">
+                  <i class="fas fa-book"></i> Read About
+                </button>
+                <span class="footer-status">
+                  <i class="fas fa-circle-check"></i> Connected to Educational Services
+                </span>
+              </div>
+              <button class="send" id="sendBtn">Send <i class="fas fa-paper-plane"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Virtual Human stage -->
+        <div id="vhStage" role="region" aria-live="polite">
+          <div class="stage">
+            <div class="human-frame">
+              <div class="human-face"><i class="fas fa-user-circle"></i></div>
+            </div>
+          </div>
+          <div class="captions" id="captions">Virtual Human is speaking…</div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Right Sidebar: Support & Discovery -->
+    <aside id="right" class="right-sidebar">
+      <div class="support-assistant">
+        <h4><i class="fas fa-headset"></i> Support Assistant</h4>
+        <p>Get help with courses, technical issues, or platform navigation</p>
+      </div>
+
+      <h3>Discover Your Path</h3>
+      <div class="discover">
+        <h4>Personalized learning plan</h4>
+        <p>Start a short flow that blends learning style, interests, and skills into a plan.</p>
+        <button class="nav-btn primary" id="beginAssessment">Begin Assessment</button>
+        
+        <div class="insights">
+          Based on your interests in technology and problem-solving, consider exploring our Software Development track.
+        </div>
+      </div>
+    </aside>
   </div>
+
+
 
   <!-- PMERIT Google-Style Footer -->
   <footer class="google-footer">
