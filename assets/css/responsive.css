@@ -2450,18 +2450,33 @@ body.dark .footer-status {
   color: var(--primary);
 }
 
+/* Ensure menu sections are visible */
+.menu-section {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  background: var(--bg-primary, #ffffff) !important;
+  color: var(--text-primary, #1f2937) !important;
+}
+
+.menu-section h4 {
+  color: var(--primary, #2563EB) !important;
+}
+
 /* Toggle Group */
 .menu-toggle-group {
   margin-bottom: 16px;
+  display: block !important;
+  visibility: visible !important;
 }
 
 .menu-toggle-item {
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
+  background: var(--card-bg, #f8f9fa) !important;
+  border: 1px solid var(--border-color, #e5e7eb);
   border-radius: 8px;
   margin-bottom: 8px;
   transition: var(--transition);
@@ -2469,6 +2484,8 @@ body.dark .footer-status {
   max-width: 100%;
   box-sizing: border-box;
   overflow: hidden;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .menu-toggle-item:hover {
@@ -2540,14 +2557,14 @@ body.dark .footer-status {
 
 /* Action Items */
 .menu-action-item {
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: space-between;
   width: 100%;
   max-width: 100%;
   padding: 12px 16px;
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
+  background: var(--card-bg, #f8f9fa) !important;
+  border: 1px solid var(--border-color, #e5e7eb);
   border-radius: 8px;
   margin-bottom: 8px;
   cursor: pointer;
@@ -2555,6 +2572,9 @@ body.dark .footer-status {
   text-align: left;
   box-sizing: border-box;
   overflow: hidden;
+  visibility: visible !important;
+  opacity: 1 !important;
+  color: var(--text-primary, #1f2937) !important;
 }
 
 .menu-action-item:hover {
@@ -2589,16 +2609,19 @@ body.dark .footer-status {
 
 /* Collapsible Settings */
 .collapsible-header {
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
+  background: var(--bg-secondary, #f1f5f9) !important;
+  border: 1px solid var(--border-color, #e5e7eb);
   border-radius: 8px;
   margin-bottom: 8px;
   cursor: pointer;
   transition: var(--transition);
+  visibility: visible !important;
+  opacity: 1 !important;
+  color: var(--text-primary, #1f2937) !important;
 }
 
 .collapsible-header:hover {
@@ -2640,19 +2663,21 @@ body.dark .footer-status {
 .dashboard-btn {
   width: 100%;
   padding: 16px;
-  background: var(--text-secondary);
-  color: white;
+  background: var(--text-secondary, #6B7280) !important;
+  color: white !important;
   border: none;
   border-radius: 8px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition);
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
   gap: 12px;
   margin-bottom: 20px;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .dashboard-btn:hover {
