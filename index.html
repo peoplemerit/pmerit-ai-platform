@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-widt=1.0, viewport-fit=cover">
   <title>PMERIT — Accessible Global Education</title>
   
   <!-- Favicon -->
@@ -61,27 +61,60 @@
 
   <!-- Enhanced Hamburger Side Menu -->
   <nav class="side-menu" id="sideMenu">
-    <!-- User Section -->
-    <div class="menu-section user-section">
-      <div class="user-status">Welcome to PMERIT</div>
-      <button class="menu-sign-in-btn" id="menuSignInBtn">Sign In</button>
+    <!-- PMERIT Header -->
+    <div class="menu-header-section">
+      <div class="menu-logo">
+        <span class="logo-icon">🎓</span>
+        <span class="logo-text">PMERIT</span>
+      </div>
     </div>
 
-    <!-- Quick Actions -->
+    <!-- User Welcome Section -->
+    <div class="menu-section user-welcome">
+      <div class="welcome-text">Welcome to PMERIT</div>
+      <button class="menu-sign-in-btn" id="menuSignInBtn">
+        <i class="fas fa-sign-in-alt"></i>
+        Sign In
+      </button>
+    </div>
+
+    <!-- Quick Actions Section -->
     <div class="menu-section">
-      <h4 class="section-title">🔄 Quick Actions</h4>
-      <div class="toggle-item">
-        <span>Virtual Human Mode</span>
-        <span class="toggle-switch active" id="virtualHumanToggle" data-mode="vh">●</span>
+      <h4 class="section-header">
+        <i class="fas fa-bolt section-icon"></i>
+        Quick Actions
+      </h4>
+      
+      <div class="menu-toggle-group">
+        <div class="menu-toggle-item">
+          <div class="toggle-content">
+            <i class="fas fa-user-astronaut toggle-icon"></i>
+            <span class="toggle-label">Virtual Human Mode</span>
+          </div>
+          <div class="toggle-switch-container">
+            <input type="checkbox" class="modern-toggle" id="virtualHumanToggle" data-mode="vh">
+            <label for="virtualHumanToggle" class="toggle-slider"></label>
+          </div>
+        </div>
+
+        <div class="menu-toggle-item">
+          <div class="toggle-content">
+            <i class="fas fa-headset toggle-icon"></i>
+            <span class="toggle-label">Customer Service Mode</span>
+          </div>
+          <div class="toggle-switch-container">
+            <input type="checkbox" class="modern-toggle" id="customerServiceToggle" data-mode="cs">
+            <label for="customerServiceToggle" class="toggle-slider"></label>
+          </div>
+        </div>
       </div>
-      <div class="toggle-item">
-        <span>Customer Service Mode</span>
-        <span class="toggle-switch" id="customerServiceToggle" data-mode="cs">○</span>
-      </div>
-      <button class="menu-item" onclick="window.location.href='career.html'">
-        <span class="menu-item-icon">🎯</span>
-        Career Track & Explore Paths
-        <span class="menu-arrow">→</span>
+
+      <button class="menu-action-item" onclick="showCareerTracks()">
+        <div class="action-content">
+          <i class="fas fa-compass action-icon"></i>
+          <span class="action-label">Career Track & Explore Paths</span>
+        </div>
+        <i class="fas fa-chevron-right action-arrow"></i>
       </button>
     </div>
 
@@ -102,46 +135,54 @@
       </button>
     </div>
 
-    <!-- Settings -->
+    <!-- Settings Section -->
     <div class="menu-section">
-      <h4 class="section-title">⚙️ Settings</h4>
-      <div class="toggle-item">
-        <span>🌙 Dark Mode</span>
-        <span class="toggle-switch" id="darkModeToggle" data-mode="dark">○</span>
+      <div class="collapsible-header" id="settingsHeader">
+        <div class="header-content">
+          <i class="fas fa-cog section-icon"></i>
+          <span class="section-label">Settings</span>
+        </div>
+        <i class="fas fa-chevron-down chevron-icon"></i>
       </div>
-      <div class="toggle-item">
-        <span>🔊 Text-to-Speech</span>
-        <span class="toggle-switch" id="ttsToggle" data-mode="tts">○</span>
+      
+      <div class="collapsible-content" id="settingsContent">
+        <div class="menu-toggle-item">
+          <div class="toggle-content">
+            <i class="fas fa-moon toggle-icon"></i>
+            <span class="toggle-label">Dark Mode</span>
+          </div>
+          <div class="toggle-switch-container">
+            <input type="checkbox" class="modern-toggle" id="darkModeToggle" data-mode="dark">
+            <label for="darkModeToggle" class="toggle-slider"></label>
+          </div>
+        </div>
+
+        <div class="menu-toggle-item">
+          <div class="toggle-content">
+            <i class="fas fa-volume-up toggle-icon"></i>
+            <span class="toggle-label">Text-to-Speech</span>
+          </div>
+          <div class="toggle-switch-container">
+            <input type="checkbox" class="modern-toggle" id="ttsToggle" data-mode="tts">
+            <label for="ttsToggle" class="toggle-slider"></label>
+          </div>
+        </div>
+
+        <button class="menu-action-item" onclick="previewVoices()">
+          <div class="action-content">
+            <i class="fas fa-headphones action-icon"></i>
+            <span class="action-label">Preview Voices</span>
+          </div>
+          <i class="fas fa-chevron-right action-arrow"></i>
+        </button>
       </div>
-      <div class="toggle-item">
-        <span>🎥 Preview Videos</span>
-        <span class="toggle-switch" id="previewVideoToggle" data-mode="video">○</span>
-      </div>
-      <button class="menu-item" onclick="previewVoices()">
-        <span class="menu-item-icon">🎤</span>
-        Preview Voices
-        <span class="menu-arrow">→</span>
-      </button>
     </div>
 
-    <!-- Language & Support -->
+    <!-- Dashboard Section -->
     <div class="menu-section">
-      <h4 class="section-title">🌐 Language & Support</h4>
-      <select class="language-select" id="languageSelect">
-        <option value="en">English</option>
-        <option value="es">Español</option>
-        <option value="fr">Français</option>
-        <option value="yo">Yorùbá</option>
-        <option value="ig">Igbo</option>
-        <option value="ha">Hausa</option>
-      </select>
-      <button class="menu-item" onclick="window.location.href='help.html'">
-        <span class="menu-item-icon">❓</span>
-        Help Center
-      </button>
-      <button class="menu-item" onclick="window.location.href='contact.html'">
-        <span class="menu-item-icon">💬</span>
-        Contact Support
+      <button class="dashboard-btn" id="dashboardBtn">
+        <i class="fas fa-tachometer-alt dashboard-icon"></i>
+        Dashboard
       </button>
     </div>
   </nav>

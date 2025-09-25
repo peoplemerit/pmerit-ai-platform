@@ -2278,6 +2278,269 @@ body.dark .footer-status {
   }
 }
 
+/* ========== ORGANIZED HAMBURGER MENU STYLES ========== */
+/* Menu Header Section */
+.menu-header-section {
+  padding: 20px;
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.menu-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  font-size: 24px;
+}
+
+.logo-text {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* User Welcome Section */
+.user-welcome {
+  background: var(--bg-secondary) !important;
+  padding: 20px !important;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.welcome-text {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+/* Section Headers */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--primary);
+  margin: 0 0 16px 0;
+  padding: 0 4px;
+}
+
+.section-icon {
+  font-size: 16px;
+  color: var(--primary);
+}
+
+/* Toggle Group */
+.menu-toggle-group {
+  margin-bottom: 16px;
+}
+
+.menu-toggle-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  transition: var(--transition);
+}
+
+.menu-toggle-item:hover {
+  border-color: var(--primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.toggle-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toggle-icon {
+  font-size: 16px;
+  color: var(--primary);
+  width: 20px;
+  text-align: center;
+}
+
+.toggle-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+/* Modern Toggle Switch */
+.toggle-switch-container {
+  position: relative;
+}
+
+.modern-toggle {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  background-color: #ccc;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.modern-toggle:checked + .toggle-slider {
+  background-color: var(--primary);
+}
+
+.modern-toggle:checked + .toggle-slider:before {
+  transform: translateX(20px);
+}
+
+/* Action Items */
+.menu-action-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: left;
+}
+
+.menu-action-item:hover {
+  border-color: var(--primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.action-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.action-icon {
+  font-size: 16px;
+  color: var(--primary);
+  width: 20px;
+  text-align: center;
+}
+
+.action-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.action-arrow {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* Collapsible Settings */
+.collapsible-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.collapsible-header:hover {
+  background: var(--border-color);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.chevron-icon {
+  font-size: 12px;
+  color: var(--text-secondary);
+  transition: transform 0.3s ease;
+}
+
+.collapsible-header.open .chevron-icon {
+  transform: rotate(180deg);
+}
+
+.collapsible-content {
+  display: none;
+  padding: 0 8px 16px;
+}
+
+.collapsible-content.open {
+  display: block;
+}
+
+/* Dashboard Button */
+.dashboard-btn {
+  width: 100%;
+  padding: 16px;
+  background: var(--text-secondary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.dashboard-btn:hover {
+  background: #4B5563;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}
+
+.dashboard-icon {
+  font-size: 18px;
+}
+
 /* Enhanced UI Polish */
 /* Keyboard Navigation Support */
 .auth-modal .next-btn:focus,
