@@ -207,16 +207,13 @@ function init() {
     });
   });
 
-  // Grid Menu Button
+  // Grid Menu Button - Reserved for future pages/apps
   if (gridMenuBtn) {
     gridMenuBtn.addEventListener('click', function() {
-      // For now, show available platform sections - can be expanded to show app grid
-      console.log('Grid menu clicked - showing platform apps');
+      console.log('Grid menu clicked - Reserved for pages/apps');
       
-      // Open hamburger menu as fallback to show platform features
-      toggleMenu();
-      
-      // Optional: Could implement a dedicated app grid dropdown here
+      // Grid menu is reserved for pages as apps - currently empty
+      // TODO: Implement app grid dropdown with page navigation
       // showAppGrid();
     });
   }
