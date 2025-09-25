@@ -959,6 +959,152 @@ function startLearning() {
   console.log('Start Learning activated');
 }
 
+// Blueprint-specific interactive features
+function showCareerTracks() {
+  console.log('Career Tracks activated');
+  // Show career path exploration modal or navigate to dedicated page
+  const careerModal = document.createElement('div');
+  careerModal.className = 'career-modal-overlay';
+  careerModal.innerHTML = `
+    <div class="career-modal">
+      <div class="modal-header">
+        <h3>Explore Career Tracks</h3>
+        <button class="modal-close" onclick="this.closest('.career-modal-overlay').remove()">×</button>
+      </div>
+      <div class="modal-content">
+        <div class="career-track-grid">
+          <div class="career-track-card" onclick="selectCareerTrack('data-science')">
+            <i class="fas fa-chart-bar"></i>
+            <h4>Data Science</h4>
+            <p>Analytics, ML, AI Development</p>
+          </div>
+          <div class="career-track-card" onclick="selectCareerTrack('software-dev')">
+            <i class="fas fa-code"></i>
+            <h4>Software Development</h4>
+            <p>Full-Stack, Mobile, Web Development</p>
+          </div>
+          <div class="career-track-card" onclick="selectCareerTrack('cybersecurity')">
+            <i class="fas fa-shield-alt"></i>
+            <h4>Cybersecurity</h4>
+            <p>Security Analysis, Penetration Testing</p>
+          </div>
+          <div class="career-track-card" onclick="selectCareerTrack('product-mgmt')">
+            <i class="fas fa-tasks"></i>
+            <h4>Product Management</h4>
+            <p>Strategy, Analytics, Leadership</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(careerModal);
+}
+
+function selectCareerTrack(track) {
+  console.log(`Selected career track: ${track}`);
+  // Store selected track and navigate or update UI
+  localStorage.setItem('selectedCareerTrack', track);
+  document.querySelector('.career-modal-overlay').remove();
+  
+  // Focus chat to start career-specific conversation
+  const chatInput = document.getElementById('chatInput') || document.querySelector('textarea[placeholder*="Ask"]');
+  if (chatInput) {
+    chatInput.focus();
+    chatInput.value = `I'm interested in the ${track.replace('-', ' ')} career track. Can you help me create a personalized learning path?`;
+  }
+}
+
+function startAssessment() {
+  console.log('Starting assessment');
+  // Navigate to assessment with proper state
+  window.location.href = '/assessment.html';
+}
+
+function previewVoices() {
+  console.log('Voice preview activated');
+  // Show voice preview modal
+  const voiceModal = document.createElement('div');
+  voiceModal.className = 'voice-modal-overlay';
+  voiceModal.innerHTML = `
+    <div class="voice-modal">
+      <div class="modal-header">
+        <h3>Preview AI Voices</h3>
+        <button class="modal-close" onclick="this.closest('.voice-modal-overlay').remove()">×</button>
+      </div>
+      <div class="modal-content">
+        <div class="voice-options">
+          <div class="voice-option" onclick="playVoicePreview('sarah')">
+            <div class="voice-info">
+              <h4>Sarah</h4>
+              <p>Professional, Clear</p>
+            </div>
+            <button class="play-btn"><i class="fas fa-play"></i></button>
+          </div>
+          <div class="voice-option" onclick="playVoicePreview('alex')">
+            <div class="voice-info">
+              <h4>Alex</h4>
+              <p>Friendly, Conversational</p>
+            </div>
+            <button class="play-btn"><i class="fas fa-play"></i></button>
+          </div>
+          <div class="voice-option" onclick="playVoicePreview('morgan')">
+            <div class="voice-info">
+              <h4>Morgan</h4>
+              <p>Calm, Reassuring</p>
+            </div>
+            <button class="play-btn"><i class="fas fa-play"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(voiceModal);
+}
+
+function playVoicePreview(voice) {
+  console.log(`Playing voice preview: ${voice}`);
+  // Implement actual TTS preview here
+  if ('speechSynthesis' in window) {
+    const utterance = new SpeechSynthesisUtterance(`Hello! This is ${voice}. I'll be your AI learning assistant.`);
+    utterance.rate = 0.8;
+    utterance.pitch = 1;
+    speechSynthesis.speak(utterance);
+  }
+}
+
+function startAIDiscovery() {
+  console.log('AI Discovery activated');
+  const chatInput = document.getElementById('chatInput') || document.querySelector('textarea[placeholder*="Ask"]');
+  if (chatInput) {
+    chatInput.focus();
+    chatInput.value = "I'd like AI to help me discover the best learning path based on my interests and goals. Can we start with a quick assessment?";
+  }
+}
+
+function showVirtualHumanWelcome() {
+  console.log('Virtual Human Mode activated');
+  // Show virtual human avatar and welcome message
+  const chatInput = document.getElementById('chatInput') || document.querySelector('textarea[placeholder*="Ask"]');
+  if (chatInput) {
+    chatInput.focus();
+    chatInput.value = "Hi! I've enabled Virtual Human Mode. Can you show me your avatar and introduce yourself?";
+    
+    // Add visual indicator for virtual human mode
+    const mainContainer = document.querySelector('main') || document.body;
+    mainContainer.classList.add('virtual-human-active');
+    
+    // Optional: TTS welcome if enabled
+    const ttsEnabled = document.getElementById('ttsToggle')?.checked;
+    if (ttsEnabled && 'speechSynthesis' in window) {
+      setTimeout(() => {
+        const utterance = new SpeechSynthesisUtterance('Virtual Human Mode is now active. I can provide a more interactive and personalized learning experience.');
+        utterance.rate = 0.8;
+        speechSynthesis.speak(utterance);
+      }, 500);
+    }
+  }
+}
+
 // New: Modern Toggle Switch Handler
 function initializeModernToggles() {
   document.querySelectorAll('.modern-toggle').forEach(toggle => {
@@ -974,16 +1120,45 @@ function initializeModernToggles() {
         setDark(this.checked);
       } else if (toggleId === 'aiAssistantToggle') {
         console.log('AI Assistant toggled');
-        // Add AI assistant functionality here
+        // Enable/disable AI assistant features
+        document.body.classList.toggle('ai-assistant-enabled', this.checked);
       } else if (toggleId === 'notificationsToggle') {
         console.log('Notifications toggled');
-        // Add notifications functionality here
+        // Enable/disable browser notifications
+        if (this.checked && 'Notification' in window) {
+          Notification.requestPermission();
+        }
       } else if (toggleId === 'autoplayToggle') {
         console.log('Autoplay toggled');
-        // Add autoplay functionality here
+        // Control autoplay of media elements
+        document.body.classList.toggle('autoplay-enabled', this.checked);
       } else if (toggleId === 'privacyModeToggle') {
         console.log('Privacy mode toggled');
-        // Add privacy mode functionality here
+        // Enable/disable privacy features
+        document.body.classList.toggle('privacy-mode', this.checked);
+      } else if (toggleId === 'ttsToggle') {
+        console.log('Text-to-Speech toggled');
+        // Enable/disable TTS functionality
+        document.body.classList.toggle('tts-enabled', this.checked);
+        if (this.checked) {
+          // Test TTS when enabled
+          if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance('Text-to-speech is now enabled.');
+            utterance.rate = 0.8;
+            speechSynthesis.speak(utterance);
+          }
+        }
+      } else if (toggleId === 'virtualHumanToggle') {
+        console.log('Virtual Human Mode toggled');
+        // Enable/disable virtual human interface
+        document.body.classList.toggle('virtual-human-mode', this.checked);
+        if (this.checked) {
+          showVirtualHumanWelcome();
+        }
+      } else if (toggleId === 'customerServiceToggle') {
+        console.log('Customer Service Mode toggled');
+        // Enable/disable customer service features
+        document.body.classList.toggle('customer-service-mode', this.checked);
       }
     });
     
