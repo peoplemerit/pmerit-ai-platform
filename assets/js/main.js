@@ -959,8 +959,82 @@ function startLearning() {
   console.log('Start Learning activated');
 }
 
+// New: Modern Toggle Switch Handler
+function initializeModernToggles() {
+  document.querySelectorAll('.modern-toggle').forEach(toggle => {
+    toggle.addEventListener('change', function() {
+      const toggleId = this.id;
+      console.log(`Toggle ${toggleId} changed to:`, this.checked);
+      
+      // Store toggle state in localStorage
+      localStorage.setItem(toggleId, this.checked);
+      
+      // Handle specific toggle behaviors
+      if (toggleId === 'darkModeToggle' && typeof setDark === 'function') {
+        setDark(this.checked);
+      } else if (toggleId === 'aiAssistantToggle') {
+        console.log('AI Assistant toggled');
+        // Add AI assistant functionality here
+      } else if (toggleId === 'notificationsToggle') {
+        console.log('Notifications toggled');
+        // Add notifications functionality here
+      } else if (toggleId === 'autoplayToggle') {
+        console.log('Autoplay toggled');
+        // Add autoplay functionality here
+      } else if (toggleId === 'privacyModeToggle') {
+        console.log('Privacy mode toggled');
+        // Add privacy mode functionality here
+      }
+    });
+    
+    // Load saved state
+    const savedState = localStorage.getItem(toggle.id);
+    if (savedState !== null) {
+      toggle.checked = savedState === 'true';
+    }
+  });
+}
+
+// New: Collapsible Settings Handler
+function initializeCollapsibleSettings() {
+  const settingsHeader = document.querySelector('.collapsible-header');
+  if (settingsHeader) {
+    settingsHeader.addEventListener('click', function() {
+      this.classList.toggle('open');
+      const content = document.querySelector('.collapsible-content');
+      if (content) {
+        content.classList.toggle('open');
+      }
+    });
+  }
+}
+
+// New: Dashboard Button Handler
+function initializeDashboardButton() {
+  const dashboardBtn = document.querySelector('.dashboard-btn');
+  if (dashboardBtn) {
+    dashboardBtn.addEventListener('click', function() {
+      // Add dashboard navigation logic here
+      console.log('Navigating to dashboard...');
+      // You can add routing logic or redirect to a dashboard page
+      window.location.href = '/learner-portal.html';
+    });
+  }
+}
+
+// Update initialization to include new features
+function initializeNewMenuFeatures() {
+  initializeModernToggles();
+  initializeCollapsibleSettings();
+  initializeDashboardButton();
+}
+
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
+  document.addEventListener('DOMContentLoaded', function() {
+    init();
+    initializeNewMenuFeatures();
+  });
 } else {
   init();
+  initializeNewMenuFeatures();
 }
