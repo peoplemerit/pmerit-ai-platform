@@ -1,5 +1,5 @@
 # Simple PowerShell HTTP Server for PMERIT AI Platform
-$port = 8080
+$port = 3001
 $listener = New-Object System.Net.HttpListener
 $listener.Prefixes.Add("http://localhost:$port/")
 $listener.Start()
@@ -18,7 +18,7 @@ try {
         
         # Get the requested path
         $localPath = $request.Url.LocalPath
-        if ($localPath -eq "/") { $localPath = "/index.html" }
+        if ($localPath -eq "/") { $localPath = "/index-final.html" }
         
         # Construct file path
         $filePath = Join-Path $PSScriptRoot ($localPath.TrimStart('/').Replace('/', '\'))

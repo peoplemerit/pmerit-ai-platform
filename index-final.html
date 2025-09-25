@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PMERIT - AI-Powered Learning Platform</title>
+  <meta name="description" content="Transform your learning experience with PMERIT's AI-powered platform. Personalized education, real-time feedback, and comprehensive skill development.">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="/assets/css/clean-mobile.css">
+</head>
+<body>
+  <!-- Mobile Layout Container -->
+  <div class="mobile-layout">
+    
+    <!-- Header -->
+    <header class="pmerit-header">
+      <!-- Hamburger Menu Button -->
+      <button class="hamburger-btn" aria-label="Toggle menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+      
+      <!-- Brand Logo -->
+      <div class="brand">PMERIT</div>
+      
+      <!-- Header Actions -->
+      <div class="header-actions">
+        <button class="grid-menu-btn" aria-label="Apps menu" title="Reserved for future apps">
+          <i class="fas fa-th"></i>
+        </button>
+        <button class="sign-in-btn">Sign In</button>
+      </div>
+    </header>
+    
+    <!-- Menu Overlay -->
+    <div class="menu-overlay"></div>
+    
+    <!-- Side Menu -->
+    <nav class="side-menu">
+      <!-- Menu Header -->
+      <div class="menu-header">
+        <div class="menu-logo">
+          <i class="fas fa-graduation-cap logo-icon"></i>
+          <span class="logo-text">PMERIT</span>
+        </div>
+      </div>
+      
+      <!-- Welcome Section -->
+      <div class="menu-section welcome-section">
+        <div class="welcome-text">Welcome to PMERIT</div>
+        <button class="menu-signin-btn">
+          <i class="fas fa-user"></i>
+          <span>Sign In</span>
+        </button>
+      </div>
+      
+      <!-- Quick Actions -->
+      <div class="menu-section">
+        <div class="section-header">
+          <i class="fas fa-bolt"></i>
+          <span>Quick Actions</span>
+        </div>
+        
+        <div class="toggle-group">
+          <div class="toggle-item">
+            <div class="toggle-content">
+              <i class="fas fa-microphone"></i>
+              <span>Voice Control</span>
+            </div>
+            <div class="toggle-switch">
+              <input type="checkbox" id="voiceToggle" class="modern-toggle">
+              <label for="voiceToggle" class="toggle-slider"></label>
+            </div>
+          </div>
+          
+          <div class="toggle-item">
+            <div class="toggle-content">
+              <i class="fas fa-moon"></i>
+              <span>Dark Mode</span>
+            </div>
+            <div class="toggle-switch">
+              <input type="checkbox" id="darkModeToggle" class="modern-toggle">
+              <label for="darkModeToggle" class="toggle-slider"></label>
+            </div>
+          </div>
+          
+          <div class="toggle-item">
+            <div class="toggle-content">
+              <i class="fas fa-bell"></i>
+              <span>Notifications</span>
+            </div>
+            <div class="toggle-switch">
+              <input type="checkbox" id="notificationsToggle" class="modern-toggle" checked>
+              <label for="notificationsToggle" class="toggle-slider"></label>
+            </div>
+          </div>
+        </div>
+        
+        <button class="action-button" data-action="assessment">
+          <div class="action-content">
+            <i class="fas fa-clipboard-check"></i>
+            <span>Start Assessment</span>
+          </div>
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+      
+      <!-- Settings -->
+      <div class="menu-section">
+        <div class="section-header">
+          <i class="fas fa-cog"></i>
+          <span>Settings</span>
+        </div>
+        
+        <div class="collapsible-header">
+          <div class="header-content">
+            <i class="fas fa-user-cog"></i>
+            <span>Account Settings</span>
+          </div>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="collapsible-content">
+          <button class="action-button" data-action="profile">
+            <div class="action-content">
+              <i class="fas fa-user"></i>
+              <span>Profile</span>
+            </div>
+          </button>
+          <button class="action-button" data-action="preferences">
+            <div class="action-content">
+              <i class="fas fa-sliders-h"></i>
+              <span>Preferences</span>
+            </div>
+          </button>
+        </div>
+        
+        <div class="collapsible-header">
+          <div class="header-content">
+            <i class="fas fa-shield-alt"></i>
+            <span>Privacy & Security</span>
+          </div>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="collapsible-content">
+          <button class="action-button" data-action="privacy">
+            <div class="action-content">
+              <i class="fas fa-lock"></i>
+              <span>Privacy Settings</span>
+            </div>
+          </button>
+          <button class="action-button" data-action="security">
+            <div class="action-content">
+              <i class="fas fa-key"></i>
+              <span>Security</span>
+            </div>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Dashboard Access -->
+      <div class="menu-section">
+        <div class="section-header">
+          <i class="fas fa-tachometer-alt"></i>
+          <span>Dashboard</span>
+        </div>
+        
+        <button class="dashboard-btn">
+          <i class="fas fa-chart-line"></i>
+          <span>View Dashboard</span>
+        </button>
+      </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="hero-section">
+        <div class="ai-greeting">
+          <div class="greeting-text">
+            Welcome to PMERIT! I'm your AI learning companion. Ready to transform your educational journey with personalized, interactive learning experiences?
+          </div>
+          
+          <div class="chat-interface">
+            <div class="chat-container">
+              <div class="chat-messages" id="chatMessages">
+                <!-- Chat messages will appear here -->
+              </div>
+              
+              <div class="chat-input-container">
+                <textarea 
+                  id="chatInput" 
+                  placeholder="Ask me anything about learning, courses, or how I can help you..."
+                  rows="1"
+                ></textarea>
+                <button class="send-btn" aria-label="Send message">
+                  <i class="fas fa-paper-plane"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-content">
+          <!-- Quick Links -->
+          <div class="footer-section">
+            <h3>Platform</h3>
+            <div class="footer-links">
+              <a href="/courses.html" class="footer-link">
+                <i class="fas fa-book"></i>
+                <span>Courses</span>
+              </a>
+              <a href="/assessment.html" class="footer-link">
+                <i class="fas fa-clipboard-check"></i>
+                <span>Assessment</span>
+              </a>
+              <a href="/progress.html" class="footer-link">
+                <i class="fas fa-chart-line"></i>
+                <span>Progress</span>
+              </a>
+              <a href="/certificates.html" class="footer-link">
+                <i class="fas fa-certificate"></i>
+                <span>Certificates</span>
+              </a>
+            </div>
+          </div>
+          
+          <!-- Support -->
+          <div class="footer-section">
+            <h3>Support</h3>
+            <div class="footer-links">
+              <a href="/help.html" class="footer-link">
+                <i class="fas fa-question-circle"></i>
+                <span>Help Center</span>
+              </a>
+              <a href="/contact.html" class="footer-link">
+                <i class="fas fa-envelope"></i>
+                <span>Contact Us</span>
+              </a>
+              <a href="/library.html" class="footer-link">
+                <i class="fas fa-book-open"></i>
+                <span>Library</span>
+              </a>
+              <a href="/support.html" class="footer-link">
+                <i class="fas fa-life-ring"></i>
+                <span>Support</span>
+              </a>
+            </div>
+          </div>
+          
+          <!-- Company -->
+          <div class="footer-section">
+            <h3>Company</h3>
+            <div class="footer-links">
+              <a href="/about-us.html" class="footer-link">
+                <i class="fas fa-info-circle"></i>
+                <span>About Us</span>
+              </a>
+              <a href="/career.html" class="footer-link">
+                <i class="fas fa-briefcase"></i>
+                <span>Careers</span>
+              </a>
+              <a href="/partnerships.html" class="footer-link">
+                <i class="fas fa-handshake"></i>
+                <span>Partnerships</span>
+              </a>
+              <a href="/impact.html" class="footer-link">
+                <i class="fas fa-heart"></i>
+                <span>Impact</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Social Links -->
+        <div class="footer-social">
+          <a href="#" class="social-link" aria-label="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="#" class="social-link" aria-label="Twitter">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="#" class="social-link" aria-label="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" class="social-link" aria-label="YouTube">
+            <i class="fab fa-youtube"></i>
+          </a>
+          <a href="#" class="social-link" aria-label="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+        </div>
+        
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+          <div class="footer-bottom-content">
+            <div class="footer-brand">
+              <i class="fas fa-graduation-cap"></i>
+              <span>PMERIT</span>
+            </div>
+            <p class="footer-tagline">
+              Empowering minds through AI-driven personalized education
+            </p>
+          </div>
+          
+          <div class="footer-legal">
+            <a href="/privacy.html">Privacy Policy</a>
+            <a href="/consent.html">Terms of Service</a>
+            <a href="/donate.html">Support</a>
+            <a href="/monitoring.html">Status</a>
+          </div>
+          
+          <p class="footer-copyright">
+            © 2025 PMERIT. All rights reserved. | Transforming education with AI.
+          </p>
+        </div>
+      </div>
+    </footer>
+  </div>
+  
+  <!-- Auth Modal -->
+  <div class="auth-modal hidden">
+    <div class="modal-content">
+      <button class="modal-close" aria-label="Close modal">×</button>
+      
+      <div class="modal-header">
+        <h2>Welcome Back</h2>
+        <p class="modal-subtitle">Sign in to your PMERIT account</p>
+      </div>
+      
+      <form class="auth-form">
+        <div class="input-group">
+          <input 
+            type="email" 
+            class="email-input" 
+            placeholder="Enter your email address"
+            required
+          >
+        </div>
+        
+        <button type="submit" class="next-btn">Continue</button>
+        
+        <p class="create-account">
+          Don't have an account? 
+          <a href="#" class="create-account-link">Create one</a>
+        </p>
+      </form>
+    </div>
+  </div>
+  
+  <!-- JavaScript -->
+  <script src="/assets/js/clean-mobile.js"></script>
+</body>
+</html>
