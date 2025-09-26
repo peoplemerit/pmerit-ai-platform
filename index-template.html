@@ -2,239 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-wi    </div>
-
-    <!-- Settings Section -->.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PMERIT — Accessible Global Education</title>
-  
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
-  
-  <link rel="stylesheet" href="assets/css/base.css">
-  <link rel="stylesheet" href="assets/css/brand.css">
-  <link rel="stylesheet" href="assets/css/components.css">
-  <link rel="stylesheet" href="assets/css/theme-pmerit.css">
-  <link rel="stylesheet" href="assets/css/responsive.css">
 
+  <link rel="stylesheet" href="style.css">
 </head>
-<body class="mobile-first-layout">
-  <!-- Clean Google-Inspired Header -->
-  <header class="pmerit-header">
-    <!-- Hamburger Menu -->
-    <button class="hamburger-btn" id="menuToggle" aria-label="Main menu">
-      <span class="hamburger-line"></span>
-      <span class="hamburger-line"></span>
-      <span class="hamburger-line"></span>
-    </button>
-    
-    <!-- Center Brand -->
-    <div class="brand">PMERIT</div>
-    
-    <!-- Right Actions -->
-    <div class="header-actions">
-      <button class="grid-menu-btn" id="gridMenuBtn" aria-label="Google apps">
-        <svg class="grid-icon" viewBox="0 0 24 24" width="20" height="20">
-          <circle cx="5" cy="5" r="2" fill="currentColor"/>
-          <circle cx="12" cy="5" r="2" fill="currentColor"/>
-          <circle cx="19" cy="5" r="2" fill="currentColor"/>
-          <circle cx="5" cy="12" r="2" fill="currentColor"/>
-          <circle cx="12" cy="12" r="2" fill="currentColor"/>
-          <circle cx="19" cy="12" r="2" fill="currentColor"/>
-          <circle cx="5" cy="19" r="2" fill="currentColor"/>
-          <circle cx="12" cy="19" r="2" fill="currentColor"/>
-          <circle cx="19" cy="19" r="2" fill="currentColor"/>
-        </svg>
-      </button>
-      <button class="sign-in-btn" id="signInBtn">Sign In</button>
-    </div>
+<body>
+  <header>
+    <div class="logo">PMERIT</div>
+    <nav>
+      <select class="nav-btn" id="lang" aria-label="Language">
+        <option value="en">English</option>
+        <option value="yo">Yorùbá</option>
+        <option value="ig">Igbo</option>
+        <option value="ha">Hausa</option>
+      </select>
+      <button class="nav-btn" id="pricingBtn">Pricing</button>
+      <button class="nav-btn" id="signInBtn">Sign In</button>
+      <button class="nav-btn primary" id="startBtn">Start Learning</button>
+    </nav>
   </header>
 
-  <!-- Menu Overlay -->
-  <div class="menu-overlay" id="menuOverlay"></div>
-
-  <!-- Mode Indicators -->
-  <div class="mode-indicator vh" id="vhModeIndicator">🤖 Virtual Human Active</div>
-  <div class="mode-indicator cs" id="csModeIndicator">🎧 Customer Service Active</div>
-
-  <!-- Enhanced Hamburger Side Menu -->
-  <nav class="side-menu" id="sideMenu">
-    <!-- PMERIT Header -->
-    <div class="menu-header-section">
-      <div class="menu-logo">
-        <span class="logo-icon">🎓</span>
-        <span class="logo-text">PMERIT</span>
-      </div>
-    </div>
-
-    <!-- User Welcome Section -->
-    <div class="menu-section user-welcome">
-      <div class="welcome-text">Welcome to PMERIT</div>
-      <button class="menu-sign-in-btn" id="menuSignInBtn">
-        <i class="fas fa-sign-in-alt"></i>
-        Sign In
-      </button>
-    </div>
-
-    <!-- Quick Actions Section -->
-    <div class="menu-section">
-      <h4 class="section-header">
-        <i class="fas fa-bolt section-icon"></i>
-        Quick Actions
-      </h4>
-      
-      <div class="menu-toggle-group">
-        <div class="menu-toggle-item">
-          <div class="toggle-content">
-            <i class="fas fa-user-astronaut toggle-icon"></i>
-            <span class="toggle-label">Virtual Human Mode</span>
-          </div>
-          <div class="toggle-switch-container">
-            <input type="checkbox" class="modern-toggle" id="virtualHumanToggle" data-mode="vh">
-            <label for="virtualHumanToggle" class="toggle-slider"></label>
-          </div>
-        </div>
-
-        <div class="menu-toggle-item">
-          <div class="toggle-content">
-            <i class="fas fa-headset toggle-icon"></i>
-            <span class="toggle-label">Customer Service Mode</span>
-          </div>
-          <div class="toggle-switch-container">
-            <input type="checkbox" class="modern-toggle" id="customerServiceToggle" data-mode="cs">
-            <label for="customerServiceToggle" class="toggle-slider"></label>
-          </div>
-        </div>
-      </div>
-
-      <button class="menu-action-item" onclick="showCareerTracks()">
-        <div class="action-content">
-          <i class="fas fa-compass action-icon"></i>
-          <span class="action-label">Career Track & Explore Paths</span>
-        </div>
-        <i class="fas fa-chevron-right action-arrow"></i>
-      </button>
-    </div>
-
-    <!-- Learning Tools -->
-    <div class="menu-section">
-      <h4 class="section-title">🎯 Learning Tools</h4>
-      <button class="menu-item primary-action" onclick="window.location.href='assessment.html'">
-        <span class="menu-item-icon">�</span>
-        Begin Assessment
-      </button>
-      <button class="menu-item" onclick="startAIDiscovery()">
-        <span class="menu-item-icon">🤖</span>
-        Discover Your Path (AI)
-      </button>
-      <button class="menu-item" onclick="window.location.href='learner-portal.html'">
-        <span class="menu-item-icon">📚</span>
-        Personalized Learning Plan
-      </button>
-    </div>
-
-    <!-- Settings Section -->
-    <div class="menu-section">
-      <div class="collapsible-header" id="settingsHeader">
-        <div class="header-content">
-          <i class="fas fa-cog section-icon"></i>
-          <span class="section-label">Settings</span>
-        </div>
-        <i class="fas fa-chevron-down chevron-icon"></i>
-      </div>
-      
-      <div class="collapsible-content" id="settingsContent">
-        <div class="menu-toggle-item">
-          <div class="toggle-content">
-            <i class="fas fa-moon toggle-icon"></i>
-            <span class="toggle-label">Dark Mode</span>
-          </div>
-          <div class="toggle-switch-container">
-            <input type="checkbox" class="modern-toggle" id="darkModeToggle" data-mode="dark">
-            <label for="darkModeToggle" class="toggle-slider"></label>
-          </div>
-        </div>
-
-        <div class="menu-toggle-item">
-          <div class="toggle-content">
-            <i class="fas fa-volume-up toggle-icon"></i>
-            <span class="toggle-label">Text-to-Speech</span>
-          </div>
-          <div class="toggle-switch-container">
-            <input type="checkbox" class="modern-toggle" id="ttsToggle" data-mode="tts">
-            <label for="ttsToggle" class="toggle-slider"></label>
-          </div>
-        </div>
-
-        <button class="menu-action-item" onclick="previewVoices()">
-          <div class="action-content">
-            <i class="fas fa-headphones action-icon"></i>
-            <span class="action-label">Preview Voices</span>
-          </div>
-          <i class="fas fa-chevron-right action-arrow"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- Dashboard Section -->
-    <div class="menu-section">
-      <button class="dashboard-btn" id="dashboardBtn">
-        <i class="fas fa-tachometer-alt dashboard-icon"></i>
-        Dashboard
-      </button>
-    </div>
-  </nav>
-
-  <!-- Google-Style Sign In Modal -->
-  <div class="auth-modal hidden" id="authModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Sign in</h2>
-        <p class="modal-subtitle">Use your PMERIT Account</p>
-      </div>
-      
-      <form class="auth-form" id="authForm">
-        <div class="input-group">
-          <input type="text" placeholder="Email or phone" class="email-input" id="emailInput" required>
-          <a href="#" class="forgot-link">Forgot email?</a>
-        </div>
-        
-        <div class="security-notice">
-          <span>Not your computer? Use Private Browsing windows to sign in.</span>
-          <a href="#" class="learn-more">Learn more about using Guest mode</a>
-        </div>
-        
-        <div class="auth-actions">
-          <a href="#" class="create-account" id="createAccountLink">Create account</a>
-          <button type="button" class="next-btn" id="nextBtn">Next</button>
-        </div>
-      </form>
-      
-      <div class="auth-footer">
-        <select class="footer-language" id="footerLanguage">
-          <option value="en">English (United States)</option>
-          <option value="es">Español</option>
-          <option value="fr">Français</option>
-        </select>
-        <div class="footer-links">
-          <a href="help.html">Help</a>
-          <a href="privacy.html">Privacy</a>
-          <a href="#">Terms</a>
-        </div>
-      </div>
-      
-      <button class="modal-close" id="modalClose" aria-label="Close modal">×</button>
-    </div>
-  </div>
-
-  <!-- Blueprint Three-Pane Layout Structure -->
   <div class="estate">
-    <!-- Left Sidebar: Quick Actions -->
-    <aside id="left" class="left-sidebar" aria-label="Quick actions sidebar">
+    <aside id="left" aria-label="Quick actions sidebar">
       <section>
         <div class="pane-title">Quick Actions</div>
 
@@ -274,7 +69,6 @@
           </div>
         </div>
 
-        <!-- Dashboard Button -->
         <button class="dashboard guest" id="dashBtn">
           <i class="fas fa-gauge-high"></i> Dashboard
         </button>
@@ -285,8 +79,7 @@
       </section>
     </aside>
 
-    <!-- Center Chat Panel -->
-    <main class="center-panel">
+    <main>
       <section class="panel" aria-label="Chat panel">
         <div class="panel-head">
           <div class="badges">
@@ -329,7 +122,6 @@
           </div>
         </div>
 
-        <!-- Virtual Human stage -->
         <div id="vhStage" role="region" aria-live="polite">
           <div class="stage">
             <div class="human-frame">
@@ -339,41 +131,86 @@
           <div class="captions" id="captions">Virtual Human is speaking…</div>
         </div>
       </section>
+
+      <div id="mobileAccordions" aria-label="Mobile sections">
+        <details class="mobile-accordion">
+          <summary><i class="fas fa-bolt"></i> Quick Actions - Tap to expand ▼</summary>
+          <div class="mobile-accordion-content">
+            <div class="mobile-grid">
+              <button class="mobile-card" id="m_vhToggle">
+                <i class="fas fa-user-astronaut"></i>
+                <span>Virtual Human</span>
+                <div class="switch"></div>
+              </button>
+              <button class="mobile-card" id="m_careerPaths">
+                <i class="fas fa-compass"></i>
+                <span>Career Paths</span>
+              </button>
+              <button class="mobile-card" id="m_supportToggle">
+                <i class="fas fa-headset"></i>
+                <span>Support Mode</span>
+                <div class="switch"></div>
+              </button>
+              <button class="mobile-card" id="m_settings">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+              </button>
+            </div>
+            <button class="dashboard guest nav-btn" id="m_dashBtn" style="margin-top:1rem;width:100%">
+              <i class="fas fa-gauge-high"></i> Dashboard
+            </button>
+          </div>
+        </details>
+
+        <details class="mobile-accordion">
+          <summary><i class="fas fa-graduation-cap"></i> Discover Your Path - Tap to expand ▼</summary>
+          <div class="mobile-accordion-content">
+            <div class="discover" style="margin:0">
+              <h4>Personalized learning plan</h4>
+              <p>Start a short flow that blends learning style, interests, and skills into a plan.</p>
+              <button class="nav-btn primary" id="m_beginAssessment">Begin Assessment</button>
+              <div class="insights" id="m_insights">Tip: Short, daily practice beats long, rare sessions.</div>
+            </div>
+          </div>
+        </details>
+      </div>
     </main>
 
-    <!-- Right Sidebar: Support & Discovery -->
-    <aside id="right" class="right-sidebar">
-      <div class="support-assistant">
-        <h4><i class="fas fa-headset"></i> Support Assistant</h4>
-        <p>Get help with courses, technical issues, or platform navigation</p>
-      </div>
-
-      <h3>Discover Your Path</h3>
-      <div class="discover">
-        <h4>Personalized learning plan</h4>
-        <p>Start a short flow that blends learning style, interests, and skills into a plan.</p>
-        <button class="nav-btn primary" id="beginAssessment">Begin Assessment</button>
-        
-        <div class="insights">
-          Based on your interests in technology and problem-solving, consider exploring our Software Development track.
+    <aside id="right" aria-label="Support and discover sidebar">
+      <section>
+        <div class="support-assistant">
+          <h4><i class="fas fa-headset"></i> Support Assistant</h4>
+          <p style="color: var(--text-secondary); margin: 0.5rem 0;">Ask me about PMERIT</p>
+          <div style="display:flex;gap:.5rem;justify-content:center;margin-top:.75rem">
+            <button class="nav-btn" style="border-color:var(--accent)" id="vhShort">
+              <i class="fas fa-user-astronaut"></i> Virtual Human
+            </button>
+            <button class="nav-btn" style="border-color:var(--success)" id="supportShort">
+              <i class="fas fa-headset"></i> Support
+            </button>
+          </div>
         </div>
-      </div>
+
+        <h3>Discover Your Path (AI)</h3>
+        <div class="discover">
+          <h4>Personalized learning plan</h4>
+          <p>Start a short flow that blends learning style, interests, and skills into a plan.</p>
+          <button class="nav-btn primary" id="beginAssessment">Begin Assessment</button>
+          <div class="insights" id="insights">Pro tip: Keep notes in your own words for better recall.</div>
+        </div>
+      </section>
     </aside>
   </div>
 
-
-
-  <!-- PMERIT Google-Style Footer -->
-  <footer class="google-footer">
-    <div class="footer-content">
-      <a href="#privacy" class="footer-link" id="privacyBtn">Privacy & Terms</a>
-      
-      <span class="footer-status" title="Platform connection status">
-        <i class="fas fa-circle status-dot"></i>
-        Connected to Educational Services
-      </span>
-      
-      <a href="#settings" class="footer-link" id="settingsBtn">Settings</a>
+  <footer>
+    <span class="footer-status-main">
+      <i class="fas fa-signal"></i> Connected to Educational Services
+    </span>
+    <div class="footer-links">
+      <button class="nav-btn" id="privacyBtn">Privacy & Terms</button>
+      <button class="nav-btn" id="contactBtn">Contact</button>
+      <button class="nav-btn" id="partnershipsBtn">Partnerships</button>
+      <button class="nav-btn" id="supportBtn">Support</button>
     </div>
   </footer>
 
@@ -428,7 +265,7 @@
       <h3><i class="fas fa-headphones"></i> Voice Sampler</h3>
       <label>
         <span>Sample text</span>
-        <textarea id="voiceText" rows="3" style="border:1px solid var(--border-color);border-radius:0.5rem;padding:0.75rem;font-family:inherit;">Hi there! I'm your PMERIT learning companion, ready to guide your educational journey.</textarea>
+        <textarea id="voiceText" rows="3" style="border:1px solid var(--border-color);border-radius:0.5rem;padding:0.75rem;font-family:inherit;">Welcome to PMERIT. Empowering learning through innovation.</textarea>
       </label>
       <div class="button-group" style="margin-top: 1rem;">
         <button class="nav-btn" id="browserTts" type="button">Browser TTS</button>
@@ -465,11 +302,7 @@
       </div>
     </div>
   </dialog>
-  </div> <!-- Close page-container -->
 
-  <script src="assets/js/boot-includes.js"></script>
-  <script src="assets/js/router.js"></script>
-  <script src="assets/js/chat.js"></script>
-  <script src="assets/js/main.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
