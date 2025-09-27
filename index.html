@@ -1,1 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PMERIT - Accessible Global Education Platform. Learn skills, get certified, and advance your career with AI-powered personalized learning.">
+    <meta name="keywords" content="education, online learning, AI, certification, career development, PMERIT">
+    <meta name="author" content="PMERIT Team">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="PMERIT - Accessible Global Education">
+    <meta property="og:description" content="Transform your career with AI-powered personalized learning and certification programs.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pmerit.com">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PMERIT - Accessible Global Education">
+    <meta name="twitter:description" content="Transform your career with AI-powered personalized learning and certification programs.">
+    
+    <title>PMERIT — Accessible Global Education</title>
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" as="style">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    
+    <!-- CSS Stylesheets -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/index.css">
+    
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#2A5B8C">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        "name": "PMERIT",
+        "description": "Accessible Global Education Platform with AI-powered personalized learning",
+        "url": "https://pmerit.com",
+        "logo": "https://pmerit.com/logo.png",
+        "sameAs": [
+            "https://twitter.com/pmerit",
+            "https://linkedin.com/company/pmerit"
+        ]
+    }
+    </script>
+</head>
+<body>
+    <!-- Mobile Header Component -->
+    <div id="mobile-header-wrapper">
+        <!-- Mobile header will be loaded here -->
+    </div>
 
+    <!-- Desktop Header -->
+    <header class="desktop-header" id="desktopHeader">
+        <div class="header-container">
+            <!-- Logo -->
+            <div class="logo">
+                <h1 class="logo-text">PMERIT</h1>
+                <span class="logo-tagline">Global Education</span>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <nav class="desktop-nav" aria-label="Main navigation">
+                <a href="/" class="nav-link active" aria-current="page">Home</a>
+                <a href="/courses.html" class="nav-link">Courses</a>
+                <a href="/assessment.html" class="nav-link">Assessment</a>
+                <a href="/pricing.html" class="nav-link">Pricing</a>
+                <a href="/about-us.html" class="nav-link">About</a>
+            </nav>
+
+            <!-- Desktop Actions -->
+            <div class="desktop-actions">
+                <select class="lang-selector" id="langSelector" aria-label="Language">
+                    <option value="en">English</option>
+                    <option value="yo">Yorùbá</option>
+                    <option value="ig">Igbo</option>
+                    <option value="ha">Hausa</option>
+                </select>
+                <button class="btn btn-secondary" id="signInBtn">Sign In</button>
+                <button class="btn btn-primary" id="startBtn">Start Learning</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <!-- Hero Section -->
+        <section class="hero" id="hero">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        Transform Your Career with 
+                        <span class="highlight">AI-Powered Learning</span>
+                    </h1>
+                    <p class="hero-description">
+                        Access world-class education, get certified in high-demand skills, 
+                        and advance your career with personalized AI guidance. Available in multiple languages.
+                    </p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary btn-large" id="heroStartBtn">
+                            <i class="fas fa-play" aria-hidden="true"></i>
+                            Start Learning Today
+                        </button>
+                        <button class="btn btn-secondary btn-large" id="heroAssessBtn">
+                            <i class="fas fa-clipboard-check" aria-hidden="true"></i>
+                            Take Skill Assessment
+                        </button>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-number">10,000+</span>
+                            <span class="stat-label">Students Enrolled</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">95%</span>
+                            <span class="stat-label">Completion Rate</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">4</span>
+                            <span class="stat-label">Languages Supported</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-image">
+                        <i class="fas fa-graduation-cap hero-icon" aria-hidden="true"></i>
+                        <div class="floating-elements">
+                            <div class="element element-1"><i class="fas fa-brain"></i></div>
+                            <div class="element element-2"><i class="fas fa-certificate"></i></div>
+                            <div class="element element-3"><i class="fas fa-users"></i></div>
+                            <div class="element element-4"><i class="fas fa-globe"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features" id="features">
+            <div class="container">
+                <h2 class="section-title">Why Choose PMERIT?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-robot" aria-hidden="true"></i>
+                        </div>
+                        <h3 class="feature-title">AI-Powered Learning</h3>
+                        <p class="feature-description">
+                            Personalized learning paths adapted to your pace, 
+                            learning style, and career goals with advanced AI.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-certificate" aria-hidden="true"></i>
+                        </div>
+                        <h3 class="feature-title">Industry Certifications</h3>
+                        <p class="feature-description">
+                            Earn recognized certifications that employers value 
+                            and trust for career advancement.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-globe" aria-hidden="true"></i>
+                        </div>
+                        <h3 class="feature-title">Multi-Language Support</h3>
+                        <p class="feature-description">
+                            Learn in your native language with support for English, 
+                            Yorùbá, Igbo, and Hausa.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-users" aria-hidden="true"></i>
+                        </div>
+                        <h3 class="feature-title">Community Support</h3>
+                        <p class="feature-description">
+                            Join a thriving community of learners with peer support, 
+                            mentorship, and collaborative projects.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line" aria-hidden="true"></i>
+                        </div>
+                        <h3 class="feature-title">Career Advancement</h3>
+                        <p class="feature-description">
+                            Track your progress with detailed analytics and 
+                            get matched with relevant job opportunities.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-hand-holding-heart" aria-hidden="true"></i>
+                        </div>
+                        <h3 class="feature-title">Accessible & Affordable</h3>
+                        <p class="feature-description">
+                            Quality education for everyone with flexible payment 
+                            options and accessibility features.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta" id="cta">
+            <div class="container">
+                <div class="cta-content">
+                    <h2 class="cta-title">Ready to Transform Your Future?</h2>
+                    <p class="cta-description">
+                        Join thousands of learners who are already advancing their careers with PMERIT.
+                    </p>
+                    <div class="cta-actions">
+                        <button class="btn btn-primary btn-large" id="ctaStartBtn">
+                            Get Started Now
+                        </button>
+                        <a href="/pricing.html" class="btn btn-outline btn-large">
+                            View Pricing
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Placeholder -->
+    <footer class="footer" id="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>PMERIT</h3>
+                    <p>Accessible Global Education</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Learn</h4>
+                    <ul>
+                        <li><a href="/courses.html">Courses</a></li>
+                        <li><a href="/assessment.html">Assessment</a></li>
+                        <li><a href="/certificates.html">Certificates</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="/help.html">Help Center</a></li>
+                        <li><a href="/contact.html">Contact Us</a></li>
+                        <li><a href="/support.html">Technical Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="/about-us.html">About Us</a></li>
+                        <li><a href="/partnerships.html">Partnerships</a></li>
+                        <li><a href="/privacy.html">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 PMERIT. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Mobile Header Component -->
+    <script>
+        // Load mobile header component
+        fetch('partials/header-mobile.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('mobile-header-wrapper').innerHTML = html;
+            })
+            .catch(error => {
+                console.log('Mobile header component not found:', error);
+            });
+    </script>
+
+    <!-- JavaScript -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/clean-mobile.js"></script>
+    
+    <!-- Initialize Application -->
+    <script>
+        // Initialize PMERIT application
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('PMERIT Platform Initialized');
+            
+            // Add smooth scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            
+            // Initialize responsive behavior
+            function updateLayout() {
+                const isMobile = window.innerWidth <= 768;
+                document.body.classList.toggle('mobile-layout', isMobile);
+                document.body.classList.toggle('desktop-layout', !isMobile);
+            }
+            
+            updateLayout();
+            window.addEventListener('resize', updateLayout);
+        });
+    </script>
+</body>
+</html>

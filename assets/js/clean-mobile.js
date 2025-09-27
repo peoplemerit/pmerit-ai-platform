@@ -45,10 +45,299 @@
             return;
         }
 
+        
         // Initialize mobile layout
         initMobileLayout();
         
-        // Bind event listeners
+        // Set up event listeners
+        setupEventListeners();
+        
+        // Initialize settings from localStorage
+        initializeSettings();
+        
+        console.log('PMERIT Mobile header initialized');
+    }
+
+    // Initialize mobile layout
+    function initMobileLayout() {
+        // Add mobile layout class to body
+        elements.body.classList.add('mobile-layout');
+        
+        // Set initial states
+        updateHeaderVisibility();
+    }
+
+    // Set up all event listeners
+    function setupEventListeners() {
+        // Hamburger menu button
+        if (elements.mobileMenuBtn) {
+            elements.mobileMenuBtn.addEventListener('click', toggleMobileNav);
+            elements.mobileMenuBtn.addEventListener('keydown', handleMenuKeydown);
+        }
+
+        // Close button and overlay
+        if (elements.mobileNavClose) {
+            elements.mobileNavClose.addEventListener('click', closeMobileNav);
+        }
+        
+        if (elements.mobileNavOverlay) {
+            elements.mobileNavOverlay.addEventListener('click', closeMobileNav);
+        }
+
+        // Sign in button
+        if (elements.mobileSignInBtn) {
+            elements.mobileSignInBtn.addEventListener('click', handleSignIn);
+        }
+
+        // Start learning button
+        if (elements.mobileStartBtn) {
+            elements.mobileStartBtn.addEventListener('click', handleStartLearning);
+        }
+
+        // Language selector
+        if (elements.mobileLang) {
+            elements.mobileLang.addEventListener('change', handleLanguageChange);
+        }
+
+        // Settings toggle
+        if (elements.mobileSettingsToggle) {
+            elements.mobileSettingsToggle.addEventListener('click', toggleSettings);
+        }
+
+        // Dark mode toggle
+        if (elements.mobileDarkToggle) {
+            elements.mobileDarkToggle.addEventListener('click', toggleDarkMode);
+        }
+
+        // TTS toggle
+        if (elements.mobileTtsToggle) {
+            elements.mobileTtsToggle.addEventListener('click', toggleTTS);
+        }
+
+        // Escape key to close nav
+        document.addEventListener('keydown', handleEscapeKey);
+        
+        // Window resize handler
+        window.addEventListener('resize', handleResize);
+    }
+
+    // Initialize settings from localStorage
+    function initializeSettings() {
+        // Set language
+        if (elements.mobileLang) {
+            elements.mobileLang.value = mobileNavState.selectedLang;
+        }
+
+        // Set dark mode
+        updateDarkMode(mobileNavState.darkMode);
+        
+        // Set TTS
+        updateTTS(mobileNavState.ttsEnabled);
+    }
+
+    // Toggle mobile navigation
+    function toggleMobileNav() {
+        if (mobileNavState.isOpen) {
+            closeMobileNav();
+        } else {
+            openMobileNav();
+        }
+    }
+
+    // Open mobile navigation
+    function openMobileNav() {
+        mobileNavState.isOpen = true;
+        
+        if (elements.mobileNav) {
+            elements.mobileNav.classList.add('active');
+        }
+        
+        if (elements.mobileMenuBtn) {
+            elements.mobileMenuBtn.setAttribute('aria-expanded', 'true');
+        }
+        
+        // Prevent body scroll
+        elements.body.style.overflow = 'hidden';
+        
+        // Focus management
+        setTimeout(() => {
+            if (elements.mobileNavClose) {
+                elements.mobileNavClose.focus();
+            }
+        }, 300);
+        
+        // Announce to screen readers
+        announceToScreenReader('Navigation menu opened');
+    }
+
+    // Close mobile navigation
+    function closeMobileNav() {
+        mobileNavState.isOpen = false;
+        
+        if (elements.mobileNav) {
+            elements.mobileNav.classList.remove('active');
+        }
+        
+        if (elements.mobileMenuBtn) {
+            elements.mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            elements.mobileMenuBtn.focus(); // Return focus
+        }
+        
+        // Restore body scroll
+        elements.body.style.overflow = '';
+        
+        // Announce to screen readers
+        announceToScreenReader('Navigation menu closed');
+    }
+
+    // Handle keyboard navigation for menu button
+    function handleMenuKeydown(event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            toggleMobileNav();
+        }
+    }
+
+    // Handle escape key
+    function handleEscapeKey(event) {
+        if (event.key === 'Escape' && mobileNavState.isOpen) {
+            closeMobileNav();
+        }
+    }
+
+    // Toggle settings panel
+    function toggleSettings() {
+        mobileNavState.settingsExpanded = !mobileNavState.settingsExpanded;
+        
+        if (elements.mobileSettingsContent) {
+            elements.mobileSettingsContent.classList.toggle('active', mobileNavState.settingsExpanded);
+        }
+        
+        if (elements.mobileSettingsToggle) {
+            elements.mobileSettingsToggle.setAttribute('aria-expanded', mobileNavState.settingsExpanded);
+        }
+    }
+
+    // Toggle dark mode
+    function toggleDarkMode() {
+        mobileNavState.darkMode = !mobileNavState.darkMode;
+        updateDarkMode(mobileNavState.darkMode);
+        
+        // Save to localStorage
+        localStorage.setItem('pmerit_dark', mobileNavState.darkMode);
+        
+        announceToScreenReader(`Dark mode ${mobileNavState.darkMode ? 'enabled' : 'disabled'}`);
+    }
+
+    // Update dark mode UI
+    function updateDarkMode(enabled) {
+        elements.body.classList.toggle('dark', enabled);
+        
+        if (elements.mobileDarkToggle) {
+            elements.mobileDarkToggle.classList.toggle('active', enabled);
+        }
+    }
+
+    // Toggle TTS
+    function toggleTTS() {
+        mobileNavState.ttsEnabled = !mobileNavState.ttsEnabled;
+        updateTTS(mobileNavState.ttsEnabled);
+        
+        // Save to localStorage
+        localStorage.setItem('pmerit_tts', mobileNavState.ttsEnabled);
+        
+        announceToScreenReader(`Text-to-speech ${mobileNavState.ttsEnabled ? 'enabled' : 'disabled'}`);
+    }
+
+    // Update TTS UI
+    function updateTTS(enabled) {
+        if (elements.mobileTtsToggle) {
+            elements.mobileTtsToggle.classList.toggle('active', enabled);
+        }
+    }
+
+    // Handle language change
+    function handleLanguageChange(event) {
+        mobileNavState.selectedLang = event.target.value;
+        localStorage.setItem('pmerit_lang', mobileNavState.selectedLang);
+        
+        announceToScreenReader(`Language changed to ${event.target.options[event.target.selectedIndex].text}`);
+        
+        // Trigger language change event
+        document.dispatchEvent(new CustomEvent('pmerit:languageChanged', {
+            detail: { language: mobileNavState.selectedLang }
+        }));
+    }
+
+    // Handle sign in
+    function handleSignIn() {
+        announceToScreenReader('Opening sign in');
+        // Trigger sign in event
+        document.dispatchEvent(new CustomEvent('pmerit:signInClicked'));
+        closeMobileNav();
+    }
+
+    // Handle start learning
+    function handleStartLearning() {
+        announceToScreenReader('Starting learning experience');
+        // Trigger start learning event
+        document.dispatchEvent(new CustomEvent('pmerit:startLearningClicked'));
+        closeMobileNav();
+    }
+
+    // Handle window resize
+    function handleResize() {
+        // Close nav on resize to desktop
+        if (window.innerWidth > 768 && mobileNavState.isOpen) {
+            closeMobileNav();
+        }
+        
+        updateHeaderVisibility();
+    }
+
+    // Update header visibility based on screen size
+    function updateHeaderVisibility() {
+        if (!elements.mobileHeader) return;
+        
+        if (window.innerWidth <= 768) {
+            elements.mobileHeader.style.display = 'block';
+        } else {
+            elements.mobileHeader.style.display = 'none';
+            // Close nav if open on desktop
+            if (mobileNavState.isOpen) {
+                closeMobileNav();
+            }
+        }
+    }
+
+    // Announce to screen readers
+    function announceToScreenReader(message) {
+        if (elements.mobileNavStatus) {
+            elements.mobileNavStatus.textContent = message;
+            setTimeout(() => {
+                elements.mobileNavStatus.textContent = '';
+            }, 1000);
+        }
+    }
+
+    // Public API
+    window.PMERITMobile = {
+        init: initMobileHeader,
+        openNav: openMobileNav,
+        closeNav: closeMobileNav,
+        toggleDarkMode: toggleDarkMode,
+        toggleTTS: toggleTTS,
+        getState: () => ({ ...mobileNavState })
+    };
+
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initMobileHeader);
+    } else {
+        initMobileHeader();
+    }
+
+})();        // Bind event listeners
         bindMobileEvents();
         
         // Apply initial state
