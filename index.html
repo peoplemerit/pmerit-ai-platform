@@ -31,10 +31,14 @@
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
     
-    <!-- CSS Stylesheets -->
-        <!-- CSS Stylesheets -->
-    <link rel="stylesheet" href="assets/css/theme.css">
-    <link rel="stylesheet" href="assets/css/pmerit-production.css?v=3">
+    <!-- PMERIT Design System Styles -->
+    <link rel="stylesheet" href="assets/css/design-tokens.css">
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="assets/css/clean-mobile.css">
+    <link rel="stylesheet" href="assets/css/theme-pmerit.css">
+    <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/index.css">
     
     <!-- Favicon and App Icons -->
@@ -60,20 +64,25 @@
     }
     </script>
 </head>
-<body>
-    <!-- Mobile Header Component -->
-    <div id="mobile-header-wrapper">
-        <!-- Mobile header will be loaded here -->
-    </div>
+<body class="mobile-layout homepage">
+  
+  <!-- Fixed Mobile Header -->
+  <div id="mobile-header-placeholder">
+    <!-- Header content will be loaded here via JavaScript -->
+  </div>
 
-    <!-- Desktop Header -->
-    <header class="desktop-header" id="desktopHeader">
-        <div class="header-container">
-            <!-- Logo -->
-            <div class="logo">
-                <h1 class="logo-text">PMERIT</h1>
-                <span class="logo-tagline">Global Education</span>
-            </div>
+  <!-- Main Content Container - This is where scrolling happens -->
+  <main class="mobile-content-container" id="mobileContent">
+    <div class="mobile-content-area" id="contentArea">
+      
+      <!-- Hero Section -->
+      <section class="hero mobile-hero" id="hero">
+        <div class="hero-container">
+          <div class="hero-content">
+            <h1 class="hero-title text-fluid-h1 text-center-mobile text-left-tablet text-left-desktop">
+              Transform Your Career with 
+              <span class="highlight">AI-Powered Learning</span>
+            </h1>
 
             <!-- Desktop Navigation -->
             <nav class="desktop-nav" aria-label="Main navigation">
@@ -278,10 +287,16 @@
                 <p>&copy; 2025 PMERIT. All rights reserved.</p>
             </div>
         </div>
-    </footer>
+    </div>
+  </main>
 
-    <!-- Loading Mobile Header Component -->
-    <script>
+  <!-- Fixed Mobile Footer -->
+  <div id="mobile-footer-placeholder">
+    <!-- Footer content will be loaded here via JavaScript -->
+  </div>
+
+  <!-- Mobile Template JavaScript -->
+  <script>
         // Load mobile header component
         fetch('partials/header-mobile.html')
             .then(response => response.text())
@@ -328,5 +343,9 @@
             window.addEventListener('resize', updateLayout);
         });
     </script>
+
+    <!-- Mobile Template JavaScript -->
+    <script src="assets/js/clean-mobile.js"></script>
+    <script src="assets/js/main.js"></script>
 </body>
 </html>
