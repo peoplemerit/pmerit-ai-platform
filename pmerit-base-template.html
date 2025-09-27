@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PMERIT - Accessible Global Education Platform">
+    <title>PMERIT — Accessible Global Education</title>
+    
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <!-- PMERIT Design System (using existing files + new structure) -->
+    <link rel="stylesheet" href="assets/css/design-tokens.css">
+    <link rel="stylesheet" href="design-system/base.css">
+    <link rel="stylesheet" href="design-system/components.css">
+    
+    <!-- Theme Color for mobile browsers -->
+    <meta name="theme-color" content="#2A5B8C">
+    
+    <style>
+        /* Quick fixes for existing system integration */
+        body {
+            /* Ensure proper mobile layout */
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-secondary, 'Inter', sans-serif);
+            background-color: var(--light-gray, #F8F9FA);
+            color: var(--dark-gray, #2C2C2C);
+        }
+        
+        /* Use existing design tokens */
+        .header {
+            height: 70px;
+            background-color: white;
+            border-bottom: 1px solid #E5E7EB;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+        }
+        
+        .logo {
+            font-family: var(--font-primary, 'Montserrat', sans-serif);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-blue, #2A5B8C);
+            text-decoration: none;
+        }
+        
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid #E5E7EB;
+            background-color: white;
+            color: var(--dark-gray, #2C2C2C);
+            min-height: 44px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+        
+        .nav-btn:hover {
+            border-color: var(--teal, #4AA4B9);
+            background-color: var(--teal, #4AA4B9);
+            color: white;
+        }
+        
+        .nav-btn.primary {
+            background-color: var(--dark-blue, #2A5B8C);
+            color: white;
+            border-color: var(--dark-blue, #2A5B8C);
+        }
+        
+        .nav-btn.primary:hover {
+            background-color: var(--teal, #4AA4B9);
+            border-color: var(--teal, #4AA4B9);
+        }
+        
+        /* Mobile hamburger menu */
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            width: 30px;
+            height: 30px;
+            justify-content: space-around;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .nav-toggle span {
+            width: 100%;
+            height: 3px;
+            background-color: var(--dark-gray, #2C2C2C);
+            transition: all 0.3s ease;
+        }
+        
+        @media (max-width: 767px) {
+            .nav {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 1rem;
+                border-bottom: 1px solid #E5E7EB;
+                transform: translateY(-100%);
+                transition: transform 0.3s ease;
+                z-index: 40;
+            }
+            
+            .nav.active {
+                transform: translateY(0);
+            }
+            
+            .nav-toggle {
+                display: flex;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                justify-content: center;
+                margin-bottom: 0.5rem;
+            }
+        }
+        
+        /* Main content area */
+        .main-content {
+            flex: 1;
+            margin-top: 70px;
+            margin-bottom: 60px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 1rem;
+        }
+        
+        @media (min-width: 768px) {
+            .main-content {
+                padding: 2rem;
+            }
+        }
+        
+        /* Footer */
+        .footer {
+            height: 60px;
+            background-color: white;
+            border-top: 1px solid #E5E7EB;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1rem;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            font-size: 0.875rem;
+            color: var(--medium-gray, #6C757D);
+        }
+        
+        .footer-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--success-green, #3A7F5C);
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links a {
+            color: var(--medium-gray, #6C757D);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--teal, #4AA4B9);
+        }
+        
+        @media (max-width: 767px) {
+            .footer {
+                flex-direction: column;
+                height: auto;
+                padding: 0.75rem 1rem;
+                gap: 0.5rem;
+            }
+            
+            .footer-links {
+                justify-content: center;
+                font-size: 0.8rem;
+            }
+        }
+        
+        /* Content styling */
+        .welcome-section {
+            text-align: center;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+        
+        .welcome-section h1 {
+            font-family: var(--font-primary, 'Montserrat', sans-serif);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--dark-blue, #2A5B8C);
+            margin-bottom: 1rem;
+        }
+        
+        .welcome-section p {
+            font-size: 1.125rem;
+            color: var(--medium-gray, #6C757D);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-large {
+            padding: 0.75rem 2rem;
+            font-size: 1rem;
+            min-height: 52px;
+        }
+        
+        @media (max-width: 767px) {
+            .welcome-section {
+                padding: 1rem;
+            }
+            
+            .welcome-section h1 {
+                font-size: 2rem;
+            }
+            
+            .welcome-section p {
+                font-size: 1rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn-large {
+                width: 100%;
+                max-width: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="/" class="logo">PMERIT</a>
+        
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        
+        <nav class="nav" id="nav">
+            <select class="nav-btn" id="lang" aria-label="Language">
+                <option value="en">English</option>
+                <option value="yo">Yorùbá</option>
+                <option value="ig">Igbo</option>
+                <option value="ha">Hausa</option>
+            </select>
+            <a href="pricing.html" class="nav-btn">Pricing</a>
+            <a href="signin.html" class="nav-btn">Sign In</a>
+            <a href="assessment.html" class="nav-btn primary">Start Learning</a>
+        </nav>
+    </header>
+    
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <section class="welcome-section">
+            <h1>Welcome to PMERIT</h1>
+            <p>Transform your career with AI-powered personalized learning. Get certified in high-demand skills and connect with global opportunities.</p>
+            
+            <div class="cta-buttons">
+                <a href="assessment.html" class="nav-btn primary btn-large">
+                    <i class="fas fa-rocket"></i>
+                    Start Assessment
+                </a>
+                <a href="courses.html" class="nav-btn btn-large">
+                    <i class="fas fa-book-open"></i>
+                    Browse Courses
+                </a>
+            </div>
+        </section>
+        
+        <!-- Quick Actions (similar to template structure) -->
+        <section class="container" style="max-width: 1200px; margin: 0 auto;">
+            <div class="grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 3rem 0;">
+                
+                <div class="card" style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 1px solid #E5E7EB;">
+                    <h3 style="color: var(--dark-blue, #2A5B8C); margin-bottom: 1rem; font-family: var(--font-primary, 'Montserrat', sans-serif);">
+                        <i class="fas fa-compass" style="margin-right: 0.5rem; color: var(--teal, #4AA4B9);"></i>
+                        Career Paths
+                    </h3>
+                    <p style="color: var(--medium-gray, #6C757D); margin-bottom: 1.5rem;">Discover your ideal learning journey with personalized career recommendations.</p>
+                    <a href="assessment.html" class="nav-btn" style="width: 100%; justify-content: center;">Explore Paths</a>
+                </div>
+                
+                <div class="card" style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 1px solid #E5E7EB;">
+                    <h3 style="color: var(--dark-blue, #2A5B8C); margin-bottom: 1rem; font-family: var(--font-primary, 'Montserrat', sans-serif);">
+                        <i class="fas fa-certificate" style="margin-right: 0.5rem; color: var(--teal, #4AA4B9);"></i>
+                        Certifications
+                    </h3>
+                    <p style="color: var(--medium-gray, #6C757D); margin-bottom: 1.5rem;">Earn industry-recognized certificates that boost your career prospects.</p>
+                    <a href="certificates.html" class="nav-btn" style="width: 100%; justify-content: center;">View Certificates</a>
+                </div>
+                
+                <div class="card" style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 1px solid #E5E7EB;">
+                    <h3 style="color: var(--dark-blue, #2A5B8C); margin-bottom: 1rem; font-family: var(--font-primary, 'Montserrat', sans-serif);">
+                        <i class="fas fa-users" style="margin-right: 0.5rem; color: var(--teal, #4AA4B9);"></i>
+                        Community
+                    </h3>
+                    <p style="color: var(--medium-gray, #6C757D); margin-bottom: 1.5rem;">Connect with learners worldwide and join study groups.</p>
+                    <a href="partnerships.html" class="nav-btn" style="width: 100%; justify-content: center;">Join Community</a>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-status">
+            <span class="status-indicator"></span>
+            <span>Connected to Educational Services</span>
+        </div>
+        <div class="footer-links">
+            <a href="privacy.html">Privacy</a>
+            <a href="contact.html">Contact</a>
+            <a href="support.html">Support</a>
+            <a href="partnerships.html">Partners</a>
+        </div>
+    </footer>
+    
+    <!-- JavaScript for mobile menu toggle -->
+    <script>
+        // Mobile navigation toggle
+        const navToggle = document.getElementById('navToggle');
+        const nav = document.getElementById('nav');
+        
+        navToggle.addEventListener('click', function() {
+            nav.classList.toggle('active');
+            
+            // Animate hamburger icon
+            const spans = navToggle.querySelectorAll('span');
+            if (nav.classList.contains('active')) {
+                spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+            } else {
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            }
+        });
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!navToggle.contains(e.target) && !nav.contains(e.target)) {
+                nav.classList.remove('active');
+                // Reset hamburger icon
+                const spans = navToggle.querySelectorAll('span');
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            }
+        });
+        
+        // Language selector functionality
+        document.getElementById('lang').addEventListener('change', function(e) {
+            console.log('Language changed to:', e.target.value);
+            // Add language switching logic here
+        });
+        
+        // Add smooth scrolling for same-page links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        console.log('PMERIT Base Template Loaded Successfully');
+    </script>
+</body>
+</html>

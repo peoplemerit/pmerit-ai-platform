@@ -1,0 +1,430 @@
+/* ==========================================================================
+   PMERIT DESIGN SYSTEM - COMPONENTS
+   ========================================================================== */
+
+/* Import base styles */
+@import url('./base.css');
+
+/* ===== HEADER COMPONENT ===== */
+.pmerit-header {
+  height: var(--pmerit-header-height);
+  background-color: var(--pmerit-bg-secondary);
+  border-bottom: 1px solid var(--pmerit-border-light);
+  box-shadow: var(--pmerit-shadow-sm);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--pmerit-z-sticky);
+  
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--pmerit-space-4);
+  
+  transition: background-color var(--pmerit-transition-base),
+              border-color var(--pmerit-transition-base);
+}
+
+/* Logo */
+.pmerit-logo {
+  font-family: var(--pmerit-font-primary);
+  font-size: var(--pmerit-text-2xl);
+  font-weight: var(--pmerit-weight-bold);
+  color: var(--pmerit-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--pmerit-space-2);
+  text-decoration: none;
+}
+
+.pmerit-logo::before {
+  content: "🎓";
+  font-size: 1.5em;
+}
+
+/* Navigation - Mobile First */
+.pmerit-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--pmerit-space-2);
+}
+
+/* Mobile hamburger menu */
+.pmerit-nav-toggle {
+  display: flex;
+  flex-direction: column;
+  width: 24px;
+  height: 24px;
+  justify-content: space-around;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.pmerit-nav-toggle span {
+  width: 100%;
+  height: 2px;
+  background-color: var(--pmerit-text-primary);
+  transition: all var(--pmerit-transition-fast);
+}
+
+/* Hide hamburger on tablet+ */
+@media (min-width: 768px) {
+  .pmerit-nav-toggle {
+    display: none;
+  }
+}
+
+/* Mobile navigation menu */
+.pmerit-nav-menu {
+  position: fixed;
+  top: var(--pmerit-header-height);
+  left: 0;
+  right: 0;
+  background-color: var(--pmerit-bg-secondary);
+  border-bottom: 1px solid var(--pmerit-border-light);
+  box-shadow: var(--pmerit-shadow-md);
+  transform: translateY(-100%);
+  transition: transform var(--pmerit-transition-base);
+  z-index: var(--pmerit-z-dropdown);
+  
+  padding: var(--pmerit-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--pmerit-space-3);
+}
+
+.pmerit-nav-menu.active {
+  transform: translateY(0);
+}
+
+/* Tablet+ navigation - horizontal */
+@media (min-width: 768px) {
+  .pmerit-nav-menu {
+    position: static;
+    transform: none;
+    flex-direction: row;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    gap: var(--pmerit-space-3);
+  }
+}
+
+/* ===== BUTTON COMPONENT ===== */
+.pmerit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--pmerit-space-2);
+  
+  min-height: var(--pmerit-button-height);
+  padding: var(--pmerit-space-3) var(--pmerit-space-5);
+  
+  font-family: var(--pmerit-font-secondary);
+  font-size: var(--pmerit-text-button);
+  font-weight: var(--pmerit-weight-medium);
+  line-height: 1;
+  text-decoration: none;
+  
+  border: 1px solid transparent;
+  border-radius: var(--pmerit-radius-full);
+  cursor: pointer;
+  
+  transition: all var(--pmerit-transition-fast);
+  
+  /* Prevent button text selection */
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Button variants */
+.pmerit-btn-primary {
+  background-color: var(--pmerit-primary);
+  color: var(--pmerit-text-inverse);
+  border-color: var(--pmerit-primary);
+}
+
+.pmerit-btn-primary:hover, .pmerit-btn-primary:focus {
+  background-color: var(--pmerit-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--pmerit-shadow-md);
+}
+
+.pmerit-btn-secondary {
+  background-color: var(--pmerit-secondary);
+  color: var(--pmerit-text-inverse);
+  border-color: var(--pmerit-secondary);
+}
+
+.pmerit-btn-secondary:hover, .pmerit-btn-secondary:focus {
+  background-color: var(--pmerit-tertiary);
+  border-color: var(--pmerit-tertiary);
+}
+
+.pmerit-btn-outline {
+  background-color: transparent;
+  color: var(--pmerit-primary);
+  border-color: var(--pmerit-border-light);
+}
+
+.pmerit-btn-outline:hover, .pmerit-btn-outline:focus {
+  background-color: var(--pmerit-primary);
+  color: var(--pmerit-text-inverse);
+  border-color: var(--pmerit-primary);
+}
+
+.pmerit-btn-accent {
+  background-color: var(--pmerit-accent);
+  color: var(--pmerit-text-inverse);
+  border-color: var(--pmerit-accent);
+}
+
+.pmerit-btn-accent:hover, .pmerit-btn-accent:focus {
+  background-color: var(--pmerit-accent-dark);
+  border-color: var(--pmerit-accent-dark);
+}
+
+/* Button sizes */
+.pmerit-btn-sm {
+  min-height: 36px;
+  padding: var(--pmerit-space-2) var(--pmerit-space-4);
+  font-size: var(--pmerit-text-sm);
+}
+
+.pmerit-btn-lg {
+  min-height: 52px;
+  padding: var(--pmerit-space-4) var(--pmerit-space-8);
+  font-size: var(--pmerit-text-lg);
+}
+
+/* Disabled state */
+.pmerit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* ===== FOOTER COMPONENT ===== */
+.pmerit-footer {
+  background-color: var(--pmerit-bg-secondary);
+  border-top: 1px solid var(--pmerit-border-light);
+  padding: var(--pmerit-space-4);
+  
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--pmerit-z-sticky);
+  
+  display: flex;
+  flex-direction: column;
+  gap: var(--pmerit-space-3);
+  
+  font-size: var(--pmerit-text-sm);
+  color: var(--pmerit-text-secondary);
+}
+
+/* Footer status indicator */
+.pmerit-footer-status {
+  display: flex;
+  align-items: center;
+  gap: var(--pmerit-space-2);
+  font-weight: var(--pmerit-weight-medium);
+}
+
+.pmerit-footer-status::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--pmerit-success);
+  flex-shrink: 0;
+}
+
+/* Footer links */
+.pmerit-footer-links {
+  display: flex;
+  gap: var(--pmerit-space-4);
+  flex-wrap: wrap;
+}
+
+.pmerit-footer-links a {
+  color: var(--pmerit-text-secondary);
+  font-size: var(--pmerit-text-sm);
+  transition: color var(--pmerit-transition-fast);
+}
+
+.pmerit-footer-links a:hover {
+  color: var(--pmerit-secondary);
+}
+
+/* Tablet+ footer - horizontal layout */
+@media (min-width: 768px) {
+  .pmerit-footer {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: var(--pmerit-footer-height);
+  }
+}
+
+/* ===== CARD COMPONENT ===== */
+.pmerit-card {
+  background-color: var(--pmerit-bg-secondary);
+  border: 1px solid var(--pmerit-border-light);
+  border-radius: var(--pmerit-radius-lg);
+  box-shadow: var(--pmerit-shadow-sm);
+  padding: var(--pmerit-space-6);
+  
+  transition: box-shadow var(--pmerit-transition-base),
+              transform var(--pmerit-transition-base);
+}
+
+.pmerit-card:hover {
+  box-shadow: var(--pmerit-shadow-md);
+  transform: translateY(-2px);
+}
+
+.pmerit-card-header {
+  margin-bottom: var(--pmerit-space-4);
+  padding-bottom: var(--pmerit-space-4);
+  border-bottom: 1px solid var(--pmerit-border-light);
+}
+
+.pmerit-card-title {
+  font-size: var(--pmerit-text-xl);
+  font-weight: var(--pmerit-weight-semibold);
+  color: var(--pmerit-primary);
+  margin-bottom: var(--pmerit-space-2);
+}
+
+.pmerit-card-subtitle {
+  font-size: var(--pmerit-text-sm);
+  color: var(--pmerit-text-secondary);
+  margin-bottom: 0;
+}
+
+/* ===== LAYOUT COMPONENTS ===== */
+/* Main layout container */
+.pmerit-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Page content area (between fixed header/footer) */
+.pmerit-main {
+  flex: 1;
+  margin-top: var(--pmerit-header-height);
+  margin-bottom: var(--pmerit-footer-height);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Grid layouts */
+.pmerit-grid {
+  display: grid;
+  gap: var(--pmerit-space-6);
+}
+
+.pmerit-grid-1 { grid-template-columns: 1fr; }
+.pmerit-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.pmerit-grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+/* Responsive grid adjustments */
+@media (max-width: 767px) {
+  .pmerit-grid-2,
+  .pmerit-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .pmerit-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ===== FORM COMPONENTS ===== */
+.pmerit-form-group {
+  margin-bottom: var(--pmerit-space-5);
+}
+
+.pmerit-label {
+  display: block;
+  font-weight: var(--pmerit-weight-medium);
+  color: var(--pmerit-text-primary);
+  margin-bottom: var(--pmerit-space-2);
+  font-size: var(--pmerit-text-sm);
+}
+
+.pmerit-input {
+  width: 100%;
+  min-height: var(--pmerit-button-height);
+  padding: var(--pmerit-space-3) var(--pmerit-space-4);
+  
+  font-size: var(--pmerit-text-base);
+  border: 1px solid var(--pmerit-border-light);
+  border-radius: var(--pmerit-radius-md);
+  background-color: var(--pmerit-bg-secondary);
+  color: var(--pmerit-text-primary);
+  
+  transition: border-color var(--pmerit-transition-fast),
+              box-shadow var(--pmerit-transition-fast);
+}
+
+.pmerit-input:focus {
+  outline: none;
+  border-color: var(--pmerit-secondary);
+  box-shadow: 0 0 0 3px rgba(74, 164, 185, 0.1);
+}
+
+.pmerit-input:invalid {
+  border-color: var(--pmerit-error);
+}
+
+/* ===== UTILITY COMPONENTS ===== */
+/* Status indicators */
+.pmerit-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--pmerit-space-2);
+  padding: var(--pmerit-space-2) var(--pmerit-space-3);
+  border-radius: var(--pmerit-radius-full);
+  font-size: var(--pmerit-text-sm);
+  font-weight: var(--pmerit-weight-medium);
+}
+
+.pmerit-status-success {
+  background-color: rgba(58, 127, 92, 0.1);
+  color: var(--pmerit-success);
+}
+
+.pmerit-status-warning {
+  background-color: rgba(230, 126, 34, 0.1);
+  color: var(--pmerit-warning);
+}
+
+.pmerit-status-error {
+  background-color: rgba(224, 90, 90, 0.1);
+  color: var(--pmerit-error);
+}
+
+/* Loading spinner */
+.pmerit-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--pmerit-border-light);
+  border-top-color: var(--pmerit-secondary);
+  border-radius: 50%;
+  animation: pmerit-spin 1s linear infinite;
+}
+
+@keyframes pmerit-spin {
+  to { transform: rotate(360deg); }
+}

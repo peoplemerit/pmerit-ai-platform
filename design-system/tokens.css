@@ -1,0 +1,170 @@
+/* ==========================================================================
+   PMERIT DESIGN SYSTEM - UNIFIED DESIGN TOKENS
+   ========================================================================== */
+
+/* Based on templates/Pmerit-theme_typography.html - Single Source of Truth */
+
+:root {
+  /* ===== COLOR PALETTE ===== */
+  /* Primary Brand Colors */
+  --pmerit-primary: #2A5B8C;        /* Dark Blue - Primary brand */
+  --pmerit-secondary: #4AA4B9;      /* Teal - Secondary accent */
+  --pmerit-tertiary: #7ED0D9;       /* Light Teal - Subtle accent */
+  --pmerit-accent: #FF6B6B;         /* Coral - Call-to-action */
+  --pmerit-accent-dark: #E05A5A;    /* Dark Coral - Hover states */
+
+  /* Neutral Colors */
+  --pmerit-bg-primary: #F8F9FA;     /* Light Gray - Main background */
+  --pmerit-bg-secondary: #FFFFFF;   /* White - Card/container background */
+  --pmerit-bg-dark: #2C2C2C;       /* Dark Gray - Dark mode background */
+
+  /* Text Colors */
+  --pmerit-text-primary: #2C2C2C;   /* Dark Gray - Primary text */
+  --pmerit-text-secondary: #6C757D; /* Medium Gray - Secondary text */
+  --pmerit-text-inverse: #FFFFFF;   /* White - Text on dark backgrounds */
+  --pmerit-text-charcoal: #3A3A3A;  /* Charcoal - Strong emphasis */
+
+  /* Status Colors */
+  --pmerit-success: #3A7F5C;        /* Success Green */
+  --pmerit-warning: #E67E22;        /* Warning Orange */
+  --pmerit-error: #E05A5A;          /* Error (using coral dark) */
+
+  /* Border & Shadow Colors */
+  --pmerit-border-light: #E5E7EB;   /* Light border */
+  --pmerit-border-medium: #7ED0D9;  /* Medium border (light teal) */
+  --pmerit-shadow: rgba(42, 91, 140, 0.1); /* Primary color with opacity */
+
+  /* ===== TYPOGRAPHY ===== */
+  /* Font Families */
+  --pmerit-font-primary: 'Montserrat', sans-serif;  /* Headings */
+  --pmerit-font-secondary: 'Inter', sans-serif;     /* Body text */
+
+  /* Font Sizes - Mobile First */
+  --pmerit-text-xs: 12px;    /* Extra small text */
+  --pmerit-text-sm: 14px;    /* Small text/secondary */
+  --pmerit-text-base: 16px;  /* Base body text */
+  --pmerit-text-lg: 18px;    /* Large text */
+  --pmerit-text-xl: 20px;    /* H3 size */
+  --pmerit-text-2xl: 24px;   /* H2 size */
+  --pmerit-text-3xl: 32px;   /* H1 size */
+  --pmerit-text-button: 15px; /* Button text */
+
+  /* Font Weights */
+  --pmerit-weight-regular: 400;
+  --pmerit-weight-medium: 500;
+  --pmerit-weight-semibold: 600;
+  --pmerit-weight-bold: 700;
+
+  /* Line Heights */
+  --pmerit-leading-tight: 1.25;
+  --pmerit-leading-normal: 1.5;
+  --pmerit-leading-relaxed: 1.625;
+
+  /* ===== SPACING ===== */
+  /* Based on 4px grid system */
+  --pmerit-space-1: 4px;    /* 0.25rem */
+  --pmerit-space-2: 8px;    /* 0.5rem */
+  --pmerit-space-3: 12px;   /* 0.75rem */
+  --pmerit-space-4: 16px;   /* 1rem */
+  --pmerit-space-5: 20px;   /* 1.25rem */
+  --pmerit-space-6: 24px;   /* 1.5rem */
+  --pmerit-space-8: 32px;   /* 2rem */
+  --pmerit-space-10: 40px;  /* 2.5rem */
+  --pmerit-space-12: 48px;  /* 3rem */
+  --pmerit-space-16: 64px;  /* 4rem */
+
+  /* ===== LAYOUT ===== */
+  /* Breakpoints (for reference in media queries) */
+  --pmerit-breakpoint-sm: 640px;   /* Small tablets */
+  --pmerit-breakpoint-md: 768px;   /* Tablets */
+  --pmerit-breakpoint-lg: 1024px;  /* Desktop */
+  --pmerit-breakpoint-xl: 1280px;  /* Large desktop */
+
+  /* Component Heights */
+  --pmerit-header-height: 70px;
+  --pmerit-footer-height: 60px;
+  --pmerit-button-height: 44px;    /* Touch-friendly minimum */
+
+  /* Container Widths */
+  --pmerit-container-sm: 640px;
+  --pmerit-container-md: 768px;
+  --pmerit-container-lg: 1024px;
+  --pmerit-container-xl: 1280px;
+
+  /* ===== EFFECTS ===== */
+  /* Shadows */
+  --pmerit-shadow-sm: 0 1px 2px rgba(42, 91, 140, 0.1);
+  --pmerit-shadow-md: 0 4px 6px rgba(42, 91, 140, 0.1);
+  --pmerit-shadow-lg: 0 10px 15px rgba(42, 91, 140, 0.1);
+  --pmerit-shadow-xl: 0 20px 25px rgba(42, 91, 140, 0.15);
+
+  /* Border Radius */
+  --pmerit-radius-sm: 4px;
+  --pmerit-radius-md: 6px;
+  --pmerit-radius-lg: 8px;
+  --pmerit-radius-xl: 12px;
+  --pmerit-radius-full: 9999px;  /* Pills/circular */
+
+  /* Transitions */
+  --pmerit-transition-fast: 0.15s ease-in-out;
+  --pmerit-transition-base: 0.3s ease-in-out;
+  --pmerit-transition-slow: 0.5s ease-in-out;
+
+  /* Z-indexes */
+  --pmerit-z-dropdown: 10;
+  --pmerit-z-sticky: 20;
+  --pmerit-z-overlay: 30;
+  --pmerit-z-modal: 40;
+  --pmerit-z-tooltip: 50;
+}
+
+/* ===== DARK MODE OVERRIDES ===== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --pmerit-bg-primary: #1F2937;
+    --pmerit-bg-secondary: #111827;
+    --pmerit-text-primary: #F9FAFB;
+    --pmerit-text-secondary: #D1D5DB;
+    --pmerit-border-light: #374151;
+    --pmerit-shadow: rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Manual dark mode class override */
+.dark {
+  --pmerit-bg-primary: #1F2937;
+  --pmerit-bg-secondary: #111827;
+  --pmerit-text-primary: #F9FAFB;
+  --pmerit-text-secondary: #D1D5DB;
+  --pmerit-border-light: #374151;
+  --pmerit-shadow: rgba(0, 0, 0, 0.3);
+}
+
+/* ===== RESPONSIVE DESIGN TOKENS ===== */
+/* Tablet adjustments */
+@media (min-width: 768px) {
+  :root {
+    --pmerit-text-base: 18px;
+    --pmerit-text-lg: 20px;
+    --pmerit-text-xl: 24px;
+    --pmerit-text-2xl: 30px;
+    --pmerit-text-3xl: 40px;
+    --pmerit-space-6: 32px;
+    --pmerit-space-8: 48px;
+    --pmerit-space-10: 56px;
+  }
+}
+
+/* Desktop adjustments */
+@media (min-width: 1024px) {
+  :root {
+    --pmerit-text-base: 18px;
+    --pmerit-text-lg: 22px;
+    --pmerit-text-xl: 28px;
+    --pmerit-text-2xl: 36px;
+    --pmerit-text-3xl: 48px;
+    --pmerit-space-8: 56px;
+    --pmerit-space-10: 64px;
+    --pmerit-space-12: 80px;
+  }
+}
