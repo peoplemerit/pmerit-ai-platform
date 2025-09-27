@@ -1,0 +1,126 @@
+<!-- PMERIT Mobile Header Component -->
+<!-- Fixed position header for non-scrollable mobile layout -->
+<header class="mobile-header" id="mobileHeader">
+  <div class="mobile-header-container">
+    <!-- Hamburger Menu Button -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open navigation menu" aria-expanded="false">
+      <span class="hamburger-icon">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </span>
+    </button>
+
+    <!-- PMERIT Logo -->
+    <div class="mobile-logo">
+      <h1 class="logo-text">PMERIT</h1>
+      <span class="logo-tagline">Global Education</span>
+    </div>
+
+    <!-- Sign In Button -->
+    <button class="mobile-signin-btn" id="mobileSignInBtn" aria-label="Sign in to your account">
+      <i class="fas fa-user" aria-hidden="true"></i>
+      <span class="signin-text">Sign In</span>
+    </button>
+  </div>
+
+  <!-- Mobile Navigation Menu (Initially Hidden) -->
+  <nav class="mobile-nav" id="mobileNav" aria-label="Main navigation">
+    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+    <div class="mobile-nav-content">
+      <!-- Header Section -->
+      <div class="mobile-nav-header">
+        <div class="nav-logo">
+          <span class="nav-logo-text">PMERIT</span>
+        </div>
+        <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close navigation menu">
+          <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <!-- Navigation Links -->
+      <div class="mobile-nav-links">
+        <a href="/" class="mobile-nav-link">
+          <i class="fas fa-home" aria-hidden="true"></i>
+          <span>Home</span>
+        </a>
+        <a href="/courses.html" class="mobile-nav-link">
+          <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+          <span>Courses</span>
+        </a>
+        <a href="/assessment.html" class="mobile-nav-link">
+          <i class="fas fa-clipboard-check" aria-hidden="true"></i>
+          <span>Assessment</span>
+        </a>
+        <a href="/pricing.html" class="mobile-nav-link">
+          <i class="fas fa-tag" aria-hidden="true"></i>
+          <span>Pricing</span>
+        </a>
+        <a href="/about-us.html" class="mobile-nav-link">
+          <i class="fas fa-info-circle" aria-hidden="true"></i>
+          <span>About Us</span>
+        </a>
+        <a href="/support.html" class="mobile-nav-link">
+          <i class="fas fa-headset" aria-hidden="true"></i>
+          <span>Support</span>
+        </a>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="mobile-nav-actions">
+        <button class="mobile-action-btn primary" id="mobileStartBtn">
+          <i class="fas fa-play" aria-hidden="true"></i>
+          <span>Start Learning</span>
+        </button>
+        
+        <!-- Language Selector -->
+        <div class="mobile-lang-selector">
+          <label for="mobileLang" class="sr-only">Select language</label>
+          <select class="mobile-lang-select" id="mobileLang" aria-label="Language">
+            <option value="en">🇺🇸 English</option>
+            <option value="yo">🇳🇬 Yorùbá</option>
+            <option value="ig">🇳🇬 Igbo</option>
+            <option value="ha">🇳🇬 Hausa</option>
+          </select>
+        </div>
+
+        <!-- Settings Toggle -->
+        <div class="mobile-settings">
+          <button class="mobile-settings-toggle" id="mobileSettingsToggle">
+            <i class="fas fa-cog" aria-hidden="true"></i>
+            <span>Settings</span>
+            <i class="fas fa-chevron-down toggle-icon" aria-hidden="true"></i>
+          </button>
+          
+          <div class="mobile-settings-content" id="mobileSettingsContent">
+            <button class="mobile-setting-item" id="mobileDarkToggle">
+              <i class="fas fa-moon" aria-hidden="true"></i>
+              <span>Dark Mode</span>
+              <span class="setting-switch"></span>
+            </button>
+            <button class="mobile-setting-item" id="mobileTtsToggle">
+              <i class="fas fa-volume-up" aria-hidden="true"></i>
+              <span>Text-to-Speech</span>
+              <span class="setting-switch"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Section -->
+      <div class="mobile-nav-footer">
+        <div class="nav-footer-links">
+          <a href="/privacy.html" class="nav-footer-link">Privacy</a>
+          <a href="/help.html" class="nav-footer-link">Help</a>
+          <a href="/contact.html" class="nav-footer-link">Contact</a>
+        </div>
+        <div class="nav-footer-copyright">
+          <p>&copy; 2025 PMERIT. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- Screen reader only content for accessibility -->
+<div class="sr-only" aria-live="polite" id="mobileNavStatus"></div>

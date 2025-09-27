@@ -1,1 +1,120 @@
+/* PMERIT Unified Design System */
+/* Import design tokens first */
+@import 'design-tokens.css';
 
+/* Base styles from base.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-secondary);
+    font-size: var(--text-body);
+    font-weight: var(--weight-regular);
+    line-height: 1.5;
+    color: var(--dark-gray);
+    background-color: var(--light-gray);
+}
+
+/* Typography styles */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-primary);
+    color: var(--dark-blue);
+    margin-bottom: 16px;
+}
+
+h1 {
+    font-size: var(--text-h1);
+    font-weight: var(--weight-bold);
+}
+
+h2 {
+    font-size: var(--text-h2);
+    font-weight: var(--weight-semibold);
+}
+
+h3 {
+    font-size: var(--text-h3);
+    font-weight: var(--weight-medium);
+}
+
+/* Brand styles from brand.css */
+.logo {
+    font-family: var(--font-primary);
+    font-weight: var(--weight-bold);
+    color: var(--dark-blue);
+}
+
+/* Button styles */
+.btn {
+    font-family: var(--font-secondary);
+    font-size: var(--text-button);
+    font-weight: var(--weight-medium);
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-primary {
+    background-color: var(--dark-blue);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--teal);
+}
+
+.btn-secondary {
+    background-color: var(--teal);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: var(--light-teal);
+    color: var(--dark-gray);
+}
+
+.btn-accent {
+    background-color: var(--coral);
+    color: white;
+}
+
+.btn-accent:hover {
+    background-color: var(--coral-dark);
+}
+
+/* Utility classes */
+.text-primary {
+    color: var(--dark-blue);
+}
+
+.text-secondary {
+    color: var(--medium-gray);
+}
+
+.text-success {
+    color: var(--success-green);
+}
+
+.text-warning {
+    color: var(--warning-orange);
+}
+
+.bg-primary {
+    background-color: var(--dark-blue);
+}
+
+.bg-secondary {
+    background-color: var(--light-gray);
+}
+
+.bg-accent {
+    background-color: var(--teal);
+} 
