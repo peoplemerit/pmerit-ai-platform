@@ -1,5 +1,71 @@
 /* PMERIT Main CSS - Production Ready */
-@import url('./unified-design-system-new.css');
+@import url('./design-tokens.css');
+
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-secondary);
+    font-size: var(--text-body);
+    font-weight: var(--weight-regular);
+    line-height: var(--line-height-normal);
+    color: var(--dark-gray);
+    background-color: var(--light-gray);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-primary);
+    margin-bottom: var(--spacing-md);
+    line-height: var(--line-height-tight);
+}
+
+h1 {
+    font-size: var(--text-h1);
+    font-weight: var(--weight-bold);
+    color: var(--dark-blue);
+}
+
+h2 {
+    font-size: var(--text-h2);
+    font-weight: var(--weight-semibold);
+    color: var(--dark-blue);
+}
+
+h3 {
+    font-size: var(--text-h3);
+    font-weight: var(--weight-medium);
+    color: var(--dark-blue);
+}
+
+p {
+    margin-bottom: var(--spacing-md);
+    line-height: var(--line-height-normal);
+}
+
+/* Links */
+a {
+    color: var(--teal);
+    text-decoration: none;
+    transition: var(--transition-normal);
+}
+
+a:hover {
+    color: var(--dark-blue);
+}
+
+/* Basic Layout */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+/* Import additional component styles */
 @import url('./components.css');
 @import url('./responsive.css');
 @import url('./clean-mobile.css');
