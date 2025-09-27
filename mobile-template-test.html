@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>PMERIT Mobile Template Test</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- PMERIT Mobile Styles -->
+  <link rel="stylesheet" href="../assets/css/clean-mobile.css">
+
+  <style>
+    /* Test-specific styles */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Ensure mobile layout is active for testing */
+    .mobile-layout {
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Test scroll indicator */
+    .test-scroll-indicator {
+      position: fixed;
+      top: 70px;
+      left: 10px;
+      background: rgba(255, 0, 0, 0.8);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      z-index: 9999;
+    }
+
+    /* Add more content for scrolling test */
+    .test-content {
+      height: 200vh;
+      background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
+      padding: 20px;
+    }
+
+    .test-section {
+      margin-bottom: 40px;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body class="mobile-layout">
+  
+  <!-- Fixed Mobile Header (Inline for testing) -->
+  <header class="mobile-header" id="mobileHeader">
+    <div class="mobile-header-container">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open navigation menu" aria-expanded="false">
+        <span class="hamburger-icon">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </span>
+      </button>
+
+      <div class="mobile-logo">
+        <h1 class="logo-text">PMERIT</h1>
+        <span class="logo-tagline">Test Template</span>
+      </div>
+
+      <button class="mobile-signin-btn" id="mobileSignInBtn">
+        <i class="fas fa-user"></i>
+        <span class="signin-text">Sign In</span>
+      </button>
+    </div>
+
+    <!-- Simple mobile navigation for test -->
+    <nav class="mobile-nav" id="mobileNav">
+      <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+      <div class="mobile-nav-content">
+        <div class="mobile-nav-header">
+          <div class="nav-logo">
+            <span class="nav-logo-text">PMERIT TEST</span>
+          </div>
+          <button class="mobile-nav-close" id="mobileNavClose">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="mobile-nav-links">
+          <a href="#" class="mobile-nav-link">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+          </a>
+          <a href="#" class="mobile-nav-link">
+            <i class="fas fa-graduation-cap"></i>
+            <span>Courses</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Scrollable Content Container -->
+  <main class="mobile-content-container" id="mobileContent">
+    <div class="mobile-content-area">
+      
+      <!-- Test scroll indicator -->
+      <div class="test-scroll-indicator" id="scrollIndicator">Scroll: 0px</div>
+
+      <!-- Welcome Section -->
+      <section class="mobile-welcome-section">
+        <div class="welcome-content">
+          <div class="welcome-hero">
+            <h1 class="welcome-title">
+              <span class="title-main">Mobile Template Test</span>
+              <span class="title-subtitle">Scroll Containment Demo</span>
+            </h1>
+            <p class="welcome-description">
+              This template demonstrates proper scroll containment where only the content area scrolls while the header and footer remain fixed.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Test Content Sections -->
+      <div class="test-content">
+        <div class="test-section">
+          <h2>Test Section 1</h2>
+          <p>This content should scroll smoothly within the content container. The page body itself should NOT scroll - only this content area.</p>
+          <p>Try scrolling up and down. Notice how the header stays fixed at the top and footer stays fixed at the bottom.</p>
+        </div>
+
+        <div class="test-section">
+          <h2>Test Section 2</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        </div>
+
+        <div class="test-section">
+          <h2>Test Section 3</h2>
+          <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+          <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </div>
+
+        <div class="test-section">
+          <h2>Test Section 4</h2>
+          <p>More test content to demonstrate scrolling behavior. The viewport height should be properly calculated.</p>
+          <p>On mobile browsers, the dynamic viewport height (100dvh) should handle the address bar behavior correctly.</p>
+        </div>
+
+        <div class="test-section">
+          <h2>Test Section 5</h2>
+          <p>Final test section. If you can see this, the scrolling is working correctly within the content container.</p>
+          <p>The header and footer should remain visible and fixed at all times during scrolling.</p>
+        </div>
+
+        <div class="test-section">
+          <h2>Viewport Information</h2>
+          <div id="viewportInfo">
+            <p>Screen width: <span id="screenWidth">-</span>px</p>
+            <p>Screen height: <span id="screenHeight">-</span>px</p>
+            <p>Viewport height: <span id="viewportHeight">-</span>px</p>
+            <p>Content height: <span id="contentHeight">-</span>px</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Fixed Mobile Footer (Inline for testing) -->
+  <footer class="mobile-footer" id="mobileFooter">
+    <div class="mobile-footer-container">
+      <div class="footer-status">
+        <div class="status-indicator">
+          <span class="status-dot"></span>
+          <span class="status-text">Template Test Active</span>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <a href="#" class="footer-link">
+          <i class="fas fa-shield-alt"></i>
+          <span>Privacy</span>
+        </a>
+        <a href="#" class="footer-link">
+          <i class="fas fa-envelope"></i>
+          <span>Contact</span>
+        </a>
+        <a href="#" class="footer-link">
+          <i class="fas fa-headset"></i>
+          <span>Support</span>
+        </a>
+      </div>
+
+      <div class="footer-copyright">
+        <p>&copy; 2025 PMERIT Test Template</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Test JavaScript -->
+  <script>
+    // Initialize mobile template functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Mobile Template Test initialized');
+
+      // Simple mobile navigation toggle
+      const menuBtn = document.getElementById('mobileMenuBtn');
+      const nav = document.getElementById('mobileNav');
+      const navClose = document.getElementById('mobileNavClose');
+      const navOverlay = document.getElementById('mobileNavOverlay');
+
+      function toggleNav() {
+        nav.classList.toggle('active');
+        const isOpen = nav.classList.contains('active');
+        menuBtn.setAttribute('aria-expanded', isOpen);
+      }
+
+      if (menuBtn) menuBtn.addEventListener('click', toggleNav);
+      if (navClose) navClose.addEventListener('click', toggleNav);
+      if (navOverlay) navOverlay.addEventListener('click', toggleNav);
+
+      // Scroll position indicator
+      const scrollIndicator = document.getElementById('scrollIndicator');
+      const contentContainer = document.getElementById('mobileContent');
+
+      if (scrollIndicator && contentContainer) {
+        contentContainer.addEventListener('scroll', function() {
+          scrollIndicator.textContent = `Scroll: ${Math.round(this.scrollTop)}px`;
+        });
+      }
+
+      // Viewport information display
+      function updateViewportInfo() {
+        const screenWidth = document.getElementById('screenWidth');
+        const screenHeight = document.getElementById('screenHeight');
+        const viewportHeight = document.getElementById('viewportHeight');
+        const contentHeight = document.getElementById('contentHeight');
+
+        if (screenWidth) screenWidth.textContent = window.screen.width;
+        if (screenHeight) screenHeight.textContent = window.screen.height;
+        if (viewportHeight) viewportHeight.textContent = window.innerHeight;
+        if (contentHeight && contentContainer) {
+          contentHeight.textContent = contentContainer.offsetHeight;
+        }
+      }
+
+      updateViewportInfo();
+      window.addEventListener('resize', updateViewportInfo);
+      window.addEventListener('orientationchange', () => {
+        setTimeout(updateViewportInfo, 100);
+      });
+
+      // Mobile viewport height handling
+      function setViewportHeight() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+        updateViewportInfo();
+      }
+
+      setViewportHeight();
+      window.addEventListener('resize', setViewportHeight);
+      window.addEventListener('orientationchange', () => {
+        setTimeout(setViewportHeight, 200);
+      });
+
+      // Test scroll containment
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+
+      console.log('✅ Mobile template test setup complete');
+      console.log('📱 Test scroll containment by scrolling in the content area');
+      console.log('🔒 The page body should NOT scroll - only the content container');
+    });
+  </script>
+</body>
+</html>
