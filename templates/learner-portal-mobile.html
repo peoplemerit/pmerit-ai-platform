@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Learner Portal | PMERIT</title>
+  <meta name="description" content="Your personalized PMERIT learner dashboard for managing courses, assessments, and career development.">
+  
+  <!-- Preconnect to external fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Google Fonts for PMERIT design system -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- PMERIT Design System Styles -->
+  <link rel="stylesheet" href="../assets/css/design-tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/clean-mobile.css">
+  <link rel="stylesheet" href="../assets/css/theme-pmerit.css">
+  <link rel="stylesheet" href="../assets/css/brand.css">
+
+  <!-- Mobile-specific viewport handling -->
+  <meta name="theme-color" content="#2A5B8C">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <!-- Page-specific styles -->
+  <style>
+    .mobile-portal-section { 
+      margin-bottom: 2rem; 
+      padding: 1rem;
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+    .mobile-portal-section h2 { 
+      color: var(--primary); 
+      margin-bottom: 0.75rem;
+      font-size: 1.25rem;
+    }
+    .mobile-feature-list { 
+      list-style: disc; 
+      margin-left: 1.5rem;
+      line-height: 1.6;
+    }
+    .mobile-dashboard-cards { 
+      display: grid; 
+      grid-template-columns: 1fr;
+      gap: 1rem; 
+      margin: 1rem 0; 
+    }
+    .mobile-dashboard-card { 
+      background: var(--card-bg); 
+      border: 1px solid var(--border-color); 
+      border-radius: 12px; 
+      padding: 1.25rem; 
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+    .mobile-dashboard-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+    .mobile-dashboard-card h3 { 
+      margin-top: 0; 
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .mobile-dashboard-card ul { 
+      margin: 0.5rem 0 0 1rem;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    .welcome-section {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      color: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .welcome-section h2 {
+      color: white !important;
+      margin-bottom: 0.5rem;
+    }
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.75rem;
+      margin: 1.5rem 0;
+    }
+    .quick-action-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 0.5rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--text-primary);
+      transition: var(--transition);
+      font-size: 0.85rem;
+      text-align: center;
+    }
+    .quick-action-btn:hover {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: white;
+    }
+    .quick-action-btn i {
+      font-size: 1.5rem;
+      color: var(--primary);
+    }
+    .quick-action-btn:hover i {
+      color: white;
+    }
+    @media (min-width: 768px) {
+      .mobile-dashboard-cards {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      }
+      .quick-actions {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body class="mobile-layout learner-portal">
+  
+  <!-- Fixed Mobile Header -->
+  <div id="mobile-header-placeholder">
+    <!-- Header content will be loaded here via JavaScript -->
+  </div>
+
+  <!-- Main Content Container - This is where scrolling happens -->
+  <main class="mobile-content-container" id="mobileContent">
+    <div class="mobile-content-area" id="contentArea">
+      
+      <!-- Welcome Section -->
+      <div class="welcome-section">
+        <h2>Welcome, <span id="userName">Learner</span>!</h2>
+        <p>Your personalized hub for managing your academic journey, career goals, and community engagement on PMERIT.</p>
+      </div>
+
+      <!-- Quick Actions -->
+      <section class="mobile-portal-section">
+        <h2><i class="fas fa-rocket"></i> Quick Actions</h2>
+        <div class="quick-actions">
+          <a href="#" class="quick-action-btn" id="aiChatBtn">
+            <i class="fas fa-brain"></i>
+            <span>AI Assistant</span>
+          </a>
+          <a href="/courses.html" class="quick-action-btn">
+            <i class="fas fa-book"></i>
+            <span>My Courses</span>
+          </a>
+          <a href="/assessment.html" class="quick-action-btn">
+            <i class="fas fa-clipboard-check"></i>
+            <span>Take Assessment</span>
+          </a>
+          <a href="/career.html" class="quick-action-btn">
+            <i class="fas fa-briefcase"></i>
+            <span>Career Path</span>
+          </a>
+          <a href="#" class="quick-action-btn" id="communityBtn">
+            <i class="fas fa-users"></i>
+            <span>Community</span>
+          </a>
+          <a href="/profile.html" class="quick-action-btn">
+            <i class="fas fa-user-cog"></i>
+            <span>Profile</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Dashboard Overview -->
+      <section class="mobile-portal-section">
+        <h2><i class="fas fa-tachometer-alt"></i> Dashboard Overview</h2>
+        <div class="mobile-dashboard-cards">
+          <div class="mobile-dashboard-card">
+            <h3><i class="fas fa-brain"></i> AI Assistant</h3>
+            <ul>
+              <li>Chat with PMERIT AI for help and recommendations</li>
+              <li>Get support or escalate to a human</li>
+            </ul>
+          </div>
+          <div class="mobile-dashboard-card">
+            <h3><i class="fas fa-book"></i> My Courses & Paths</h3>
+            <ul>
+              <li>View enrolled courses and recommended paths</li>
+              <li>Access interactive modules, quizzes, and offline content</li>
+            </ul>
+          </div>
+          <div class="mobile-dashboard-card">
+            <h3><i class="fas fa-chart-line"></i> Progress & Assessments</h3>
+            <ul>
+              <li>Track progress, milestones, and assessment scores</li>
+              <li>Earn badges and certificates</li>
+            </ul>
+          </div>
+          <div class="mobile-dashboard-card">
+            <h3><i class="fas fa-briefcase"></i> Career Guidance</h3>
+            <ul>
+              <li>Take career assessments</li>
+              <li>Explore job curricula and connect with employers</li>
+            </ul>
+          </div>
+          <div class="mobile-dashboard-card">
+            <h3><i class="fas fa-users"></i> Community & Support</h3>
+            <ul>
+              <li>Join forums, study groups, and get help</li>
+              <li>Contact human support if needed</li>
+            </ul>
+          </div>
+          <div class="mobile-dashboard-card">
+            <h3><i class="fas fa-cog"></i> Settings & Profile</h3>
+            <ul>
+              <li>Manage your info, notifications, and privacy</li>
+              <li>Parental/teacher oversight for minors</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Academic Information -->
+      <section class="mobile-portal-section">
+        <h2><i class="fas fa-graduation-cap"></i> Academic Information</h2>
+        <ul class="mobile-feature-list">
+          <li>Enrolled courses and learning paths</li>
+          <li>Assessment and quiz results</li>
+          <li>Progress tracking and milestones</li>
+          <li>Certification status and downloadable certificates</li>
+          <li>Career assessment results and recommendations</li>
+          <li>Community participation and support tickets</li>
+          <li>Profile and settings (including parent/teacher oversight for minors)</li>
+        </ul>
+      </section>
+
+      <!-- Security & Integrity -->
+      <section class="mobile-portal-section">
+        <h2><i class="fas fa-shield-alt"></i> Security & Integrity</h2>
+        <ul class="mobile-feature-list">
+          <li>Multi-factor authentication (MFA) for login and sensitive actions</li>
+          <li>AI-powered and human support for issue escalation</li>
+          <li>Blockchain-backed certificate verification for authenticity</li>
+          <li>Plagiarism and cheating prevention for assignments and exams</li>
+          <li>Audit logs for all user activities</li>
+        </ul>
+      </section>
+
+      <!-- Accessibility & Global Reach -->
+      <section class="mobile-portal-section">
+        <h2><i class="fas fa-globe"></i> Accessibility & Global Reach</h2>
+        <ul class="mobile-feature-list">
+          <li>Designed for users in the USA, Nigeria, and globally</li>
+          <li>Offline reading and low-bandwidth support</li>
+          <li>Parental/teacher controls for minors (COPPA compliant)</li>
+        </ul>
+      </section>
+      
+    </div>
+  </main>
+
+  <!-- Fixed Mobile Footer -->
+  <div id="mobile-footer-placeholder">
+    <!-- Footer content will be loaded here via JavaScript -->
+  </div>
+
+  <!-- Loading Screen for Template -->
+  <div class="mobile-loading" id="mobileLoading">
+    <div class="loading-spinner">
+      <div class="spinner-circle"></div>
+    </div>
+    <p class="loading-text">Loading Portal...</p>
+  </div>
+
+  <!-- JavaScript for Mobile Base Template -->
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/clean-mobile.js"></script>
+  <script src="script.js"></script>
+  
+  <script>
+    // Mobile Base Template Initialization
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize mobile template
+      if (typeof MobileTemplate !== 'undefined') {
+        MobileTemplate.init();
+      }
+      
+      // Load header and footer partials
+      loadMobilePartials();
+      
+      // Handle viewport height changes on mobile browsers
+      handleMobileViewport();
+      
+      // Initialize learner portal specific functionality
+      initializeLearnerPortal();
+      
+      // Hide loading screen
+      setTimeout(() => {
+        const loading = document.getElementById('mobileLoading');
+        if (loading) {
+          loading.style.opacity = '0';
+          setTimeout(() => loading.style.display = 'none', 300);
+        }
+      }, 500);
+    });
+
+    // Learner Portal specific initialization
+    function initializeLearnerPortal() {
+      // Set user name from session/localStorage
+      const userNameElement = document.getElementById('userName');
+      if (userNameElement) {
+        userNameElement.textContent = localStorage.getItem('userName') || 'Learner';
+      }
+
+      // Initialize AI Chat button
+      const aiChatBtn = document.getElementById('aiChatBtn');
+      if (aiChatBtn) {
+        aiChatBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          // Open AI chat modal or navigate to chat page
+          openAIChat();
+        });
+      }
+
+      // Initialize Community button
+      const communityBtn = document.getElementById('communityBtn');
+      if (communityBtn) {
+        communityBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          // Navigate to community page or open community modal
+          window.location.href = '/community.html';
+        });
+      }
+
+      // Add click handlers for dashboard cards
+      const dashboardCards = document.querySelectorAll('.mobile-dashboard-card');
+      dashboardCards.forEach(card => {
+        card.addEventListener('click', () => {
+          const cardTitle = card.querySelector('h3').textContent;
+          handleDashboardCardClick(cardTitle);
+        });
+      });
+    }
+
+    // Handle dashboard card clicks
+    function handleDashboardCardClick(cardTitle) {
+      switch(true) {
+        case cardTitle.includes('AI Assistant'):
+          openAIChat();
+          break;
+        case cardTitle.includes('Courses'):
+          window.location.href = '/courses.html';
+          break;
+        case cardTitle.includes('Progress'):
+          window.location.href = '/progress.html';
+          break;
+        case cardTitle.includes('Career'):
+          window.location.href = '/career.html';
+          break;
+        case cardTitle.includes('Community'):
+          window.location.href = '/community.html';
+          break;
+        case cardTitle.includes('Settings'):
+          window.location.href = '/profile.html';
+          break;
+      }
+    }
+
+    // Open AI Chat functionality
+    function openAIChat() {
+      // This would integrate with the existing AI chat system
+      // For now, show a simple modal or navigate to chat page
+      if (typeof showAIChat === 'function') {
+        showAIChat();
+      } else {
+        alert('AI Assistant feature will be available soon!');
+      }
+    }
+
+    // Load mobile header and footer partials
+    async function loadMobilePartials() {
+      try {
+        // Load header
+        const headerResponse = await fetch('../partials/header-mobile.html');
+        const headerHTML = await headerResponse.text();
+        document.getElementById('mobile-header-placeholder').innerHTML = headerHTML;
+
+        // Load footer
+        const footerResponse = await fetch('../partials/footer-mobile.html');
+        const footerHTML = await footerResponse.text();
+        document.getElementById('mobile-footer-placeholder').innerHTML = footerHTML;
+
+        // Initialize components after loading
+        initializeMobileComponents();
+      } catch (error) {
+        console.error('Error loading mobile partials:', error);
+        // Fallback to show basic template
+        showFallbackContent();
+      }
+    }
+
+    // Initialize mobile components after partials are loaded
+    function initializeMobileComponents() {
+      // Initialize mobile header functionality
+      if (typeof initMobileHeader === 'function') {
+        initMobileHeader();
+      }
+
+      // Initialize mobile footer functionality
+      if (typeof initMobileFooter === 'function') {
+        initMobileFooter();
+      }
+
+      // Adjust content area height after components load
+      adjustContentHeight();
+    }
+
+    // Handle mobile viewport height changes (address bar, etc.)
+    function handleMobileViewport() {
+      function setViewportHeight() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+        
+        // Trigger content height adjustment
+        adjustContentHeight();
+      }
+
+      // Set initial height
+      setViewportHeight();
+
+      // Update on resize and orientation change
+      window.addEventListener('resize', setViewportHeight);
+      window.addEventListener('orientationchange', () => {
+        setTimeout(setViewportHeight, 100);
+      });
+
+      // Handle iOS Safari address bar behavior
+      if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        window.addEventListener('scroll', setViewportHeight);
+      }
+    }
+
+    // Adjust content area height based on header and footer
+    function adjustContentHeight() {
+      const header = document.querySelector('.mobile-header');
+      const footer = document.querySelector('.mobile-footer');
+      const content = document.querySelector('.mobile-content-container');
+      
+      if (header && footer && content) {
+        const headerHeight = header.offsetHeight;
+        const footerHeight = footer.offsetHeight;
+        
+        content.style.height = `calc(100vh - ${headerHeight}px - ${footerHeight}px)`;
+        content.style.top = `${headerHeight}px`;
+      }
+    }
+
+    // Fallback content if partials fail to load
+    function showFallbackContent() {
+      document.getElementById('mobile-header-placeholder').innerHTML = `
+        <header class="mobile-header-fallback">
+          <div class="fallback-container">
+            <h1>PMERIT</h1>
+            <button onclick="location.reload()">Retry</button>
+          </div>
+        </header>
+      `;
+      
+      document.getElementById('mobile-footer-placeholder').innerHTML = `
+        <footer class="mobile-footer-fallback">
+          <p>&copy; 2025 PMERIT - Global Education</p>
+        </footer>
+      `;
+    }
+
+    // Export functions for external use
+    window.MobileBaseTemplate = {
+      adjustContentHeight,
+      handleMobileViewport,
+      loadMobilePartials
+    };
+  </script>
+</body>
+</html>

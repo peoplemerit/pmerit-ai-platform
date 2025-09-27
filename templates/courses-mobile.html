@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Courses - PMERIT Platform</title>
+  <meta name="description" content="Explore PMERIT courses designed for accessible, high-quality education worldwide.">
+
+  <!-- Preconnect to external fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Google Fonts for PMERIT design system -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- PMERIT Design System Styles -->
+  <link rel="stylesheet" href="../assets/css/design-tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/clean-mobile.css">
+  <link rel="stylesheet" href="../assets/css/theme-pmerit.css">
+  <link rel="stylesheet" href="../assets/css/unified-design-system.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+
+  <!-- Mobile-specific viewport handling -->
+  <meta name="theme-color" content="#2A5B8C">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <!-- Courses-specific mobile styles -->
+  <style>
+    .mobile-courses-container {
+      padding: 1rem;
+    }
+    
+    .mobile-courses-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .mobile-courses-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .mobile-courses-subtitle {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .mobile-filters-section {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+
+    .mobile-search-box {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+
+    .mobile-search-input {
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 2.5rem;
+      border: 1px solid var(--border-color);
+      border-radius: 25px;
+      font-size: 1rem;
+      background-color: var(--card-bg);
+    }
+
+    .mobile-search-icon {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+    }
+
+    .mobile-filters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .mobile-filter-select {
+      padding: 0.5rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background-color: var(--card-bg);
+      font-size: 0.9rem;
+    }
+
+    .mobile-view-toggle {
+      display: flex;
+      background-color: var(--bg-secondary);
+      border-radius: 8px;
+      padding: 0.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .mobile-view-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      border-radius: 6px;
+      font-size: 0.85rem;
+    }
+
+    .mobile-view-btn.active {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .mobile-career-tracks {
+      margin-bottom: 2rem;
+    }
+
+    .mobile-tracks-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .mobile-tracks-scroll {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      scroll-snap-type: x mandatory;
+    }
+
+    .mobile-track-card {
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(124, 58, 237, 0.1));
+      border: 1px solid rgba(79, 70, 229, 0.2);
+      border-radius: 12px;
+      padding: 1rem;
+      min-width: 250px;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: var(--transition);
+      scroll-snap-align: start;
+    }
+
+    .mobile-track-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .mobile-track-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .mobile-track-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .mobile-track-description {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      line-height: 1.4;
+      margin-bottom: 0.75rem;
+    }
+
+    .mobile-track-stats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.75rem;
+    }
+
+    .mobile-track-action {
+      width: 100%;
+      padding: 0.5rem;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .mobile-courses-section {
+      margin-bottom: 2rem;
+    }
+
+    .mobile-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .mobile-section-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .mobile-course-count {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+
+    .mobile-courses-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .mobile-course-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: var(--transition);
+      cursor: pointer;
+      box-shadow: var(--shadow);
+    }
+
+    .mobile-course-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .mobile-course-thumbnail {
+      height: 120px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2rem;
+      position: relative;
+    }
+
+    .mobile-course-level {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background-color: rgba(255, 255, 255, 0.9);
+      color: var(--text-primary);
+      padding: 0.25rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 500;
+    }
+
+    .mobile-course-content {
+      padding: 1rem;
+    }
+
+    .mobile-course-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+      line-height: 1.3;
+    }
+
+    .mobile-course-instructor {
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .mobile-course-description {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      line-height: 1.4;
+      margin-bottom: 0.75rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .mobile-course-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .mobile-course-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .mobile-course-tag {
+      background-color: var(--bg-secondary);
+      color: var(--text-secondary);
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 500;
+    }
+
+    .mobile-course-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .mobile-course-price {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .mobile-course-action {
+      padding: 0.5rem 1rem;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    /* List view styles */
+    .list-view .mobile-courses-grid {
+      gap: 0.75rem;
+    }
+
+    .list-view .mobile-course-card {
+      display: flex;
+      height: 120px;
+    }
+
+    .list-view .mobile-course-thumbnail {
+      width: 120px;
+      height: 100%;
+      flex-shrink: 0;
+    }
+
+    .list-view .mobile-course-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 0.75rem;
+    }
+
+    @media (min-width: 600px) {
+      .mobile-courses-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body class="mobile-layout courses-page">
+  
+  <!-- Fixed Mobile Header -->
+  <div id="mobile-header-placeholder">
+    <!-- Header content will be loaded here via JavaScript -->
+  </div>
+
+  <!-- Main Content Container - This is where scrolling happens -->
+  <main class="mobile-content-container" id="mobileContent">
+    <div class="mobile-content-area" id="contentArea">
+      
+      <div class="mobile-courses-container">
+        <!-- Page Header -->
+        <div class="mobile-courses-header">
+          <h1 class="mobile-courses-title">Explore Courses</h1>
+          <p class="mobile-courses-subtitle">Discover high-quality courses designed to advance your career</p>
+        </div>
+        
+        <!-- Search and Filters -->
+        <div class="mobile-filters-section">
+          <div class="mobile-search-box">
+            <i class="fas fa-search mobile-search-icon"></i>
+            <input type="text" class="mobile-search-input" placeholder="Search courses..." id="searchInput">
+          </div>
+          
+          <div class="mobile-view-toggle">
+            <button class="mobile-view-btn active" id="gridViewBtn">
+              <i class="fas fa-th"></i>
+              <span>Grid</span>
+            </button>
+            <button class="mobile-view-btn" id="listViewBtn">
+              <i class="fas fa-list"></i>
+              <span>List</span>
+            </button>
+          </div>
+          
+          <div class="mobile-filters-grid">
+            <select class="mobile-filter-select" id="categoryFilter">
+              <option value="">Category</option>
+              <option value="programming">Programming</option>
+              <option value="data-science">Data Science</option>
+              <option value="design">Design</option>
+              <option value="marketing">Marketing</option>
+              <option value="business">Business</option>
+            </select>
+            
+            <select class="mobile-filter-select" id="levelFilter">
+              <option value="">Level</option>
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
+            
+            <select class="mobile-filter-select" id="durationFilter">
+              <option value="">Duration</option>
+              <option value="short">Under 5h</option>
+              <option value="medium">5-20h</option>
+              <option value="long">20h+</option>
+            </select>
+            
+            <select class="mobile-filter-select" id="priceFilter">
+              <option value="">Price</option>
+              <option value="free">Free</option>
+              <option value="paid">Paid</option>
+            </select>
+          </div>
+        </div>
+        
+        <!-- Career Tracks -->
+        <div class="mobile-career-tracks">
+          <h2 class="mobile-tracks-title">Career-Focused Learning Paths</h2>
+          <div class="mobile-tracks-scroll" id="careerTracks">
+            <!-- Loading state -->
+            <div class="loading-state" id="tracksLoading">
+              <div style="text-align: center; padding: 2rem;">
+                <i class="fas fa-spinner fa-spin" style="font-size: 1.5rem; color: var(--primary);"></i>
+                <p style="color: var(--text-secondary); margin-top: 0.5rem;">Loading tracks...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Courses Section -->
+        <div class="mobile-courses-section">
+          <div class="mobile-section-header">
+            <h2 class="mobile-section-title">All Courses</h2>
+            <div class="mobile-course-count" id="courseCount">Loading...</div>
+          </div>
+          
+          <div class="mobile-courses-grid" id="coursesGrid">
+            <!-- Loading state -->
+            <div class="loading-state" id="coursesLoading">
+              <div style="text-align: center; padding: 3rem 1rem;">
+                <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                <p style="color: var(--text-secondary);">Loading courses...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </main>
+
+  <!-- Fixed Mobile Footer -->
+  <div id="mobile-footer-placeholder">
+    <!-- Footer content will be loaded here via JavaScript -->
+  </div>
+
+  <!-- Loading Screen for Template -->
+  <div class="mobile-loading" id="mobileLoading">
+    <div class="loading-spinner">
+      <div class="spinner-circle"></div>
+    </div>
+    <p class="loading-text">Loading Courses...</p>
+  </div>
+
+  <!-- JavaScript for Mobile Base Template -->
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/clean-mobile.js"></script>
+  <script src="script.js"></script>
+  
+  <script>
+    // Mobile Base Template Initialization
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize mobile template
+      if (typeof MobileTemplate !== 'undefined') {
+        MobileTemplate.init();
+      }
+      
+      // Load header and footer partials
+      loadMobilePartials();
+      
+      // Handle viewport height changes on mobile browsers
+      handleMobileViewport();
+      
+      // Initialize courses page specific functionality
+      initializeCoursesPage();
+      
+      // Hide loading screen
+      setTimeout(() => {
+        const loading = document.getElementById('mobileLoading');
+        if (loading) {
+          loading.style.opacity = '0';
+          setTimeout(() => loading.style.display = 'none', 300);
+        }
+      }, 500);
+    });
+
+    // Courses page specific initialization
+    function initializeCoursesPage() {
+      // Initialize PMERIT Courses module
+      if (window.PMERIT && window.PMERIT.Courses) {
+        window.PMERIT.Courses.init();
+      } else {
+        // Initialize mobile-specific courses functionality
+        initMobileCourses();
+      }
+
+      // Setup view toggle
+      setupViewToggle();
+      
+      // Setup search and filters
+      setupFilters();
+    }
+
+    // Mobile courses functionality
+    function initMobileCourses() {
+      const mobileCourses = {
+        allCourses: [],
+        filteredCourses: [],
+        careerTracks: [],
+        currentView: 'grid',
+        
+        async init() {
+          try {
+            await Promise.all([
+              this.loadCareerTracks(),
+              this.loadCourses()
+            ]);
+            
+            this.applyFilters();
+          } catch (error) {
+            console.error('Failed to initialize mobile courses:', error);
+            this.loadSampleData();
+          }
+        },
+
+        async loadCareerTracks() {
+          // Load sample tracks for mobile
+          this.careerTracks = [
+            { id: 'fullstack', name: 'Full-Stack Development', description: 'Frontend + backend foundations', icon: 'fas fa-code', courseCount: 12, duration: '6 months' },
+            { id: 'data', name: 'Data Analytics', description: 'SQL, dashboards, insights', icon: 'fas fa-chart-bar', courseCount: 8, duration: '4 months' },
+            { id: 'design', name: 'UI/UX Design', description: 'Design thinking, prototypes', icon: 'fas fa-paint-brush', courseCount: 10, duration: '5 months' },
+            { id: 'marketing', name: 'Digital Marketing', description: 'SEO, content, ads, analytics', icon: 'fas fa-bullhorn', courseCount: 15, duration: '3 months' }
+          ];
+          this.displayCareerTracks();
+        },
+
+        async loadCourses() {
+          // Load sample courses for mobile
+          this.allCourses = [
+            { id: 1, title: 'JavaScript Fundamentals', instructor: 'John Doe', level: 'Beginner', duration: '8 hours', rating: 4.5, price: 'Free', category: 'programming', description: 'Learn the basics of JavaScript programming' },
+            { id: 2, title: 'React Development', instructor: 'Jane Smith', level: 'Intermediate', duration: '20 hours', rating: 4.8, price: '$49', category: 'programming', description: 'Build modern web apps with React' },
+            { id: 3, title: 'Data Visualization', instructor: 'Bob Johnson', level: 'Beginner', duration: '12 hours', rating: 4.6, price: '$29', category: 'data-science', description: 'Create compelling data visualizations' },
+            { id: 4, title: 'UX Research Methods', instructor: 'Alice Brown', level: 'Intermediate', duration: '15 hours', rating: 4.7, price: '$39', category: 'design', description: 'Learn user research techniques' }
+          ];
+          this.filteredCourses = [...this.allCourses];
+          this.displayCourses();
+        },
+
+        displayCareerTracks() {
+          const container = document.getElementById('careerTracks');
+          const loading = document.getElementById('tracksLoading');
+          
+          if (loading) loading.style.display = 'none';
+          if (!container) return;
+          
+          container.innerHTML = this.careerTracks.map(track => `
+            <div class="mobile-track-card" onclick="selectTrack('${track.id}')">
+              <div class="mobile-track-icon">
+                <i class="${track.icon}"></i>
+              </div>
+              <div class="mobile-track-name">${track.name}</div>
+              <div class="mobile-track-description">${track.description}</div>
+              <div class="mobile-track-stats">
+                <span>${track.courseCount} courses</span>
+                <span><i class="fas fa-clock"></i> ${track.duration}</span>
+              </div>
+              <button class="mobile-track-action">Explore Track</button>
+            </div>
+          `).join('');
+        },
+
+        displayCourses() {
+          const container = document.getElementById('coursesGrid');
+          const loading = document.getElementById('coursesLoading');
+          const countElement = document.getElementById('courseCount');
+          
+          if (loading) loading.style.display = 'none';
+          if (countElement) countElement.textContent = `${this.filteredCourses.length} courses`;
+          if (!container) return;
+          
+          container.innerHTML = this.filteredCourses.map(course => `
+            <div class="mobile-course-card" onclick="selectCourse('${course.id}')">
+              <div class="mobile-course-thumbnail">
+                <i class="fas fa-graduation-cap"></i>
+                <div class="mobile-course-level">${course.level}</div>
+              </div>
+              <div class="mobile-course-content">
+                <div class="mobile-course-title">${course.title}</div>
+                <div class="mobile-course-instructor">by ${course.instructor}</div>
+                <div class="mobile-course-description">${course.description}</div>
+                <div class="mobile-course-meta">
+                  <span><i class="fas fa-clock"></i> ${course.duration}</span>
+                  <span><i class="fas fa-star"></i> ${course.rating}</span>
+                </div>
+                <div class="mobile-course-tags">
+                  <span class="mobile-course-tag">${course.category}</span>
+                </div>
+                <div class="mobile-course-footer">
+                  <div class="mobile-course-price">${course.price}</div>
+                  <button class="mobile-course-action">Enroll</button>
+                </div>
+              </div>
+            </div>
+          `).join('');
+        }
+      };
+
+      window.mobileCourses = mobileCourses;
+      mobileCourses.init();
+    }
+
+    // Setup view toggle functionality
+    function setupViewToggle() {
+      const gridBtn = document.getElementById('gridViewBtn');
+      const listBtn = document.getElementById('listViewBtn');
+      const coursesGrid = document.getElementById('coursesGrid');
+      
+      if (gridBtn && listBtn && coursesGrid) {
+        gridBtn.addEventListener('click', () => {
+          gridBtn.classList.add('active');
+          listBtn.classList.remove('active');
+          coursesGrid.classList.remove('list-view');
+        });
+        
+        listBtn.addEventListener('click', () => {
+          listBtn.classList.add('active');
+          gridBtn.classList.remove('active');
+          coursesGrid.classList.add('list-view');
+        });
+      }
+    }
+
+    // Setup search and filter functionality
+    function setupFilters() {
+      const searchInput = document.getElementById('searchInput');
+      
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          // Implement search functionality
+          console.log('Search:', e.target.value);
+        });
+      }
+      
+      // Setup filter dropdowns
+      ['categoryFilter', 'levelFilter', 'durationFilter', 'priceFilter'].forEach(id => {
+        const filter = document.getElementById(id);
+        if (filter) {
+          filter.addEventListener('change', (e) => {
+            console.log('Filter changed:', id, e.target.value);
+          });
+        }
+      });
+    }
+
+    // Course selection
+    function selectCourse(courseId) {
+      console.log('Selected course:', courseId);
+      // Navigate to course details or open modal
+      window.location.href = `/course/${courseId}`;
+    }
+
+    // Track selection
+    function selectTrack(trackId) {
+      console.log('Selected track:', trackId);
+      // Navigate to track details or filter courses
+      window.location.href = `/career-path/${trackId}`;
+    }
+
+    // Load mobile header and footer partials
+    async function loadMobilePartials() {
+      try {
+        // Load header
+        const headerResponse = await fetch('../partials/header-mobile.html');
+        const headerHTML = await headerResponse.text();
+        document.getElementById('mobile-header-placeholder').innerHTML = headerHTML;
+
+        // Load footer
+        const footerResponse = await fetch('../partials/footer-mobile.html');
+        const footerHTML = await footerResponse.text();
+        document.getElementById('mobile-footer-placeholder').innerHTML = footerHTML;
+
+        // Initialize components after loading
+        initializeMobileComponents();
+      } catch (error) {
+        console.error('Error loading mobile partials:', error);
+        showFallbackContent();
+      }
+    }
+
+    // Initialize mobile components after partials are loaded
+    function initializeMobileComponents() {
+      if (typeof initMobileHeader === 'function') {
+        initMobileHeader();
+      }
+
+      if (typeof initMobileFooter === 'function') {
+        initMobileFooter();
+      }
+
+      adjustContentHeight();
+    }
+
+    // Handle mobile viewport height changes
+    function handleMobileViewport() {
+      function setViewportHeight() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+        adjustContentHeight();
+      }
+
+      setViewportHeight();
+      window.addEventListener('resize', setViewportHeight);
+      window.addEventListener('orientationchange', () => {
+        setTimeout(setViewportHeight, 100);
+      });
+
+      if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        window.addEventListener('scroll', setViewportHeight);
+      }
+    }
+
+    // Adjust content area height
+    function adjustContentHeight() {
+      const header = document.querySelector('.mobile-header');
+      const footer = document.querySelector('.mobile-footer');
+      const content = document.querySelector('.mobile-content-container');
+      
+      if (header && footer && content) {
+        const headerHeight = header.offsetHeight;
+        const footerHeight = footer.offsetHeight;
+        
+        content.style.height = `calc(100vh - ${headerHeight}px - ${footerHeight}px)`;
+        content.style.top = `${headerHeight}px`;
+      }
+    }
+
+    // Fallback content
+    function showFallbackContent() {
+      document.getElementById('mobile-header-placeholder').innerHTML = `
+        <header class="mobile-header-fallback">
+          <div class="fallback-container">
+            <h1>PMERIT</h1>
+            <button onclick="location.reload()">Retry</button>
+          </div>
+        </header>
+      `;
+      
+      document.getElementById('mobile-footer-placeholder').innerHTML = `
+        <footer class="mobile-footer-fallback">
+          <p>&copy; 2025 PMERIT - Global Education</p>
+        </footer>
+      `;
+    }
+
+    window.MobileBaseTemplate = {
+      adjustContentHeight,
+      handleMobileViewport,
+      loadMobilePartials
+    };
+  </script>
+</body>
+</html>

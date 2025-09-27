@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Profile - PMERIT Platform</title>
+  <meta name="description" content="Manage your PMERIT profile, settings, and learning preferences.">
+
+  <!-- Preconnect to external fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Google Fonts for PMERIT design system -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- PMERIT Design System Styles -->
+  <link rel="stylesheet" href="../assets/css/design-tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/clean-mobile.css">
+  <link rel="stylesheet" href="../assets/css/theme-pmerit.css">
+
+  <!-- Mobile-specific viewport handling -->
+  <meta name="theme-color" content="#2A5B8C">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <!-- Profile-specific styles -->
+  <style>
+    .mobile-profile-container {
+      padding: 1rem;
+    }
+    
+    .profile-header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      color: white;
+      border-radius: 16px;
+      padding: 2rem 1.5rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      position: relative;
+    }
+    
+    .profile-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: white;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin: 0 auto 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    
+    .profile-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    
+    .profile-role {
+      opacity: 0.9;
+      margin-bottom: 1rem;
+    }
+    
+    .profile-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .profile-stat {
+      text-align: center;
+    }
+    
+    .profile-stat-number {
+      display: block;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    
+    .profile-stat-label {
+      font-size: 0.8rem;
+      opacity: 0.8;
+    }
+    
+    .profile-sections {
+      display: grid;
+      gap: 1rem;
+    }
+    
+    .profile-section {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+    
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    
+    .section-action {
+      background: none;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      padding: 0.25rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .section-action:hover {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    
+    .form-label {
+      display: block;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+    
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background: var(--card-bg);
+      color: var(--text-primary);
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+    
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+    }
+    
+    .form-textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+    
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+    
+    .toggle-input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--border-color);
+      transition: 0.4s;
+      border-radius: 24px;
+    }
+    
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+    
+    .toggle-input:checked + .toggle-slider {
+      background-color: var(--primary);
+    }
+    
+    .toggle-input:checked + .toggle-slider:before {
+      transform: translateX(26px);
+    }
+    
+    .preference-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .preference-item:last-child {
+      border-bottom: none;
+    }
+    
+    .preference-info h4 {
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+      font-size: 0.95rem;
+    }
+    
+    .preference-info p {
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      margin: 0;
+    }
+    
+    .progress-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .progress-item:last-child {
+      border-bottom: none;
+    }
+    
+    .progress-info h4 {
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+      font-size: 0.95rem;
+    }
+    
+    .progress-info p {
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      margin: 0;
+    }
+    
+    .progress-bar-container {
+      width: 80px;
+      height: 8px;
+      background: var(--bg-secondary);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+    
+    .certificate-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .certificate-item:last-child {
+      border-bottom: none;
+    }
+    
+    .certificate-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--accent), #F59E0B);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.25rem;
+    }
+    
+    .certificate-info {
+      flex: 1;
+    }
+    
+    .certificate-info h4 {
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+      font-size: 0.95rem;
+    }
+    
+    .certificate-info p {
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      margin: 0;
+    }
+    
+    .certificate-date {
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+    }
+    
+    .save-button {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-top: 1rem;
+    }
+    
+    .save-button:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .danger-zone {
+      border: 1px solid #EF4444;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+    
+    .danger-zone h3 {
+      color: #EF4444;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .danger-zone p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    
+    .danger-button {
+      background: #EF4444;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .danger-button:hover {
+      background: #DC2626;
+    }
+    
+    @media (min-width: 600px) {
+      .profile-sections {
+        grid-template-columns: 1fr;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      
+      .form-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        align-items: start;
+      }
+      
+      .form-group.full-width {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body class="mobile-layout profile-page">
+  
+  <!-- Fixed Mobile Header -->
+  <div id="mobile-header-placeholder">
+    <!-- Header content will be loaded here via JavaScript -->
+  </div>
+
+  <!-- Main Content Container - This is where scrolling happens -->
+  <main class="mobile-content-container" id="mobileContent">
+    <div class="mobile-content-area" id="contentArea">
+      
+      <div class="mobile-profile-container">
+        
+        <!-- Profile Header -->
+        <div class="profile-header">
+          <div class="profile-avatar">
+            <i class="fas fa-user" id="avatarIcon"></i>
+          </div>
+          <div class="profile-name" id="profileName">John Doe</div>
+          <div class="profile-role" id="profileRole">Software Developer</div>
+          <div class="profile-stats">
+            <div class="profile-stat">
+              <span class="profile-stat-number">5</span>
+              <span class="profile-stat-label">Courses</span>
+            </div>
+            <div class="profile-stat">
+              <span class="profile-stat-number">3</span>
+              <span class="profile-stat-label">Certificates</span>
+            </div>
+            <div class="profile-stat">
+              <span class="profile-stat-number">89%</span>
+              <span class="profile-stat-label">Progress</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-sections">
+          
+          <!-- Personal Information -->
+          <div class="profile-section">
+            <div class="section-header">
+              <h3 class="section-title">
+                <i class="fas fa-user"></i>
+                Personal Information
+              </h3>
+              <button class="section-action" onclick="toggleEdit('personal')">Edit</button>
+            </div>
+            <div id="personalInfo">
+              <div class="form-group">
+                <label class="form-label">First Name</label>
+                <input type="text" class="form-input" id="firstName" value="John" readonly>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Last Name</label>
+                <input type="text" class="form-input" id="lastName" value="Doe" readonly>
+              </div>
+              <div class="form-group full-width">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-input" id="email" value="john.doe@email.com" readonly>
+              </div>
+              <div class="form-group full-width">
+                <label class="form-label">Phone</label>
+                <input type="tel" class="form-input" id="phone" value="+1 (555) 123-4567" readonly>
+              </div>
+            </div>
+          </div>
+
+          <!-- Learning Preferences -->
+          <div class="profile-section">
+            <div class="section-header">
+              <h3 class="section-title">
+                <i class="fas fa-graduation-cap"></i>
+                Learning Preferences
+              </h3>
+            </div>
+            <div class="preference-item">
+              <div class="preference-info">
+                <h4>Email Notifications</h4>
+                <p>Receive updates about courses and progress</p>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" class="toggle-input" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="preference-item">
+              <div class="preference-info">
+                <h4>Push Notifications</h4>
+                <p>Mobile push notifications for deadlines</p>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" class="toggle-input">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="preference-item">
+              <div class="preference-info">
+                <h4>AI Recommendations</h4>
+                <p>Personalized course suggestions</p>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" class="toggle-input" checked>
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="form-group full-width">
+              <label class="form-label">Preferred Language</label>
+              <select class="form-select" id="preferredLanguage">
+                <option value="en">English</option>
+                <option value="yo">Yorùbá</option>
+                <option value="ig">Igbo</option>
+                <option value="ha">Hausa</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Learning Progress -->
+          <div class="profile-section">
+            <div class="section-header">
+              <h3 class="section-title">
+                <i class="fas fa-chart-line"></i>
+                Learning Progress
+              </h3>
+              <button class="section-action" onclick="viewAllProgress()">View All</button>
+            </div>
+            <div class="progress-item">
+              <div class="progress-info">
+                <h4>JavaScript Fundamentals</h4>
+                <p>8 of 12 lessons completed</p>
+              </div>
+              <div class="progress-bar-container">
+                <div class="progress-bar-fill" style="width: 67%;"></div>
+              </div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-info">
+                <h4>React Development</h4>
+                <p>15 of 20 lessons completed</p>
+              </div>
+              <div class="progress-bar-container">
+                <div class="progress-bar-fill" style="width: 75%;"></div>
+              </div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-info">
+                <h4>Data Visualization</h4>
+                <p>12 of 12 lessons completed</p>
+              </div>
+              <div class="progress-bar-container">
+                <div class="progress-bar-fill" style="width: 100%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Certificates -->
+          <div class="profile-section">
+            <div class="section-header">
+              <h3 class="section-title">
+                <i class="fas fa-certificate"></i>
+                Certificates
+              </h3>
+              <button class="section-action" onclick="downloadAll()">Download All</button>
+            </div>
+            <div class="certificate-item">
+              <div class="certificate-icon">
+                <i class="fas fa-medal"></i>
+              </div>
+              <div class="certificate-info">
+                <h4>Data Visualization Specialist</h4>
+                <p>PMERIT Certified • Verified on Blockchain</p>
+              </div>
+              <div class="certificate-date">Dec 2024</div>
+            </div>
+            <div class="certificate-item">
+              <div class="certificate-icon">
+                <i class="fas fa-award"></i>
+              </div>
+              <div class="certificate-info">
+                <h4>JavaScript Developer</h4>
+                <p>PMERIT Certified • Verified on Blockchain</p>
+              </div>
+              <div class="certificate-date">Nov 2024</div>
+            </div>
+            <div class="certificate-item">
+              <div class="certificate-icon">
+                <i class="fas fa-trophy"></i>
+              </div>
+              <div class="certificate-info">
+                <h4>Problem Solving Fundamentals</h4>
+                <p>PMERIT Certified • Verified on Blockchain</p>
+              </div>
+              <div class="certificate-date">Oct 2024</div>
+            </div>
+          </div>
+
+          <!-- Career Goals -->
+          <div class="profile-section">
+            <div class="section-header">
+              <h3 class="section-title">
+                <i class="fas fa-target"></i>
+                Career Goals
+              </h3>
+              <button class="section-action" onclick="toggleEdit('career')">Edit</button>
+            </div>
+            <div id="careerInfo">
+              <div class="form-group full-width">
+                <label class="form-label">Current Role</label>
+                <input type="text" class="form-input" id="currentRole" value="Junior Developer" readonly>
+              </div>
+              <div class="form-group full-width">
+                <label class="form-label">Target Role</label>
+                <input type="text" class="form-input" id="targetRole" value="Full-Stack Developer" readonly>
+              </div>
+              <div class="form-group full-width">
+                <label class="form-label">Industry</label>
+                <select class="form-select" id="industry" disabled>
+                  <option value="technology">Technology</option>
+                  <option value="healthcare">Healthcare</option>
+                  <option value="finance">Finance</option>
+                  <option value="education">Education</option>
+                  <option value="retail">Retail</option>
+                </select>
+              </div>
+              <div class="form-group full-width">
+                <label class="form-label">Career Notes</label>
+                <textarea class="form-textarea" id="careerNotes" readonly>Focusing on full-stack development with React and Node.js. Interested in remote work opportunities.</textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Save Changes Button -->
+          <button class="save-button" onclick="saveProfile()" style="display: none;" id="saveButton">
+            <i class="fas fa-save"></i>
+            Save Changes
+          </button>
+
+          <!-- Danger Zone -->
+          <div class="danger-zone">
+            <h3>
+              <i class="fas fa-exclamation-triangle"></i>
+              Danger Zone
+            </h3>
+            <p>These actions cannot be undone. Please be careful.</p>
+            <button class="danger-button" onclick="confirmDeleteAccount()">
+              Delete Account
+            </button>
+          </div>
+
+        </div>
+        
+      </div>
+      
+    </div>
+  </main>
+
+  <!-- Fixed Mobile Footer -->
+  <div id="mobile-footer-placeholder">
+    <!-- Footer content will be loaded here via JavaScript -->
+  </div>
+
+  <!-- Loading Screen for Template -->
+  <div class="mobile-loading" id="mobileLoading">
+    <div class="loading-spinner">
+      <div class="spinner-circle"></div>
+    </div>
+    <p class="loading-text">Loading Profile...</p>
+  </div>
+
+  <!-- JavaScript for Mobile Base Template -->
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/clean-mobile.js"></script>
+  <script src="script.js"></script>
+  
+  <script>
+    // Profile Module
+    const Profile = {
+      editModes: {
+        personal: false,
+        career: false
+      }
+    };
+
+    // Mobile Base Template Initialization
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize mobile template
+      if (typeof MobileTemplate !== 'undefined') {
+        MobileTemplate.init();
+      }
+      
+      // Load header and footer partials
+      loadMobilePartials();
+      
+      // Handle viewport height changes on mobile browsers
+      handleMobileViewport();
+      
+      // Initialize profile functionality
+      initializeProfile();
+      
+      // Hide loading screen
+      setTimeout(() => {
+        const loading = document.getElementById('mobileLoading');
+        if (loading) {
+          loading.style.opacity = '0';
+          setTimeout(() => loading.style.display = 'none', 300);
+        }
+      }, 500);
+    });
+
+    // Initialize profile functionality
+    function initializeProfile() {
+      // Load user data
+      loadUserData();
+      
+      // Setup toggle switches
+      setupToggleSwitches();
+      
+      console.log('Profile page initialized');
+    }
+
+    // Load user data
+    function loadUserData() {
+      // This would typically load from an API
+      const userData = {
+        firstName: localStorage.getItem('firstName') || 'John',
+        lastName: localStorage.getItem('lastName') || 'Doe',
+        email: localStorage.getItem('email') || 'john.doe@email.com',
+        role: localStorage.getItem('role') || 'Software Developer'
+      };
+      
+      document.getElementById('profileName').textContent = `${userData.firstName} ${userData.lastName}`;
+      document.getElementById('profileRole').textContent = userData.role;
+    }
+
+    // Setup toggle switches
+    function setupToggleSwitches() {
+      const toggles = document.querySelectorAll('.toggle-input');
+      toggles.forEach(toggle => {
+        toggle.addEventListener('change', function() {
+          // Save preference
+          console.log('Toggle changed:', this.checked);
+          showSaveButton();
+        });
+      });
+    }
+
+    // Toggle edit mode
+    function toggleEdit(section) {
+      Profile.editModes[section] = !Profile.editModes[section];
+      const isEditing = Profile.editModes[section];
+      
+      if (section === 'personal') {
+        const inputs = document.querySelectorAll('#personalInfo input');
+        inputs.forEach(input => {
+          input.readOnly = !isEditing;
+        });
+      } else if (section === 'career') {
+        const inputs = document.querySelectorAll('#careerInfo input, #careerInfo textarea');
+        const selects = document.querySelectorAll('#careerInfo select');
+        
+        inputs.forEach(input => {
+          input.readOnly = !isEditing;
+        });
+        
+        selects.forEach(select => {
+          select.disabled = !isEditing;
+        });
+      }
+      
+      // Update button text
+      const button = document.querySelector(`[onclick="toggleEdit('${section}')"]`);
+      button.textContent = isEditing ? 'Cancel' : 'Edit';
+      
+      if (isEditing) {
+        showSaveButton();
+      } else {
+        checkIfShouldHideSaveButton();
+      }
+    }
+
+    // Show save button
+    function showSaveButton() {
+      document.getElementById('saveButton').style.display = 'block';
+    }
+
+    // Check if save button should be hidden
+    function checkIfShouldHideSaveButton() {
+      const anyEditing = Object.values(Profile.editModes).some(mode => mode);
+      if (!anyEditing) {
+        document.getElementById('saveButton').style.display = 'none';
+      }
+    }
+
+    // Save profile
+    function saveProfile() {
+      // Collect form data
+      const profileData = {
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        currentRole: document.getElementById('currentRole').value,
+        targetRole: document.getElementById('targetRole').value,
+        industry: document.getElementById('industry').value,
+        careerNotes: document.getElementById('careerNotes').value,
+        preferredLanguage: document.getElementById('preferredLanguage').value
+      };
+      
+      // Save to localStorage (in real app, would save to API)
+      Object.keys(profileData).forEach(key => {
+        localStorage.setItem(key, profileData[key]);
+      });
+      
+      // Reset edit modes
+      Object.keys(Profile.editModes).forEach(section => {
+        if (Profile.editModes[section]) {
+          toggleEdit(section);
+        }
+      });
+      
+      // Hide save button
+      document.getElementById('saveButton').style.display = 'none';
+      
+      // Show success message
+      alert('Profile updated successfully!');
+    }
+
+    // View all progress
+    function viewAllProgress() {
+      window.location.href = '/progress.html';
+    }
+
+    // Download all certificates
+    function downloadAll() {
+      alert('Downloading all certificates... (Demo)');
+    }
+
+    // Confirm delete account
+    function confirmDeleteAccount() {
+      if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+        if (confirm('This will permanently delete all your data, progress, and certificates. Are you absolutely sure?')) {
+          alert('Account deletion request submitted. (Demo)');
+        }
+      }
+    }
+
+    // Load mobile header and footer partials
+    async function loadMobilePartials() {
+      try {
+        // Load header
+        const headerResponse = await fetch('../partials/header-mobile.html');
+        const headerHTML = await headerResponse.text();
+        document.getElementById('mobile-header-placeholder').innerHTML = headerHTML;
+
+        // Load footer
+        const footerResponse = await fetch('../partials/footer-mobile.html');
+        const footerHTML = await footerResponse.text();
+        document.getElementById('mobile-footer-placeholder').innerHTML = footerHTML;
+
+        // Initialize components after loading
+        initializeMobileComponents();
+      } catch (error) {
+        console.error('Error loading mobile partials:', error);
+        showFallbackContent();
+      }
+    }
+
+    // Initialize mobile components after partials are loaded
+    function initializeMobileComponents() {
+      if (typeof initMobileHeader === 'function') {
+        initMobileHeader();
+      }
+
+      if (typeof initMobileFooter === 'function') {
+        initMobileFooter();
+      }
+
+      adjustContentHeight();
+    }
+
+    // Handle mobile viewport height changes
+    function handleMobileViewport() {
+      function setViewportHeight() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+        adjustContentHeight();
+      }
+
+      setViewportHeight();
+      window.addEventListener('resize', setViewportHeight);
+      window.addEventListener('orientationchange', () => {
+        setTimeout(setViewportHeight, 100);
+      });
+
+      if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        window.addEventListener('scroll', setViewportHeight);
+      }
+    }
+
+    // Adjust content area height
+    function adjustContentHeight() {
+      const header = document.querySelector('.mobile-header');
+      const footer = document.querySelector('.mobile-footer');
+      const content = document.querySelector('.mobile-content-container');
+      
+      if (header && footer && content) {
+        const headerHeight = header.offsetHeight;
+        const footerHeight = footer.offsetHeight;
+        
+        content.style.height = `calc(100vh - ${headerHeight}px - ${footerHeight}px)`;
+        content.style.top = `${headerHeight}px`;
+      }
+    }
+
+    // Fallback content
+    function showFallbackContent() {
+      document.getElementById('mobile-header-placeholder').innerHTML = `
+        <header class="mobile-header-fallback">
+          <div class="fallback-container">
+            <h1>PMERIT</h1>
+            <button onclick="location.reload()">Retry</button>
+          </div>
+        </header>
+      `;
+      
+      document.getElementById('mobile-footer-placeholder').innerHTML = `
+        <footer class="mobile-footer-fallback">
+          <p>&copy; 2025 PMERIT - Global Education</p>
+        </footer>
+      `;
+    }
+
+    window.MobileBaseTemplate = {
+      adjustContentHeight,
+      handleMobileViewport,
+      loadMobilePartials
+    };
+  </script>
+</body>
+</html>

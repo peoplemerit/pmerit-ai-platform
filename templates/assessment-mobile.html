@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Assessment - PMERIT Platform</title>
+  <meta name="description" content="Take skill assessments to discover your strengths and get personalized learning recommendations.">
+
+  <!-- Preconnect to external fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Google Fonts for PMERIT design system -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- PMERIT Design System Styles -->
+  <link rel="stylesheet" href="../assets/css/design-tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/clean-mobile.css">
+  <link rel="stylesheet" href="../assets/css/theme-pmerit.css">
+
+  <!-- Mobile-specific viewport handling -->
+  <meta name="theme-color" content="#2A5B8C">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <!-- Assessment-specific styles -->
+  <style>
+    .mobile-assessment-container {
+      padding: 1rem;
+    }
+    
+    .assessment-intro {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      color: white;
+      border-radius: 16px;
+      padding: 2rem 1.5rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    
+    .assessment-intro h1 {
+      color: white;
+      font-size: 1.75rem;
+      margin-bottom: 0.75rem;
+    }
+    
+    .assessment-intro p {
+      opacity: 0.9;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+    
+    .assessment-types {
+      margin-bottom: 2rem;
+    }
+    
+    .assessment-type-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: var(--shadow);
+    }
+    
+    .assessment-type-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary);
+    }
+    
+    .assessment-type-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .assessment-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+    }
+    
+    .assessment-type-info h3 {
+      color: var(--text-primary);
+      font-size: 1.1rem;
+      margin-bottom: 0.25rem;
+    }
+    
+    .assessment-duration {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+    }
+    
+    .assessment-description {
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+    
+    .assessment-features {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .assessment-feature {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+    
+    .assessment-feature i {
+      color: var(--success);
+    }
+    
+    .assessment-action {
+      width: 100%;
+      padding: 0.75rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .assessment-action:hover {
+      background: var(--primary-dark);
+    }
+    
+    .assessment-progress {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .progress-title {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    
+    .progress-status {
+      background: var(--success);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.8rem;
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: var(--bg-secondary);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+    
+    .progress-text {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      text-align: center;
+    }
+    
+    .question-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      display: none;
+    }
+    
+    .question-container.active {
+      display: block;
+    }
+    
+    .question-number {
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .question-text {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+      line-height: 1.4;
+    }
+    
+    .answer-options {
+      display: grid;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .answer-option {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .answer-option:hover {
+      border-color: var(--primary);
+      background: rgba(79, 70, 229, 0.05);
+    }
+    
+    .answer-option.selected {
+      border-color: var(--primary);
+      background: rgba(79, 70, 229, 0.1);
+    }
+    
+    .answer-radio {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--border-color);
+      border-radius: 50%;
+      position: relative;
+    }
+    
+    .answer-option.selected .answer-radio {
+      border-color: var(--primary);
+    }
+    
+    .answer-option.selected .answer-radio::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px;
+      height: 8px;
+      background: var(--primary);
+      border-radius: 50%;
+    }
+    
+    .answer-text {
+      flex: 1;
+      color: var(--text-primary);
+    }
+    
+    .question-navigation {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .nav-btn {
+      flex: 1;
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background: var(--card-bg);
+      color: var(--text-primary);
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .nav-btn:hover {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: white;
+    }
+    
+    .nav-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .results-section {
+      display: none;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+    
+    .results-section.active {
+      display: block;
+    }
+    
+    .results-icon {
+      font-size: 4rem;
+      color: var(--success);
+      margin-bottom: 1rem;
+    }
+    
+    .results-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .results-subtitle {
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+    }
+    
+    .score-card {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .score-number {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .score-text {
+      opacity: 0.9;
+    }
+    
+    .recommendations {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .recommendations h3 {
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+    
+    .recommendation-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .recommendation-item:last-child {
+      border-bottom: none;
+    }
+    
+    .recommendation-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--primary);
+      color: white;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .recommendation-text {
+      flex: 1;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+    }
+    
+    @media (min-width: 600px) {
+      .assessment-features {
+        grid-template-columns: 1fr 1fr;
+      }
+      
+      .question-navigation {
+        justify-content: flex-end;
+      }
+      
+      .nav-btn {
+        flex: none;
+        min-width: 120px;
+      }
+    }
+  </style>
+</head>
+<body class="mobile-layout assessment-page">
+  
+  <!-- Fixed Mobile Header -->
+  <div id="mobile-header-placeholder">
+    <!-- Header content will be loaded here via JavaScript -->
+  </div>
+
+  <!-- Main Content Container - This is where scrolling happens -->
+  <main class="mobile-content-container" id="mobileContent">
+    <div class="mobile-content-area" id="contentArea">
+      
+      <div class="mobile-assessment-container">
+        
+        <!-- Assessment Introduction -->
+        <div class="assessment-intro" id="assessmentIntro">
+          <h1>Skill Assessment</h1>
+          <p>Discover your strengths and get personalized learning recommendations tailored to your career goals.</p>
+        </div>
+
+        <!-- Assessment Types -->
+        <div class="assessment-types" id="assessmentTypes">
+          <div class="assessment-type-card" onclick="startAssessment('general')">
+            <div class="assessment-type-header">
+              <div class="assessment-icon">
+                <i class="fas fa-brain"></i>
+              </div>
+              <div class="assessment-type-info">
+                <h3>General Skills Assessment</h3>
+                <div class="assessment-duration">15-20 minutes</div>
+              </div>
+            </div>
+            <div class="assessment-description">
+              A comprehensive evaluation of your technical and soft skills across multiple domains.
+            </div>
+            <div class="assessment-features">
+              <div class="assessment-feature">
+                <i class="fas fa-check"></i>
+                <span>25 questions</span>
+              </div>
+              <div class="assessment-feature">
+                <i class="fas fa-check"></i>
+                <span>Multiple choice</span>
+              </div>
+              <div class="assessment-feature">
+                <i class="fas fa-check"></i>
+                <span>Instant results</span>
+              </div>
+              <div class="assessment-feature">
+                <i class="fas fa-check"></i>
+                <span>Career recommendations</span>
+              </div>
+            </div>
+            <button class="assessment-action">Start Assessment</button>
+          </div>
+
+          <div class="assessment-type-card" onclick="startAssessment('technical')">
+            <div class="assessment-type-header">
+              <div class="assessment-icon">
+                <i class="fas fa-code"></i>
+              </div>
+              <div class="assessment-type-info">
+                <h3>Technical Skills Assessment</h3>
+                <div class="assessment-duration">20-25 minutes</div>
+              </div>
+            </div>
+            <div class="assessment-description">
+              Focus on programming, data analysis, and technical problem-solving skills.
+            </div>
+            <div class="assessment-features">
+              <div class="assessment-feature">
+                <i class="fas fa-check"></i>
+                <span>30 questions</span>
+              </div>
+              <div class="assessment-feature">
+                <i class="fas fa-check"></i>
+                <span>Code snippets</span>
+              </div>
+              <div class="assessment-feature">
+                <i class="fas fa-check"></i>
+                <span>Skill-specific results</span>
+              </div>
+              <div class="assessment-feature">
+                <i class="fas fa-check"></i>
+                <span>Learning path suggestions</span>
+              </div>
+            </div>
+            <button class="assessment-action">Start Assessment</button>
+          </div>
+
+          <div class="assessment-type-card" onclick="startAssessment('career')">
+            <div class="assessment-type-header">
+              <div class="assessment-icon">
+                <i class="fas fa-compass"></i>
+              </div>
+              <div class="assessment-type-info">
+                <h3>Career Readiness Assessment</h3>
+                <div class="assessment-duration">10-15 minutes</div>
+              </div>
+            </div>
+            <div class="assessment-description">
+              Evaluate your readiness for different career paths and remote work opportunities.
+            </div>
+            <div class="assessment-features">
+              <div class="assessment-feature">
+                <i class="fas fa-check"></i>
+                <span>20 questions</span>
+              </div>
+              <div class="assessment-feature">
+                <i class="fas fa-check"></i>
+                <span>Scenario-based</span>
+              </div>
+              <div class="assessment-feature">
+                <i class="fas fa-check"></i>
+                <span>Career matching</span>
+              </div>
+              <div class="assessment-feature">
+                <i class="fas fa-check"></i>
+                <span>Job market insights</span>
+              </div>
+            </div>
+            <button class="assessment-action">Start Assessment</button>
+          </div>
+        </div>
+
+        <!-- Assessment Progress (Hidden initially) -->
+        <div class="assessment-progress" id="assessmentProgress" style="display: none;">
+          <div class="progress-header">
+            <div class="progress-title">Assessment Progress</div>
+            <div class="progress-status" id="progressStatus">In Progress</div>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+          </div>
+          <div class="progress-text" id="progressText">Question 1 of 25</div>
+        </div>
+
+        <!-- Question Container (Hidden initially) -->
+        <div class="question-container" id="questionContainer">
+          <div class="question-number" id="questionNumber">Question 1 of 25</div>
+          <div class="question-text" id="questionText">Loading question...</div>
+          <div class="answer-options" id="answerOptions">
+            <!-- Options will be populated by JavaScript -->
+          </div>
+          <div class="question-navigation">
+            <button class="nav-btn" id="prevBtn" onclick="previousQuestion()" disabled>Previous</button>
+            <button class="nav-btn" id="nextBtn" onclick="nextQuestion()" disabled>Next</button>
+          </div>
+        </div>
+
+        <!-- Results Section (Hidden initially) -->
+        <div class="results-section" id="resultsSection">
+          <div class="results-icon">
+            <i class="fas fa-trophy"></i>
+          </div>
+          <div class="results-title">Assessment Complete!</div>
+          <div class="results-subtitle">Here are your personalized results and recommendations</div>
+          
+          <div class="score-card">
+            <div class="score-number" id="finalScore">85%</div>
+            <div class="score-text">Overall Score</div>
+          </div>
+          
+          <div class="recommendations">
+            <h3>Recommended Learning Paths</h3>
+            <div id="recommendationsList">
+              <!-- Will be populated by JavaScript -->
+            </div>
+          </div>
+          
+          <button class="assessment-action" onclick="viewDashboard()">View My Dashboard</button>
+        </div>
+        
+      </div>
+      
+    </div>
+  </main>
+
+  <!-- Fixed Mobile Footer -->
+  <div id="mobile-footer-placeholder">
+    <!-- Footer content will be loaded here via JavaScript -->
+  </div>
+
+  <!-- Loading Screen for Template -->
+  <div class="mobile-loading" id="mobileLoading">
+    <div class="loading-spinner">
+      <div class="spinner-circle"></div>
+    </div>
+    <p class="loading-text">Loading Assessment...</p>
+  </div>
+
+  <!-- JavaScript for Mobile Base Template -->
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/clean-mobile.js"></script>
+  <script src="script.js"></script>
+  
+  <script>
+    // Assessment Module
+    const Assessment = {
+      currentType: null,
+      currentQuestionIndex: 0,
+      questions: [],
+      answers: [],
+      
+      // Sample questions for demo
+      sampleQuestions: {
+        general: [
+          {
+            question: "Which of the following best describes your experience with problem-solving in a team environment?",
+            options: [
+              "I prefer working alone and solving problems independently",
+              "I enjoy collaborating but prefer to lead the problem-solving process",
+              "I like contributing ideas while others take the lead",
+              "I'm comfortable in any role depending on the situation"
+            ]
+          },
+          {
+            question: "How do you typically approach learning new technologies or skills?",
+            options: [
+              "I dive in and learn by doing, figuring things out as I go",
+              "I prefer structured courses and step-by-step tutorials",
+              "I like to research extensively before starting",
+              "I learn best through hands-on projects with guidance"
+            ]
+          },
+          {
+            question: "What motivates you most in your work or studies?",
+            options: [
+              "Solving complex challenges and problems",
+              "Creating something new and innovative",
+              "Helping others and making a positive impact",
+              "Building expertise and becoming a subject matter expert"
+            ]
+          }
+        ],
+        technical: [
+          {
+            question: "Which programming concept is most important for writing maintainable code?",
+            options: [
+              "Code comments and documentation",
+              "Consistent naming conventions",
+              "Modular design and separation of concerns",
+              "Performance optimization"
+            ]
+          },
+          {
+            question: "In data analysis, what is the first step when working with a new dataset?",
+            options: [
+              "Apply machine learning algorithms",
+              "Create visualizations",
+              "Explore and clean the data",
+              "Define business objectives"
+            ]
+          }
+        ],
+        career: [
+          {
+            question: "What type of work environment do you prefer?",
+            options: [
+              "Remote work with flexible hours",
+              "In-office with regular team interaction",
+              "Hybrid model with some remote and office time",
+              "Co-working spaces or varying locations"
+            ]
+          },
+          {
+            question: "How do you prefer to receive feedback on your work?",
+            options: [
+              "Regular one-on-one meetings",
+              "Written feedback and reviews",
+              "Peer feedback and collaboration",
+              "Self-assessment with occasional check-ins"
+            ]
+          }
+        ]
+      }
+    };
+
+    // Mobile Base Template Initialization
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize mobile template
+      if (typeof MobileTemplate !== 'undefined') {
+        MobileTemplate.init();
+      }
+      
+      // Load header and footer partials
+      loadMobilePartials();
+      
+      // Handle viewport height changes on mobile browsers
+      handleMobileViewport();
+      
+      // Initialize assessment functionality
+      initializeAssessment();
+      
+      // Hide loading screen
+      setTimeout(() => {
+        const loading = document.getElementById('mobileLoading');
+        if (loading) {
+          loading.style.opacity = '0';
+          setTimeout(() => loading.style.display = 'none', 300);
+        }
+      }, 500);
+    });
+
+    // Initialize assessment functionality
+    function initializeAssessment() {
+      console.log('Assessment page initialized');
+    }
+
+    // Start assessment
+    function startAssessment(type) {
+      Assessment.currentType = type;
+      Assessment.questions = Assessment.sampleQuestions[type] || Assessment.sampleQuestions.general;
+      Assessment.answers = [];
+      Assessment.currentQuestionIndex = 0;
+      
+      // Hide intro and types, show progress and question
+      document.getElementById('assessmentIntro').style.display = 'none';
+      document.getElementById('assessmentTypes').style.display = 'none';
+      document.getElementById('assessmentProgress').style.display = 'block';
+      document.getElementById('questionContainer').style.display = 'block';
+      
+      loadQuestion();
+    }
+
+    // Load current question
+    function loadQuestion() {
+      const question = Assessment.questions[Assessment.currentQuestionIndex];
+      if (!question) return;
+      
+      // Update progress
+      const progress = ((Assessment.currentQuestionIndex + 1) / Assessment.questions.length) * 100;
+      document.getElementById('progressFill').style.width = `${progress}%`;
+      document.getElementById('progressText').textContent = 
+        `Question ${Assessment.currentQuestionIndex + 1} of ${Assessment.questions.length}`;
+      
+      // Update question
+      document.getElementById('questionNumber').textContent = 
+        `Question ${Assessment.currentQuestionIndex + 1} of ${Assessment.questions.length}`;
+      document.getElementById('questionText').textContent = question.question;
+      
+      // Create answer options
+      const optionsContainer = document.getElementById('answerOptions');
+      optionsContainer.innerHTML = question.options.map((option, index) => `
+        <div class="answer-option" onclick="selectAnswer(${index})">
+          <div class="answer-radio"></div>
+          <div class="answer-text">${option}</div>
+        </div>
+      `).join('');
+      
+      // Update navigation buttons
+      document.getElementById('prevBtn').disabled = Assessment.currentQuestionIndex === 0;
+      document.getElementById('nextBtn').disabled = true; // Enable when answer selected
+    }
+
+    // Select answer
+    function selectAnswer(index) {
+      // Clear previous selection
+      document.querySelectorAll('.answer-option').forEach(opt => opt.classList.remove('selected'));
+      
+      // Select current option
+      document.querySelectorAll('.answer-option')[index].classList.add('selected');
+      
+      // Store answer
+      Assessment.answers[Assessment.currentQuestionIndex] = index;
+      
+      // Enable next button
+      document.getElementById('nextBtn').disabled = false;
+    }
+
+    // Next question
+    function nextQuestion() {
+      if (Assessment.currentQuestionIndex < Assessment.questions.length - 1) {
+        Assessment.currentQuestionIndex++;
+        loadQuestion();
+      } else {
+        completeAssessment();
+      }
+    }
+
+    // Previous question
+    function previousQuestion() {
+      if (Assessment.currentQuestionIndex > 0) {
+        Assessment.currentQuestionIndex--;
+        loadQuestion();
+      }
+    }
+
+    // Complete assessment
+    function completeAssessment() {
+      // Hide question container and progress
+      document.getElementById('questionContainer').style.display = 'none';
+      document.getElementById('assessmentProgress').style.display = 'none';
+      
+      // Show results
+      document.getElementById('resultsSection').classList.add('active');
+      
+      // Calculate and display score (demo)
+      const score = Math.floor(Math.random() * 20) + 75; // Random score between 75-95
+      document.getElementById('finalScore').textContent = `${score}%`;
+      
+      // Show recommendations
+      showRecommendations(Assessment.currentType, score);
+    }
+
+    // Show recommendations
+    function showRecommendations(assessmentType, score) {
+      const recommendations = {
+        general: [
+          { icon: 'fas fa-code', text: 'Full-Stack Development Track - Build web applications' },
+          { icon: 'fas fa-chart-bar', text: 'Data Analytics Track - Work with data insights' },
+          { icon: 'fas fa-paint-brush', text: 'UI/UX Design Track - Create user experiences' }
+        ],
+        technical: [
+          { icon: 'fas fa-laptop-code', text: 'Advanced Programming Courses' },
+          { icon: 'fas fa-database', text: 'Database Design and Management' },
+          { icon: 'fas fa-cloud', text: 'Cloud Computing Fundamentals' }
+        ],
+        career: [
+          { icon: 'fas fa-briefcase', text: 'Remote Work Skills Development' },
+          { icon: 'fas fa-users', text: 'Leadership and Communication' },
+          { icon: 'fas fa-handshake', text: 'Professional Networking' }
+        ]
+      };
+      
+      const recList = document.getElementById('recommendationsList');
+      const recs = recommendations[assessmentType] || recommendations.general;
+      
+      recList.innerHTML = recs.map(rec => `
+        <div class="recommendation-item">
+          <div class="recommendation-icon">
+            <i class="${rec.icon}"></i>
+          </div>
+          <div class="recommendation-text">${rec.text}</div>
+        </div>
+      `).join('');
+    }
+
+    // View dashboard
+    function viewDashboard() {
+      window.location.href = '/learner-portal.html';
+    }
+
+    // Load mobile header and footer partials
+    async function loadMobilePartials() {
+      try {
+        // Load header
+        const headerResponse = await fetch('../partials/header-mobile.html');
+        const headerHTML = await headerResponse.text();
+        document.getElementById('mobile-header-placeholder').innerHTML = headerHTML;
+
+        // Load footer
+        const footerResponse = await fetch('../partials/footer-mobile.html');
+        const footerHTML = await footerResponse.text();
+        document.getElementById('mobile-footer-placeholder').innerHTML = footerHTML;
+
+        // Initialize components after loading
+        initializeMobileComponents();
+      } catch (error) {
+        console.error('Error loading mobile partials:', error);
+        showFallbackContent();
+      }
+    }
+
+    // Initialize mobile components after partials are loaded
+    function initializeMobileComponents() {
+      if (typeof initMobileHeader === 'function') {
+        initMobileHeader();
+      }
+
+      if (typeof initMobileFooter === 'function') {
+        initMobileFooter();
+      }
+
+      adjustContentHeight();
+    }
+
+    // Handle mobile viewport height changes
+    function handleMobileViewport() {
+      function setViewportHeight() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+        adjustContentHeight();
+      }
+
+      setViewportHeight();
+      window.addEventListener('resize', setViewportHeight);
+      window.addEventListener('orientationchange', () => {
+        setTimeout(setViewportHeight, 100);
+      });
+
+      if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        window.addEventListener('scroll', setViewportHeight);
+      }
+    }
+
+    // Adjust content area height
+    function adjustContentHeight() {
+      const header = document.querySelector('.mobile-header');
+      const footer = document.querySelector('.mobile-footer');
+      const content = document.querySelector('.mobile-content-container');
+      
+      if (header && footer && content) {
+        const headerHeight = header.offsetHeight;
+        const footerHeight = footer.offsetHeight;
+        
+        content.style.height = `calc(100vh - ${headerHeight}px - ${footerHeight}px)`;
+        content.style.top = `${headerHeight}px`;
+      }
+    }
+
+    // Fallback content
+    function showFallbackContent() {
+      document.getElementById('mobile-header-placeholder').innerHTML = `
+        <header class="mobile-header-fallback">
+          <div class="fallback-container">
+            <h1>PMERIT</h1>
+            <button onclick="location.reload()">Retry</button>
+          </div>
+        </header>
+      `;
+      
+      document.getElementById('mobile-footer-placeholder').innerHTML = `
+        <footer class="mobile-footer-fallback">
+          <p>&copy; 2025 PMERIT - Global Education</p>
+        </footer>
+      `;
+    }
+
+    window.MobileBaseTemplate = {
+      adjustContentHeight,
+      handleMobileViewport,
+      loadMobilePartials
+    };
+  </script>
+</body>
+</html>
