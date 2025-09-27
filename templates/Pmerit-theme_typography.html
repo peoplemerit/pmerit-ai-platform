@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PMERIT - Final Design with Typography</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Optimized Color Palette */
+        :root {
+            --dark-blue: #2A5B8C;
+            --teal: #4AA4B9;
+            --light-teal: #7ED0D9;
+            --coral: #FF6B6B;
+            --coral-dark: #E05A5A;
+            --light-gray: #F8F9FA;
+            --dark-gray: #2C2C2C;
+            --medium-gray: #6C757D;
+            --charcoal: #3A3A3A;
+            --success-green: #3A7F5C;
+            --warning-orange: #E67E22;
+        }
+        
+        /* Typography System */
+        :root {
+            --font-primary: 'Montserrat', sans-serif;
+            --font-secondary: 'Inter', sans-serif;
+            
+            /* Font Sizes */
+            --text-h1: 32px;
+            --text-h2: 24px;
+            --text-h3: 20px;
+            --text-body: 16px;
+            --text-secondary: 14px;
+            --text-button: 15px;
+            
+            /* Font Weights */
+            --weight-bold: 700;
+            --weight-semibold: 600;
+            --weight-medium: 500;
+            --weight-regular: 400;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            line-height: 1.5;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            font-family: var(--font-secondary);
+            font-size: var(--text-body);
+            font-weight: var(--weight-regular);
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: var(--font-primary);
+            margin-bottom: 16px;
+        }
+        
+        h1 {
+            font-size: var(--text-h1);
+            font-weight: var(--weight-bold);
+            color: var(--dark-blue);
+        }
+        
+        h2 {
+            font-size: var(--text-h2);
+            font-weight: var(--weight-semibold);
+            color: var(--dark-blue);
+        }
+        
+        h3 {
+            font-size: var(--text-h3);
+            font-weight: var(--weight-medium);
+            color: var(--dark-blue);
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 2px solid var(--light-teal);
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-family: var(--font-primary);
+            font-size: 2.5rem;
+            font-weight: var(--weight-bold);
+            color: var(--dark-blue);
+        }
+        
+        .nav {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .nav-item {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-family: var(--font-secondary);
+            font-weight: var(--weight-regular);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--medium-gray);
+            font-size: var(--text-body);
+        }
+        
+        .nav-item.active {
+            background-color: var(--teal);
+            color: white;
+            font-weight: var(--weight-semibold);
+        }
+        
+        .nav-item:hover:not(.active) {
+            background-color: var(--light-teal);
+            color: var(--dark-gray);
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .card-header {
+            color: var(--dark-blue);
+            margin-bottom: 16px;
+            font-family: var(--font-primary);
+            font-size: var(--text-h3);
+            font-weight: var(--weight-medium);
+            border-bottom: 1px solid var(--light-teal);
+            padding-bottom: 8px;
+        }
+        
+        .ai-section {
+            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--teal) 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            grid-column: 1 / -1;
+        }
+        
+        .ai-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .ai-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            color: var(--dark-blue);
+            font-family: var(--font-primary);
+            font-weight: var(--weight-bold);
+        }
+        
+        .ai-section h3 {
+            color: white;
+            margin-bottom: 5px;
+        }
+        
+        .ai-section p {
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        
+        .support-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .support-avatar {
+            width: 50px;
+            height: 50px;
+            background-color: var(--teal);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            color: white;
+            font-family: var(--font-primary);
+            font-weight: var(--weight-bold);
+        }
+        
+        .support-section h3 {
+            margin-bottom: 5px;
+        }
+        
+        .buttons-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        
+        .button {
+            padding: 10px 16px;
+            border-radius: 4px;
+            border: none;
+            font-family: var(--font-primary);
+            font-weight: var(--weight-semibold);
+            font-size: var(--text-button);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .button.primary {
+            background-color: var(--coral);
+            color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .button.primary:hover {
+            background-color: var(--coral-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        .button.outline {
+            background-color: transparent;
+            border: 2px solid var(--teal);
+            color: var(--teal);
+        }
+        
+        .button.outline:hover {
+            background-color: var(--teal);
+            color: white;
+        }
+        
+        .assessment-section {
+            background: linear-gradient(135deg, var(--light-teal) 0%, #a8e6cf 100%);
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            color: var(--charcoal);
+            grid-column: 1 / -1;
+        }
+        
+        .assessment-title {
+            font-family: var(--font-primary);
+            font-size: var(--text-h3);
+            font-weight: var(--weight-medium);
+            margin-bottom: 12px;
+            color: var(--dark-blue);
+        }
+        
+        .status-section {
+            margin-top: 20px;
+        }
+        
+        .status-item {
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            font-size: var(--text-body);
+        }
+        
+        .status-item.success {
+            background-color: rgba(58, 127, 92, 0.1);
+            border-left: 4px solid var(--success-green);
+        }
+        
+        .status-item.warning {
+            background-color: rgba(230, 126, 34, 0.1);
+            border-left: 4px solid var(--warning-orange);
+        }
+        
+        .status-item.info {
+            background-color: rgba(74, 164, 185, 0.1);
+            border-left: 4px solid var(--teal);
+        }
+        
+        .status-icon {
+            margin-right: 10px;
+            font-weight: var(--weight-bold);
+        }
+        
+        .text-hierarchy {
+            padding: 15px;
+            background-color: white;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        
+        .text-primary {
+            color: var(--dark-blue);
+            font-family: var(--font-primary);
+            font-size: var(--text-h3);
+            font-weight: var(--weight-medium);
+            margin-bottom: 10px;
+        }
+        
+        .text-body {
+            color: var(--dark-gray);
+            margin-bottom: 10px;
+            font-size: var(--text-body);
+        }
+        
+        .text-secondary {
+            color: var(--medium-gray);
+            margin-bottom: 10px;
+            font-size: var(--text-secondary);
+        }
+        
+        .text-interactive {
+            color: var(--coral);
+            font-family: var(--font-secondary);
+            font-weight: var(--weight-semibold);
+            font-size: var(--text-body);
+            cursor: pointer;
+        }
+        
+        .text-interactive:hover {
+            color: var(--coral-dark);
+            text-decoration: underline;
+        }
+        
+        .color-guide {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .color-guide h3 {
+            color: var(--dark-blue);
+            margin-bottom: 15px;
+        }
+        
+        .color-item {
+            margin-bottom: 10px;
+            padding-left: 15px;
+            border-left: 3px solid;
+            font-size: var(--text-body);
+        }
+        
+        .footer {
+            border-top: 1px solid var(--light-teal);
+            padding-top: 20px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            color: var(--medium-gray);
+            font-size: var(--text-secondary);
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .footer-link {
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .footer-link:hover {
+            color: var(--teal);
+        }
+        
+        .typography-demo {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .typography-demo h3 {
+            margin-bottom: 20px;
+        }
+        
+        .type-sample {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .type-label {
+            font-family: var(--font-secondary);
+            font-size: var(--text-secondary);
+            color: var(--medium-gray);
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">PMERIT</div>
+        <div class="nav">
+            <div class="nav-item active">Dashboard</div>
+            <div class="nav-item">Courses</div>
+            <div class="nav-item">Paths</div>
+            <div class="nav-item">Progress</div>
+        </div>
+    </div>
+    
+    <div class="typography-demo">
+        <h3>Typography System Demo</h3>
+        
+        <div class="type-sample">
+            <div class="type-label">H1 (Page Title / Brand): Montserrat Bold, 32px</div>
+            <h1>PMERIT Learning Platform</h1>
+        </div>
+        
+        <div class="type-sample">
+            <div class="type-label">H2 (Section Headings): Montserrat SemiBold, 24px</div>
+            <h2>Discover Your Learning Path</h2>
+        </div>
+        
+        <div class="type-sample">
+            <div class="type-label">H3 (Card Titles / Subheads): Montserrat Medium, 20px</div>
+            <h3>Personalized Recommendations</h3>
+        </div>
+        
+        <div class="type-sample">
+            <div class="type-label">Body Text (Default): Inter Regular, 16px</div>
+            <p>This is standard body text using Inter for optimal readability. The typeface is designed specifically for UI clarity.</p>
+        </div>
+        
+        <div class="type-sample">
+            <div class="type-label">Secondary Text (Muted): Inter Regular, 14px, #6C757D</div>
+            <p class="text-secondary">This is secondary text for less important information or metadata.</p>
+        </div>
+        
+        <div class="type-sample">
+            <div class="type-label">Interactive / Links: Inter SemiBold, 16px, Coral (#FF6B6B)</div>
+            <p class="text-interactive">Interactive text uses coral links for emphasis with contrast-safe shade.</p>
+        </div>
+        
+        <div class="type-sample">
+            <div class="type-label">Buttons: Montserrat SemiBold, 15px</div>
+            <button class="button primary">Begin Assessment</button>
+            <button class="button outline">Learn More</button>
+        </div>
+    </div>
+    
+    <div class="ai-section">
+        <div class="ai-header">
+            <div class="ai-avatar">AI</div>
+            <div>
+                <h3>PMERIT AI</h3>
+                <p>Ready to guide your learning journey</p>
+            </div>
+        </div>
+        <p>Welcome to PMERIT! Our mission is to provide accessible, high-quality education that opens doors to opportunities.</p>
+        <div class="buttons-row">
+            <button class="button outline">Ask about courses</button>
+            <button class="button outline">Learning paths</button>
+            <button class="button outline">Career goals</button>
+        </div>
+    </div>
+    
+    <div class="content-grid">
+        <div class="card">
+            <div class="card-header">Text & Link Hierarchy</div>
+            <div class="text-hierarchy">
+                <div class="text-body">This is standard body text using Inter for optimal readability.</div>
+                <div class="text-secondary">This is secondary text for less important information.</div>
+                <div class="text-interactive">Interactive text uses coral links for emphasis with contrast-safe shade.</div>
+            </div>
+            
+            <div class="support-section">
+                <div class="support-avatar">SA</div>
+                <div>
+                    <h3>Support Assistant</h3>
+                    <p>Ask me about PMERIT</p>
+                </div>
+            </div>
+            
+            <div class="buttons-row">
+                <button class="button outline">Virtual Human</button>
+                <button class="button outline">Support</button>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">Status & Alerts</div>
+            <div class="status-section">
+                <div class="status-item success">
+                    <span class="status-icon">✓</span>
+                    <span>Great job! Your last quiz improved by 14%.</span>
+                </div>
+                <div class="status-item warning">
+                    <span class="status-icon">!</span>
+                    <span>Heads up: You have an assignment due tomorrow.</span>
+                </div>
+                <div class="status-item info">
+                    <span class="status-icon">i</span>
+                    <span>New career path recommendations are available.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="assessment-section">
+        <div class="assessment-title">Discover Your Path (AI)</div>
+        <p>Start a short flow that blends learning style, interests, and skills into a personalized plan.</p>
+        <div class="buttons-row">
+            <button class="button primary">Begin Assessment</button>
+        </div>
+    </div>
+    
+    <div class="color-guide">
+        <h3>Refined Color Usage Guide</h3>
+        <div class="color-item" style="border-left-color: var(--dark-blue);">
+            <strong>Dark Blue</strong> - headers, nav, key brand elements.
+        </div>
+        <div class="color-item" style="border-left-color: var(--teal);">
+            <strong>Teal</strong> - secondary highlights, secondary buttons, supportive UI.
+        </div>
+        <div class="color-item" style="border-left-color: var(--light-teal);">
+            <strong>Light Teal</strong> - section backgrounds; pair with Dark Blue/Charcoal text.
+        </div>
+        <div class="color-item" style="border-left-color: var(--coral);">
+            <strong>Coral</strong> – CTAs, alerts; use for small text/links.
+        </div>
+        <div class="color-item" style="border-left-color: var(--light-gray);">
+            <strong>Light Gray</strong> – app background to reduce eye strain.
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div class="footer-links">
+            <div class="footer-link">Privacy & Terms</div>
+            <div class="footer-link">Contact</div>
+            <div class="footer-link">Partnerships</div>
+            <div class="footer-link">Support</div>
+        </div>
+        <div>© PMERIT • Connected to Educational Services</div>
+    </div>
+
+    <script>
+        // Navigation interaction
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(nav => {
+                    nav.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+        
+        // Interactive text example
+        document.querySelector('.text-interactive').addEventListener('click', function() {
+            alert('Interactive link clicked!');
+        });
+        
+        // Button interactions
+        document.querySelectorAll('.button').forEach(button => {
+            button.addEventListener('click', function() {
+                if (this.textContent === 'Begin Assessment') {
+                    alert('Beginning your personalized assessment...');
+                } else {
+                    alert(`Action: ${this.textContent}`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
