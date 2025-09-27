@@ -1,0 +1,65 @@
+/* PMERIT Design Tokens */
+/* Extracted from Pmerit-theme_typography.html */
+
+:root {
+    /* Optimized Color Palette */
+    --dark-blue: #2A5B8C;
+    --teal: #4AA4B9;
+    --light-teal: #7ED0D9;
+    --coral: #FF6B6B;
+    --coral-dark: #E05A5A;
+    --light-gray: #F8F9FA;
+    --dark-gray: #2C2C2C;
+    --medium-gray: #6C757D;
+    --charcoal: #3A3A3A;
+    --success-green: #3A7F5C;
+    --warning-orange: #E67E22;
+    
+    /* Typography System */
+    --font-primary: 'Montserrat', sans-serif;
+    --font-secondary: 'Inter', sans-serif;
+    
+    /* Font Sizes */
+    --text-h1: 32px;
+    --text-h2: 24px;
+    --text-h3: 20px;
+    --text-body: 16px;
+    --text-secondary: 14px;
+    --text-button: 15px;
+    --text-small: 12px;
+    
+    /* Font Weights */
+    --weight-bold: 700;
+    --weight-semibold: 600;
+    --weight-medium: 500;
+    --weight-regular: 400;
+    
+    /* Line Heights */
+    --line-height-tight: 1.2;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.75;
+    
+    /* Spacing System */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-xxl: 48px;
+    
+    /* Border Radius */
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+    --radius-full: 50%;
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+    
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}

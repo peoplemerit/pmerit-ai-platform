@@ -1,7 +1,5 @@
 /* PMERIT Main CSS - Production Ready */
-@import url('./unified-design-system.css');
-@import url('./design-tokens.css');
-@import url('./base.css');
+@import url('./unified-design-system-new.css');
 @import url('./components.css');
 @import url('./responsive.css');
 @import url('./clean-mobile.css');

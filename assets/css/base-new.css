@@ -1,0 +1,117 @@
+/* PMERIT Base Styles */
+/* Foundation styles extracted from Pmerit-theme_typography.html */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-secondary);
+    font-size: var(--text-body);
+    font-weight: var(--weight-regular);
+    line-height: var(--line-height-normal);
+    color: var(--dark-gray);
+    background-color: var(--light-gray);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-primary);
+    margin-bottom: var(--spacing-md);
+    line-height: var(--line-height-tight);
+}
+
+h1 {
+    font-size: var(--text-h1);
+    font-weight: var(--weight-bold);
+    color: var(--dark-blue);
+}
+
+h2 {
+    font-size: var(--text-h2);
+    font-weight: var(--weight-semibold);
+    color: var(--dark-blue);
+}
+
+h3 {
+    font-size: var(--text-h3);
+    font-weight: var(--weight-medium);
+    color: var(--dark-blue);
+}
+
+p {
+    margin-bottom: var(--spacing-md);
+    line-height: var(--line-height-normal);
+}
+
+/* Links */
+a {
+    color: var(--teal);
+    text-decoration: none;
+    transition: var(--transition-normal);
+}
+
+a:hover {
+    color: var(--dark-blue);
+}
+
+/* Lists */
+ul, ol {
+    margin-left: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+}
+
+li {
+    margin-bottom: var(--spacing-sm);
+}
+
+/* Basic Layout */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+.section {
+    padding: var(--spacing-xxl) 0;
+}
+
+/* Utility Classes */
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mb-0 { margin-bottom: 0; }
+.mb-1 { margin-bottom: var(--spacing-xs); }
+.mb-2 { margin-bottom: var(--spacing-sm); }
+.mb-3 { margin-bottom: var(--spacing-md); }
+.mb-4 { margin-bottom: var(--spacing-lg); }
+.mb-5 { margin-bottom: var(--spacing-xl); }
+
+.mt-0 { margin-top: 0; }
+.mt-1 { margin-top: var(--spacing-xs); }
+.mt-2 { margin-top: var(--spacing-sm); }
+.mt-3 { margin-top: var(--spacing-md); }
+.mt-4 { margin-top: var(--spacing-lg); }
+.mt-5 { margin-top: var(--spacing-xl); }
+
+/* Responsive breakpoints */
+@media (max-width: 767px) {
+    .container {
+        padding: 0 var(--spacing-sm);
+    }
+    
+    .section {
+        padding: var(--spacing-lg) 0;
+    }
+}
