@@ -337,18 +337,7 @@
         initMobileHeader();
     }
 
-})();                // Bind event listeners
-        bindMobileEvents();
-        
-        // Apply initial state
-        applyInitialState();
-        
-        // Setup resize handler
-        setupResizeHandler();
-
-        console.log('Mobile header initialized');
-    }
-    }
+})();
 
     // Initialize mobile layout
     function initMobileLayout() {
@@ -702,13 +691,14 @@
         }
     });
 
-})();
+})(); // End Mobile Header IIFE - Self-invoking function
 
 /**
- * PMERIT Mobile Base Template Functionality
+ * PMERIT Mobile Base Template Functionality  
  * Handles viewport height management, scroll containment, and template integration
  */
 
+// Second IIFE for mobile template functionality
 (function() {
     'use strict';
 
