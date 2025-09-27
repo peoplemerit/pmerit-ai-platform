@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="../assets/css/design-tokens.css">
   <link rel="stylesheet" href="../assets/css/base.css">
   <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
   <link rel="stylesheet" href="../assets/css/clean-mobile.css">
   <link rel="stylesheet" href="../assets/css/theme-pmerit.css">
   <link rel="stylesheet" href="../assets/css/main.css">
@@ -78,11 +79,11 @@
       <section class="hero mobile-hero" id="hero">
         <div class="hero-container">
           <div class="hero-content">
-            <h1 class="hero-title">
+            <h1 class="hero-title text-fluid-h1 text-center-mobile text-left-tablet text-left-desktop">
               Transform Your Career with 
               <span class="highlight">AI-Powered Learning</span>
             </h1>
-            <p class="hero-description">
+            <p class="hero-description text-fluid-body text-center-mobile text-left-tablet text-left-desktop">
               Access world-class education, get certified in high-demand skills, 
               and advance your career with personalized AI guidance. Available in multiple languages.
             </p>
@@ -321,8 +322,8 @@
     // Load mobile header and footer partials
     async function loadMobilePartials() {
       try {
-        // Load header
-        const headerResponse = await fetch('../partials/header-mobile.html');
+        // Load responsive header
+        const headerResponse = await fetch('../partials/header-responsive.html');
         const headerHTML = await headerResponse.text();
         document.getElementById('mobile-header-placeholder').innerHTML = headerHTML;
 

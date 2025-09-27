@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="../assets/css/design-tokens.css">
   <link rel="stylesheet" href="../assets/css/base.css">
   <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
   <link rel="stylesheet" href="../assets/css/clean-mobile.css">
   <link rel="stylesheet" href="../assets/css/theme-pmerit.css">
 
@@ -850,7 +851,7 @@
     async function loadMobilePartials() {
       try {
         // Load header
-        const headerResponse = await fetch('../partials/header-mobile.html');
+        const headerResponse = await fetch('../partials/header-responsive.html');
         const headerHTML = await headerResponse.text();
         document.getElementById('mobile-header-placeholder').innerHTML = headerHTML;
 

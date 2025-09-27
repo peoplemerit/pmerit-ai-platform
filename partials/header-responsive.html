@@ -1,0 +1,365 @@
+<!-- PMERIT Responsive Header Component -->
+<!-- Transforms from mobile hamburger to tablet/desktop horizontal navigation -->
+<header class="mobile-header" id="responsiveHeader">
+  <div class="mobile-header-container">
+    
+    <!-- Mobile Hamburger Menu Button (shown only on mobile) -->
+    <button class="mobile-menu-btn mobile-only" id="mobileMenuBtn" aria-label="Open navigation menu" aria-expanded="false">
+      <span class="hamburger-icon">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </span>
+    </button>
+
+    <!-- PMERIT Logo (responsive scaling) -->
+    <div class="mobile-logo">
+      <h1 class="logo-text">PMERIT</h1>
+      <span class="logo-tagline">Global Education</span>
+    </div>
+
+    <!-- Tablet Horizontal Navigation (768px - 1023px) -->
+    <nav class="tablet-nav tablet-only" aria-label="Main navigation">
+      <a href="/" class="tablet-nav-item" data-page="home">
+        <i class="fas fa-home" aria-hidden="true"></i>
+        Home
+      </a>
+      <a href="/courses.html" class="tablet-nav-item" data-page="courses">
+        <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+        Courses
+      </a>
+      <a href="/learner-portal.html" class="tablet-nav-item" data-page="learner-portal">
+        <i class="fas fa-user-graduate" aria-hidden="true"></i>
+        Portal
+      </a>
+      <a href="/assessment.html" class="tablet-nav-item" data-page="assessment">
+        <i class="fas fa-clipboard-check" aria-hidden="true"></i>
+        Assessment
+      </a>
+    </nav>
+
+    <!-- Desktop Full Navigation (1024px+) -->
+    <nav class="desktop-nav desktop-only" aria-label="Main navigation">
+      <div class="desktop-nav-section">
+        <a href="/" class="desktop-nav-item" data-page="home">
+          <i class="fas fa-home" aria-hidden="true"></i>
+          Home
+        </a>
+        
+        <div class="desktop-nav-item desktop-nav-dropdown-trigger" data-page="courses">
+          <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+          Courses
+          <i class="fas fa-chevron-down dropdown-icon" aria-hidden="true"></i>
+          <div class="desktop-nav-dropdown">
+            <a href="/courses.html" class="dropdown-item">All Courses</a>
+            <a href="/courses.html#ai" class="dropdown-item">AI & Machine Learning</a>
+            <a href="/courses.html#business" class="dropdown-item">Business Skills</a>
+            <a href="/courses.html#tech" class="dropdown-item">Technology</a>
+          </div>
+        </div>
+        
+        <a href="/learner-portal.html" class="desktop-nav-item" data-page="learner-portal">
+          <i class="fas fa-user-graduate" aria-hidden="true"></i>
+          Learner Portal
+        </a>
+        
+        <a href="/assessment.html" class="desktop-nav-item" data-page="assessment">
+          <i class="fas fa-clipboard-check" aria-hidden="true"></i>
+          Assessment
+        </a>
+        
+        <div class="desktop-nav-item desktop-nav-dropdown-trigger">
+          <i class="fas fa-ellipsis-h" aria-hidden="true"></i>
+          More
+          <i class="fas fa-chevron-down dropdown-icon" aria-hidden="true"></i>
+          <div class="desktop-nav-dropdown">
+            <a href="/about-us.html" class="dropdown-item">About Us</a>
+            <a href="/partnerships.html" class="dropdown-item">Partnerships</a>
+            <a href="/help.html" class="dropdown-item">Help</a>
+            <a href="/contact.html" class="dropdown-item">Contact</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- User Actions Section (responsive) -->
+    <div class="header-actions">
+      <!-- Language Selector (all breakpoints) -->
+      <div class="language-selector">
+        <select id="responsiveLang" class="lang-select" aria-label="Select language">
+          <option value="en">🇺🇸 EN</option>
+          <option value="es">🇪🇸 ES</option>
+          <option value="fr">🇫🇷 FR</option>
+          <option value="de">🇩🇪 DE</option>
+          <option value="zh">🇨🇳 ZH</option>
+          <option value="ar">🇸🇦 AR</option>
+        </select>
+      </div>
+
+      <!-- Sign In Button (responsive) -->
+      <button class="mobile-signin-btn" id="responsiveSignInBtn" aria-label="Sign in to your account">
+        <i class="fas fa-user" aria-hidden="true"></i>
+        <span class="signin-text">Sign In</span>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Mobile Navigation Menu (Initially Hidden) -->
+  <nav class="mobile-nav mobile-only" id="mobileNav" aria-label="Main navigation">
+    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+    <div class="mobile-nav-content">
+      
+      <!-- Mobile Header Section -->
+      <div class="mobile-nav-header">
+        <div class="nav-logo">
+          <span class="nav-logo-text">PMERIT</span>
+        </div>
+        <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close navigation menu">
+          <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <!-- Mobile Navigation Links -->
+      <div class="mobile-nav-links">
+        <a href="/" class="mobile-nav-link" data-page="home">
+          <i class="fas fa-home" aria-hidden="true"></i>
+          <span>Home</span>
+        </a>
+        <a href="/courses.html" class="mobile-nav-link" data-page="courses">
+          <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+          <span>Courses</span>
+        </a>
+        <a href="/learner-portal.html" class="mobile-nav-link" data-page="learner-portal">
+          <i class="fas fa-user-graduate" aria-hidden="true"></i>
+          <span>Learner Portal</span>
+        </a>
+        <a href="/assessment.html" class="mobile-nav-link" data-page="assessment">
+          <i class="fas fa-clipboard-check" aria-hidden="true"></i>
+          <span>Assessment</span>
+        </a>
+        <a href="/profile.html" class="mobile-nav-link" data-page="profile">
+          <i class="fas fa-user-circle" aria-hidden="true"></i>
+          <span>Profile</span>
+        </a>
+        
+        <!-- Mobile Navigation Sections -->
+        <div class="mobile-nav-section">
+          <h3 class="mobile-nav-section-title">
+            <i class="fas fa-info-circle" aria-hidden="true"></i>
+            Information
+          </h3>
+          <div class="mobile-nav-section-links">
+            <a href="/about-us.html" class="mobile-nav-link">About Us</a>
+            <a href="/partnerships.html" class="mobile-nav-link">Partnerships</a>
+            <a href="/help.html" class="mobile-nav-link">Help</a>
+            <a href="/contact.html" class="mobile-nav-link">Contact</a>
+          </div>
+        </div>
+
+        <div class="mobile-nav-section">
+          <h3 class="mobile-nav-section-title">
+            <i class="fas fa-cog" aria-hidden="true"></i>
+            Quick Actions
+          </h3>
+          <div class="mobile-nav-section-links">
+            <button class="mobile-nav-btn" id="mobileStartBtn">
+              <i class="fas fa-play" aria-hidden="true"></i>
+              Start Learning
+            </button>
+            <button class="mobile-nav-btn" id="mobileTakeAssessment">
+              <i class="fas fa-clipboard-check" aria-hidden="true"></i>
+              Take Assessment
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Settings Section -->
+      <div class="mobile-nav-settings">
+        <button class="mobile-settings-toggle" id="mobileSettingsToggle" aria-expanded="false">
+          <i class="fas fa-cog" aria-hidden="true"></i>
+          <span>Settings</span>
+          <i class="fas fa-chevron-down" aria-hidden="true"></i>
+        </button>
+        
+        <div class="mobile-settings-content" id="mobileSettingsContent">
+          <!-- Language Selector -->
+          <div class="mobile-setting">
+            <label for="mobileLangSelect">
+              <i class="fas fa-globe" aria-hidden="true"></i>
+              Language
+            </label>
+            <select id="mobileLangSelect" class="mobile-lang-select">
+              <option value="en">🇺🇸 English</option>
+              <option value="es">🇪🇸 Español</option>
+              <option value="fr">🇫🇷 Français</option>
+              <option value="de">🇩🇪 Deutsch</option>
+              <option value="zh">🇨🇳 中文</option>
+              <option value="ar">🇸🇦 العربية</option>
+            </select>
+          </div>
+
+          <!-- Dark Mode Toggle -->
+          <div class="mobile-setting">
+            <label for="mobileDarkToggle">
+              <i class="fas fa-moon" aria-hidden="true"></i>
+              Dark Mode
+            </label>
+            <div class="mobile-toggle" id="mobileDarkToggle" role="switch" aria-checked="false">
+              <div class="mobile-toggle-switch"></div>
+            </div>
+          </div>
+
+          <!-- Text-to-Speech Toggle -->
+          <div class="mobile-setting">
+            <label for="mobileTtsToggle">
+              <i class="fas fa-volume-up" aria-hidden="true"></i>
+              Voice Assistant
+            </label>
+            <div class="mobile-toggle" id="mobileTtsToggle" role="switch" aria-checked="false">
+              <div class="mobile-toggle-switch"></div>
+            </div>
+          </div>
+
+          <!-- Accessibility Status -->
+          <div class="mobile-setting">
+            <div class="accessibility-status" id="mobileNavStatus">
+              <i class="fas fa-universal-access" aria-hidden="true"></i>
+              <span>Accessibility: Enhanced</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Footer Actions -->
+      <div class="mobile-nav-footer">
+        <button class="mobile-nav-cta" id="mobileSignUpBtn">
+          <i class="fas fa-user-plus" aria-hidden="true"></i>
+          Sign Up Free
+        </button>
+        <div class="mobile-nav-links-footer">
+          <a href="/privacy.html" class="mobile-nav-footer-link">Privacy</a>
+          <a href="/help.html" class="mobile-nav-footer-link">Help</a>
+        </div>
+      </div>
+
+    </div>
+  </nav>
+
+</header>
+
+<!-- Responsive Navigation Styles -->
+<style>
+/* Additional responsive navigation styles specific to the header component */
+
+/* Tablet Navigation Styles */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .tablet-nav {
+    display: flex !important;
+  }
+  
+  .tablet-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+  
+  .tablet-nav-item i {
+    font-size: 14px;
+  }
+}
+
+/* Desktop Navigation Styles */
+@media (min-width: 1024px) {
+  .desktop-nav {
+    display: flex !important;
+  }
+  
+  .desktop-nav-section {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+  
+  .desktop-nav-dropdown-trigger {
+    position: relative;
+  }
+  
+  .dropdown-icon {
+    margin-left: 8px;
+    font-size: 12px;
+    transition: transform 0.3s ease;
+  }
+  
+  .desktop-nav-dropdown-trigger:hover .dropdown-icon {
+    transform: rotate(180deg);
+  }
+  
+  .dropdown-item {
+    display: block;
+    padding: 12px 16px;
+    color: var(--dark-gray);
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    border-radius: 4px;
+  }
+  
+  .dropdown-item:hover {
+    background-color: var(--light-gray);
+    color: var(--dark-blue);
+  }
+  
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .lang-select {
+    padding: 8px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 14px;
+  }
+  
+  .lang-select:focus {
+    outline: 2px solid rgba(255, 255, 255, 0.5);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+/* Responsive header actions */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+@media (max-width: 767px) {
+  .language-selector {
+    display: none; /* Hide language selector on mobile, available in hamburger menu */
+  }
+}
+
+/* Responsive logo scaling */
+.mobile-logo .logo-text {
+  transition: font-size 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .mobile-logo .logo-text {
+    font-size: 1.75rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .mobile-logo .logo-text {
+    font-size: 2rem;
+  }
+}
+</style>

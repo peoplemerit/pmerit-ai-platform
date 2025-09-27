@@ -923,31 +923,250 @@
         }
     }
 
-    // Responsive breakpoint handling
+    // Enhanced responsive breakpoint handling
     function handleResponsiveBreakpoints() {
-        const mediaQuery = window.matchMedia('(max-width: 768px)');
+        // Define breakpoint media queries
+        const breakpoints = {
+            mobile: window.matchMedia('(max-width: 767px)'),
+            tablet: window.matchMedia('(min-width: 768px) and (max-width: 1023px)'),
+            desktop: window.matchMedia('(min-width: 1024px)')
+        };
         
-        function handleBreakpointChange(e) {
-            if (e.matches) {
-                // Mobile view
-                if (!document.body.classList.contains('mobile-layout')) {
-                    document.body.classList.add('mobile-layout');
-                    initMobileTemplate();
-                }
-            } else {
-                // Desktop view
-                if (document.body.classList.contains('mobile-layout')) {
-                    document.body.classList.remove('mobile-layout');
-                    cleanupMobileTemplate();
+        // Current breakpoint state
+        let currentBreakpoint = 'mobile';
+        
+        function determineBreakpoint() {
+            if (breakpoints.desktop.matches) return 'desktop';
+            if (breakpoints.tablet.matches) return 'tablet';
+            return 'mobile';
+        }
+        
+        function handleBreakpointChange() {
+            const newBreakpoint = determineBreakpoint();
+            
+            if (newBreakpoint !== currentBreakpoint) {
+                const previousBreakpoint = currentBreakpoint;
+                currentBreakpoint = newBreakpoint;
+                
+                console.log(`PMERIT: Breakpoint changed from ${previousBreakpoint} to ${currentBreakpoint}`);
+                
+                // Update body classes
+                document.body.classList.remove('mobile-layout', 'tablet-layout', 'desktop-layout');
+                document.body.classList.add(`${currentBreakpoint}-layout`);
+                
+                // Handle navigation based on breakpoint
+                handleNavigationBreakpoint(currentBreakpoint, previousBreakpoint);
+                
+                // Handle content layout
+                handleContentBreakpoint(currentBreakpoint);
+                
+                // Dispatch custom event for other components to listen to
+                const breakpointEvent = new CustomEvent('breakpointChange', {
+                    detail: {
+                        current: currentBreakpoint,
+                        previous: previousBreakpoint,
+                        viewport: {
+                            width: window.innerWidth,
+                            height: window.innerHeight
+                        }
+                    }
+                });
+                document.dispatchEvent(breakpointEvent);
+            }
+        }
+        
+        function handleNavigationBreakpoint(current, previous) {
+            const mobileNav = document.getElementById('mobileNav');
+            const tabletNav = document.querySelector('.tablet-nav');
+            const desktopNav = document.querySelector('.desktop-nav');
+            
+            switch (current) {
+                case 'mobile':
+                    // Ensure mobile layout is initialized
+                    if (!document.body.classList.contains('mobile-layout')) {
+                        initMobileTemplate();
+                    }
+                    // Close any open mobile nav if coming from larger screen
+                    if (previous !== 'mobile' && mobileNavState.isOpen) {
+                        closeMobileNav();
+                    }
+                    break;
+                    
+                case 'tablet':
+                    // Close mobile nav if open
+                    if (mobileNavState.isOpen) {
+                        closeMobileNav();
+                    }
+                    // Initialize tablet-specific behaviors
+                    initTabletBehaviors();
+                    break;
+                    
+                case 'desktop':
+                    // Close mobile nav if open
+                    if (mobileNavState.isOpen) {
+                        closeMobileNav();
+                    }
+                    // Initialize desktop-specific behaviors
+                    initDesktopBehaviors();
+                    break;
+            }
+        }
+        
+        function handleContentBreakpoint(breakpoint) {
+            const contentArea = document.getElementById('contentArea') || document.querySelector('.mobile-content-area');
+            
+            if (contentArea) {
+                // Update content area classes for responsive layouts
+                contentArea.classList.remove('mobile-content', 'tablet-content', 'desktop-content');
+                contentArea.classList.add(`${breakpoint}-content`);
+                
+                // Adjust content height if needed
+                if (typeof adjustContentHeight === 'function') {
+                    adjustContentHeight();
                 }
             }
         }
-
-        // Initial check
-        handleBreakpointChange(mediaQuery);
         
-        // Listen for changes
-        mediaQuery.addListener(handleBreakpointChange);
+        function initTabletBehaviors() {
+            console.log('PMERIT: Initializing tablet behaviors');
+            
+            // Add tablet-specific event listeners
+            const tabletNavItems = document.querySelectorAll('.tablet-nav-item');
+            tabletNavItems.forEach(item => {
+                // Enhanced hover effects for tablet
+                item.addEventListener('touchstart', handleTabletTouch, { passive: true });
+            });
+            
+            // Initialize tablet grid layouts
+            const gridElements = document.querySelectorAll('.content-grid-tablet');
+            gridElements.forEach(grid => {
+                grid.style.display = 'grid';
+            });
+        }
+        
+        function initDesktopBehaviors() {
+            console.log('PMERIT: Initializing desktop behaviors');
+            
+            // Add desktop-specific event listeners
+            const desktopNavItems = document.querySelectorAll('.desktop-nav-item');
+            desktopNavItems.forEach(item => {
+                // Desktop hover and focus behaviors
+                item.addEventListener('mouseenter', handleDesktopNavHover);
+                item.addEventListener('mouseleave', handleDesktopNavLeave);
+                item.addEventListener('focus', handleDesktopNavFocus);
+            });
+            
+            // Initialize desktop grid layouts
+            const gridElements = document.querySelectorAll('.content-grid-desktop');
+            gridElements.forEach(grid => {
+                grid.style.display = 'grid';
+            });
+            
+            // Initialize desktop-specific components
+            initDesktopDropdowns();
+            initDesktopTooltips();
+        }
+        
+        function handleTabletTouch(event) {
+            // Add visual feedback for tablet touches
+            const item = event.currentTarget;
+            item.classList.add('tablet-touch');
+            setTimeout(() => {
+                item.classList.remove('tablet-touch');
+            }, 200);
+        }
+        
+        function handleDesktopNavHover(event) {
+            const item = event.currentTarget;
+            const dropdown = item.querySelector('.desktop-nav-dropdown');
+            if (dropdown) {
+                dropdown.style.display = 'block';
+            }
+        }
+        
+        function handleDesktopNavLeave(event) {
+            const item = event.currentTarget;
+            const dropdown = item.querySelector('.desktop-nav-dropdown');
+            if (dropdown) {
+                dropdown.style.display = 'none';
+            }
+        }
+        
+        function handleDesktopNavFocus(event) {
+            // Keyboard navigation support for desktop
+            const item = event.currentTarget;
+            item.classList.add('nav-focused');
+        }
+        
+        function initDesktopDropdowns() {
+            const dropdownTriggers = document.querySelectorAll('.desktop-nav-dropdown-trigger');
+            dropdownTriggers.forEach(trigger => {
+                trigger.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        const dropdown = trigger.querySelector('.desktop-nav-dropdown');
+                        if (dropdown) {
+                            const isVisible = dropdown.style.display === 'block';
+                            dropdown.style.display = isVisible ? 'none' : 'block';
+                        }
+                    }
+                });
+            });
+        }
+        
+        function initDesktopTooltips() {
+            const tooltipElements = document.querySelectorAll('[data-tooltip]');
+            tooltipElements.forEach(element => {
+                element.addEventListener('mouseenter', showTooltip);
+                element.addEventListener('mouseleave', hideTooltip);
+            });
+        }
+        
+        function showTooltip(event) {
+            // Tooltip implementation for desktop
+            console.log('Showing tooltip:', event.currentTarget.dataset.tooltip);
+        }
+        
+        function hideTooltip(event) {
+            // Hide tooltip
+            console.log('Hiding tooltip');
+        }
+        
+        // Initialize responsive font loading
+        function initResponsiveFonts() {
+            // Ensure fonts are loaded appropriately for current breakpoint
+            if ('fonts' in document) {
+                document.fonts.ready.then(() => {
+                    document.body.classList.add('fonts-loaded');
+                    console.log('PMERIT: Fonts loaded for', currentBreakpoint, 'breakpoint');
+                });
+            }
+        }
+        
+        // Set up media query listeners
+        Object.values(breakpoints).forEach(mq => {
+            mq.addListener(handleBreakpointChange);
+        });
+        
+        // Initial breakpoint determination
+        handleBreakpointChange();
+        
+        // Initialize responsive fonts
+        initResponsiveFonts();
+        
+        // Add resize debouncing for better performance
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                handleBreakpointChange();
+            }, 150);
+        });
+        
+        // Expose current breakpoint globally
+        window.getCurrentBreakpoint = () => currentBreakpoint;
+        
+        console.log('PMERIT: Responsive breakpoint system initialized');
     }
 
     // Performance optimization: Intersection Observer for content loading
