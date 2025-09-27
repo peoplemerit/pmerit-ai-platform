@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PMERIT - Mobile Layout Test</title>
+    
+    <!-- Import design tokens and mobile CSS -->
+    <link rel="stylesheet" href="assets/css/design-tokens.css">
+    <link rel="stylesheet" href="assets/css/clean-mobile.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Test content styles */
+        .test-content {
+            padding: 20px;
+            min-height: 150vh; /* Force scrolling to test fixed positioning */
+        }
+        
+        .content-section {
+            background: white;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .scroll-indicator {
+            background: var(--teal);
+            color: white;
+            padding: 10px;
+            text-align: center;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="mobile-layout">
+    
+    <!-- Include Phase 2 Mobile Header -->
+    <!-- PMERIT Mobile Header Component -->
+    <!-- Fixed position header for non-scrollable mobile layout -->
+    <header class="mobile-header" id="mobileHeader">
+      <div class="mobile-header-container">
+        <!-- Hamburger Menu Button -->
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open navigation menu" aria-expanded="false">
+          <span class="hamburger-icon">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+          </span>
+        </button>
+
+        <!-- PMERIT Logo -->
+        <div class="mobile-logo">
+          <h1 class="logo-text">PMERIT</h1>
+          <span class="logo-tagline">Global Education</span>
+        </div>
+
+        <!-- Sign In Button -->
+        <button class="mobile-signin-btn" id="mobileSignInBtn" aria-label="Sign in to your account">
+          <i class="fas fa-user" aria-hidden="true"></i>
+          <span class="signin-text">Sign In</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Area (Scrollable) -->
+    <main class="test-content">
+        <div class="content-section">
+            <h2>Phase 3: Mobile Footer Test</h2>
+            <p>This page tests the integration between the Phase 2 header and the new Phase 3 footer.</p>
+            <p>The header should be fixed at the top, the footer fixed at the bottom, and this content should scroll between them.</p>
+        </div>
+
+        <div class="scroll-indicator">
+            <i class="fas fa-arrow-down"></i> Scroll down to test layout <i class="fas fa-arrow-down"></i>
+        </div>
+
+        <div class="content-section">
+            <h3>Touch Target Testing</h3>
+            <p>The footer links below should have 44px minimum touch targets for accessibility.</p>
+            <ul>
+                <li>Privacy Policy link</li>
+                <li>Contact Us link</li>
+                <li>Support Center link</li>
+                <li>Partnerships link</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h3>Connection Status</h3>
+            <p>The footer displays a "Connected to Educational Services" status indicator with a pulsing green dot.</p>
+            <p>This status updates based on network connectivity and can show:</p>
+            <ul>
+                <li>🟢 Connected (green) - Normal operation</li>
+                <li>🟡 Connecting (orange) - Checking connection</li>
+                <li>🔴 Disconnected (red) - Connection issues</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h3>Design Consistency</h3>
+            <p>The footer maintains the same design language as the header:</p>
+            <ul>
+                <li>Uses --dark-blue and --teal colors from design tokens</li>
+                <li>Montserrat/Inter typography system</li>
+                <li>Google-inspired clean minimalist design</li>
+                <li>Consistent spacing and visual hierarchy</li>
+            </ul>
+        </div>
+
+        <div class="scroll-indicator">
+            <i class="fas fa-arrow-up"></i> Scroll up to test layout <i class="fas fa-arrow-up"></i>
+        </div>
+
+        <div class="content-section">
+            <h3>Layout Behavior</h3>
+            <p>Key layout features being tested:</p>
+            <ul>
+                <li>Header remains fixed during scroll</li>
+                <li>Footer remains fixed during scroll</li>
+                <li>Content scrolls independently between header/footer</li>
+                <li>No vertical scrolling on page body</li>
+                <li>Footer hides when mobile keyboard appears</li>
+            </ul>
+        </div>
+
+        <div class="content-section">
+            <h3>Ready for Phase 4</h3>
+            <p>This mobile shell (header + footer) is now ready for Phase 4 template integration where content will be dynamically placed between the fixed header and footer components.</p>
+        </div>
+    </main>
+
+    <!-- Phase 3 Mobile Footer -->
+    <!-- PMERIT Mobile Footer Component -->
+    <!-- Fixed position footer for non-scrollable mobile layout -->
+    <footer class="mobile-footer" id="mobileFooter">
+      <div class="mobile-footer-container">
+        
+        <!-- Connection Status Indicator -->
+        <div class="footer-status" id="footerStatus">
+          <div class="status-indicator">
+            <span class="status-dot" id="statusDot"></span>
+            <span class="status-text" id="statusText">Connected to Educational Services</span>
+          </div>
+        </div>
+
+        <!-- Essential Links -->
+        <div class="footer-links">
+          <a href="/privacy.html" class="footer-link" aria-label="Privacy Policy">
+            <i class="fas fa-shield-alt" aria-hidden="true"></i>
+            <span>Privacy</span>
+          </a>
+          <a href="/contact.html" class="footer-link" aria-label="Contact Us">
+            <i class="fas fa-envelope" aria-hidden="true"></i>
+            <span>Contact</span>
+          </a>
+          <a href="/support.html" class="footer-link" aria-label="Support Center">
+            <i class="fas fa-headset" aria-hidden="true"></i>
+            <span>Support</span>
+          </a>
+          <a href="/partnerships.html" class="footer-link" aria-label="Partnerships">
+            <i class="fas fa-handshake" aria-hidden="true"></i>
+            <span>Partners</span>
+          </a>
+        </div>
+
+        <!-- Copyright Notice -->
+        <div class="footer-copyright">
+          <p>&copy; <span id="currentYear">2025</span> PMERIT &bull; Global Education Platform</p>
+        </div>
+
+      </div>
+    </footer>
+
+    <!-- Load Core JavaScript -->
+    <script src="assets/js/core.js"></script>
+    
+    <!-- Additional test script -->
+    <script>
+        // Test connection status changes
+        setTimeout(() => {
+            if (window.PMERIT && window.PMERIT.ConnectionStatus) {
+                console.log('Testing connection status changes...');
+                
+                // Test different states
+                setTimeout(() => {
+                    window.PMERIT.ConnectionStatus.updateStatus('connecting', 'Checking connection...');
+                }, 3000);
+                
+                setTimeout(() => {
+                    window.PMERIT.ConnectionStatus.updateStatus('connected', 'Connected to Educational Services');
+                }, 5000);
+            }
+        }, 1000);
+        
+        // Log layout measurements
+        document.addEventListener('DOMContentLoaded', () => {
+            const header = document.getElementById('mobileHeader');
+            const footer = document.getElementById('mobileFooter');
+            
+            if (header && footer) {
+                console.log('Layout measurements:');
+                console.log(`Header height: ${header.offsetHeight}px`);
+                console.log(`Footer height: ${footer.offsetHeight}px`);
+                console.log(`Body padding-top: ${getComputedStyle(document.body).paddingTop}`);
+                console.log(`Body padding-bottom: ${getComputedStyle(document.body).paddingBottom}`);
+            }
+        });
+    </script>
+</body>
+</html>

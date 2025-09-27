@@ -1,0 +1,51 @@
+<!-- PMERIT Mobile Footer Component -->
+<!-- Fixed position footer for non-scrollable mobile layout -->
+<footer class="mobile-footer" id="mobileFooter">
+  <div class="mobile-footer-container">
+    
+    <!-- Connection Status Indicator -->
+    <div class="footer-status" id="footerStatus">
+      <div class="status-indicator">
+        <span class="status-dot" id="statusDot"></span>
+        <span class="status-text" id="statusText">Connected to Educational Services</span>
+      </div>
+    </div>
+
+    <!-- Essential Links -->
+    <div class="footer-links">
+      <a href="/privacy.html" class="footer-link" aria-label="Privacy Policy">
+        <i class="fas fa-shield-alt" aria-hidden="true"></i>
+        <span>Privacy</span>
+      </a>
+      <a href="/contact.html" class="footer-link" aria-label="Contact Us">
+        <i class="fas fa-envelope" aria-hidden="true"></i>
+        <span>Contact</span>
+      </a>
+      <a href="/support.html" class="footer-link" aria-label="Support Center">
+        <i class="fas fa-headset" aria-hidden="true"></i>
+        <span>Support</span>
+      </a>
+      <a href="/partnerships.html" class="footer-link" aria-label="Partnerships">
+        <i class="fas fa-handshake" aria-hidden="true"></i>
+        <span>Partners</span>
+      </a>
+    </div>
+
+    <!-- Copyright Notice -->
+    <div class="footer-copyright">
+      <p>&copy; <span id="currentYear">2025</span> PMERIT &bull; Global Education Platform</p>
+    </div>
+
+  </div>
+</footer>
+
+<!-- Footer JavaScript Integration -->
+<script>
+  // Update copyright year automatically
+  document.addEventListener('DOMContentLoaded', function() {
+    const yearElement = document.getElementById('currentYear');
+    if (yearElement) {
+      yearElement.textContent = new Date().getFullYear();
+    }
+  });
+</script>
