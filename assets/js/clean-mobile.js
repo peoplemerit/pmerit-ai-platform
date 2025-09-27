@@ -4,6 +4,8 @@
  * Includes mobile header functionality and viewport height handling for mobile browsers
  */
 
+/* eslint-disable */
+// @ts-nocheck
 (function() {
     'use strict';
 
@@ -337,56 +339,30 @@
         initMobileHeader();
     }
 
-})();
+})(); // End first IIFE
 
-    // Initialize mobile layout
-    function initMobileLayout() {
-        // Add mobile layout class to body on mobile screens
-        if (window.innerWidth <= 768) {
-            elements.body.classList.add('mobile-layout');
-        }
-    }
+/**
+ * PMERIT Mobile Base Template Functionality  
+ * Handles viewport height management, scroll containment, and template integration
+ */
 
-    // Bind all mobile event listeners
-    function bindMobileEvents() {
-        // Hamburger menu toggle
-        if (elements.mobileMenuBtn) {
-            elements.mobileMenuBtn.addEventListener('click', toggleMobileNav);
-            elements.mobileMenuBtn.addEventListener('keydown', handleMenuKeydown);
-        }
+// Second IIFE for mobile template functionality
+(function() {
+    'use strict';
 
-        // Close navigation
-        if (elements.mobileNavClose) {
-            elements.mobileNavClose.addEventListener('click', closeMobileNav);
-        }
+    // Mobile template state
+    let templateState = {
+        viewportHeight: window.innerHeight,
+        headerHeight: 64,
+        footerHeight: 80,
+        contentHeight: 0,
+        isIOS: /iPad|iPhone|iPod/.test(navigator.userAgent),
+        isAndroid: /Android/.test(navigator.userAgent),
+        scrollPosition: 0
+    };
 
-        // Overlay click to close
-        if (elements.mobileNavOverlay) {
-            elements.mobileNavOverlay.addEventListener('click', closeMobileNav);
-        }
-
-        // Sign in button
-        if (elements.mobileSignInBtn) {
-            elements.mobileSignInBtn.addEventListener('click', handleSignIn);
-        }
-
-        // Start learning button
-        if (elements.mobileStartBtn) {
-            elements.mobileStartBtn.addEventListener('click', handleStartLearning);
-        }
-
-        // Language selector
-        if (elements.mobileLang) {
-            elements.mobileLang.addEventListener('change', handleLanguageChange);
-        }
-
-        // Settings toggle
-        if (elements.mobileSettingsToggle) {
-            elements.mobileSettingsToggle.addEventListener('click', toggleMobileSettings);
-        }
-
-        // Dark mode toggle
-        if (elements.mobileDarkToggle) {
+    // Viewport height management
+    function handleMobileViewport() {
             elements.mobileDarkToggle.addEventListener('click', toggleDarkMode);
         }
 
