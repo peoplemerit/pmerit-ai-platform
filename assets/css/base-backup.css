@@ -1,0 +1,41 @@
+/* PMERIT Base Styles */
+/* Basic reset and foundation styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+    color: #2C2C2C;
+    background-color: #F8F9FA;
+}
+
+/* Basic typography */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    color: #2A5B8C;
+    margin-bottom: 1rem;
+}
+
+p {
+    margin-bottom: 1rem;
+}
+
+/* Links */
+a {
+    color: #4AA4B9;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #2A5B8C;
+}

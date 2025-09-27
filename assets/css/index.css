@@ -1,13 +1,8 @@
 /* PMERIT Main Page Styles - Production Ready */
 /* Extends the unified design system with page-specific styles */
 
-/* Import all necessary stylesheets */
-@import url('./unified-design-system.css');
-@import url('./design-tokens.css');
-@import url('./base.css');
-@import url('./components.css');
-@import url('./responsive.css');
-@import url('./clean-mobile.css');
+/* Note: Main styles are imported via main.css in the HTML */
+/* This file contains page-specific styles for index.html */
 
 /* Main Layout Styles */
 .main-content {
