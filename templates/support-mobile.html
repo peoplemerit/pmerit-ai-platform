@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Support — PMERIT Technical Support & Assistance</title>
+  <meta name="description" content="Get technical support for PMERIT platform. Access troubleshooting guides, report issues, and get help with account management and learning tools.">
+  <meta name="keywords" content="PMERIT support, technical help, troubleshooting, platform issues, account help">
+  <meta name="author" content="PMERIT Team">
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Support - PMERIT Technical Support & Assistance">
+  <meta property="og:description" content="Get technical support for PMERIT platform. Access troubleshooting guides and report issues.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pmerit.com/support">
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Support - PMERIT Technical Support & Assistance">
+  <meta name="twitter:description" content="Get technical support for PMERIT platform. Access troubleshooting guides and report issues.">
+
+  <!-- Preconnect to external fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Google Fonts for PMERIT design system -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- PMERIT Design System Styles -->
+  <link rel="stylesheet" href="../assets/css/design-tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+  <link rel="stylesheet" href="../assets/css/clean-mobile.css">
+  <link rel="stylesheet" href="../assets/css/theme-pmerit.css">
+
+  <!-- Mobile-specific viewport handling -->
+  <meta name="theme-color" content="#2A5B8C">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  
+  <!-- Favicon and App Icons -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+</head>
+<body class="mobile-layout">
+  
+  <!-- Fixed Mobile Header -->
+  <div id="mobile-header-placeholder">
+    <!-- Header content will be loaded here via JavaScript -->
+  </div>
+
+  <!-- Main Content Container -->
+  <main class="mobile-content-container" id="mobileContent">
+    <div class="mobile-content-area" id="contentArea">
+      
+      <!-- Hero Section -->
+      <section class="hero-section support-hero">
+        <div class="hero-content">
+          <h1 class="hero-title">Support Center</h1>
+          <p class="hero-subtitle">Technical support and assistance for PMERIT platform</p>
+        </div>
+      </section>
+
+      <!-- Support Status Section -->
+      <section class="status-section">
+        <div class="section-container">
+          <div class="status-card">
+            <div class="status-indicator">
+              <div class="status-dot status-operational"></div>
+              <span class="status-text">All Systems Operational</span>
+            </div>
+            <p class="status-description">Platform running smoothly with 99.9% uptime</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Support Options -->
+      <section class="content-section">
+        <div class="section-container">
+          <h2 class="section-title">Get Support</h2>
+          <div class="support-grid">
+            
+            <div class="support-option">
+              <div class="support-icon">
+                <i class="fas fa-robot"></i>
+              </div>
+              <h3>Ask Gabriel AI</h3>
+              <p>Get instant help from our AI assistant for common questions and troubleshooting.</p>
+              <button class="btn btn-primary" onclick="openAIChat()">Chat with Gabriel</button>
+            </div>
+            
+            <div class="support-option">
+              <div class="support-icon">
+                <i class="fas fa-ticket-alt"></i>
+              </div>
+              <h3>Submit Ticket</h3>
+              <p>Report technical issues or account problems with detailed descriptions.</p>
+              <button class="btn btn-primary" onclick="openTicketForm()">Create Ticket</button>
+            </div>
+            
+            <div class="support-option">
+              <div class="support-icon">
+                <i class="fas fa-phone"></i>
+              </div>
+              <h3>Emergency Support</h3>
+              <p>Critical issues affecting course deadlines or certification exams.</p>
+              <a href="mailto:emergency@pmerit.com" class="btn btn-secondary">Emergency Contact</a>
+            </div>
+            
+          </div>
+        </div>
+      </section>
+
+      <!-- Common Issues Section -->
+      <section class="content-section bg-light">
+        <div class="section-container">
+          <h2 class="section-title">Common Issues & Solutions</h2>
+          <div class="troubleshoot-grid">
+            
+            <div class="issue-card">
+              <div class="issue-icon">
+                <i class="fas fa-wifi"></i>
+              </div>
+              <h3>Connection Problems</h3>
+              <div class="issue-symptoms">
+                <p><strong>Symptoms:</strong> Slow loading, timeout errors, content not loading</p>
+              </div>
+              <div class="issue-solutions">
+                <p><strong>Solutions:</strong></p>
+                <ul>
+                  <li>Check your internet connection</li>
+                  <li>Try refreshing the page</li>
+                  <li>Switch to offline mode if available</li>
+                  <li>Clear browser cache and cookies</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="issue-card">
+              <div class="issue-icon">
+                <i class="fas fa-lock"></i>
+              </div>
+              <h3>Login Issues</h3>
+              <div class="issue-symptoms">
+                <p><strong>Symptoms:</strong> Cannot log in, password not working, account locked</p>
+              </div>
+              <div class="issue-solutions">
+                <p><strong>Solutions:</strong></p>
+                <ul>
+                  <li>Try password reset</li>
+                  <li>Check email for verification link</li>
+                  <li>Ensure caps lock is off</li>
+                  <li>Try different browser or device</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="issue-card">
+              <div class="issue-icon">
+                <i class="fas fa-play-circle"></i>
+              </div>
+              <h3>Course Access Problems</h3>
+              <div class="issue-symptoms">
+                <p><strong>Symptoms:</strong> Cannot access enrolled courses, missing content</p>
+              </div>
+              <div class="issue-solutions">
+                <p><strong>Solutions:</strong></p>
+                <ul>
+                  <li>Verify course enrollment status</li>
+                  <li>Check if payment is complete</li>
+                  <li>Refresh your learner dashboard</li>
+                  <li>Contact support if issue persists</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="issue-card">
+              <div class="issue-icon">
+                <i class="fas fa-certificate"></i>
+              </div>
+              <h3>Certificate Issues</h3>
+              <div class="issue-symptoms">
+                <p><strong>Symptoms:</strong> Certificate not generated, verification failed</p>
+              </div>
+              <div class="issue-solutions">
+                <p><strong>Solutions:</strong></p>
+                <ul>
+                  <li>Ensure all course requirements are met</li>
+                  <li>Check final assessment scores</li>
+                  <li>Wait 24-48 hours for processing</li>
+                  <li>Submit support ticket for manual review</li>
+                </ul>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </section>
+
+      <!-- Ticket Form Section (Hidden by default) -->
+      <section class="ticket-form-section" id="ticketFormSection" style="display: none;">
+        <div class="section-container">
+          <h2 class="section-title">Submit Support Ticket</h2>
+          <form class="ticket-form" id="supportTicketForm">
+            <div class="form-group">
+              <label for="ticketType" class="form-label">Issue Type</label>
+              <select id="ticketType" name="ticketType" class="form-select" required>
+                <option value="">Select issue type</option>
+                <option value="technical">Technical Issue</option>
+                <option value="account">Account Problem</option>
+                <option value="course">Course Access</option>
+                <option value="payment">Payment & Billing</option>
+                <option value="certificate">Certificate Issue</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="priority" class="form-label">Priority Level</label>
+              <select id="priority" name="priority" class="form-select" required>
+                <option value="low">Low - General question</option>
+                <option value="medium">Medium - Affecting my learning</option>
+                <option value="high">High - Blocking course progress</option>
+                <option value="critical">Critical - Exam/deadline issue</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="subject" class="form-label">Subject</label>
+              <input type="text" id="subject" name="subject" class="form-input" placeholder="Brief description of the issue" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="description" class="form-label">Detailed Description</label>
+              <textarea id="description" name="description" class="form-textarea" rows="5" placeholder="Please provide as much detail as possible including steps to reproduce the issue..." required></textarea>
+            </div>
+            
+            <div class="form-group">
+              <label for="browserInfo" class="form-label">Browser & Device Info</label>
+              <input type="text" id="browserInfo" name="browserInfo" class="form-input" readonly>
+              <small class="form-note">Auto-detected. Edit if incorrect.</small>
+            </div>
+            
+            <div class="form-actions">
+              <button type="button" class="btn btn-secondary" onclick="closeTicketForm()">Cancel</button>
+              <button type="submit" class="btn btn-primary">Submit Ticket</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Contact Information -->
+      <section class="content-section">
+        <div class="section-container">
+          <h2 class="section-title">Support Contacts</h2>
+          <div class="contact-info-grid">
+            <div class="contact-method">
+              <div class="contact-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <h3>General Support</h3>
+              <p><a href="mailto:support@pmerit.com">support@pmerit.com</a></p>
+              <p>Response time: 24-48 hours</p>
+            </div>
+            
+            <div class="contact-method">
+              <div class="contact-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+              </div>
+              <h3>Emergency Support</h3>
+              <p><a href="mailto:emergency@pmerit.com">emergency@pmerit.com</a></p>
+              <p>For critical issues only</p>
+            </div>
+            
+            <div class="contact-method">
+              <div class="contact-icon">
+                <i class="fas fa-bug"></i>
+              </div>
+              <h3>Bug Reports</h3>
+              <p><a href="mailto:bugs@pmerit.com">bugs@pmerit.com</a></p>
+              <p>Technical issues and bugs</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Fixed Mobile Footer -->
+  <div id="mobile-footer-placeholder">
+    <!-- Footer content will be loaded here via JavaScript -->
+  </div>
+
+  <!-- Loading Screen -->
+  <div class="mobile-loading" id="mobileLoading">
+    <div class="loading-spinner">
+      <div class="spinner-circle"></div>
+    </div>
+    <p class="loading-text">Loading Support Center...</p>
+  </div>
+
+  <!-- AI Chat Modal -->
+  <div class="modal-overlay" id="aiChatModal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Chat with Gabriel AI</h3>
+        <button class="modal-close" onclick="closeAIChat()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="chat-container" id="chatContainer">
+        <div class="chat-message bot-message">
+          <p>Hello! I'm Gabriel, your AI support assistant. How can I help you today?</p>
+        </div>
+      </div>
+      <div class="chat-input-container">
+        <input type="text" id="chatInput" class="chat-input" placeholder="Type your question...">
+        <button class="chat-send" onclick="sendChatMessage()">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript for Mobile Template -->
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/clean-mobile.js"></script>
+  
+  <script>
+    // Mobile Template Initialization
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof MobileTemplate !== 'undefined') {
+        MobileTemplate.init();
+      }
+      
+      loadMobilePartials();
+      handleMobileViewport();
+      initializeSupportFunctionality();
+      populateBrowserInfo();
+      
+      setTimeout(() => {
+        const loading = document.getElementById('mobileLoading');
+        if (loading) {
+          loading.style.opacity = '0';
+          setTimeout(() => loading.style.display = 'none', 300);
+        }
+      }, 500);
+    });
+
+    // Load mobile partials
+    async function loadMobilePartials() {
+      try {
+        const headerResponse = await fetch('../partials/header-mobile.html');
+        const headerHTML = await headerResponse.text();
+        document.getElementById('mobile-header-placeholder').innerHTML = headerHTML;
+
+        const footerResponse = await fetch('../partials/footer-mobile.html');
+        const footerHTML = await footerResponse.text();
+        document.getElementById('mobile-footer-placeholder').innerHTML = footerHTML;
+
+        initializeMobileComponents();
+      } catch (error) {
+        console.error('Error loading mobile partials:', error);
+      }
+    }
+
+    function initializeMobileComponents() {
+      if (typeof initMobileHeader === 'function') {
+        initMobileHeader();
+      }
+      if (typeof initMobileFooter === 'function') {
+        initMobileFooter();
+      }
+      adjustContentHeight();
+    }
+
+    function handleMobileViewport() {
+      function setViewportHeight() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+        adjustContentHeight();
+      }
+
+      setViewportHeight();
+      window.addEventListener('resize', setViewportHeight);
+      window.addEventListener('orientationchange', () => {
+        setTimeout(setViewportHeight, 100);
+      });
+
+      if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        window.addEventListener('scroll', setViewportHeight);
+      }
+    }
+
+    function adjustContentHeight() {
+      const header = document.querySelector('.mobile-header');
+      const footer = document.querySelector('.mobile-footer');
+      const content = document.querySelector('.mobile-content-container');
+      
+      if (header && footer && content) {
+        const headerHeight = header.offsetHeight;
+        const footerHeight = footer.offsetHeight;
+        content.style.height = `calc(100vh - ${headerHeight}px - ${footerHeight}px)`;
+        content.style.top = `${headerHeight}px`;
+      }
+    }
+
+    // Support functionality
+    function initializeSupportFunctionality() {
+      const ticketForm = document.getElementById('supportTicketForm');
+      const chatInput = document.getElementById('chatInput');
+      
+      ticketForm.addEventListener('submit', submitSupportTicket);
+      
+      chatInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          sendChatMessage();
+        }
+      });
+    }
+
+    function openTicketForm() {
+      document.getElementById('ticketFormSection').style.display = 'block';
+      document.getElementById('ticketFormSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function closeTicketForm() {
+      document.getElementById('ticketFormSection').style.display = 'none';
+    }
+
+    function openAIChat() {
+      document.getElementById('aiChatModal').style.display = 'flex';
+    }
+
+    function closeAIChat() {
+      document.getElementById('aiChatModal').style.display = 'none';
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById('chatInput');
+      const message = input.value.trim();
+      
+      if (!message) return;
+      
+      // Add user message
+      addChatMessage(message, 'user');
+      
+      // Clear input
+      input.value = '';
+      
+      // Simulate AI response
+      setTimeout(() => {
+        const responses = [
+          "I understand you're having an issue. Can you provide more details about what you're experiencing?",
+          "Let me help you troubleshoot this. First, try refreshing the page and clearing your browser cache.",
+          "This sounds like a common issue. Have you tried logging out and back in?",
+          "I'll create a support ticket for you. A human agent will follow up within 24 hours."
+        ];
+        const response = responses[Math.floor(Math.random() * responses.length)];
+        addChatMessage(response, 'bot');
+      }, 1000);
+    }
+
+    function addChatMessage(message, sender) {
+      const container = document.getElementById('chatContainer');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `chat-message ${sender}-message`;
+      messageDiv.innerHTML = `<p>${message}</p>`;
+      container.appendChild(messageDiv);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function submitSupportTicket(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(e.target);
+      const ticketData = Object.fromEntries(formData);
+      
+      console.log('Support ticket submitted:', ticketData);
+      
+      // Show success message
+      showSuccessMessage('Support ticket submitted successfully! Ticket ID: #' + Math.random().toString(36).substr(2, 9).toUpperCase());
+      
+      // Reset form and hide
+      e.target.reset();
+      closeTicketForm();
+    }
+
+    function populateBrowserInfo() {
+      const browserInfo = `${navigator.userAgent} | Screen: ${screen.width}x${screen.height}`;
+      document.getElementById('browserInfo').value = browserInfo;
+    }
+
+    function showSuccessMessage(message) {
+      const successMsg = document.createElement('div');
+      successMsg.className = 'success-message';
+      successMsg.innerHTML = `
+        <div class="success-content">
+          <i class="fas fa-check-circle"></i>
+          <p>${message}</p>
+        </div>
+      `;
+      
+      document.body.appendChild(successMsg);
+      
+      setTimeout(() => {
+        successMsg.remove();
+      }, 5000);
+    }
+  </script>
+</body>
+</html>

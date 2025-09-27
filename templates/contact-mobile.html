@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Contact Us — PMERIT Support & Help</title>
+  <meta name="description" content="Get in touch with the PMERIT team. We're here to help with your educational journey, technical support, and partnership inquiries.">
+  <meta name="keywords" content="PMERIT contact, support, help, customer service, educational support">
+  <meta name="author" content="PMERIT Team">
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Contact Us - PMERIT Platform">
+  <meta property="og:description" content="Get in touch with the PMERIT team for support, questions, or partnership opportunities.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pmerit.com/contact">
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Contact Us - PMERIT Platform">
+  <meta name="twitter:description" content="Get in touch with the PMERIT team for support, questions, or partnership opportunities.">
+
+  <!-- Preconnect to external fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Google Fonts for PMERIT design system -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- PMERIT Design System Styles -->
+  <link rel="stylesheet" href="../assets/css/design-tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+  <link rel="stylesheet" href="../assets/css/clean-mobile.css">
+  <link rel="stylesheet" href="../assets/css/theme-pmerit.css">
+
+  <!-- Mobile-specific viewport handling -->
+  <meta name="theme-color" content="#2A5B8C">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  
+  <!-- Favicon and App Icons -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+</head>
+<body class="mobile-layout">
+  
+  <!-- Fixed Mobile Header -->
+  <div id="mobile-header-placeholder">
+    <!-- Header content will be loaded here via JavaScript -->
+  </div>
+
+  <!-- Main Content Container -->
+  <main class="mobile-content-container" id="mobileContent">
+    <div class="mobile-content-area" id="contentArea">
+      
+      <!-- Hero Section -->
+      <section class="hero-section contact-hero">
+        <div class="hero-content">
+          <h1 class="hero-title">Contact Us</h1>
+          <p class="hero-subtitle">Get in touch with the PMERIT team</p>
+        </div>
+      </section>
+
+      <!-- Contact Content Section -->
+      <section class="content-section">
+        <div class="section-container">
+          <div class="contact-grid">
+            
+            <!-- Contact Information -->
+            <div class="contact-info">
+              <h2 class="section-title">Get in Touch</h2>
+              <p class="contact-intro">We're here to help you on your educational journey. Reach out to us with any questions, feedback, or partnership inquiries.</p>
+              
+              <div class="contact-methods">
+                <div class="contact-method">
+                  <div class="contact-icon">
+                    <i class="fas fa-envelope"></i>
+                  </div>
+                  <div class="contact-details">
+                    <h3>Email Support</h3>
+                    <p><a href="mailto:support@pmerit.com">support@pmerit.com</a></p>
+                    <p class="contact-note">For technical support and general inquiries</p>
+                  </div>
+                </div>
+                
+                <div class="contact-method">
+                  <div class="contact-icon">
+                    <i class="fas fa-handshake"></i>
+                  </div>
+                  <div class="contact-details">
+                    <h3>Partnerships</h3>
+                    <p><a href="mailto:partnerships@pmerit.com">partnerships@pmerit.com</a></p>
+                    <p class="contact-note">For collaboration and partnership opportunities</p>
+                  </div>
+                </div>
+                
+                <div class="contact-method">
+                  <div class="contact-icon">
+                    <i class="fas fa-clock"></i>
+                  </div>
+                  <div class="contact-details">
+                    <h3>Office Hours</h3>
+                    <p>Monday - Friday: 9:00 AM - 6:00 PM (WAT)</p>
+                    <p class="contact-note">Response time: Within 24 hours</p>
+                  </div>
+                </div>
+                
+                <div class="contact-method">
+                  <div class="contact-icon">
+                    <i class="fas fa-globe"></i>
+                  </div>
+                  <div class="contact-details">
+                    <h3>Global Reach</h3>
+                    <p>Serving learners in Nigeria, USA, and worldwide</p>
+                    <p class="contact-note">24/7 AI support available on platform</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Contact Form -->
+            <div class="contact-form-container">
+              <h2 class="section-title">Send us a Message</h2>
+              <form class="contact-form" id="contactForm">
+                <div class="form-group">
+                  <label for="name" class="form-label">Full Name</label>
+                  <input type="text" id="name" name="name" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                  <label for="email" class="form-label">Email Address</label>
+                  <input type="email" id="email" name="email" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                  <label for="subject" class="form-label">Subject</label>
+                  <select id="subject" name="subject" class="form-select" required>
+                    <option value="">Select a subject</option>
+                    <option value="technical-support">Technical Support</option>
+                    <option value="course-inquiry">Course Inquiry</option>
+                    <option value="partnership">Partnership Opportunity</option>
+                    <option value="feedback">Feedback & Suggestions</option>
+                    <option value="billing">Billing & Payment</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label for="message" class="form-label">Message</label>
+                  <textarea id="message" name="message" class="form-textarea" rows="5" placeholder="Please describe how we can help you..." required></textarea>
+                </div>
+                
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary btn-large">
+                    <i class="fas fa-paper-plane"></i>
+                    Send Message
+                  </button>
+                </div>
+              </form>
+            </div>
+            
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Help Section -->
+      <section class="content-section bg-light">
+        <div class="section-container">
+          <h2 class="section-title">Quick Help</h2>
+          <div class="help-grid">
+            <div class="help-card">
+              <div class="help-icon">
+                <i class="fas fa-question-circle"></i>
+              </div>
+              <h3>FAQ</h3>
+              <p>Find answers to common questions about our platform and courses.</p>
+              <a href="../help.html" class="btn btn-secondary">View FAQ</a>
+            </div>
+            
+            <div class="help-card">
+              <div class="help-icon">
+                <i class="fas fa-life-ring"></i>
+              </div>
+              <h3>Support Center</h3>
+              <p>Access our comprehensive support documentation and guides.</p>
+              <a href="../support.html" class="btn btn-secondary">Get Support</a>
+            </div>
+            
+            <div class="help-card">
+              <div class="help-icon">
+                <i class="fas fa-comments"></i>
+              </div>
+              <h3>Community</h3>
+              <p>Join our learner community for peer support and discussions.</p>
+              <a href="../learner-portal.html" class="btn btn-secondary">Join Community</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Fixed Mobile Footer -->
+  <div id="mobile-footer-placeholder">
+    <!-- Footer content will be loaded here via JavaScript -->
+  </div>
+
+  <!-- Loading Screen -->
+  <div class="mobile-loading" id="mobileLoading">
+    <div class="loading-spinner">
+      <div class="spinner-circle"></div>
+    </div>
+    <p class="loading-text">Loading Contact...</p>
+  </div>
+
+  <!-- JavaScript for Mobile Template -->
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/clean-mobile.js"></script>
+  
+  <script>
+    // Mobile Template Initialization
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize mobile template
+      if (typeof MobileTemplate !== 'undefined') {
+        MobileTemplate.init();
+      }
+      
+      // Load header and footer partials
+      loadMobilePartials();
+      
+      // Handle viewport height changes
+      handleMobileViewport();
+      
+      // Initialize contact form
+      initializeContactForm();
+      
+      // Hide loading screen
+      setTimeout(() => {
+        const loading = document.getElementById('mobileLoading');
+        if (loading) {
+          loading.style.opacity = '0';
+          setTimeout(() => loading.style.display = 'none', 300);
+        }
+      }, 500);
+    });
+
+    // Load mobile header and footer partials
+    async function loadMobilePartials() {
+      try {
+        const headerResponse = await fetch('../partials/header-mobile.html');
+        const headerHTML = await headerResponse.text();
+        document.getElementById('mobile-header-placeholder').innerHTML = headerHTML;
+
+        const footerResponse = await fetch('../partials/footer-mobile.html');
+        const footerHTML = await footerResponse.text();
+        document.getElementById('mobile-footer-placeholder').innerHTML = footerHTML;
+
+        initializeMobileComponents();
+      } catch (error) {
+        console.error('Error loading mobile partials:', error);
+      }
+    }
+
+    // Initialize mobile components
+    function initializeMobileComponents() {
+      if (typeof initMobileHeader === 'function') {
+        initMobileHeader();
+      }
+      if (typeof initMobileFooter === 'function') {
+        initMobileFooter();
+      }
+      adjustContentHeight();
+    }
+
+    // Handle mobile viewport height changes
+    function handleMobileViewport() {
+      function setViewportHeight() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+        adjustContentHeight();
+      }
+
+      setViewportHeight();
+      window.addEventListener('resize', setViewportHeight);
+      window.addEventListener('orientationchange', () => {
+        setTimeout(setViewportHeight, 100);
+      });
+
+      if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        window.addEventListener('scroll', setViewportHeight);
+      }
+    }
+
+    // Adjust content area height
+    function adjustContentHeight() {
+      const header = document.querySelector('.mobile-header');
+      const footer = document.querySelector('.mobile-footer');
+      const content = document.querySelector('.mobile-content-container');
+      
+      if (header && footer && content) {
+        const headerHeight = header.offsetHeight;
+        const footerHeight = footer.offsetHeight;
+        content.style.height = `calc(100vh - ${headerHeight}px - ${footerHeight}px)`;
+        content.style.top = `${headerHeight}px`;
+      }
+    }
+
+    // Initialize contact form functionality
+    function initializeContactForm() {
+      const form = document.getElementById('contactForm');
+      
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData);
+        
+        // Here you would typically send the data to your backend
+        console.log('Contact form submitted:', data);
+        
+        // Show success message
+        showSuccessMessage();
+        
+        // Reset form
+        form.reset();
+      });
+    }
+
+    function showSuccessMessage() {
+      const successMsg = document.createElement('div');
+      successMsg.className = 'success-message';
+      successMsg.innerHTML = `
+        <div class="success-content">
+          <i class="fas fa-check-circle"></i>
+          <p>Thank you! Your message has been sent successfully.</p>
+          <p>We'll get back to you within 24 hours.</p>
+        </div>
+      `;
+      
+      document.body.appendChild(successMsg);
+      
+      setTimeout(() => {
+        successMsg.remove();
+      }, 5000);
+    }
+  </script>
+</body>
+</html>

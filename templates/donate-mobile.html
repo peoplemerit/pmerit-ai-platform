@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Donate — Support Education for All | PMERIT</title>
+  <meta name="description" content="Support PMERIT's mission to provide free, quality education to underserved communities worldwide. Every donation creates opportunities.">
+  <meta name="keywords" content="donate to education, PMERIT donation, support learning, education charity, sponsor students">
+  <meta name="author" content="PMERIT Team">
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Donate - Support Education for All | PMERIT">
+  <meta property="og:description" content="Support quality education for underserved communities. Every donation creates opportunities.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pmerit.com/donate">
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Donate - Support Education for All">
+  <meta name="twitter:description" content="Support quality education for underserved communities. Every donation creates opportunities.">
+
+  <!-- Preconnect to external fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Google Fonts for PMERIT design system -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- PMERIT Design System Styles -->
+  <link rel="stylesheet" href="../assets/css/design-tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+  <link rel="stylesheet" href="../assets/css/clean-mobile.css">
+  <link rel="stylesheet" href="../assets/css/theme-pmerit.css">
+
+  <!-- Mobile-specific viewport handling -->
+  <meta name="theme-color" content="#2A5B8C">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  
+  <!-- Favicon and App Icons -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+</head>
+<body class="mobile-layout">
+  
+  <!-- Fixed Mobile Header -->
+  <div id="mobile-header-placeholder">
+    <!-- Header content will be loaded here via JavaScript -->
+  </div>
+
+  <!-- Main Content Container -->
+  <main class="mobile-content-container" id="mobileContent">
+    <div class="mobile-content-area" id="contentArea">
+      
+      <!-- Hero Section -->
+      <section class="hero-section donate-hero">
+        <div class="hero-content">
+          <h1 class="hero-title">Support Education for All</h1>
+          <p class="hero-subtitle">Every donation creates opportunities and transforms lives</p>
+          <div class="hero-impact">
+            <div class="impact-stat">
+              <span class="stat-number">10,000+</span>
+              <span class="stat-label">Lives Impacted</span>
+            </div>
+            <div class="impact-stat">
+              <span class="stat-number">50+</span>
+              <span class="stat-label">Countries Reached</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Mission Impact -->
+      <section class="content-section">
+        <div class="section-container">
+          <h2 class="section-title">Your Impact</h2>
+          
+          <div class="impact-showcase">
+            <div class="impact-story">
+              <div class="story-image">
+                <i class="fas fa-graduation-cap"></i>
+              </div>
+              <div class="story-content">
+                <h3>Breaking Poverty Cycles</h3>
+                <p>Education is the most powerful tool for breaking generational poverty. Your donation provides free, high-quality education to those who need it most.</p>
+              </div>
+            </div>
+            
+            <div class="impact-metrics">
+              <div class="metric-item">
+                <div class="metric-icon">
+                  <i class="fas fa-dollar-sign"></i>
+                </div>
+                <div class="metric-content">
+                  <h4>$25</h4>
+                  <p>Provides one month of comprehensive education for a student</p>
+                </div>
+              </div>
+              
+              <div class="metric-item">
+                <div class="metric-icon">
+                  <i class="fas fa-users"></i>
+                </div>
+                <div class="metric-content">
+                  <h4>$100</h4>
+                  <p>Sponsors a full course completion for 4 students</p>
+                </div>
+              </div>
+              
+              <div class="metric-item">
+                <div class="metric-icon">
+                  <i class="fas fa-globe"></i>
+                </div>
+                <div class="metric-content">
+                  <h4>$500</h4>
+                  <p>Funds platform access for an entire community for one year</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Donation Options -->
+      <section class="content-section bg-light">
+        <div class="section-container">
+          <h2 class="section-title">Ways to Give</h2>
+          
+          <div class="donation-options">
+            
+            <!-- One-Time Donation -->
+            <div class="donation-card">
+              <div class="donation-header">
+                <h3><i class="fas fa-gift"></i> One-Time Donation</h3>
+                <p>Make an immediate impact with a single donation</p>
+              </div>
+              
+              <div class="donation-amounts">
+                <div class="amount-grid">
+                  <button class="amount-btn" onclick="selectAmount(25)" data-amount="25">
+                    <span class="amount">$25</span>
+                    <span class="impact">1 month for 1 student</span>
+                  </button>
+                  <button class="amount-btn" onclick="selectAmount(50)" data-amount="50">
+                    <span class="amount">$50</span>
+                    <span class="impact">2 months for 1 student</span>
+                  </button>
+                  <button class="amount-btn" onclick="selectAmount(100)" data-amount="100">
+                    <span class="amount">$100</span>
+                    <span class="impact">Full course for 4 students</span>
+                  </button>
+                  <button class="amount-btn" onclick="selectAmount(250)" data-amount="250">
+                    <span class="amount">$250</span>
+                    <span class="impact">10 students for 1 month</span>
+                  </button>
+                </div>
+                
+                <div class="custom-amount">
+                  <label>Custom Amount</label>
+                  <div class="amount-input-group">
+                    <span class="currency">$</span>
+                    <input type="number" id="customAmount" placeholder="Enter amount" min="1">
+                  </div>
+                </div>
+              </div>
+              
+              <button class="btn btn-primary donation-btn" onclick="processDonation('one-time')">
+                <i class="fas fa-heart"></i> Donate Now
+              </button>
+            </div>
+
+            <!-- Monthly Giving -->
+            <div class="donation-card featured">
+              <div class="popular-badge">Most Impact</div>
+              <div class="donation-header">
+                <h3><i class="fas fa-calendar-alt"></i> Monthly Giving</h3>
+                <p>Provide ongoing support and sustainable impact</p>
+              </div>
+              
+              <div class="monthly-benefits">
+                <div class="benefit-item">
+                  <i class="fas fa-check"></i>
+                  <span>Predictable funding for program planning</span>
+                </div>
+                <div class="benefit-item">
+                  <i class="fas fa-check"></i>
+                  <span>Regular impact reports and updates</span>
+                </div>
+                <div class="benefit-item">
+                  <i class="fas fa-check"></i>
+                  <span>Exclusive donor community access</span>
+                </div>
+                <div class="benefit-item">
+                  <i class="fas fa-check"></i>
+                  <span>Cancel or modify anytime</span>
+                </div>
+              </div>
+              
+              <div class="monthly-amounts">
+                <button class="monthly-btn" onclick="selectMonthly(10)" data-amount="10">
+                  <span class="amount">$10/month</span>
+                  <span class="impact">Support 1 student ongoing</span>
+                </button>
+                <button class="monthly-btn" onclick="selectMonthly(25)" data-amount="25">
+                  <span class="amount">$25/month</span>
+                  <span class="impact">Fund community access</span>
+                </button>
+                <button class="monthly-btn" onclick="selectMonthly(50)" data-amount="50">
+                  <span class="amount">$50/month</span>
+                  <span class="impact">Sponsor multiple students</span>
+                </button>
+              </div>
+              
+              <button class="btn btn-primary donation-btn" onclick="processDonation('monthly')">
+                <i class="fas fa-sync-alt"></i> Give Monthly
+              </button>
+            </div>
+
+            <!-- Sponsor a Student -->
+            <div class="donation-card">
+              <div class="donation-header">
+                <h3><i class="fas fa-user-graduate"></i> Sponsor a Student</h3>
+                <p>Direct 1-on-1 sponsorship with progress updates</p>
+              </div>
+              
+              <div class="sponsorship-features">
+                <div class="feature-item">
+                  <i class="fas fa-user"></i>
+                  <span>Personal connection with a student</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-chart-line"></i>
+                  <span>Regular progress reports</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-envelope"></i>
+                  <span>Direct communication (optional)</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-certificate"></i>
+                  <span>Graduation celebration</span>
+                </div>
+              </div>
+              
+              <div class="sponsorship-levels">
+                <div class="sponsor-level">
+                  <h4>Basic Sponsorship</h4>
+                  <p class="sponsor-price">$30/month</p>
+                  <p>Full educational support for one student</p>
+                </div>
+                <div class="sponsor-level">
+                  <h4>Premium Sponsorship</h4>
+                  <p class="sponsor-price">$60/month</p>
+                  <p>Includes mentorship and career guidance</p>
+                </div>
+              </div>
+              
+              <button class="btn btn-primary donation-btn" onclick="sponsorStudent()">
+                <i class="fas fa-handshake"></i> Sponsor a Student
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Corporate Giving -->
+      <section class="content-section">
+        <div class="section-container">
+          <h2 class="section-title">Corporate & Foundation Partnerships</h2>
+          
+          <div class="corporate-giving">
+            <div class="corporate-info">
+              <h3>Transform Communities Through Corporate Giving</h3>
+              <p>Partner with PMERIT to align your corporate social responsibility goals with meaningful education outcomes.</p>
+              
+              <div class="corporate-benefits">
+                <div class="benefit-category">
+                  <h4>Impact Benefits</h4>
+                  <ul>
+                    <li>Directly measurable social impact</li>
+                    <li>Global reach and scalability</li>
+                    <li>Sustainable community development</li>
+                    <li>Poverty reduction through education</li>
+                  </ul>
+                </div>
+                
+                <div class="benefit-category">
+                  <h4>Business Benefits</h4>
+                  <ul>
+                    <li>Enhanced brand reputation</li>
+                    <li>Employee engagement opportunities</li>
+                    <li>Access to global talent pipeline</li>
+                    <li>ESG and sustainability reporting</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div class="corporate-levels">
+                <div class="partnership-tier">
+                  <h4>Community Partner</h4>
+                  <p class="tier-amount">$5,000 - $25,000</p>
+                  <p>Fund education for entire communities</p>
+                </div>
+                
+                <div class="partnership-tier">
+                  <h4>Global Impact Partner</h4>
+                  <p class="tier-amount">$25,000 - $100,000</p>
+                  <p>Multi-country program sponsorship</p>
+                </div>
+                
+                <div class="partnership-tier">
+                  <h4>Transformational Partner</h4>
+                  <p class="tier-amount">$100,000+</p>
+                  <p>Custom programs and brand integration</p>
+                </div>
+              </div>
+            </div>
+            
+            <button class="btn btn-primary btn-corporate" onclick="contactCorporate()">
+              <i class="fas fa-building"></i> Explore Corporate Partnership
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Success Stories -->
+      <section class="content-section bg-light">
+        <div class="section-container">
+          <h2 class="section-title">Your Donation in Action</h2>
+          
+          <div class="success-stories">
+            <div class="story-card active">
+              <div class="story-header">
+                <div class="story-image">
+                  <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="story-info">
+                  <h4>Maria Santos</h4>
+                  <p class="story-location">Philippines</p>
+                </div>
+              </div>
+              
+              <div class="story-content">
+                <blockquote>
+                  "Thanks to PMERIT donors, I completed my web development certification and now work remotely for a US company. I can support my family and give my children the education I never had."
+                </blockquote>
+                
+                <div class="story-outcome">
+                  <div class="outcome-metric">
+                    <span class="metric-value">300%</span>
+                    <span class="metric-label">Income Increase</span>
+                  </div>
+                  <div class="outcome-metric">
+                    <span class="metric-value">6 months</span>
+                    <span class="metric-label">To Employment</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="story-navigation">
+              <button class="story-nav-btn active" onclick="showStory(0)"></button>
+              <button class="story-nav-btn" onclick="showStory(1)"></button>
+              <button class="story-nav-btn" onclick="showStory(2)"></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Transparency -->
+      <section class="content-section">
+        <div class="section-container">
+          <h2 class="section-title">Complete Transparency</h2>
+          
+          <div class="transparency-info">
+            <div class="transparency-card">
+              <div class="transparency-icon">
+                <i class="fas fa-chart-pie"></i>
+              </div>
+              <h3>Where Your Money Goes</h3>
+              
+              <div class="fund-allocation">
+                <div class="allocation-item">
+                  <div class="allocation-bar">
+                    <div class="allocation-fill" style="width: 85%"></div>
+                  </div>
+                  <div class="allocation-info">
+                    <span class="allocation-label">Direct Education Programs</span>
+                    <span class="allocation-percent">85%</span>
+                  </div>
+                </div>
+                
+                <div class="allocation-item">
+                  <div class="allocation-bar">
+                    <div class="allocation-fill" style="width: 10%"></div>
+                  </div>
+                  <div class="allocation-info">
+                    <span class="allocation-label">Technology & Infrastructure</span>
+                    <span class="allocation-percent">10%</span>
+                  </div>
+                </div>
+                
+                <div class="allocation-item">
+                  <div class="allocation-bar">
+                    <div class="allocation-fill" style="width: 5%"></div>
+                  </div>
+                  <div class="allocation-info">
+                    <span class="allocation-label">Administrative Costs</span>
+                    <span class="allocation-percent">5%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="transparency-features">
+              <div class="transparency-feature">
+                <i class="fas fa-file-alt"></i>
+                <div>
+                  <h4>Annual Reports</h4>
+                  <p>Detailed financial and impact reporting</p>
+                </div>
+              </div>
+              
+              <div class="transparency-feature">
+                <i class="fas fa-eye"></i>
+                <div>
+                  <h4>Real-Time Tracking</h4>
+                  <p>See your donation's impact in real-time</p>
+                </div>
+              </div>
+              
+              <div class="transparency-feature">
+                <i class="fas fa-certificate"></i>
+                <div>
+                  <h4>Third-Party Audits</h4>
+                  <p>Independently verified financial practices</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Donation Modal -->
+  <div class="modal-overlay" id="donationModal" style="display: none;">
+    <div class="modal-content donation-modal">
+      <div class="modal-header">
+        <h3 id="donationTitle">Complete Your Donation</h3>
+        <button class="modal-close" onclick="closeDonationModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body" id="donationBody">
+        <!-- Dynamic content will be loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Fixed Mobile Footer -->
+  <div id="mobile-footer-placeholder">
+    <!-- Footer content will be loaded here via JavaScript -->
+  </div>
+
+  <!-- Loading Screen -->
+  <div class="mobile-loading" id="mobileLoading">
+    <div class="loading-spinner">
+      <div class="spinner-circle"></div>
+    </div>
+    <p class="loading-text">Loading Donation Portal...</p>
+  </div>
+
+  <!-- JavaScript for Mobile Template -->
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/clean-mobile.js"></script>
+  
+  <script>
+    // Mobile Template Initialization
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof MobileTemplate !== 'undefined') {
+        MobileTemplate.init();
+      }
+      
+      loadMobilePartials();
+      handleMobileViewport();
+      initializeDonation();
+      
+      setTimeout(() => {
+        const loading = document.getElementById('mobileLoading');
+        if (loading) {
+          loading.style.opacity = '0';
+          setTimeout(() => loading.style.display = 'none', 300);
+        }
+      }, 500);
+    });
+
+    // Load mobile partials
+    async function loadMobilePartials() {
+      try {
+        const headerResponse = await fetch('../partials/header-mobile.html');
+        const headerHTML = await headerResponse.text();
+        document.getElementById('mobile-header-placeholder').innerHTML = headerHTML;
+
+        const footerResponse = await fetch('../partials/footer-mobile.html');
+        const footerHTML = await footerResponse.text();
+        document.getElementById('mobile-footer-placeholder').innerHTML = footerHTML;
+
+        initializeMobileComponents();
+      } catch (error) {
+        console.error('Error loading mobile partials:', error);
+      }
+    }
+
+    function initializeMobileComponents() {
+      if (typeof initMobileHeader === 'function') {
+        initMobileHeader();
+      }
+      if (typeof initMobileFooter === 'function') {
+        initMobileFooter();
+      }
+      adjustContentHeight();
+    }
+
+    function handleMobileViewport() {
+      function setViewportHeight() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+        adjustContentHeight();
+      }
+
+      setViewportHeight();
+      window.addEventListener('resize', setViewportHeight);
+      window.addEventListener('orientationchange', () => {
+        setTimeout(setViewportHeight, 100);
+      });
+
+      if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        window.addEventListener('scroll', setViewportHeight);
+      }
+    }
+
+    function adjustContentHeight() {
+      const header = document.querySelector('.mobile-header');
+      const footer = document.querySelector('.mobile-footer');
+      const content = document.querySelector('.mobile-content-container');
+      
+      if (header && footer && content) {
+        const headerHeight = header.offsetHeight;
+        const footerHeight = footer.offsetHeight;
+        content.style.height = `calc(100vh - ${headerHeight}px - ${footerHeight}px)`;
+        content.style.top = `${headerHeight}px`;
+      }
+    }
+
+    // Donation functionality
+    let selectedAmount = 0;
+    let selectedMonthly = 0;
+    let donationType = 'one-time';
+
+    function initializeDonation() {
+      // Initialize donation tracking
+      console.log('Donation portal initialized');
+    }
+
+    function selectAmount(amount) {
+      selectedAmount = amount;
+      donationType = 'one-time';
+      
+      // Update UI to show selected amount
+      document.querySelectorAll('.amount-btn').forEach(btn => {
+        btn.classList.remove('selected');
+      });
+      
+      document.querySelector(`[data-amount="${amount}"]`).classList.add('selected');
+      document.getElementById('customAmount').value = '';
+    }
+
+    function selectMonthly(amount) {
+      selectedMonthly = amount;
+      donationType = 'monthly';
+      
+      // Update UI to show selected monthly amount
+      document.querySelectorAll('.monthly-btn').forEach(btn => {
+        btn.classList.remove('selected');
+      });
+      
+      document.querySelector(`[data-amount="${amount}"]`).classList.add('selected');
+    }
+
+    function processDonation(type) {
+      donationType = type;
+      let amount = 0;
+      
+      if (type === 'one-time') {
+        const customAmount = document.getElementById('customAmount').value;
+        amount = customAmount ? parseFloat(customAmount) : selectedAmount;
+      } else if (type === 'monthly') {
+        amount = selectedMonthly;
+      }
+      
+      if (amount === 0) {
+        showNotification('Please select a donation amount');
+        return;
+      }
+      
+      showDonationModal('Complete Your Donation', createDonationForm(amount, type));
+    }
+
+    function createDonationForm(amount, type) {
+      return `
+        <div class="donation-form">
+          <div class="donation-summary">
+            <h4>Donation Summary</h4>
+            <div class="summary-item">
+              <span>Amount:</span>
+              <span class="amount-display">$${amount}${type === 'monthly' ? '/month' : ''}</span>
+            </div>
+            <div class="summary-item">
+              <span>Type:</span>
+              <span>${type === 'monthly' ? 'Monthly Recurring' : 'One-time'}</span>
+            </div>
+            <div class="summary-impact">
+              <p><strong>Your Impact:</strong> ${getDonationImpact(amount, type)}</p>
+            </div>
+          </div>
+          
+          <form class="payment-form">
+            <h4>Donor Information</h4>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label>First Name</label>
+                <input type="text" class="form-control" required>
+              </div>
+              
+              <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" class="form-control" required>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" class="form-control" required>
+              <small>For donation receipts and impact updates</small>
+            </div>
+            
+            <div class="form-group">
+              <label>Country</label>
+              <select class="form-control" required>
+                <option value="">Select Country</option>
+                <option>United States</option>
+                <option>Canada</option>
+                <option>United Kingdom</option>
+                <option>Australia</option>
+                <option>Germany</option>
+                <option>Other</option>
+              </select>
+            </div>
+            
+            <h4>Payment Information</h4>
+            
+            <div class="payment-methods">
+              <label class="payment-method">
+                <input type="radio" name="payment" value="card" checked>
+                <i class="fas fa-credit-card"></i> Credit/Debit Card
+              </label>
+              <label class="payment-method">
+                <input type="radio" name="payment" value="paypal">
+                <i class="fab fa-paypal"></i> PayPal
+              </label>
+              <label class="payment-method">
+                <input type="radio" name="payment" value="bank">
+                <i class="fas fa-university"></i> Bank Transfer
+              </label>
+            </div>
+            
+            <div class="form-group">
+              <label>
+                <input type="checkbox" required>
+                I agree to the <a href="privacy.html" target="_blank">Terms of Service</a> and <a href="privacy.html" target="_blank">Privacy Policy</a>
+              </label>
+            </div>
+            
+            ${type === 'monthly' ? `
+              <div class="form-group">
+                <label>
+                  <input type="checkbox">
+                  Send me monthly impact reports showing how my donation is being used
+                </label>
+              </div>
+            ` : ''}
+            
+            <button type="submit" class="btn btn-primary btn-donate" onclick="completeDonation(event)">
+              <i class="fas fa-heart"></i> Complete Donation
+            </button>
+          </form>
+          
+          <div class="security-info">
+            <p><i class="fas fa-lock"></i> Your payment information is secure and encrypted</p>
+          </div>
+        </div>
+      `;
+    }
+
+    function getDonationImpact(amount, type) {
+      if (type === 'monthly') {
+        if (amount >= 50) return 'Fund multiple students\' complete education journey';
+        if (amount >= 25) return 'Provide community-wide access to education';
+        return 'Support one student\'s ongoing education';
+      } else {
+        if (amount >= 500) return 'Fund platform access for an entire community for one year';
+        if (amount >= 100) return 'Sponsor a full course completion for 4 students';
+        if (amount >= 50) return 'Provide 2 months of education for one student';
+        return 'Provide 1 month of comprehensive education for a student';
+      }
+    }
+
+    function sponsorStudent() {
+      showDonationModal('Sponsor a Student', `
+        <div class="sponsorship-form">
+          <h4>Create a Personal Connection</h4>
+          <p>Sponsor a student's complete educational journey and watch them transform their life.</p>
+          
+          <div class="sponsorship-options">
+            <div class="sponsor-option">
+              <input type="radio" id="basic-sponsor" name="sponsorship" value="basic" checked>
+              <label for="basic-sponsor" class="sponsor-card">
+                <div class="sponsor-header">
+                  <h5>Basic Sponsorship</h5>
+                  <div class="sponsor-price">$30/month</div>
+                </div>
+                <div class="sponsor-features">
+                  <p><i class="fas fa-check"></i> Full educational support</p>
+                  <p><i class="fas fa-check"></i> Monthly progress reports</p>
+                  <p><i class="fas fa-check"></i> Graduation celebration</p>
+                </div>
+              </label>
+            </div>
+            
+            <div class="sponsor-option">
+              <input type="radio" id="premium-sponsor" name="sponsorship" value="premium">
+              <label for="premium-sponsor" class="sponsor-card">
+                <div class="sponsor-header">
+                  <h5>Premium Sponsorship</h5>
+                  <div class="sponsor-price">$60/month</div>
+                </div>
+                <div class="sponsor-features">
+                  <p><i class="fas fa-check"></i> Everything in Basic</p>
+                  <p><i class="fas fa-check"></i> 1-on-1 mentorship</p>
+                  <p><i class="fas fa-check"></i> Career guidance</p>
+                  <p><i class="fas fa-check"></i> Direct communication</p>
+                </div>
+              </label>
+            </div>
+          </div>
+          
+          <div class="student-preferences">
+            <h5>Student Preferences (Optional)</h5>
+            
+            <div class="form-group">
+              <label>Preferred Region</label>
+              <select class="form-control">
+                <option value="">No preference</option>
+                <option>Sub-Saharan Africa</option>
+                <option>South Asia</option>
+                <option>Southeast Asia</option>
+                <option>Latin America</option>
+                <option>Middle East</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label>Field of Study</label>
+              <select class="form-control">
+                <option value="">No preference</option>
+                <option>Technology</option>
+                <option>Business</option>
+                <option>Healthcare</option>
+                <option>Education</option>
+                <option>Agriculture</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label>
+                <input type="checkbox">
+                I'm interested in mentoring my sponsored student
+              </label>
+            </div>
+          </div>
+          
+          <button class="btn btn-primary" onclick="processSponsorship()">
+            <i class="fas fa-handshake"></i> Begin Sponsorship
+          </button>
+        </div>
+      `);
+    }
+
+    function contactCorporate() {
+      showDonationModal('Corporate Partnership', `
+        <div class="corporate-form">
+          <h4>Transform Communities Through Corporate Giving</h4>
+          <p>Let's discuss how your organization can make a meaningful impact through education.</p>
+          
+          <form class="partnership-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Company Name</label>
+                <input type="text" class="form-control" required>
+              </div>
+              
+              <div class="form-group">
+                <label>Industry</label>
+                <select class="form-control" required>
+                  <option value="">Select Industry</option>
+                  <option>Technology</option>
+                  <option>Finance</option>
+                  <option>Healthcare</option>
+                  <option>Manufacturing</option>
+                  <option>Retail</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label>Your Name</label>
+                <input type="text" class="form-control" required>
+              </div>
+              
+              <div class="form-group">
+                <label>Title</label>
+                <input type="text" class="form-control" required>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+              <label>Annual Giving Budget</label>
+              <select class="form-control">
+                <option value="">Prefer not to say</option>
+                <option>$5,000 - $25,000</option>
+                <option>$25,000 - $100,000</option>
+                <option>$100,000 - $500,000</option>
+                <option>$500,000+</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label>CSR Goals</label>
+              <textarea class="form-control" rows="3" placeholder="Tell us about your corporate social responsibility objectives..."></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Submit Partnership Inquiry</button>
+          </form>
+        </div>
+      `);
+    }
+
+    function showStory(index) {
+      const stories = [
+        {
+          name: 'Maria Santos',
+          location: 'Philippines',
+          quote: 'Thanks to PMERIT donors, I completed my web development certification and now work remotely for a US company. I can support my family and give my children the education I never had.',
+          metrics: [
+            { value: '300%', label: 'Income Increase' },
+            { value: '6 months', label: 'To Employment' }
+          ]
+        },
+        {
+          name: 'James Ochieng',
+          location: 'Kenya',
+          quote: 'The digital marketing course changed everything. I started my own agency and now employ 5 people in my community. Education truly breaks the poverty cycle.',
+          metrics: [
+            { value: '5 jobs', label: 'Created' },
+            { value: '18 months', label: 'To Business Owner' }
+          ]
+        },
+        {
+          name: 'Priya Sharma',
+          location: 'India',
+          quote: 'Learning data analysis through PMERIT helped me get a position at a major tech company. Now I mentor other women in my village to follow the same path.',
+          metrics: [
+            { value: '400%', label: 'Salary Increase' },
+            { value: '12 women', label: 'Now Mentoring' }
+          ]
+        }
+      ];
+
+      const story = stories[index];
+      const storyElement = document.querySelector('.story-card');
+      
+      storyElement.innerHTML = `
+        <div class="story-header">
+          <div class="story-image">
+            <i class="fas fa-user-circle"></i>
+          </div>
+          <div class="story-info">
+            <h4>${story.name}</h4>
+            <p class="story-location">${story.location}</p>
+          </div>
+        </div>
+        
+        <div class="story-content">
+          <blockquote>${story.quote}</blockquote>
+          
+          <div class="story-outcome">
+            ${story.metrics.map(metric => `
+              <div class="outcome-metric">
+                <span class="metric-value">${metric.value}</span>
+                <span class="metric-label">${metric.label}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+
+      // Update navigation
+      const navButtons = document.querySelectorAll('.story-nav-btn');
+      navButtons.forEach((btn, i) => {
+        btn.classList.toggle('active', i === index);
+      });
+    }
+
+    function showDonationModal(title, content) {
+      document.getElementById('donationTitle').textContent = title;
+      document.getElementById('donationBody').innerHTML = content;
+      document.getElementById('donationModal').style.display = 'flex';
+    }
+
+    function closeDonationModal() {
+      document.getElementById('donationModal').style.display = 'none';
+    }
+
+    function completeDonation(event) {
+      event.preventDefault();
+      showNotification('Processing donation...');
+      
+      setTimeout(() => {
+        showNotification('Thank you! Your donation has been processed successfully.');
+        closeDonationModal();
+      }, 2000);
+    }
+
+    function processSponsorship() {
+      showNotification('Setting up your student sponsorship...');
+      
+      setTimeout(() => {
+        showNotification('Sponsorship created! You will be matched with a student within 48 hours.');
+        closeDonationModal();
+      }, 2000);
+    }
+
+    function showNotification(message) {
+      const notification = document.createElement('div');
+      notification.className = 'notification';
+      notification.innerHTML = `
+        <div class="notification-content">
+          <p>${message}</p>
+        </div>
+      `;
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+  </script>
+</body>
+</html>

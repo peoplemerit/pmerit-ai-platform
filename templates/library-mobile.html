@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Library — PMERIT Learning Resources</title>
+  <meta name="description" content="Access PMERIT's comprehensive library of educational resources, study materials, reference guides, and multimedia content for enhanced learning.">
+  <meta name="keywords" content="PMERIT library, learning resources, study materials, educational content, reference guides">
+  <meta name="author" content="PMERIT Team">
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Library - PMERIT Learning Resources">
+  <meta property="og:description" content="Access comprehensive learning resources and study materials in PMERIT's digital library.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pmerit.com/library">
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Library - PMERIT Learning Resources">
+  <meta name="twitter:description" content="Access comprehensive learning resources and study materials in PMERIT's digital library.">
+
+  <!-- Preconnect to external fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Google Fonts for PMERIT design system -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- PMERIT Design System Styles -->
+  <link rel="stylesheet" href="../assets/css/design-tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+  <link rel="stylesheet" href="../assets/css/clean-mobile.css">
+  <link rel="stylesheet" href="../assets/css/theme-pmerit.css">
+
+  <!-- Mobile-specific viewport handling -->
+  <meta name="theme-color" content="#2A5B8C">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  
+  <!-- Favicon and App Icons -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+</head>
+<body class="mobile-layout">
+  
+  <!-- Fixed Mobile Header -->
+  <div id="mobile-header-placeholder">
+    <!-- Header content will be loaded here via JavaScript -->
+  </div>
+
+  <!-- Main Content Container -->
+  <main class="mobile-content-container" id="mobileContent">
+    <div class="mobile-content-area" id="contentArea">
+      
+      <!-- Hero Section -->
+      <section class="hero-section library-hero">
+        <div class="hero-content">
+          <h1 class="hero-title">PMERIT Library</h1>
+          <p class="hero-subtitle">Your digital gateway to comprehensive learning resources</p>
+        </div>
+      </section>
+
+      <!-- Search Section -->
+      <section class="search-section">
+        <div class="section-container">
+          <div class="library-search">
+            <div class="search-input-container">
+              <input type="text" id="librarySearch" class="search-input" placeholder="Search resources, topics, or formats...">
+              <button class="search-btn" id="searchBtn">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+            
+            <div class="search-filters">
+              <select class="filter-select" id="categoryFilter">
+                <option value="">All Categories</option>
+                <option value="programming">Programming</option>
+                <option value="design">Design</option>
+                <option value="marketing">Marketing</option>
+                <option value="business">Business</option>
+                <option value="data">Data Science</option>
+                <option value="ai">AI & Machine Learning</option>
+              </select>
+              
+              <select class="filter-select" id="formatFilter">
+                <option value="">All Formats</option>
+                <option value="pdf">PDF Documents</option>
+                <option value="video">Video Tutorials</option>
+                <option value="interactive">Interactive Guides</option>
+                <option value="audio">Audio Content</option>
+                <option value="quiz">Practice Quizzes</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Access Categories -->
+      <section class="content-section">
+        <div class="section-container">
+          <h2 class="section-title">Browse by Category</h2>
+          <div class="category-grid">
+            
+            <div class="category-card" onclick="filterByCategory('programming')">
+              <div class="category-icon">
+                <i class="fas fa-code"></i>
+              </div>
+              <h3>Programming</h3>
+              <p>47 Resources</p>
+            </div>
+            
+            <div class="category-card" onclick="filterByCategory('design')">
+              <div class="category-icon">
+                <i class="fas fa-paint-brush"></i>
+              </div>
+              <h3>Design</h3>
+              <p>32 Resources</p>
+            </div>
+            
+            <div class="category-card" onclick="filterByCategory('marketing')">
+              <div class="category-icon">
+                <i class="fas fa-bullhorn"></i>
+              </div>
+              <h3>Marketing</h3>
+              <p>28 Resources</p>
+            </div>
+            
+            <div class="category-card" onclick="filterByCategory('business')">
+              <div class="category-icon">
+                <i class="fas fa-briefcase"></i>
+              </div>
+              <h3>Business</h3>
+              <p>35 Resources</p>
+            </div>
+            
+            <div class="category-card" onclick="filterByCategory('data')">
+              <div class="category-icon">
+                <i class="fas fa-chart-bar"></i>
+              </div>
+              <h3>Data Science</h3>
+              <p>41 Resources</p>
+            </div>
+            
+            <div class="category-card" onclick="filterByCategory('ai')">
+              <div class="category-icon">
+                <i class="fas fa-robot"></i>
+              </div>
+              <h3>AI & ML</h3>
+              <p>23 Resources</p>
+            </div>
+            
+          </div>
+        </div>
+      </section>
+
+      <!-- Featured Resources -->
+      <section class="content-section bg-light">
+        <div class="section-container">
+          <h2 class="section-title">Featured Resources</h2>
+          <div class="featured-resources">
+            
+            <div class="resource-card featured">
+              <div class="resource-thumbnail">
+                <div class="format-badge pdf">PDF</div>
+                <i class="fas fa-file-pdf resource-icon"></i>
+              </div>
+              <div class="resource-content">
+                <h3>Complete Guide to Web Development</h3>
+                <p class="resource-author">By PMERIT Team</p>
+                <p class="resource-description">Comprehensive 200-page guide covering HTML, CSS, JavaScript, and modern frameworks.</p>
+                <div class="resource-tags">
+                  <span class="tag">HTML</span>
+                  <span class="tag">CSS</span>
+                  <span class="tag">JavaScript</span>
+                </div>
+              </div>
+              <div class="resource-actions">
+                <button class="btn btn-primary" onclick="accessResource('web-dev-guide')">
+                  <i class="fas fa-download"></i> Access
+                </button>
+                <button class="btn btn-icon" onclick="saveResource('web-dev-guide')">
+                  <i class="fas fa-bookmark"></i>
+                </button>
+                <button class="btn btn-icon" onclick="shareResource('web-dev-guide')">
+                  <i class="fas fa-share-alt"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="resource-card featured">
+              <div class="resource-thumbnail">
+                <div class="format-badge video">VIDEO</div>
+                <i class="fas fa-play-circle resource-icon"></i>
+              </div>
+              <div class="resource-content">
+                <h3>AI for Beginners: Interactive Series</h3>
+                <p class="resource-author">By Dr. Sarah Chen</p>
+                <p class="resource-description">12-part video series introducing artificial intelligence concepts with hands-on examples.</p>
+                <div class="resource-tags">
+                  <span class="tag">AI</span>
+                  <span class="tag">Machine Learning</span>
+                  <span class="tag">Beginners</span>
+                </div>
+              </div>
+              <div class="resource-actions">
+                <button class="btn btn-primary" onclick="accessResource('ai-series')">
+                  <i class="fas fa-play"></i> Watch
+                </button>
+                <button class="btn btn-icon" onclick="saveResource('ai-series')">
+                  <i class="fas fa-bookmark"></i>
+                </button>
+                <button class="btn btn-icon" onclick="shareResource('ai-series')">
+                  <i class="fas fa-share-alt"></i>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Recently Added -->
+      <section class="content-section">
+        <div class="section-container">
+          <h2 class="section-title">Recently Added</h2>
+          <div class="resources-list" id="resourcesList">
+            
+            <div class="resource-item">
+              <div class="resource-thumb">
+                <i class="fas fa-file-pdf"></i>
+              </div>
+              <div class="resource-info">
+                <h4>Python Data Structures Cheat Sheet</h4>
+                <p class="resource-meta">PDF • Programming • Added 2 days ago</p>
+                <p class="resource-excerpt">Quick reference guide for Python lists, dictionaries, sets, and tuples.</p>
+              </div>
+              <div class="resource-quick-actions">
+                <button class="btn-icon" onclick="accessResource('python-cheat')">
+                  <i class="fas fa-download"></i>
+                </button>
+                <button class="btn-icon" onclick="saveResource('python-cheat')">
+                  <i class="fas fa-bookmark"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="resource-item">
+              <div class="resource-thumb">
+                <i class="fas fa-headphones"></i>
+              </div>
+              <div class="resource-info">
+                <h4>Digital Marketing Podcast Series</h4>
+                <p class="resource-meta">Audio • Marketing • Added 4 days ago</p>
+                <p class="resource-excerpt">Weekly podcast featuring industry experts discussing latest marketing trends.</p>
+              </div>
+              <div class="resource-quick-actions">
+                <button class="btn-icon" onclick="accessResource('marketing-podcast')">
+                  <i class="fas fa-play"></i>
+                </button>
+                <button class="btn-icon" onclick="saveResource('marketing-podcast')">
+                  <i class="fas fa-bookmark"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="resource-item">
+              <div class="resource-thumb">
+                <i class="fas fa-laptop-code"></i>
+              </div>
+              <div class="resource-info">
+                <h4>Interactive JavaScript Playground</h4>
+                <p class="resource-meta">Interactive • Programming • Added 1 week ago</p>
+                <p class="resource-excerpt">Hands-on coding environment to practice JavaScript concepts with real-time feedback.</p>
+              </div>
+              <div class="resource-quick-actions">
+                <button class="btn-icon" onclick="accessResource('js-playground')">
+                  <i class="fas fa-external-link-alt"></i>
+                </button>
+                <button class="btn-icon" onclick="saveResource('js-playground')">
+                  <i class="fas fa-bookmark"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="resource-item">
+              <div class="resource-thumb">
+                <i class="fas fa-question-circle"></i>
+              </div>
+              <div class="resource-info">
+                <h4>UI/UX Design Principles Quiz</h4>
+                <p class="resource-meta">Quiz • Design • Added 1 week ago</p>
+                <p class="resource-excerpt">Test your understanding of fundamental UI/UX design principles and best practices.</p>
+              </div>
+              <div class="resource-quick-actions">
+                <button class="btn-icon" onclick="accessResource('ux-quiz')">
+                  <i class="fas fa-play"></i>
+                </button>
+                <button class="btn-icon" onclick="saveResource('ux-quiz')">
+                  <i class="fas fa-bookmark"></i>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- My Saved Resources -->
+      <section class="content-section">
+        <div class="section-container">
+          <div class="saved-resources-header">
+            <h2 class="section-title">My Saved Resources</h2>
+            <button class="btn btn-secondary" onclick="viewAllSaved()">
+              <i class="fas fa-bookmark"></i> View All
+            </button>
+          </div>
+          
+          <div class="saved-preview" id="savedPreview">
+            <p class="empty-state">
+              <i class="fas fa-bookmark"></i>
+              Save resources to access them quickly later. Start by clicking the bookmark icon on any resource.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Offline Resources -->
+      <section class="content-section bg-light">
+        <div class="section-container">
+          <h2 class="section-title">Offline Access</h2>
+          <div class="offline-info">
+            <div class="offline-card">
+              <div class="offline-icon">
+                <i class="fas fa-wifi-slash"></i>
+              </div>
+              <h3>Download for Offline Reading</h3>
+              <p>Many resources can be downloaded for offline access, perfect for areas with limited internet connectivity.</p>
+              <div class="offline-stats">
+                <span class="stat">5 resources downloaded</span>
+                <span class="stat">127 MB used</span>
+              </div>
+              <button class="btn btn-primary" onclick="manageOfflineContent()">
+                Manage Downloads
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Resource Modal -->
+  <div class="modal-overlay" id="resourceModal" style="display: none;">
+    <div class="modal-content resource-modal">
+      <div class="modal-header">
+        <h3 id="modalResourceTitle">Resource Preview</h3>
+        <button class="modal-close" onclick="closeResourceModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="resource-preview" id="resourcePreview">
+        <!-- Resource content will be loaded here -->
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-primary" onclick="downloadResource()">
+          <i class="fas fa-download"></i> Download
+        </button>
+        <button class="btn btn-secondary" onclick="saveToLibrary()">
+          <i class="fas fa-bookmark"></i> Save
+        </button>
+        <button class="btn btn-secondary" onclick="shareResourceModal()">
+          <i class="fas fa-share"></i> Share
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fixed Mobile Footer -->
+  <div id="mobile-footer-placeholder">
+    <!-- Footer content will be loaded here via JavaScript -->
+  </div>
+
+  <!-- Loading Screen -->
+  <div class="mobile-loading" id="mobileLoading">
+    <div class="loading-spinner">
+      <div class="spinner-circle"></div>
+    </div>
+    <p class="loading-text">Loading Library...</p>
+  </div>
+
+  <!-- JavaScript for Mobile Template -->
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/clean-mobile.js"></script>
+  
+  <script>
+    // Mobile Template Initialization
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof MobileTemplate !== 'undefined') {
+        MobileTemplate.init();
+      }
+      
+      loadMobilePartials();
+      handleMobileViewport();
+      initializeLibrary();
+      
+      setTimeout(() => {
+        const loading = document.getElementById('mobileLoading');
+        if (loading) {
+          loading.style.opacity = '0';
+          setTimeout(() => loading.style.display = 'none', 300);
+        }
+      }, 500);
+    });
+
+    // Load mobile partials
+    async function loadMobilePartials() {
+      try {
+        const headerResponse = await fetch('../partials/header-mobile.html');
+        const headerHTML = await headerResponse.text();
+        document.getElementById('mobile-header-placeholder').innerHTML = headerHTML;
+
+        const footerResponse = await fetch('../partials/footer-mobile.html');
+        const footerHTML = await footerResponse.text();
+        document.getElementById('mobile-footer-placeholder').innerHTML = footerHTML;
+
+        initializeMobileComponents();
+      } catch (error) {
+        console.error('Error loading mobile partials:', error);
+      }
+    }
+
+    function initializeMobileComponents() {
+      if (typeof initMobileHeader === 'function') {
+        initMobileHeader();
+      }
+      if (typeof initMobileFooter === 'function') {
+        initMobileFooter();
+      }
+      adjustContentHeight();
+    }
+
+    function handleMobileViewport() {
+      function setViewportHeight() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+        adjustContentHeight();
+      }
+
+      setViewportHeight();
+      window.addEventListener('resize', setViewportHeight);
+      window.addEventListener('orientationchange', () => {
+        setTimeout(setViewportHeight, 100);
+      });
+
+      if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        window.addEventListener('scroll', setViewportHeight);
+      }
+    }
+
+    function adjustContentHeight() {
+      const header = document.querySelector('.mobile-header');
+      const footer = document.querySelector('.mobile-footer');
+      const content = document.querySelector('.mobile-content-container');
+      
+      if (header && footer && content) {
+        const headerHeight = header.offsetHeight;
+        const footerHeight = footer.offsetHeight;
+        content.style.height = `calc(100vh - ${headerHeight}px - ${footerHeight}px)`;
+        content.style.top = `${headerHeight}px`;
+      }
+    }
+
+    // Library functionality
+    let savedResources = JSON.parse(localStorage.getItem('pmerit-saved-resources') || '[]');
+    let currentResource = null;
+
+    function initializeLibrary() {
+      // Initialize search functionality
+      const searchInput = document.getElementById('librarySearch');
+      const searchBtn = document.getElementById('searchBtn');
+      
+      searchBtn.addEventListener('click', performSearch);
+      searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          performSearch();
+        }
+      });
+
+      // Initialize filters
+      document.getElementById('categoryFilter').addEventListener('change', applyFilters);
+      document.getElementById('formatFilter').addEventListener('change', applyFilters);
+
+      // Load saved resources preview
+      updateSavedResourcesPreview();
+    }
+
+    function performSearch() {
+      const searchTerm = document.getElementById('librarySearch').value.toLowerCase();
+      if (!searchTerm) {
+        showNotification('Please enter a search term');
+        return;
+      }
+      
+      showNotification(`Searching for "${searchTerm}"...`);
+      
+      // In a real implementation, this would query the backend
+      setTimeout(() => {
+        showNotification(`Found resources for "${searchTerm}"`);
+      }, 1000);
+    }
+
+    function applyFilters() {
+      const category = document.getElementById('categoryFilter').value;
+      const format = document.getElementById('formatFilter').value;
+      
+      showNotification('Applying filters...');
+      
+      // In a real implementation, this would filter the resources
+      setTimeout(() => {
+        showNotification('Filters applied');
+      }, 500);
+    }
+
+    function filterByCategory(category) {
+      document.getElementById('categoryFilter').value = category;
+      applyFilters();
+    }
+
+    function accessResource(resourceId) {
+      currentResource = resourceId;
+      
+      // Simulate resource loading
+      showNotification('Loading resource...');
+      
+      // In a real app, this would open the resource or download it
+      setTimeout(() => {
+        const resourceData = getResourceData(resourceId);
+        if (resourceData) {
+          openResourceModal(resourceData);
+        } else {
+          showNotification('Resource loaded successfully!');
+        }
+      }, 1000);
+    }
+
+    function saveResource(resourceId) {
+      if (!savedResources.includes(resourceId)) {
+        savedResources.push(resourceId);
+        localStorage.setItem('pmerit-saved-resources', JSON.stringify(savedResources));
+        showNotification('Resource saved to your library');
+        updateSavedResourcesPreview();
+      } else {
+        showNotification('Resource already saved');
+      }
+    }
+
+    function shareResource(resourceId) {
+      if (navigator.share) {
+        navigator.share({
+          title: 'PMERIT Resource',
+          text: 'Check out this learning resource from PMERIT!',
+          url: `https://pmerit.com/library/resource/${resourceId}`
+        });
+      } else {
+        copyToClipboard(`https://pmerit.com/library/resource/${resourceId}`);
+        showNotification('Resource link copied to clipboard!');
+      }
+    }
+
+    function getResourceData(resourceId) {
+      const resources = {
+        'web-dev-guide': {
+          title: 'Complete Guide to Web Development',
+          type: 'PDF Document',
+          description: 'Comprehensive guide covering modern web development practices and technologies.',
+          author: 'PMERIT Team'
+        },
+        'ai-series': {
+          title: 'AI for Beginners: Interactive Series',
+          type: 'Video Series',
+          description: '12-part interactive video series introducing AI concepts.',
+          author: 'Dr. Sarah Chen'
+        }
+      };
+      
+      return resources[resourceId];
+    }
+
+    function openResourceModal(resourceData) {
+      document.getElementById('modalResourceTitle').textContent = resourceData.title;
+      document.getElementById('resourcePreview').innerHTML = `
+        <div class="resource-details">
+          <h4>${resourceData.title}</h4>
+          <p class="resource-type">${resourceData.type}</p>
+          <p class="resource-author">By ${resourceData.author}</p>
+          <p class="resource-description">${resourceData.description}</p>
+          <div class="preview-content">
+            <p>Resource preview would be displayed here...</p>
+          </div>
+        </div>
+      `;
+      
+      document.getElementById('resourceModal').style.display = 'flex';
+    }
+
+    function closeResourceModal() {
+      document.getElementById('resourceModal').style.display = 'none';
+      currentResource = null;
+    }
+
+    function downloadResource() {
+      if (currentResource) {
+        showNotification('Starting download...');
+        closeResourceModal();
+        
+        setTimeout(() => {
+          showNotification('Resource downloaded successfully!');
+        }, 2000);
+      }
+    }
+
+    function saveToLibrary() {
+      if (currentResource) {
+        saveResource(currentResource);
+        closeResourceModal();
+      }
+    }
+
+    function shareResourceModal() {
+      if (currentResource) {
+        shareResource(currentResource);
+      }
+    }
+
+    function updateSavedResourcesPreview() {
+      const preview = document.getElementById('savedPreview');
+      
+      if (savedResources.length === 0) {
+        preview.innerHTML = `
+          <p class="empty-state">
+            <i class="fas fa-bookmark"></i>
+            Save resources to access them quickly later. Start by clicking the bookmark icon on any resource.
+          </p>
+        `;
+      } else {
+        preview.innerHTML = `
+          <div class="saved-count">
+            <p>${savedResources.length} saved resources</p>
+            <button class="btn btn-primary btn-small" onclick="viewAllSaved()">View All</button>
+          </div>
+        `;
+      }
+    }
+
+    function viewAllSaved() {
+      showNotification('Loading saved resources...');
+      // In a real app, this would navigate to a dedicated saved resources page
+    }
+
+    function manageOfflineContent() {
+      showNotification('Opening offline content manager...');
+      // In a real app, this would open offline content management interface
+    }
+
+    function copyToClipboard(text) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text);
+      } else {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+      }
+    }
+
+    function showNotification(message) {
+      const notification = document.createElement('div');
+      notification.className = 'notification';
+      notification.innerHTML = `
+        <div class="notification-content">
+          <p>${message}</p>
+        </div>
+      `;
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+  </script>
+</body>
+</html>

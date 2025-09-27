@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>PMERIT Classroom — Interactive Learning Environment</title>
+  <meta name="description" content="Access your interactive PMERIT classroom with AI tutor, course materials, and collaborative learning features.">
+  <meta name="keywords" content="PMERIT classroom, interactive learning, AI tutor, online education, virtual classroom">
+  <meta name="author" content="PMERIT Team">
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="PMERIT Classroom - Interactive Learning Environment">
+  <meta property="og:description" content="Access your interactive PMERIT classroom with AI tutor and course materials.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pmerit.com/classroom">
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="PMERIT Classroom - Interactive Learning Environment">
+  <meta name="twitter:description" content="Access your interactive PMERIT classroom with AI tutor and course materials.">
+
+  <!-- Preconnect to external fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Google Fonts for PMERIT design system -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- PMERIT Design System Styles -->
+  <link rel="stylesheet" href="../assets/css/design-tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+  <link rel="stylesheet" href="../assets/css/clean-mobile.css">
+  <link rel="stylesheet" href="../assets/css/theme-pmerit.css">
+
+  <!-- Mobile-specific viewport handling -->
+  <meta name="theme-color" content="#2A5B8C">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  
+  <!-- Favicon and App Icons -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+</head>
+<body class="mobile-layout classroom-layout">
+  
+  <!-- Fixed Mobile Header -->
+  <div id="mobile-header-placeholder">
+    <!-- Header content will be loaded here via JavaScript -->
+  </div>
+
+  <!-- Main Content Container -->
+  <main class="mobile-content-container" id="mobileContent">
+    <div class="mobile-content-area" id="contentArea">
+      
+      <!-- Classroom Header -->
+      <section class="classroom-header">
+        <div class="classroom-info">
+          <h1 class="classroom-title" id="classroomTitle">PMERIT Classroom</h1>
+          <p class="classroom-subtitle" id="classroomSubtitle">Interactive Learning Environment</p>
+        </div>
+        <div class="classroom-controls">
+          <button class="btn btn-icon" id="fullscreenBtn" onclick="toggleFullscreen()">
+            <i class="fas fa-expand"></i>
+          </button>
+          <button class="btn btn-secondary" id="endClassBtn" onclick="endClass()">
+            <i class="fas fa-sign-out-alt"></i> End Class
+          </button>
+        </div>
+      </section>
+
+      <!-- Mobile Classroom Tabs -->
+      <section class="classroom-tabs">
+        <div class="tab-navigation">
+          <button class="tab-btn active" onclick="switchTab('lesson')">
+            <i class="fas fa-play-circle"></i>
+            <span>Lesson</span>
+          </button>
+          <button class="tab-btn" onclick="switchTab('notes')">
+            <i class="fas fa-sticky-note"></i>
+            <span>Notes</span>
+          </button>
+          <button class="tab-btn" onclick="switchTab('chat')">
+            <i class="fas fa-robot"></i>
+            <span>AI Tutor</span>
+            <span class="notification-dot" id="chatNotification" style="display: none;"></span>
+          </button>
+          <button class="tab-btn" onclick="switchTab('outline')">
+            <i class="fas fa-list"></i>
+            <span>Outline</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Lesson Tab -->
+      <section class="classroom-tab-content active" id="lesson-tab">
+        <div class="lesson-player">
+          <div class="player-area">
+            <div class="lesson-video-placeholder" id="lessonPlayer">
+              <div class="video-icon">
+                <i class="fas fa-play-circle"></i>
+              </div>
+              <h3>Introduction to PMERIT Learning</h3>
+              <p>Select a lesson from the outline to begin</p>
+            </div>
+          </div>
+          
+          <div class="lesson-controls">
+            <button class="control-btn" id="playBtn" onclick="togglePlay()">
+              <i class="fas fa-play"></i>
+            </button>
+            <button class="control-btn" id="prevBtn" onclick="previousLesson()">
+              <i class="fas fa-step-backward"></i>
+            </button>
+            <button class="control-btn" id="nextBtn" onclick="nextLesson()">
+              <i class="fas fa-step-forward"></i>
+            </button>
+            <div class="progress-container">
+              <input type="range" class="progress-slider" id="progressSlider" min="0" max="100" value="0">
+              <div class="time-display">
+                <span id="currentTime">0:00</span> / <span id="totalTime">0:00</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="lesson-info">
+            <h3 id="currentLessonTitle">Welcome to PMERIT Classroom</h3>
+            <p id="currentLessonDescription">Your interactive learning journey begins here. Use the outline to navigate through lessons and engage with Gabriel AI for personalized assistance.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Notes Tab -->
+      <section class="classroom-tab-content" id="notes-tab">
+        <div class="notes-container">
+          <div class="notes-header">
+            <h3>Lesson Notes</h3>
+            <div class="notes-actions">
+              <button class="btn btn-icon" onclick="saveNotes()">
+                <i class="fas fa-save"></i>
+              </button>
+              <button class="btn btn-icon" onclick="exportNotes()">
+                <i class="fas fa-download"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="notes-editor">
+            <textarea id="notesEditor" class="notes-textarea" placeholder="Take notes during your lesson...
+
+Tips:
+• Write key concepts and definitions
+• Note questions to ask Gabriel AI
+• Summarize important points
+• Track your learning progress"></textarea>
+          </div>
+          
+          <div class="notes-features">
+            <button class="feature-btn" onclick="addTimestamp()">
+              <i class="fas fa-clock"></i>
+              Add Timestamp
+            </button>
+            <button class="feature-btn" onclick="addHighlight()">
+              <i class="fas fa-highlighter"></i>
+              Highlight
+            </button>
+            <button class="feature-btn" onclick="addQuestionMark()">
+              <i class="fas fa-question-circle"></i>
+              Mark Question
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- AI Chat Tab -->
+      <section class="classroom-tab-content" id="chat-tab">
+        <div class="ai-chat-container">
+          <div class="chat-header">
+            <div class="ai-avatar">
+              <i class="fas fa-robot"></i>
+            </div>
+            <div class="ai-info">
+              <h3>Gabriel AI Tutor</h3>
+              <p class="ai-status">Online and ready to help</p>
+            </div>
+          </div>
+          
+          <div class="chat-messages" id="chatMessages">
+            <div class="chat-message ai-message">
+              <div class="message-avatar">
+                <i class="fas fa-robot"></i>
+              </div>
+              <div class="message-content">
+                <p>Hello! I'm Gabriel, your AI tutor. I'm here to help you understand the lesson content, answer questions, and provide personalized guidance. How can I assist you today?</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="chat-input-container">
+            <form class="chat-form" id="chatForm">
+              <div class="input-group">
+                <input type="text" id="chatInput" class="chat-input" placeholder="Ask Gabriel about the lesson...">
+                <button type="submit" class="send-btn">
+                  <i class="fas fa-paper-plane"></i>
+                </button>
+              </div>
+            </form>
+            
+            <div class="chat-suggestions">
+              <button class="suggestion-btn" onclick="askSuggestion('Explain this concept')">
+                <i class="fas fa-lightbulb"></i>
+                Explain this concept
+              </button>
+              <button class="suggestion-btn" onclick="askSuggestion('Give me an example')">
+                <i class="fas fa-example"></i>
+                Give me an example
+              </button>
+              <button class="suggestion-btn" onclick="askSuggestion('Test my understanding')">
+                <i class="fas fa-question"></i>
+                Test my understanding
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Outline Tab -->
+      <section class="classroom-tab-content" id="outline-tab">
+        <div class="outline-container">
+          <div class="outline-header">
+            <h3>Course Outline</h3>
+            <div class="outline-progress">
+              <div class="progress-circle">
+                <span id="progressPercent">0%</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="outline-content">
+            <div class="outline-section">
+              <h4 class="section-title">
+                <i class="fas fa-chevron-down"></i>
+                Module 1: Introduction to PMERIT
+              </h4>
+              <div class="outline-lessons">
+                <div class="outline-item completed" onclick="selectLesson(1, 1)">
+                  <div class="lesson-status">
+                    <i class="fas fa-check-circle"></i>
+                  </div>
+                  <div class="lesson-info">
+                    <h5>Welcome to PMERIT</h5>
+                    <span class="lesson-duration">5 min</span>
+                  </div>
+                </div>
+                
+                <div class="outline-item current" onclick="selectLesson(1, 2)">
+                  <div class="lesson-status">
+                    <i class="fas fa-play-circle"></i>
+                  </div>
+                  <div class="lesson-info">
+                    <h5>How to Use the Classroom</h5>
+                    <span class="lesson-duration">8 min</span>
+                  </div>
+                </div>
+                
+                <div class="outline-item" onclick="selectLesson(1, 3)">
+                  <div class="lesson-status">
+                    <i class="far fa-circle"></i>
+                  </div>
+                  <div class="lesson-info">
+                    <h5>Your Learning Journey</h5>
+                    <span class="lesson-duration">12 min</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="outline-section">
+              <h4 class="section-title">
+                <i class="fas fa-chevron-right"></i>
+                Module 2: Getting Started with Gabriel AI
+              </h4>
+              <div class="outline-lessons" style="display: none;">
+                <div class="outline-item" onclick="selectLesson(2, 1)">
+                  <div class="lesson-status">
+                    <i class="far fa-circle"></i>
+                  </div>
+                  <div class="lesson-info">
+                    <h5>Meet Your AI Tutor</h5>
+                    <span class="lesson-duration">10 min</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Fixed Mobile Footer -->
+  <div id="mobile-footer-placeholder">
+    <!-- Footer content will be loaded here via JavaScript -->
+  </div>
+
+  <!-- Loading Screen -->
+  <div class="mobile-loading" id="mobileLoading">
+    <div class="loading-spinner">
+      <div class="spinner-circle"></div>
+    </div>
+    <p class="loading-text">Loading Classroom...</p>
+  </div>
+
+  <!-- JavaScript for Mobile Template -->
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/clean-mobile.js"></script>
+  
+  <script>
+    // Mobile Template Initialization
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof MobileTemplate !== 'undefined') {
+        MobileTemplate.init();
+      }
+      
+      loadMobilePartials();
+      handleMobileViewport();
+      initializeClassroom();
+      
+      setTimeout(() => {
+        const loading = document.getElementById('mobileLoading');
+        if (loading) {
+          loading.style.opacity = '0';
+          setTimeout(() => loading.style.display = 'none', 300);
+        }
+      }, 500);
+    });
+
+    // Load mobile partials
+    async function loadMobilePartials() {
+      try {
+        const headerResponse = await fetch('../partials/header-mobile.html');
+        const headerHTML = await headerResponse.text();
+        document.getElementById('mobile-header-placeholder').innerHTML = headerHTML;
+
+        const footerResponse = await fetch('../partials/footer-mobile.html');
+        const footerHTML = await footerResponse.text();
+        document.getElementById('mobile-footer-placeholder').innerHTML = footerHTML;
+
+        initializeMobileComponents();
+      } catch (error) {
+        console.error('Error loading mobile partials:', error);
+      }
+    }
+
+    function initializeMobileComponents() {
+      if (typeof initMobileHeader === 'function') {
+        initMobileHeader();
+      }
+      if (typeof initMobileFooter === 'function') {
+        initMobileFooter();
+      }
+      adjustContentHeight();
+    }
+
+    function handleMobileViewport() {
+      function setViewportHeight() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+        adjustContentHeight();
+      }
+
+      setViewportHeight();
+      window.addEventListener('resize', setViewportHeight);
+      window.addEventListener('orientationchange', () => {
+        setTimeout(setViewportHeight, 100);
+      });
+
+      if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        window.addEventListener('scroll', setViewportHeight);
+      }
+    }
+
+    function adjustContentHeight() {
+      const header = document.querySelector('.mobile-header');
+      const footer = document.querySelector('.mobile-footer');
+      const content = document.querySelector('.mobile-content-container');
+      
+      if (header && footer && content) {
+        const headerHeight = header.offsetHeight;
+        const footerHeight = footer.offsetHeight;
+        content.style.height = `calc(100vh - ${headerHeight}px - ${footerHeight}px)`;
+        content.style.top = `${headerHeight}px`;
+      }
+    }
+
+    // Classroom functionality
+    let currentModule = 1;
+    let currentLesson = 2;
+    let isPlaying = false;
+    let notes = localStorage.getItem('pmerit-classroom-notes') || '';
+
+    function initializeClassroom() {
+      // Initialize chat form
+      document.getElementById('chatForm').addEventListener('submit', sendChatMessage);
+      
+      // Load saved notes
+      document.getElementById('notesEditor').value = notes;
+      
+      // Auto-save notes
+      document.getElementById('notesEditor').addEventListener('input', function() {
+        notes = this.value;
+        localStorage.setItem('pmerit-classroom-notes', notes);
+      });
+      
+      // Update progress
+      updateProgress();
+    }
+
+    function switchTab(tabName) {
+      // Remove active class from all tabs and buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.classroom-tab-content').forEach(tab => tab.classList.remove('active'));
+      
+      // Add active class to selected tab and button
+      document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
+      document.getElementById(tabName + '-tab').classList.add('active');
+      
+      // Hide chat notification when opening chat
+      if (tabName === 'chat') {
+        document.getElementById('chatNotification').style.display = 'none';
+      }
+    }
+
+    function togglePlay() {
+      const playBtn = document.getElementById('playBtn');
+      const icon = playBtn.querySelector('i');
+      
+      isPlaying = !isPlaying;
+      
+      if (isPlaying) {
+        icon.className = 'fas fa-pause';
+        // Start lesson simulation
+      } else {
+        icon.className = 'fas fa-play';
+        // Pause lesson
+      }
+    }
+
+    function previousLesson() {
+      if (currentLesson > 1) {
+        selectLesson(currentModule, currentLesson - 1);
+      } else if (currentModule > 1) {
+        selectLesson(currentModule - 1, 3); // Assuming 3 lessons per module
+      }
+    }
+
+    function nextLesson() {
+      selectLesson(currentModule, currentLesson + 1);
+    }
+
+    function selectLesson(moduleNum, lessonNum) {
+      currentModule = moduleNum;
+      currentLesson = lessonNum;
+      
+      // Update lesson display
+      const lessons = {
+        '1-1': { title: 'Welcome to PMERIT', description: 'Introduction to the PMERIT learning platform and your educational journey.' },
+        '1-2': { title: 'How to Use the Classroom', description: 'Learn to navigate the classroom interface, take notes, and interact with Gabriel AI.' },
+        '1-3': { title: 'Your Learning Journey', description: 'Understand how PMERIT personalizes your learning experience and tracks progress.' },
+        '2-1': { title: 'Meet Your AI Tutor', description: 'Introduction to Gabriel AI and how it can enhance your learning experience.' }
+      };
+      
+      const lessonKey = `${moduleNum}-${lessonNum}`;
+      const lesson = lessons[lessonKey];
+      
+      if (lesson) {
+        document.getElementById('currentLessonTitle').textContent = lesson.title;
+        document.getElementById('currentLessonDescription').textContent = lesson.description;
+        
+        // Update outline active state
+        document.querySelectorAll('.outline-item').forEach(item => {
+          item.classList.remove('current');
+        });
+        
+        // Switch to lesson tab if not already there
+        if (!document.getElementById('lesson-tab').classList.contains('active')) {
+          switchTab('lesson');
+        }
+        
+        updateProgress();
+      }
+    }
+
+    function updateProgress() {
+      // Simple progress calculation
+      const completedLessons = 1; // Hardcoded for demo
+      const totalLessons = 4;
+      const progressPercent = Math.round((completedLessons / totalLessons) * 100);
+      
+      document.getElementById('progressPercent').textContent = progressPercent + '%';
+    }
+
+    function sendChatMessage(e) {
+      e.preventDefault();
+      
+      const input = document.getElementById('chatInput');
+      const message = input.value.trim();
+      
+      if (!message) return;
+      
+      // Add user message
+      addChatMessage(message, 'user');
+      
+      // Clear input
+      input.value = '';
+      
+      // Simulate AI response
+      setTimeout(() => {
+        const responses = [
+          "That's a great question! Let me explain that concept in more detail...",
+          "I can help you understand this better. Would you like me to provide an example?",
+          "Based on what we've covered, here's how I would approach this...",
+          "Let me break this down into simpler steps for you...",
+          "That connects to what we learned earlier. Do you remember when we discussed...?"
+        ];
+        const response = responses[Math.floor(Math.random() * responses.length)];
+        addChatMessage(response, 'ai');
+        
+        // Show notification if not on chat tab
+        if (!document.getElementById('chat-tab').classList.contains('active')) {
+          document.getElementById('chatNotification').style.display = 'block';
+        }
+      }, 1000);
+    }
+
+    function addChatMessage(message, sender) {
+      const container = document.getElementById('chatMessages');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `chat-message ${sender}-message`;
+      
+      messageDiv.innerHTML = `
+        <div class="message-avatar">
+          <i class="fas fa-${sender === 'user' ? 'user' : 'robot'}"></i>
+        </div>
+        <div class="message-content">
+          <p>${message}</p>
+        </div>
+      `;
+      
+      container.appendChild(messageDiv);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function askSuggestion(suggestion) {
+      document.getElementById('chatInput').value = suggestion;
+      sendChatMessage(new Event('submit'));
+    }
+
+    function addTimestamp() {
+      const editor = document.getElementById('notesEditor');
+      const timestamp = new Date().toLocaleTimeString();
+      editor.value += `\n[${timestamp}] `;
+      editor.focus();
+    }
+
+    function addHighlight() {
+      const editor = document.getElementById('notesEditor');
+      editor.value += '\n**IMPORTANT**: ';
+      editor.focus();
+    }
+
+    function addQuestionMark() {
+      const editor = document.getElementById('notesEditor');
+      editor.value += '\n❓ Question: ';
+      editor.focus();
+    }
+
+    function saveNotes() {
+      const notes = document.getElementById('notesEditor').value;
+      localStorage.setItem('pmerit-classroom-notes', notes);
+      
+      // Show save confirmation
+      showNotification('Notes saved successfully!');
+    }
+
+    function exportNotes() {
+      const notes = document.getElementById('notesEditor').value;
+      const blob = new Blob([notes], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'pmerit-notes.txt';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    function endClass() {
+      if (confirm('Are you sure you want to end this class session?')) {
+        window.location.href = '../learner-portal.html';
+      }
+    }
+
+    function showNotification(message) {
+      const notification = document.createElement('div');
+      notification.className = 'notification';
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+
+    // Toggle outline sections
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('section-title')) {
+        const section = e.target.parentElement;
+        const lessons = section.querySelector('.outline-lessons');
+        const icon = e.target.querySelector('i');
+        
+        if (lessons.style.display === 'none') {
+          lessons.style.display = 'block';
+          icon.className = 'fas fa-chevron-down';
+        } else {
+          lessons.style.display = 'none';
+          icon.className = 'fas fa-chevron-right';
+        }
+      }
+    });
+  </script>
+</body>
+</html>

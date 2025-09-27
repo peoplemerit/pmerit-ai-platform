@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Learning Progress — PMERIT Achievement Tracking</title>
+  <meta name="description" content="Track your learning progress, achievements, and milestones on PMERIT. Monitor course completion, skills gained, and career development.">
+  <meta name="keywords" content="PMERIT progress, learning tracking, achievements, course progress, skill development">
+  <meta name="author" content="PMERIT Team">
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Learning Progress - PMERIT Achievement Tracking">
+  <meta property="og:description" content="Track your learning progress and achievements on PMERIT platform.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pmerit.com/progress">
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Learning Progress - PMERIT Achievement Tracking">
+  <meta name="twitter:description" content="Track your learning progress and achievements on PMERIT platform.">
+
+  <!-- Preconnect to external fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Google Fonts for PMERIT design system -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- PMERIT Design System Styles -->
+  <link rel="stylesheet" href="../assets/css/design-tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+  <link rel="stylesheet" href="../assets/css/clean-mobile.css">
+  <link rel="stylesheet" href="../assets/css/theme-pmerit.css">
+
+  <!-- Mobile-specific viewport handling -->
+  <meta name="theme-color" content="#2A5B8C">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  
+  <!-- Favicon and App Icons -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+</head>
+<body class="mobile-layout">
+  
+  <!-- Fixed Mobile Header -->
+  <div id="mobile-header-placeholder">
+    <!-- Header content will be loaded here via JavaScript -->
+  </div>
+
+  <!-- Main Content Container -->
+  <main class="mobile-content-container" id="mobileContent">
+    <div class="mobile-content-area" id="contentArea">
+      
+      <!-- Hero Section -->
+      <section class="hero-section progress-hero">
+        <div class="hero-content">
+          <h1 class="hero-title">Learning Progress</h1>
+          <p class="hero-subtitle">Track your achievements and growth</p>
+        </div>
+      </section>
+
+      <!-- Progress Overview -->
+      <section class="progress-overview">
+        <div class="section-container">
+          <div class="overview-card">
+            <div class="learner-info">
+              <div class="avatar-container">
+                <div class="learner-avatar">
+                  <i class="fas fa-user-graduate"></i>
+                </div>
+                <div class="level-badge">
+                  <span>Level 3</span>
+                </div>
+              </div>
+              <div class="learner-details">
+                <h2 id="learnerName">John Doe</h2>
+                <p class="learner-title">Aspiring Developer</p>
+                <p class="member-since">Member since February 2025</p>
+              </div>
+            </div>
+            
+            <div class="progress-stats">
+              <div class="stat-item">
+                <div class="stat-number">2</div>
+                <div class="stat-label">Certificates</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-number">127</div>
+                <div class="stat-label">Learning Hours</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-number">8</div>
+                <div class="stat-label">Skills Gained</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Current Goals -->
+      <section class="content-section">
+        <div class="section-container">
+          <h2 class="section-title">Current Learning Goals</h2>
+          <div class="goals-container">
+            
+            <div class="goal-card">
+              <div class="goal-header">
+                <div class="goal-icon">
+                  <i class="fas fa-code"></i>
+                </div>
+                <h3>Complete Web Development Track</h3>
+                <div class="goal-progress">75%</div>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 75%"></div>
+              </div>
+              <div class="goal-details">
+                <p>3 of 4 courses completed</p>
+                <p class="goal-deadline">Target: April 30, 2025</p>
+              </div>
+              <button class="btn btn-primary btn-small" onclick="viewGoalDetails('web-dev')">
+                View Details
+              </button>
+            </div>
+
+            <div class="goal-card">
+              <div class="goal-header">
+                <div class="goal-icon">
+                  <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Earn 3 Certificates This Quarter</h3>
+                <div class="goal-progress">67%</div>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 67%"></div>
+              </div>
+              <div class="goal-details">
+                <p>2 of 3 certificates earned</p>
+                <p class="goal-deadline">Target: March 31, 2025</p>
+              </div>
+              <button class="btn btn-primary btn-small" onclick="viewGoalDetails('certificates')">
+                View Details
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Active Courses -->
+      <section class="content-section">
+        <div class="section-container">
+          <h2 class="section-title">Active Courses</h2>
+          <div class="courses-grid">
+            
+            <div class="course-progress-card">
+              <div class="course-header">
+                <h3>Web Development Fundamentals</h3>
+                <div class="course-progress-percent">75%</div>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 75%"></div>
+              </div>
+              <div class="course-details">
+                <div class="course-stats">
+                  <div class="stat">
+                    <i class="fas fa-play-circle"></i>
+                    <span>12/16 Lessons</span>
+                  </div>
+                  <div class="stat">
+                    <i class="fas fa-clock"></i>
+                    <span>18 hours</span>
+                  </div>
+                  <div class="stat">
+                    <i class="fas fa-calendar"></i>
+                    <span>5 days left</span>
+                  </div>
+                </div>
+                <div class="next-lesson">
+                  <p>Next: JavaScript Functions</p>
+                </div>
+              </div>
+              <div class="course-actions">
+                <button class="btn btn-primary" onclick="continueCourse('web-dev')">
+                  Continue Learning
+                </button>
+                <button class="btn btn-secondary" onclick="viewCourseProgress('web-dev')">
+                  View Details
+                </button>
+              </div>
+            </div>
+
+            <div class="course-progress-card">
+              <div class="course-header">
+                <h3>Digital Marketing Essentials</h3>
+                <div class="course-progress-percent">45%</div>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 45%"></div>
+              </div>
+              <div class="course-details">
+                <div class="course-stats">
+                  <div class="stat">
+                    <i class="fas fa-play-circle"></i>
+                    <span>6/14 Lessons</span>
+                  </div>
+                  <div class="stat">
+                    <i class="fas fa-clock"></i>
+                    <span>8 hours</span>
+                  </div>
+                  <div class="stat">
+                    <i class="fas fa-calendar"></i>
+                    <span>12 days left</span>
+                  </div>
+                </div>
+                <div class="next-lesson">
+                  <p>Next: Social Media Strategy</p>
+                </div>
+              </div>
+              <div class="course-actions">
+                <button class="btn btn-primary" onclick="continueCourse('digital-marketing')">
+                  Continue Learning
+                </button>
+                <button class="btn btn-secondary" onclick="viewCourseProgress('digital-marketing')">
+                  View Details
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Achievement Timeline -->
+      <section class="content-section bg-light">
+        <div class="section-container">
+          <h2 class="section-title">Recent Achievements</h2>
+          <div class="achievement-timeline">
+            
+            <div class="timeline-item">
+              <div class="timeline-icon achievement">
+                <i class="fas fa-trophy"></i>
+              </div>
+              <div class="timeline-content">
+                <h4>Course Completed!</h4>
+                <p>Successfully completed "AI and Machine Learning Introduction"</p>
+                <span class="timeline-date">2 days ago</span>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-icon badge">
+                <i class="fas fa-medal"></i>
+              </div>
+              <div class="timeline-content">
+                <h4>Badge Earned: Fast Learner</h4>
+                <p>Completed 3 lessons in one day</p>
+                <span class="timeline-date">5 days ago</span>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-icon milestone">
+                <i class="fas fa-star"></i>
+              </div>
+              <div class="timeline-content">
+                <h4>Milestone Reached</h4>
+                <p>100 hours of learning completed</p>
+                <span class="timeline-date">1 week ago</span>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-icon certificate">
+                <i class="fas fa-certificate"></i>
+              </div>
+              <div class="timeline-content">
+                <h4>Certificate Earned</h4>
+                <p>Digital Literacy Fundamentals</p>
+                <span class="timeline-date">2 weeks ago</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills Progress -->
+      <section class="content-section">
+        <div class="section-container">
+          <h2 class="section-title">Skills Development</h2>
+          <div class="skills-progress">
+            
+            <div class="skill-item">
+              <div class="skill-header">
+                <h4>JavaScript Programming</h4>
+                <span class="skill-level">Intermediate</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-fill" style="width: 70%"></div>
+              </div>
+              <div class="skill-details">
+                <span class="skill-percent">70%</span>
+                <span class="skill-next">Next: Advanced Functions</span>
+              </div>
+            </div>
+
+            <div class="skill-item">
+              <div class="skill-header">
+                <h4>HTML & CSS</h4>
+                <span class="skill-level">Advanced</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-fill" style="width: 85%"></div>
+              </div>
+              <div class="skill-details">
+                <span class="skill-percent">85%</span>
+                <span class="skill-next">Next: CSS Grid</span>
+              </div>
+            </div>
+
+            <div class="skill-item">
+              <div class="skill-header">
+                <h4>Digital Marketing</h4>
+                <span class="skill-level">Beginner</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-fill" style="width: 35%"></div>
+              </div>
+              <div class="skill-details">
+                <span class="skill-percent">35%</span>
+                <span class="skill-next">Next: SEO Basics</span>
+              </div>
+            </div>
+
+            <div class="skill-item">
+              <div class="skill-header">
+                <h4>Data Analysis</h4>
+                <span class="skill-level">Beginner</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-fill" style="width: 25%"></div>
+              </div>
+              <div class="skill-details">
+                <span class="skill-percent">25%</span>
+                <span class="skill-next">Next: Statistics Basics</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Weekly Activity -->
+      <section class="content-section">
+        <div class="section-container">
+          <h2 class="section-title">Weekly Activity</h2>
+          <div class="activity-chart">
+            <div class="chart-container">
+              <div class="chart-bars">
+                <div class="chart-bar" style="height: 60%;">
+                  <span class="bar-value">3h</span>
+                  <span class="bar-label">Mon</span>
+                </div>
+                <div class="chart-bar" style="height: 80%;">
+                  <span class="bar-value">4h</span>
+                  <span class="bar-label">Tue</span>
+                </div>
+                <div class="chart-bar" style="height: 40%;">
+                  <span class="bar-value">2h</span>
+                  <span class="bar-label">Wed</span>
+                </div>
+                <div class="chart-bar" style="height: 100%;">
+                  <span class="bar-value">5h</span>
+                  <span class="bar-label">Thu</span>
+                </div>
+                <div class="chart-bar" style="height: 70%;">
+                  <span class="bar-value">3.5h</span>
+                  <span class="bar-label">Fri</span>
+                </div>
+                <div class="chart-bar" style="height: 20%;">
+                  <span class="bar-value">1h</span>
+                  <span class="bar-label">Sat</span>
+                </div>
+                <div class="chart-bar" style="height: 50%;">
+                  <span class="bar-value">2.5h</span>
+                  <span class="bar-label">Sun</span>
+                </div>
+              </div>
+            </div>
+            <div class="activity-summary">
+              <div class="summary-stat">
+                <span class="stat-label">Total this week:</span>
+                <span class="stat-value">21 hours</span>
+              </div>
+              <div class="summary-stat">
+                <span class="stat-label">Daily average:</span>
+                <span class="stat-value">3 hours</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Fixed Mobile Footer -->
+  <div id="mobile-footer-placeholder">
+    <!-- Footer content will be loaded here via JavaScript -->
+  </div>
+
+  <!-- Loading Screen -->
+  <div class="mobile-loading" id="mobileLoading">
+    <div class="loading-spinner">
+      <div class="spinner-circle"></div>
+    </div>
+    <p class="loading-text">Loading Progress...</p>
+  </div>
+
+  <!-- JavaScript for Mobile Template -->
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/clean-mobile.js"></script>
+  
+  <script>
+    // Mobile Template Initialization
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof MobileTemplate !== 'undefined') {
+        MobileTemplate.init();
+      }
+      
+      loadMobilePartials();
+      handleMobileViewport();
+      initializeProgress();
+      
+      setTimeout(() => {
+        const loading = document.getElementById('mobileLoading');
+        if (loading) {
+          loading.style.opacity = '0';
+          setTimeout(() => loading.style.display = 'none', 300);
+        }
+      }, 500);
+    });
+
+    // Load mobile partials
+    async function loadMobilePartials() {
+      try {
+        const headerResponse = await fetch('../partials/header-mobile.html');
+        const headerHTML = await headerResponse.text();
+        document.getElementById('mobile-header-placeholder').innerHTML = headerHTML;
+
+        const footerResponse = await fetch('../partials/footer-mobile.html');
+        const footerHTML = await footerResponse.text();
+        document.getElementById('mobile-footer-placeholder').innerHTML = footerHTML;
+
+        initializeMobileComponents();
+      } catch (error) {
+        console.error('Error loading mobile partials:', error);
+      }
+    }
+
+    function initializeMobileComponents() {
+      if (typeof initMobileHeader === 'function') {
+        initMobileHeader();
+      }
+      if (typeof initMobileFooter === 'function') {
+        initMobileFooter();
+      }
+      adjustContentHeight();
+    }
+
+    function handleMobileViewport() {
+      function setViewportHeight() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+        adjustContentHeight();
+      }
+
+      setViewportHeight();
+      window.addEventListener('resize', setViewportHeight);
+      window.addEventListener('orientationchange', () => {
+        setTimeout(setViewportHeight, 100);
+      });
+
+      if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        window.addEventListener('scroll', setViewportHeight);
+      }
+    }
+
+    function adjustContentHeight() {
+      const header = document.querySelector('.mobile-header');
+      const footer = document.querySelector('.mobile-footer');
+      const content = document.querySelector('.mobile-content-container');
+      
+      if (header && footer && content) {
+        const headerHeight = header.offsetHeight;
+        const footerHeight = footer.offsetHeight;
+        content.style.height = `calc(100vh - ${headerHeight}px - ${footerHeight}px)`;
+        content.style.top = `${headerHeight}px`;
+      }
+    }
+
+    // Progress functionality
+    function initializeProgress() {
+      // Load user data (in real app, this would come from API)
+      loadUserProgress();
+      
+      // Animate progress bars
+      animateProgressBars();
+      
+      // Initialize chart interactions
+      initializeActivityChart();
+    }
+
+    function loadUserProgress() {
+      // In a real application, this would fetch data from an API
+      const userData = {
+        name: 'John Doe',
+        level: 3,
+        totalHours: 127,
+        certificates: 2,
+        skills: 8
+      };
+      
+      document.getElementById('learnerName').textContent = userData.name;
+    }
+
+    function animateProgressBars() {
+      const progressBars = document.querySelectorAll('.progress-fill, .skill-fill');
+      
+      progressBars.forEach(bar => {
+        const width = bar.style.width;
+        bar.style.width = '0%';
+        
+        setTimeout(() => {
+          bar.style.transition = 'width 1s ease-out';
+          bar.style.width = width;
+        }, 200);
+      });
+    }
+
+    function initializeActivityChart() {
+      const bars = document.querySelectorAll('.chart-bar');
+      
+      bars.forEach((bar, index) => {
+        setTimeout(() => {
+          bar.style.opacity = '0';
+          bar.style.transform = 'translateY(20px)';
+          
+          setTimeout(() => {
+            bar.style.transition = 'all 0.5s ease-out';
+            bar.style.opacity = '1';
+            bar.style.transform = 'translateY(0)';
+          }, index * 100);
+        }, 500);
+      });
+    }
+
+    function viewGoalDetails(goalId) {
+      // Navigate to detailed goal view or show modal
+      showNotification('Loading goal details...');
+    }
+
+    function continueCourse(courseId) {
+      // Navigate to classroom or course page
+      window.location.href = '../classroom.html?course=' + courseId;
+    }
+
+    function viewCourseProgress(courseId) {
+      // Show detailed course progress
+      showNotification('Loading course details...');
+    }
+
+    function showNotification(message) {
+      const notification = document.createElement('div');
+      notification.className = 'notification';
+      notification.innerHTML = `
+        <div class="notification-content">
+          <p>${message}</p>
+        </div>
+      `;
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Certificates — PMERIT Verified Credentials</title>
+  <meta name="description" content="View, download, and verify your PMERIT certificates. Blockchain-backed credentials recognized by employers worldwide.">
+  <meta name="keywords" content="PMERIT certificates, verified credentials, blockchain certificates, education credentials">
+  <meta name="author" content="PMERIT Team">
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Certificates - PMERIT Verified Credentials">
+  <meta property="og:description" content="View and verify your PMERIT certificates with blockchain-backed security.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pmerit.com/certificates">
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Certificates - PMERIT Verified Credentials">
+  <meta name="twitter:description" content="View and verify your PMERIT certificates with blockchain-backed security.">
+
+  <!-- Preconnect to external fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Google Fonts for PMERIT design system -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- PMERIT Design System Styles -->
+  <link rel="stylesheet" href="../assets/css/design-tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+  <link rel="stylesheet" href="../assets/css/clean-mobile.css">
+  <link rel="stylesheet" href="../assets/css/theme-pmerit.css">
+
+  <!-- Mobile-specific viewport handling -->
+  <meta name="theme-color" content="#2A5B8C">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  
+  <!-- Favicon and App Icons -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+</head>
+<body class="mobile-layout">
+  
+  <!-- Fixed Mobile Header -->
+  <div id="mobile-header-placeholder">
+    <!-- Header content will be loaded here via JavaScript -->
+  </div>
+
+  <!-- Main Content Container -->
+  <main class="mobile-content-container" id="mobileContent">
+    <div class="mobile-content-area" id="contentArea">
+      
+      <!-- Hero Section -->
+      <section class="hero-section certificates-hero">
+        <div class="hero-content">
+          <h1 class="hero-title">My Certificates</h1>
+          <p class="hero-subtitle">Verified credentials that showcase your achievements</p>
+        </div>
+      </section>
+
+      <!-- Certificate Status Overview -->
+      <section class="status-overview">
+        <div class="section-container">
+          <div class="status-grid">
+            <div class="status-card">
+              <div class="status-icon earned">
+                <i class="fas fa-award"></i>
+              </div>
+              <div class="status-info">
+                <h3>2</h3>
+                <p>Certificates Earned</p>
+              </div>
+            </div>
+            
+            <div class="status-card">
+              <div class="status-icon progress">
+                <i class="fas fa-hourglass-half"></i>
+              </div>
+              <div class="status-info">
+                <h3>3</h3>
+                <p>In Progress</p>
+              </div>
+            </div>
+            
+            <div class="status-card">
+              <div class="status-icon verified">
+                <i class="fas fa-shield-check"></i>
+              </div>
+              <div class="status-info">
+                <h3>100%</h3>
+                <p>Blockchain Verified</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Filter Section -->
+      <section class="filter-section">
+        <div class="section-container">
+          <div class="filter-options">
+            <button class="filter-btn active" onclick="filterCertificates('all')">All</button>
+            <button class="filter-btn" onclick="filterCertificates('earned')">Earned</button>
+            <button class="filter-btn" onclick="filterCertificates('progress')">In Progress</button>
+            <button class="filter-btn" onclick="filterCertificates('available')">Available</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Certificates Grid -->
+      <section class="content-section">
+        <div class="section-container">
+          <div class="certificates-grid" id="certificatesGrid">
+            
+            <!-- Earned Certificate -->
+            <div class="certificate-card earned" data-category="earned">
+              <div class="certificate-badge">
+                <i class="fas fa-certificate"></i>
+              </div>
+              <div class="certificate-content">
+                <h3 class="certificate-title">Digital Literacy Fundamentals</h3>
+                <p class="certificate-issuer">PMERIT Global Education</p>
+                <p class="certificate-date">Earned: March 15, 2025</p>
+                <div class="certificate-skills">
+                  <span class="skill-tag">Computer Basics</span>
+                  <span class="skill-tag">Internet Safety</span>
+                  <span class="skill-tag">Digital Communication</span>
+                </div>
+              </div>
+              <div class="certificate-actions">
+                <button class="btn btn-primary" onclick="viewCertificate('digital-literacy')">
+                  <i class="fas fa-eye"></i> View
+                </button>
+                <button class="btn btn-secondary" onclick="downloadCertificate('digital-literacy')">
+                  <i class="fas fa-download"></i> Download
+                </button>
+                <button class="btn btn-icon" onclick="shareCertificate('digital-literacy')">
+                  <i class="fas fa-share-alt"></i>
+                </button>
+                <button class="btn btn-icon" onclick="verifyCertificate('digital-literacy')">
+                  <i class="fas fa-shield-check"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Another Earned Certificate -->
+            <div class="certificate-card earned" data-category="earned">
+              <div class="certificate-badge">
+                <i class="fas fa-certificate"></i>
+              </div>
+              <div class="certificate-content">
+                <h3 class="certificate-title">Introduction to AI and Machine Learning</h3>
+                <p class="certificate-issuer">PMERIT Global Education</p>
+                <p class="certificate-date">Earned: February 28, 2025</p>
+                <div class="certificate-skills">
+                  <span class="skill-tag">AI Basics</span>
+                  <span class="skill-tag">Machine Learning</span>
+                  <span class="skill-tag">Data Science</span>
+                </div>
+              </div>
+              <div class="certificate-actions">
+                <button class="btn btn-primary" onclick="viewCertificate('ai-ml-intro')">
+                  <i class="fas fa-eye"></i> View
+                </button>
+                <button class="btn btn-secondary" onclick="downloadCertificate('ai-ml-intro')">
+                  <i class="fas fa-download"></i> Download
+                </button>
+                <button class="btn btn-icon" onclick="shareCertificate('ai-ml-intro')">
+                  <i class="fas fa-share-alt"></i>
+                </button>
+                <button class="btn btn-icon" onclick="verifyCertificate('ai-ml-intro')">
+                  <i class="fas fa-shield-check"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- In Progress Certificate -->
+            <div class="certificate-card progress" data-category="progress">
+              <div class="certificate-badge">
+                <div class="progress-circle">
+                  <span>75%</span>
+                </div>
+              </div>
+              <div class="certificate-content">
+                <h3 class="certificate-title">Web Development Fundamentals</h3>
+                <p class="certificate-issuer">PMERIT Global Education</p>
+                <p class="certificate-progress">Progress: 75% Complete</p>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 75%"></div>
+                </div>
+                <div class="certificate-requirements">
+                  <p class="requirement completed"><i class="fas fa-check"></i> Complete HTML/CSS Module</p>
+                  <p class="requirement completed"><i class="fas fa-check"></i> Complete JavaScript Basics</p>
+                  <p class="requirement pending"><i class="far fa-circle"></i> Complete Final Project</p>
+                </div>
+              </div>
+              <div class="certificate-actions">
+                <button class="btn btn-primary" onclick="continueCourse('web-dev')">
+                  <i class="fas fa-play"></i> Continue Course
+                </button>
+                <button class="btn btn-secondary" onclick="viewProgress('web-dev')">
+                  <i class="fas fa-chart-line"></i> View Progress
+                </button>
+              </div>
+            </div>
+
+            <!-- Another In Progress -->
+            <div class="certificate-card progress" data-category="progress">
+              <div class="certificate-badge">
+                <div class="progress-circle">
+                  <span>45%</span>
+                </div>
+              </div>
+              <div class="certificate-content">
+                <h3 class="certificate-title">Digital Marketing Essentials</h3>
+                <p class="certificate-issuer">PMERIT Global Education</p>
+                <p class="certificate-progress">Progress: 45% Complete</p>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 45%"></div>
+                </div>
+                <div class="certificate-requirements">
+                  <p class="requirement completed"><i class="fas fa-check"></i> Marketing Fundamentals</p>
+                  <p class="requirement pending"><i class="far fa-circle"></i> Social Media Marketing</p>
+                  <p class="requirement pending"><i class="far fa-circle"></i> SEO Basics</p>
+                </div>
+              </div>
+              <div class="certificate-actions">
+                <button class="btn btn-primary" onclick="continueCourse('digital-marketing')">
+                  <i class="fas fa-play"></i> Continue Course
+                </button>
+                <button class="btn btn-secondary" onclick="viewProgress('digital-marketing')">
+                  <i class="fas fa-chart-line"></i> View Progress
+                </button>
+              </div>
+            </div>
+
+            <!-- Available Certificate -->
+            <div class="certificate-card available" data-category="available">
+              <div class="certificate-badge">
+                <i class="fas fa-lock"></i>
+              </div>
+              <div class="certificate-content">
+                <h3 class="certificate-title">Data Analysis with Python</h3>
+                <p class="certificate-issuer">PMERIT Global Education</p>
+                <p class="certificate-description">Learn data analysis techniques using Python programming language.</p>
+                <div class="certificate-skills">
+                  <span class="skill-tag">Python</span>
+                  <span class="skill-tag">Data Analysis</span>
+                  <span class="skill-tag">Statistics</span>
+                </div>
+                <div class="certificate-requirements">
+                  <p class="requirement-note">Prerequisites: Complete Digital Literacy Fundamentals</p>
+                </div>
+              </div>
+              <div class="certificate-actions">
+                <button class="btn btn-primary" onclick="startCourse('data-analysis')">
+                  <i class="fas fa-play"></i> Start Course
+                </button>
+                <button class="btn btn-secondary" onclick="viewCourseInfo('data-analysis')">
+                  <i class="fas fa-info-circle"></i> Course Info
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Verification Info Section -->
+      <section class="content-section bg-light">
+        <div class="section-container">
+          <h2 class="section-title">Certificate Verification</h2>
+          <div class="verification-info">
+            <div class="verification-card">
+              <div class="verification-icon">
+                <i class="fas fa-blockchain"></i>
+              </div>
+              <h3>Blockchain Security</h3>
+              <p>All PMERIT certificates are secured with blockchain technology, ensuring authenticity and preventing fraud.</p>
+            </div>
+            
+            <div class="verification-card">
+              <div class="verification-icon">
+                <i class="fas fa-globe"></i>
+              </div>
+              <h3>Global Recognition</h3>
+              <p>Our certificates are recognized by employers worldwide and integrated with major job platforms.</p>
+            </div>
+            
+            <div class="verification-card">
+              <div class="verification-icon">
+                <i class="fas fa-qrcode"></i>
+              </div>
+              <h3>Instant Verification</h3>
+              <p>Employers can verify certificates instantly using QR codes or our online verification system.</p>
+            </div>
+          </div>
+          
+          <div class="verify-certificate-section">
+            <h3>Verify a Certificate</h3>
+            <div class="verify-form">
+              <input type="text" class="verify-input" placeholder="Enter certificate ID or scan QR code">
+              <button class="btn btn-primary">
+                <i class="fas fa-search"></i> Verify
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Certificate Modal -->
+  <div class="modal-overlay" id="certificateModal" style="display: none;">
+    <div class="modal-content certificate-modal">
+      <div class="modal-header">
+        <h3>Certificate Preview</h3>
+        <button class="modal-close" onclick="closeCertificateModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="certificate-preview" id="certificatePreview">
+        <!-- Certificate content will be loaded here -->
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-primary" onclick="downloadCurrentCertificate()">
+          <i class="fas fa-download"></i> Download PDF
+        </button>
+        <button class="btn btn-secondary" onclick="shareCurrentCertificate()">
+          <i class="fas fa-share"></i> Share
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fixed Mobile Footer -->
+  <div id="mobile-footer-placeholder">
+    <!-- Footer content will be loaded here via JavaScript -->
+  </div>
+
+  <!-- Loading Screen -->
+  <div class="mobile-loading" id="mobileLoading">
+    <div class="loading-spinner">
+      <div class="spinner-circle"></div>
+    </div>
+    <p class="loading-text">Loading Certificates...</p>
+  </div>
+
+  <!-- JavaScript for Mobile Template -->
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/clean-mobile.js"></script>
+  
+  <script>
+    // Mobile Template Initialization
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof MobileTemplate !== 'undefined') {
+        MobileTemplate.init();
+      }
+      
+      loadMobilePartials();
+      handleMobileViewport();
+      initializeCertificates();
+      
+      setTimeout(() => {
+        const loading = document.getElementById('mobileLoading');
+        if (loading) {
+          loading.style.opacity = '0';
+          setTimeout(() => loading.style.display = 'none', 300);
+        }
+      }, 500);
+    });
+
+    // Load mobile partials
+    async function loadMobilePartials() {
+      try {
+        const headerResponse = await fetch('../partials/header-mobile.html');
+        const headerHTML = await headerResponse.text();
+        document.getElementById('mobile-header-placeholder').innerHTML = headerHTML;
+
+        const footerResponse = await fetch('../partials/footer-mobile.html');
+        const footerHTML = await footerResponse.text();
+        document.getElementById('mobile-footer-placeholder').innerHTML = footerHTML;
+
+        initializeMobileComponents();
+      } catch (error) {
+        console.error('Error loading mobile partials:', error);
+      }
+    }
+
+    function initializeMobileComponents() {
+      if (typeof initMobileHeader === 'function') {
+        initMobileHeader();
+      }
+      if (typeof initMobileFooter === 'function') {
+        initMobileFooter();
+      }
+      adjustContentHeight();
+    }
+
+    function handleMobileViewport() {
+      function setViewportHeight() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+        adjustContentHeight();
+      }
+
+      setViewportHeight();
+      window.addEventListener('resize', setViewportHeight);
+      window.addEventListener('orientationchange', () => {
+        setTimeout(setViewportHeight, 100);
+      });
+
+      if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        window.addEventListener('scroll', setViewportHeight);
+      }
+    }
+
+    function adjustContentHeight() {
+      const header = document.querySelector('.mobile-header');
+      const footer = document.querySelector('.mobile-footer');
+      const content = document.querySelector('.mobile-content-container');
+      
+      if (header && footer && content) {
+        const headerHeight = header.offsetHeight;
+        const footerHeight = footer.offsetHeight;
+        content.style.height = `calc(100vh - ${headerHeight}px - ${footerHeight}px)`;
+        content.style.top = `${headerHeight}px`;
+      }
+    }
+
+    // Certificate functionality
+    let currentCertificate = null;
+
+    function initializeCertificates() {
+      // Any initial setup for certificates
+      updateCertificateStats();
+    }
+
+    function filterCertificates(category) {
+      // Remove active class from all filter buttons
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      
+      // Add active class to clicked button
+      event.target.classList.add('active');
+      
+      // Show/hide certificates based on filter
+      const certificates = document.querySelectorAll('.certificate-card');
+      certificates.forEach(cert => {
+        if (category === 'all' || cert.dataset.category === category) {
+          cert.style.display = 'block';
+        } else {
+          cert.style.display = 'none';
+        }
+      });
+    }
+
+    function viewCertificate(certificateId) {
+      currentCertificate = certificateId;
+      
+      // Generate certificate preview
+      const certificateData = getCertificateData(certificateId);
+      const preview = generateCertificatePreview(certificateData);
+      
+      document.getElementById('certificatePreview').innerHTML = preview;
+      document.getElementById('certificateModal').style.display = 'flex';
+    }
+
+    function closeCertificateModal() {
+      document.getElementById('certificateModal').style.display = 'none';
+      currentCertificate = null;
+    }
+
+    function downloadCertificate(certificateId) {
+      // Simulate certificate download
+      showNotification('Certificate download started...');
+      
+      // In a real implementation, this would generate and download the PDF
+      setTimeout(() => {
+        showNotification('Certificate downloaded successfully!');
+      }, 2000);
+    }
+
+    function shareCertificate(certificateId) {
+      if (navigator.share) {
+        navigator.share({
+          title: 'My PMERIT Certificate',
+          text: 'Check out my achievement on PMERIT!',
+          url: `https://pmerit.com/verify/${certificateId}`
+        });
+      } else {
+        // Fallback for browsers that don't support Web Share API
+        copyToClipboard(`https://pmerit.com/verify/${certificateId}`);
+        showNotification('Certificate link copied to clipboard!');
+      }
+    }
+
+    function verifyCertificate(certificateId) {
+      showNotification('Verifying certificate...');
+      
+      // Simulate verification process
+      setTimeout(() => {
+        showNotification('✅ Certificate verified on blockchain!');
+      }, 1500);
+    }
+
+    function continueCourse(courseId) {
+      // Redirect to course or classroom
+      window.location.href = '../classroom.html?course=' + courseId;
+    }
+
+    function viewProgress(courseId) {
+      window.location.href = '../progress.html?course=' + courseId;
+    }
+
+    function startCourse(courseId) {
+      window.location.href = '../courses.html?start=' + courseId;
+    }
+
+    function viewCourseInfo(courseId) {
+      window.location.href = '../courses.html?info=' + courseId;
+    }
+
+    function getCertificateData(certificateId) {
+      const certificates = {
+        'digital-literacy': {
+          title: 'Digital Literacy Fundamentals',
+          recipient: 'John Doe', // In real app, get from user data
+          date: 'March 15, 2025',
+          issuer: 'PMERIT Global Education',
+          skills: ['Computer Basics', 'Internet Safety', 'Digital Communication'],
+          id: 'PMERIT-DL-2025-001'
+        },
+        'ai-ml-intro': {
+          title: 'Introduction to AI and Machine Learning',
+          recipient: 'John Doe',
+          date: 'February 28, 2025',
+          issuer: 'PMERIT Global Education',
+          skills: ['AI Basics', 'Machine Learning', 'Data Science'],
+          id: 'PMERIT-AI-2025-002'
+        }
+      };
+      
+      return certificates[certificateId];
+    }
+
+    function generateCertificatePreview(data) {
+      if (!data) return '<p>Certificate not found</p>';
+      
+      return `
+        <div class="certificate-document">
+          <div class="cert-header">
+            <div class="cert-logo">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h1>PMERIT</h1>
+            <p>Global Education Platform</p>
+          </div>
+          
+          <div class="cert-body">
+            <h2>Certificate of Completion</h2>
+            <p class="cert-text">This certifies that</p>
+            <h3 class="recipient-name">${data.recipient}</h3>
+            <p class="cert-text">has successfully completed</p>
+            <h4 class="course-title">${data.title}</h4>
+            <p class="completion-date">Completed on ${data.date}</p>
+            
+            <div class="skills-achieved">
+              <p>Skills Achieved:</p>
+              <div class="skills-list">
+                ${data.skills.map(skill => `<span class="skill">${skill}</span>`).join('')}
+              </div>
+            </div>
+          </div>
+          
+          <div class="cert-footer">
+            <div class="verification-info">
+              <p>Certificate ID: ${data.id}</p>
+              <p>Blockchain Verified</p>
+              <div class="qr-placeholder">
+                <i class="fas fa-qrcode"></i>
+                <p>QR Code</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function downloadCurrentCertificate() {
+      if (currentCertificate) {
+        downloadCertificate(currentCertificate);
+        closeCertificateModal();
+      }
+    }
+
+    function shareCurrentCertificate() {
+      if (currentCertificate) {
+        shareCertificate(currentCertificate);
+      }
+    }
+
+    function updateCertificateStats() {
+      // This would typically fetch real data from an API
+      // For demo purposes, we're using static data
+    }
+
+    function copyToClipboard(text) {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text);
+      } else {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+      }
+    }
+
+    function showNotification(message) {
+      const notification = document.createElement('div');
+      notification.className = 'notification';
+      notification.innerHTML = `
+        <div class="notification-content">
+          <p>${message}</p>
+        </div>
+      `;
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+  </script>
+</body>
+</html>

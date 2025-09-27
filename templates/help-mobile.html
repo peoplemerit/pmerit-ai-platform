@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Help Center — PMERIT Support & FAQ</title>
+  <meta name="description" content="Find answers to common questions about PMERIT platform, courses, certifications, and technical support. Get help with your learning journey.">
+  <meta name="keywords" content="PMERIT help, FAQ, support, troubleshooting, platform guide, learning assistance">
+  <meta name="author" content="PMERIT Team">
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Help Center - PMERIT Support & FAQ">
+  <meta property="og:description" content="Find answers to common questions about PMERIT platform, courses, and technical support.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pmerit.com/help">
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Help Center - PMERIT Support & FAQ">
+  <meta name="twitter:description" content="Find answers to common questions about PMERIT platform, courses, and technical support.">
+
+  <!-- Preconnect to external fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Google Fonts for PMERIT design system -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- PMERIT Design System Styles -->
+  <link rel="stylesheet" href="../assets/css/design-tokens.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+  <link rel="stylesheet" href="../assets/css/clean-mobile.css">
+  <link rel="stylesheet" href="../assets/css/theme-pmerit.css">
+
+  <!-- Mobile-specific viewport handling -->
+  <meta name="theme-color" content="#2A5B8C">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  
+  <!-- Favicon and App Icons -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+</head>
+<body class="mobile-layout">
+  
+  <!-- Fixed Mobile Header -->
+  <div id="mobile-header-placeholder">
+    <!-- Header content will be loaded here via JavaScript -->
+  </div>
+
+  <!-- Main Content Container -->
+  <main class="mobile-content-container" id="mobileContent">
+    <div class="mobile-content-area" id="contentArea">
+      
+      <!-- Hero Section -->
+      <section class="hero-section help-hero">
+        <div class="hero-content">
+          <h1 class="hero-title">Help Center</h1>
+          <p class="hero-subtitle">Find answers to common questions and get the help you need</p>
+        </div>
+      </section>
+
+      <!-- Search Section -->
+      <section class="search-section">
+        <div class="section-container">
+          <div class="help-search">
+            <input type="text" id="helpSearch" class="search-input" placeholder="Search for help topics...">
+            <button class="search-btn" id="searchBtn">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Links Section -->
+      <section class="content-section">
+        <div class="section-container">
+          <h2 class="section-title">Quick Help</h2>
+          <div class="quick-help-grid">
+            <div class="help-card">
+              <div class="help-icon">
+                <i class="fas fa-play-circle"></i>
+              </div>
+              <h3>Getting Started</h3>
+              <p>Learn how to create your account, take assessments, and begin your learning journey.</p>
+              <button class="expand-btn" onclick="toggleFAQ('getting-started')">View FAQ</button>
+            </div>
+            
+            <div class="help-card">
+              <div class="help-icon">
+                <i class="fas fa-book-open"></i>
+              </div>
+              <h3>Courses & Learning</h3>
+              <p>Find help with course enrollment, progress tracking, and accessing course materials.</p>
+              <button class="expand-btn" onclick="toggleFAQ('courses')">View FAQ</button>
+            </div>
+            
+            <div class="help-card">
+              <div class="help-icon">
+                <i class="fas fa-certificate"></i>
+              </div>
+              <h3>Certifications</h3>
+              <p>Understand how to earn, verify, and share your PMERIT certificates.</p>
+              <button class="expand-btn" onclick="toggleFAQ('certificates')">View FAQ</button>
+            </div>
+            
+            <div class="help-card">
+              <div class="help-icon">
+                <i class="fas fa-robot"></i>
+              </div>
+              <h3>Gabriel AI Tutor</h3>
+              <p>Learn how to interact with and get the most out of your AI tutor.</p>
+              <button class="expand-btn" onclick="toggleFAQ('ai-tutor')">View FAQ</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ Sections -->
+      <section class="content-section bg-light">
+        <div class="section-container">
+          <h2 class="section-title">Frequently Asked Questions</h2>
+          
+          <!-- Getting Started FAQ -->
+          <div class="faq-section" id="getting-started" style="display: none;">
+            <h3 class="faq-title">Getting Started</h3>
+            <div class="faq-list">
+              <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                  <span>How do I create a PMERIT account?</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                  <p>To create your PMERIT account:</p>
+                  <ol>
+                    <li>Click "Sign Up" on any page</li>
+                    <li>Fill in your basic information (name, email, password)</li>
+                    <li>Verify your email address</li>
+                    <li>Complete your profile setup</li>
+                    <li>Take the initial career assessment</li>
+                  </ol>
+                  <p>Your account will be ready to use immediately after verification.</p>
+                </div>
+              </div>
+              
+              <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                  <span>What is the career assessment and why do I need to take it?</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                  <p>The career assessment helps us understand your:</p>
+                  <ul>
+                    <li>Learning preferences and style</li>
+                    <li>Current skills and experience level</li>
+                    <li>Career interests and goals</li>
+                    <li>Available time for learning</li>
+                  </ul>
+                  <p>This information allows Gabriel AI to create a personalized learning path that matches your needs and goals.</p>
+                </div>
+              </div>
+              
+              <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                  <span>Is PMERIT really free? What are the costs?</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                  <p>PMERIT offers different access levels:</p>
+                  <ul>
+                    <li><strong>Free Access:</strong> Basic courses, AI chat, and community features</li>
+                    <li><strong>Premium AI Tutoring:</strong> $2.99/month for advanced AI features</li>
+                    <li><strong>Career Center:</strong> $4.99/month for job placement support</li>
+                    <li><strong>Certifications:</strong> Pay-per-certificate for verified credentials</li>
+                  </ul>
+                  <p>Many features are completely free to ensure accessibility for all learners.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Courses FAQ -->
+          <div class="faq-section" id="courses" style="display: none;">
+            <h3 class="faq-title">Courses & Learning</h3>
+            <div class="faq-list">
+              <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                  <span>How do I enroll in a course?</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                  <p>Course enrollment is simple:</p>
+                  <ol>
+                    <li>Browse the course catalog or get recommendations from Gabriel AI</li>
+                    <li>Click on any course that interests you</li>
+                    <li>Review the course description and requirements</li>
+                    <li>Click "Enroll Now" to add it to your learning path</li>
+                  </ol>
+                  <p>Most courses are available immediately after enrollment.</p>
+                </div>
+              </div>
+              
+              <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                  <span>Can I learn offline or with poor internet?</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                  <p>Yes! PMERIT is designed for global accessibility:</p>
+                  <ul>
+                    <li>Download course materials for offline reading</li>
+                    <li>Low-bandwidth mode for slower connections</li>
+                    <li>Text-based content that loads quickly</li>
+                    <li>Optional video content that can be downloaded</li>
+                  </ul>
+                  <p>Gabriel AI can work in text-only mode when internet is limited.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Certificates FAQ -->
+          <div class="faq-section" id="certificates" style="display: none;">
+            <h3 class="faq-title">Certifications</h3>
+            <div class="faq-list">
+              <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                  <span>How do I earn a certificate?</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                  <p>To earn a PMERIT certificate:</p>
+                  <ol>
+                    <li>Complete all required course modules</li>
+                    <li>Pass the final assessment (usually 70% or higher)</li>
+                    <li>Submit any required projects or assignments</li>
+                    <li>Pay the certification fee (if applicable)</li>
+                  </ol>
+                  <p>Certificates are blockchain-verified and recognized by employers globally.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI Tutor FAQ -->
+          <div class="faq-section" id="ai-tutor" style="display: none;">
+            <h3 class="faq-title">Gabriel AI Tutor</h3>
+            <div class="faq-list">
+              <div class="faq-item">
+                <button class="faq-question" onclick="toggleAnswer(this)">
+                  <span>How does Gabriel AI help me learn?</span>
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                  <p>Gabriel AI provides personalized support by:</p>
+                  <ul>
+                    <li>Answering questions about course content</li>
+                    <li>Providing additional explanations and examples</li>
+                    <li>Creating custom practice exercises</li>
+                    <li>Tracking your progress and suggesting improvements</li>
+                    <li>Adapting to your learning style and pace</li>
+                  </ul>
+                  <p>Think of Gabriel as your personal tutor available 24/7.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Support Section -->
+      <section class="content-section">
+        <div class="section-container">
+          <h2 class="section-title">Still Need Help?</h2>
+          <div class="support-options">
+            <div class="support-card">
+              <div class="support-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <h3>Email Support</h3>
+              <p>Send us a detailed message and we'll respond within 24 hours.</p>
+              <a href="../contact.html" class="btn btn-primary">Contact Support</a>
+            </div>
+            
+            <div class="support-card">
+              <div class="support-icon">
+                <i class="fas fa-comments"></i>
+              </div>
+              <h3>Community Forum</h3>
+              <p>Get help from fellow learners and community moderators.</p>
+              <a href="../learner-portal.html" class="btn btn-secondary">Join Community</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Fixed Mobile Footer -->
+  <div id="mobile-footer-placeholder">
+    <!-- Footer content will be loaded here via JavaScript -->
+  </div>
+
+  <!-- Loading Screen -->
+  <div class="mobile-loading" id="mobileLoading">
+    <div class="loading-spinner">
+      <div class="spinner-circle"></div>
+    </div>
+    <p class="loading-text">Loading Help Center...</p>
+  </div>
+
+  <!-- JavaScript for Mobile Template -->
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/clean-mobile.js"></script>
+  
+  <script>
+    // Mobile Template Initialization
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof MobileTemplate !== 'undefined') {
+        MobileTemplate.init();
+      }
+      
+      loadMobilePartials();
+      handleMobileViewport();
+      initializeHelpFunctionality();
+      
+      setTimeout(() => {
+        const loading = document.getElementById('mobileLoading');
+        if (loading) {
+          loading.style.opacity = '0';
+          setTimeout(() => loading.style.display = 'none', 300);
+        }
+      }, 500);
+    });
+
+    // Load mobile partials
+    async function loadMobilePartials() {
+      try {
+        const headerResponse = await fetch('../partials/header-mobile.html');
+        const headerHTML = await headerResponse.text();
+        document.getElementById('mobile-header-placeholder').innerHTML = headerHTML;
+
+        const footerResponse = await fetch('../partials/footer-mobile.html');
+        const footerHTML = await footerResponse.text();
+        document.getElementById('mobile-footer-placeholder').innerHTML = footerHTML;
+
+        initializeMobileComponents();
+      } catch (error) {
+        console.error('Error loading mobile partials:', error);
+      }
+    }
+
+    function initializeMobileComponents() {
+      if (typeof initMobileHeader === 'function') {
+        initMobileHeader();
+      }
+      if (typeof initMobileFooter === 'function') {
+        initMobileFooter();
+      }
+      adjustContentHeight();
+    }
+
+    function handleMobileViewport() {
+      function setViewportHeight() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+        adjustContentHeight();
+      }
+
+      setViewportHeight();
+      window.addEventListener('resize', setViewportHeight);
+      window.addEventListener('orientationchange', () => {
+        setTimeout(setViewportHeight, 100);
+      });
+
+      if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        window.addEventListener('scroll', setViewportHeight);
+      }
+    }
+
+    function adjustContentHeight() {
+      const header = document.querySelector('.mobile-header');
+      const footer = document.querySelector('.mobile-footer');
+      const content = document.querySelector('.mobile-content-container');
+      
+      if (header && footer && content) {
+        const headerHeight = header.offsetHeight;
+        const footerHeight = footer.offsetHeight;
+        content.style.height = `calc(100vh - ${headerHeight}px - ${footerHeight}px)`;
+        content.style.top = `${headerHeight}px`;
+      }
+    }
+
+    // Help functionality
+    function initializeHelpFunctionality() {
+      const searchInput = document.getElementById('helpSearch');
+      const searchBtn = document.getElementById('searchBtn');
+      
+      searchBtn.addEventListener('click', performSearch);
+      searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          performSearch();
+        }
+      });
+    }
+
+    function performSearch() {
+      const searchTerm = document.getElementById('helpSearch').value.toLowerCase();
+      if (!searchTerm) return;
+      
+      // Simple search implementation
+      const faqItems = document.querySelectorAll('.faq-item');
+      faqItems.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (text.includes(searchTerm)) {
+          item.style.display = 'block';
+          item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+    }
+
+    function toggleFAQ(sectionId) {
+      const section = document.getElementById(sectionId);
+      const allSections = document.querySelectorAll('.faq-section');
+      
+      // Hide all sections
+      allSections.forEach(s => s.style.display = 'none');
+      
+      // Show selected section
+      section.style.display = 'block';
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function toggleAnswer(button) {
+      const faqItem = button.parentElement;
+      const answer = faqItem.querySelector('.faq-answer');
+      const icon = button.querySelector('i');
+      
+      if (answer.style.display === 'block') {
+        answer.style.display = 'none';
+        icon.style.transform = 'rotate(0deg)';
+      } else {
+        // Close other open answers
+        document.querySelectorAll('.faq-answer').forEach(a => {
+          a.style.display = 'none';
+        });
+        document.querySelectorAll('.faq-question i').forEach(i => {
+          i.style.transform = 'rotate(0deg)';
+        });
+        
+        // Open this answer
+        answer.style.display = 'block';
+        icon.style.transform = 'rotate(180deg)';
+      }
+    }
+  </script>
+</body>
+</html>
