@@ -1,3 +1,14 @@
+@media (max-width: 600px) {
+  html, body, .mobile-first-layout, .estate, .center-panel, .panel {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    box-sizing: border-box !important;
+  }
+}
 /* Mobile-First Responsive Layout for PMERIT AI */
 
 /* ===== CORE MOBILE RESET ===== */
