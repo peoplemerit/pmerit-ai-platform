@@ -3408,9 +3408,19 @@ textarea:focus {
     display: none;
   }
   
+  .center-panel {
+    width: 100%;
+    max-width: 100vw;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
   .panel {
-    margin: 0.75rem;
-    border-radius: 8px;
+    width: 100%;
+    max-width: 100vw;
+    margin: 0;
+    border-radius: 0;
+    box-sizing: border-box;
   }
 
   /* Show hamburger menu on mobile instead of left sidebar */
