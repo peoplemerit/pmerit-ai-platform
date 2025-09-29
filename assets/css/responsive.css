@@ -3562,6 +3562,23 @@ textarea:focus {
     outline: 2px solid var(--primary);
     outline-offset: 2px;
   }
+  
+  /* Minimize footer on mobile - reduce viewport waste */
+  .google-footer {
+    height: 40px; /* Reduced from default to save space */
+    font-size: 12px; /* Smaller text */
+  }
+  
+  .footer-content {
+    gap: 12px; /* Tighter spacing */
+    padding: 0 var(--space-sm);
+  }
+  
+  .footer-link,
+  .footer-status {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
 }
 
 /* Tablet and larger screens - show simplified layout */
