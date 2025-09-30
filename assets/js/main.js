@@ -99,6 +99,9 @@ function init() {
       const text = this.textContent.trim();
       console.log(`Menu item clicked: ${text}`);
       
+      // Close menu after item selection
+      closeMenu();
+      
       // Handle specific blueprint behaviors
       if (text.includes('Career Track')) {
         showCareerTracks();
@@ -106,8 +109,6 @@ function init() {
         startAssessment();
       } else if (text.includes('Preview Voices')) {
         previewVoices();
-      } else {
-        closeMenu();
       }
     });
   });
