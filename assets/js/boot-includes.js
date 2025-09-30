@@ -78,6 +78,10 @@ function initState() {
   if (state.tts && ttsToggle) {
     ttsToggle.classList.add('active');
   }
+  const ttsToggleBtn = document.getElementById('ttsToggleBtn');
+  if (state.tts && ttsToggleBtn) {
+    ttsToggleBtn.classList.add('active');
+  }
   
   const langSelect = document.getElementById('lang');
   if (langSelect) {
@@ -127,6 +131,8 @@ function setDark(on) {
 
 function setTTS(on) {
   if (ttsToggle) ttsToggle.classList.toggle('active', on);
+  const ttsToggleBtn = document.getElementById('ttsToggleBtn');
+  if (ttsToggleBtn) ttsToggleBtn.classList.toggle('active', on);
   const mTtsToggle = document.getElementById('m_ttsToggle');
   if (mTtsToggle) mTtsToggle.classList.toggle('active', on);
   state.tts = on;

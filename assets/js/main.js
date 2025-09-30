@@ -471,6 +471,11 @@ function init() {
   // Set up event listeners with null safety checks
   if (darkToggle) darkToggle.addEventListener('click', () => setDark(!state.dark));
   if (ttsToggle) ttsToggle.addEventListener('click', () => setTTS(!state.tts));
+  
+  // Add event listener for the button version of TTS toggle
+  const ttsToggleBtn = document.getElementById('ttsToggleBtn');
+  if (ttsToggleBtn) ttsToggleBtn.addEventListener('click', () => setTTS(!state.tts));
+  
   if (supportToggle) supportToggle.addEventListener('click', () => setSupport(!state.support));
   if (supportShort) supportShort.addEventListener('click', () => setSupport(true));
   if (vhToggle) vhToggle.addEventListener('click', () => setVH(!state.vh));
