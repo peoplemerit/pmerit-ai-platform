@@ -23,6 +23,7 @@ const darkToggle = document.getElementById('darkToggle');
 const vhToggle = document.getElementById('vhToggle');
 const supportToggle = document.getElementById('supportToggle');
 const ttsToggle = document.getElementById('ttsToggle');
+const ttsToggleButton = document.getElementById('ttsToggleButton');
 const vhAvatar = document.getElementById('vhAvatar');
 const vhBadge = document.getElementById('vhBadge');
 const vhStage = document.getElementById('vhStage');
@@ -127,6 +128,7 @@ function setDark(on) {
 
 function setTTS(on) {
   if (ttsToggle) ttsToggle.classList.toggle('active', on);
+  if (ttsToggleButton) ttsToggleButton.classList.toggle('active', on);
   const mTtsToggle = document.getElementById('m_ttsToggle');
   if (mTtsToggle) mTtsToggle.classList.toggle('active', on);
   state.tts = on;

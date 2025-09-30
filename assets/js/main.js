@@ -301,6 +301,7 @@ function init() {
     const leftSupportToggle = document.getElementById('supportToggle');
     const leftDarkToggle = document.getElementById('darkToggle');
     const leftTtsToggle = document.getElementById('ttsToggle');
+    const ttsToggleButton = document.getElementById('ttsToggleButton');
     const settingsBox = document.getElementById('settingsBox');
     const careerPathsBtn = document.getElementById('careerPaths');
     const dashBtn = document.getElementById('dashBtn');
@@ -471,6 +472,7 @@ function init() {
   // Set up event listeners with null safety checks
   if (darkToggle) darkToggle.addEventListener('click', () => setDark(!state.dark));
   if (ttsToggle) ttsToggle.addEventListener('click', () => setTTS(!state.tts));
+  if (ttsToggleButton) ttsToggleButton.addEventListener('click', () => setTTS(!state.tts));
   if (supportToggle) supportToggle.addEventListener('click', () => setSupport(!state.support));
   if (supportShort) supportShort.addEventListener('click', () => setSupport(true));
   if (vhToggle) vhToggle.addEventListener('click', () => setVH(!state.vh));
