@@ -27,7 +27,7 @@
   <!-- Clean Google-Inspired Header -->
   <header class="pmerit-header">
     <!-- Hamburger Menu -->
-    <button class="hamburger-btn" id="menuToggle" aria-label="Main menu">
+    <button id="menuButton" class="hamburger-btn" aria-label="Open menu" aria-expanded="false" aria-controls="sideMenu">
       <span class="hamburger-line"></span>
       <span class="hamburger-line"></span>
       <span class="hamburger-line"></span>
@@ -55,138 +55,55 @@
     </div>
   </header>
 
-  <!-- Menu Overlay -->
-  <div class="menu-overlay" id="menuOverlay"></div>
+  <!-- Overlay -->
+  <div id="menuOverlay" class="menu-overlay" hidden></div>
 
   <!-- Mode Indicators -->
   <div class="mode-indicator vh" id="vhModeIndicator">🤖 Virtual Human Active</div>
   <div class="mode-indicator cs" id="csModeIndicator">🎧 Customer Service Active</div>
 
-  <!-- Enhanced Hamburger Side Menu -->
-  <nav class="side-menu" id="sideMenu">
-    <!-- PMERIT Header -->
-    <div class="menu-header-section">
-      <div class="menu-logo">
-        <span class="logo-icon">🎓</span>
-        <span class="logo-text">PMERIT</span>
+  <!-- Side Menu -->
+  <nav id="sideMenu" class="side-menu" aria-hidden="true" aria-labelledby="menuButton">
+    <div class="menu-scroll">
+      <header class="menu-header">
+        <div class="brand-row">
+          <span class="brand-mark">🎓</span>
+          <span class="brand-name">PMERIT</span>
+        </div>
+        <button id="menuClose" class="icon-btn" aria-label="Close menu">✕</button>
+      </header>
+
+      <div class="menu-content" role="menu">
+        <details class="menu-group" open>
+          <summary class="group-title">Welcome</summary>
+          <a class="menu-item" href="#signin" role="menuitem">
+            <span class="menu-item-icon">🔐</span> Sign In
+          </a>
+        </details>
+
+        <details class="menu-group">
+          <summary class="group-title">Learning Tools</summary>
+          <a class="menu-item" href="assessment.html" role="menuitem">
+            <span class="menu-item-icon">🎯</span> Begin Assessment
+          </a>
+          <button class="menu-item" type="button" id="ttsToggle" role="menuitemcheckbox" aria-checked="false">
+            <span class="menu-item-icon">🔊</span> Text-to-Speech
+          </button>
+          <a class="menu-item" href="learner-portal.html" role="menuitem">
+            <span class="menu-item-icon">📚</span> Personalized Learning Plan
+          </a>
+        </details>
+
+        <details class="menu-group">
+          <summary class="group-title">Settings</summary>
+          <button class="menu-item" type="button" id="darkModeToggle" role="menuitemcheckbox" aria-checked="false">
+            <span class="menu-item-icon">🌙</span> Dark Mode
+          </button>
+          <button class="menu-item" type="button" id="voicesBtn" role="menuitem">
+            <span class="menu-item-icon">🎧</span> Preview Voices
+          </button>
+        </details>
       </div>
-    </div>
-
-    <!-- User Welcome Section -->
-    <div class="menu-section user-welcome">
-      <div class="welcome-text">Welcome to PMERIT</div>
-      <button class="menu-sign-in-btn" id="menuSignInBtn">
-        <i class="fas fa-sign-in-alt"></i>
-        Sign In
-      </button>
-    </div>
-
-    <!-- Quick Actions Section -->
-    <div class="menu-section">
-      <h4 class="section-header">
-        <i class="fas fa-bolt section-icon"></i>
-        Quick Actions
-      </h4>
-      
-      <div class="menu-toggle-group">
-        <div class="menu-toggle-item">
-          <div class="toggle-content">
-            <i class="fas fa-user-astronaut toggle-icon"></i>
-            <span class="toggle-label">Virtual Human Mode</span>
-          </div>
-          <div class="toggle-switch-container">
-            <input type="checkbox" class="modern-toggle" id="virtualHumanToggle" data-mode="vh">
-            <label for="virtualHumanToggle" class="toggle-slider"></label>
-          </div>
-        </div>
-
-        <div class="menu-toggle-item">
-          <div class="toggle-content">
-            <i class="fas fa-headset toggle-icon"></i>
-            <span class="toggle-label">Customer Service Mode</span>
-          </div>
-          <div class="toggle-switch-container">
-            <input type="checkbox" class="modern-toggle" id="customerServiceToggle" data-mode="cs">
-            <label for="customerServiceToggle" class="toggle-slider"></label>
-          </div>
-        </div>
-      </div>
-
-      <button class="menu-action-item" onclick="showCareerTracks()">
-        <div class="action-content">
-          <i class="fas fa-compass action-icon"></i>
-          <span class="action-label">Career Track & Explore Paths</span>
-        </div>
-        <i class="fas fa-chevron-right action-arrow"></i>
-      </button>
-    </div>
-
-    <!-- Learning Tools -->
-    <div class="menu-section">
-      <h4 class="section-title">🎯 Learning Tools</h4>
-      <button class="menu-item primary-action" onclick="window.location.href='assessment.html'">
-        <span class="menu-item-icon"><i class="fas fa-clipboard-check"></i></span>
-        Begin Assessment
-      </button>
-      <button class="menu-item" onclick="startAIDiscovery()">
-        <span class="menu-item-icon">🤖</span>
-        Discover Your Path (AI)
-      </button>
-      <button class="menu-item" onclick="window.location.href='learner-portal.html'">
-        <span class="menu-item-icon">📚</span>
-        Personalized Learning Plan
-      </button>
-    </div>
-
-    <!-- Settings Section -->
-    <div class="menu-section">
-      <div class="collapsible-header" id="settingsHeader">
-        <div class="header-content">
-          <i class="fas fa-cog section-icon"></i>
-          <span class="section-label">Settings</span>
-        </div>
-        <i class="fas fa-chevron-down chevron-icon"></i>
-      </div>
-      
-      <div class="collapsible-content" id="settingsContent">
-        <div class="menu-toggle-item">
-          <div class="toggle-content">
-            <i class="fas fa-moon toggle-icon"></i>
-            <span class="toggle-label">Dark Mode</span>
-          </div>
-          <div class="toggle-switch-container">
-            <input type="checkbox" class="modern-toggle" id="darkModeToggle" data-mode="dark">
-            <label for="darkModeToggle" class="toggle-slider"></label>
-          </div>
-        </div>
-
-        <div class="menu-toggle-item">
-          <div class="toggle-content">
-            <i class="fas fa-volume-up toggle-icon"></i>
-            <span class="toggle-label">Text-to-Speech</span>
-          </div>
-          <div class="toggle-switch-container">
-            <input type="checkbox" class="modern-toggle" id="ttsToggle" data-mode="tts">
-            <label for="ttsToggle" class="toggle-slider"></label>
-          </div>
-        </div>
-
-        <button class="menu-action-item" onclick="previewVoices()">
-          <div class="action-content">
-            <i class="fas fa-headphones action-icon"></i>
-            <span class="action-label">Preview Voices</span>
-          </div>
-          <i class="fas fa-chevron-right action-arrow"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- Dashboard Section -->
-    <div class="menu-section">
-      <button class="dashboard-btn" id="dashboardBtn">
-        <i class="fas fa-tachometer-alt dashboard-icon"></i>
-        Dashboard
-      </button>
     </div>
   </nav>
 

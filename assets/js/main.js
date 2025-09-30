@@ -8,39 +8,64 @@ function init() {
   initChatInterface();
   
   // Clean Google-Inspired Header Functionality
-  const menuToggle = document.getElementById('menuToggle');
+  const menuButton = document.getElementById('menuButton');
   const sideMenu = document.getElementById('sideMenu');
   const menuOverlay = document.getElementById('menuOverlay');
+  const menuClose = document.getElementById('menuClose');
   const signInBtn = document.getElementById('signInBtn');
   const gridMenuBtn = document.getElementById('gridMenuBtn');
   const darkModeToggle = document.getElementById('darkModeToggle');
   const aiAssistantToggle = document.getElementById('aiAssistantToggle');
-  
-  // Hamburger Menu Toggle
-  function toggleMenu() {
-    if (sideMenu && menuOverlay) {
-      sideMenu.classList.toggle('active');
-      menuOverlay.classList.toggle('active');
-    }
+  let lastFocus = null;
+
+  // Enhanced Mobile Menu Implementation
+  function openMenu() {
+    lastFocus = document.activeElement;
+    document.body.classList.add('menu-open');
+    sideMenu.setAttribute('aria-hidden', 'false');
+    menuButton.setAttribute('aria-expanded', 'true');
+    menuOverlay.hidden = false;
+    const firstFocusable = sideMenu.querySelector('button, a, [tabindex]:not([tabindex="-1"])');
+    if (firstFocusable) firstFocusable.focus({preventScroll:true});
   }
 
   function closeMenu() {
-    if (sideMenu && menuOverlay) {
-      sideMenu.classList.remove('active');
-      menuOverlay.classList.remove('active');
+    document.body.classList.remove('menu-open');
+    sideMenu.setAttribute('aria-hidden', 'true');
+    menuButton.setAttribute('aria-expanded', 'false');
+    menuOverlay.hidden = true;
+    if (lastFocus) lastFocus.focus({preventScroll:true});
+  }
+
+  function toggleMenu() {
+    if (document.body.classList.contains('menu-open')) {
+      closeMenu();
+    } else {
+      openMenu();
     }
   }
 
   // Event Listeners for Header
-  if (menuToggle) menuToggle.addEventListener('click', toggleMenu);
+  if (menuButton) menuButton.addEventListener('click', toggleMenu);
+  if (menuClose) menuClose.addEventListener('click', closeMenu);
   if (menuOverlay) menuOverlay.addEventListener('click', closeMenu);
 
   // Close menu on Escape key
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
+    if (e.key === 'Escape' && document.body.classList.contains('menu-open')) {
+      e.preventDefault();
       closeMenu();
     }
   });
+
+  // Close on menu item selection
+  sideMenu?.addEventListener('click', (e) => {
+    const el = e.target.closest('a.menu-item, button.menu-item');
+    if (el) closeMenu();
+  });
+
+  // Lock background scroll for iOS
+  menuOverlay?.addEventListener('touchmove', (e) => e.preventDefault(), {passive:false});
 
   // Toggle Switches
   if (darkModeToggle) {

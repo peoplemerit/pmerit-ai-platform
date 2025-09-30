@@ -247,3 +247,52 @@ window.addEventListener('resize', () => {
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = PMERITApp;
 }
+
+// Enhanced Mobile Menu Implementation
+(() => {
+  const body = document.body;
+  const menu = document.getElementById('sideMenu');
+  const overlay = document.getElementById('menuOverlay');
+  const openBtn = document.getElementById('menuButton');
+  const closeBtn = document.getElementById('menuClose');
+  let lastFocus = null;
+
+  function openMenu() {
+    lastFocus = document.activeElement;
+    body.classList.add('menu-open');
+    menu.setAttribute('aria-hidden', 'false');
+    openBtn.setAttribute('aria-expanded', 'true');
+    overlay.hidden = false;
+    const firstFocusable = menu.querySelector('button, a, [tabindex]:not([tabindex="-1"])');
+    if (firstFocusable) firstFocusable.focus({preventScroll:true});
+  }
+
+  function closeMenu() {
+    body.classList.remove('menu-open');
+    menu.setAttribute('aria-hidden', 'true');
+    openBtn.setAttribute('aria-expanded', 'false');
+    overlay.hidden = true;
+    if (lastFocus) lastFocus.focus({preventScroll:true});
+  }
+
+  openBtn?.addEventListener('click', openMenu);
+  closeBtn?.addEventListener('click', closeMenu);
+  overlay?.addEventListener('click', closeMenu);
+
+  // Esc to close
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && body.classList.contains('menu-open')) {
+      e.preventDefault(); 
+      closeMenu();
+    }
+  });
+
+  // Close on menu item selection
+  menu?.addEventListener('click', (e) => {
+    const el = e.target.closest('a.menu-item, button.menu-item');
+    if (el) closeMenu();
+  });
+
+  // Lock background scroll for iOS
+  overlay?.addEventListener('touchmove', (e) => e.preventDefault(), {passive:false});
+})();
