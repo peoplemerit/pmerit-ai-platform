@@ -285,8 +285,27 @@ function closeMobileMenu() {
   }
 }
 
+// Load footer partial if footer-container exists
+async function loadFooter() {
+  const footerContainer = document.getElementById('footer-container');
+  if (footerContainer) {
+    try {
+      const response = await fetch('partials/footer.html');
+      if (response.ok) {
+        const html = await response.text();
+        footerContainer.innerHTML = html;
+      }
+    } catch (error) {
+      console.error('Error loading footer:', error);
+    }
+  }
+}
+
 // Initialize mobile menu event listeners
 document.addEventListener('DOMContentLoaded', function() {
+  // Load footer if container exists
+  loadFooter();
+  
   // Hamburger toggle
   if (hamburgerToggle) {
     hamburgerToggle.addEventListener('click', function() {

@@ -29,6 +29,24 @@ class NavigationManager {
     }
   }
 
+  // Load footer partial
+  async loadFooter() {
+    try {
+      const response = await fetch('partials/footer.html');
+      if (!response.ok) {
+        throw new Error('HTTP error! status: ' + response.status);
+      }
+      const html = await response.text();
+      
+      const container = document.getElementById('footer-container');
+      if (container) {
+        container.innerHTML = html;
+      }
+    } catch (error) {
+      console.error('Error loading footer:', error);
+    }
+  }
+
   // Initialize hamburger menu functionality
   initializeHamburgerMenu() {
     this.hamburgerToggle = document.querySelector('.hamburger-toggle');
@@ -125,6 +143,7 @@ class NavigationManager {
 document.addEventListener('DOMContentLoaded', function() {
   const navManager = new NavigationManager();
   navManager.loadNavigation();
+  navManager.loadFooter();
   
   // Handle window resize
   window.addEventListener('resize', () => {
