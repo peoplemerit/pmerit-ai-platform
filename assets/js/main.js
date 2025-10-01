@@ -300,8 +300,7 @@ function init() {
     const leftVhToggle = document.getElementById('vhToggle');
     const leftSupportToggle = document.getElementById('supportToggle');
     const leftDarkToggle = document.getElementById('darkToggle');
-    const leftTtsToggle = document.getElementById('ttsToggle');
-    const ttsToggleButton = document.getElementById('ttsToggleButton');
+    const leftTtsToggle = document.getElementById('ttsToggleButton');
     const settingsBox = document.getElementById('settingsBox');
     const careerPathsBtn = document.getElementById('careerPaths');
     const dashBtn = document.getElementById('dashBtn');
@@ -352,7 +351,9 @@ function init() {
       leftTtsToggle.addEventListener('click', function() {
         this.classList.toggle('active');
         const isActive = this.classList.contains('active');
-        toggleTextToSpeech(isActive);
+        if (typeof setTTS === 'function') {
+          setTTS(isActive);
+        }
       });
     }
 
@@ -471,8 +472,6 @@ function init() {
   
   // Set up event listeners with null safety checks
   if (darkToggle) darkToggle.addEventListener('click', () => setDark(!state.dark));
-  if (ttsToggle) ttsToggle.addEventListener('click', () => setTTS(!state.tts));
-  if (ttsToggleButton) ttsToggleButton.addEventListener('click', () => setTTS(!state.tts));
   if (supportToggle) supportToggle.addEventListener('click', () => setSupport(!state.support));
   if (supportShort) supportShort.addEventListener('click', () => setSupport(true));
   if (vhToggle) vhToggle.addEventListener('click', () => setVH(!state.vh));
@@ -1137,8 +1136,10 @@ function initializeModernToggles() {
         document.body.classList.toggle('privacy-mode', this.checked);
       } else if (toggleId === 'ttsToggle') {
         console.log('Text-to-Speech toggled');
-        // Enable/disable TTS functionality
-        document.body.classList.toggle('tts-enabled', this.checked);
+        // Sync TTS state across all toggles
+        if (typeof setTTS === 'function') {
+          setTTS(this.checked);
+        }
         if (this.checked) {
           // Test TTS when enabled
           if ('speechSynthesis' in window) {
