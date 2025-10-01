@@ -294,10 +294,31 @@ async function loadFooter() {
       if (response.ok) {
         const html = await response.text();
         footerContainer.innerHTML = html;
+        
+        // Initialize footer button functionality after loading
+        initFooterButtons();
       }
     } catch (error) {
       console.error('Error loading footer:', error);
     }
+  }
+}
+
+// Initialize footer button event listeners
+function initFooterButtons() {
+  const privacyBtn = document.getElementById('privacyBtn');
+  const settingsBtn = document.getElementById('settingsBtn');
+
+  if (privacyBtn) {
+    privacyBtn.addEventListener('click', function() {
+      window.location.href = 'privacy.html';
+    });
+  }
+
+  if (settingsBtn) {
+    settingsBtn.addEventListener('click', function() {
+      alert('Settings functionality will be implemented here');
+    });
   }
 }
 

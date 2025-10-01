@@ -41,9 +41,30 @@ class NavigationManager {
       const container = document.getElementById('footer-container');
       if (container) {
         container.innerHTML = html;
+        
+        // Initialize footer button functionality
+        this.initFooterButtons();
       }
     } catch (error) {
       console.error('Error loading footer:', error);
+    }
+  }
+
+  // Initialize footer button event listeners
+  initFooterButtons() {
+    const privacyBtn = document.getElementById('privacyBtn');
+    const settingsBtn = document.getElementById('settingsBtn');
+
+    if (privacyBtn) {
+      privacyBtn.addEventListener('click', function() {
+        window.location.href = 'privacy.html';
+      });
+    }
+
+    if (settingsBtn) {
+      settingsBtn.addEventListener('click', function() {
+        alert('Settings functionality will be implemented here');
+      });
     }
   }
 
