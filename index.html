@@ -38,19 +38,12 @@
     
     <!-- Right Actions -->
     <div class="header-actions">
-      <button class="grid-menu-btn" id="gridMenuBtn" aria-label="Google apps">
-        <svg class="grid-icon" viewBox="0 0 24 24" width="20" height="20">
-          <circle cx="5" cy="5" r="2" fill="currentColor"/>
-          <circle cx="12" cy="5" r="2" fill="currentColor"/>
-          <circle cx="19" cy="5" r="2" fill="currentColor"/>
-          <circle cx="5" cy="12" r="2" fill="currentColor"/>
-          <circle cx="12" cy="12" r="2" fill="currentColor"/>
-          <circle cx="19" cy="12" r="2" fill="currentColor"/>
-          <circle cx="5" cy="19" r="2" fill="currentColor"/>
-          <circle cx="12" cy="19" r="2" fill="currentColor"/>
-          <circle cx="19" cy="19" r="2" fill="currentColor"/>
-        </svg>
-      </button>
+      <select class="language-switcher" id="headerLang" aria-label="Select Language" title="Language">
+        <option value="en">🇺🇸 EN</option>
+        <option value="yo">🇳🇬 YO</option>
+        <option value="ig">🇳🇬 IG</option>
+        <option value="ha">🇳🇬 HA</option>
+      </select>
       <button class="sign-in-btn" id="signInBtn">Sign In</button>
     </div>
   </header>
@@ -238,7 +231,6 @@
       <!-- AI Greeting Section -->
       <div class="ai-greeting">
         <div class="ai-avatar">🤖</div>
-        <h1>PMERIT</h1>
         <div class="greeting-text">
           Hi there! I'm your learning companion, empowering your education through innovation. 
           PMERIT provides accessible, high-quality education that opens doors to endless opportunities worldwide. 
@@ -253,11 +245,19 @@
           <div class="chat-description">Get help with courses, learning paths, or your educational goals</div>
         </div>
         
+        <!-- Issue #7: Starter prompt chips -->
+        <div class="prompt-chips">
+          <button class="prompt-chip" data-prompt="Which career path fits me?">Which career path fits me?</button>
+          <button class="prompt-chip" data-prompt="Show beginner courses">Show beginner courses</button>
+          <button class="prompt-chip" data-prompt="How do I get started?">How do I get started?</button>
+          <button class="prompt-chip" data-prompt="What skills should I learn?">What skills should I learn?</button>
+        </div>
+        
         <div class="chat-input-container">
-          <textarea id="chatInputMobile" maxlength="1000" placeholder="Ask about courses, learning paths, or your goals..." aria-label="Message"></textarea>
+          <textarea id="chatInputMobile" maxlength="1000" placeholder="Ask about courses, learning paths, or your goals..." aria-label="Message" aria-describedby="chatDescription"></textarea>
           <div class="input-bar-mobile">
-            <span class="count-mobile" id="countMobile">0/1000</span>
-            <button class="send-btn" id="sendBtnMobile">
+            <span class="count-mobile" id="countMobile" aria-live="polite" aria-atomic="true">0/1000</span>
+            <button class="send-btn" id="sendBtnMobile" aria-label="Send message">
               <span>Send</span>
               <i class="fas fa-paper-plane"></i>
             </button>
@@ -506,5 +506,61 @@
   <script src="assets/js/router.js"></script>
   <script src="assets/js/chat.js"></script>
   <script src="assets/js/main.js"></script>
+  
+  <!-- Mobile Hero & Chat Polish - Interactive enhancements -->
+  <script>
+    // Issue #7: Prompt chips functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const promptChips = document.querySelectorAll('.prompt-chip');
+      const chatInput = document.getElementById('chatInputMobile');
+      const charCount = document.getElementById('countMobile');
+      
+      // Handle prompt chip clicks
+      promptChips.forEach(chip => {
+        chip.addEventListener('click', function() {
+          const prompt = this.getAttribute('data-prompt');
+          if (chatInput && prompt) {
+            chatInput.value = prompt;
+            chatInput.focus();
+            // Update character count
+            if (charCount) {
+              charCount.textContent = `${chatInput.value.length}/1000`;
+            }
+          }
+        });
+      });
+      
+      // Issue #3: Character counter for mobile textarea
+      if (chatInput && charCount) {
+        chatInput.addEventListener('input', function() {
+          const length = this.value.length;
+          charCount.textContent = `${length}/1000`;
+          
+          // Auto-grow textarea (Issue #3)
+          this.style.height = 'auto';
+          this.style.height = Math.min(this.scrollHeight, 200) + 'px';
+        });
+        
+        // Initialize auto-grow on page load
+        chatInput.style.height = 'auto';
+        chatInput.style.minHeight = '72px';
+      }
+      
+      // Also handle desktop textarea character count
+      const desktopInput = document.getElementById('chatInput');
+      const desktopCount = document.getElementById('count');
+      
+      if (desktopInput && desktopCount) {
+        desktopInput.addEventListener('input', function() {
+          const length = this.value.length;
+          desktopCount.textContent = `${length}/1000`;
+          
+          // Auto-grow
+          this.style.height = 'auto';
+          this.style.height = Math.min(this.scrollHeight, 200) + 'px';
+        });
+      }
+    });
+  </script>
 </body>
 </html>

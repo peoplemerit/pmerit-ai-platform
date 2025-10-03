@@ -3716,3 +3716,348 @@ textarea:focus {
     overflow: visible;
   }
 }
+
+/* ========== MOBILE HERO & CHAT POLISH (EPIC) ========== */
+
+/* Issue #1: Header improvements - Language switcher styling */
+.language-switcher {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 6px 8px;
+  font-size: 14px;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: var(--transition);
+  min-height: 36px;
+  font-family: inherit;
+}
+
+.language-switcher:hover {
+  background: var(--bg-secondary);
+  border-color: var(--primary);
+}
+
+.language-switcher:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-color: var(--primary);
+}
+
+@media (max-width: 480px) {
+  .pmerit-header {
+    padding: 8px 12px;
+    height: 56px;
+  }
+  
+  .brand {
+    font-size: 18px;
+  }
+  
+  .language-switcher {
+    font-size: 13px;
+    padding: 4px 6px;
+    min-height: 32px;
+  }
+  
+  .sign-in-btn {
+    font-size: 13px;
+    padding: 6px 12px;
+    min-height: 32px;
+  }
+}
+
+/* Issue #2 & #6: Hero section improvements */
+@media (max-width: 767px) {
+  .ai-greeting {
+    text-align: center;
+    padding: 24px 16px; /* 24-32px top/bottom padding */
+  }
+  
+  .ai-avatar {
+    font-size: 48px;
+    margin-bottom: 16px; /* 8px rhythm */
+  }
+  
+  .greeting-text {
+    font-size: 16px; /* Issue #5: ≥16px on mobile */
+    line-height: 1.6; /* Issue #5: 1.5-1.6 line-height */
+    color: var(--text-primary);
+    margin: 0 auto;
+    max-width: 60ch;
+    padding: 0 8px;
+  }
+  
+  /* Add visual hierarchy with subtle gradient */
+  .ai-greeting {
+    background: linear-gradient(to bottom, 
+      var(--bg-secondary) 0%, 
+      var(--bg-primary) 100%);
+    border-radius: 0 0 16px 16px;
+    margin-bottom: 16px; /* 8px rhythm */
+  }
+}
+
+/* Issue #3: Chat area comfort improvements */
+@media (max-width: 767px) {
+  .chat-interface {
+    padding: 16px; /* Increased comfort padding */
+    margin: 16px;
+    gap: 16px; /* 16px vertical spacing */
+  }
+  
+  .chat-header {
+    margin-bottom: 16px; /* 16px spacing */
+  }
+  
+  .chat-header h2 {
+    font-size: 18px; /* Issue #5: Readable size */
+    line-height: 1.5;
+    margin-bottom: 8px; /* 8px rhythm */
+  }
+  
+  .chat-description {
+    font-size: 14px;
+    line-height: 1.6; /* Issue #5 */
+    color: var(--text-secondary);
+  }
+  
+  .chat-input-container {
+    gap: 12px; /* 12px spacing between elements */
+  }
+  
+  #chatInputMobile {
+    min-height: 72px; /* Issue #3: 72px min-height */
+    max-height: 200px; /* Safe max for auto-grow */
+    padding: 12px 16px; /* Comfortable touch padding */
+    font-size: 16px; /* Issue #5: Prevent iOS zoom */
+    line-height: 1.5;
+    border-radius: 12px;
+    resize: vertical;
+  }
+  
+  .input-bar-mobile {
+    display: flex;
+    flex-direction: column; /* Stack vertically on mobile */
+    gap: 12px; /* 12px spacing */
+    align-items: stretch;
+  }
+  
+  .count-mobile {
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-align: right;
+    order: 1;
+  }
+  
+  .send-btn {
+    width: 100%; /* Full-width on mobile */
+    min-height: 48px; /* Issue #3: ≥44px height, 48px for comfort */
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 12px;
+    order: 2;
+    justify-content: center;
+  }
+}
+
+/* Issue #4: Strengthen CTA visibility - Primary buttons */
+.sign-in-btn,
+.send-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+.sign-in-btn:hover,
+.send-btn:hover {
+  background: var(--primary-dark);
+  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+  transform: translateY(-1px);
+}
+
+.sign-in-btn:focus-visible,
+.send-btn:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+.sign-in-btn:active,
+.send-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(37, 99, 235, 0.2);
+}
+
+/* Issue #7: Starter prompt chips */
+.prompt-chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 8px 0;
+  margin-bottom: 16px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Hide scrollbar on Firefox */
+}
+
+.prompt-chips::-webkit-scrollbar {
+  display: none; /* Hide scrollbar on Chrome/Safari */
+}
+
+.prompt-chip {
+  flex-shrink: 0;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+}
+
+.prompt-chip:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+.prompt-chip:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.prompt-chip:active {
+  transform: translateY(0);
+}
+
+/* Issue #8: Mobile spacing & safe areas */
+@media (max-width: 767px) {
+  .main-content {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+    padding-top: max(16px, env(safe-area-inset-top));
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+  }
+  
+  .pmerit-header {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+  
+  .google-footer {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+    padding-bottom: max(0px, env(safe-area-inset-bottom));
+  }
+  
+  .conversation-container {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+}
+
+/* Issue #9: Accessibility - Focus states and ARIA support */
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Ensure all interactive elements have visible focus */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* High contrast for better readability */
+@media (max-width: 767px) {
+  .greeting-text,
+  .chat-description,
+  p {
+    color: var(--text-primary);
+    /* Ensure AA contrast ratio ≥4.5:1 */
+  }
+}
+
+/* Additional mobile-specific improvements */
+@media (max-width: 430px) {
+  /* Extra small devices like iPhone SE */
+  .pmerit-header {
+    padding: 6px 10px;
+    height: 54px;
+  }
+  
+  .brand {
+    font-size: 17px;
+  }
+  
+  .ai-greeting {
+    padding: 20px 12px;
+  }
+  
+  .chat-interface {
+    padding: 12px;
+    margin: 12px 8px;
+  }
+  
+  #chatInputMobile {
+    min-height: 72px; /* Maintain comfortable height */
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 320px) {
+  /* Very small devices */
+  .pmerit-header {
+    padding: 6px 8px;
+    height: 52px;
+  }
+  
+  .brand {
+    font-size: 16px;
+  }
+  
+  .header-actions {
+    gap: 6px;
+  }
+  
+  .language-switcher {
+    font-size: 12px;
+    padding: 4px 6px;
+  }
+  
+  .sign-in-btn {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+  
+  .ai-greeting {
+    padding: 16px 10px;
+  }
+  
+  .greeting-text {
+    font-size: 15px;
+  }
+  
+  .chat-interface {
+    padding: 10px;
+    margin: 10px 6px;
+  }
+}
