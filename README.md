@@ -33,6 +33,20 @@ Breaking poverty cycles through accessible education and remote career opportuni
 - Touch-friendly interactions
 - Beautiful gradient design
 
+## 📚 Documentation
+
+Comprehensive documentation is available to help you understand and work with this codebase:
+
+- **[📖 FILE_DOCUMENTATION.md](FILE_DOCUMENTATION.md)** - Complete guide to all files, their objectives, and how they connect (1,294 lines)
+- **[⚡ QUICK_REFERENCE.md](QUICK_REFERENCE.md)** - Fast lookup guide for developers (186 lines)
+- **[🗺️ VISUAL_MAP.md](VISUAL_MAP.md)** - Visual repository structure and architecture diagrams (599 lines)
+
+### Quick Start Guide
+
+1. **New to the project?** Start with [QUICK_REFERENCE.md](QUICK_REFERENCE.md)
+2. **Want to understand the architecture?** Check [VISUAL_MAP.md](VISUAL_MAP.md)
+3. **Need detailed information?** Dive into [FILE_DOCUMENTATION.md](FILE_DOCUMENTATION.md)
+
 ---
 
 **PMERIT AI Educational Platform - Empowering learning through innovation**
