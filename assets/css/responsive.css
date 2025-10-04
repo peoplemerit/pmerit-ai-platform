@@ -3469,6 +3469,7 @@ textarea:focus {
     padding: var(--space-md);
     max-width: 100%;
     overflow-y: auto;
+    min-height: 0; /* Allow flex item to shrink */
   }
   
   /* Single conversation container - mobile optimized */
@@ -3607,8 +3608,11 @@ textarea:focus {
   
   /* Minimize footer on mobile - reduce viewport waste */
   .google-footer {
+    position: relative; /* Override grid-area positioning */
+    grid-area: unset; /* Remove grid-area on mobile */
     height: 40px; /* Reduced from default to save space */
     font-size: 12px; /* Smaller text */
+    flex-shrink: 0; /* Prevent footer from shrinking in flex layout */
   }
   
   .footer-content {
