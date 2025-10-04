@@ -644,7 +644,7 @@ function init() {
   // Chat functionality - Add null checks
   if (chatInput) {
     chatInput.addEventListener('input', () => {
-      count.textContent = `${chatInput.value.length}/1000`;
+      if (charCount) charCount.textContent = `${chatInput.value.length}/1000`;
     });
     
     chatInput.addEventListener('keydown', (e) => {
