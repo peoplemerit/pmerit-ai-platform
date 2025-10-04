@@ -763,6 +763,7 @@ body {
   .estate {
     display: flex !important;
     flex-direction: column !important;
+    flex: 1 !important;
     height: auto !important;
     overflow-y: auto !important;
   }
