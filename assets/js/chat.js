@@ -1,8 +1,4 @@
 function addMessage(sender, text, isUser = false) {
-  if (document.getElementById('welcomeMsg')) {
-    welcomeMsg.remove();
-  }
-  
   // Hide typing indicator when adding a message
   hideTypingIndicator();
 
@@ -19,8 +15,15 @@ function addMessage(sender, text, isUser = false) {
     </div>
   `;
   
-  chatBody.appendChild(messageEl);
-  chatBody.scrollTop = chatBody.scrollHeight;
+  const chatBody = document.getElementById('chatBody');
+  if (chatBody) {
+    chatBody.appendChild(messageEl);
+    // Scroll the chat messages container
+    const chatMessages = document.getElementById('chatMessages');
+    if (chatMessages) {
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+  }
   
   if (state.tts && !isUser && 'speechSynthesis' in window) {
     const utterance = new SpeechSynthesisUtterance(text);
@@ -28,7 +31,8 @@ function addMessage(sender, text, isUser = false) {
   }
   
   if (state.vh && !isUser) {
-    document.getElementById('captions').textContent = text;
+    const captions = document.getElementById('captions');
+    if (captions) captions.textContent = text;
   }
 }
 
@@ -36,7 +40,10 @@ function showTypingIndicator() {
   const indicator = document.getElementById('typingIndicator');
   if (indicator) {
     indicator.style.display = 'flex';
-    chatBody.scrollTop = chatBody.scrollHeight;
+    const chatMessages = document.getElementById('chatMessages');
+    if (chatMessages) {
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
   }
 }
 
@@ -54,7 +61,7 @@ function sendMessage() {
   addMessage('You', text, true);
   
   chatInput.value = '';
-  count.textContent = '0/1000';
+  if (charCount) charCount.textContent = '0/1000';
   
   // Show typing indicator before AI response
   showTypingIndicator();
