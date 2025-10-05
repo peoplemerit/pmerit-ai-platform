@@ -1,94 +1,61 @@
-<!-- Mobile-First Navigation -->
+<!-- Unified Mobile Navigation for PMERIT -->
 <nav class="mobile-nav sticky-header">
-  <div class="nav-container">
-    <div class="nav-left">
-      <button class="nav-link primary-cta" id="startBtn" title="Sign Up">Sign Up</button>
-    </div>
-    
-    <div class="nav-center">
-      <a href="index.html" class="nav-logo">
-        <span class="logo-icon">🤖</span>
-        <span class="logo-text">PMERIT AI</span>
+  <div class="nav-container" style="display:flex;align-items:center;justify-content:space-between;">
+    <!-- Far Left: Logo/Text -->
+    <div class="nav-left" style="flex:0 0 auto;">
+      <a href="index.html" class="nav-logo" style="display:flex;align-items:center;text-decoration:none;">
+        <span class="logo-icon" style="font-size:1.5rem;">🤖</span>
+        <span class="logo-text" style="font-weight:bold;font-size:1.2rem;margin-left:.25rem;">PMERIT</span>
       </a>
     </div>
-    
-    <div class="nav-right">
-      <select class="language-switcher mobile-hidden" id="lang" aria-label="Select Language" title="Language">
+    <!-- Far Right: Language Switcher, Hamburger, Sign-In -->
+    <div class="nav-right" style="display:flex;align-items:center;gap:1rem;">
+      <select class="language-switcher" id="lang" aria-label="Select Language" title="Language" style="font-size:1rem;">
         <option value="en">🇺🇸 English</option>
         <option value="yo">🇳🇬 Yorùbá</option>
         <option value="ig">🇳🇬 Igbo</option>
         <option value="ha">🇳🇬 Hausa</option>
       </select>
-      <button class="nav-link mobile-hidden" id="pricingBtn" title="Donate">Donate</button>
-      <button class="nav-link mobile-hidden" id="signInBtn" title="Sign In">Sign In</button>
-      <button class="hamburger-toggle" aria-label="Menu" aria-expanded="false">
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
+      <button class="hamburger-toggle" id="hamburgerMenu" aria-label="Menu" aria-expanded="false" style="background:none;border:none;padding:0;">
+        <span class="hamburger-line" style="display:block;width:24px;height:3px;background:#333;margin:4px 0;"></span>
+        <span class="hamburger-line" style="display:block;width:24px;height:3px;background:#333;margin:4px 0;"></span>
+        <span class="hamburger-line" style="display:block;width:24px;height:3px;background:#333;margin:4px 0;"></span>
       </button>
+      <button class="nav-link sign-in-btn" id="signInBtn" title="Sign In" style="font-size:1rem;">Sign In</button>
     </div>
   </div>
   
-  <!-- Mobile Slide-out Menu -->
-  <div class="hamburger-menu" id="mobileMenu" aria-hidden="true">
-    <div class="menu-header">
-      <div class="menu-logo">
-        <span class="logo-icon">🤖</span>
-        <span class="logo-text">PMERIT AI</span>
+  <!-- Hamburger Slide-out Menu -->
+  <div class="hamburger-menu" id="mobileMenu" aria-hidden="true" style="display:none;position:fixed;top:56px;right:0;width:80vw;max-width:340px;height:100vh;background:#fff;z-index:1200;box-shadow:-2px 0 8px rgba(0,0,0,0.1);">
+    <div class="menu-header" style="display:flex;align-items:center;justify-content:space-between;padding:.75rem;">
+      <div class="menu-logo" style="display:flex;align-items:center;">
+        <span class="logo-icon" style="font-size:1.5rem;">🤖</span>
+        <span class="logo-text" style="font-weight:bold;font-size:1.2rem;margin-left:.25rem;">PMERIT</span>
       </div>
-      <button class="menu-close" aria-label="Close Menu">
+      <button class="menu-close" id="menuCloseBtn" aria-label="Close Menu" style="background:none;border:none;">
         <i class="fas fa-times"></i>
       </button>
     </div>
-    
-    <div class="menu-content">
+    <div class="menu-content" style="padding:1rem;">
       <div class="menu-section">
         <h3>Learning</h3>
         <div class="menu-grid">
-          <a href="courses.html" class="menu-item">
-            <i class="fas fa-book-open"></i>
-            <span class="label">Courses</span>
-          </a>
-          <a href="career.html" class="menu-item">
-            <i class="fas fa-compass"></i>
-            <span class="label">Career Paths</span>
-          </a>
-          <a href="assessment.html" class="menu-item">
-            <i class="fas fa-graduation-cap"></i>
-            <span class="label">Assessment</span>
-          </a>
-          <a href="library.html" class="menu-item">
-            <i class="fas fa-books"></i>
-            <span class="label">Library</span>
-          </a>
+          <a href="courses.html" class="menu-item"><i class="fas fa-book-open"></i> <span class="label">Courses</span></a>
+          <a href="career.html" class="menu-item"><i class="fas fa-compass"></i> <span class="label">Career Paths</span></a>
+          <a href="assessment.html" class="menu-item"><i class="fas fa-graduation-cap"></i> <span class="label">Assessment</span></a>
+          <a href="library.html" class="menu-item"><i class="fas fa-books"></i> <span class="label">Library</span></a>
         </div>
       </div>
-      
       <div class="menu-section">
         <h3>Account</h3>
         <div class="menu-grid">
-          <a href="progress.html" class="menu-item">
-            <i class="fas fa-chart-line"></i>
-            <span class="label">Progress</span>
-          </a>
-          <a href="learner-portal.html" class="menu-item">
-            <i class="fas fa-user-graduate"></i>
-            <span class="label">Learner Portal</span>
-          </a>
-          <a href="classroom.html" class="menu-item">
-            <i class="fas fa-chalkboard-teacher"></i>
-            <span class="label">Classroom</span>
-          </a>
+          <a href="progress.html" class="menu-item"><i class="fas fa-chart-line"></i> <span class="label">Progress</span></a>
+          <a href="learner-portal.html" class="menu-item"><i class="fas fa-user-graduate"></i> <span class="label">Learner Portal</span></a>
+          <a href="classroom.html" class="menu-item"><i class="fas fa-chalkboard-teacher"></i> <span class="label">Classroom</span></a>
         </div>
       </div>
-    </div>
-    
-    <div class="menu-footer">
-      <div class="menu-actions">
-        <button class="menu-action-btn primary" id="menuSignUp">Sign Up</button>
-        <button class="menu-action-btn secondary" id="menuSignIn">Sign In</button>
-      </div>
-      <div class="menu-language">
+      <!-- Language Switcher in menu for accessibility -->
+      <div class="menu-language" style="margin-top:1rem;">
         <select class="mobile-language-switcher" id="mobileLang" aria-label="Select Language">
           <option value="en">🇺🇸 English</option>
           <option value="yo">🇳🇬 Yorùbá</option>
@@ -96,10 +63,12 @@
           <option value="ha">🇳🇬 Hausa</option>
         </select>
       </div>
+      <div class="menu-actions" style="margin-top:1rem;">
+        <button class="menu-action-btn primary" id="menuSignUp">Sign Up</button>
+        <button class="menu-action-btn secondary" id="menuSignIn">Sign In</button>
+      </div>
     </div>
-    
-    <!-- Help & Information section -->
-    <details class="help-section">
+    <details class="help-section" style="padding:1rem;">
       <summary>Help & Information</summary>
       <ul>
         <li><a href="help.html">Help Center</a></li>
@@ -112,3 +81,26 @@
     </details>
   </div>
 </nav>
+
+<script>
+// Hamburger open/close logic
+const hamburgerBtn = document.getElementById('hamburgerMenu');
+const mobileMenu = document.getElementById('mobileMenu');
+const menuCloseBtn = document.getElementById('menuCloseBtn');
+hamburgerBtn && hamburgerBtn.addEventListener('click', () => {
+  mobileMenu.style.display = 'block';
+});
+menuCloseBtn && menuCloseBtn.addEventListener('click', () => {
+  mobileMenu.style.display = 'none';
+});
+</script>
+
+<style>
+@media (max-width: 768px) {
+  .mobile-nav { display: block; }
+  .sticky-header { position:sticky;top:0;background:#fff;z-index:1100; }
+}
+@media (min-width: 769px) {
+  .mobile-nav { display: none; }
+}
+</style>
