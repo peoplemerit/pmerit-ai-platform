@@ -1,64 +1,12 @@
-<!-- PMERIT Unified Header - Google Style -->
-<nav class="google-nav">
-  <div class="nav-left">
-    <button class="hamburger-toggle" aria-label="Menu">☰</button>
-  </div>
-  
-  <div class="nav-right">
-    <select class="language-switcher" id="lang" aria-label="Select Language" title="Language">
-      <option value="en">🇺🇸 English</option>
-      <option value="yo">🇳🇬 Yorùbá</option>
-      <option value="ig">🇳🇬 Igbo</option>
-      <option value="ha">🇳🇬 Hausa</option>
-    </select>
-    <button class="nav-link" id="pricingBtn" title="Donate">Donate</button>
-    <button class="nav-link" id="signInBtn" title="Sign In">Sign In</button>
-    <button class="nav-link" id="startBtn" title="Sign Up">Sign Up</button>
-  </div>
-</nav>
-
-<!-- Hidden hamburger menu -->
-<div class="hamburger-menu" hidden>
-  <div class="menu-grid">
-    <a href="courses.html" class="menu-item">
-      <span class="icon">📚</span>
-      <span class="label">Courses</span>
-    </a>
-    <a href="career.html" class="menu-item">
-      <span class="icon">🎯</span>
-      <span class="label">Career Paths</span>
-    </a>
-    <a href="assessment.html" class="menu-item">
-      <span class="icon">📊</span>
-      <span class="label">Assessment</span>
-    </a>
-    <a href="classroom.html" class="menu-item">
-      <span class="icon">🏫</span>
-      <span class="label">Classroom</span>
-    </a>
-    <a href="learner-portal.html" class="menu-item">
-      <span class="icon">👤</span>
-      <span class="label">Learner Portal</span>
-    </a>
-    <a href="library.html" class="menu-item">
-      <span class="icon">📖</span>
-      <span class="label">Library</span>
-    </a>
-    <a href="certificates.html" class="menu-item">
-      <span class="icon">🏆</span>
-      <span class="label">Certificates</span>
-    </a>
-    <a href="progress.html" class="menu-item">
-      <span class="icon">📈</span>
-      <span class="label">Progress</span>
-    </a>
-    <a href="support.html" class="menu-item">
-      <span class="icon">💬</span>
-      <span class="label">Support</span>
-    </a>
-    <a href="help.html" class="menu-item">
-      <span class="icon">❓</span>
-      <span class="label">Help</span>
+<!-- PMERIT Unified Header (No Hamburger Menu, "Pmerit" far left) -->
+<header class="pmerit-header" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--bg-primary); border-bottom: 1px solid var(--border-color); height: 60px; box-sizing: border-box;">
+  <!-- Far Left: Logo/Text -->
+  <div class="header-left" style="flex:0 0 auto;">
+    <a href="index.html" class="header-logo" style="display: flex; align-items: center; text-decoration: none;">
+      <span class="logo-icon" style="font-size:1.5rem;">🤖</span>
+      <span class="logo-text" style="font-weight: bold; font-size: 1.2rem; margin-left: .25rem;">PMERIT</span>
     </a>
   </div>
-</div>
+  <!-- Far Right: (empty, or add actions if needed) -->
+  <div class="header-right" style="flex:1 1 auto;"></div>
+</header>
