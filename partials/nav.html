@@ -54,6 +54,44 @@
           <a href="classroom.html" class="menu-item"><i class="fas fa-chalkboard-teacher"></i> <span class="label">Classroom</span></a>
         </div>
       </div>
+      
+      <!-- Quick Actions Section -->
+      <div class="menu-section" style="margin-top:1rem;">
+        <h3>Quick Actions</h3>
+        <div style="display:flex;flex-direction:column;gap:0.5rem;">
+          <button class="toggle" id="vhToggleMobile" style="display:flex;align-items:center;justify-content:space-between;padding:0.75rem;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:8px;cursor:pointer;">
+            <span><i class="fas fa-user-astronaut"></i> Virtual Human Mode</span>
+            <span class="switch" aria-hidden="true" style="width:40px;height:20px;background:#ccc;border-radius:10px;position:relative;transition:background 0.3s;"></span>
+          </button>
+          <button class="toggle" id="supportToggleMobile" style="display:flex;align-items:center;justify-content:space-between;padding:0.75rem;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:8px;cursor:pointer;">
+            <span><i class="fas fa-headset"></i> Customer Service Mode</span>
+            <span class="switch" aria-hidden="true" style="width:40px;height:20px;background:#ccc;border-radius:10px;position:relative;transition:background 0.3s;"></span>
+          </button>
+          <a href="learner-portal.html" class="menu-item" style="display:flex;align-items:center;padding:0.75rem;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:8px;text-decoration:none;">
+            <i class="fas fa-gauge-high"></i> <span class="label" style="margin-left:0.5rem;">Dashboard</span>
+          </a>
+        </div>
+      </div>
+      
+      <!-- Settings Section -->
+      <details class="settings-section" style="margin-top:1rem;padding:0 1rem;">
+        <summary style="cursor:pointer;padding:0.5rem 0;font-weight:600;"><i class="fas fa-cog"></i> Settings</summary>
+        <div style="display:flex;flex-direction:column;gap:0.5rem;margin-top:0.5rem;">
+          <button class="toggle" id="darkToggleMobile" style="display:flex;align-items:center;justify-content:space-between;padding:0.75rem;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:8px;cursor:pointer;">
+            <span><i class="fas fa-moon"></i> Dark Mode</span>
+            <span class="switch" aria-hidden="true" style="width:40px;height:20px;background:#ccc;border-radius:10px;position:relative;transition:background 0.3s;"></span>
+          </button>
+          <button class="toggle" id="ttsToggleMobile" style="display:flex;align-items:center;justify-content:space-between;padding:0.75rem;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:8px;cursor:pointer;">
+            <span><i class="fas fa-volume-up"></i> Text-to-Speech</span>
+            <span class="switch" aria-hidden="true" style="width:40px;height:20px;background:#ccc;border-radius:10px;position:relative;transition:background 0.3s;"></span>
+          </button>
+          <button id="voicesBtnMobile" style="display:flex;align-items:center;justify-content:space-between;padding:0.75rem;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:8px;cursor:pointer;">
+            <span><i class="fas fa-headphones"></i> Preview Voices</span>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </details>
+      
       <!-- Language Switcher in menu for accessibility -->
       <div class="menu-language" style="margin-top:1rem;">
         <select class="mobile-language-switcher" id="mobileLang" aria-label="Select Language">

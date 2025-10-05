@@ -25,10 +25,17 @@
     initializeToggles() {
       // Virtual Human Mode toggle
       const vhToggle = document.getElementById('vhToggle');
+      const vhToggleMobile = document.getElementById('vhToggleMobile');
       const virtualHumanToggle = document.getElementById('virtualHumanToggle');
       
       if (vhToggle) {
         vhToggle.addEventListener('click', () => {
+          this.toggleVirtualHumanMode();
+        });
+      }
+
+      if (vhToggleMobile) {
+        vhToggleMobile.addEventListener('click', () => {
           this.toggleVirtualHumanMode();
         });
       }
@@ -42,10 +49,17 @@
 
       // Customer Service Mode toggle
       const supportToggle = document.getElementById('supportToggle');
+      const supportToggleMobile = document.getElementById('supportToggleMobile');
       const customerServiceToggle = document.getElementById('customerServiceToggle');
       
       if (supportToggle) {
         supportToggle.addEventListener('click', () => {
+          this.toggleCustomerServiceMode();
+        });
+      }
+
+      if (supportToggleMobile) {
+        supportToggleMobile.addEventListener('click', () => {
           this.toggleCustomerServiceMode();
         });
       }
@@ -59,10 +73,17 @@
 
       // Dark Mode toggle
       const darkToggle = document.getElementById('darkToggle');
+      const darkToggleMobile = document.getElementById('darkToggleMobile');
       const darkModeToggle = document.getElementById('darkModeToggle');
       
       if (darkToggle) {
         darkToggle.addEventListener('click', () => {
+          this.toggleDarkMode();
+        });
+      }
+
+      if (darkToggleMobile) {
+        darkToggleMobile.addEventListener('click', () => {
           this.toggleDarkMode();
         });
       }
@@ -76,10 +97,16 @@
 
       // TTS toggle
       const ttsToggle = document.getElementById('ttsToggle');
-      const ttsToggleCheckbox = document.getElementById('ttsToggle');
+      const ttsToggleMobile = document.getElementById('ttsToggleMobile');
       
       if (ttsToggle) {
         ttsToggle.addEventListener('click', () => {
+          this.toggleTextToSpeech();
+        });
+      }
+
+      if (ttsToggleMobile) {
+        ttsToggleMobile.addEventListener('click', () => {
           this.toggleTextToSpeech();
         });
       }
@@ -94,6 +121,10 @@
       if (checkbox) {
         checkbox.checked = window.virtualHumanMode;
       }
+      
+      // Update mobile toggle visual state
+      this.updateToggleSwitch('vhToggleMobile', window.virtualHumanMode);
+      this.updateToggleSwitch('vhToggle', window.virtualHumanMode);
     },
 
     updateVirtualHumanMode() {
@@ -127,6 +158,10 @@
       if (checkbox) {
         checkbox.checked = window.customerServiceMode;
       }
+      
+      // Update mobile toggle visual state
+      this.updateToggleSwitch('supportToggleMobile', window.customerServiceMode);
+      this.updateToggleSwitch('supportToggle', window.customerServiceMode);
     },
 
     updateCustomerServiceMode() {
@@ -154,6 +189,10 @@
       if (checkbox) {
         checkbox.checked = window.darkMode;
       }
+      
+      // Update mobile toggle visual state
+      this.updateToggleSwitch('darkToggleMobile', window.darkMode);
+      this.updateToggleSwitch('darkToggle', window.darkMode);
     },
 
     applyDarkMode() {
@@ -282,11 +321,15 @@
 
       // Preview Voices button
       const voicesBtn = document.getElementById('voicesBtn');
-      if (voicesBtn) {
-        voicesBtn.addEventListener('click', () => {
-          window.previewVoices();
-        });
-      }
+      const voicesBtnMobile = document.getElementById('voicesBtnMobile');
+      
+      [voicesBtn, voicesBtnMobile].forEach(btn => {
+        if (btn) {
+          btn.addEventListener('click', () => {
+            window.previewVoices();
+          });
+        }
+      });
 
       // Begin Assessment button
       const beginAssessment = document.getElementById('beginAssessment');
@@ -318,6 +361,17 @@
         supportShort.addEventListener('click', () => {
           this.toggleCustomerServiceMode();
         });
+      }
+    },
+
+    updateToggleSwitch(toggleId, isActive) {
+      const toggle = document.getElementById(toggleId);
+      if (toggle) {
+        const switchEl = toggle.querySelector('.switch');
+        if (switchEl) {
+          switchEl.style.background = isActive ? 'var(--primary, #2563eb)' : '#ccc';
+        }
+        toggle.classList.toggle('active', isActive);
       }
     },
 
