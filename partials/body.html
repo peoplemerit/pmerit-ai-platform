@@ -1,125 +1,5 @@
+<!-- Main Body Layout (without mobile nav/header) -->
 <div class="estate">
-  <!-- Header (Desktop & Mobile) -->
-  <header class="main-header">
-    <div class="logo">PMERIT</div>
-    <!-- Desktop: Right icons and sign-in -->
-    <nav class="desktop-nav">
-      <button class="icon-btn" id="gridMenu" aria-label="Grid Menu">
-        <i class="fas fa-th"></i>
-      </button>
-      <button class="sign-in-btn">Sign In</button>
-    </nav>
-    <!-- Mobile: Hamburger and sign-in -->
-    <nav class="mobile-nav">
-      <button class="hamburger-btn" id="hamburgerMenu" aria-label="Open Menu">
-        <i class="fas fa-bars"></i>
-      </button>
-      <button class="sign-in-btn">Sign In</button>
-    </nav>
-  </header>
-
-  <!-- Hamburger Drawer (Mobile only) -->
-  <aside id="mobileHamburgerDrawer" class="hamburger-drawer" aria-label="Quick actions hamburger menu" style="display:none;">
-    <section>
-      <div class="pane-title">Quick Actions</div>
-
-      <button class="toggle" id="vhToggle">
-        <span><i class="fas fa-user-astronaut icon"></i> Virtual Human Mode</span>
-        <span class="switch" aria-hidden="true"></span>
-      </button>
-
-      <button class="action" id="careerPaths">
-        <span><i class="fas fa-compass icon"></i> Career Track & Explore Paths</span>
-        <i class="fas fa-chevron-right" aria-hidden="true"></i>
-      </button>
-
-      <button class="toggle" id="supportToggle">
-        <span><i class="fas fa-headset icon"></i> Customer Service Mode</span>
-        <span class="switch" aria-hidden="true"></span>
-      </button>
-
-      <div class="collapsible" id="settingsBox">
-        <div class="head">
-          <strong><i class="fas fa-sliders-h"></i> Settings</strong>
-          <i class="fas fa-chevron-down"></i>
-        </div>
-        <div class="body">
-          <button class="toggle" id="darkToggle">
-            <span><i class="fas fa-moon icon"></i> Dark Mode</span>
-            <span class="switch" aria-hidden="true"></span>
-          </button>
-          <button class="toggle" id="ttsToggle">
-            <span><i class="fas fa-volume-up icon"></i> Text-to-Speech</span>
-            <span class="switch" aria-hidden="true"></span>
-          </button>
-          <button class="action" id="voicesBtn">
-            <span><i class="fas fa-headphones icon"></i> Preview Voices</span>
-            <i class="fas fa-chevron-right"></i>
-          </button>
-        </div>
-      </div>
-
-      <button class="dashboard guest" id="dashBtn">
-        <i class="fas fa-gauge-high"></i> Dashboard
-      </button>
-
-      <div class="avatar" id="vhAvatar" title="Virtual Human">
-        <i class="fas fa-user-circle" aria-hidden="true"></i>
-      </div>
-    </section>
-  </aside>
-
-  <!-- Left Sidebar (Desktop only) -->
-  <aside id="left" class="desktop-sidebar" aria-label="Quick actions sidebar">
-    <section>
-      <div class="pane-title">Quick Actions</div>
-
-      <button class="toggle" id="vhToggle">
-        <span><i class="fas fa-user-astronaut icon"></i> Virtual Human Mode</span>
-        <span class="switch" aria-hidden="true"></span>
-      </button>
-
-      <button class="action" id="careerPaths">
-        <span><i class="fas fa-compass icon"></i> Career Track & Explore Paths</span>
-        <i class="fas fa-chevron-right" aria-hidden="true"></i>
-      </button>
-
-      <button class="toggle" id="supportToggle">
-        <span><i class="fas fa-headset icon"></i> Customer Service Mode</span>
-        <span class="switch" aria-hidden="true"></span>
-      </button>
-
-      <div class="collapsible" id="settingsBox">
-        <div class="head">
-          <strong><i class="fas fa-sliders-h"></i> Settings</strong>
-          <i class="fas fa-chevron-down"></i>
-        </div>
-        <div class="body">
-          <button class="toggle" id="darkToggle">
-            <span><i class="fas fa-moon icon"></i> Dark Mode</span>
-            <span class="switch" aria-hidden="true"></span>
-          </button>
-          <button class="toggle" id="ttsToggle">
-            <span><i class="fas fa-volume-up icon"></i> Text-to-Speech</span>
-            <span class="switch" aria-hidden="true"></span>
-          </button>
-          <button class="action" id="voicesBtn">
-            <span><i class="fas fa-headphones icon"></i> Preview Voices</span>
-            <i class="fas fa-chevron-right"></i>
-          </button>
-        </div>
-      </div>
-
-      <button class="dashboard guest" id="dashBtn">
-        <i class="fas fa-gauge-high"></i> Dashboard
-      </button>
-
-      <div class="avatar" id="vhAvatar" title="Virtual Human">
-        <i class="fas fa-user-circle" aria-hidden="true"></i>
-      </div>
-    </section>
-  </aside>
-
   <main>
     <section class="panel" aria-label="Chat panel">
       <div class="panel-head">
@@ -139,7 +19,7 @@
             <div class="ava"><i class="fas fa-user-circle"></i></div>
             <div>
               <h3>PMERIT AI:</h3>
-              <p id="welcomeCopy">Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?</p>
+              <p id="welcomeCopy">Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities.</p>
             </div>
           </article>
         </div>
@@ -174,6 +54,52 @@
     </section>
   </main>
 
+  <!-- Desktop Sidebar (hidden on mobile) -->
+  <aside id="left" class="desktop-sidebar" aria-label="Quick actions sidebar">
+    <section>
+      <div class="pane-title">Quick Actions</div>
+      <button class="toggle" id="vhToggle">
+        <span><i class="fas fa-user-astronaut icon"></i> Virtual Human Mode</span>
+        <span class="switch" aria-hidden="true"></span>
+      </button>
+      <button class="action" id="careerPaths">
+        <span><i class="fas fa-compass icon"></i> Career Track & Explore Paths</span>
+        <i class="fas fa-chevron-right" aria-hidden="true"></i>
+      </button>
+      <button class="toggle" id="supportToggle">
+        <span><i class="fas fa-headset icon"></i> Customer Service Mode</span>
+        <span class="switch" aria-hidden="true"></span>
+      </button>
+      <div class="collapsible" id="settingsBox">
+        <div class="head">
+          <strong><i class="fas fa-sliders-h"></i> Settings</strong>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="body">
+          <button class="toggle" id="darkToggle">
+            <span><i class="fas fa-moon icon"></i> Dark Mode</span>
+            <span class="switch" aria-hidden="true"></span>
+          </button>
+          <button class="toggle" id="ttsToggle">
+            <span><i class="fas fa-volume-up icon"></i> Text-to-Speech</span>
+            <span class="switch" aria-hidden="true"></span>
+          </button>
+          <button class="action" id="voicesBtn">
+            <span><i class="fas fa-headphones icon"></i> Preview Voices</span>
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+      <button class="dashboard guest" id="dashBtn">
+        <i class="fas fa-gauge-high"></i> Dashboard
+      </button>
+      <div class="avatar" id="vhAvatar" title="Virtual Human">
+        <i class="fas fa-user-circle" aria-hidden="true"></i>
+      </div>
+    </section>
+  </aside>
+
+  <!-- Right Sidebar (hidden on mobile) -->
   <aside id="right" aria-label="Support and discover sidebar">
     <section>
       <div class="support-assistant">
@@ -188,7 +114,6 @@
           </button>
         </div>
       </div>
-
       <h3>Discover Your Path (AI)</h3>
       <div class="discover">
         <h4>Personalized learning plan</h4>
@@ -200,31 +125,13 @@
   </aside>
 </div>
 
-<!-- Hamburger Drawer JS (example) -->
-<script>
-  // Simple mobile hamburger toggle logic
-  const hamburgerBtn = document.getElementById('hamburgerMenu');
-  const hamburgerDrawer = document.getElementById('mobileHamburgerDrawer');
-  hamburgerBtn && hamburgerBtn.addEventListener('click', () => {
-    if (hamburgerDrawer.style.display === 'none' || !hamburgerDrawer.style.display) {
-      hamburgerDrawer.style.display = 'block';
-    } else {
-      hamburgerDrawer.style.display = 'none';
-    }
-  });
-
-  // Optional: Close drawer when clicking outside, etc.
-</script>
-
 <style>
-/* Example styles to show/hide mobile hamburger, and desktop/sidebar responsiveness */
-.desktop-sidebar { display: block; }
-.hamburger-drawer, .mobile-nav { display: none; }
-
 @media (max-width: 768px) {
   .desktop-sidebar { display: none; }
-  .hamburger-drawer { display: block; position: fixed; top: 56px; right: 0; width: 80vw; max-width: 340px; height: 100vh; background: #fff; z-index: 1200; box-shadow: -2px 0 8px rgba(0,0,0,0.1); overflow-y: auto; }
-  .main-header .desktop-nav { display: none; }
-  .main-header .mobile-nav { display: flex; gap: 1rem; align-items: center; }
+  #right { display: none; }
+}
+@media (min-width: 769px) {
+  .desktop-sidebar { display: block; }
+  #right { display: block; }
 }
 </style>
