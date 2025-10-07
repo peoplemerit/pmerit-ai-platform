@@ -1,28 +1,166 @@
-<!-- In partials/header.html or inline header -->
-<header>
-    <div class="logo">PMERIT</div>
-    
-    <nav class="nav-actions">
-        <!-- Language Switcher -->
-        <select id="languageSwitcher">
-            <option value="en">English</option>
-            <option value="yo">Yorùbá</option>
-        </select>
+<!-- PMERIT Mobile-First Header -->
+<header class="pmerit-header" id="mainHeader">
+    <div class="header-container">
+        <!-- Left: Logo & Platform Name -->
+        <div class="header-left">
+            <a href="index.html" class="logo-link" aria-label="PMERIT Home">
+                <i class="fas fa-graduation-cap logo-icon"></i>
+                <span class="logo-text">Pmerit</span>
+            </a>
+        </div>
         
-        <!-- Dark Mode Toggle (NEW) -->
-        <button id="darkModeToggle" class="theme-toggle">
-            <span class="icon">🌙</span>
-            <span class="text">Dark Mode</span>
-        </button>
-        
-        <!-- Hamburger Menu -->
-        <button id="menuToggle" class="hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-        
-        <!-- Sign In -->
-        <button id="signInBtn" class="btn-sign-in">Sign In</button>
-    </nav>
+        <!-- Right: Language Switcher | Hamburger | Sign In -->
+        <div class="header-right">
+            <!-- Language Switcher Button -->
+            <button class="header-btn language-btn" id="languageBtn" aria-label="Change language" title="Select Language">
+                <i class="fas fa-globe"></i>
+            </button>
+            
+            <!-- Hamburger Menu Toggle -->
+            <button class="header-btn hamburger-toggle" id="hamburgerToggle" aria-label="Toggle menu" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            
+            <!-- Sign In Button -->
+            <button class="btn-sign-in" id="signInBtn">Sign In</button>
+        </div>
+    </div>
 </header>
+
+<!-- Hamburger Menu Overlay -->
+<div class="menu-overlay" id="menuOverlay" aria-hidden="true"></div>
+
+<!-- Hamburger Menu (Slide-in from Left) -->
+<aside class="hamburger-menu" id="hamburgerMenu" aria-hidden="true">
+    <!-- Menu Header -->
+    <div class="menu-header">
+        <div class="menu-brand">
+            <i class="fas fa-graduation-cap"></i>
+            <span>Pmerit Menu</span>
+        </div>
+        <button class="menu-close-btn" id="menuCloseBtn" aria-label="Close menu">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- Menu Content (Scrollable) -->
+    <div class="menu-content">
+        <!-- Quick Actions Section -->
+        <div class="menu-section">
+            <h3 class="menu-section-title">Quick Actions</h3>
+            
+            <!-- Virtual Human Mode Toggle -->
+            <div class="menu-toggle-item">
+                <div class="toggle-label-group">
+                    <i class="fas fa-user-astronaut toggle-icon"></i>
+                    <span class="toggle-label">Virtual Human Mode</span>
+                </div>
+                <label class="modern-toggle">
+                    <input type="checkbox" id="virtualHumanToggle" aria-label="Toggle Virtual Human Mode">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <!-- Customer Service Mode Toggle -->
+            <div class="menu-toggle-item">
+                <div class="toggle-label-group">
+                    <i class="fas fa-headset toggle-icon"></i>
+                    <span class="toggle-label">Customer Service Mode</span>
+                </div>
+                <label class="modern-toggle">
+                    <input type="checkbox" id="customerServiceToggle" aria-label="Toggle Customer Service Mode">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <!-- Career Track & Explore Paths -->
+            <button class="menu-action-btn" id="careerTrackBtn">
+                <i class="fas fa-route"></i>
+                <span>Career Track & Explore Paths</span>
+                <i class="fas fa-chevron-right chevron-right"></i>
+            </button>
+
+            <!-- Preview Voices -->
+            <button class="menu-action-btn" id="previewVoicesBtn">
+                <i class="fas fa-volume-up"></i>
+                <span>Preview Voices</span>
+                <i class="fas fa-chevron-right chevron-right"></i>
+            </button>
+        </div>
+
+        <!-- Settings Section (Collapsible) -->
+        <div class="menu-section">
+            <details class="menu-collapsible" id="settingsCollapsible">
+                <summary class="collapsible-header">
+                    <div class="summary-left">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </div>
+                    <i class="fas fa-chevron-down chevron-icon"></i>
+                </summary>
+                <div class="collapsible-body">
+                    <!-- Dark Mode Toggle -->
+                    <div class="menu-toggle-item">
+                        <div class="toggle-label-group">
+                            <i class="fas fa-moon toggle-icon"></i>
+                            <span class="toggle-label">Dark Mode</span>
+                        </div>
+                        <label class="modern-toggle">
+                            <input type="checkbox" id="darkModeToggle" aria-label="Toggle Dark Mode">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <!-- Text-to-Speech Toggle -->
+                    <div class="menu-toggle-item">
+                        <div class="toggle-label-group">
+                            <i class="fas fa-microphone toggle-icon"></i>
+                            <span class="toggle-label">Text-to-Speech</span>
+                        </div>
+                        <label class="modern-toggle">
+                            <input type="checkbox" id="ttsToggle" aria-label="Toggle Text-to-Speech">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </details>
+        </div>
+
+        <!-- Dashboard & Assessment -->
+        <div class="menu-section">
+            <button class="dashboard-btn" id="dashboardBtn">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </button>
+            
+            <button class="assessment-btn" id="beginAssessmentBtn">
+                <i class="fas fa-clipboard-list"></i>
+                <span>Begin Assessment</span>
+            </button>
+        </div>
+
+        <!-- Virtual Human Avatar (shown when active) -->
+        <div class="menu-section" id="vhAvatarSection" style="display: none;">
+            <div class="vh-avatar-container">
+                <div class="vh-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <p class="vh-status">Virtual Human Active</p>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<!-- Desktop Header (shown at 1101px+) -->
+<style>
+@media (min-width: 1101px) {
+    .pmerit-header { display: none; }
+    .menu-overlay, .hamburger-menu { display: none !important; }
+}
+
+@media (max-width: 1100px) {
+    .desktop-layout { display: none !important; }
+}
+</style>
