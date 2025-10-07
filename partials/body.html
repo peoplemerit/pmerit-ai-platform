@@ -1,112 +1,269 @@
-<!-- Main Body Layout (without mobile nav/header) -->
-<div class="estate">
-  <main>
-    <section class="panel" aria-label="Chat panel">
-      <div class="panel-head">
-        <div class="badges">
-          <span class="badge vh" id="vhBadge" style="display:none">
-            <i class="fas fa-user-astronaut"></i> Virtual Human
-          </span>
-          <span class="badge support" id="supportBadge" style="display:none">
-            <i class="fas fa-headset"></i> Support Assistant
-          </span>
-        </div>
-      </div>
+<!-- PMERIT Mobile-First Body Layout -->
 
-      <div id="textChat" role="region" aria-live="polite">
-        <div class="chat-body" id="chatBody">
-          <article class="bubble" id="welcomeMsg">
-            <div class="ava"><i class="fas fa-user-circle"></i></div>
-            <div>
-              <h3>PMERIT AI:</h3>
-              <p id="welcomeCopy">Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities.</p>
+<!-- Main Container (Non-Scrollable Viewport) -->
+<main class="main-container" id="mainContainer">
+    
+    <!-- Hero/Greeting Section (Fixed at top of main) -->
+    <section class="hero-greeting">
+        <div class="greeting-content">
+            <h1 class="hero-title">Hi there! I'm your learning companion,</h1>
+            <p class="hero-subtitle">empowering your education through innovation. PMERIT provides accessible, high-quality education that opens doors to endless opportunities worldwide.</p>
+        </div>
+    </section>
+
+    <!-- Ask Your Learning Companion Card -->
+    <section class="learning-companion-card">
+        <h2 class="card-title">Ask Your Learning Companion</h2>
+        <p class="card-subtitle">Get personalized guidance on courses, career paths, and learning objectives</p>
+    </section>
+
+    <!-- Chat Container (Scrollable Messages Area) -->
+    <section class="chat-container" id="chatContainer">
+        
+        <!-- Chat Messages Area (Scrollable) -->
+        <div class="chat-messages" id="chatMessages" role="log" aria-live="polite" aria-atomic="false">
+            
+            <!-- AI Welcome Message -->
+            <div class="chat-bubble ai-bubble">
+                <div class="bubble-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="bubble-content">
+                    <h3 class="bubble-sender">PMERIT AI</h3>
+                    <p class="bubble-text">Hello! I'm here to help you explore courses, career paths, and answer any questions about your learning journey. What would you like to know?</p>
+                </div>
             </div>
-          </article>
+            
         </div>
-        <div class="chat-input">
-          <textarea id="chatInput" maxlength="1000" placeholder="Ask about courses, learning paths, or your goals..." aria-label="Message"></textarea>
-          <div class="input-bar">
-            <span class="count" id="count">0/1000</span>
-            <div class="input-actions">
-              <span class="footer-status">
-                <i class="fas fa-circle-check"></i> Connected to Educational Services
-              </span>
+
+        <!-- Typing Indicator (Hidden by default) -->
+        <div class="typing-indicator" id="typingIndicator" style="display: none;">
+            <div class="typing-avatar">
+                <i class="fas fa-robot"></i>
             </div>
-            <button class="send" id="sendBtn">Send <i class="fas fa-paper-plane"></i></button>
-          </div>
+            <div class="typing-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
-      </div>
 
-      <div id="vhStage" role="region" aria-live="polite">
-        <div class="stage">
-          <div class="human-frame">
-            <div class="human-face"><i class="fas fa-user-circle"></i></div>
-          </div>
+        <!-- Chat Input Area (Fixed at bottom of chat container) -->
+        <div class="chat-input-container">
+            <div class="input-wrapper">
+                <textarea 
+                    id="chatInput" 
+                    class="chat-textarea" 
+                    placeholder='Try: "What programming courses do you offer?"'
+                    maxlength="1000"
+                    rows="1"
+                    aria-label="Type your message"
+                ></textarea>
+                <button class="send-btn" id="sendBtn" aria-label="Send message">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+            <div class="input-info">
+                <span class="char-count" id="charCount">0/1000</span>
+            </div>
         </div>
-        <div class="captions" id="captions">Virtual Human is speaking…</div>
-      </div>
+        
     </section>
-  </main>
 
-  <!-- Desktop Sidebar (hidden on mobile) -->
-  <aside id="left" class="desktop-sidebar" aria-label="Quick actions sidebar">
-    <section>
-      <div class="pane-title">Quick Actions</div>
-      <!-- Quick actions and toggles removed for separation of concerns. Only desktop sidebar remains. -->
-            <span class="switch" aria-hidden="true"></span>
-          </button>
-          <button class="toggle" id="ttsToggle">
-            <span><i class="fas fa-volume-up icon"></i> Text-to-Speech</span>
-            <span class="switch" aria-hidden="true"></span>
-          </button>
-          <button class="action" id="voicesBtn">
-            <span><i class="fas fa-headphones icon"></i> Preview Voices</span>
-            <i class="fas fa-chevron-right"></i>
-          </button>
-        </div>
-      </div>
-      <button class="dashboard guest" id="dashBtn">
-        <i class="fas fa-gauge-high"></i> Dashboard
-      </button>
-      <div class="avatar" id="vhAvatar" title="Virtual Human">
-        <i class="fas fa-user-circle" aria-hidden="true"></i>
-      </div>
-    </section>
-  </aside>
+</main>
 
-  <!-- Right Sidebar (hidden on mobile) -->
-  <aside id="right" aria-label="Support and discover sidebar">
-    <section>
-      <div class="support-assistant">
-        <h4><i class="fas fa-headset"></i> Support Assistant</h4>
-        <p style="color: var(--text-secondary); margin: 0.5rem 0;">Ask me about PMERIT</p>
-        <div style="display:flex;gap:.5rem;justify-content:center;margin-top:.75rem">
-          <button class="nav-btn" style="border-color:var(--accent)" id="vhShort">
-            <i class="fas fa-user-astronaut"></i> Virtual Human
-          </button>
-          <button class="nav-btn" style="border-color:var(--success)" id="supportShort">
-            <i class="fas fa-headset"></i> Support
-          </button>
+<!-- Desktop Layout (Three-Panel: Left | Main | Right) -->
+<!-- Hidden on mobile (max-width: 1100px), shown at 1101px+ -->
+<div class="desktop-layout" id="desktopLayout">
+    
+    <!-- Left Sidebar -->
+    <aside class="desktop-sidebar desktop-sidebar-left">
+        <div class="sidebar-section">
+            <h3 class="sidebar-title">Quick Actions</h3>
+            
+            <!-- Virtual Human Mode -->
+            <div class="sidebar-toggle-item">
+                <div class="toggle-label-group">
+                    <i class="fas fa-user-astronaut"></i>
+                    <span>Virtual Human Mode</span>
+                </div>
+                <label class="modern-toggle">
+                    <input type="checkbox" id="desktopVHToggle">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <!-- Customer Service Mode -->
+            <div class="sidebar-toggle-item">
+                <div class="toggle-label-group">
+                    <i class="fas fa-headset"></i>
+                    <span>Customer Service</span>
+                </div>
+                <label class="modern-toggle">
+                    <input type="checkbox" id="desktopCSToggle">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <!-- Career Track -->
+            <button class="sidebar-action-btn" id="desktopCareerBtn">
+                <i class="fas fa-route"></i>
+                <span>Career Tracks</span>
+            </button>
+
+            <!-- Preview Voices -->
+            <button class="sidebar-action-btn" id="desktopVoicesBtn">
+                <i class="fas fa-volume-up"></i>
+                <span>Preview Voices</span>
+            </button>
+
+            <!-- Settings Collapsible -->
+            <details class="sidebar-collapsible">
+                <summary>
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                    <i class="fas fa-chevron-down"></i>
+                </summary>
+                <div class="collapsible-content">
+                    <div class="sidebar-toggle-item">
+                        <span>Dark Mode</span>
+                        <label class="modern-toggle">
+                            <input type="checkbox" id="desktopDarkToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="sidebar-toggle-item">
+                        <span>Text-to-Speech</span>
+                        <label class="modern-toggle">
+                            <input type="checkbox" id="desktopTTSToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Dashboard Button -->
+            <button class="dashboard-btn" id="desktopDashboardBtn">
+                <i class="fas fa-tachometer-alt"></i>
+                Dashboard
+            </button>
+
+            <!-- VH Avatar (when active) -->
+            <div class="vh-avatar-desktop" id="desktopVHAvatar" style="display: none;">
+                <i class="fas fa-user-circle"></i>
+            </div>
         </div>
-      </div>
-      <h3>Discover Your Path (AI)</h3>
-      <div class="discover">
-        <h4>Personalized learning plan</h4>
-        <p>Start a short flow that blends learning style, interests, and skills into a plan.</p>
-        <button class="nav-btn primary" id="beginAssessment">Begin Assessment</button>
-        <div class="insights" id="insights">Pro tip: Keep notes in your own words for better recall.</div>
-      </div>
-    </section>
-  </aside>
+    </aside>
+
+    <!-- Center Content -->
+    <main class="desktop-main">
+        <!-- Hero Greeting -->
+        <section class="hero-greeting">
+            <div class="greeting-content">
+                <h1 class="hero-title">Hi there! I'm your learning companion,</h1>
+                <p class="hero-subtitle">empowering your education through innovation. PMERIT provides accessible, high-quality education that opens doors to endless opportunities worldwide.</p>
+            </div>
+        </section>
+
+        <!-- Learning Companion Card -->
+        <section class="learning-companion-card">
+            <h2 class="card-title">Ask Your Learning Companion</h2>
+            <p class="card-subtitle">Get personalized guidance on courses, career paths, and learning objectives</p>
+        </section>
+
+        <!-- Chat Container -->
+        <section class="chat-container">
+            <div class="chat-messages" id="desktopChatMessages" role="log" aria-live="polite">
+                <div class="chat-bubble ai-bubble">
+                    <div class="bubble-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="bubble-content">
+                        <h3 class="bubble-sender">PMERIT AI</h3>
+                        <p class="bubble-text">Hello! I'm here to help you explore courses, career paths, and answer any questions about your learning journey. What would you like to know?</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="typing-indicator" id="desktopTypingIndicator" style="display: none;">
+                <div class="typing-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+
+            <div class="chat-input-container">
+                <div class="input-wrapper">
+                    <textarea 
+                        id="desktopChatInput" 
+                        class="chat-textarea" 
+                        placeholder='Try: "What programming courses do you offer?"'
+                        maxlength="1000"
+                        rows="1"
+                    ></textarea>
+                    <button class="send-btn" id="desktopSendBtn" aria-label="Send message">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="input-info">
+                    <span class="char-count" id="desktopCharCount">0/1000</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Right Sidebar -->
+    <aside class="desktop-sidebar desktop-sidebar-right">
+        <div class="sidebar-section">
+            <h3 class="sidebar-title">Support Assistant</h3>
+            <p class="sidebar-description">Need help? Our AI assistant is here for you 24/7.</p>
+            
+            <div class="support-actions">
+                <button class="support-btn" id="supportVHBtn">
+                    <i class="fas fa-user-astronaut"></i>
+                    Virtual Human
+                </button>
+                <button class="support-btn" id="supportCSBtn">
+                    <i class="fas fa-headset"></i>
+                    Support
+                </button>
+            </div>
+        </div>
+
+        <div class="sidebar-section">
+            <h3 class="sidebar-title">Discover Your Path (AI)</h3>
+            <p class="sidebar-description">Start a personalized assessment to create your learning plan.</p>
+            <button class="btn-primary btn-block" id="desktopAssessmentBtn">
+                <i class="fas fa-clipboard-list"></i>
+                Begin Assessment
+            </button>
+            <div class="sidebar-tip">
+                <i class="fas fa-lightbulb"></i>
+                <span>Pro tip: Keep notes in your own words for better recall.</span>
+            </div>
+        </div>
+    </aside>
+    
 </div>
 
 <style>
-@media (max-width: 768px) {
-  .desktop-sidebar { display: none; }
-  #right { display: none; }
+/* Mobile: Hide desktop layout */
+@media (max-width: 1100px) {
+    .desktop-layout { display: none !important; }
 }
-@media (min-width: 769px) {
-  .desktop-sidebar { display: block; }
-  #right { display: block; }
+
+/* Desktop: Hide mobile main, show desktop layout */
+@media (min-width: 1101px) {
+    .main-container { display: none; }
+    .desktop-layout {
+        display: grid;
+        grid-template-columns: 280px 1fr 320px;
+        height: calc(100vh - 70px);
+        gap: 0;
+    }
 }
 </style>
