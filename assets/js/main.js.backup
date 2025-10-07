@@ -45,10 +45,6 @@
         languageModalClose: document.getElementById('languageModalClose'),
         careerModal: document.getElementById('careerModal'),
         careerModalClose: document.getElementById('careerModalClose'),
-        voicesModal: document.getElementById('voicesModal'),
-        voicesModalClose: document.getElementById('voicesModalClose'),
-        privacyModal: document.getElementById('privacyModal'),
-        privacyModalClose: document.getElementById('privacyModalClose'),
         
         // Menu toggles
         virtualHumanToggle: document.getElementById('virtualHumanToggle'),
@@ -209,18 +205,6 @@
             DOM.privacyTermsBtn.addEventListener('click', () => showPrivacyTerms());
         }
         
-        if (DOM.privacyModalClose) {
-            DOM.privacyModalClose.addEventListener('click', () => closeModal(DOM.privacyModal));
-        }
-        
-        if (DOM.careerModalClose) {
-            DOM.careerModalClose.addEventListener('click', () => closeModal(DOM.careerModal));
-        }
-        
-        if (DOM.voicesModalClose) {
-            DOM.voicesModalClose.addEventListener('click', () => closeModal(DOM.voicesModal));
-        }
-        
         // Close modals on Escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
@@ -248,17 +232,17 @@
     
     function openMenu() {
         AppState.menuOpen = true;
-        if (DOM.hamburgerMenu) DOM.hamburgerMenu.setAttribute('aria-hidden', 'false');
-        if (DOM.menuOverlay) DOM.menuOverlay.setAttribute('aria-hidden', 'false');
-        if (DOM.hamburgerToggle) DOM.hamburgerToggle.setAttribute('aria-expanded', 'true');
+        DOM.hamburgerMenu.setAttribute('aria-hidden', 'false');
+        DOM.menuOverlay.setAttribute('aria-hidden', 'false');
+        DOM.hamburgerToggle.setAttribute('aria-expanded', 'true');
         document.body.style.overflow = 'hidden';
     }
     
     function closeMenu() {
         AppState.menuOpen = false;
-        if (DOM.hamburgerMenu) DOM.hamburgerMenu.setAttribute('aria-hidden', 'true');
-        if (DOM.menuOverlay) DOM.menuOverlay.setAttribute('aria-hidden', 'true');
-        if (DOM.hamburgerToggle) DOM.hamburgerToggle.setAttribute('aria-expanded', 'false');
+        DOM.hamburgerMenu.setAttribute('aria-hidden', 'true');
+        DOM.menuOverlay.setAttribute('aria-hidden', 'true');
+        DOM.hamburgerToggle.setAttribute('aria-expanded', 'false');
         document.body.style.overflow = '';
     }
 
@@ -267,13 +251,13 @@
     // ============================================
     
     function openModal(modal) {
-        if (modal && typeof modal.showModal === 'function') {
+        if (modal) {
             modal.showModal();
         }
     }
     
     function closeModal(modal) {
-        if (modal && typeof modal.close === 'function') {
+        if (modal) {
             modal.close();
         }
     }
@@ -286,22 +270,22 @@
     
     function openAuthModal(mode) {
         if (mode === 'signup') {
-            if (DOM.signInForm) DOM.signInForm.style.display = 'none';
-            if (DOM.signUpForm) DOM.signUpForm.style.display = 'block';
+            DOM.signInForm.style.display = 'none';
+            DOM.signUpForm.style.display = 'block';
         } else {
-            if (DOM.signInForm) DOM.signInForm.style.display = 'block';
-            if (DOM.signUpForm) DOM.signUpForm.style.display = 'none';
+            DOM.signInForm.style.display = 'block';
+            DOM.signUpForm.style.display = 'none';
         }
         openModal(DOM.authModal);
     }
     
     function switchAuthForm(mode) {
         if (mode === 'signup') {
-            if (DOM.signInForm) DOM.signInForm.style.display = 'none';
-            if (DOM.signUpForm) DOM.signUpForm.style.display = 'block';
+            DOM.signInForm.style.display = 'none';
+            DOM.signUpForm.style.display = 'block';
         } else {
-            if (DOM.signInForm) DOM.signInForm.style.display = 'block';
-            if (DOM.signUpForm) DOM.signUpForm.style.display = 'none';
+            DOM.signInForm.style.display = 'block';
+            DOM.signUpForm.style.display = 'none';
         }
     }
 
@@ -364,13 +348,13 @@
     // ============================================
     
     function initChat() {
-        // Welcome message already in HTML, no need to add
-        updateCharCount();
+        // Add welcome message if chat is empty
+        if (DOM.chatMessages && DOM.chatMessages.children.length === 0) {
+            addAIMessage('Hello! I\'m here to help you explore courses, career paths, and answer any questions about your learning journey. What would you like to know?');
+        }
     }
     
     function sendMessage() {
-        if (!DOM.chatInput) return;
-        
         const message = DOM.chatInput.value.trim();
         
         if (!message) return;
@@ -383,31 +367,23 @@
         updateCharCount();
         autoResizeTextarea();
         
-        // Show typing indicator
-        showTypingIndicator();
-        
         // Simulate AI response (replace with actual API call)
         setTimeout(() => {
-            hideTypingIndicator();
             const response = generateAIResponse(message);
             addAIMessage(response);
-        }, 1500);
+        }, 1000);
     }
     
     function addUserMessage(text) {
         const bubble = createChatBubble('user', text);
-        if (DOM.chatMessages) {
-            DOM.chatMessages.appendChild(bubble);
-            scrollToBottom();
-        }
+        DOM.chatMessages.appendChild(bubble);
+        scrollToBottom();
     }
     
     function addAIMessage(text) {
         const bubble = createChatBubble('ai', text);
-        if (DOM.chatMessages) {
-            DOM.chatMessages.appendChild(bubble);
-            scrollToBottom();
-        }
+        DOM.chatMessages.appendChild(bubble);
+        scrollToBottom();
         
         // Speak message if TTS is enabled
         if (AppState.ttsEnabled) {
@@ -421,259 +397,4 @@
         
         const avatar = document.createElement('div');
         avatar.className = 'bubble-avatar';
-        avatar.innerHTML = type === 'ai' 
-            ? '<i class="fas fa-robot"></i>' 
-            : '<i class="fas fa-user"></i>';
-        
-        const content = document.createElement('div');
-        content.className = 'bubble-content';
-        
-        const sender = document.createElement('h3');
-        sender.className = 'bubble-sender';
-        sender.textContent = type === 'ai' ? 'PMERIT AI' : 'You';
-        
-        const textElement = document.createElement('p');
-        textElement.className = 'bubble-text';
-        textElement.textContent = text;
-        
-        content.appendChild(sender);
-        content.appendChild(textElement);
-        bubble.appendChild(avatar);
-        bubble.appendChild(content);
-        
-        return bubble;
-    }
-    
-    function generateAIResponse(message) {
-        const lowerMessage = message.toLowerCase();
-        
-        // Context-aware responses
-        if (lowerMessage.includes('course') || lowerMessage.includes('program')) {
-            return 'We offer a wide range of courses including programming, data science, web development, and career preparation. Would you like to explore our course catalog or take an assessment to find the best path for you?';
-        }
-        
-        if (lowerMessage.includes('career') || lowerMessage.includes('job')) {
-            return 'Our career tracks are designed to prepare you for success: Global Remote Careers (12 courses), Local Career Pathways (12 courses), and University Preparation (12 courses). Which path interests you most?';
-        }
-        
-        if (lowerMessage.includes('help') || lowerMessage.includes('support')) {
-            return 'I\'m here to help! You can ask about courses, career paths, assessments, or any questions about your learning journey. What would you like to know more about?';
-        }
-        
-        if (lowerMessage.includes('assessment') || lowerMessage.includes('test')) {
-            return 'Our personalized assessment takes about 5 minutes and helps us understand your learning style, interests, and skills. It will create a custom learning plan just for you. Would you like to begin?';
-        }
-        
-        if (lowerMessage.includes('language')) {
-            return 'PMERIT supports multiple languages including English, Yorùbá, Igbo, and Hausa. You can change your language preference using the language selector in the header.';
-        }
-        
-        // Default response
-        return 'That\'s a great question! I can help you with information about our courses, career paths, assessments, and learning resources. What specific area would you like to explore?';
-    }
-    
-    function showTypingIndicator() {
-        const indicator = document.getElementById('typingIndicator');
-        if (indicator) {
-            indicator.style.display = 'flex';
-            scrollToBottom();
-        }
-    }
-    
-    function hideTypingIndicator() {
-        const indicator = document.getElementById('typingIndicator');
-        if (indicator) {
-            indicator.style.display = 'none';
-        }
-    }
-    
-    function scrollToBottom() {
-        if (DOM.chatMessages) {
-            DOM.chatMessages.scrollTop = DOM.chatMessages.scrollHeight;
-        }
-    }
-    
-    function updateCharCount() {
-        if (DOM.chatInput && DOM.charCount) {
-            const count = DOM.chatInput.value.length;
-            DOM.charCount.textContent = `${count}/1000`;
-        }
-    }
-    
-    function autoResizeTextarea() {
-        if (!DOM.chatInput) return;
-        
-        DOM.chatInput.style.height = 'auto';
-        DOM.chatInput.style.height = Math.min(DOM.chatInput.scrollHeight, 120) + 'px';
-    }
-
-    // ============================================
-    // LANGUAGE FUNCTIONS
-    // ============================================
-    
-    function changeLanguage(lang) {
-        AppState.language = lang;
-        localStorage.setItem('pmerit-language', lang);
-        
-        // Update active state in language modal
-        document.querySelectorAll('.language-option').forEach(option => {
-            if (option.dataset.lang === lang) {
-                option.classList.add('active');
-            } else {
-                option.classList.remove('active');
-            }
-        });
-        
-        showToast(`Language changed to ${getLanguageName(lang)}`);
-        
-        // TODO: Implement actual i18n translation
-        // For now, just show confirmation
-    }
-    
-    function getLanguageName(code) {
-        const names = {
-            'en': 'English',
-            'yo': 'Yorùbá',
-            'ig': 'Igbo',
-            'ha': 'Hausa'
-        };
-        return names[code] || code;
-    }
-
-    // ============================================
-    // NAVIGATION FUNCTIONS
-    // ============================================
-    
-    function openCareerTracks() {
-        openModal(DOM.careerModal);
-    }
-    
-    function previewVoices() {
-        openModal(DOM.voicesModal);
-        
-        // Set up voice preview buttons
-        document.querySelectorAll('.voice-option-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const voiceType = this.dataset.voice;
-                const text = document.getElementById('voiceText')?.value || 'Welcome to PMERIT';
-                speakText(text, voiceType);
-            });
-        });
-    }
-    
-    function navigateToDashboard() {
-        closeMenu();
-        window.location.href = 'learner-portal.html';
-    }
-    
-    function navigateToAssessment() {
-        closeMenu();
-        window.location.href = 'assessment.html';
-    }
-    
-    function showPrivacyTerms() {
-        openModal(DOM.privacyModal);
-    }
-
-    // ============================================
-    // TTS FUNCTIONS
-    // ============================================
-    
-    function speakText(text, voiceType = 'default') {
-        if ('speechSynthesis' in window) {
-            // Cancel any ongoing speech
-            window.speechSynthesis.cancel();
-            
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.rate = 0.9;
-            utterance.pitch = 1;
-            
-            // Set voice based on type
-            const voices = window.speechSynthesis.getVoices();
-            if (voiceType === 'male') {
-                utterance.voice = voices.find(v => v.name.includes('Male')) || voices[0];
-            } else if (voiceType === 'female') {
-                utterance.voice = voices.find(v => v.name.includes('Female')) || voices[1];
-            }
-            
-            window.speechSynthesis.speak(utterance);
-        } else {
-            console.warn('Text-to-Speech not supported in this browser');
-        }
-    }
-
-    // ============================================
-    // TOAST NOTIFICATION
-    // ============================================
-    
-    function showToast(message) {
-        // Create toast element
-        const toast = document.createElement('div');
-        toast.className = 'toast-notification';
-        toast.textContent = message;
-        toast.style.cssText = `
-            position: fixed;
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--color-dark-blue);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-size: 14px;
-            z-index: 10000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            animation: slideUp 0.3s ease-out;
-        `;
-        
-        document.body.appendChild(toast);
-        
-        // Remove after 3 seconds
-        setTimeout(() => {
-            toast.style.animation = 'slideDown 0.3s ease-out';
-            setTimeout(() => {
-                document.body.removeChild(toast);
-            }, 300);
-        }, 3000);
-    }
-    
-    // Add toast animations
-    if (!document.getElementById('toast-styles')) {
-        const style = document.createElement('style');
-        style.id = 'toast-styles';
-        style.textContent = `
-            @keyframes slideUp {
-                from {
-                    opacity: 0;
-                    transform: translateX(-50%) translateY(20px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateX(-50%) translateY(0);
-                }
-            }
-            @keyframes slideDown {
-                from {
-                    opacity: 1;
-                    transform: translateX(-50%) translateY(0);
-                }
-                to {
-                    opacity: 0;
-                    transform: translateX(-50%) translateY(20px);
-                }
-            }
-        `;
-        document.head.appendChild(style);
-    }
-
-    // ============================================
-    // INITIALIZE ON DOM READY
-    // ============================================
-    
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-    } else {
-        init();
-    }
-
-})();
+        avatar.innerHTML = type === 'ai'
