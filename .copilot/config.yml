@@ -1,1 +1,120 @@
+# === GitHub Copilot Configuration File ===
+# Controls Copilot's behavior, context, and review scope for PMERIT Platform
 
+version: 1
+language: en
+project_name: "PMERIT Platform Frontend"
+
+behavior:
+  # Reference files for design context
+  context_files:
+    - ".copilot/Pmerit-theme_typography.html"
+    - ".copilot/blueprint-index.html"
+    - "assets/css/brand.css"
+    - "assets/css/theme-pmerit.css"
+  
+  # Review configuration
+  review:
+    enabled: true
+    depth: detailed
+    focus:
+      - responsiveness
+      - design-consistency
+      - accessibility
+      - modular-structure
+      - code-quality
+      - mobile-first
+      - safe-area-support
+  
+  # Comment style
+  comments:
+    tone: constructive
+    detail_level: high
+    prefix: "🤖 Copilot Review:"
+  
+  # Code style preferences
+  style:
+    consistency: enforced
+    code_conventions: readable
+    indentation: 2-spaces
+    html_semantic: true
+    css_methodology: "BEM or utility-based"
+  
+  # File targeting
+  review_targets:
+    - "*.html"
+    - "*.css"
+    - "*.js"
+  
+  # Excluded paths (read-only reference files)
+  excluded_paths:
+    - ".copilot/"
+    - "*.jpg"
+    - "*.png"
+    - "*.svg"
+    - "node_modules/"
+    - ".git/"
+
+# Theme specifications (from Pmerit-theme_typography.html)
+theme:
+  colors:
+    primary: "#2A5B8C"      # Dark Blue
+    secondary: "#4AA4B9"     # Teal
+    accent: "#FF6B6B"        # Coral
+    success: "#3A7F5C"       # Green
+    warning: "#E67E22"       # Orange
+  
+  typography:
+    headings: "Montserrat, sans-serif"
+    body: "Inter, sans-serif"
+    sizes:
+      h1: "32px"
+      h2: "24px"
+      h3: "20px"
+      body: "16px"
+      small: "14px"
+
+# Design targets
+responsive:
+  breakpoints:
+    mobile: "320px - 767px"
+    tablet: "768px - 1023px"
+    desktop: "1024px+"
+  
+  mobile_requirements:
+    - "Non-scrollable viewport (except chat area)"
+    - "Safe-area-inset for iOS"
+    - "Minimum 44px touch targets"
+    - "Dynamic viewport height (dvh)"
+    - "Hamburger menu navigation"
+  
+  desktop_requirements:
+    - "Three-panel layout (sidebar, main, right panel)"
+    - "Persistent navigation sidebar"
+    - "Full footer with all links"
+
+# Quality standards
+standards:
+  html:
+    - "Use semantic HTML5 elements"
+    - "Include proper ARIA labels"
+    - "Alt text for all images"
+    - "Proper heading hierarchy"
+  
+  css:
+    - "Mobile-first approach"
+    - "CSS variables for theming"
+    - "No inline styles"
+    - "Consistent spacing units (4px/8px multiples)"
+  
+  javascript:
+    - "Modular functions"
+    - "No global variables (use modules)"
+    - "Event delegation where appropriate"
+    - "Descriptive function names"
+
+# Automation settings
+automation:
+  auto_review_on_push: true
+  auto_fix_suggestions: true
+  commit_review_mode: "on_push"
