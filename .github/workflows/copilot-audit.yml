@@ -1,48 +1,36 @@
-module.exports = async ({github, context}) => {
-  // Get changed files
-  const files = await github.rest.pulls.listFiles({
-    owner: context.repo.owner,
-    repo: context.repo.repo,
-    pull_number: context.issue.number
-  });
+name: 🤖 Copilot Frontend Audit
+on:
+  pull_request:
+    paths: ['src/**/*.html', 'src/**/*.css', 'src/**/*.js']
+  push:
+    branches: [main, develop]
+    paths: ['src/**']
 
-  const auditResults = [];
-  
-  for (const file of files.data) {
-    if (file.filename.match(/\.(html|css|js)$/)) {
-      const audit = await auditFile(file);
-      auditResults.push(audit);
-    }
-  }
-  
-  // Create summary comment with clear labels
-  await createAuditSummary(github, context, auditResults);
-};
+jobs:
+  frontend-audit:
+    runs-on: ubuntu-latest
+    name: Frontend Code Audit
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-async function auditFile(file) {
-  return {
-    filename: file.filename,
-    tasks: [
-      {
-        label: "🎨 BRAND_COMPLIANCE_CHECK",
-        status: await checkBrandCompliance(file),
-        details: "Verified Pmerit colors and typography"
-      },
-      {
-        label: "📱 RESPONSIVE_DESIGN_AUDIT", 
-        status: await checkResponsiveDesign(file),
-        details: "Checked mobile-first and non-scrollable requirements"
-      },
-      {
-        label: "⚡ PERFORMANCE_REVIEW",
-        status: await checkPerformance(file),
-        details: "Audited loading and rendering performance"
-      },
-      {
-        label: "♿ ACCESSIBILITY_CHECK",
-        status: await checkAccessibility(file),
-        details: "Verified WCAG compliance"
-      }
-    ]
-  };
-}
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: 📦 Install dependencies
+        run: |
+          npm install @actions/github @octokit/rest
+
+      - name: 🎯 Run Copilot Audit
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const auditScript = require('.github/scripts/copilot-audit.js')
+            await auditScript({github, context})
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
