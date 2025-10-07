@@ -1,101 +1,256 @@
-<!-- PMERIT Minimal Footer - Google Style -->
-<footer class="minimal-footer">
-  <div class="footer-content">
-    <button class="footer-link footer-left" id="privacyBtn">Privacy & Terms</button>
-    
-    <span class="footer-center" title="Platform connection status">
-      <i class="fas fa-signal"></i> Education Services Portal
-    </span>
-    
-    <button class="footer-link footer-right" id="settingsBtn">Settings</button>
-  </div>
+<!-- PMERIT Mobile-First Footer -->
+<footer class="pmerit-footer" id="mainFooter">
+    <div class="footer-container">
+        <button class="footer-link" id="privacyTermsBtn">
+            Privacy & Terms
+        </button>
+        <span class="footer-divider">•</span>
+        <span class="footer-status">
+            <i class="fas fa-circle status-indicator"></i>
+            Connected to Educational Services
+        </span>
+    </div>
 </footer>
 
-<dialog id="signUpModal">
-  <form method="dialog">
-    <h3><i class="fas fa-user-plus"></i> Create your PMERIT account</h3>
-    <label>
-      <span>Full name</span>
-      <input id="su_name" required placeholder="Your name"/>
-    </label>
-    <label>
-      <span>Email</span>
-      <input id="su_email" type="email" required placeholder="you@example.com"/>
-    </label>
-    <label>
-      <span>Password</span>
-      <input id="su_pwd" type="password" required placeholder="••••••••"/>
-    </label>
-    <p style="font-size:0.9rem;color:var(--text-secondary);margin:1rem 0">
-      By continuing you agree to our terms.
-    </p>
-    <div class="button-group">
-      <button class="nav-btn" id="signUpCancel" type="button">Cancel</button>
-      <button class="nav-btn primary" id="signUpCreate" type="button">Create account</button>
+<!-- Modals -->
+
+<!-- Sign In/Sign Up Modal -->
+<dialog class="auth-modal" id="authModal">
+    <div class="modal-content">
+        <button class="modal-close" id="authModalClose" aria-label="Close modal">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <!-- Sign In Form -->
+        <div class="auth-form" id="signInForm">
+            <div class="modal-brand">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Pmerit</span>
+            </div>
+            <h2 class="modal-title">Sign in to your account</h2>
+            <p class="auth-subtitle">New to Pmerit? <button class="link-btn" id="showSignUpBtn">Create an account</button></p>
+            
+            <form id="signInFormElement">
+                <div class="form-group">
+                    <label for="signInEmail">Email</label>
+                    <input type="email" id="signInEmail" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="signInPassword">Password</label>
+                    <input type="password" id="signInPassword" placeholder="Enter your password" required>
+                </div>
+                <div class="form-footer">
+                    <a href="#forgot" class="forgot-link">Forgot password?</a>
+                </div>
+                <button type="submit" class="btn-primary btn-full">Sign In</button>
+            </form>
+            
+            <div class="auth-divider">
+                <span>or</span>
+            </div>
+            
+            <button class="btn-google" id="googleSignInBtn">
+                <i class="fab fa-google"></i>
+                Continue with Google
+            </button>
+        </div>
+        
+        <!-- Sign Up Form (hidden by default) -->
+        <div class="auth-form" id="signUpForm" style="display: none;">
+            <div class="modal-brand">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Pmerit</span>
+            </div>
+            <h2 class="modal-title">Create your account</h2>
+            <p class="auth-subtitle">Already have an account? <button class="link-btn" id="showSignInBtn">Sign in</button></p>
+            
+            <form id="signUpFormElement">
+                <div class="form-group">
+                    <label for="signUpName">Full Name</label>
+                    <input type="text" id="signUpName" placeholder="Your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="signUpEmail">Email</label>
+                    <input type="email" id="signUpEmail" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="signUpPassword">Password</label>
+                    <input type="password" id="signUpPassword" placeholder="Create a password" required>
+                </div>
+                <p class="terms-text">By creating an account, you agree to our <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a>.</p>
+                <button type="submit" class="btn-primary btn-full">Create Account</button>
+            </form>
+            
+            <div class="auth-divider">
+                <span>or</span>
+            </div>
+            
+            <button class="btn-google" id="googleSignUpBtn">
+                <i class="fab fa-google"></i>
+                Continue with Google
+            </button>
+        </div>
     </div>
-  </form>
 </dialog>
 
-<dialog id="signInModal">
-  <form method="dialog">
-    <h3><i class="fas fa-right-to-bracket"></i> Sign in to PMERIT</h3>
-    <label>
-      <span>Email</span>
-      <input id="si_email" type="email" required placeholder="you@example.com"/>
-    </label>
-    <label>
-      <span>Password</span>
-      <input id="si_pwd" type="password" required placeholder="••••••••"/>
-    </label>
-    <div style="margin-top:1rem">
-      <a href="#forgot" style="font-size:0.9rem; color: var(--primary);">Forgot password?</a>
+<!-- Language Selector Modal -->
+<dialog class="language-modal" id="languageModal">
+    <div class="modal-content">
+        <button class="modal-close" id="languageModalClose" aria-label="Close modal">
+            <i class="fas fa-times"></i>
+        </button>
+        <h2 class="modal-title">Select Language</h2>
+        <div class="language-grid">
+            <button class="language-option active" data-lang="en">
+                <span class="language-flag">🇺🇸</span>
+                <span class="language-name">English</span>
+                <i class="fas fa-check check-icon"></i>
+            </button>
+            <button class="language-option" data-lang="yo">
+                <span class="language-flag">🇳🇬</span>
+                <span class="language-name">Yorùbá</span>
+                <i class="fas fa-check check-icon"></i>
+            </button>
+            <button class="language-option" data-lang="ig">
+                <span class="language-flag">🇳🇬</span>
+                <span class="language-name">Igbo</span>
+                <i class="fas fa-check check-icon"></i>
+            </button>
+            <button class="language-option" data-lang="ha">
+                <span class="language-flag">🇳🇬</span>
+                <span class="language-name">Hausa</span>
+                <i class="fas fa-check check-icon"></i>
+            </button>
+        </div>
     </div>
-    <div class="button-group">
-      <button class="nav-btn" id="signInCancel" type="button">Cancel</button>
-      <button class="nav-btn primary" id="signInGo" type="button">Sign In</button>
-    </div>
-  </form>
 </dialog>
 
-<dialog id="voicesModal">
-  <form method="dialog">
-    <h3><i class="fas fa-headphones"></i> Voice Sampler</h3>
-    <label>
-      <span>Sample text</span>
-      <textarea id="voiceText" rows="3" style="border:1px solid var(--border-color);border-radius:0.5rem;padding:0.75rem;font-family:inherit;">Welcome to PMERIT. Empowering learning through innovation.</textarea>
-    </label>
-    <div class="button-group" style="margin-top: 1rem;">
-      <button class="nav-btn" id="browserTts" type="button">Browser TTS</button>
-      <button class="nav-btn" id="voicesClose" type="button">Close</button>
+<!-- Career Tracks Modal -->
+<dialog class="career-modal" id="careerModal">
+    <div class="modal-content modal-large">
+        <button class="modal-close" id="careerModalClose" aria-label="Close modal">
+            <i class="fas fa-times"></i>
+        </button>
+        <h2 class="modal-title">
+            <i class="fas fa-route"></i>
+            Career Track & Explore Paths
+        </h2>
+        <div class="career-tracks-grid" id="careerTracksGrid">
+            <div class="career-track-card" data-track="grc">
+                <div class="track-icon">
+                    <i class="fas fa-globe"></i>
+                </div>
+                <h3 class="track-title">Global Remote Career</h3>
+                <p class="track-description">12 courses designed for remote work opportunities worldwide</p>
+                <button class="btn-outline">Explore</button>
+            </div>
+            
+            <div class="career-track-card" data-track="lcp">
+                <div class="track-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3 class="track-title">Local Career Pathways</h3>
+                <p class="track-description">12 courses tailored to local job markets</p>
+                <button class="btn-outline">Explore</button>
+            </div>
+            
+            <div class="career-track-card" data-track="up">
+                <div class="track-icon">
+                    <i class="fas fa-university"></i>
+                </div>
+                <h3 class="track-title">University Preparation</h3>
+                <p class="track-description">12 courses for academic excellence</p>
+                <button class="btn-outline">Explore</button>
+            </div>
+        </div>
     </div>
-  </form>
 </dialog>
 
-<dialog id="tracksModal">
-  <div style="margin:0;padding:1.5rem">
-    <h3><i class="fas fa-compass"></i> Explore Career Tracks</h3>
-    <div class="tracks-grid" id="tracksList"></div>
-    <div id="trackDetail" style="margin-top:1rem;display:none;border-top:1px solid var(--border-color);padding-top:1rem"></div>
-    <div class="button-group">
-      <button class="nav-btn" id="tracksClose" type="button">Close</button>
+<!-- Voices Preview Modal -->
+<dialog class="voices-modal" id="voicesModal">
+    <div class="modal-content">
+        <button class="modal-close" id="voicesModalClose" aria-label="Close modal">
+            <i class="fas fa-times"></i>
+        </button>
+        <h2 class="modal-title">
+            <i class="fas fa-headphones"></i>
+            Preview Voices
+        </h2>
+        <div class="form-group">
+            <label for="voiceText">Sample Text</label>
+            <textarea 
+                id="voiceText" 
+                class="form-textarea" 
+                rows="4"
+                placeholder="Enter text to preview voices..."
+            >Welcome to PMERIT. Empowering learning through innovation.</textarea>
+        </div>
+        
+        <div class="voice-options">
+            <button class="voice-option-btn" data-voice="default">
+                <i class="fas fa-play-circle"></i>
+                Browser Default
+            </button>
+            <button class="voice-option-btn" data-voice="male">
+                <i class="fas fa-play-circle"></i>
+                Male Voice
+            </button>
+            <button class="voice-option-btn" data-voice="female">
+                <i class="fas fa-play-circle"></i>
+                Female Voice
+            </button>
+        </div>
     </div>
-  </div>
 </dialog>
 
-<dialog id="assessmentModal">
-  <div style="margin:0;padding:1.5rem">
-    <h3><i class="fas fa-graduation-cap"></i> Discover Your Path — Quick Assessment</h3>
-    <ol style="line-height:1.6;margin:0 0 1rem 1.25rem">
-      <li><strong>Learning style:</strong> a few preferences.</li>
-      <li><strong>Interests:</strong> choose areas you enjoy.</li>
-      <li><strong>Skills:</strong> rate comfort with common tools.</li>
-    </ol>
-    <p style="color:var(--text-secondary);margin:0 0 1rem">
-      This assessment will help us create a personalized learning plan based on your preferences.
-    </p>
-    <div class="button-group">
-      <button class="nav-btn" id="assessmentCancel" type="button">Cancel</button>
-      <button class="nav-btn primary" id="assessmentStart" type="button">Start</button>
+<!-- Assessment Modal -->
+<dialog class="assessment-modal" id="assessmentModal">
+    <div class="modal-content">
+        <button class="modal-close" id="assessmentModalClose" aria-label="Close modal">
+            <i class="fas fa-times"></i>
+        </button>
+        <h2 class="modal-title">
+            <i class="fas fa-graduation-cap"></i>
+            Discover Your Path
+        </h2>
+        <p class="modal-intro">Take a quick assessment to create your personalized learning plan:</p>
+        <ol class="assessment-steps">
+            <li><strong>Learning Style:</strong> Understand how you learn best</li>
+            <li><strong>Interests:</strong> Choose areas that excite you</li>
+            <li><strong>Skills:</strong> Rate your comfort with common tools</li>
+        </ol>
+        <p class="modal-note">This takes about 5 minutes and will create a custom learning plan for you.</p>
+        <div class="modal-actions">
+            <button class="btn-outline" id="assessmentCancelBtn">Maybe Later</button>
+            <button class="btn-primary" id="assessmentStartBtn">Start Assessment</button>
+        </div>
     </div>
-  </div>
 </dialog>
+
+<!-- Privacy & Terms Modal -->
+<dialog class="privacy-modal" id="privacyModal">
+    <div class="modal-content modal-large">
+        <button class="modal-close" id="privacyModalClose" aria-label="Close modal">
+            <i class="fas fa-times"></i>
+        </button>
+        <h2 class="modal-title">Privacy & Terms</h2>
+        <div class="privacy-content">
+            <p>Our Privacy & Terms page provides detailed information about how we protect your data and our terms of service. We prioritize your privacy and transparency in all our educational services.</p>
+            <div class="modal-actions">
+                <a href="privacy.html" class="btn-outline">View Privacy Policy</a>
+                <a href="terms.html" class="btn-outline">View Terms of Service</a>
+            </div>
+        </div>
+    </div>
+</dialog>
+
+<style>
+/* Desktop footer hidden on mobile, shown at 1101px+ */
+@media (max-width: 1100px) {
+    .desktop-footer { display: none !important; }
+}
+
+@media (min-width: 1101px) {
+    .pmerit-footer { display: none; }
+}
+</style>
