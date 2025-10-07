@@ -4,222 +4,226 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#2A5B8C">
+    <meta name="description" content="PMERIT - Accessible global education platform breaking poverty cycles through AI-powered learning">
     <title>PMERIT – Accessible Global Education</title>
     
     <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Montserrat + Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
-    <!-- CSS - Mobile First Load Order -->
+    <!-- CSS - Correct Load Order -->
     <link rel="stylesheet" href="assets/css/theme-variables.css">
     <link rel="stylesheet" href="assets/css/typography.css">
     <link rel="stylesheet" href="assets/css/base.css">
     <link rel="stylesheet" href="assets/css/components.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
 </head>
-<body>
-    <!-- ============================================
-         MOBILE HEADER
-         Fixed position with logo, language, hamburger, sign-in
-         ============================================ -->
-    <header class="mobile-header">
-        <div class="header-left">
-            <div class="logo">
-                <i class="fas fa-graduation-cap"></i>
-                <span class="logo-text">Pmerit</span>
+<body data-theme="light">
+    <!-- ========================================
+         MOBILE HEADER (Fixed Position)
+         Logo | Language | Hamburger | Sign In
+         ======================================== -->
+    <header class="pmerit-header" id="mainHeader">
+        <div class="header-container">
+            <!-- Left: Logo -->
+            <div class="header-left">
+                <a href="index.html" class="logo-link" aria-label="PMERIT Home">
+                    <i class="fas fa-graduation-cap logo-icon"></i>
+                    <span class="logo-text">Pmerit</span>
+                </a>
             </div>
-        </div>
-        
-        <div class="header-right">
-            <!-- Language Switcher -->
-            <button class="icon-btn language-btn" id="languageBtn" aria-label="Change language">
-                <i class="fas fa-globe"></i>
-            </button>
             
-            <!-- Hamburger Menu -->
-            <button class="icon-btn hamburger-btn" id="menuToggle" aria-label="Toggle menu">
-                <i class="fas fa-bars"></i>
-            </button>
-            
-            <!-- Sign In Button -->
-            <button class="btn-sign-in" id="signInBtn">
-                Sign In
-            </button>
+            <!-- Right: Language, Hamburger, Sign In -->
+            <div class="header-right">
+                <!-- Language Switcher -->
+                <button class="header-btn language-btn" id="languageBtn" aria-label="Change language" title="Select Language">
+                    <i class="fas fa-globe"></i>
+                </button>
+                
+                <!-- Hamburger Menu -->
+                <button class="header-btn hamburger-toggle" id="hamburgerToggle" aria-label="Toggle menu" aria-expanded="false">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+                
+                <!-- Sign In Button -->
+                <button class="btn-sign-in" id="signInBtn">
+                    Sign In
+                </button>
+            </div>
         </div>
     </header>
 
-    <!-- ============================================
+    <!-- ========================================
          HAMBURGER MENU OVERLAY
-         ============================================ -->
-    <div class="menu-overlay" id="menuOverlay"></div>
+         ======================================== -->
+    <div class="menu-overlay" id="menuOverlay" aria-hidden="true"></div>
 
-    <!-- ============================================
-         HAMBURGER MENU SIDEBAR
-         Slides in from left with all features
-         ============================================ -->
-    <aside class="side-menu" id="sideMenu">
+    <!-- ========================================
+         HAMBURGER MENU (Slide-in from Left)
+         Contains all desktop sidebar features
+         ======================================== -->
+    <aside class="hamburger-menu" id="hamburgerMenu" aria-hidden="true">
         <!-- Menu Header -->
-        <div class="menu-header-section">
-            <div class="menu-logo">
+        <div class="menu-header">
+            <div class="menu-brand">
                 <i class="fas fa-graduation-cap"></i>
-                <span>Pmerit</span>
+                <span>Pmerit Menu</span>
             </div>
-            <button class="menu-close-btn" id="menuClose" aria-label="Close menu">
+            <button class="menu-close-btn" id="menuCloseBtn" aria-label="Close menu">
                 <i class="fas fa-times"></i>
             </button>
         </div>
 
-        <!-- User Welcome (if not signed in) -->
-        <div class="user-welcome">
-            <p>Welcome! Please sign in to access all features.</p>
-            <button class="menu-sign-in-btn" id="menuSignInBtn">
-                <i class="fas fa-sign-in-alt"></i>
-                Sign In / Sign Up
-            </button>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="menu-section">
-            <h3 class="section-header">Quick Actions</h3>
-            
-            <div class="menu-toggle-group">
-                <!-- Virtual Human Mode Toggle -->
+        <!-- Menu Content (Scrollable) -->
+        <div class="menu-content">
+            <!-- Quick Actions Section -->
+            <div class="menu-section">
+                <h3 class="menu-section-title">Quick Actions</h3>
+                
+                <!-- Virtual Human Mode -->
                 <div class="menu-toggle-item">
-                    <div class="toggle-info">
+                    <div class="toggle-label-group">
                         <i class="fas fa-user-astronaut toggle-icon"></i>
                         <span class="toggle-label">Virtual Human Mode</span>
                     </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="virtualHumanToggle" class="modern-toggle">
+                    <label class="modern-toggle">
+                        <input type="checkbox" id="virtualHumanToggle" aria-label="Toggle Virtual Human Mode">
                         <span class="toggle-slider"></span>
                     </label>
                 </div>
 
-                <!-- Customer Service Mode Toggle -->
+                <!-- Customer Service Mode -->
                 <div class="menu-toggle-item">
-                    <div class="toggle-info">
+                    <div class="toggle-label-group">
                         <i class="fas fa-headset toggle-icon"></i>
                         <span class="toggle-label">Customer Service Mode</span>
                     </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="customerServiceToggle" class="modern-toggle">
+                    <label class="modern-toggle">
+                        <input type="checkbox" id="customerServiceToggle" aria-label="Toggle Customer Service Mode">
                         <span class="toggle-slider"></span>
                     </label>
                 </div>
+
+                <!-- Career Track Button -->
+                <button class="menu-action-btn" id="careerTrackBtn">
+                    <i class="fas fa-route"></i>
+                    <span>Career Track & Explore Paths</span>
+                    <i class="fas fa-chevron-right chevron-right"></i>
+                </button>
+
+                <!-- Preview Voices Button -->
+                <button class="menu-action-btn" id="previewVoicesBtn">
+                    <i class="fas fa-volume-up"></i>
+                    <span>Preview Voices</span>
+                    <i class="fas fa-chevron-right chevron-right"></i>
+                </button>
             </div>
 
-            <!-- Career Track -->
-            <button class="menu-action-item" id="careerTrackBtn">
-                <i class="fas fa-route"></i>
-                <span>Career Track & Explore Paths</span>
-                <i class="fas fa-chevron-right"></i>
-            </button>
-        </div>
-
-        <!-- Learning Tools -->
-        <div class="menu-section">
-            <h3 class="section-title">Learning Tools</h3>
-            <button class="menu-item" id="coursesBtn">
-                <i class="fas fa-book-open"></i>
-                <span>Browse Courses</span>
-            </button>
-            <button class="menu-item" id="libraryBtn">
-                <i class="fas fa-books"></i>
-                <span>Resource Library</span>
-            </button>
-            <button class="menu-item" id="previewVoicesBtn">
-                <i class="fas fa-volume-up"></i>
-                <span>Preview Voices</span>
-            </button>
-        </div>
-
-        <!-- Settings (Collapsible) -->
-        <div class="menu-section">
-            <details class="collapsible-section">
-                <summary class="collapsible-header">
-                    <div class="summary-content">
-                        <i class="fas fa-cog"></i>
-                        <span>Settings</span>
-                    </div>
-                    <i class="fas fa-chevron-down chevron-icon"></i>
-                </summary>
-                <div class="collapsible-content">
-                    <!-- Dark Mode Toggle -->
-                    <div class="menu-toggle-item">
-                        <div class="toggle-info">
-                            <i class="fas fa-moon toggle-icon"></i>
-                            <span class="toggle-label">Dark Mode</span>
+            <!-- Settings Section (Collapsible) -->
+            <div class="menu-section">
+                <details class="menu-collapsible" id="settingsCollapsible">
+                    <summary class="collapsible-header">
+                        <div class="summary-left">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
                         </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="darkModeToggle" class="modern-toggle">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-
-                    <!-- Text-to-Speech Toggle -->
-                    <div class="menu-toggle-item">
-                        <div class="toggle-info">
-                            <i class="fas fa-microphone toggle-icon"></i>
-                            <span class="toggle-label">Text-to-Speech</span>
+                        <i class="fas fa-chevron-down chevron-icon"></i>
+                    </summary>
+                    <div class="collapsible-body">
+                        <!-- Dark Mode Toggle -->
+                        <div class="menu-toggle-item">
+                            <div class="toggle-label-group">
+                                <i class="fas fa-moon toggle-icon"></i>
+                                <span class="toggle-label">Dark Mode</span>
+                            </div>
+                            <label class="modern-toggle">
+                                <input type="checkbox" id="darkModeToggle" aria-label="Toggle Dark Mode">
+                                <span class="toggle-slider"></span>
+                            </label>
                         </div>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="ttsToggle" class="modern-toggle">
-                            <span class="toggle-slider"></span>
-                        </label>
+
+                        <!-- Text-to-Speech Toggle -->
+                        <div class="menu-toggle-item">
+                            <div class="toggle-label-group">
+                                <i class="fas fa-microphone toggle-icon"></i>
+                                <span class="toggle-label">Text-to-Speech</span>
+                            </div>
+                            <label class="modern-toggle">
+                                <input type="checkbox" id="ttsToggle" aria-label="Toggle Text-to-Speech">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
                     </div>
+                </details>
+            </div>
+
+            <!-- Dashboard & Assessment -->
+            <div class="menu-section">
+                <button class="dashboard-btn" id="dashboardBtn">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </button>
+                
+                <button class="assessment-btn" id="beginAssessmentBtn">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>Begin Assessment</span>
+                </button>
+            </div>
+
+            <!-- Virtual Human Avatar (shown when active) -->
+            <div class="menu-section" id="vhAvatarSection" style="display: none;">
+                <div class="vh-avatar-container">
+                    <div class="vh-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <p class="vh-status">Virtual Human Active</p>
                 </div>
-            </details>
-        </div>
-
-        <!-- Dashboard & Assessment -->
-        <div class="menu-section">
-            <button class="dashboard-btn" id="dashboardBtn">
-                <i class="fas fa-tachometer-alt"></i>
-                <span>Dashboard</span>
-            </button>
-            <button class="assessment-btn" id="beginAssessmentBtn">
-                <i class="fas fa-clipboard-list"></i>
-                <span>Begin Assessment</span>
-            </button>
+            </div>
         </div>
     </aside>
 
-    <!-- ============================================
+    <!-- ========================================
          MAIN CONTENT AREA
-         Non-scrollable viewport with gradient hero
-         ============================================ -->
-    <main class="main-container">
-        <!-- Hero Section with Gradient Background -->
-        <section class="hero-section">
-            <div class="hero-content">
-                <h1 class="hero-title">Hi there! I'm your learning companion,</h1>
-                <p class="hero-subtitle">empowering your education through innovation. PMERIT provides accessible, high-quality education that opens doors to endless opportunities worldwide. Ready to discover your potential and start your learning journey?</p>
+         Non-scrollable viewport, scrollable chat
+         ======================================== -->
+    <main class="main-container" id="mainContainer">
+        <!-- Hero/Greeting Section -->
+        <section class="hero-greeting">
+            <div class="greeting-content">
+                <h1 class="greeting-title">Hi there! I'm your learning companion,</h1>
+                <p class="greeting-subtitle">
+                    empowering your education through innovation. PMERIT provides accessible, 
+                    high-quality education that opens doors to endless opportunities worldwide.
+                </p>
                 
-                <div class="hero-cta">
-                    <h2>Ask Your Learning Companion</h2>
-                    <p class="cta-subtitle">Get personalized guidance on courses, career paths, and learning objectives</p>
+                <div class="greeting-cta">
+                    <h2 class="cta-heading">Ask Your Learning Companion</h2>
+                    <p class="cta-text">Get personalized guidance on courses, career paths, and learning objectives</p>
                 </div>
             </div>
         </section>
 
         <!-- Chat Interface (Scrollable Container) -->
-        <div class="chat-container">
-            <div class="chat-body" id="chatBody">
-                <!-- Welcome message -->
-                <div class="message ai-message">
+        <div class="chat-wrapper" id="chatWrapper">
+            <div class="chat-messages" id="chatMessages" role="log" aria-live="polite" aria-atomic="false">
+                <!-- Welcome Message -->
+                <div class="message-bubble ai-message">
                     <div class="message-avatar">
                         <i class="fas fa-robot"></i>
                     </div>
-                    <div class="message-bubble">
+                    <div class="message-content">
                         <div class="message-sender">PMERIT AI</div>
                         <div class="message-text">
-                            Hello! I'm here to help you explore courses, career paths, and answer any questions about your learning journey. What would you like to know?
+                            Hello! I'm here to help you explore courses, career paths, and answer any 
+                            questions about your learning journey. What would you like to know?
                         </div>
                     </div>
                 </div>
@@ -227,102 +231,195 @@
 
             <!-- Typing Indicator (Hidden by default) -->
             <div class="typing-indicator" id="typingIndicator" style="display: none;">
+                <div class="typing-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
                 <div class="typing-dots">
                     <span></span>
                     <span></span>
                     <span></span>
                 </div>
-                <span class="typing-text">PMERIT AI is typing...</span>
             </div>
         </div>
 
-        <!-- Fixed Input Bar -->
-        <div class="chat-input-container">
+        <!-- Fixed Chat Input Bar -->
+        <div class="chat-input-container" id="chatInputContainer">
             <div class="input-wrapper">
                 <input 
                     type="text" 
                     id="chatInput" 
                     class="chat-input" 
                     placeholder='Try: "What programming courses do you offer?"'
-                    aria-label="Chat message input"
+                    aria-label="Type your message"
+                    maxlength="1000"
                 >
-                <button class="send-btn" id="sendBtn" aria-label="Send message">
+                <button class="send-btn" id="sendBtn" aria-label="Send message" title="Send">
                     <i class="fas fa-paper-plane"></i>
                 </button>
+            </div>
+            <div class="input-meta">
+                <span class="char-count" id="charCount">0/1000</span>
             </div>
         </div>
     </main>
 
-    <!-- ============================================
-         FOOTER
-         Simplified for mobile, fixed position
-         ============================================ -->
-    <footer class="mobile-footer">
-        <div class="footer-links">
+    <!-- ========================================
+         FOOTER (Simplified for Mobile)
+         ======================================== -->
+    <footer class="mobile-footer" id="mainFooter">
+        <div class="footer-container">
             <a href="privacy.html" class="footer-link">Privacy & Terms</a>
             <span class="footer-divider">•</span>
             <span class="footer-status">
-                <i class="fas fa-circle status-indicator"></i>
+                <i class="fas fa-circle status-dot"></i>
                 Connected to Educational Services
             </span>
         </div>
     </footer>
 
-    <!-- ============================================
+    <!-- ========================================
          MODALS
-         ============================================ -->
+         ======================================== -->
     
-    <!-- Sign In / Sign Up Modal -->
-    <div class="modal" id="authModal">
-        <div class="modal-overlay"></div>
-        <div class="modal-content auth-modal">
-            <button class="modal-close" id="authModalClose" aria-label="Close modal">
+    <!-- Language Switcher Modal -->
+    <dialog class="modal-dialog" id="languageModal">
+        <div class="modal-header">
+            <h2 class="modal-title">Select Language</h2>
+            <button class="modal-close-btn" id="languageModalClose" aria-label="Close">
                 <i class="fas fa-times"></i>
             </button>
-            
-            <div class="modal-header">
-                <div class="modal-logo">
-                    <i class="fas fa-graduation-cap"></i>
-                    <span>Pmerit</span>
-                </div>
-                <h2>Sign in to your account</h2>
-                <p>Or <a href="#" id="switchToSignUp">create a new account</a></p>
-            </div>
+        </div>
+        <div class="modal-body">
+            <button class="language-option active" data-lang="en">
+                <span class="language-flag">🇺🇸</span>
+                <span class="language-name">English</span>
+                <i class="fas fa-check check-icon"></i>
+            </button>
+            <button class="language-option" data-lang="yo">
+                <span class="language-flag">🇳🇬</span>
+                <span class="language-name">Yorùbá</span>
+            </button>
+            <button class="language-option" data-lang="ig">
+                <span class="language-flag">🇳🇬</span>
+                <span class="language-name">Igbo</span>
+            </button>
+            <button class="language-option" data-lang="ha">
+                <span class="language-flag">🇳🇬</span>
+                <span class="language-name">Hausa</span>
+            </button>
+        </div>
+    </dialog>
 
-            <div class="modal-body">
-                <form id="authForm">
+    <!-- Auth Modal (Sign In / Sign Up) -->
+    <dialog class="modal-dialog" id="authModal">
+        <div class="modal-header">
+            <div class="modal-brand">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Pmerit</span>
+            </div>
+            <button class="modal-close-btn" id="authModalClose" aria-label="Close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <!-- Sign In Form -->
+            <div class="auth-form" id="signInForm">
+                <h2 class="auth-title">Sign in to your account</h2>
+                <p class="auth-subtitle">Or <a href="#" id="switchToSignUp" class="auth-link">create a new account</a></p>
+                
+                <form>
                     <div class="form-group">
-                        <label for="emailInput">Email</label>
+                        <label for="signInEmail" class="form-label">Email</label>
                         <input 
                             type="email" 
-                            id="emailInput" 
+                            id="signInEmail" 
                             class="form-input" 
-                            placeholder="Enter your email"
+                            placeholder="you@example.com"
                             required
                         >
                     </div>
                     
                     <div class="form-group">
-                        <label for="passwordInput">Password</label>
+                        <label for="signInPassword" class="form-label">Password</label>
                         <input 
                             type="password" 
-                            id="passwordInput" 
+                            id="signInPassword" 
                             class="form-input" 
                             placeholder="Enter your password"
                             required
                         >
                     </div>
 
-                    <div class="form-actions">
-                        <a href="#" class="forgot-password">Forgot password?</a>
+                    <div class="form-footer">
+                        <a href="#" class="forgot-link">Forgot password?</a>
                     </div>
 
-                    <button type="submit" class="btn-primary btn-full">
-                        Next
+                    <button type="submit" class="btn-primary btn-block">
+                        Sign In
                     </button>
                 </form>
 
-                <div class="divider">
+                <div class="auth-divider">
+                    <span>or</span>
+                </div>
+
+                <button class="btn-google">
+                    <i class="fab fa-google"></i>
+                    Continue with Google
+                </button>
+            </div>
+
+            <!-- Sign Up Form (Hidden by default) -->
+            <div class="auth-form" id="signUpForm" style="display: none;">
+                <h2 class="auth-title">Create your account</h2>
+                <p class="auth-subtitle">Already have an account? <a href="#" id="switchToSignIn" class="auth-link">Sign in</a></p>
+                
+                <form>
+                    <div class="form-group">
+                        <label for="signUpName" class="form-label">Full Name</label>
+                        <input 
+                            type="text" 
+                            id="signUpName" 
+                            class="form-input" 
+                            placeholder="Your full name"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signUpEmail" class="form-label">Email</label>
+                        <input 
+                            type="email" 
+                            id="signUpEmail" 
+                            class="form-input" 
+                            placeholder="you@example.com"
+                            required
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signUpPassword" class="form-label">Password</label>
+                        <input 
+                            type="password" 
+                            id="signUpPassword" 
+                            class="form-input" 
+                            placeholder="Create a strong password"
+                            required
+                        >
+                    </div>
+
+                    <p class="terms-text">
+                        By creating an account, you agree to our 
+                        <a href="terms.html" class="terms-link">Terms of Service</a> and 
+                        <a href="privacy.html" class="terms-link">Privacy Policy</a>.
+                    </p>
+
+                    <button type="submit" class="btn-primary btn-block">
+                        Create Account
+                    </button>
+                </form>
+
+                <div class="auth-divider">
                     <span>or</span>
                 </div>
 
@@ -332,120 +429,249 @@
                 </button>
             </div>
         </div>
-    </div>
+    </dialog>
 
     <!-- Career Tracks Modal -->
-    <div class="modal" id="careerTracksModal">
-        <div class="modal-overlay"></div>
-        <div class="modal-content">
-            <button class="modal-close" id="careerTracksClose" aria-label="Close modal">
+    <dialog class="modal-dialog modal-large" id="careerTracksModal">
+        <div class="modal-header">
+            <h2 class="modal-title">Career Track & Explore Paths</h2>
+            <button class="modal-close-btn" id="careerTracksClose" aria-label="Close">
                 <i class="fas fa-times"></i>
             </button>
-            
-            <div class="modal-header">
-                <h2>Career Track & Explore Paths</h2>
-                <p>Choose your learning journey</p>
-            </div>
-
-            <div class="modal-body">
-                <div class="career-track-grid">
-                    <div class="career-track-card">
+        </div>
+        <div class="modal-body">
+            <div class="career-tracks-grid">
+                <div class="career-track-card">
+                    <div class="track-icon">
                         <i class="fas fa-globe"></i>
-                        <h3>Global Remote Career</h3>
-                        <p>12 courses designed for remote work opportunities worldwide</p>
-                        <button class="btn-outline">Explore</button>
                     </div>
-                    <div class="career-track-card">
+                    <h3 class="track-title">Global Remote Career</h3>
+                    <p class="track-description">12 courses designed for remote work opportunities worldwide</p>
+                    <button class="btn-outline">Explore</button>
+                </div>
+                
+                <div class="career-track-card">
+                    <div class="track-icon">
                         <i class="fas fa-map-marker-alt"></i>
-                        <h3>Local Career Pathways</h3>
-                        <p>12 courses tailored to local job markets</p>
-                        <button class="btn-outline">Explore</button>
                     </div>
-                    <div class="career-track-card">
+                    <h3 class="track-title">Local Career Pathways</h3>
+                    <p class="track-description">12 courses tailored to local job markets</p>
+                    <button class="btn-outline">Explore</button>
+                </div>
+                
+                <div class="career-track-card">
+                    <div class="track-icon">
                         <i class="fas fa-university"></i>
-                        <h3>University Preparation</h3>
-                        <p>12 courses for academic excellence</p>
-                        <button class="btn-outline">Explore</button>
                     </div>
+                    <h3 class="track-title">University Preparation</h3>
+                    <p class="track-description">12 courses for academic excellence</p>
+                    <button class="btn-outline">Explore</button>
                 </div>
             </div>
         </div>
-    </div>
+    </dialog>
 
-    <!-- Language Switcher Modal -->
-    <div class="modal" id="languageModal">
-        <div class="modal-overlay"></div>
-        <div class="modal-content language-modal">
-            <button class="modal-close" id="languageModalClose" aria-label="Close modal">
+    <!-- Voices Preview Modal -->
+    <dialog class="modal-dialog" id="voicesModal">
+        <div class="modal-header">
+            <h2 class="modal-title"><i class="fas fa-headphones"></i> Preview Voices</h2>
+            <button class="modal-close-btn" id="voicesModalClose" aria-label="Close">
                 <i class="fas fa-times"></i>
             </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="voiceText" class="form-label">Sample Text</label>
+                <textarea 
+                    id="voiceText" 
+                    class="form-textarea" 
+                    rows="4"
+                    placeholder="Enter text to preview voices..."
+                >Welcome to PMERIT. Empowering learning through innovation.</textarea>
+            </div>
             
-            <div class="modal-header">
-                <h2>Select Language</h2>
-            </div>
-
-            <div class="modal-body">
-                <button class="language-option active" data-lang="en">
-                    <span class="language-name">English</span>
-                    <i class="fas fa-check"></i>
+            <div class="voice-options">
+                <button class="voice-option-btn" data-voice="default">
+                    <i class="fas fa-play-circle"></i> Browser Default
                 </button>
-                <button class="language-option" data-lang="yo">
-                    <span class="language-name">Yorùbá</span>
+                <button class="voice-option-btn" data-voice="male">
+                    <i class="fas fa-play-circle"></i> Male Voice
                 </button>
-                <button class="language-option" data-lang="ig">
-                    <span class="language-name">Igbo</span>
-                </button>
-                <button class="language-option" data-lang="ha">
-                    <span class="language-name">Hausa</span>
+                <button class="voice-option-btn" data-voice="female">
+                    <i class="fas fa-play-circle"></i> Female Voice
                 </button>
             </div>
         </div>
-    </div>
+    </dialog>
 
-    <!-- ============================================
+    <!-- Assessment Modal -->
+    <dialog class="modal-dialog" id="assessmentModal">
+        <div class="modal-header">
+            <h2 class="modal-title"><i class="fas fa-graduation-cap"></i> Begin Assessment</h2>
+            <button class="modal-close-btn" id="assessmentModalClose" aria-label="Close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p class="modal-intro">Discover your personalized learning path with our quick assessment:</p>
+            <ol class="assessment-steps">
+                <li><strong>Learning Style:</strong> Understand how you learn best</li>
+                <li><strong>Interests:</strong> Choose areas that excite you</li>
+                <li><strong>Skills:</strong> Rate your comfort with common tools</li>
+            </ol>
+            <p class="modal-note">This takes about 5 minutes and will create a custom learning plan for you.</p>
+            <div class="modal-actions">
+                <button class="btn-outline" id="assessmentCancelBtn">Maybe Later</button>
+                <button class="btn-primary" id="assessmentStartBtn">Start Assessment</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- ========================================
          DESKTOP LAYOUT (Hidden on Mobile)
-         Three-panel layout shown at >1100px
-         ============================================ -->
-    <div class="desktop-container">
+         Three-panel: Left Sidebar | Main | Right Sidebar
+         Shown at 1101px+ viewport width
+         ======================================== -->
+    <div class="desktop-layout" id="desktopLayout">
         <!-- Left Sidebar -->
-        <aside class="desktop-sidebar-left">
+        <aside class="desktop-sidebar desktop-sidebar-left">
             <div class="sidebar-section">
-                <h3>Quick Actions</h3>
-                <!-- Mirror mobile menu content here for desktop -->
+                <h3 class="sidebar-title">Quick Actions</h3>
+                
+                <!-- Virtual Human Mode -->
+                <div class="sidebar-toggle-item">
+                    <div class="toggle-label-group">
+                        <i class="fas fa-user-astronaut"></i>
+                        <span>Virtual Human Mode</span>
+                    </div>
+                    <label class="modern-toggle">
+                        <input type="checkbox" id="desktopVHToggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+
+                <!-- Customer Service Mode -->
+                <div class="sidebar-toggle-item">
+                    <div class="toggle-label-group">
+                        <i class="fas fa-headset"></i>
+                        <span>Customer Service</span>
+                    </div>
+                    <label class="modern-toggle">
+                        <input type="checkbox" id="desktopCSToggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+
+                <!-- Career Track -->
+                <button class="sidebar-action-btn" id="desktopCareerBtn">
+                    <i class="fas fa-route"></i>
+                    <span>Career Tracks</span>
+                </button>
+
+                <!-- Preview Voices -->
+                <button class="sidebar-action-btn" id="desktopVoicesBtn">
+                    <i class="fas fa-volume-up"></i>
+                    <span>Preview Voices</span>
+                </button>
+
+                <!-- Settings Collapsible -->
+                <details class="sidebar-collapsible">
+                    <summary>
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </summary>
+                    <div class="collapsible-content">
+                        <div class="sidebar-toggle-item">
+                            <span>Dark Mode</span>
+                            <label class="modern-toggle">
+                                <input type="checkbox" id="desktopDarkToggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="sidebar-toggle-item">
+                            <span>Text-to-Speech</span>
+                            <label class="modern-toggle">
+                                <input type="checkbox" id="desktopTTSToggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </details>
+
+                <!-- Dashboard Button -->
+                <button class="dashboard-btn" id="desktopDashboardBtn">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Dashboard
+                </button>
+
+                <!-- VH Avatar (when active) -->
+                <div class="vh-avatar-desktop" id="desktopVHAvatar" style="display: none;">
+                    <i class="fas fa-user-circle"></i>
+                </div>
             </div>
         </aside>
 
-        <!-- Center Content -->
-        <div class="desktop-main">
-            <!-- Same as mobile main content -->
-        </div>
+        <!-- Center Content (Same as mobile main) -->
+        <main class="desktop-main">
+            <!-- Content mirrored from mobile main -->
+        </main>
 
-        <!-- Right Panel -->
-        <aside class="desktop-sidebar-right">
+        <!-- Right Sidebar -->
+        <aside class="desktop-sidebar desktop-sidebar-right">
             <div class="sidebar-section">
-                <h3>Support Assistant</h3>
-                <p>Need help? Our AI assistant is here for you.</p>
+                <h3 class="sidebar-title">Support Assistant</h3>
+                <p class="sidebar-description">
+                    Need help? Our AI assistant is here for you 24/7.
+                </p>
+                
+                <div class="support-actions">
+                    <button class="support-btn" id="supportVHBtn">
+                        <i class="fas fa-user-astronaut"></i>
+                        Virtual Human
+                    </button>
+                    <button class="support-btn" id="supportCSBtn">
+                        <i class="fas fa-headset"></i>
+                        Support
+                    </button>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Discover Your Path (AI)</h3>
+                <p class="sidebar-description">
+                    Start a personalized assessment to create your learning plan.
+                </p>
+                <button class="btn-primary btn-block" id="desktopAssessmentBtn">
+                    <i class="fas fa-clipboard-list"></i>
+                    Begin Assessment
+                </button>
+                <div class="sidebar-tip">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Pro tip: Keep notes in your own words for better recall.</span>
+                </div>
             </div>
         </aside>
     </div>
 
-    <!-- ============================================
+    <!-- ========================================
          JAVASCRIPT
-         ============================================ -->
-    <script src="assets/js/boot-includes.js"></script>
-    <script src="assets/js/router.js"></script>
+         ======================================== -->
+    <script src="assets/js/core/utils.js"></script>
+    <script src="assets/js/core/state.js"></script>
     <script src="assets/js/chat.js"></script>
     <script src="assets/js/main.js"></script>
 
     <script>
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', () => {
-            // Initialize main app
-            if (typeof init === 'function') {
-                init();
-            }
+            console.log('🚀 PMERIT Platform - Mobile-First Implementation');
+            console.log('✅ Theme System Loaded');
+            console.log('✅ Responsive Layout Active');
             
-            console.log('✅ PMERIT Platform Initialized - Mobile-First Design');
+            // Check viewport and log mode
+            const isMobile = window.innerWidth <= 1100;
+            console.log(`📱 Current Mode: ${isMobile ? 'Mobile' : 'Desktop'}`);
         });
     </script>
 </body>
