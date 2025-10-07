@@ -1,0 +1,48 @@
+module.exports = async ({github, context}) => {
+  // Get changed files
+  const files = await github.rest.pulls.listFiles({
+    owner: context.repo.owner,
+    repo: context.repo.repo,
+    pull_number: context.issue.number
+  });
+
+  const auditResults = [];
+  
+  for (const file of files.data) {
+    if (file.filename.match(/\.(html|css|js)$/)) {
+      const audit = await auditFile(file);
+      auditResults.push(audit);
+    }
+  }
+  
+  // Create summary comment with clear labels
+  await createAuditSummary(github, context, auditResults);
+};
+
+async function auditFile(file) {
+  return {
+    filename: file.filename,
+    tasks: [
+      {
+        label: "🎨 BRAND_COMPLIANCE_CHECK",
+        status: await checkBrandCompliance(file),
+        details: "Verified Pmerit colors and typography"
+      },
+      {
+        label: "📱 RESPONSIVE_DESIGN_AUDIT", 
+        status: await checkResponsiveDesign(file),
+        details: "Checked mobile-first and non-scrollable requirements"
+      },
+      {
+        label: "⚡ PERFORMANCE_REVIEW",
+        status: await checkPerformance(file),
+        details: "Audited loading and rendering performance"
+      },
+      {
+        label: "♿ ACCESSIBILITY_CHECK",
+        status: await checkAccessibility(file),
+        details: "Verified WCAG compliance"
+      }
+    ]
+  };
+}
