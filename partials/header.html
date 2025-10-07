@@ -1,9 +1,28 @@
-<header class="pmerit-header" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--bg-primary); border-bottom: 1px solid var(--border-color); height: 60px; box-sizing: border-box;">
-  <div class="header-left" style="flex:0 0 auto;">
-    <a href="index.html" class="header-logo" style="display: flex; align-items: center; text-decoration: none;">
-      <span class="logo-icon" style="font-size:1.5rem;">🤖</span>
-      <span class="logo-text" style="font-weight: bold; font-size: 1.2rem; margin-left: .25rem;">PMERIT</span>
-    </a>
-  </div>
-  <!-- No navigation or hamburger menu here. Branding only. -->
+<!-- In partials/header.html or inline header -->
+<header>
+    <div class="logo">PMERIT</div>
+    
+    <nav class="nav-actions">
+        <!-- Language Switcher -->
+        <select id="languageSwitcher">
+            <option value="en">English</option>
+            <option value="yo">Yorùbá</option>
+        </select>
+        
+        <!-- Dark Mode Toggle (NEW) -->
+        <button id="darkModeToggle" class="theme-toggle">
+            <span class="icon">🌙</span>
+            <span class="text">Dark Mode</span>
+        </button>
+        
+        <!-- Hamburger Menu -->
+        <button id="menuToggle" class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        
+        <!-- Sign In -->
+        <button id="signInBtn" class="btn-sign-in">Sign In</button>
+    </nav>
 </header>
