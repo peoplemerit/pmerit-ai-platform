@@ -1210,3 +1210,44 @@ if (document.readyState === 'loading') {
   init();
   initializeNewMenuFeatures();
 }
+// Dark Mode Toggle
+function initDarkMode() {
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    
+    // Set initial theme
+    document.body.setAttribute('data-theme', currentTheme);
+    
+    // Toggle handler
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', () => {
+            const currentTheme = document.body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            // Update toggle button text/icon
+            updateDarkModeButton(newTheme);
+        });
+    }
+}
+
+function updateDarkModeButton(theme) {
+    const button = document.getElementById('darkModeToggle');
+    if (button) {
+        const icon = button.querySelector('.icon');
+        const text = button.querySelector('.text');
+        
+        if (theme === 'dark') {
+            icon.textContent = '🌙';
+            text.textContent = 'Dark Mode';
+        } else {
+            icon.textContent = '☀️';
+            text.textContent = 'Light Mode';
+        }
+    }
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', initDarkMode);
