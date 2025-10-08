@@ -16,7 +16,6 @@ const state = {
 
 // ========== INITIALIZATION ==========
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('🚀 PMERIT Platform initializing...');
   init();
 });
 
@@ -31,8 +30,6 @@ function init() {
   initializeLanguageSwitcher();
   initializeModals();
   initializeChat();
-  
-  console.log('✅ PMERIT Platform initialized successfully');
 }
 
 // ========== MENU SYSTEM ==========
@@ -194,11 +191,9 @@ function toggleVirtualHumanMode(enabled) {
   if (enabled) {
     document.body.classList.add('virtual-human-mode');
     showToast('Virtual Human Mode Enabled', 'success');
-    console.log('🤖 Virtual Human Mode: ON');
   } else {
     document.body.classList.remove('virtual-human-mode');
     showToast('Virtual Human Mode Disabled', 'info');
-    console.log('🤖 Virtual Human Mode: OFF');
   }
 }
 
@@ -206,11 +201,9 @@ function toggleCustomerServiceMode(enabled) {
   if (enabled) {
     document.body.classList.add('customer-service-mode');
     showToast('Customer Service Mode Enabled', 'success');
-    console.log('💬 Customer Service Mode: ON');
   } else {
     document.body.classList.remove('customer-service-mode');
     showToast('Customer Service Mode Disabled', 'info');
-    console.log('💬 Customer Service Mode: OFF');
   }
 }
 
@@ -278,7 +271,6 @@ function changeLanguage(lang) {
   state.language = lang;
   saveState();
   showToast(`Language changed to ${lang.toUpperCase()}`, 'success');
-  console.log(`🌐 Language changed to: ${lang}`);
   
   // Update active language option
   document.querySelectorAll('.language-option').forEach(opt => {
