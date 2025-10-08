@@ -24,7 +24,7 @@ window.addEventListener('resize', function() {
 });
 
 function initializeChat() {
-  console.log('💬 Initializing chat interface...');
+  // Initialize chat interface
 
   // Mobile chat
   const mobileChatInput = document.getElementById('chat-input');
@@ -71,8 +71,6 @@ function initializeChat() {
       sendMessage('desktop');
     });
   }
-
-  console.log('✅ Chat interface initialized');
 }
 
 // ========== SEND MESSAGE ==========
@@ -171,8 +169,6 @@ function addMessage(sender, text, layout = 'mobile') {
 
   // Auto-scroll to bottom
   scrollToBottom(messagesContainer);
-
-  console.log(`💬 ${sender} message added: "${text.substring(0, 50)}..."`);
 }
 
 // ========== TYPING INDICATOR ==========
@@ -264,7 +260,6 @@ function speakMessage(text) {
     utterance.lang = 'en-US';
 
     window.speechSynthesis.speak(utterance);
-    console.log('🔊 Speaking message via TTS');
   }
 }
 
