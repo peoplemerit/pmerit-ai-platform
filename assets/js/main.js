@@ -1,400 +1,515 @@
 /**
- * PMERIT Main JavaScript
- * Version: 3.0 - Mobile-First Implementation
- * 
- * Handles all UI interactions for mobile and desktop
+ * PMERIT Platform - Main Application Logic
+ * Version: 2.1 (Fixed Indentation & IDs)
+ * Last Updated: October 2025
  */
 
-(function() {
-    'use strict';
+// ========== STATE MANAGEMENT ==========
+const state = {
+  virtualHuman: false,
+  customerService: false,
+  darkMode: false,
+  textToSpeech: false,
+  language: 'en',
+  authenticated: false
+};
 
-    // ============================================
-    // STATE MANAGEMENT
-    // ============================================
-    
-    const AppState = {
-        theme: localStorage.getItem('pmerit-theme') || 'light',
-        language: localStorage.getItem('pmerit-language') || 'en',
-        virtualHumanActive: false,
-        customerServiceActive: false,
-        ttsEnabled: false,
-        menuOpen: false
+// ========== INITIALIZATION ==========
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('🚀 PMERIT Platform initializing...');
+  init();
+});
+
+function init() {
+  // Load saved state
+  loadState();
+  
+  // Initialize all components
+  initializeMenu();
+  initializeAuth();
+  initializeToggles();
+  initializeLanguageSwitcher();
+  initializeModals();
+  initializeChat();
+  
+  console.log('✅ PMERIT Platform initialized successfully');
+}
+
+// ========== MENU SYSTEM ==========
+function initializeMenu() {
+  const hamburgerToggle = document.getElementById('hamburger-toggle');
+  const menuOverlay = document.getElementById('menu-overlay');
+  const hamburgerMenu = document.getElementById('hamburger-menu');
+  const menuCloseBtn = document.getElementById('menu-close-btn');
+
+  if (hamburgerToggle) {
+    hamburgerToggle.addEventListener('click', openMenu);
+  }
+
+  if (menuCloseBtn) {
+    menuCloseBtn.addEventListener('click', closeMenu);
+  }
+
+  if (menuOverlay) {
+    menuOverlay.addEventListener('click', closeMenu);
+  }
+
+  // ESC key closes menu
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && hamburgerMenu && hamburgerMenu.getAttribute('aria-hidden') === 'false') {
+      closeMenu();
+    }
+  });
+}
+
+function openMenu() {
+  const hamburgerToggle = document.getElementById('hamburger-toggle');
+  const menuOverlay = document.getElementById('menu-overlay');
+  const hamburgerMenu = document.getElementById('hamburger-menu');
+
+  if (hamburgerMenu) {
+    hamburgerMenu.classList.add('active');
+    hamburgerMenu.setAttribute('aria-hidden', 'false');
+  }
+
+  if (menuOverlay) {
+    menuOverlay.classList.add('active');
+    menuOverlay.setAttribute('aria-hidden', 'false');
+  }
+
+  if (hamburgerToggle) {
+    hamburgerToggle.setAttribute('aria-expanded', 'true');
+  }
+
+  // Prevent body scroll
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMenu() {
+  const hamburgerToggle = document.getElementById('hamburger-toggle');
+  const menuOverlay = document.getElementById('menu-overlay');
+  const hamburgerMenu = document.getElementById('hamburger-menu');
+
+  if (hamburgerMenu) {
+    hamburgerMenu.classList.remove('active');
+    hamburgerMenu.setAttribute('aria-hidden', 'true');
+  }
+
+  if (menuOverlay) {
+    menuOverlay.classList.remove('active');
+    menuOverlay.setAttribute('aria-hidden', 'true');
+  }
+
+  if (hamburgerToggle) {
+    hamburgerToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  // Restore body scroll
+  document.body.style.overflow = '';
+}
+
+// ========== AUTHENTICATION ==========
+function initializeAuth() {
+  const signInBtn = document.getElementById('sign-in-btn');
+  const menuSignIn = document.getElementById('menu-sign-in');
+
+  if (signInBtn) {
+    signInBtn.addEventListener('click', openAuthModal);
+  }
+
+  if (menuSignIn) {
+    menuSignIn.addEventListener('click', () => {
+      closeMenu();
+      openAuthModal();
+    });
+  }
+}
+
+function openAuthModal() {
+  const authModal = document.getElementById('auth-modal');
+  if (authModal) {
+    authModal.classList.remove('hidden');
+    authModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeAuthModal() {
+  const authModal = document.getElementById('auth-modal');
+  if (authModal) {
+    authModal.classList.add('hidden');
+    authModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+}
+
+// ========== TOGGLE SWITCHES ==========
+function initializeToggles() {
+  // Virtual Human Mode
+  const virtualHumanToggle = document.getElementById('virtual-human-toggle');
+  if (virtualHumanToggle) {
+    virtualHumanToggle.checked = state.virtualHuman;
+    virtualHumanToggle.addEventListener('change', function() {
+      state.virtualHuman = this.checked;
+      toggleVirtualHumanMode(this.checked);
+      saveState();
+    });
+  }
+
+  // Customer Service Mode
+  const customerServiceToggle = document.getElementById('customer-service-toggle');
+  if (customerServiceToggle) {
+    customerServiceToggle.checked = state.customerService;
+    customerServiceToggle.addEventListener('change', function() {
+      state.customerService = this.checked;
+      toggleCustomerServiceMode(this.checked);
+      saveState();
+    });
+  }
+
+  // Dark Mode
+  const darkModeToggle = document.getElementById('dark-mode-toggle');
+  if (darkModeToggle) {
+    darkModeToggle.checked = state.darkMode;
+    darkModeToggle.addEventListener('change', function() {
+      state.darkMode = this.checked;
+      toggleDarkMode(this.checked);
+      saveState();
+    });
+  }
+
+  // Text-to-Speech
+  const ttsToggle = document.getElementById('tts-toggle');
+  if (ttsToggle) {
+    ttsToggle.checked = state.textToSpeech;
+    ttsToggle.addEventListener('change', function() {
+      state.textToSpeech = this.checked;
+      toggleTextToSpeech(this.checked);
+      saveState();
+    });
+  }
+}
+
+function toggleVirtualHumanMode(enabled) {
+  if (enabled) {
+    document.body.classList.add('virtual-human-mode');
+    showToast('Virtual Human Mode Enabled', 'success');
+    console.log('🤖 Virtual Human Mode: ON');
+  } else {
+    document.body.classList.remove('virtual-human-mode');
+    showToast('Virtual Human Mode Disabled', 'info');
+    console.log('🤖 Virtual Human Mode: OFF');
+  }
+}
+
+function toggleCustomerServiceMode(enabled) {
+  if (enabled) {
+    document.body.classList.add('customer-service-mode');
+    showToast('Customer Service Mode Enabled', 'success');
+    console.log('💬 Customer Service Mode: ON');
+  } else {
+    document.body.classList.remove('customer-service-mode');
+    showToast('Customer Service Mode Disabled', 'info');
+    console.log('💬 Customer Service Mode: OFF');
+  }
+}
+
+function toggleDarkMode(enabled) {
+  if (enabled) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    showToast('Dark Mode Enabled', 'success');
+  } else {
+    document.documentElement.setAttribute('data-theme', 'light');
+    showToast('Dark Mode Disabled', 'info');
+  }
+}
+
+function toggleTextToSpeech(enabled) {
+  if (enabled) {
+    showToast('Text-to-Speech Enabled', 'success');
+    testTextToSpeech();
+  } else {
+    showToast('Text-to-Speech Disabled', 'info');
+  }
+}
+
+function testTextToSpeech() {
+  if ('speechSynthesis' in window) {
+    const utterance = new SpeechSynthesisUtterance('Text-to-speech is now enabled.');
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    window.speechSynthesis.speak(utterance);
+  }
+}
+
+// ========== LANGUAGE SWITCHER ==========
+function initializeLanguageSwitcher() {
+  const languageBtn = document.getElementById('language-btn');
+  const languageDropdown = document.getElementById('language-dropdown');
+  const closeLanguageDropdown = document.getElementById('close-language-dropdown');
+  const languageOptions = document.querySelectorAll('.language-option');
+
+  if (languageBtn && languageDropdown) {
+    languageBtn.addEventListener('click', function() {
+      const isHidden = languageDropdown.getAttribute('aria-hidden') === 'true';
+      languageDropdown.setAttribute('aria-hidden', !isHidden);
+      languageDropdown.classList.toggle('active');
+    });
+  }
+
+  if (closeLanguageDropdown) {
+    closeLanguageDropdown.addEventListener('click', function() {
+      languageDropdown.setAttribute('aria-hidden', 'true');
+      languageDropdown.classList.remove('active');
+    });
+  }
+
+  languageOptions.forEach(option => {
+    option.addEventListener('click', function() {
+      const lang = this.getAttribute('data-lang');
+      changeLanguage(lang);
+      languageDropdown.setAttribute('aria-hidden', 'true');
+      languageDropdown.classList.remove('active');
+    });
+  });
+}
+
+function changeLanguage(lang) {
+  state.language = lang;
+  saveState();
+  showToast(`Language changed to ${lang.toUpperCase()}`, 'success');
+  console.log(`🌐 Language changed to: ${lang}`);
+  
+  // Update active language option
+  document.querySelectorAll('.language-option').forEach(opt => {
+    opt.classList.remove('active');
+    if (opt.getAttribute('data-lang') === lang) {
+      opt.classList.add('active');
+    }
+  });
+}
+
+// ========== MODALS ==========
+function initializeModals() {
+  // Career Track Modal
+  const careerTrackBtn = document.getElementById('career-track-btn');
+  if (careerTrackBtn) {
+    careerTrackBtn.addEventListener('click', function() {
+      closeMenu();
+      openModal('career-tracks-modal');
+    });
+  }
+
+  // Preview Voices Modal
+  const previewVoicesBtn = document.getElementById('preview-voices-btn');
+  if (previewVoicesBtn) {
+    previewVoicesBtn.addEventListener('click', function() {
+      closeMenu();
+      openModal('voices-modal');
+    });
+  }
+
+  // Dashboard
+  const dashboardBtn = document.getElementById('dashboard-btn');
+  if (dashboardBtn) {
+    dashboardBtn.addEventListener('click', function() {
+      closeMenu();
+      window.location.href = 'learner-portal.html';
+    });
+  }
+
+  // Begin Assessment
+  const beginAssessmentBtn = document.getElementById('begin-assessment-btn');
+  if (beginAssessmentBtn) {
+    beginAssessmentBtn.addEventListener('click', function() {
+      closeMenu();
+      openModal('assessment-modal');
+    });
+  }
+
+  // Close modals on backdrop click
+  document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('modal-backdrop')) {
+      closeModal(e.target.closest('.modal').id);
+    }
+  });
+}
+
+function openModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+}
+
+// ========== CHAT INTERFACE ==========
+function initializeChat() {
+  const sendBtn = document.getElementById('send-btn');
+  const chatInput = document.getElementById('chat-input');
+
+  if (sendBtn && chatInput) {
+    sendBtn.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+  }
+}
+
+function sendMessage() {
+  const chatInput = document.getElementById('chat-input');
+  const message = chatInput.value.trim();
+
+  if (message) {
+    addMessageToChat('user', message);
+    chatInput.value = '';
+
+    // Simulate AI response
+    setTimeout(() => {
+      const response = getAIResponse(message);
+      addMessageToChat('ai', response);
+
+      if (state.textToSpeech) {
+        speakMessage(response);
+      }
+    }, 1500);
+  }
+}
+
+function addMessageToChat(sender, message) {
+  const chatBody = document.getElementById('chat-body');
+  if (!chatBody) return;
+
+  const messageDiv = document.createElement('div');
+  messageDiv.classList.add('chat-message', sender === 'user' ? 'user-message' : 'ai-message');
+
+  const avatar = document.createElement('div');
+  avatar.classList.add('message-avatar');
+  avatar.textContent = sender === 'user' ? '👤' : '🤖';
+
+  const content = document.createElement('div');
+  content.classList.add('message-content');
+
+  const text = document.createElement('p');
+  text.classList.add('message-text');
+  text.textContent = message;
+
+  const timestamp = document.createElement('span');
+  timestamp.classList.add('message-time');
+  timestamp.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+  content.appendChild(text);
+  content.appendChild(timestamp);
+
+  messageDiv.appendChild(avatar);
+  messageDiv.appendChild(content);
+
+  chatBody.appendChild(messageDiv);
+
+  // Auto-scroll to bottom
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+function getAIResponse(message) {
+  const responses = [
+    "I'd be happy to help you with that! Let me provide you with some information.",
+    "That's a great question! Here's what I can tell you...",
+    "Thank you for asking. Let me assist you with that.",
+    "I understand what you're looking for. Here's my response...",
+    "Excellent inquiry! Allow me to guide you through this."
+  ];
+
+  return responses[Math.floor(Math.random() * responses.length)];
+}
+
+function speakMessage(text) {
+  if ('speechSynthesis' in window) {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    window.speechSynthesis.speak(utterance);
+  }
+}
+
+// ========== TOAST NOTIFICATIONS ==========
+function showToast(message, type = 'info') {
+  const toast = document.createElement('div');
+  toast.classList.add('toast', `toast-${type}`);
+  toast.textContent = message;
+
+  document.body.appendChild(toast);
+
+  // Trigger animation
+  setTimeout(() => toast.classList.add('show'), 10);
+
+  // Remove after 3 seconds
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
+
+// ========== STATE PERSISTENCE ==========
+function loadState() {
+  const savedState = localStorage.getItem('pmerit-state');
+  if (savedState) {
+    Object.assign(state, JSON.parse(savedState));
+  }
+
+  // Apply saved state
+  if (state.darkMode) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+
+  if (state.virtualHuman) {
+    document.body.classList.add('virtual-human-mode');
+  }
+
+  if (state.customerService) {
+    document.body.classList.add('customer-service-mode');
+  }
+}
+
+function saveState() {
+  localStorage.setItem('pmerit-state', JSON.stringify(state));
+}
+
+// ========== UTILITY FUNCTIONS ==========
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
     };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
 
-    // ============================================
-    // DOM ELEMENTS
-    // ============================================
-    
-    const DOM = {
-        // Header
-        hamburgerToggle: document.getElementById('hamburgerToggle'),
-        menuOverlay: document.getElementById('menuOverlay'),
-        hamburgerMenu: document.getElementById('hamburgerMenu'),
-        menuCloseBtn: document.getElementById('menuCloseBtn'),
-        signInBtn: document.getElementById('signInBtn'),
-        languageBtn: document.getElementById('languageBtn'),
-        
-        // Modals
-        authModal: document.getElementById('authModal'),
-        authModalClose: document.getElementById('authModalClose'),
-        signInForm: document.getElementById('signInForm'),
-        signUpForm: document.getElementById('signUpForm'),
-        showSignUpBtn: document.getElementById('showSignUpBtn'),
-        showSignInBtn: document.getElementById('showSignInBtn'),
-        languageModal: document.getElementById('languageModal'),
-        languageModalClose: document.getElementById('languageModalClose'),
-        careerModal: document.getElementById('careerModal'),
-        careerModalClose: document.getElementById('careerModalClose'),
-        
-        // Menu toggles
-        virtualHumanToggle: document.getElementById('virtualHumanToggle'),
-        customerServiceToggle: document.getElementById('customerServiceToggle'),
-        darkModeToggle: document.getElementById('darkModeToggle'),
-        ttsToggle: document.getElementById('ttsToggle'),
-        
-        // Menu buttons
-        careerTrackBtn: document.getElementById('careerTrackBtn'),
-        previewVoicesBtn: document.getElementById('previewVoicesBtn'),
-        dashboardBtn: document.getElementById('dashboardBtn'),
-        beginAssessmentBtn: document.getElementById('beginAssessmentBtn'),
-        
-        // Chat
-        chatMessages: document.getElementById('chatMessages'),
-        chatInput: document.getElementById('chatInput'),
-        sendBtn: document.getElementById('sendBtn'),
-        charCount: document.getElementById('charCount'),
-        
-        // Footer
-        privacyTermsBtn: document.getElementById('privacyTermsBtn')
-    };
-
-    // ============================================
-    // INITIALIZATION
-    // ============================================
-    
-    function init() {
-        console.log('🚀 PMERIT Initializing...');
-        
-        // Apply saved theme
-        applyTheme(AppState.theme);
-        
-        // Setup event listeners
-        setupEventListeners();
-        
-        // Initialize chat
-        initChat();
-        
-        console.log('✅ PMERIT Ready');
-    }
-
-    // ============================================
-    // EVENT LISTENERS
-    // ============================================
-    
-    function setupEventListeners() {
-        // Hamburger menu
-        if (DOM.hamburgerToggle) {
-            DOM.hamburgerToggle.addEventListener('click', toggleMenu);
-        }
-        
-        if (DOM.menuCloseBtn) {
-            DOM.menuCloseBtn.addEventListener('click', closeMenu);
-        }
-        
-        if (DOM.menuOverlay) {
-            DOM.menuOverlay.addEventListener('click', closeMenu);
-        }
-        
-        // Sign In/Sign Up
-        if (DOM.signInBtn) {
-            DOM.signInBtn.addEventListener('click', () => openAuthModal('signin'));
-        }
-        
-        if (DOM.authModalClose) {
-            DOM.authModalClose.addEventListener('click', () => closeModal(DOM.authModal));
-        }
-        
-        if (DOM.showSignUpBtn) {
-            DOM.showSignUpBtn.addEventListener('click', () => switchAuthForm('signup'));
-        }
-        
-        if (DOM.showSignInBtn) {
-            DOM.showSignInBtn.addEventListener('click', () => switchAuthForm('signin'));
-        }
-        
-        // Language switcher
-        if (DOM.languageBtn) {
-            DOM.languageBtn.addEventListener('click', () => openModal(DOM.languageModal));
-        }
-        
-        if (DOM.languageModalClose) {
-            DOM.languageModalClose.addEventListener('click', () => closeModal(DOM.languageModal));
-        }
-        
-        // Language options
-        document.querySelectorAll('.language-option').forEach(option => {
-            option.addEventListener('click', function() {
-                const lang = this.dataset.lang;
-                changeLanguage(lang);
-                closeModal(DOM.languageModal);
-            });
-        });
-        
-        // Menu toggles
-        if (DOM.virtualHumanToggle) {
-            DOM.virtualHumanToggle.addEventListener('change', function() {
-                toggleVirtualHuman(this.checked);
-            });
-        }
-        
-        if (DOM.customerServiceToggle) {
-            DOM.customerServiceToggle.addEventListener('change', function() {
-                toggleCustomerService(this.checked);
-            });
-        }
-        
-        if (DOM.darkModeToggle) {
-            DOM.darkModeToggle.addEventListener('change', function() {
-                toggleDarkMode(this.checked);
-            });
-        }
-        
-        if (DOM.ttsToggle) {
-            DOM.ttsToggle.addEventListener('change', function() {
-                toggleTTS(this.checked);
-            });
-        }
-        
-        // Menu buttons
-        if (DOM.careerTrackBtn) {
-            DOM.careerTrackBtn.addEventListener('click', () => openCareerTracks());
-        }
-        
-        if (DOM.previewVoicesBtn) {
-            DOM.previewVoicesBtn.addEventListener('click', () => previewVoices());
-        }
-        
-        if (DOM.dashboardBtn) {
-            DOM.dashboardBtn.addEventListener('click', () => navigateToDashboard());
-        }
-        
-        if (DOM.beginAssessmentBtn) {
-            DOM.beginAssessmentBtn.addEventListener('click', () => navigateToAssessment());
-        }
-        
-        // Chat
-        if (DOM.sendBtn) {
-            DOM.sendBtn.addEventListener('click', sendMessage);
-        }
-        
-        if (DOM.chatInput) {
-            DOM.chatInput.addEventListener('input', updateCharCount);
-            DOM.chatInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    sendMessage();
-                }
-            });
-            
-            // Auto-resize textarea
-            DOM.chatInput.addEventListener('input', autoResizeTextarea);
-        }
-        
-        // Footer
-        if (DOM.privacyTermsBtn) {
-            DOM.privacyTermsBtn.addEventListener('click', () => showPrivacyTerms());
-        }
-        
-        // Close modals on Escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeAllModals();
-                if (AppState.menuOpen) {
-                    closeMenu();
-                }
-            }
-        });
-    }
-
-    // ============================================
-    // MENU FUNCTIONS
-    // ============================================
-    
-    function toggleMenu() {
-        AppState.menuOpen = !AppState.menuOpen;
-        
-        if (AppState.menuOpen) {
-            openMenu();
-        } else {
-            closeMenu();
-        }
-    }
-    
-    function openMenu() {
-        AppState.menuOpen = true;
-        DOM.hamburgerMenu.setAttribute('aria-hidden', 'false');
-        DOM.menuOverlay.setAttribute('aria-hidden', 'false');
-        DOM.hamburgerToggle.setAttribute('aria-expanded', 'true');
-        document.body.style.overflow = 'hidden';
-    }
-    
-    function closeMenu() {
-        AppState.menuOpen = false;
-        DOM.hamburgerMenu.setAttribute('aria-hidden', 'true');
-        DOM.menuOverlay.setAttribute('aria-hidden', 'true');
-        DOM.hamburgerToggle.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-    }
-
-    // ============================================
-    // MODAL FUNCTIONS
-    // ============================================
-    
-    function openModal(modal) {
-        if (modal) {
-            modal.showModal();
-        }
-    }
-    
-    function closeModal(modal) {
-        if (modal) {
-            modal.close();
-        }
-    }
-    
-    function closeAllModals() {
-        document.querySelectorAll('dialog[open]').forEach(dialog => {
-            dialog.close();
-        });
-    }
-    
-    function openAuthModal(mode) {
-        if (mode === 'signup') {
-            DOM.signInForm.style.display = 'none';
-            DOM.signUpForm.style.display = 'block';
-        } else {
-            DOM.signInForm.style.display = 'block';
-            DOM.signUpForm.style.display = 'none';
-        }
-        openModal(DOM.authModal);
-    }
-    
-    function switchAuthForm(mode) {
-        if (mode === 'signup') {
-            DOM.signInForm.style.display = 'none';
-            DOM.signUpForm.style.display = 'block';
-        } else {
-            DOM.signInForm.style.display = 'block';
-            DOM.signUpForm.style.display = 'none';
-        }
-    }
-
-    // ============================================
-    // THEME FUNCTIONS
-    // ============================================
-    
-    function toggleDarkMode(enabled) {
-        const theme = enabled ? 'dark' : 'light';
-        applyTheme(theme);
-        AppState.theme = theme;
-        localStorage.setItem('pmerit-theme', theme);
-        
-        showToast(`${enabled ? 'Dark' : 'Light'} mode enabled`);
-    }
-    
-    function applyTheme(theme) {
-        document.body.setAttribute('data-theme', theme);
-        
-        if (DOM.darkModeToggle) {
-            DOM.darkModeToggle.checked = (theme === 'dark');
-        }
-    }
-
-    // ============================================
-    // FEATURE TOGGLES
-    // ============================================
-    
-    function toggleVirtualHuman(enabled) {
-        AppState.virtualHumanActive = enabled;
-        
-        const vhAvatarSection = document.getElementById('vhAvatarSection');
-        if (vhAvatarSection) {
-            vhAvatarSection.style.display = enabled ? 'block' : 'none';
-        }
-        
-        showToast(`Virtual Human ${enabled ? 'activated' : 'deactivated'}`);
-        
-        if (enabled) {
-            addAIMessage('Virtual Human mode activated. I\'m now using visual representation to enhance our interaction.');
-        }
-    }
-    
-    function toggleCustomerService(enabled) {
-        AppState.customerServiceActive = enabled;
-        showToast(`Customer Service mode ${enabled ? 'activated' : 'deactivated'}`);
-        
-        if (enabled) {
-            addAIMessage('Customer Service mode activated. How can I assist you today?');
-        }
-    }
-    
-    function toggleTTS(enabled) {
-        AppState.ttsEnabled = enabled;
-        showToast(`Text-to-Speech ${enabled ? 'enabled' : 'disabled'}`);
-    }
-
-    // ============================================
-    // CHAT FUNCTIONS
-    // ============================================
-    
-    function initChat() {
-        // Add welcome message if chat is empty
-        if (DOM.chatMessages && DOM.chatMessages.children.length === 0) {
-            addAIMessage('Hello! I\'m here to help you explore courses, career paths, and answer any questions about your learning journey. What would you like to know?');
-        }
-    }
-    
-    function sendMessage() {
-        const message = DOM.chatInput.value.trim();
-        
-        if (!message) return;
-        
-        // Add user message
-        addUserMessage(message);
-        
-        // Clear input
-        DOM.chatInput.value = '';
-        updateCharCount();
-        autoResizeTextarea();
-        
-        // Simulate AI response (replace with actual API call)
-        setTimeout(() => {
-            const response = generateAIResponse(message);
-            addAIMessage(response);
-        }, 1000);
-    }
-    
-    function addUserMessage(text) {
-        const bubble = createChatBubble('user', text);
-        DOM.chatMessages.appendChild(bubble);
-        scrollToBottom();
-    }
-    
-    function addAIMessage(text) {
-        const bubble = createChatBubble('ai', text);
-        DOM.chatMessages.appendChild(bubble);
-        scrollToBottom();
-        
-        // Speak message if TTS is enabled
-        if (AppState.ttsEnabled) {
-            speakText(text);
-        }
-    }
-    
-    function createChatBubble(type, text) {
-        const bubble = document.createElement('div');
-        bubble.className = `chat-bubble ${type}-bubble`;
-        
-        const avatar = document.createElement('div');
-        avatar.className = 'bubble-avatar';
-        avatar.innerHTML = type === 'ai'
+// Export for testing
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    init,
+    openMenu,
+    closeMenu,
+    openAuthModal,
+    closeAuthModal,
+    toggleVirtualHumanMode,
+    toggleCustomerServiceMode,
+    showToast
+  };
+}
