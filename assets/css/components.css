@@ -818,3 +818,113 @@
         display: flex;
     }
 }
+
+/* ========================================
+   HERO SECTION (Home Page)
+   ======================================== */
+
+.hero-section {
+  background: linear-gradient(135deg, #6B5CE7 0%, #8B7CE8 100%);
+  min-height: calc(100vh - var(--mobile-header-height) - var(--mobile-footer-height));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  text-align: center;
+}
+
+.hero-content {
+  max-width: 600px;
+  color: white;
+}
+
+.hero-text {
+  color: white;
+  opacity: 0.95;
+  margin-bottom: var(--space-6);
+}
+
+.hero-title {
+  color: white;
+  margin-bottom: var(--space-3);
+}
+
+.hero-subtitle {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.chat-input-fixed {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  padding: var(--space-4);
+  z-index: var(--z-fixed);
+}
+
+/* ========================================
+   CHAT INPUT UTILITIES
+   ======================================== */
+
+.chat-container {
+  max-width: 800px;
+}
+
+.chat-input-wrapper {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.chat-input {
+  flex: 1;
+  min-height: var(--mobile-input-height);
+  padding: var(--space-4);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border-color);
+  font-size: 16px;
+}
+
+.chat-send-button {
+  background: var(--color-primary);
+  color: white;
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-4);
+  min-width: var(--mobile-touch-target);
+  min-height: var(--mobile-touch-target);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.chat-send-button:hover {
+  background: var(--color-primary-dark);
+}
+
+/* ========================================
+   FOOTER UTILITIES
+   ======================================== */
+
+.footer-container {
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-4);
+}
+
+.footer-content {
+  color: var(--text-secondary);
+}
+
+.footer-separator {
+  margin: 0 var(--space-2);
+  color: var(--text-muted);
+}
+
+.footer-status {
+  color: var(--color-success);
+}
