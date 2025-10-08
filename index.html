@@ -112,37 +112,27 @@
         <!-- Main Content - Scrollable area -->
         <main class="app-main" role="main">
             <!-- Hero Section with Gradient Background -->
-            <section style="
-                background: linear-gradient(135deg, #6B5CE7 0%, #8B7CE8 100%);
-                min-height: calc(100vh - var(--mobile-header-height) - var(--mobile-footer-height));
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                padding: var(--space-6);
-                text-align: center;
-            ">
+            <section class="hero-section">
                 <!-- Welcome Text -->
-                <div style="max-width: 600px; color: white;">
-                    <p class="body-text" style="color: white; opacity: 0.95; margin-bottom: var(--space-6);">
+                <div class="hero-content">
+                    <p class="body-text hero-text">
                         Hi there! I'm your learning companion, empowering your education through innovation. 
                         PMERIT provides accessible, high-quality education that opens doors to endless 
                         opportunities worldwide. Ready to discover your potential and start your learning journey?
                     </p>
                     
-                    <h2 class="h1" style="color: white; margin-bottom: var(--space-3);">
+                    <h2 class="h1 hero-title">
                         Ask Your Learning Companion
                     </h2>
                     
-                    <p class="text-small" style="color: rgba(255, 255, 255, 0.8);">
+                    <p class="text-small hero-subtitle">
                         Get personalized guidance on courses, career paths, and learning objectives
                     </p>
                 </div>
             </section>
             
             <!-- Chat Input (Fixed at bottom - Phase 3) -->
-            <div style="
-                position: sticky;
+            <div class="chat-input-fixed">
                 bottom: 0;
                 left: 0;
                 right: 0;
@@ -151,35 +141,17 @@
                 padding: var(--space-4);
                 padding-bottom: calc(var(--space-4) + var(--safe-area-bottom));
             ">
-                <div class="container" style="max-width: 800px;">
-                    <div style="display: flex; gap: var(--space-3); align-items: center;">
+                <div class="container chat-container">
+                    <div class="chat-input-wrapper">
                         <input 
                             type="text" 
+                            class="chat-input"
                             placeholder="Try: 'What programming courses do you recommend?'"
-                            style="
-                                flex: 1;
-                                min-height: var(--mobile-input-height);
-                                padding: var(--space-4);
-                                border-radius: var(--border-radius-lg);
-                                border: 1px solid var(--border-color);
-                                font-size: 16px;
-                            "
                             aria-label="Ask your learning companion"
                         >
                         <button 
-                            class="btn touch-target"
-                            aria-label="Send message"
-                            style="
-                                background: var(--color-primary);
-                                color: white;
-                                border-radius: var(--border-radius-lg);
-                                padding: var(--space-4);
-                                min-width: var(--mobile-touch-target);
-                                min-height: var(--mobile-touch-target);
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                            ">
+                            class="btn touch-target chat-send-button"
+                            aria-label="Send message">
                             ➤
                         </button>
                     </div>
@@ -189,12 +161,12 @@
         
         <!-- Footer (Phase 4) -->
         <footer class="app-footer" role="contentinfo">
-            <div class="container" style="padding-top: var(--space-4); padding-bottom: var(--space-4);">
+            <div class="container footer-container">
                 <!-- Mobile Footer: Simple links -->
-                <div class="text-center text-small" style="color: var(--text-secondary);">
+                <div class="text-center text-small footer-content">
                     <a href="/privacy" class="link-subtle">Privacy & Terms</a>
-                    <span style="margin: 0 var(--space-2); color: var(--text-muted);">•</span>
-                    <span style="color: var(--color-success);">● Connected to Educational Services</span>
+                    <span class="footer-separator">•</span>
+                    <span class="footer-status">● Connected to Educational Services</span>
                 </div>
             </div>
         </footer>
