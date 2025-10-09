@@ -1,0 +1,898 @@
+/**
+ * PMERIT Desktop Styles - Phase 5
+ * Version: 2.0
+ * Last Updated: October 2025
+ * 
+ * Desktop-specific styles for three-panel layout (1024px+)
+ * Mobile-first approach: These styles override/enhance mobile base
+ * 
+ * LOAD ORDER: 
+ * 1. theme-variables.css
+ * 2. base.css
+ * 3. typography.css
+ * 4. components.css
+ * 5. mobile.css
+ * 6. desktop.css ← THIS FILE
+ */
+
+/* ========================================
+   DESKTOP BREAKPOINT VARIABLES
+   ======================================== */
+
+:root {
+  --desktop-min: 1024px;
+  --desktop-sidebar-left: 280px;
+  --desktop-sidebar-right: 320px;
+  --desktop-header-height: 70px;
+  --desktop-footer-height: auto;
+}
+
+/* ========================================
+   DESKTOP BASE LAYOUT (1024px+)
+   ======================================== */
+
+@media (min-width: 1024px) {
+  
+  /* Hide mobile-only elements */
+  .mobile-only,
+  #hamburger-toggle,
+  #hamburger-menu,
+  #menu-overlay {
+    display: none !important;
+  }
+
+  /* Body adjustments for desktop */
+  body {
+    overflow-y: auto; /* Allow page scrolling on desktop */
+  }
+
+  /* ========================================
+     THREE-PANEL GRID LAYOUT
+     ======================================== */
+
+  .desktop-layout {
+    display: grid;
+    grid-template-columns: var(--desktop-sidebar-left) 1fr var(--desktop-sidebar-right);
+    min-height: calc(100vh - var(--desktop-header-height));
+    gap: 0;
+    background-color: var(--bg-primary);
+  }
+
+  /* Ensure desktop layout is visible */
+  .desktop-layout.hidden {
+    display: grid !important;
+  }
+
+  /* ========================================
+     LEFT SIDEBAR (280px)
+     ======================================== */
+
+  .left-sidebar,
+  .desktop-sidebar {
+    width: var(--desktop-sidebar-left);
+    background-color: var(--bg-secondary);
+    border-right: 1px solid var(--border-color);
+    padding: 1.5rem 1rem;
+    overflow-y: auto;
+    position: sticky;
+    top: var(--desktop-header-height);
+    height: calc(100vh - var(--desktop-header-height));
+  }
+
+  /* Sidebar scrollbar styling */
+  .left-sidebar::-webkit-scrollbar,
+  .desktop-sidebar::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .left-sidebar::-webkit-scrollbar-track,
+  .desktop-sidebar::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+  }
+
+  .left-sidebar::-webkit-scrollbar-thumb,
+  .desktop-sidebar::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+  }
+
+  .left-sidebar::-webkit-scrollbar-thumb:hover,
+  .desktop-sidebar::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+  }
+
+  /* Sidebar section titles */
+  .pane-title,
+  .sidebar-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--primary);
+  }
+
+  /* ========================================
+     QUICK ACTIONS & TOGGLES
+     ======================================== */
+
+  .toggle,
+  .action,
+  .dashboard {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    min-height: 44px;
+  }
+
+  .toggle:hover,
+  .action:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .toggle:active,
+  .action:active {
+    transform: translateY(0);
+  }
+
+  /* Toggle switch styling */
+  .switch {
+    width: 40px;
+    height: 20px;
+    background: var(--border-color);
+    border-radius: 34px;
+    position: relative;
+    transition: background-color 0.3s ease;
+  }
+
+  .switch::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+  }
+
+  .toggle.active .switch {
+    background-color: var(--primary);
+  }
+
+  .toggle.active .switch::after {
+    transform: translateX(20px);
+  }
+
+  /* Dashboard button */
+  .dashboard {
+    justify-content: center;
+    font-weight: 600;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    box-shadow: 0 2px 8px rgba(42, 91, 140, 0.3);
+  }
+
+  .dashboard:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(42, 91, 140, 0.4);
+  }
+
+  .dashboard.guest {
+    background-color: var(--text-secondary);
+  }
+
+  .dashboard.guest:hover {
+    background-color: #4B5563;
+  }
+
+  /* Icons in sidebar */
+  .icon {
+    color: var(--primary);
+    margin-right: 0.5rem;
+    font-size: 1rem;
+  }
+
+  /* ========================================
+     COLLAPSIBLE SECTIONS
+     ======================================== */
+
+  .collapsible {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--card-bg);
+    margin-bottom: 0.5rem;
+    transition: all 0.2s ease;
+  }
+
+  .collapsible:hover {
+    border-color: var(--primary);
+  }
+
+  .collapsible .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem;
+    cursor: pointer;
+    background-color: var(--bg-secondary);
+    transition: background-color 0.2s ease;
+  }
+
+  .collapsible .head:hover {
+    background-color: var(--border-color);
+  }
+
+  .collapsible .body {
+    display: none;
+    padding: 0.75rem;
+    background-color: var(--card-bg);
+    border-top: 1px solid var(--border-color);
+  }
+
+  .collapsible.open .body {
+    display: block;
+  }
+
+  /* ========================================
+     AVATAR (Virtual Human Mode)
+     ======================================== */
+
+  .avatar {
+    display: none;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 1rem auto 0;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: white;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    border: 3px solid var(--border-color);
+    transition: all 0.3s ease;
+  }
+
+  .avatar.active {
+    display: flex;
+    animation: avatarPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes avatarPulse {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(42, 91, 140, 0.4);
+    }
+    50% {
+      box-shadow: 0 0 0 15px rgba(42, 91, 140, 0);
+    }
+  }
+
+  /* ========================================
+     CENTER MAIN CONTENT AREA
+     ======================================== */
+
+  .main-content,
+  #center {
+    background-color: var(--bg-primary);
+    overflow-y: auto;
+    padding: 2rem;
+    min-height: calc(100vh - var(--desktop-header-height));
+  }
+
+  /* Hero/Welcome Section */
+  .hero-section,
+  .greeting {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 3rem 2rem;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 2rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  .hero-section h1,
+  .greeting h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+
+  .hero-section p,
+  .greeting p {
+    font-size: 1.1rem;
+    opacity: 0.95;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  /* Chat Container */
+  .chat-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem;
+    min-height: 400px;
+    max-height: 600px;
+    overflow-y: auto;
+  }
+
+  /* Chat messages */
+  .message {
+    margin-bottom: 1rem;
+    animation: messageSlideIn 0.3s ease;
+  }
+
+  @keyframes messageSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .message.user {
+    text-align: right;
+  }
+
+  .message.ai {
+    text-align: left;
+  }
+
+  .message-bubble {
+    display: inline-block;
+    padding: 0.75rem 1rem;
+    border-radius: 18px;
+    max-width: 70%;
+    word-wrap: break-word;
+  }
+
+  .message.user .message-bubble {
+    background-color: var(--primary);
+    color: white;
+  }
+
+  .message.ai .message-bubble {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+  }
+
+  /* ========================================
+     RIGHT SIDEBAR (320px)
+     ======================================== */
+
+  .right-sidebar,
+  #right {
+    width: var(--desktop-sidebar-right);
+    background-color: var(--bg-secondary);
+    border-left: 1px solid var(--border-color);
+    padding: 1.5rem;
+    overflow-y: auto;
+    position: sticky;
+    top: var(--desktop-header-height);
+    height: calc(100vh - var(--desktop-header-height));
+  }
+
+  /* Right sidebar scrollbar */
+  .right-sidebar::-webkit-scrollbar,
+  #right::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .right-sidebar::-webkit-scrollbar-track,
+  #right::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+  }
+
+  .right-sidebar::-webkit-scrollbar-thumb,
+  #right::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+  }
+
+  /* Support Assistant Card */
+  .support-assistant {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.25rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+  }
+
+  .support-assistant:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  }
+
+  .support-assistant h4 {
+    margin: 0;
+    color: var(--success);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+  }
+
+  .support-assistant p {
+    color: var(--text-secondary);
+    margin: 0.5rem 0;
+  }
+
+  /* Support action buttons */
+  .support-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 0.75rem;
+  }
+
+  .support-btn {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.85rem;
+  }
+
+  .support-btn:hover {
+    border-color: var(--primary);
+    background-color: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .support-btn i {
+    font-size: 1.25rem;
+  }
+
+  /* Right sidebar sections */
+  .sidebar-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .sidebar-section h3,
+  .right-sidebar h3 {
+    margin: 0.25rem 0 0.75rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--primary);
+  }
+
+  .sidebar-section h3::after,
+  .right-sidebar h3::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 40px;
+    height: 3px;
+    background-color: var(--primary);
+    border-radius: 2px;
+  }
+
+  /* Discover Your Path Card */
+  .discover {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: all 0.3s ease;
+  }
+
+  .discover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  }
+
+  .discover h4 {
+    margin: 0.25rem 0;
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  .discover p,
+  .sidebar-description {
+    margin: 0.25rem 0 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .discover .insights,
+  .sidebar-tip {
+    border-top: 1px dashed var(--border-color);
+    padding-top: 0.75rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    min-height: 2.5em;
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .sidebar-tip i {
+    color: var(--warning);
+    font-size: 1.1rem;
+  }
+
+  /* ========================================
+     DESKTOP HEADER ENHANCEMENTS
+     ======================================== */
+
+  .pmerit-header {
+    height: var(--desktop-header-height);
+    padding: 0 2rem;
+  }
+
+  .header-nav {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .nav-link {
+    padding: 0.5rem 1rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+  }
+
+  .nav-link:hover {
+    background-color: var(--bg-secondary);
+    color: var(--primary);
+  }
+
+  .nav-link.active {
+    background-color: var(--primary);
+    color: white;
+  }
+
+  /* ========================================
+     DESKTOP FOOTER ENHANCEMENTS
+     ======================================== */
+
+  .pmerit-footer {
+    display: block;
+    padding: 3rem 2rem;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto 2rem;
+  }
+
+  .footer-column h4 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-links li {
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    font-size: 0.95rem;
+  }
+
+  .footer-links a:hover {
+    color: var(--primary);
+  }
+
+  /* ========================================
+     BUTTONS & INTERACTIVE ELEMENTS
+     ======================================== */
+
+  .btn-primary,
+  .btn-block {
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .btn-primary:hover,
+  .btn-block:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(42, 91, 140, 0.3);
+  }
+
+  .btn-primary:active,
+  .btn-block:active {
+    transform: translateY(0);
+  }
+
+  /* ========================================
+     VIRTUAL HUMAN STAGE (Desktop)
+     ======================================== */
+
+  #vhStage {
+    display: none;
+    flex-direction: column;
+    height: calc(100vh - var(--desktop-header-height) - 100px);
+    margin: 2rem;
+  }
+
+  #vhStage.active {
+    display: flex;
+  }
+
+  .stage {
+    flex: 1;
+    display: grid;
+    place-items: center;
+    padding: 2rem;
+  }
+
+  .human-frame {
+    width: min(800px, 90%);
+    height: min(500px, 60vh);
+    border: 3px solid var(--primary);
+    border-radius: 1rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, #e2e8f0, #f8fafc);
+    display: grid;
+    place-items: center;
+    transition: all 0.3s ease;
+  }
+
+  .human-frame:hover {
+    transform: scale(1.02);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  }
+
+  .human-face {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: white;
+    display: grid;
+    place-items: center;
+    font-size: 4rem;
+    border: 4px solid white;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  .captions {
+    border-top: 1px solid var(--border-color);
+    background-color: var(--bg-secondary);
+    padding: 1rem 1.5rem;
+    color: var(--text-secondary);
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  /* ========================================
+     RESPONSIVE TRANSITIONS
+     ======================================== */
+
+  /* Smooth transitions between breakpoints */
+  .desktop-layout,
+  .left-sidebar,
+  .right-sidebar,
+  .main-content,
+  .pmerit-header,
+  .pmerit-footer {
+    transition: all 0.3s ease;
+  }
+
+  /* ========================================
+     ACCESSIBILITY ENHANCEMENTS
+     ======================================== */
+
+  /* Focus states for keyboard navigation */
+  .toggle:focus-visible,
+  .action:focus-visible,
+  .dashboard:focus-visible,
+  .btn-primary:focus-visible,
+  .nav-link:focus-visible,
+  .support-btn:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  /* Reduced motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* ========================================
+     DARK MODE DESKTOP ADJUSTMENTS
+     ======================================== */
+
+  .dark .left-sidebar,
+  .dark .desktop-sidebar,
+  .dark .right-sidebar,
+  .dark #right {
+    background-color: #1f2937;
+    border-color: #374151;
+  }
+
+  .dark .toggle,
+  .dark .action,
+  .dark .support-assistant,
+  .dark .discover {
+    background-color: #111827;
+    border-color: #374151;
+  }
+
+  .dark .human-frame {
+    background: linear-gradient(135deg, #1f2937, #111827);
+  }
+
+  .dark .human-face {
+    border-color: #1f2937;
+  }
+
+  .dark .chat-container {
+    background-color: #1f2937;
+    border-color: #374151;
+  }
+
+  .dark .message.ai .message-bubble {
+    background-color: #111827;
+    border-color: #374151;
+  }
+
+} /* End of @media (min-width: 1024px) */
+
+/* ========================================
+   LARGE DESKTOP (1440px+)
+   ======================================== */
+
+@media (min-width: 1440px) {
+  
+  :root {
+    --desktop-sidebar-left: 320px;
+    --desktop-sidebar-right: 360px;
+  }
+
+  .desktop-layout {
+    grid-template-columns: var(--desktop-sidebar-left) 1fr var(--desktop-sidebar-right);
+  }
+
+  .left-sidebar,
+  .desktop-sidebar {
+    width: var(--desktop-sidebar-left);
+    padding: 2rem 1.5rem;
+  }
+
+  .right-sidebar,
+  #right {
+    width: var(--desktop-sidebar-right);
+    padding: 2rem 1.5rem;
+  }
+
+  .main-content,
+  #center {
+    padding: 2.5rem 3rem;
+  }
+
+  .hero-section,
+  .greeting {
+    padding: 4rem 3rem;
+  }
+
+  .hero-section h1,
+  .greeting h1 {
+    font-size: 2.5rem;
+  }
+
+  .chat-container {
+    max-width: 1000px;
+    padding: 2rem;
+  }
+
+}
+
+/* ========================================
+   ULTRA-WIDE DESKTOP (1920px+)
+   ======================================== */
+
+@media (min-width: 1920px) {
+  
+  .desktop-layout {
+    max-width: 1920px;
+    margin: 0 auto;
+  }
+
+  .main-content,
+  #center {
+    padding: 3rem 4rem;
+  }
+
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+
+@media print {
+  
+  .left-sidebar,
+  .desktop-sidebar,
+  .right-sidebar,
+  #right,
+  .pmerit-header,
+  .pmerit-footer {
+    display: none;
+  }
+
+  .desktop-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .main-content,
+  #center {
+    padding: 0;
+  }
+
+}
