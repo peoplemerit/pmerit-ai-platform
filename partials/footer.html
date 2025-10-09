@@ -1,256 +1,347 @@
-<!-- PMERIT Mobile-First Footer -->
-<footer class="pmerit-footer" id="mainFooter">
-    <div class="footer-container">
-        <button class="footer-link" id="privacyTermsBtn">
-            Privacy & Terms
-        </button>
-        <span class="footer-divider">•</span>
-        <span class="footer-status">
-            <i class="fas fa-circle status-indicator"></i>
-            Connected to Educational Services
-        </span>
-    </div>
+<!-- 
+  PMERIT Footer - Phase 4
+  Mobile: Simplified footer with safe-area support
+  Desktop: Full footer with all links
+-->
+
+<!-- Mobile Footer (Default: <1024px) -->
+<footer class="mobile-footer" id="mobile-footer">
+  <div class="mobile-footer-content">
+    <a href="privacy.html" class="footer-link">Privacy & Terms</a>
+    <span class="footer-separator">•</span>
+    <span class="footer-status">
+      <i class="fas fa-circle status-indicator" aria-hidden="true"></i>
+      Connected to Educational Services
+    </span>
+  </div>
 </footer>
 
-<!-- Modals -->
-
-<!-- Sign In/Sign Up Modal -->
-<dialog class="auth-modal" id="authModal">
-    <div class="modal-content">
-        <button class="modal-close" id="authModalClose" aria-label="Close modal">
-            <i class="fas fa-times"></i>
-        </button>
-        
-        <!-- Sign In Form -->
-        <div class="auth-form" id="signInForm">
-            <div class="modal-brand">
-                <i class="fas fa-graduation-cap"></i>
-                <span>Pmerit</span>
-            </div>
-            <h2 class="modal-title">Sign in to your account</h2>
-            <p class="auth-subtitle">New to Pmerit? <button class="link-btn" id="showSignUpBtn">Create an account</button></p>
-            
-            <form id="signInFormElement">
-                <div class="form-group">
-                    <label for="signInEmail">Email</label>
-                    <input type="email" id="signInEmail" placeholder="you@example.com" required>
-                </div>
-                <div class="form-group">
-                    <label for="signInPassword">Password</label>
-                    <input type="password" id="signInPassword" placeholder="Enter your password" required>
-                </div>
-                <div class="form-footer">
-                    <a href="#forgot" class="forgot-link">Forgot password?</a>
-                </div>
-                <button type="submit" class="btn-primary btn-full">Sign In</button>
-            </form>
-            
-            <div class="auth-divider">
-                <span>or</span>
-            </div>
-            
-            <button class="btn-google" id="googleSignInBtn">
-                <i class="fab fa-google"></i>
-                Continue with Google
-            </button>
-        </div>
-        
-        <!-- Sign Up Form (hidden by default) -->
-        <div class="auth-form" id="signUpForm" style="display: none;">
-            <div class="modal-brand">
-                <i class="fas fa-graduation-cap"></i>
-                <span>Pmerit</span>
-            </div>
-            <h2 class="modal-title">Create your account</h2>
-            <p class="auth-subtitle">Already have an account? <button class="link-btn" id="showSignInBtn">Sign in</button></p>
-            
-            <form id="signUpFormElement">
-                <div class="form-group">
-                    <label for="signUpName">Full Name</label>
-                    <input type="text" id="signUpName" placeholder="Your name" required>
-                </div>
-                <div class="form-group">
-                    <label for="signUpEmail">Email</label>
-                    <input type="email" id="signUpEmail" placeholder="you@example.com" required>
-                </div>
-                <div class="form-group">
-                    <label for="signUpPassword">Password</label>
-                    <input type="password" id="signUpPassword" placeholder="Create a password" required>
-                </div>
-                <p class="terms-text">By creating an account, you agree to our <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a>.</p>
-                <button type="submit" class="btn-primary btn-full">Create Account</button>
-            </form>
-            
-            <div class="auth-divider">
-                <span>or</span>
-            </div>
-            
-            <button class="btn-google" id="googleSignUpBtn">
-                <i class="fab fa-google"></i>
-                Continue with Google
-            </button>
-        </div>
-    </div>
-</dialog>
-
-<!-- Language Selector Modal -->
-<dialog class="language-modal" id="languageModal">
-    <div class="modal-content">
-        <button class="modal-close" id="languageModalClose" aria-label="Close modal">
-            <i class="fas fa-times"></i>
-        </button>
-        <h2 class="modal-title">Select Language</h2>
-        <div class="language-grid">
-            <button class="language-option active" data-lang="en">
-                <span class="language-flag">🇺🇸</span>
-                <span class="language-name">English</span>
-                <i class="fas fa-check check-icon"></i>
-            </button>
-            <button class="language-option" data-lang="yo">
-                <span class="language-flag">🇳🇬</span>
-                <span class="language-name">Yorùbá</span>
-                <i class="fas fa-check check-icon"></i>
-            </button>
-            <button class="language-option" data-lang="ig">
-                <span class="language-flag">🇳🇬</span>
-                <span class="language-name">Igbo</span>
-                <i class="fas fa-check check-icon"></i>
-            </button>
-            <button class="language-option" data-lang="ha">
-                <span class="language-flag">🇳🇬</span>
-                <span class="language-name">Hausa</span>
-                <i class="fas fa-check check-icon"></i>
-            </button>
-        </div>
-    </div>
-</dialog>
-
-<!-- Career Tracks Modal -->
-<dialog class="career-modal" id="careerModal">
-    <div class="modal-content modal-large">
-        <button class="modal-close" id="careerModalClose" aria-label="Close modal">
-            <i class="fas fa-times"></i>
-        </button>
-        <h2 class="modal-title">
+<!-- Desktop Footer (≥1024px) -->
+<footer class="desktop-footer" id="desktop-footer">
+  <div class="desktop-footer-container">
+    
+    <!-- Footer Top Section -->
+    <div class="footer-top">
+      
+      <!-- Column 1: Platform -->
+      <div class="footer-column">
+        <h3 class="footer-column-title">Platform</h3>
+        <ul class="footer-links">
+          <li><a href="courses.html" class="footer-link">
+            <i class="fas fa-book"></i>
+            Courses
+          </a></li>
+          <li><a href="assessment.html" class="footer-link">
+            <i class="fas fa-clipboard-check"></i>
+            Assessment
+          </a></li>
+          <li><a href="career.html" class="footer-link">
             <i class="fas fa-route"></i>
-            Career Track & Explore Paths
-        </h2>
-        <div class="career-tracks-grid" id="careerTracksGrid">
-            <div class="career-track-card" data-track="grc">
-                <div class="track-icon">
-                    <i class="fas fa-globe"></i>
-                </div>
-                <h3 class="track-title">Global Remote Career</h3>
-                <p class="track-description">12 courses designed for remote work opportunities worldwide</p>
-                <button class="btn-outline">Explore</button>
-            </div>
-            
-            <div class="career-track-card" data-track="lcp">
-                <div class="track-icon">
-                    <i class="fas fa-map-marker-alt"></i>
-                </div>
-                <h3 class="track-title">Local Career Pathways</h3>
-                <p class="track-description">12 courses tailored to local job markets</p>
-                <button class="btn-outline">Explore</button>
-            </div>
-            
-            <div class="career-track-card" data-track="up">
-                <div class="track-icon">
-                    <i class="fas fa-university"></i>
-                </div>
-                <h3 class="track-title">University Preparation</h3>
-                <p class="track-description">12 courses for academic excellence</p>
-                <button class="btn-outline">Explore</button>
-            </div>
-        </div>
-    </div>
-</dialog>
+            Career Paths
+          </a></li>
+          <li><a href="library.html" class="footer-link">
+            <i class="fas fa-book-open"></i>
+            Library
+          </a></li>
+          <li><a href="certificates.html" class="footer-link">
+            <i class="fas fa-certificate"></i>
+            Certificates
+          </a></li>
+        </ul>
+      </div>
 
-<!-- Voices Preview Modal -->
-<dialog class="voices-modal" id="voicesModal">
-    <div class="modal-content">
-        <button class="modal-close" id="voicesModalClose" aria-label="Close modal">
-            <i class="fas fa-times"></i>
-        </button>
-        <h2 class="modal-title">
-            <i class="fas fa-headphones"></i>
-            Preview Voices
-        </h2>
-        <div class="form-group">
-            <label for="voiceText">Sample Text</label>
-            <textarea 
-                id="voiceText" 
-                class="form-textarea" 
-                rows="4"
-                placeholder="Enter text to preview voices..."
-            >Welcome to PMERIT. Empowering learning through innovation.</textarea>
+      <!-- Column 2: Features -->
+      <div class="footer-column">
+        <h3 class="footer-column-title">Features</h3>
+        <ul class="footer-links">
+          <li><a href="virtual-human.html" class="footer-link">
+            <i class="fas fa-user-astronaut"></i>
+            Virtual Human Mode
+          </a></li>
+          <li><a href="customer-service.html" class="footer-link">
+            <i class="fas fa-headset"></i>
+            Customer Service
+          </a></li>
+          <li><a href="progress.html" class="footer-link">
+            <i class="fas fa-chart-line"></i>
+            Progress Tracking
+          </a></li>
+          <li><a href="classroom.html" class="footer-link">
+            <i class="fas fa-chalkboard-teacher"></i>
+            Virtual Classroom
+          </a></li>
+          <li><a href="learner-portal.html" class="footer-link">
+            <i class="fas fa-user-graduate"></i>
+            Learner Portal
+          </a></li>
+        </ul>
+      </div>
+
+      <!-- Column 3: Support -->
+      <div class="footer-column">
+        <h3 class="footer-column-title">Support</h3>
+        <ul class="footer-links">
+          <li><a href="help.html" class="footer-link">
+            <i class="fas fa-question-circle"></i>
+            Help Center
+          </a></li>
+          <li><a href="support.html" class="footer-link">
+            <i class="fas fa-life-ring"></i>
+            Get Support
+          </a></li>
+          <li><a href="contact.html" class="footer-link">
+            <i class="fas fa-envelope"></i>
+            Contact Us
+          </a></li>
+          <li><a href="incident-response.html" class="footer-link">
+            <i class="fas fa-exclamation-triangle"></i>
+            Report Issue
+          </a></li>
+          <li><a href="feedback.html" class="footer-link">
+            <i class="fas fa-comment-dots"></i>
+            Feedback
+          </a></li>
+        </ul>
+      </div>
+
+      <!-- Column 4: Company -->
+      <div class="footer-column">
+        <h3 class="footer-column-title">Company</h3>
+        <ul class="footer-links">
+          <li><a href="about-us.html" class="footer-link">
+            <i class="fas fa-info-circle"></i>
+            About PMERIT
+          </a></li>
+          <li><a href="partnerships.html" class="footer-link">
+            <i class="fas fa-handshake"></i>
+            Partnerships
+          </a></li>
+          <li><a href="careers.html" class="footer-link">
+            <i class="fas fa-briefcase"></i>
+            Careers
+          </a></li>
+          <li><a href="blog.html" class="footer-link">
+            <i class="fas fa-blog"></i>
+            Blog
+          </a></li>
+          <li><a href="press.html" class="footer-link">
+            <i class="fas fa-newspaper"></i>
+            Press
+          </a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Footer Bottom Section -->
+    <div class="footer-bottom">
+      
+      <!-- Left: Copyright & Links -->
+      <div class="footer-bottom-left">
+        <p class="footer-copyright">
+          © 2025 PMERIT. All rights reserved.
+        </p>
+        <div class="footer-legal-links">
+          <a href="privacy.html" class="footer-link-sm">Privacy Policy</a>
+          <span class="footer-separator">•</span>
+          <a href="terms.html" class="footer-link-sm">Terms of Service</a>
+          <span class="footer-separator">•</span>
+          <a href="accessibility.html" class="footer-link-sm">Accessibility</a>
+          <span class="footer-separator">•</span>
+          <a href="cookies.html" class="footer-link-sm">Cookie Policy</a>
         </div>
+      </div>
+
+      <!-- Right: Status & Social -->
+      <div class="footer-bottom-right">
+        <div class="footer-status">
+          <i class="fas fa-circle status-indicator" aria-hidden="true"></i>
+          <span>Connected to Educational Services</span>
+        </div>
+        <div class="footer-social">
+          <a href="https://twitter.com/pmerit" class="social-link" aria-label="Twitter" target="_blank" rel="noopener">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="https://facebook.com/pmerit" class="social-link" aria-label="Facebook" target="_blank" rel="noopener">
+            <i class="fab fa-facebook"></i>
+          </a>
+          <a href="https://linkedin.com/company/pmerit" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a href="https://instagram.com/pmerit" class="social-link" aria-label="Instagram" target="_blank" rel="noopener">
+            <i class="fab fa-instagram"></i>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</footer>
+
+<!-- Modals (Shared across all pages) -->
+<!-- Sign Up Modal -->
+<div class="modal" id="sign-up-modal" aria-hidden="true" role="dialog" aria-labelledby="sign-up-title">
+  <div class="modal-backdrop" id="sign-up-backdrop"></div>
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h2 class="modal-title" id="sign-up-title">Create Your Account</h2>
+      <button class="modal-close" id="sign-up-close" aria-label="Close">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form class="auth-form" id="sign-up-form">
         
-        <div class="voice-options">
-            <button class="voice-option-btn" data-voice="default">
-                <i class="fas fa-play-circle"></i>
-                Browser Default
-            </button>
-            <button class="voice-option-btn" data-voice="male">
-                <i class="fas fa-play-circle"></i>
-                Male Voice
-            </button>
-            <button class="voice-option-btn" data-voice="female">
-                <i class="fas fa-play-circle"></i>
-                Female Voice
-            </button>
+        <!-- Name Field -->
+        <div class="form-group">
+          <label for="sign-up-name" class="form-label">Full Name</label>
+          <input 
+            type="text" 
+            id="sign-up-name" 
+            class="form-input" 
+            placeholder="Enter your full name"
+            required
+            aria-required="true"
+          >
         </div>
-    </div>
-</dialog>
 
-<!-- Assessment Modal -->
-<dialog class="assessment-modal" id="assessmentModal">
-    <div class="modal-content">
-        <button class="modal-close" id="assessmentModalClose" aria-label="Close modal">
-            <i class="fas fa-times"></i>
+        <!-- Email Field -->
+        <div class="form-group">
+          <label for="sign-up-email" class="form-label">Email Address</label>
+          <input 
+            type="email" 
+            id="sign-up-email" 
+            class="form-input" 
+            placeholder="you@example.com"
+            required
+            aria-required="true"
+          >
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+          <label for="sign-up-password" class="form-label">Password</label>
+          <input 
+            type="password" 
+            id="sign-up-password" 
+            class="form-input" 
+            placeholder="Create a strong password"
+            required
+            aria-required="true"
+            minlength="8"
+          >
+          <p class="form-help">Must be at least 8 characters</p>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary btn-block">
+          Create Account
         </button>
-        <h2 class="modal-title">
-            <i class="fas fa-graduation-cap"></i>
-            Discover Your Path
-        </h2>
-        <p class="modal-intro">Take a quick assessment to create your personalized learning plan:</p>
-        <ol class="assessment-steps">
-            <li><strong>Learning Style:</strong> Understand how you learn best</li>
-            <li><strong>Interests:</strong> Choose areas that excite you</li>
-            <li><strong>Skills:</strong> Rate your comfort with common tools</li>
-        </ol>
-        <p class="modal-note">This takes about 5 minutes and will create a custom learning plan for you.</p>
-        <div class="modal-actions">
-            <button class="btn-outline" id="assessmentCancelBtn">Maybe Later</button>
-            <button class="btn-primary" id="assessmentStartBtn">Start Assessment</button>
-        </div>
-    </div>
-</dialog>
 
-<!-- Privacy & Terms Modal -->
-<dialog class="privacy-modal" id="privacyModal">
-    <div class="modal-content modal-large">
-        <button class="modal-close" id="privacyModalClose" aria-label="Close modal">
-            <i class="fas fa-times"></i>
+        <!-- Social Sign Up -->
+        <div class="auth-divider">
+          <span>or sign up with</span>
+        </div>
+
+        <div class="social-auth">
+          <button type="button" class="btn btn-social">
+            <i class="fab fa-google"></i>
+            Google
+          </button>
+          <button type="button" class="btn btn-social">
+            <i class="fab fa-microsoft"></i>
+            Microsoft
+          </button>
+        </div>
+
+        <!-- Sign In Link -->
+        <p class="auth-switch">
+          Already have an account? 
+          <a href="#" class="auth-link" id="switch-to-sign-in">Sign in</a>
+        </p>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Sign In Modal -->
+<div class="modal" id="sign-in-modal" aria-hidden="true" role="dialog" aria-labelledby="sign-in-title">
+  <div class="modal-backdrop" id="sign-in-backdrop"></div>
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h2 class="modal-title" id="sign-in-title">Sign In</h2>
+      <button class="modal-close" id="sign-in-close" aria-label="Close">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form class="auth-form" id="sign-in-form">
+        
+        <!-- Email Field -->
+        <div class="form-group">
+          <label for="sign-in-email" class="form-label">Email Address</label>
+          <input 
+            type="email" 
+            id="sign-in-email" 
+            class="form-input" 
+            placeholder="you@example.com"
+            required
+            aria-required="true"
+          >
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+          <label for="sign-in-password" class="form-label">Password</label>
+          <input 
+            type="password" 
+            id="sign-in-password" 
+            class="form-input" 
+            placeholder="Enter your password"
+            required
+            aria-required="true"
+          >
+        </div>
+
+        <!-- Remember Me & Forgot Password -->
+        <div class="form-row">
+          <label class="checkbox-label">
+            <input type="checkbox" id="remember-me">
+            <span>Remember me</span>
+          </label>
+          <a href="forgot-password.html" class="auth-link">Forgot password?</a>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary btn-block">
+          Sign In
         </button>
-        <h2 class="modal-title">Privacy & Terms</h2>
-        <div class="privacy-content">
-            <p>Our Privacy & Terms page provides detailed information about how we protect your data and our terms of service. We prioritize your privacy and transparency in all our educational services.</p>
-            <div class="modal-actions">
-                <a href="privacy.html" class="btn-outline">View Privacy Policy</a>
-                <a href="terms.html" class="btn-outline">View Terms of Service</a>
-            </div>
+
+        <!-- Social Sign In -->
+        <div class="auth-divider">
+          <span>or sign in with</span>
         </div>
+
+        <div class="social-auth">
+          <button type="button" class="btn btn-social">
+            <i class="fab fa-google"></i>
+            Google
+          </button>
+          <button type="button" class="btn btn-social">
+            <i class="fab fa-microsoft"></i>
+            Microsoft
+          </button>
+        </div>
+
+        <!-- Sign Up Link -->
+        <p class="auth-switch">
+          Don't have an account? 
+          <a href="#" class="auth-link" id="switch-to-sign-up">Sign up</a>
+        </p>
+
+      </form>
     </div>
-</dialog>
-
-<style>
-/* Desktop footer hidden on mobile, shown at 1101px+ */
-@media (max-width: 1100px) {
-    .desktop-footer { display: none !important; }
-}
-
-@media (min-width: 1101px) {
-    .pmerit-footer { display: none; }
-}
-</style>
+  </div>
+</div>
