@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PMERIT - Personalized Merit-based Education Platform. Accessible, high-quality education for everyone.">
+  <meta name="theme-color" content="#2A5B8C">
   <title>PMERIT - Personalized Learning Platform</title>
   
   <!-- Google Fonts -->
@@ -19,313 +21,712 @@
   <link rel="stylesheet" href="assets/css/typography.css">
   <link rel="stylesheet" href="assets/css/components.css">
   <link rel="stylesheet" href="assets/css/mobile.css">
-  <link rel="stylesheet" href="assets/css/desktop.css"> <!-- Phase 5: NEW -->
+  <link rel="stylesheet" href="assets/css/desktop.css">
 </head>
 
 <body>
-    <!-- App Container - Non-scrollable viewport -->
-    <div class="app-container">
+  
+  <!-- ========================================
+       HEADER (Phase 2)
+       Mobile: Logo + Language + Hamburger + Sign In
+       Desktop: Logo + Nav Links + Language + Sign In
+       ======================================== -->
+  <header class="pmerit-header" role="banner">
+    <div class="header-container">
+      
+      <!-- Logo & Brand -->
+      <div class="header-logo">
+        <a href="/" class="logo-link" aria-label="PMERIT Home">
+          <i class="fas fa-graduation-cap" style="font-size: 1.5rem; color: var(--primary);"></i>
+          <span class="logo-text">PMERIT</span>
+        </a>
+      </div>
+      
+      <!-- Desktop Navigation (Hidden < 1024px) -->
+      <nav class="header-nav desktop-only" role="navigation" aria-label="Main Navigation">
+        <ul class="nav-list">
+          <li><a href="#virtual-human" class="nav-link">Virtual Human Mode</a></li>
+          <li><a href="#career-paths" class="nav-link">Career Paths</a></li>
+          <li><a href="#customer-service" class="nav-link">Customer Service</a></li>
+          <li><a href="#dashboard" class="nav-link">Dashboard</a></li>
+        </ul>
+      </nav>
+      
+      <!-- Right Side Actions -->
+      <div class="header-actions">
         
-        <!-- Include Header Component (Phase 2) -->
-        <!-- In production, use server-side includes or a build tool -->
-        <!-- For now, copy content from partials/header.html -->
-        
-        <!-- HEADER START (from partials/header.html) -->
-        <header class="app-header" role="banner">
-            <div class="header-container">
-                
-                <!-- Logo & Brand Name -->
-                <div class="header-logo">
-                    <a href="/" class="logo-link" aria-label="PMERIT Home">
-                        <img src="assets/img/logo.svg" alt="PMERIT Logo" class="logo-image">
-                        <span class="logo-text">PMERIT</span>
-                    </a>
-                </div>
-                
-                <!-- Desktop Navigation (Hidden on Mobile) -->
-                <nav class="header-nav desktop-only" role="navigation" aria-label="Main Navigation">
-                    <ul class="nav-list">
-                        <li><a href="/virtual-human" class="nav-link">Virtual Human Mode</a></li>
-                        <li><a href="/career-paths" class="nav-link">Career Paths</a></li>
-                        <li><a href="/customer-service" class="nav-link">Customer Service</a></li>
-                        <li><a href="/dashboard" class="nav-link">Dashboard</a></li>
-                    </ul>
-                </nav>
-                
-                <!-- Right Side Actions -->
-                <div class="header-actions">
-                    
-                    <!-- Language Switcher -->
-                    <div class="language-switcher">
-                        <label for="language-select" class="sr-only">Select Language</label>
-                        <select id="language-select" class="language-select" aria-label="Language">
-                            <option value="en">EN</option>
-                            <option value="es">ES</option>
-                            <option value="fr">FR</option>
-                            <option value="de">DE</option>
-                            <option value="zh">中文</option>
-                            <option value="ar">العربية</option>
-                        </select>
-                    </div>
-                    
-                    <!-- Hamburger Menu Button (Mobile Only) -->
-                    <button 
-                        class="hamburger-button mobile-only touch-target"
-                        aria-label="Open Navigation Menu"
-                        aria-expanded="false"
-                        aria-controls="mobile-menu"
-                        type="button">
-                        <span class="hamburger-icon">
-                            <span class="hamburger-line"></span>
-                            <span class="hamburger-line"></span>
-                            <span class="hamburger-line"></span>
-                        </span>
-                    </button>
-                    
-                    <!-- Sign In Button -->
-                    <button 
-                        class="btn btn-primary sign-in-button touch-target"
-                        data-modal-target="sign-in-modal"
-                        type="button">
-                        Sign In
-                    </button>
-                    
-                </div>
-                
-            </div>
-        </header>
-        <!-- HEADER END -->
-        
-        <!-- Body Container (Phase 3) -->
-        <!-- Note: For full Phase 3 integration, use partials/body.html -->
-        <!-- Current: Inline content below, can be replaced with dynamic loading -->
-        <div id="body-container">
-        <!-- Main Content - Scrollable area -->
-        <main class="app-main" role="main">
-            <!-- Hero Section with Gradient Background -->
-            <section class="hero-section">
-                <!-- Welcome Text -->
-                <div class="hero-content">
-                    <p class="body-text hero-text">
-                        Hi there! I'm your learning companion, empowering your education through innovation. 
-                        PMERIT provides accessible, high-quality education that opens doors to endless 
-                        opportunities worldwide. Ready to discover your potential and start your learning journey?
-                    </p>
-                    
-                    <h2 class="h1 hero-title">
-                        Ask Your Learning Companion
-                    </h2>
-                    
-                    <p class="text-small hero-subtitle">
-                        Get personalized guidance on courses, career paths, and learning objectives
-                    </p>
-                </div>
-            </section>
-            
-            <!-- Chat Input (Fixed at bottom - Phase 3) -->
-            <div class="chat-input-fixed">
-                <div class="container chat-container">
-                    <div class="chat-input-wrapper">
-                        <input 
-                            type="text" 
-                            class="chat-input"
-                            placeholder="Try: 'What programming courses do you recommend?'"
-                            aria-label="Ask your learning companion"
-                        >
-                        <button 
-                            class="btn touch-target chat-send-button"
-                            aria-label="Send message">
-                            ➤
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </main>
+        <!-- Language Switcher -->
+        <div class="language-switcher">
+          <label for="language-select" class="sr-only">Select Language</label>
+          <select id="language-select" class="language-select" aria-label="Language">
+            <option value="en">EN</option>
+            <option value="es">ES</option>
+            <option value="fr">FR</option>
+            <option value="de">DE</option>
+            <option value="zh">中文</option>
+            <option value="ar">العربية</option>
+          </select>
         </div>
-        <!-- Body Container End -->
         
-        <!-- Footer (Phase 4) -->
-        <footer class="app-footer" role="contentinfo">
-            <div class="container footer-container">
-                <!-- Mobile Footer: Simple links -->
-                <div class="text-center text-small footer-content">
-                    <a href="/privacy" class="link-subtle">Privacy & Terms</a>
-                    <span class="footer-separator">•</span>
-                    <span class="footer-status">● Connected to Educational Services</span>
-                </div>
-            </div>
-        </footer>
+        <!-- Hamburger Menu (Mobile Only) -->
+        <button 
+          id="hamburger-toggle"
+          class="hamburger-button mobile-only touch-target"
+          aria-label="Open Navigation Menu"
+          aria-expanded="false"
+          aria-controls="hamburger-menu"
+          type="button">
+          <span class="hamburger-icon">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+          </span>
+        </button>
         
+        <!-- Sign In Button -->
+        <button 
+          id="sign-in-btn"
+          class="btn btn-primary sign-in-button touch-target"
+          aria-label="Sign In"
+          type="button">
+          Sign In
+        </button>
+        
+      </div>
+      
+    </div>
+  </header>
+  
+  <!-- ========================================
+       MOBILE LAYOUT (< 1024px)
+       Shows on mobile/tablet, hidden on desktop
+       ======================================== -->
+  <main class="main-container mobile-only" role="main">
+    
+    <!-- Mobile Hero Section -->
+    <section class="hero-section">
+      <div class="hero-content">
+        <p class="hero-text">
+          Hi there! I'm your learning companion, empowering your education through innovation. 
+          PMERIT provides accessible, high-quality education that opens doors to endless 
+          opportunities worldwide. Ready to discover your potential and start your learning journey?
+        </p>
+        
+        <h1 class="hero-title">Ask Your Learning Companion</h1>
+        
+        <p class="hero-subtitle">
+          Get personalized guidance on courses, career paths, and learning objectives
+        </p>
+      </div>
+    </section>
+    
+    <!-- Mobile Chat Container -->
+    <div class="chat-messages" id="mobile-chat-messages" role="log" aria-live="polite" aria-atomic="false">
+      <!-- Chat messages will be inserted here by chat.js -->
+      <div class="typing-indicator" id="mobile-typing-indicator" style="display: none;">
+        <span class="typing-dot"></span>
+        <span class="typing-dot"></span>
+        <span class="typing-dot"></span>
+      </div>
     </div>
     
-    <!-- Mobile Menu (from partials/header.html) -->
-    <div id="mobile-menu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Mobile Navigation Menu">
-        <div class="menu-overlay"></div>
-        <div class="menu-panel">
-            <div class="menu-header">
-                <span class="menu-title">Menu</span>
-                <button class="menu-close touch-target" aria-label="Close Menu" type="button">✕</button>
-            </div>
-            <nav class="menu-nav" role="navigation">
-                <ul class="menu-list">
-                    <li class="menu-item">
-                        <a href="/virtual-human" class="menu-link">
-                            <span class="menu-icon">🤖</span>
-                            <div class="menu-content">
-                                <span class="menu-label">Virtual Human Mode</span>
-                                <span class="menu-description">Interactive AI assistant</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="/career-paths" class="menu-link">
-                            <span class="menu-icon">🎯</span>
-                            <div class="menu-content">
-                                <span class="menu-label">Career Track & Explore Paths</span>
-                                <span class="menu-description">Find your ideal career path</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="/customer-service" class="menu-link">
-                            <span class="menu-icon">💬</span>
-                            <div class="menu-content">
-                                <span class="menu-label">Customer Service Mode</span>
-                                <span class="menu-description">Get help and support</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="menu-item menu-item-expandable">
-                        <button class="menu-link menu-toggle" aria-expanded="false">
-                            <span class="menu-icon">⚙️</span>
-                            <div class="menu-content">
-                                <span class="menu-label">Settings</span>
-                                <span class="menu-description">Preferences & options</span>
-                            </div>
-                            <span class="menu-arrow">›</span>
-                        </button>
-                        <ul class="menu-submenu">
-                            <li class="submenu-item">
-                                <label class="submenu-link">
-                                    <span class="submenu-label">Dark Mode</span>
-                                    <input type="checkbox" class="toggle-switch" id="dark-mode-toggle">
-                                </label>
-                            </li>
-                            <li class="submenu-item">
-                                <label class="submenu-link">
-                                    <span class="submenu-label">Text-to-Speech</span>
-                                    <input type="checkbox" class="toggle-switch" id="tts-toggle">
-                                </label>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="menu-item">
-                        <a href="/preview-voices" class="menu-link">
-                            <span class="menu-icon">🔊</span>
-                            <div class="menu-content">
-                                <span class="menu-label">Preview Voices</span>
-                                <span class="menu-description">Try different AI voices</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="/dashboard" class="menu-link">
-                            <span class="menu-icon">📊</span>
-                            <div class="menu-content">
-                                <span class="menu-label">Dashboard</span>
-                                <span class="menu-description">View your progress</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="menu-item menu-item-highlighted">
-                        <a href="/assessment" class="menu-link">
-                            <span class="menu-icon">🚀</span>
-                            <div class="menu-content">
-                                <span class="menu-label">Begin Assessment</span>
-                                <span class="menu-description">Start your evaluation</span>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            <div class="menu-footer">
-                <p class="menu-footer-text">PMERIT Platform v2.0</p>
-            </div>
-        </div>
+    <!-- Mobile Chat Input (Fixed at bottom) -->
+    <div class="chat-input-container">
+      <div class="chat-input-wrapper">
+        <textarea 
+          id="mobile-chat-input"
+          class="chat-input"
+          placeholder="Try: 'What programming courses do you recommend?'"
+          aria-label="Ask your learning companion"
+          rows="1"></textarea>
+        <button 
+          id="mobile-send-btn"
+          class="chat-send-btn touch-target"
+          aria-label="Send message"
+          type="button">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+      <div class="chat-input-footer">
+        <span class="character-count" id="mobile-char-count">0/1000</span>
+      </div>
     </div>
     
-    <!-- Sign In/Sign Up Modal (from partials/header.html) -->
-    <div id="sign-in-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
-        <div class="modal-backdrop"></div>
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 id="modal-title" class="modal-title">Welcome to PMERIT</h2>
-                <button class="modal-close touch-target" aria-label="Close Modal" type="button">✕</button>
-            </div>
-            <div class="modal-tabs" role="tablist">
-                <button class="tab-button active" role="tab" aria-selected="true" aria-controls="signin-panel" id="signin-tab" type="button">Sign In</button>
-                <button class="tab-button" role="tab" aria-selected="false" aria-controls="signup-panel" id="signup-tab" type="button">Sign Up</button>
-            </div>
-            <div class="modal-body tab-panel active" role="tabpanel" id="signin-panel" aria-labelledby="signin-tab" aria-hidden="false">
-                <form class="auth-form" id="signin-form">
-                    <div class="form-group">
-                        <label for="signin-email" class="form-label">Email</label>
-                        <input type="email" id="signin-email" class="form-input" placeholder="you@example.com" required autocomplete="email">
-                    </div>
-                    <div class="form-group">
-                        <label for="signin-password" class="form-label">Password</label>
-                        <input type="password" id="signin-password" class="form-input" placeholder="Enter your password" required autocomplete="current-password">
-                    </div>
-                    <div class="form-row">
-                        <label class="form-checkbox">
-                            <input type="checkbox" id="remember-me">
-                            <span>Remember me</span>
-                        </label>
-                        <a href="/forgot-password" class="form-link">Forgot password?</a>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-full">Sign In</button>
-                    <div class="form-divider"><span>or continue with</span></div>
-                    <div class="social-buttons">
-                        <button type="button" class="btn btn-social"><span class="social-icon">G</span> Google</button>
-                        <button type="button" class="btn btn-social"><span class="social-icon">M</span> Microsoft</button>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-body tab-panel" role="tabpanel" id="signup-panel" aria-labelledby="signup-tab" aria-hidden="true">
-                <form class="auth-form" id="signup-form">
-                    <div class="form-group">
-                        <label for="signup-name" class="form-label">Full Name</label>
-                        <input type="text" id="signup-name" class="form-input" placeholder="Your full name" required autocomplete="name">
-                    </div>
-                    <div class="form-group">
-                        <label for="signup-email" class="form-label">Email</label>
-                        <input type="email" id="signup-email" class="form-input" placeholder="you@example.com" required autocomplete="email">
-                    </div>
-                    <div class="form-group">
-                        <label for="signup-password" class="form-label">Password</label>
-                        <input type="password" id="signup-password" class="form-input" placeholder="Create a strong password" required autocomplete="new-password">
-                        <p class="form-hint">At least 8 characters</p>
-                    </div>
-                    <label class="form-checkbox">
-                        <input type="checkbox" id="terms-agree" required>
-                        <span>I agree to the <a href="/terms" class="form-link">Terms & Conditions</a></span>
-                    </label>
-                    <button type="submit" class="btn btn-primary btn-full">Create Account</button>
-                    <div class="form-divider"><span>or sign up with</span></div>
-                    <div class="social-buttons">
-                        <button type="button" class="btn btn-social"><span class="social-icon">G</span> Google</button>
-                        <button type="button" class="btn btn-social"><span class="social-icon">M</span> Microsoft</button>
-                    </div>
-                </form>
-            </div>
+  </main>
+  
+  <!-- ========================================
+       DESKTOP LAYOUT (≥ 1024px)
+       Three-panel grid: Left Sidebar | Center | Right Sidebar
+       ======================================== -->
+  <div class="desktop-layout desktop-only">
+    
+    <!-- LEFT SIDEBAR (280px) -->
+    <aside class="left-sidebar desktop-sidebar" role="complementary" aria-label="Quick actions and settings">
+      
+      <section>
+        <h2 class="pane-title">Quick Actions</h2>
+        
+        <!-- Virtual Human Mode Toggle -->
+        <button class="toggle" id="vh-toggle" aria-pressed="false">
+          <span>
+            <i class="fas fa-user-astronaut icon"></i> 
+            Virtual Human Mode
+          </span>
+          <span class="switch" aria-hidden="true"></span>
+        </button>
+        
+        <!-- Customer Service Mode Toggle -->
+        <button class="toggle" id="cs-toggle" aria-pressed="false">
+          <span>
+            <i class="fas fa-headset icon"></i> 
+            Customer Service Mode
+          </span>
+          <span class="switch" aria-hidden="true"></span>
+        </button>
+        
+        <!-- Career Tracks Explorer -->
+        <button class="action" id="career-btn">
+          <span>
+            <i class="fas fa-route icon"></i> 
+            Explore Career Paths
+          </span>
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </section>
+      
+      <section style="margin-top: 1.5rem;">
+        <h2 class="pane-title">Settings</h2>
+        
+        <!-- Dark Mode Toggle -->
+        <button class="toggle" id="dark-mode-toggle" aria-pressed="false">
+          <span>
+            <i class="fas fa-moon icon"></i> 
+            Dark Mode
+          </span>
+          <span class="switch" aria-hidden="true"></span>
+        </button>
+        
+        <!-- Text-to-Speech Toggle -->
+        <button class="toggle" id="tts-toggle" aria-pressed="false">
+          <span>
+            <i class="fas fa-volume-up icon"></i> 
+            Text-to-Speech
+          </span>
+          <span class="switch" aria-hidden="true"></span>
+        </button>
+        
+        <!-- Preview Voices -->
+        <button class="action" id="voices-btn">
+          <span>
+            <i class="fas fa-headphones icon"></i> 
+            Preview Voices
+          </span>
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </section>
+      
+      <!-- Dashboard Button -->
+      <button class="dashboard guest" id="dashboard-btn">
+        <i class="fas fa-gauge-high"></i> 
+        Dashboard
+      </button>
+      
+      <!-- Virtual Human Avatar (Hidden by default, shown when VH mode active) -->
+      <div class="avatar" id="vh-avatar" aria-hidden="true">
+        <i class="fas fa-user-circle"></i>
+      </div>
+      
+    </aside>
+    
+    <!-- CENTER CONTENT (Flexible 1fr) -->
+    <main class="main-content" id="center" role="main">
+      
+      <!-- Hero/Greeting Section -->
+      <section class="greeting">
+        <h1>Hi there! I'm your learning companion</h1>
+        <p>
+          Empowering your education through innovation. PMERIT provides accessible, 
+          high-quality education that opens doors to endless opportunities worldwide. 
+          Ready to discover your potential and start your learning journey?
+        </p>
+      </section>
+      
+      <!-- Chat Interface -->
+      <div class="chat-container" id="desktop-chat-messages" role="log" aria-live="polite" aria-atomic="false">
+        <!-- Welcome message -->
+        <div class="message ai">
+          <div class="message-bubble">
+            👋 Welcome! I'm here to help you find the perfect courses and career paths. 
+            What would you like to learn about today?
+          </div>
         </div>
+        
+        <!-- Typing indicator -->
+        <div class="typing-indicator" id="desktop-typing-indicator" style="display: none;">
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+        </div>
+      </div>
+      
+      <!-- Desktop Chat Input -->
+      <div class="chat-input-container" style="margin-top: 1rem;">
+        <div class="chat-input-wrapper">
+          <textarea 
+            id="desktop-chat-input"
+            class="chat-input"
+            placeholder="Ask me anything about courses, careers, or learning paths..."
+            aria-label="Chat with your learning companion"
+            rows="2"></textarea>
+          <button 
+            id="desktop-send-btn"
+            class="chat-send-btn touch-target"
+            aria-label="Send message"
+            type="button">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+        <div class="chat-input-footer">
+          <span class="character-count" id="desktop-char-count">0/1000</span>
+        </div>
+      </div>
+      
+      <!-- Virtual Human Stage (Hidden by default, shown when VH mode active) -->
+      <div id="vh-stage" style="display: none;">
+        <div class="stage">
+          <div class="human-frame">
+            <div class="human-face">
+              <i class="fas fa-user-circle"></i>
+            </div>
+          </div>
+        </div>
+        <div class="captions" id="vh-captions">
+          Virtual Human is ready to assist you...
+        </div>
+      </div>
+      
+    </main>
+    
+    <!-- RIGHT SIDEBAR (320px) -->
+    <aside class="right-sidebar" id="right" role="complementary" aria-label="Support and discovery">
+      
+      <section>
+        <!-- Support Assistant Card -->
+        <div class="support-assistant">
+          <h4>
+            <i class="fas fa-headset"></i> 
+            Support Assistant
+          </h4>
+          <p style="color: var(--text-secondary); margin: 0.5rem 0;">
+            Our AI assistant is here for you 24/7
+          </p>
+          
+          <div class="support-actions">
+            <button class="support-btn" id="support-vh-btn">
+              <i class="fas fa-user-astronaut"></i>
+              Virtual Human
+            </button>
+            <button class="support-btn" id="support-cs-btn">
+              <i class="fas fa-headset"></i>
+              Support
+            </button>
+          </div>
+        </div>
+      </section>
+      
+      <section>
+        <h3>Discover Your Path (AI)</h3>
+        
+        <!-- Discover Card -->
+        <div class="discover">
+          <h4>Personalized Learning Plan</h4>
+          <p>
+            Start a personalized assessment to create your learning plan tailored to your 
+            goals, interests, and learning style.
+          </p>
+          <button class="btn-primary btn-block" id="begin-assessment-btn">
+            <i class="fas fa-clipboard-list"></i>
+            Begin Assessment
+          </button>
+          <div class="sidebar-tip">
+            <i class="fas fa-lightbulb"></i>
+            <span>Pro tip: Keep notes in your own words for better recall.</span>
+          </div>
+        </div>
+      </section>
+      
+    </aside>
+    
+  </div>
+  
+  <!-- ========================================
+       FOOTER (Phase 4)
+       Mobile: Simple (Privacy & Terms)
+       Desktop: Full (4 columns with all links)
+       ======================================== -->
+  <footer class="pmerit-footer" role="contentinfo">
+    
+    <!-- Mobile Footer (< 1024px) -->
+    <div class="footer-mobile mobile-only">
+      <div class="footer-content">
+        <a href="#privacy" class="footer-link">Privacy & Terms</a>
+        <span class="footer-separator">•</span>
+        <span class="footer-status">
+          <span class="status-indicator"></span>
+          Connected to Educational Services
+        </span>
+      </div>
     </div>
     
-    <!-- JavaScript (Phase 2) -->
-    <script src="assets/js/menu.js" defer></script>
-    <script src="assets/js/modal.js" defer></script>
-    <script src="assets/js/chat.js" defer></script>
-    <!-- <script src="assets/js/main.js" defer></script> -->
+    <!-- Desktop Footer (≥ 1024px) -->
+    <div class="footer-desktop desktop-only">
+      <div class="footer-grid">
+        
+        <!-- Column 1: Platform -->
+        <div class="footer-column">
+          <h4>Platform</h4>
+          <ul class="footer-links">
+            <li><a href="#about">About PMERIT</a></li>
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#careers">Careers</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#press">Press Kit</a></li>
+          </ul>
+        </div>
+        
+        <!-- Column 2: Features -->
+        <div class="footer-column">
+          <h4>Features</h4>
+          <ul class="footer-links">
+            <li><a href="#virtual-human">Virtual Human</a></li>
+            <li><a href="#career-tracks">Career Tracks</a></li>
+            <li><a href="#assessments">Assessments</a></li>
+            <li><a href="#courses">Course Library</a></li>
+            <li><a href="#certifications">Certifications</a></li>
+            <li><a href="#ai-tutor">AI Tutor</a></li>
+          </ul>
+        </div>
+        
+        <!-- Column 3: Support -->
+        <div class="footer-column">
+          <h4>Support</h4>
+          <ul class="footer-links">
+            <li><a href="#help">Help Center</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#accessibility">Accessibility</a></li>
+            <li><a href="#community">Community</a></li>
+            <li><a href="#feedback">Send Feedback</a></li>
+          </ul>
+        </div>
+        
+        <!-- Column 4: Legal & Social -->
+        <div class="footer-column">
+          <h4>Legal</h4>
+          <ul class="footer-links">
+            <li><a href="#privacy">Privacy Policy</a></li>
+            <li><a href="#terms">Terms of Service</a></li>
+            <li><a href="#cookies">Cookie Policy</a></li>
+            <li><a href="#gdpr">GDPR</a></li>
+          </ul>
+          <div style="margin-top: 1rem;">
+            <h4>Follow Us</h4>
+            <div class="social-links">
+              <a href="#twitter" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+              <a href="#facebook" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+              <a href="#linkedin" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+              <a href="#instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+      <!-- Footer Bottom -->
+      <div class="footer-bottom">
+        <p>&copy; 2025 PMERIT. All rights reserved.</p>
+        <p class="footer-status">
+          <span class="status-indicator"></span>
+          Connected to Educational Services
+        </p>
+      </div>
+    </div>
     
+  </footer>
+  
+  <!-- ========================================
+       MOBILE HAMBURGER MENU (Phase 2)
+       Slide-in panel with backdrop
+       ======================================== -->
+  <div id="hamburger-menu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Mobile Navigation Menu" aria-hidden="true">
+    <div id="menu-overlay" class="menu-overlay"></div>
+    <div class="menu-panel">
+      
+      <!-- Menu Header -->
+      <div class="menu-header">
+        <span class="menu-title">Menu</span>
+        <button id="menu-close" class="menu-close touch-target" aria-label="Close Menu" type="button">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <!-- Menu Navigation -->
+      <nav class="menu-nav" role="navigation">
+        <ul class="menu-list">
+          
+          <li class="menu-item">
+            <a href="#virtual-human" class="menu-link">
+              <span class="menu-icon"><i class="fas fa-user-astronaut"></i></span>
+              <div class="menu-content">
+                <span class="menu-label">Virtual Human Mode</span>
+                <span class="menu-description">Interactive AI assistant</span>
+              </div>
+            </a>
+          </li>
+          
+          <li class="menu-item">
+            <a href="#career-paths" class="menu-link">
+              <span class="menu-icon"><i class="fas fa-route"></i></span>
+              <div class="menu-content">
+                <span class="menu-label">Career Track & Explore Paths</span>
+                <span class="menu-description">Find your ideal career path</span>
+              </div>
+            </a>
+          </li>
+          
+          <li class="menu-item">
+            <a href="#customer-service" class="menu-link">
+              <span class="menu-icon"><i class="fas fa-headset"></i></span>
+              <div class="menu-content">
+                <span class="menu-label">Customer Service Mode</span>
+                <span class="menu-description">Get help and support</span>
+              </div>
+            </a>
+          </li>
+          
+          <li class="menu-item menu-item-expandable">
+            <button class="menu-link menu-toggle" aria-expanded="false">
+              <span class="menu-icon"><i class="fas fa-cog"></i></span>
+              <div class="menu-content">
+                <span class="menu-label">Settings</span>
+                <span class="menu-description">Preferences & options</span>
+              </div>
+              <span class="menu-arrow"><i class="fas fa-chevron-right"></i></span>
+            </button>
+            <ul class="menu-submenu">
+              <li class="submenu-item">
+                <label class="submenu-link">
+                  <span class="submenu-label">Dark Mode</span>
+                  <input type="checkbox" class="toggle-switch" id="mobile-dark-mode">
+                </label>
+              </li>
+              <li class="submenu-item">
+                <label class="submenu-link">
+                  <span class="submenu-label">Text-to-Speech</span>
+                  <input type="checkbox" class="toggle-switch" id="mobile-tts">
+                </label>
+              </li>
+            </ul>
+          </li>
+          
+          <li class="menu-item">
+            <a href="#preview-voices" class="menu-link">
+              <span class="menu-icon"><i class="fas fa-headphones"></i></span>
+              <div class="menu-content">
+                <span class="menu-label">Preview Voices</span>
+                <span class="menu-description">Try different AI voices</span>
+              </div>
+            </a>
+          </li>
+          
+          <li class="menu-item">
+            <a href="#dashboard" class="menu-link">
+              <span class="menu-icon"><i class="fas fa-gauge-high"></i></span>
+              <div class="menu-content">
+                <span class="menu-label">Dashboard</span>
+                <span class="menu-description">View your progress</span>
+              </div>
+            </a>
+          </li>
+          
+          <li class="menu-item menu-item-highlighted">
+            <a href="#assessment" class="menu-link">
+              <span class="menu-icon"><i class="fas fa-clipboard-list"></i></span>
+              <div class="menu-content">
+                <span class="menu-label">Begin Assessment</span>
+                <span class="menu-description">Start your evaluation</span>
+              </div>
+            </a>
+          </li>
+          
+        </ul>
+      </nav>
+      
+      <!-- Menu Footer -->
+      <div class="menu-footer">
+        <p class="menu-footer-text">PMERIT Platform v2.0</p>
+      </div>
+      
+    </div>
+  </div>
+  
+  <!-- ========================================
+       SIGN IN / SIGN UP MODAL (Phase 2)
+       Modal with tabs for switching between sign-in and sign-up
+       ======================================== -->
+  <div id="sign-in-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h2 id="modal-title" class="modal-title">Welcome to PMERIT</h2>
+        <button id="modal-close" class="modal-close touch-target" aria-label="Close Modal" type="button">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <!-- Modal Tabs -->
+      <div class="modal-tabs" role="tablist">
+        <button 
+          class="tab-button active" 
+          role="tab" 
+          aria-selected="true" 
+          aria-controls="signin-panel" 
+          id="signin-tab" 
+          type="button">
+          Sign In
+        </button>
+        <button 
+          class="tab-button" 
+          role="tab" 
+          aria-selected="false" 
+          aria-controls="signup-panel" 
+          id="signup-tab" 
+          type="button">
+          Sign Up
+        </button>
+      </div>
+      
+      <!-- Sign In Panel -->
+      <div class="modal-body tab-panel active" role="tabpanel" id="signin-panel" aria-labelledby="signin-tab">
+        <form class="auth-form" id="signin-form">
+          
+          <div class="form-group">
+            <label for="signin-email" class="form-label">Email</label>
+            <input 
+              type="email" 
+              id="signin-email" 
+              class="form-input" 
+              placeholder="you@example.com" 
+              required 
+              autocomplete="email">
+          </div>
+          
+          <div class="form-group">
+            <label for="signin-password" class="form-label">Password</label>
+            <input 
+              type="password" 
+              id="signin-password" 
+              class="form-input" 
+              placeholder="Enter your password" 
+              required 
+              autocomplete="current-password">
+          </div>
+          
+          <div class="form-row">
+            <label class="form-checkbox">
+              <input type="checkbox" id="remember-me">
+              <span>Remember me</span>
+            </label>
+            <a href="#forgot-password" class="form-link">Forgot password?</a>
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+          
+          <div class="form-divider"><span>or continue with</span></div>
+          
+          <div class="social-buttons">
+            <button type="button" class="btn btn-social">
+              <i class="fab fa-google"></i> Google
+            </button>
+            <button type="button" class="btn btn-social">
+              <i class="fab fa-microsoft"></i> Microsoft
+            </button>
+          </div>
+          
+        </form>
+      </div>
+      
+      <!-- Sign Up Panel -->
+      <div class="modal-body tab-panel" role="tabpanel" id="signup-panel" aria-labelledby="signup-tab" aria-hidden="true">
+        <form class="auth-form" id="signup-form">
+          
+          <div class="form-group">
+            <label for="signup-name" class="form-label">Full Name</label>
+            <input 
+              type="text" 
+              id="signup-name" 
+              class="form-input" 
+              placeholder="Your full name" 
+              required 
+              autocomplete="name">
+          </div>
+          
+          <div class="form-group">
+            <label for="signup-email" class="form-label">Email</label>
+            <input 
+              type="email" 
+              id="signup-email" 
+              class="form-input" 
+              placeholder="you@example.com" 
+              required 
+              autocomplete="email">
+          </div>
+          
+          <div class="form-group">
+            <label for="signup-password" class="form-label">Password</label>
+            <input 
+              type="password" 
+              id="signup-password" 
+              class="form-input" 
+              placeholder="Create a strong password" 
+              required 
+              autocomplete="new-password">
+            <p class="form-hint">At least 8 characters</p>
+          </div>
+          
+          <label class="form-checkbox">
+            <input type="checkbox" id="terms-agree" required>
+            <span>I agree to the <a href="#terms" class="form-link">Terms & Conditions</a></span>
+          </label>
+          
+          <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+          
+          <div class="form-divider"><span>or sign up with</span></div>
+          
+          <div class="social-buttons">
+            <button type="button" class="btn btn-social">
+              <i class="fab fa-google"></i> Google
+            </button>
+            <button type="button" class="btn btn-social">
+              <i class="fab fa-microsoft"></i> Microsoft
+            </button>
+          </div>
+          
+        </form>
+      </div>
+      
+    </div>
+  </div>
+  
+  <!-- ========================================
+       JAVASCRIPT (Phases 2, 3, 4)
+       Load scripts at the end for better performance
+       ======================================== -->
+  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/chat.js" defer></script>
+  
 </body>
 </html>
