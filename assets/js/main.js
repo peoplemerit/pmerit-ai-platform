@@ -18,7 +18,6 @@ const state = {
 
 // ========== INITIALIZATION ==========
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('🚀 PMERIT Platform initializing...');
   init();
 });
 
@@ -33,8 +32,6 @@ function init() {
   initializeLanguageSwitcher();
   initializeModals();
   initializeChat();
-  
-  console.log('✅ PMERIT Platform initialized successfully');
 }
 
 // ========== MENU SYSTEM ==========
@@ -242,11 +239,9 @@ function toggleVirtualHumanMode(enabled) {
   if (enabled) {
     document.body.classList.add('virtual-human-mode');
     showToast('Virtual Human Mode Enabled', 'success');
-    console.log('🤖 Virtual Human Mode: ON');
   } else {
     document.body.classList.remove('virtual-human-mode');
     showToast('Virtual Human Mode Disabled', 'info');
-    console.log('🤖 Virtual Human Mode: OFF');
   }
 }
 
@@ -254,11 +249,9 @@ function toggleCustomerServiceMode(enabled) {
   if (enabled) {
     document.body.classList.add('customer-service-mode');
     showToast('Customer Service Mode Enabled', 'success');
-    console.log('💬 Customer Service Mode: ON');
   } else {
     document.body.classList.remove('customer-service-mode');
     showToast('Customer Service Mode Disabled', 'info');
-    console.log('💬 Customer Service Mode: OFF');
   }
 }
 
@@ -328,7 +321,6 @@ function changeLanguage(lang) {
   state.language = lang;
   saveState();
   showToast(`Language changed to ${lang.toUpperCase()}`, 'success');
-  console.log(`🌐 Language changed to: ${lang}`);
   
   // Update active language option
   document.querySelectorAll('.language-option').forEach(opt => {
@@ -501,8 +493,6 @@ function handleSignIn(e) {
   const email = document.getElementById('sign-in-email').value;
   const password = document.getElementById('sign-in-password').value;
   const rememberMe = document.getElementById('remember-me').checked;
-
-  console.log('Sign In:', { email, rememberMe });
   
   // TODO: Implement actual authentication
   showToast('Sign-in feature coming soon!', 'info');
@@ -521,8 +511,6 @@ function handleSignUp(e) {
   const name = document.getElementById('sign-up-name').value;
   const email = document.getElementById('sign-up-email').value;
   const password = document.getElementById('sign-up-password').value;
-
-  console.log('Sign Up:', { name, email });
   
   // TODO: Implement actual registration
   showToast('Sign-up feature coming soon!', 'info');
@@ -569,8 +557,6 @@ function sendMessage(layout = 'mobile') {
   // Delegate to chat.js if available
   if (typeof window.sendMessage === 'function') {
     window.sendMessage(layout);
-  } else {
-    console.log('Chat functionality will be handled by chat.js');
   }
 }
 
