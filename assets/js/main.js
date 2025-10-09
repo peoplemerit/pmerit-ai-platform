@@ -1,7 +1,9 @@
 /**
  * PMERIT Platform - Main Application Logic
- * Version: 2.1 (Fixed Indentation & IDs)
+ * Version: 2.2 (Phase 4 - Modal System)
  * Last Updated: October 2025
+ * 
+ * Includes: Menu system, toggles, modals (Sign In/Sign Up), chat integration
  */
 
 // ========== STATE MANAGEMENT ==========
@@ -16,6 +18,7 @@ const state = {
 
 // ========== INITIALIZATION ==========
 document.addEventListener('DOMContentLoaded', function() {
+  console.log('🚀 PMERIT Platform initializing...');
   init();
 });
 
@@ -30,6 +33,8 @@ function init() {
   initializeLanguageSwitcher();
   initializeModals();
   initializeChat();
+  
+  console.log('✅ PMERIT Platform initialized successfully');
 }
 
 // ========== MENU SYSTEM ==========
@@ -123,21 +128,26 @@ function initializeAuth() {
 }
 
 function openAuthModal() {
-  const authModal = document.getElementById('auth-modal');
-  if (authModal) {
-    authModal.classList.remove('hidden');
-    authModal.setAttribute('aria-hidden', 'false');
+  const signInModal = document.getElementById('sign-in-modal');
+  if (signInModal) {
+    signInModal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
   }
 }
 
 function closeAuthModal() {
-  const authModal = document.getElementById('auth-modal');
-  if (authModal) {
-    authModal.classList.add('hidden');
-    authModal.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
+  const signInModal = document.getElementById('sign-in-modal');
+  const signUpModal = document.getElementById('sign-up-modal');
+  
+  if (signInModal) {
+    signInModal.setAttribute('aria-hidden', 'true');
   }
+  
+  if (signUpModal) {
+    signUpModal.setAttribute('aria-hidden', 'true');
+  }
+  
+  document.body.style.overflow = '';
 }
 
 // ========== TOGGLE SWITCHES ==========
@@ -185,15 +195,58 @@ function initializeToggles() {
       saveState();
     });
   }
+
+  // Desktop toggles (if present)
+  const desktopVHToggle = document.getElementById('desktop-vh-toggle');
+  if (desktopVHToggle) {
+    desktopVHToggle.checked = state.virtualHuman;
+    desktopVHToggle.addEventListener('change', function() {
+      state.virtualHuman = this.checked;
+      toggleVirtualHumanMode(this.checked);
+      saveState();
+    });
+  }
+
+  const desktopCSToggle = document.getElementById('desktop-cs-toggle');
+  if (desktopCSToggle) {
+    desktopCSToggle.checked = state.customerService;
+    desktopCSToggle.addEventListener('change', function() {
+      state.customerService = this.checked;
+      toggleCustomerServiceMode(this.checked);
+      saveState();
+    });
+  }
+
+  const desktopDarkToggle = document.getElementById('desktop-dark-toggle');
+  if (desktopDarkToggle) {
+    desktopDarkToggle.checked = state.darkMode;
+    desktopDarkToggle.addEventListener('change', function() {
+      state.darkMode = this.checked;
+      toggleDarkMode(this.checked);
+      saveState();
+    });
+  }
+
+  const desktopTTSToggle = document.getElementById('desktop-tts-toggle');
+  if (desktopTTSToggle) {
+    desktopTTSToggle.checked = state.textToSpeech;
+    desktopTTSToggle.addEventListener('change', function() {
+      state.textToSpeech = this.checked;
+      toggleTextToSpeech(this.checked);
+      saveState();
+    });
+  }
 }
 
 function toggleVirtualHumanMode(enabled) {
   if (enabled) {
     document.body.classList.add('virtual-human-mode');
     showToast('Virtual Human Mode Enabled', 'success');
+    console.log('🤖 Virtual Human Mode: ON');
   } else {
     document.body.classList.remove('virtual-human-mode');
     showToast('Virtual Human Mode Disabled', 'info');
+    console.log('🤖 Virtual Human Mode: OFF');
   }
 }
 
@@ -201,9 +254,11 @@ function toggleCustomerServiceMode(enabled) {
   if (enabled) {
     document.body.classList.add('customer-service-mode');
     showToast('Customer Service Mode Enabled', 'success');
+    console.log('💬 Customer Service Mode: ON');
   } else {
     document.body.classList.remove('customer-service-mode');
     showToast('Customer Service Mode Disabled', 'info');
+    console.log('💬 Customer Service Mode: OFF');
   }
 }
 
@@ -219,9 +274,11 @@ function toggleDarkMode(enabled) {
 
 function toggleTextToSpeech(enabled) {
   if (enabled) {
+    document.body.classList.add('tts-enabled');
     showToast('Text-to-Speech Enabled', 'success');
     testTextToSpeech();
   } else {
+    document.body.classList.remove('tts-enabled');
     showToast('Text-to-Speech Disabled', 'info');
   }
 }
@@ -271,6 +328,7 @@ function changeLanguage(lang) {
   state.language = lang;
   saveState();
   showToast(`Language changed to ${lang.toUpperCase()}`, 'success');
+  console.log(`🌐 Language changed to: ${lang}`);
   
   // Update active language option
   document.querySelectorAll('.language-option').forEach(opt => {
@@ -281,14 +339,102 @@ function changeLanguage(lang) {
   });
 }
 
-// ========== MODALS ==========
+// ========== MODALS (Phase 4) ==========
 function initializeModals() {
+  // Sign In Modal
+  const signInModal = document.getElementById('sign-in-modal');
+  const signInClose = document.getElementById('sign-in-close');
+  const signInBackdrop = document.getElementById('sign-in-backdrop');
+  const signInForm = document.getElementById('sign-in-form');
+
+  if (signInClose) {
+    signInClose.addEventListener('click', () => {
+      signInModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    });
+  }
+
+  if (signInBackdrop) {
+    signInBackdrop.addEventListener('click', () => {
+      signInModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    });
+  }
+
+  if (signInForm) {
+    signInForm.addEventListener('submit', handleSignIn);
+  }
+
+  // Sign Up Modal
+  const signUpModal = document.getElementById('sign-up-modal');
+  const signUpClose = document.getElementById('sign-up-close');
+  const signUpBackdrop = document.getElementById('sign-up-backdrop');
+  const signUpForm = document.getElementById('sign-up-form');
+
+  if (signUpClose) {
+    signUpClose.addEventListener('click', () => {
+      signUpModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    });
+  }
+
+  if (signUpBackdrop) {
+    signUpBackdrop.addEventListener('click', () => {
+      signUpModal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    });
+  }
+
+  if (signUpForm) {
+    signUpForm.addEventListener('submit', handleSignUp);
+  }
+
+  // Switch between modals
+  const switchToSignIn = document.getElementById('switch-to-sign-in');
+  const switchToSignUp = document.getElementById('switch-to-sign-up');
+
+  if (switchToSignIn) {
+    switchToSignIn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (signUpModal) signUpModal.setAttribute('aria-hidden', 'true');
+      if (signInModal) {
+        signInModal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+    });
+  }
+
+  if (switchToSignUp) {
+    switchToSignUp.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (signInModal) signInModal.setAttribute('aria-hidden', 'true');
+      if (signUpModal) {
+        signUpModal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+    });
+  }
+
+  // ESC key closes modals
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (signInModal && signInModal.getAttribute('aria-hidden') === 'false') {
+        signInModal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+      if (signUpModal && signUpModal.getAttribute('aria-hidden') === 'false') {
+        signUpModal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+    }
+  });
+
   // Career Track Modal
   const careerTrackBtn = document.getElementById('career-track-btn');
   if (careerTrackBtn) {
     careerTrackBtn.addEventListener('click', function() {
       closeMenu();
-      openModal('career-tracks-modal');
+      showToast('Career Tracks feature coming soon!', 'info');
     });
   }
 
@@ -297,7 +443,7 @@ function initializeModals() {
   if (previewVoicesBtn) {
     previewVoicesBtn.addEventListener('click', function() {
       closeMenu();
-      openModal('voices-modal');
+      showToast('Voice Preview feature coming soon!', 'info');
     });
   }
 
@@ -315,32 +461,76 @@ function initializeModals() {
   if (beginAssessmentBtn) {
     beginAssessmentBtn.addEventListener('click', function() {
       closeMenu();
-      openModal('assessment-modal');
+      window.location.href = 'assessment.html';
     });
   }
 
-  // Close modals on backdrop click
-  document.addEventListener('click', function(e) {
-    if (e.target.classList.contains('modal-backdrop')) {
-      closeModal(e.target.closest('.modal').id);
-    }
-  });
-}
+  // Desktop buttons
+  const desktopCareerBtn = document.getElementById('desktop-career-btn');
+  if (desktopCareerBtn) {
+    desktopCareerBtn.addEventListener('click', () => {
+      showToast('Career Tracks feature coming soon!', 'info');
+    });
+  }
 
-function openModal(modalId) {
-  const modal = document.getElementById(modalId);
-  if (modal) {
-    modal.classList.add('active');
-    modal.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
+  const desktopVoicesBtn = document.getElementById('desktop-voices-btn');
+  if (desktopVoicesBtn) {
+    desktopVoicesBtn.addEventListener('click', () => {
+      showToast('Voice Preview feature coming soon!', 'info');
+    });
+  }
+
+  const desktopDashboardBtn = document.getElementById('desktop-dashboard-btn');
+  if (desktopDashboardBtn) {
+    desktopDashboardBtn.addEventListener('click', () => {
+      window.location.href = 'learner-portal.html';
+    });
+  }
+
+  const desktopBeginAssessment = document.getElementById('desktop-begin-assessment');
+  if (desktopBeginAssessment) {
+    desktopBeginAssessment.addEventListener('click', () => {
+      window.location.href = 'assessment.html';
+    });
   }
 }
 
-function closeModal(modalId) {
-  const modal = document.getElementById(modalId);
-  if (modal) {
-    modal.classList.remove('active');
-    modal.setAttribute('aria-hidden', 'true');
+function handleSignIn(e) {
+  e.preventDefault();
+  
+  const email = document.getElementById('sign-in-email').value;
+  const password = document.getElementById('sign-in-password').value;
+  const rememberMe = document.getElementById('remember-me').checked;
+
+  console.log('Sign In:', { email, rememberMe });
+  
+  // TODO: Implement actual authentication
+  showToast('Sign-in feature coming soon!', 'info');
+  
+  // Close modal
+  const signInModal = document.getElementById('sign-in-modal');
+  if (signInModal) {
+    signInModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+}
+
+function handleSignUp(e) {
+  e.preventDefault();
+  
+  const name = document.getElementById('sign-up-name').value;
+  const email = document.getElementById('sign-up-email').value;
+  const password = document.getElementById('sign-up-password').value;
+
+  console.log('Sign Up:', { name, email });
+  
+  // TODO: Implement actual registration
+  showToast('Sign-up feature coming soon!', 'info');
+  
+  // Close modal
+  const signUpModal = document.getElementById('sign-up-modal');
+  if (signUpModal) {
+    signUpModal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
   }
 }
@@ -359,88 +549,59 @@ function initializeChat() {
       }
     });
   }
-}
 
-function sendMessage() {
-  const chatInput = document.getElementById('chat-input');
-  const message = chatInput.value.trim();
+  // Desktop chat
+  const desktopSendBtn = document.getElementById('desktop-send-btn');
+  const desktopChatInput = document.getElementById('desktop-chat-input');
 
-  if (message) {
-    addMessageToChat('user', message);
-    chatInput.value = '';
-
-    // Simulate AI response
-    setTimeout(() => {
-      const response = getAIResponse(message);
-      addMessageToChat('ai', response);
-
-      if (state.textToSpeech) {
-        speakMessage(response);
+  if (desktopSendBtn && desktopChatInput) {
+    desktopSendBtn.addEventListener('click', () => sendMessage('desktop'));
+    desktopChatInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage('desktop');
       }
-    }, 1500);
+    });
   }
 }
 
-function addMessageToChat(sender, message) {
-  const chatBody = document.getElementById('chat-body');
-  if (!chatBody) return;
-
-  const messageDiv = document.createElement('div');
-  messageDiv.classList.add('chat-message', sender === 'user' ? 'user-message' : 'ai-message');
-
-  const avatar = document.createElement('div');
-  avatar.classList.add('message-avatar');
-  avatar.textContent = sender === 'user' ? '👤' : '🤖';
-
-  const content = document.createElement('div');
-  content.classList.add('message-content');
-
-  const text = document.createElement('p');
-  text.classList.add('message-text');
-  text.textContent = message;
-
-  const timestamp = document.createElement('span');
-  timestamp.classList.add('message-time');
-  timestamp.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-  content.appendChild(text);
-  content.appendChild(timestamp);
-
-  messageDiv.appendChild(avatar);
-  messageDiv.appendChild(content);
-
-  chatBody.appendChild(messageDiv);
-
-  // Auto-scroll to bottom
-  chatBody.scrollTop = chatBody.scrollHeight;
-}
-
-function getAIResponse(message) {
-  const responses = [
-    "I'd be happy to help you with that! Let me provide you with some information.",
-    "That's a great question! Here's what I can tell you...",
-    "Thank you for asking. Let me assist you with that.",
-    "I understand what you're looking for. Here's my response...",
-    "Excellent inquiry! Allow me to guide you through this."
-  ];
-
-  return responses[Math.floor(Math.random() * responses.length)];
-}
-
-function speakMessage(text) {
-  if ('speechSynthesis' in window) {
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 1.0;
-    utterance.pitch = 1.0;
-    window.speechSynthesis.speak(utterance);
+function sendMessage(layout = 'mobile') {
+  // Delegate to chat.js if available
+  if (typeof window.sendMessage === 'function') {
+    window.sendMessage(layout);
+  } else {
+    console.log('Chat functionality will be handled by chat.js');
   }
 }
 
 // ========== TOAST NOTIFICATIONS ==========
 function showToast(message, type = 'info') {
+  // Remove any existing toast
+  const existingToast = document.querySelector('.toast');
+  if (existingToast) {
+    existingToast.remove();
+  }
+
   const toast = document.createElement('div');
   toast.classList.add('toast', `toast-${type}`);
   toast.textContent = message;
+
+  // Add icon based on type
+  const icon = document.createElement('i');
+  switch(type) {
+    case 'success':
+      icon.className = 'fas fa-check-circle';
+      break;
+    case 'error':
+      icon.className = 'fas fa-exclamation-circle';
+      break;
+    case 'warning':
+      icon.className = 'fas fa-exclamation-triangle';
+      break;
+    default:
+      icon.className = 'fas fa-info-circle';
+  }
+  toast.prepend(icon);
 
   document.body.appendChild(toast);
 
@@ -452,6 +613,59 @@ function showToast(message, type = 'info') {
     toast.classList.remove('show');
     setTimeout(() => toast.remove(), 300);
   }, 3000);
+}
+
+// Toast styles (if not already in CSS)
+if (!document.querySelector('style[data-toast-styles]')) {
+  const toastStyles = document.createElement('style');
+  toastStyles.setAttribute('data-toast-styles', '');
+  toastStyles.textContent = `
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--bg-primary, #fff);
+      color: var(--text-primary, #000);
+      padding: 12px 24px;
+      border-radius: 8px;
+      box-shadow: var(--shadow-lg, 0 4px 12px rgba(0,0,0,0.15));
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 9999;
+      opacity: 0;
+      transition: all 0.3s ease;
+      font-size: 14px;
+      font-weight: 500;
+      border: 1px solid var(--border-color, #e0e0e0);
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .toast-success {
+      background: var(--success-light, #d4edda);
+      color: var(--success, #155724);
+      border-color: var(--success, #28a745);
+    }
+    .toast-error {
+      background: var(--error-light, #f8d7da);
+      color: var(--error, #721c24);
+      border-color: var(--error, #dc3545);
+    }
+    .toast-warning {
+      background: var(--warning-light, #fff3cd);
+      color: var(--warning, #856404);
+      border-color: var(--warning, #ffc107);
+    }
+    .toast-info {
+      background: var(--primary-light, #d1ecf1);
+      color: var(--primary, #0c5460);
+      border-color: var(--primary, #17a2b8);
+    }
+  `;
+  document.head.appendChild(toastStyles);
 }
 
 // ========== STATE PERSISTENCE ==========
@@ -473,6 +687,10 @@ function loadState() {
   if (state.customerService) {
     document.body.classList.add('customer-service-mode');
   }
+
+  if (state.textToSpeech) {
+    document.body.classList.add('tts-enabled');
+  }
 }
 
 function saveState() {
@@ -492,7 +710,7 @@ function debounce(func, wait) {
   };
 }
 
-// Export for testing
+// ========== EXPORT FOR TESTING ==========
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     init,
