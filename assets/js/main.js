@@ -59,6 +59,28 @@ function initializeMenu() {
       closeMenu();
     }
   });
+
+  // Initialize submenu toggles
+  const menuToggles = document.querySelectorAll('.menu-toggle');
+  menuToggles.forEach(toggle => {
+    toggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      const isExpanded = this.getAttribute('aria-expanded') === 'true';
+      const submenu = this.nextElementSibling;
+      
+      if (submenu && submenu.classList.contains('menu-submenu')) {
+        if (isExpanded) {
+          this.setAttribute('aria-expanded', 'false');
+          submenu.style.display = 'none';
+          this.classList.remove('expanded');
+        } else {
+          this.setAttribute('aria-expanded', 'true');
+          submenu.style.display = 'block';
+          this.classList.add('expanded');
+        }
+      }
+    });
+  });
 }
 
 function openMenu() {
@@ -134,14 +156,9 @@ function openAuthModal() {
 
 function closeAuthModal() {
   const signInModal = document.getElementById('sign-in-modal');
-  const signUpModal = document.getElementById('sign-up-modal');
   
   if (signInModal) {
     signInModal.setAttribute('aria-hidden', 'true');
-  }
-  
-  if (signUpModal) {
-    signUpModal.setAttribute('aria-hidden', 'true');
   }
   
   document.body.style.overflow = '';
@@ -190,6 +207,31 @@ function initializeToggles() {
       state.textToSpeech = this.checked;
       toggleTextToSpeech(this.checked);
       saveState();
+    });
+  }
+
+  // Mobile-specific toggles (in hamburger menu)
+  const mobileDarkModeToggle = document.getElementById('mobile-dark-mode');
+  if (mobileDarkModeToggle) {
+    mobileDarkModeToggle.checked = state.darkMode;
+    mobileDarkModeToggle.addEventListener('change', function() {
+      state.darkMode = this.checked;
+      toggleDarkMode(this.checked);
+      saveState();
+      // Sync with desktop if it exists
+      if (darkModeToggle) darkModeToggle.checked = this.checked;
+    });
+  }
+
+  const mobileTTSToggle = document.getElementById('mobile-tts');
+  if (mobileTTSToggle) {
+    mobileTTSToggle.checked = state.textToSpeech;
+    mobileTTSToggle.addEventListener('change', function() {
+      state.textToSpeech = this.checked;
+      toggleTextToSpeech(this.checked);
+      saveState();
+      // Sync with desktop if it exists
+      if (ttsToggle) ttsToggle.checked = this.checked;
     });
   }
 
@@ -333,89 +375,83 @@ function changeLanguage(lang) {
 
 // ========== MODALS (Phase 4) ==========
 function initializeModals() {
-  // Sign In Modal
+  // Sign In Modal (using tab system)
   const signInModal = document.getElementById('sign-in-modal');
-  const signInClose = document.getElementById('sign-in-close');
-  const signInBackdrop = document.getElementById('sign-in-backdrop');
-  const signInForm = document.getElementById('sign-in-form');
+  const modalClose = document.getElementById('modal-close');
+  const modalBackdrop = signInModal ? signInModal.querySelector('.modal-backdrop') : null;
+  const signInForm = document.getElementById('signin-form');
+  const signUpForm = document.getElementById('signup-form');
 
-  if (signInClose) {
-    signInClose.addEventListener('click', () => {
-      signInModal.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
+  // Close modal button
+  if (modalClose) {
+    modalClose.addEventListener('click', () => {
+      if (signInModal) {
+        signInModal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
     });
   }
 
-  if (signInBackdrop) {
-    signInBackdrop.addEventListener('click', () => {
-      signInModal.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
+  // Backdrop click closes modal
+  if (modalBackdrop) {
+    modalBackdrop.addEventListener('click', () => {
+      if (signInModal) {
+        signInModal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
     });
   }
 
+  // Tab switching
+  const signInTab = document.getElementById('signin-tab');
+  const signUpTab = document.getElementById('signup-tab');
+  const signInPanel = document.getElementById('signin-panel');
+  const signUpPanel = document.getElementById('signup-panel');
+
+  if (signInTab && signUpTab && signInPanel && signUpPanel) {
+    signInTab.addEventListener('click', () => {
+      // Update tabs
+      signInTab.classList.add('active');
+      signInTab.setAttribute('aria-selected', 'true');
+      signUpTab.classList.remove('active');
+      signUpTab.setAttribute('aria-selected', 'false');
+      
+      // Update panels
+      signInPanel.classList.add('active');
+      signInPanel.removeAttribute('aria-hidden');
+      signUpPanel.classList.remove('active');
+      signUpPanel.setAttribute('aria-hidden', 'true');
+    });
+
+    signUpTab.addEventListener('click', () => {
+      // Update tabs
+      signUpTab.classList.add('active');
+      signUpTab.setAttribute('aria-selected', 'true');
+      signInTab.classList.remove('active');
+      signInTab.setAttribute('aria-selected', 'false');
+      
+      // Update panels
+      signUpPanel.classList.add('active');
+      signUpPanel.removeAttribute('aria-hidden');
+      signInPanel.classList.remove('active');
+      signInPanel.setAttribute('aria-hidden', 'true');
+    });
+  }
+
+  // Form submissions
   if (signInForm) {
     signInForm.addEventListener('submit', handleSignIn);
-  }
-
-  // Sign Up Modal
-  const signUpModal = document.getElementById('sign-up-modal');
-  const signUpClose = document.getElementById('sign-up-close');
-  const signUpBackdrop = document.getElementById('sign-up-backdrop');
-  const signUpForm = document.getElementById('sign-up-form');
-
-  if (signUpClose) {
-    signUpClose.addEventListener('click', () => {
-      signUpModal.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
-    });
-  }
-
-  if (signUpBackdrop) {
-    signUpBackdrop.addEventListener('click', () => {
-      signUpModal.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
-    });
   }
 
   if (signUpForm) {
     signUpForm.addEventListener('submit', handleSignUp);
   }
 
-  // Switch between modals
-  const switchToSignIn = document.getElementById('switch-to-sign-in');
-  const switchToSignUp = document.getElementById('switch-to-sign-up');
-
-  if (switchToSignIn) {
-    switchToSignIn.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (signUpModal) signUpModal.setAttribute('aria-hidden', 'true');
-      if (signInModal) {
-        signInModal.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
-      }
-    });
-  }
-
-  if (switchToSignUp) {
-    switchToSignUp.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (signInModal) signInModal.setAttribute('aria-hidden', 'true');
-      if (signUpModal) {
-        signUpModal.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
-      }
-    });
-  }
-
-  // ESC key closes modals
+  // ESC key closes modal
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       if (signInModal && signInModal.getAttribute('aria-hidden') === 'false') {
         signInModal.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-      }
-      if (signUpModal && signUpModal.getAttribute('aria-hidden') === 'false') {
-        signUpModal.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
       }
     }

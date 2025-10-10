@@ -27,9 +27,9 @@ function initializeChat() {
   // Initialize chat interface
 
   // Mobile chat
-  const mobileChatInput = document.getElementById('chat-input');
-  const mobileSendBtn = document.getElementById('send-btn');
-  const mobileCharCount = document.getElementById('char-count');
+  const mobileChatInput = document.getElementById('mobile-chat-input');
+  const mobileSendBtn = document.getElementById('mobile-send-btn');
+  const mobileCharCount = document.getElementById('mobile-char-count');
 
   if (mobileChatInput && mobileSendBtn) {
     mobileChatInput.addEventListener('input', function() {
@@ -77,7 +77,7 @@ function initializeChat() {
 function sendMessage(layout = 'mobile') {
   if (chatState.isTyping) return;
 
-  const inputId = layout === 'mobile' ? 'chat-input' : 'desktop-chat-input';
+  const inputId = layout === 'mobile' ? 'mobile-chat-input' : 'desktop-chat-input';
   const input = document.getElementById(inputId);
 
   if (!input) return;
@@ -94,7 +94,7 @@ function sendMessage(layout = 'mobile') {
   input.style.height = 'auto';
 
   // Update char count
-  const charCountId = layout === 'mobile' ? 'char-count' : 'desktop-char-count';
+  const charCountId = layout === 'mobile' ? 'mobile-char-count' : 'desktop-char-count';
   const charCount = document.getElementById(charCountId);
   if (charCount) {
     charCount.textContent = '0/1000';
@@ -119,7 +119,7 @@ function sendMessage(layout = 'mobile') {
 
 // ========== ADD MESSAGE ==========
 function addMessage(sender, text, layout = 'mobile') {
-  const messagesId = layout === 'mobile' ? 'chat-messages' : 'desktop-chat-messages';
+  const messagesId = layout === 'mobile' ? 'mobile-chat-messages' : 'desktop-chat-messages';
   const messagesContainer = document.getElementById(messagesId);
 
   if (!messagesContainer) return;
@@ -175,14 +175,14 @@ function addMessage(sender, text, layout = 'mobile') {
 function showTypingIndicator(layout = 'mobile') {
   chatState.isTyping = true;
 
-  const indicatorId = layout === 'mobile' ? 'typing-indicator' : 'desktop-typing-indicator';
+  const indicatorId = layout === 'mobile' ? 'mobile-typing-indicator' : 'desktop-typing-indicator';
   const indicator = document.getElementById(indicatorId);
 
   if (indicator) {
     indicator.style.display = 'flex';
 
     // Scroll to show indicator
-    const messagesId = layout === 'mobile' ? 'chat-messages' : 'desktop-chat-messages';
+    const messagesId = layout === 'mobile' ? 'mobile-chat-messages' : 'desktop-chat-messages';
     const messagesContainer = document.getElementById(messagesId);
     if (messagesContainer) {
       setTimeout(() => scrollToBottom(messagesContainer, indicator), 50);
@@ -193,7 +193,7 @@ function showTypingIndicator(layout = 'mobile') {
 function hideTypingIndicator(layout = 'mobile') {
   chatState.isTyping = false;
 
-  const indicatorId = layout === 'mobile' ? 'typing-indicator' : 'desktop-typing-indicator';
+  const indicatorId = layout === 'mobile' ? 'mobile-typing-indicator' : 'desktop-typing-indicator';
   const indicator = document.getElementById(indicatorId);
 
   if (indicator) {
