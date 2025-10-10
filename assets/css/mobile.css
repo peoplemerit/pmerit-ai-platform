@@ -28,7 +28,7 @@
     overflow: visible;           /* Allow content to show */
     
     /* Purple gradient background */
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--hero-gradient);
     padding: 1.5rem 1rem;
     
     /* Flexbox for content */
@@ -186,7 +186,7 @@
     max-height: 40vh; /* Limit height to 40% of viewport */
     
     /* Purple gradient background */
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--hero-gradient);
     
     /* Padding and spacing */
     padding: 2rem 1.5rem;
@@ -646,7 +646,7 @@
      ======================================== */
   
   .dark .hero-section {
-    background: linear-gradient(135deg, #4c51bf 0%, #553c9a 100%);
+    background: var(--hero-gradient);
   }
   
   .dark .chat-input-container,

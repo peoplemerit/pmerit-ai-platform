@@ -44,6 +44,11 @@
     --bg-gradient-start: #6B5CE7;      /* Gradient start (purple-blue) */
     --bg-gradient-end: #8B7CE8;        /* Gradient end (lighter purple) */
     
+    /* === HERO GRADIENT === */
+    --hero-gradient-start: #667eea;    /* Hero gradient start (vibrant purple) */
+    --hero-gradient-end: #764ba2;      /* Hero gradient end (deep purple) */
+    --hero-gradient: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
+    
     /* === BORDERS === */
     --border-color: #E9ECEF;           /* Default border */
     --border-color-light: #F1F3F5;     /* Light border */
@@ -159,6 +164,11 @@
     /* === EXTENDED PALETTE === */
     --color-light-teal: #7ED0D9;
     --color-coral-dark: #FF6B6B;
+    
+    /* === HERO GRADIENT (DARK MODE) === */
+    --hero-gradient-start: #4c51bf;    /* Darker hero gradient start */
+    --hero-gradient-end: #553c9a;      /* Darker hero gradient end */
+    --hero-gradient: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
     
     /* === SEMANTIC COLORS === */
     --color-success: #4CAF7A;          /* Lighter green */
