@@ -1,732 +1,737 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="PMERIT - Personalized Merit-based Education Platform. Accessible, high-quality education for everyone.">
-  <meta name="theme-color" content="#2A5B8C">
-  <title>PMERIT - Personalized Learning Platform</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="description" content="PMERIT - Accessible Global Education powered by AI. Breaking poverty cycles through high-quality, personalized learning."/>
+  <meta name="theme-color" content="#2563EB"/>
   
-  <!-- Google Fonts -->
+  <title>PMERIT – Accessible Global Education</title>
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <!-- CSS Loading Order - CRITICAL -->
-  <link rel="stylesheet" href="assets/css/theme-variables.css">
-  <link rel="stylesheet" href="assets/css/base.css">
-  <link rel="stylesheet" href="assets/css/typography.css">
-  <link rel="stylesheet" href="assets/css/components.css">
-  <link rel="stylesheet" href="assets/css/mobile.css">
-  <link rel="stylesheet" href="assets/css/desktop.css">
-</head>
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 
+  <!-- Stylesheets - Load Order Matters -->
+  <link rel="stylesheet" href="assets/css/light-theme.css">
+  <link rel="stylesheet" href="assets/css/mobile-mockup-match.css">
+  
+  <style>
+    /* ========================================
+       DESKTOP THREE-PANEL LAYOUT
+       Based on blueprint-index.html
+       ======================================== */
+    
+    @media (min-width: 1024px) {
+      /* === HEADER (DESKTOP) === */
+      .pmerit-header {
+        height: var(--header-height);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1.5rem;
+        background-color: var(--bg-card);
+        border-bottom: 1px solid var(--border-color);
+        box-shadow: var(--shadow);
+        z-index: 50;
+      }
+
+      .pmerit-logo {
+        font-weight: 700;
+        font-size: 1.5rem;
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .pmerit-logo::before {
+        content: "🎓";
+        font-size: 1.5rem;
+      }
+
+      .header-nav {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .nav-btn, .lang-selector {
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-weight: 500;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: var(--transition);
+        border: 1px solid var(--border-color);
+        background-color: var(--bg-card);
+        color: var(--text-primary);
+        min-height: 44px;
+      }
+
+      .nav-btn:hover, .lang-selector:hover {
+        border-color: var(--primary);
+        transform: translateY(-1px);
+      }
+
+      .nav-btn.primary {
+        background-color: var(--primary);
+        color: white;
+        border-color: var(--primary);
+      }
+
+      .nav-btn.primary:hover {
+        background-color: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      /* === THREE-PANEL GRID === */
+      .desktop-layout {
+        display: grid;
+        grid-template-columns: 280px 1fr 320px;
+        height: calc(100vh - var(--header-height) - var(--footer-height));
+        overflow: hidden;
+        gap: 0;
+      }
+
+      /* === LEFT SIDEBAR === */
+      .left-sidebar {
+        background-color: var(--bg-secondary);
+        border-right: 1px solid var(--border-color);
+        padding: 1.5rem 1rem;
+        overflow-y: auto;
+      }
+
+      .pane-title {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--primary);
+        margin-bottom: 1rem;
+      }
+
+      .toggle, .action, .dashboard-btn {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem;
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+        cursor: pointer;
+        transition: var(--transition);
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        min-height: 44px;
+      }
+
+      .toggle:hover, .action:hover, .dashboard-btn:hover {
+        border-color: var(--primary);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow);
+      }
+
+      .icon {
+        color: var(--primary);
+        margin-right: 0.5rem;
+      }
+
+      .toggle-switch {
+        width: 40px;
+        height: 20px;
+        background: #ccc;
+        border-radius: 34px;
+        position: relative;
+        transition: .4s;
+      }
+
+      .toggle-switch::after {
+        content: "";
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        border-radius: 50%;
+        transition: .4s;
+      }
+
+      .toggle.active .toggle-switch {
+        background-color: var(--primary);
+      }
+
+      .toggle.active .toggle-switch::after {
+        transform: translateX(20px);
+      }
+
+      .dashboard-btn {
+        justify-content: center;
+        font-weight: 600;
+        background-color: var(--text-secondary);
+        color: white;
+        box-shadow: var(--shadow-lg);
+      }
+
+      .dashboard-btn:hover {
+        background-color: #4B5563;
+      }
+
+      .collapsible {
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: var(--bg-card);
+        margin-bottom: 0.5rem;
+      }
+
+      .collapsible-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem;
+        cursor: pointer;
+        background-color: var(--bg-secondary);
+        transition: var(--transition);
+      }
+
+      .collapsible-header:hover {
+        background-color: var(--border-color);
+      }
+
+      .collapsible-body {
+        display: none;
+        padding: 0.75rem;
+        background-color: var(--bg-card);
+        border-top: 1px solid var(--border-color);
+      }
+
+      .collapsible.open .collapsible-body {
+        display: block;
+      }
+
+      /* === CENTER PANEL === */
+      .main-content {
+        background: var(--gradient-purple);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        overflow-y: auto;
+        color: white;
+      }
+
+      .hero-content {
+        text-align: center;
+        max-width: 800px;
+      }
+
+      .greeting-text {
+        font-size: 1.3rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+      }
+
+      .chat-preview h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .chat-description {
+        font-size: 1rem;
+        opacity: 0.9;
+        margin-bottom: 2rem;
+      }
+
+      .sample-prompts {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .prompt-btn {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 0.75rem 1.5rem;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: var(--transition);
+        backdrop-filter: blur(10px);
+      }
+
+      .prompt-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        border-color: rgba(255, 255, 255, 0.5);
+      }
+
+      /* === RIGHT SIDEBAR === */
+      .right-sidebar {
+        background-color: var(--bg-secondary);
+        border-left: 1px solid var(--border-color);
+        padding: 1.5rem 1rem;
+        overflow-y: auto;
+      }
+
+      .support-card {
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .support-card h3 {
+        margin-bottom: 0.5rem;
+        color: var(--primary);
+      }
+
+      .support-buttons {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      .support-btn {
+        flex: 1;
+        padding: 0.5rem;
+        border-radius: 6px;
+        border: 1px solid var(--border-color);
+        background: var(--bg-card);
+        cursor: pointer;
+        transition: var(--transition);
+        font-size: 0.85rem;
+      }
+
+      .support-btn:hover {
+        border-color: var(--primary);
+        background: var(--bg-secondary);
+      }
+
+      .cta-large {
+        background: var(--primary);
+        color: white;
+        padding: 1rem;
+        border-radius: 8px;
+        text-align: center;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        margin-top: 1rem;
+      }
+
+      .cta-large:hover {
+        background: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      /* === FOOTER === */
+      .pmerit-footer {
+        background-color: var(--bg-card);
+        border-top: 1px solid var(--border-color);
+        padding: 1.5rem;
+      }
+
+      .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+      }
+
+      .footer-column h4 {
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+      }
+
+      .footer-link {
+        display: block;
+        color: var(--text-secondary);
+        text-decoration: none;
+        margin-bottom: 0.5rem;
+        font-size: 0.85rem;
+        transition: var(--transition);
+      }
+
+      .footer-link:hover {
+        color: var(--primary);
+      }
+
+      .footer-bottom {
+        text-align: center;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border-color);
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
 <body>
-  
-  <!-- ========================================
-       HEADER (Phase 2)
-       Mobile: Logo + Language + Hamburger + Sign In
-       Desktop: Logo + Nav Links + Language + Sign In
-       ======================================== -->
-  <header class="pmerit-header" role="banner">
-    <div class="header-container">
-      
-      <!-- Logo & Brand -->
-      <div class="header-logo">
-        <a href="/" class="logo-link" aria-label="PMERIT Home">
-          <i class="fas fa-graduation-cap" style="font-size: 1.5rem; color: var(--primary);"></i>
-          <span class="logo-text">PMERIT</span>
-        </a>
-      </div>
-      
-      <!-- Desktop Navigation (Hidden < 1024px) -->
-      <nav class="header-nav desktop-only" role="navigation" aria-label="Main Navigation">
-        <ul class="nav-list">
-          <li><a href="#virtual-human" class="nav-link">Virtual Human Mode</a></li>
-          <li><a href="#career-paths" class="nav-link">Career Paths</a></li>
-          <li><a href="#customer-service" class="nav-link">Customer Service</a></li>
-          <li><a href="#dashboard" class="nav-link">Dashboard</a></li>
-        </ul>
-      </nav>
-      
-      <!-- Right Side Actions -->
-      <div class="header-actions">
-        
-        <!-- Language Switcher -->
-        <div class="language-switcher">
-          <label for="language-select" class="sr-only">Select Language</label>
-          <select id="language-select" class="language-select" aria-label="Language">
-            <option value="en">EN</option>
-            <option value="es">ES</option>
-            <option value="fr">FR</option>
-            <option value="de">DE</option>
-            <option value="zh">中文</option>
-            <option value="ar">العربية</option>
-          </select>
-        </div>
-        
-        <!-- Hamburger Menu (Mobile Only) -->
-        <button 
-          id="hamburger-toggle"
-          class="hamburger-button mobile-only touch-target"
-          aria-label="Open Navigation Menu"
-          aria-expanded="false"
-          aria-controls="hamburger-menu"
-          type="button">
-          <span class="hamburger-icon">
-            <span class="hamburger-line"></span>
-            <span class="hamburger-line"></span>
-            <span class="hamburger-line"></span>
-          </span>
-        </button>
-        
-        <!-- Sign In Button -->
-        <button 
-          id="sign-in-btn"
-          class="btn btn-primary sign-in-button touch-target"
-          aria-label="Sign In"
-          type="button">
-          Sign In
-        </button>
-        
-      </div>
-      
-    </div>
-  </header>
-  
+
   <!-- ========================================
        MOBILE LAYOUT (< 1024px)
-       Shows on mobile/tablet, hidden on desktop
+       Matches Mobile-UI-Blueprint.jpg
        ======================================== -->
-  <main class="main-container mobile-only" role="main">
-    
-    <!-- Mobile Hero Section -->
+  
+  <div class="mobile-layout">
+    <!-- Mobile Header -->
+    <header class="pmerit-header">
+      <div class="pmerit-logo">PMERIT</div>
+      <div class="header-actions">
+        <button class="lang-selector" aria-label="Change language">En</button>
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">☰</button>
+        <button class="sign-in-btn" id="signInBtn">Sign In</button>
+      </div>
+    </header>
+
+    <!-- Hero Section with Purple Gradient -->
     <section class="hero-section">
+      <p class="hero-text">
+        Hi there! I'm your learning companion, empowering your education through innovation. 
+        PMERIT provides accessible, high-quality education that opens doors to endless 
+        opportunities worldwide. Ready to discover your potential and start your learning journey?
+      </p>
+      
+      <h2 class="hero-title">Ask Your Learning Companion</h2>
+      
+      <p class="hero-subtitle">
+        Get personalized guidance on courses, career paths, and learning objectives
+      </p>
+    </section>
+
+    <!-- Chat Messages Area (Scrollable) -->
+    <div class="chat-messages" id="chatMessages">
+      <div class="chat-message ai">
+        <p><strong>👋 Welcome!</strong></p>
+        <p>I'm here to help you explore courses, career paths, and learning opportunities. What would you like to know?</p>
+      </div>
+    </div>
+
+    <!-- Chat Input (Fixed at Bottom) -->
+    <div class="chat-input-container">
+      <textarea 
+        class="chat-input" 
+        id="chatInput"
+        placeholder="Try: 'What programming courses do you offer?'"
+        maxlength="1000"
+        rows="1"
+      ></textarea>
+      <button class="send-btn" id="sendBtn" aria-label="Send message">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+      <span class="char-count" id="charCount">0/1000</span>
+    </div>
+
+    <!-- Mobile Footer -->
+    <footer class="pmerit-footer">
+      <a href="/privacy.html" class="footer-link">Privacy & Terms</a>
+      <span> • </span>
+      <span class="footer-status">Connected to Educational Services</span>
+    </footer>
+
+    <!-- Hamburger Menu (Slide-in) -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <nav class="side-menu" id="sideMenu">
+      <h3 class="menu-title">Quick Actions</h3>
+      <div class="menu-item" data-toggle="vh">
+        <span><i class="fas fa-robot"></i> Virtual Human Mode</span>
+        <div class="toggle-switch"></div>
+      </div>
+      <div class="menu-item">
+        <span><i class="fas fa-route"></i> Career Track & Explore Paths</span>
+      </div>
+      <div class="menu-item" data-toggle="cs">
+        <span><i class="fas fa-headset"></i> Customer Service Mode</span>
+        <div class="toggle-switch"></div>
+      </div>
+      
+      <h3 class="menu-title">Settings</h3>
+      <div class="menu-item" data-toggle="dark">
+        <span><i class="fas fa-moon"></i> Dark Mode</span>
+        <div class="toggle-switch"></div>
+      </div>
+      <div class="menu-item" data-toggle="tts">
+        <span><i class="fas fa-volume-up"></i> Text-to-Speech</span>
+        <div class="toggle-switch"></div>
+      </div>
+      <div class="menu-item">
+        <span><i class="fas fa-microphone"></i> Preview Voices</span>
+      </div>
+      
+      <h3 class="menu-title">Account</h3>
+      <div class="menu-item">
+        <span><i class="fas fa-tachometer-alt"></i> Dashboard</span>
+      </div>
+      <div class="menu-item">
+        <span><i class="fas fa-clipboard-list"></i> Begin Assessment</span>
+      </div>
+    </nav>
+  </div>
+
+  <!-- ========================================
+       DESKTOP LAYOUT (>= 1024px)
+       Matches blueprint-index.html
+       ======================================== -->
+  
+  <div class="desktop-layout">
+    <!-- Desktop Header -->
+    <header class="pmerit-header" style="grid-column: 1 / -1;">
+      <div class="pmerit-logo">PMERIT</div>
+      <nav class="header-nav">
+        <select class="lang-selector" aria-label="Change language">
+          <option value="en">English</option>
+          <option value="yo">Yorùbá</option>
+          <option value="ig">Igbo</option>
+          <option value="ha">Hausa</option>
+        </select>
+        <button class="nav-btn">Donate</button>
+        <button class="nav-btn" id="desktopSignInBtn">Sign In</button>
+        <button class="nav-btn primary">Start Learning</button>
+      </nav>
+    </header>
+
+    <!-- Left Sidebar -->
+    <aside class="left-sidebar">
+      <h3 class="pane-title">Quick Actions</h3>
+      
+      <div class="toggle" data-toggle="vh">
+        <span><i class="fas fa-robot icon"></i>Virtual Human Mode</span>
+        <div class="toggle-switch"></div>
+      </div>
+      
+      <div class="action">
+        <span><i class="fas fa-route icon"></i>Career Track & Explore Paths</span>
+        <i class="fas fa-chevron-right"></i>
+      </div>
+      
+      <div class="toggle" data-toggle="cs">
+        <span><i class="fas fa-headset icon"></i>Customer Service Mode</span>
+        <div class="toggle-switch"></div>
+      </div>
+      
+      <div class="collapsible" id="settingsCollapsible">
+        <div class="collapsible-header">
+          <h4><i class="fas fa-cog icon"></i>Settings</h4>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="collapsible-body">
+          <div class="toggle" data-toggle="dark">
+            <span>Dark Mode</span>
+            <div class="toggle-switch"></div>
+          </div>
+          <div class="toggle" data-toggle="tts">
+            <span>Text-to-Speech</span>
+            <div class="toggle-switch"></div>
+          </div>
+          <div class="action">
+            <span>Preview Voices</span>
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+      </div>
+      
+      <button class="dashboard-btn">
+        <i class="fas fa-tachometer-alt"></i> Dashboard
+      </button>
+    </aside>
+
+    <!-- Center Panel (Purple Gradient Hero) -->
+    <main class="main-content">
       <div class="hero-content">
-        <p class="hero-text">
+        <p class="greeting-text">
           Hi there! I'm your learning companion, empowering your education through innovation. 
           PMERIT provides accessible, high-quality education that opens doors to endless 
           opportunities worldwide. Ready to discover your potential and start your learning journey?
         </p>
         
-        <h1 class="hero-title">Ask Your Learning Companion</h1>
-        
-        <p class="hero-subtitle">
-          Get personalized guidance on courses, career paths, and learning objectives
-        </p>
-      </div>
-    </section>
-    
-    <!-- Mobile Chat Container -->
-    <div class="chat-messages" id="mobile-chat-messages" role="log" aria-live="polite" aria-atomic="false">
-      <!-- Chat messages will be inserted here by chat.js -->
-      <div class="typing-indicator" id="mobile-typing-indicator" style="display: none;">
-        <span class="typing-dot"></span>
-        <span class="typing-dot"></span>
-        <span class="typing-dot"></span>
-      </div>
-    </div>
-    
-    <!-- Mobile Chat Input (Fixed at bottom) -->
-    <div class="chat-input-container">
-      <div class="chat-input-wrapper">
-        <textarea 
-          id="mobile-chat-input"
-          class="chat-input"
-          placeholder="Try: 'What programming courses do you recommend?'"
-          aria-label="Ask your learning companion"
-          rows="1"></textarea>
-        <button 
-          id="mobile-send-btn"
-          class="chat-send-btn touch-target"
-          aria-label="Send message"
-          type="button">
-          <i class="fas fa-paper-plane"></i>
-        </button>
-      </div>
-      <div class="chat-input-footer">
-        <span class="character-count" id="mobile-char-count">0/1000</span>
-      </div>
-    </div>
-    
-  </main>
-  
-  <!-- ========================================
-       DESKTOP LAYOUT (≥ 1024px)
-       Three-panel grid: Left Sidebar | Center | Right Sidebar
-       ======================================== -->
-  <div class="desktop-layout desktop-only">
-    
-    <!-- LEFT SIDEBAR (280px) -->
-    <aside class="left-sidebar desktop-sidebar" role="complementary" aria-label="Quick actions and settings">
-      
-      <section>
-        <h2 class="pane-title">Quick Actions</h2>
-        
-        <!-- Virtual Human Mode Toggle -->
-        <button class="toggle" id="vh-toggle" aria-pressed="false">
-          <span>
-            <i class="fas fa-user-astronaut icon"></i> 
-            Virtual Human Mode
-          </span>
-          <span class="switch" aria-hidden="true"></span>
-        </button>
-        
-        <!-- Customer Service Mode Toggle -->
-        <button class="toggle" id="cs-toggle" aria-pressed="false">
-          <span>
-            <i class="fas fa-headset icon"></i> 
-            Customer Service Mode
-          </span>
-          <span class="switch" aria-hidden="true"></span>
-        </button>
-        
-        <!-- Career Tracks Explorer -->
-        <button class="action" id="career-btn">
-          <span>
-            <i class="fas fa-route icon"></i> 
-            Explore Career Paths
-          </span>
-          <i class="fas fa-chevron-right"></i>
-        </button>
-      </section>
-      
-      <section style="margin-top: 1.5rem;">
-        <h2 class="pane-title">Settings</h2>
-        
-        <!-- Dark Mode Toggle -->
-        <button class="toggle" id="dark-mode-toggle" aria-pressed="false">
-          <span>
-            <i class="fas fa-moon icon"></i> 
-            Dark Mode
-          </span>
-          <span class="switch" aria-hidden="true"></span>
-        </button>
-        
-        <!-- Text-to-Speech Toggle -->
-        <button class="toggle" id="tts-toggle" aria-pressed="false">
-          <span>
-            <i class="fas fa-volume-up icon"></i> 
-            Text-to-Speech
-          </span>
-          <span class="switch" aria-hidden="true"></span>
-        </button>
-        
-        <!-- Preview Voices -->
-        <button class="action" id="voices-btn">
-          <span>
-            <i class="fas fa-headphones icon"></i> 
-            Preview Voices
-          </span>
-          <i class="fas fa-chevron-right"></i>
-        </button>
-      </section>
-      
-      <!-- Dashboard Button -->
-      <button class="dashboard guest" id="dashboard-btn">
-        <i class="fas fa-gauge-high"></i> 
-        Dashboard
-      </button>
-      
-      <!-- Virtual Human Avatar (Hidden by default, shown when VH mode active) -->
-      <div class="avatar" id="vh-avatar" aria-hidden="true">
-        <i class="fas fa-user-circle"></i>
-      </div>
-      
-    </aside>
-    
-    <!-- CENTER CONTENT (Flexible 1fr) -->
-    <main class="main-content" id="center" role="main">
-      
-      <!-- Hero/Greeting Section -->
-      <section class="greeting">
-        <h1>Hi there! I'm your learning companion</h1>
-        <p>
-          Empowering your education through innovation. PMERIT provides accessible, 
-          high-quality education that opens doors to endless opportunities worldwide. 
-          Ready to discover your potential and start your learning journey?
-        </p>
-      </section>
-      
-      <!-- Chat Interface -->
-      <div class="chat-container" id="desktop-chat-messages" role="log" aria-live="polite" aria-atomic="false">
-        <!-- Welcome message -->
-        <div class="message ai">
-          <div class="message-bubble">
-            👋 Welcome! I'm here to help you find the perfect courses and career paths. 
-            What would you like to learn about today?
-          </div>
+        <div class="chat-preview">
+          <h2>Ask Your Learning Companion</h2>
+          <p class="chat-description">
+            Get personalized guidance on courses, career paths, and learning objectives
+          </p>
         </div>
         
-        <!-- Typing indicator -->
-        <div class="typing-indicator" id="desktop-typing-indicator" style="display: none;">
-          <span class="typing-dot"></span>
-          <span class="typing-dot"></span>
-          <span class="typing-dot"></span>
+        <div class="sample-prompts">
+          <button class="prompt-btn">What courses do you offer?</button>
+          <button class="prompt-btn">Explore career paths</button>
+          <button class="prompt-btn">Assess my skills</button>
         </div>
       </div>
-      
-      <!-- Desktop Chat Input -->
-      <div class="chat-input-container" style="margin-top: 1rem;">
-        <div class="chat-input-wrapper">
-          <textarea 
-            id="desktop-chat-input"
-            class="chat-input"
-            placeholder="Ask me anything about courses, careers, or learning paths..."
-            aria-label="Chat with your learning companion"
-            rows="2"></textarea>
-          <button 
-            id="desktop-send-btn"
-            class="chat-send-btn touch-target"
-            aria-label="Send message"
-            type="button">
-            <i class="fas fa-paper-plane"></i>
-          </button>
-        </div>
-        <div class="chat-input-footer">
-          <span class="character-count" id="desktop-char-count">0/1000</span>
-        </div>
-      </div>
-      
-      <!-- Virtual Human Stage (Hidden by default, shown when VH mode active) -->
-      <div id="vh-stage" style="display: none;">
-        <div class="stage">
-          <div class="human-frame">
-            <div class="human-face">
-              <i class="fas fa-user-circle"></i>
-            </div>
-          </div>
-        </div>
-        <div class="captions" id="vh-captions">
-          Virtual Human is ready to assist you...
-        </div>
-      </div>
-      
     </main>
-    
-    <!-- RIGHT SIDEBAR (320px) -->
-    <aside class="right-sidebar" id="right" role="complementary" aria-label="Support and discovery">
+
+    <!-- Right Sidebar -->
+    <aside class="right-sidebar">
+      <h3 class="pane-title">Support Assistant</h3>
       
-      <section>
-        <!-- Support Assistant Card -->
-        <div class="support-assistant">
-          <h4>
-            <i class="fas fa-headset"></i> 
-            Support Assistant
-          </h4>
-          <p style="color: var(--text-secondary); margin: 0.5rem 0;">
-            Our AI assistant is here for you 24/7
-          </p>
-          
-          <div class="support-actions">
-            <button class="support-btn" id="support-vh-btn">
-              <i class="fas fa-user-astronaut"></i>
-              Virtual Human
-            </button>
-            <button class="support-btn" id="support-cs-btn">
-              <i class="fas fa-headset"></i>
-              Support
-            </button>
-          </div>
-        </div>
-      </section>
-      
-      <section>
-        <h3>Discover Your Path (AI)</h3>
-        
-        <!-- Discover Card -->
-        <div class="discover">
-          <h4>Personalized Learning Plan</h4>
-          <p>
-            Start a personalized assessment to create your learning plan tailored to your 
-            goals, interests, and learning style.
-          </p>
-          <button class="btn-primary btn-block" id="begin-assessment-btn">
-            <i class="fas fa-clipboard-list"></i>
-            Begin Assessment
+      <div class="support-card">
+        <h3>Need Help?</h3>
+        <p style="font-size: 0.85rem; color: var(--text-secondary);">
+          Our AI assistant is here 24/7 to answer your questions
+        </p>
+        <div class="support-buttons">
+          <button class="support-btn">
+            <i class="fas fa-robot"></i> Virtual Human
           </button>
-          <div class="sidebar-tip">
-            <i class="fas fa-lightbulb"></i>
-            <span>Pro tip: Keep notes in your own words for better recall.</span>
-          </div>
+          <button class="support-btn">
+            <i class="fas fa-headset"></i> Support
+          </button>
         </div>
-      </section>
-      
-    </aside>
-    
-  </div>
-  
-  <!-- ========================================
-       FOOTER (Phase 4)
-       Mobile: Simple (Privacy & Terms)
-       Desktop: Full (4 columns with all links)
-       ======================================== -->
-  <footer class="pmerit-footer" role="contentinfo">
-    
-    <!-- Mobile Footer (< 1024px) -->
-    <div class="footer-mobile mobile-only">
-      <div class="footer-content">
-        <a href="#privacy" class="footer-link">Privacy & Terms</a>
-        <span class="footer-separator">•</span>
-        <span class="footer-status">
-          <span class="status-indicator"></span>
-          Connected to Educational Services
-        </span>
       </div>
-    </div>
-    
-    <!-- Desktop Footer (≥ 1024px) -->
-    <div class="footer-desktop desktop-only">
-      <div class="footer-grid">
-        
-        <!-- Column 1: Platform -->
+      
+      <div class="support-card">
+        <h3>Discover Your Path (AI)</h3>
+        <p style="font-size: 0.85rem; color: var(--text-secondary);">
+          Let AI create a personalized learning plan tailored to your goals and interests
+        </p>
+        <button class="cta-large">
+          <i class="fas fa-compass"></i> Begin Assessment
+        </button>
+      </div>
+    </aside>
+
+    <!-- Desktop Footer -->
+    <footer class="pmerit-footer" style="grid-column: 1 / -1;">
+      <div class="footer-content">
         <div class="footer-column">
           <h4>Platform</h4>
-          <ul class="footer-links">
-            <li><a href="#about">About PMERIT</a></li>
-            <li><a href="#how-it-works">How It Works</a></li>
-            <li><a href="#pricing">Pricing</a></li>
-            <li><a href="#careers">Careers</a></li>
-            <li><a href="#blog">Blog</a></li>
-            <li><a href="#press">Press Kit</a></li>
-          </ul>
+          <a href="/courses.html" class="footer-link">Courses</a>
+          <a href="/career-paths.html" class="footer-link">Career Paths</a>
+          <a href="/assessment.html" class="footer-link">Assessment</a>
+          <a href="/library.html" class="footer-link">Library</a>
         </div>
         
-        <!-- Column 2: Features -->
         <div class="footer-column">
           <h4>Features</h4>
-          <ul class="footer-links">
-            <li><a href="#virtual-human">Virtual Human</a></li>
-            <li><a href="#career-tracks">Career Tracks</a></li>
-            <li><a href="#assessments">Assessments</a></li>
-            <li><a href="#courses">Course Library</a></li>
-            <li><a href="#certifications">Certifications</a></li>
-            <li><a href="#ai-tutor">AI Tutor</a></li>
-          </ul>
+          <a href="/virtual-human.html" class="footer-link">Virtual Human</a>
+          <a href="/ai-tutor.html" class="footer-link">AI Tutor</a>
+          <a href="/customer-service.html" class="footer-link">Customer Service</a>
         </div>
         
-        <!-- Column 3: Support -->
         <div class="footer-column">
           <h4>Support</h4>
-          <ul class="footer-links">
-            <li><a href="#help">Help Center</a></li>
-            <li><a href="#contact">Contact Us</a></li>
-            <li><a href="#faq">FAQ</a></li>
-            <li><a href="#accessibility">Accessibility</a></li>
-            <li><a href="#community">Community</a></li>
-            <li><a href="#feedback">Send Feedback</a></li>
-          </ul>
+          <a href="/help.html" class="footer-link">Help Center</a>
+          <a href="/contact.html" class="footer-link">Contact</a>
+          <a href="/partnerships.html" class="footer-link">Partnerships</a>
         </div>
         
-        <!-- Column 4: Legal & Social -->
         <div class="footer-column">
           <h4>Legal</h4>
-          <ul class="footer-links">
-            <li><a href="#privacy">Privacy Policy</a></li>
-            <li><a href="#terms">Terms of Service</a></li>
-            <li><a href="#cookies">Cookie Policy</a></li>
-            <li><a href="#gdpr">GDPR</a></li>
-          </ul>
-          <div style="margin-top: 1rem;">
-            <h4>Follow Us</h4>
-            <div class="social-links">
-              <a href="#twitter" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-              <a href="#facebook" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-              <a href="#linkedin" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-              <a href="#instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            </div>
-          </div>
+          <a href="/privacy.html" class="footer-link">Privacy Policy</a>
+          <a href="/terms.html" class="footer-link">Terms of Service</a>
+          <a href="/about.html" class="footer-link">About PMERIT</a>
         </div>
-        
       </div>
       
-      <!-- Footer Bottom -->
       <div class="footer-bottom">
-        <p>&copy; 2025 PMERIT. All rights reserved.</p>
-        <p class="footer-status">
-          <span class="status-indicator"></span>
-          Connected to Educational Services
-        </p>
+        <i class="fas fa-signal" style="color: var(--color-success);"></i> 
+        Connected to Educational Services | 
+        © 2025 PMERIT. All rights reserved.
       </div>
-    </div>
-    
-  </footer>
-  
-  <!-- ========================================
-       MOBILE HAMBURGER MENU (Phase 2)
-       Slide-in panel with backdrop
-       ======================================== -->
-  <div id="hamburger-menu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Mobile Navigation Menu" aria-hidden="true">
-    <div id="menu-overlay" class="menu-overlay"></div>
-    <div class="menu-panel">
-      
-      <!-- Menu Header -->
-      <div class="menu-header">
-        <span class="menu-title">Menu</span>
-        <button id="menu-close" class="menu-close touch-target" aria-label="Close Menu" type="button">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-      
-      <!-- Menu Navigation -->
-      <nav class="menu-nav" role="navigation">
-        <ul class="menu-list">
-          
-          <li class="menu-item">
-            <a href="#virtual-human" class="menu-link">
-              <span class="menu-icon"><i class="fas fa-user-astronaut"></i></span>
-              <div class="menu-content">
-                <span class="menu-label">Virtual Human Mode</span>
-                <span class="menu-description">Interactive AI assistant</span>
-              </div>
-            </a>
-          </li>
-          
-          <li class="menu-item">
-            <a href="#career-paths" class="menu-link">
-              <span class="menu-icon"><i class="fas fa-route"></i></span>
-              <div class="menu-content">
-                <span class="menu-label">Career Track & Explore Paths</span>
-                <span class="menu-description">Find your ideal career path</span>
-              </div>
-            </a>
-          </li>
-          
-          <li class="menu-item">
-            <a href="#customer-service" class="menu-link">
-              <span class="menu-icon"><i class="fas fa-headset"></i></span>
-              <div class="menu-content">
-                <span class="menu-label">Customer Service Mode</span>
-                <span class="menu-description">Get help and support</span>
-              </div>
-            </a>
-          </li>
-          
-          <li class="menu-item menu-item-expandable">
-            <button class="menu-link menu-toggle" aria-expanded="false">
-              <span class="menu-icon"><i class="fas fa-cog"></i></span>
-              <div class="menu-content">
-                <span class="menu-label">Settings</span>
-                <span class="menu-description">Preferences & options</span>
-              </div>
-              <span class="menu-arrow"><i class="fas fa-chevron-right"></i></span>
-            </button>
-            <ul class="menu-submenu">
-              <li class="submenu-item">
-                <label class="submenu-link">
-                  <span class="submenu-label">Dark Mode</span>
-                  <input type="checkbox" class="toggle-switch" id="mobile-dark-mode">
-                </label>
-              </li>
-              <li class="submenu-item">
-                <label class="submenu-link">
-                  <span class="submenu-label">Text-to-Speech</span>
-                  <input type="checkbox" class="toggle-switch" id="mobile-tts">
-                </label>
-              </li>
-            </ul>
-          </li>
-          
-          <li class="menu-item">
-            <a href="#preview-voices" class="menu-link">
-              <span class="menu-icon"><i class="fas fa-headphones"></i></span>
-              <div class="menu-content">
-                <span class="menu-label">Preview Voices</span>
-                <span class="menu-description">Try different AI voices</span>
-              </div>
-            </a>
-          </li>
-          
-          <li class="menu-item">
-            <a href="#dashboard" class="menu-link">
-              <span class="menu-icon"><i class="fas fa-gauge-high"></i></span>
-              <div class="menu-content">
-                <span class="menu-label">Dashboard</span>
-                <span class="menu-description">View your progress</span>
-              </div>
-            </a>
-          </li>
-          
-          <li class="menu-item menu-item-highlighted">
-            <a href="#assessment" class="menu-link">
-              <span class="menu-icon"><i class="fas fa-clipboard-list"></i></span>
-              <div class="menu-content">
-                <span class="menu-label">Begin Assessment</span>
-                <span class="menu-description">Start your evaluation</span>
-              </div>
-            </a>
-          </li>
-          
-        </ul>
-      </nav>
-      
-      <!-- Menu Footer -->
-      <div class="menu-footer">
-        <p class="menu-footer-text">PMERIT Platform v2.0</p>
-      </div>
-      
-    </div>
+    </footer>
   </div>
-  
-  <!-- ========================================
-       SIGN IN / SIGN UP MODAL (Phase 2)
-       Modal with tabs for switching between sign-in and sign-up
-       ======================================== -->
-  <div id="sign-in-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
-    <div class="modal-backdrop"></div>
-    <div class="modal-content">
-      
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h2 id="modal-title" class="modal-title">Welcome to PMERIT</h2>
-        <button id="modal-close" class="modal-close touch-target" aria-label="Close Modal" type="button">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-      
-      <!-- Modal Tabs -->
-      <div class="modal-tabs" role="tablist">
-        <button 
-          class="tab-button active" 
-          role="tab" 
-          aria-selected="true" 
-          aria-controls="signin-panel" 
-          id="signin-tab" 
-          type="button">
-          Sign In
-        </button>
-        <button 
-          class="tab-button" 
-          role="tab" 
-          aria-selected="false" 
-          aria-controls="signup-panel" 
-          id="signup-tab" 
-          type="button">
-          Sign Up
-        </button>
-      </div>
-      
-      <!-- Sign In Panel -->
-      <div class="modal-body tab-panel active" role="tabpanel" id="signin-panel" aria-labelledby="signin-tab">
-        <form class="auth-form" id="signin-form">
-          
-          <div class="form-group">
-            <label for="signin-email" class="form-label">Email</label>
-            <input 
-              type="email" 
-              id="signin-email" 
-              class="form-input" 
-              placeholder="you@example.com" 
-              required 
-              autocomplete="email">
-          </div>
-          
-          <div class="form-group">
-            <label for="signin-password" class="form-label">Password</label>
-            <input 
-              type="password" 
-              id="signin-password" 
-              class="form-input" 
-              placeholder="Enter your password" 
-              required 
-              autocomplete="current-password">
-          </div>
-          
-          <div class="form-row">
-            <label class="form-checkbox">
-              <input type="checkbox" id="remember-me">
-              <span>Remember me</span>
-            </label>
-            <a href="#forgot-password" class="form-link">Forgot password?</a>
-          </div>
-          
-          <button type="submit" class="btn btn-primary btn-full">Sign In</button>
-          
-          <div class="form-divider"><span>or continue with</span></div>
-          
-          <div class="social-buttons">
-            <button type="button" class="btn btn-social">
-              <i class="fab fa-google"></i> Google
-            </button>
-            <button type="button" class="btn btn-social">
-              <i class="fab fa-microsoft"></i> Microsoft
-            </button>
-          </div>
-          
-        </form>
-      </div>
-      
-      <!-- Sign Up Panel -->
-      <div class="modal-body tab-panel" role="tabpanel" id="signup-panel" aria-labelledby="signup-tab" aria-hidden="true">
-        <form class="auth-form" id="signup-form">
-          
-          <div class="form-group">
-            <label for="signup-name" class="form-label">Full Name</label>
-            <input 
-              type="text" 
-              id="signup-name" 
-              class="form-input" 
-              placeholder="Your full name" 
-              required 
-              autocomplete="name">
-          </div>
-          
-          <div class="form-group">
-            <label for="signup-email" class="form-label">Email</label>
-            <input 
-              type="email" 
-              id="signup-email" 
-              class="form-input" 
-              placeholder="you@example.com" 
-              required 
-              autocomplete="email">
-          </div>
-          
-          <div class="form-group">
-            <label for="signup-password" class="form-label">Password</label>
-            <input 
-              type="password" 
-              id="signup-password" 
-              class="form-input" 
-              placeholder="Create a strong password" 
-              required 
-              autocomplete="new-password">
-            <p class="form-hint">At least 8 characters</p>
-          </div>
-          
-          <label class="form-checkbox">
-            <input type="checkbox" id="terms-agree" required>
-            <span>I agree to the <a href="#terms" class="form-link">Terms & Conditions</a></span>
-          </label>
-          
-          <button type="submit" class="btn btn-primary btn-full">Create Account</button>
-          
-          <div class="form-divider"><span>or sign up with</span></div>
-          
-          <div class="social-buttons">
-            <button type="button" class="btn btn-social">
-              <i class="fab fa-google"></i> Google
-            </button>
-            <button type="button" class="btn btn-social">
-              <i class="fab fa-microsoft"></i> Microsoft
-            </button>
-          </div>
-          
-        </form>
-      </div>
-      
-    </div>
-  </div>
-  
-  <!-- ========================================
-       JAVASCRIPT (Phases 2, 3, 4)
-       Load scripts at the end for better performance
-       ======================================== -->
-  <script src="assets/js/main.js" defer></script>
-  <script src="assets/js/chat.js" defer></script>
-  
+
+  <!-- JavaScript -->
+  <script>
+    // Mobile Hamburger Menu
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const sideMenu = document.getElementById('sideMenu');
+    const menuOverlay = document.getElementById('menuOverlay');
+
+    hamburgerBtn?.addEventListener('click', () => {
+      sideMenu.classList.toggle('active');
+      menuOverlay.classList.toggle('active');
+    });
+
+    menuOverlay?.addEventListener('click', () => {
+      sideMenu.classList.remove('active');
+      menuOverlay.classList.remove('active');
+    });
+
+    // Toggle Switches
+    document.querySelectorAll('[data-toggle]').forEach(toggle => {
+      toggle.addEventListener('click', () => {
+        toggle.classList.toggle('active');
+      });
+    });
+
+    // Collapsible Settings
+    const settingsCollapsible = document.getElementById('settingsCollapsible');
+    settingsCollapsible?.querySelector('.collapsible-header').addEventListener('click', () => {
+      settingsCollapsible.classList.toggle('open');
+    });
+
+    // Character Counter
+    const chatInput = document.getElementById('chatInput');
+    const charCount = document.getElementById('charCount');
+
+    chatInput?.addEventListener('input', () => {
+      charCount.textContent = `${chatInput.value.length}/1000`;
+    });
+
+    // Auto-resize textarea
+    chatInput?.addEventListener('input', function() {
+      this.style.height = 'auto';
+      this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+    });
+
+    // Send Message
+    const sendBtn = document.getElementById('sendBtn');
+    const chatMessages = document.getElementById('chatMessages');
+
+    sendBtn?.addEventListener('click', sendMessage);
+    chatInput?.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    function sendMessage() {
+      const message = chatInput.value.trim();
+      if (!message) return;
+
+      // Add user message
+      const userMsg = document.createElement('div');
+      userMsg.className = 'chat-message user';
+      userMsg.innerHTML = `<p>${message}</p>`;
+      chatMessages.appendChild(userMsg);
+
+      // Clear input
+      chatInput.value = '';
+      charCount.textContent = '0/1000';
+      chatInput.style.height = 'auto';
+
+      // Scroll to bottom
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      // Simulate AI response (placeholder)
+      setTimeout(() => {
+        const aiMsg = document.createElement('div');
+        aiMsg.className = 'chat-message ai';
+        aiMsg.innerHTML = `<p>Thank you for your message! I'm here to help you with your learning journey.</p>`;
+        chatMessages.appendChild(aiMsg);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }, 1000);
+    }
+
+    // Sample Prompts (Desktop)
+    document.querySelectorAll('.prompt-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        alert('This would start a conversation about: ' + btn.textContent);
+      });
+    });
+  </script>
+
 </body>
 </html>
