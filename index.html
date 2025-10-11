@@ -6,7 +6,7 @@
   <meta name="description" content="PMERIT - Accessible Global Education powered by AI. Breaking poverty cycles through high-quality, personalized learning."/>
   <meta name="theme-color" content="#2563EB"/>
   
-  <title>PMERIT – Accessible Global Education</title>
+  <title>PMERIT — Accessible Global Education</title>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,18 +21,18 @@
   <link rel="stylesheet" href="assets/css/mobile-mockup-match.css">
   
   <style>
-      /* ========================================
-     DEFAULT: Desktop Layout (Hide Mobile)
+    /* ========================================
+       DEFAULT: Desktop Layout (Hide Mobile)
        ======================================== */
 
     .mobile-layout {
-    display: none;
+      display: none;
     }
 
     .desktop-layout {
-    display: grid;
+      display: grid;
     }
-    /* Now apply desktop styles at >= 1024px */
+
     /* ========================================
        DESKTOP THREE-PANEL LAYOUT
        Based on blueprint-index.html
@@ -106,7 +106,7 @@
       .desktop-layout {
         display: grid;
         grid-template-columns: 280px 1fr 320px;
-        height: calc(100vh - var(--header-height) - var(--footer-height));
+        height: calc(100vh - var(--header-height) - 40px); /* 40px = minimal footer */
         overflow: hidden;
         gap: 0;
       }
@@ -343,48 +343,143 @@
         box-shadow: var(--shadow-lg);
       }
 
-      /* === FOOTER === */
+      /* ========================================
+         DESKTOP FOOTER - MINIMAL HEIGHT
+         CONSOLIDATED - NO CONFLICTS
+         Height: ~35-40px total
+         ======================================== */
+      
       .pmerit-footer {
+        grid-column: 1 / -1;
+        
+        /* CRITICAL: Minimal padding for compact footer */
+        padding: 0.5rem 1.5rem !important;
+        
         background-color: var(--bg-card);
         border-top: 1px solid var(--border-color);
-        padding: 1.5rem;
+        box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.05);
+        
+        /* Force minimal height */
+        min-height: auto !important;
+        height: auto !important;
+        line-height: 1.2;
       }
-
-      .footer-content {
+      
+      .footer-container {
         max-width: 1200px;
         margin: 0 auto;
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 2rem;
+        padding: 0;
+        
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
       }
-
-      .footer-column h4 {
-        font-size: 0.9rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
+      
+      .footer-left {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        
+        font-weight: 500;
+        font-size: 0.85rem;
+        line-height: 1.2;
         color: var(--text-primary);
       }
-
-      .footer-link {
-        display: block;
-        color: var(--text-secondary);
-        text-decoration: none;
-        margin-bottom: 0.5rem;
-        font-size: 0.85rem;
-        transition: var(--transition);
+      
+      .footer-left i {
+        font-size: 0.75rem;
+        color: var(--color-success);
       }
-
-      .footer-link:hover {
+      
+      .footer-status {
         color: var(--primary);
       }
-
-      .footer-bottom {
-        text-align: center;
-        margin-top: 2rem;
-        padding-top: 1.5rem;
-        border-top: 1px solid var(--border-color);
+      
+      .footer-right {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      
+      .footer-link {
         color: var(--text-secondary);
-        font-size: 0.85rem;
+        text-decoration: none;
+        
+        font-size: 0.8rem;
+        line-height: 1.2;
+        
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        transition: var(--transition-fast);
+        
+        margin: 0;
+      }
+      
+      .footer-link:hover {
+        color: var(--primary);
+        background-color: var(--bg-secondary);
+      }
+      
+      /* Remove any default margins */
+      .pmerit-footer *,
+      .footer-container * {
+        margin-block-start: 0 !important;
+        margin-block-end: 0 !important;
+        padding-block-start: 0 !important;
+        padding-block-end: 0 !important;
+      }
+    }
+
+    /* ========================================
+       MOBILE FOOTER - MINIMAL
+       ======================================== */
+    
+    @media (max-width: 1023px) {
+      .pmerit-footer {
+        background: var(--bg-primary);
+        border-top: 1px solid var(--border-color);
+        
+        padding: 0.75rem 1rem;
+        padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+        
+        text-align: center;
+        font-size: 0.8rem;
+        line-height: 1.3;
+        color: var(--text-secondary);
+        flex-shrink: 0;
+      }
+      
+      .footer-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        align-items: center;
+        padding: 0;
+        margin: 0;
+      }
+      
+      .footer-left,
+      .footer-right {
+        display: contents;
+      }
+      
+      .footer-link {
+        color: var(--text-link);
+        text-decoration: none;
+        font-size: 0.8rem;
+      }
+      
+      .footer-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+      }
+      
+      .footer-status::before {
+        content: "•";
+        color: var(--color-success);
+        font-size: 1rem;
       }
     }
   </style>
@@ -612,316 +707,28 @@
       </div>
     </aside>
 
-    <!-- ========================================
-     DESKTOP FOOTER (BLUEPRINT MATCH)
-     Simple informational footer for GUEST homepage
-     ======================================== -->
-<footer class="pmerit-footer" style="grid-column: 1 / -1;">
-  <div class="footer-container">
-    
-    <!-- Left: Status Indicator -->
-    <div class="footer-left">
-      <i class="fas fa-signal" style="color: var(--color-success);"></i>
-      <span class="footer-status">Connected to Educational Services</span>
-    </div>
-    
-    <!-- Right: Informational Links -->
-    <div class="footer-right">
-      <a href="/privacy.html" class="footer-link">Privacy & Terms</a>
-      <a href="/contact.html" class="footer-link">Contact</a>
-      <a href="/partnerships.html" class="footer-link">Partnerships</a>
-      <a href="/support.html" class="footer-link">Support</a>
-      <a href="/about.html" class="footer-link">About PMERIT</a>
-    </div>
-    
+    <!-- Desktop Footer (Minimal Height) -->
+    <footer class="pmerit-footer">
+      <div class="footer-container">
+        
+        <!-- Left: Status Indicator -->
+        <div class="footer-left">
+          <i class="fas fa-signal"></i>
+          <span class="footer-status">Connected to Educational Services</span>
+        </div>
+        
+        <!-- Right: Informational Links -->
+        <div class="footer-right">
+          <a href="/privacy.html" class="footer-link">Privacy & Terms</a>
+          <a href="/contact.html" class="footer-link">Contact</a>
+          <a href="/partnerships.html" class="footer-link">Partnerships</a>
+          <a href="/support.html" class="footer-link">Support</a>
+          <a href="/about.html" class="footer-link">About PMERIT</a>
+        </div>
+        
+      </div>
+    </footer>
   </div>
-</footer>
-
-<style>
-  /* ========================================
-     DESKTOP FOOTER STYLES (BLUEPRINT)
-     ======================================== */
-  
-  @media (min-width: 1024px) {
-    .pmerit-footer {
-      background-color: var(--bg-card);
-      border-top: 1px solid var(--border-color);
-      padding: 1rem 1.5rem;
-      box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-    }
-    
-    .footer-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 2rem;
-    }
-    
-    .footer-left {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      font-size: 0.94rem;
-    }
-    
-    .footer-status {
-      color: var(--primary);
-    }
-    
-    .footer-right {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-    }
-    
-    .footer-link {
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 0.9rem;
-      transition: var(--transition);
-      padding: 0.4rem 0.8rem;
-      border-radius: var(--radius-md);
-    }
-    
-    .footer-link:hover {
-      color: var(--primary);
-      background-color: var(--bg-secondary);
-    }
-  }
-  
-  /* ========================================
-     MOBILE FOOTER (UNCHANGED)
-     ======================================== */
-  
-  @media (max-width: 1023px) {
-    .pmerit-footer {
-      background: var(--bg-primary);
-      border-top: 1px solid var(--border-color);
-      padding: var(--space-md) var(--space-lg);
-      text-align: center;
-      font-size: var(--text-small);
-      color: var(--text-secondary);
-      flex-shrink: 0;
-      padding-bottom: calc(var(--space-md) + env(safe-area-inset-bottom));
-    }
-    
-    .footer-container {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-sm);
-      align-items: center;
-    }
-    
-    .footer-left,
-    .footer-right {
-      display: contents;
-    }
-    
-    .footer-link {
-      color: var(--text-link);
-      text-decoration: none;
-    }
-    
-    .footer-status::before {
-      content: "• ";
-      color: var(--color-success);
-      font-size: 1.25rem;
-    }
-  }
-
-  /* ========================================
-   MINIMAL HEIGHT FOOTER
-   Reduce footer to lowest possible height
-   ======================================== */
-
-@media (min-width: 1024px) {
-  /* === DESKTOP FOOTER - MINIMAL === */
-  
-  .pmerit-footer {
-    background-color: var(--bg-card);
-    border-top: 1px solid var(--border-color);
-    
-    /* CRITICAL: Minimal padding */
-    padding: 0.5rem 1.5rem;
-    
-    /* Remove shadow or make subtle */
-    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.05);
-    
-    /* Ensure minimal height */
-    min-height: auto;
-    height: auto;
-  }
-  
-  .footer-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    
-    /* Minimal gap */
-    gap: 1.5rem;
-    
-    /* Remove any extra padding */
-    padding: 0;
-  }
-  
-  .footer-left {
-    display: flex;
-    align-items: center;
-    
-    /* Minimal gap */
-    gap: 0.4rem;
-    
-    /* Compact font */
-    font-weight: 500;
-    font-size: 0.85rem;
-    line-height: 1.2;
-    
-    color: var(--text-primary);
-  }
-  
-  .footer-left i {
-    /* Smaller icon */
-    font-size: 0.75rem;
-    color: var(--color-success);
-  }
-  
-  .footer-status {
-    color: var(--primary);
-  }
-  
-  .footer-right {
-    display: flex;
-    align-items: center;
-    
-    /* Minimal gap between links */
-    gap: 0.75rem;
-  }
-  
-  .footer-link {
-    color: var(--text-secondary);
-    text-decoration: none;
-    
-    /* Compact font */
-    font-size: 0.8rem;
-    line-height: 1.2;
-    
-    /* Minimal padding */
-    padding: 0.25rem 0.5rem;
-    
-    border-radius: 4px;
-    transition: var(--transition-fast);
-    
-    /* Remove default margins */
-    margin: 0;
-  }
-  
-  .footer-link:hover {
-    color: var(--primary);
-    background-color: var(--bg-secondary);
-  }
-  
-  /* === OVERRIDE ANY CONFLICTING STYLES === */
-  
-  .pmerit-footer * {
-    /* Remove any default margins/padding */
-    margin-block-start: 0;
-    margin-block-end: 0;
-    padding-block-start: 0;
-    padding-block-end: 0;
-  }
-}
-
-/* ========================================
-   MOBILE FOOTER - MINIMAL
-   ======================================== */
-
-@media (max-width: 1023px) {
-  .pmerit-footer {
-    background: var(--bg-primary);
-    border-top: 1px solid var(--border-color);
-    
-    /* Minimal padding */
-    padding: 0.75rem 1rem;
-    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
-    
-    text-align: center;
-    
-    /* Compact font */
-    font-size: 0.8rem;
-    line-height: 1.3;
-    
-    color: var(--text-secondary);
-    flex-shrink: 0;
-  }
-  
-  .footer-container {
-    display: flex;
-    flex-direction: column;
-    
-    /* Minimal gap */
-    gap: 0.4rem;
-    
-    align-items: center;
-    
-    /* Remove padding */
-    padding: 0;
-    margin: 0;
-  }
-  
-  .footer-left,
-  .footer-right {
-    display: contents;
-  }
-  
-  .footer-link {
-    color: var(--text-link);
-    text-decoration: none;
-    font-size: 0.8rem;
-  }
-  
-  .footer-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-  }
-  
-  .footer-status::before {
-    content: "•";
-    color: var(--color-success);
-    font-size: 1rem;
-  }
-}
-
-/* ========================================
-   ULTRA-MINIMAL VARIANT (OPTIONAL)
-   Uncomment if you want even more compact
-   ======================================== */
-
-/*
-@media (min-width: 1024px) {
-  .pmerit-footer {
-    padding: 0.35rem 1.5rem;
-  }
-  
-  .footer-left {
-    font-size: 0.75rem;
-  }
-  
-  .footer-link {
-    font-size: 0.75rem;
-    padding: 0.2rem 0.4rem;
-  }
-}
-*/
-  
-</style>
 
   <!-- JavaScript -->
   <script>
