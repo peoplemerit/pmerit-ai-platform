@@ -612,46 +612,127 @@
       </div>
     </aside>
 
-    <!-- Desktop Footer -->
-    <footer class="pmerit-footer" style="grid-column: 1 / -1;">
-      <div class="footer-content">
-        <div class="footer-column">
-          <h4>Platform</h4>
-          <a href="/courses.html" class="footer-link">Courses</a>
-          <a href="/career-paths.html" class="footer-link">Career Paths</a>
-          <a href="/assessment.html" class="footer-link">Assessment</a>
-          <a href="/library.html" class="footer-link">Library</a>
-        </div>
-        
-        <div class="footer-column">
-          <h4>Features</h4>
-          <a href="/virtual-human.html" class="footer-link">Virtual Human</a>
-          <a href="/ai-tutor.html" class="footer-link">AI Tutor</a>
-          <a href="/customer-service.html" class="footer-link">Customer Service</a>
-        </div>
-        
-        <div class="footer-column">
-          <h4>Support</h4>
-          <a href="/help.html" class="footer-link">Help Center</a>
-          <a href="/contact.html" class="footer-link">Contact</a>
-          <a href="/partnerships.html" class="footer-link">Partnerships</a>
-        </div>
-        
-        <div class="footer-column">
-          <h4>Legal</h4>
-          <a href="/privacy.html" class="footer-link">Privacy Policy</a>
-          <a href="/terms.html" class="footer-link">Terms of Service</a>
-          <a href="/about.html" class="footer-link">About PMERIT</a>
-        </div>
-      </div>
-      
-      <div class="footer-bottom">
-        <i class="fas fa-signal" style="color: var(--color-success);"></i> 
-        Connected to Educational Services | 
-        © 2025 PMERIT. All rights reserved.
-      </div>
-    </footer>
+    <!-- ========================================
+     DESKTOP FOOTER (BLUEPRINT MATCH)
+     Simple informational footer for GUEST homepage
+     ======================================== -->
+<footer class="pmerit-footer" style="grid-column: 1 / -1;">
+  <div class="footer-container">
+    
+    <!-- Left: Status Indicator -->
+    <div class="footer-left">
+      <i class="fas fa-signal" style="color: var(--color-success);"></i>
+      <span class="footer-status">Connected to Educational Services</span>
+    </div>
+    
+    <!-- Right: Informational Links -->
+    <div class="footer-right">
+      <a href="/privacy.html" class="footer-link">Privacy & Terms</a>
+      <a href="/contact.html" class="footer-link">Contact</a>
+      <a href="/partnerships.html" class="footer-link">Partnerships</a>
+      <a href="/support.html" class="footer-link">Support</a>
+      <a href="/about.html" class="footer-link">About PMERIT</a>
+    </div>
+    
   </div>
+</footer>
+
+<style>
+  /* ========================================
+     DESKTOP FOOTER STYLES (BLUEPRINT)
+     ======================================== */
+  
+  @media (min-width: 1024px) {
+    .pmerit-footer {
+      background-color: var(--bg-card);
+      border-top: 1px solid var(--border-color);
+      padding: 1rem 1.5rem;
+      box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+    
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: 0.94rem;
+    }
+    
+    .footer-status {
+      color: var(--primary);
+    }
+    
+    .footer-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    
+    .footer-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: var(--transition);
+      padding: 0.4rem 0.8rem;
+      border-radius: var(--radius-md);
+    }
+    
+    .footer-link:hover {
+      color: var(--primary);
+      background-color: var(--bg-secondary);
+    }
+  }
+  
+  /* ========================================
+     MOBILE FOOTER (UNCHANGED)
+     ======================================== */
+  
+  @media (max-width: 1023px) {
+    .pmerit-footer {
+      background: var(--bg-primary);
+      border-top: 1px solid var(--border-color);
+      padding: var(--space-md) var(--space-lg);
+      text-align: center;
+      font-size: var(--text-small);
+      color: var(--text-secondary);
+      flex-shrink: 0;
+      padding-bottom: calc(var(--space-md) + env(safe-area-inset-bottom));
+    }
+    
+    .footer-container {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      align-items: center;
+    }
+    
+    .footer-left,
+    .footer-right {
+      display: contents;
+    }
+    
+    .footer-link {
+      color: var(--text-link);
+      text-decoration: none;
+    }
+    
+    .footer-status::before {
+      content: "• ";
+      color: var(--color-success);
+      font-size: 1.25rem;
+    }
+  }
+</style>
 
   <!-- JavaScript -->
   <script>
