@@ -1,0 +1,573 @@
+/**
+ * PMERIT Mobile Layout - Match Mobile-UI-Blueprint.jpg
+ * Makes mobile layout match the Word document mockup design
+ * Version: 2.0
+ * Last Updated: October 2025
+ * 
+ * CRITICAL: This file makes mobile look exactly like the reference design
+ * - Purple gradient hero full-width at top
+ * - White text on purple gradient
+ * - Chat area scrollable below
+ * - Chat input fixed at bottom
+ * - Non-scrollable viewport (only chat area scrolls)
+ */
+
+/* ========================================
+   MOBILE LAYOUT (< 1024px)
+   ======================================== */
+
+@media (max-width: 1023px) {
+  
+  /* === VIEWPORT & BODY === */
+  html, body {
+    height: 100%;
+    overflow: hidden; /* Non-scrollable viewport */
+    background: var(--bg-primary);
+    color: var(--text-primary);
+  }
+  
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* === HIDE DESKTOP LAYOUT === */
+  .desktop-layout {
+    display: none !important;
+  }
+  
+  /* === SHOW MOBILE LAYOUT === */
+  .mobile-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+  }
+  
+  /* === MOBILE HEADER === */
+  .pmerit-header {
+    height: var(--header-height);
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0 var(--space-md);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: var(--z-sticky);
+    flex-shrink: 0;
+  }
+  
+  .pmerit-logo {
+    font-family: var(--font-primary);
+    font-weight: var(--weight-bold);
+    font-size: 1.25rem;
+    color: var(--color-dark-blue);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+  
+  .pmerit-logo::before {
+    content: "🎓";
+    font-size: 1.5rem;
+  }
+  
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+  
+  .lang-selector,
+  .hamburger-btn,
+  .sign-in-btn {
+    min-width: 44px;
+    min-height: 44px;
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-full);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-size: var(--text-small);
+    font-weight: var(--weight-medium);
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  
+  .hamburger-btn {
+    font-size: 1.25rem;
+  }
+  
+  .sign-in-btn {
+    background: var(--primary);
+    color: var(--text-inverse);
+    border-color: var(--primary);
+  }
+  
+  /* === HERO SECTION (PURPLE GRADIENT) === */
+  .hero-section {
+    /* CRITICAL: Purple gradient full-width */
+    width: 100%;
+    max-height: 40vh;
+    min-height: 280px;
+    
+    background: var(--gradient-purple);
+    padding: var(--space-xl) var(--space-lg);
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    
+    flex-shrink: 0; /* Don't shrink */
+    overflow-y: auto;
+    
+    /* iOS safe area */
+    padding-top: calc(var(--space-xl) + env(safe-area-inset-top));
+  }
+  
+  /* === TEXT ON PURPLE GRADIENT === */
+  .hero-section .hero-text,
+  .hero-section .hero-title,
+  .hero-section .hero-subtitle,
+  .hero-section h1,
+  .hero-section h2,
+  .hero-section h3,
+  .hero-section p {
+    color: var(--text-on-gradient) !important;
+  }
+  
+  .hero-text {
+    font-size: 1rem;
+    line-height: var(--line-height-relaxed);
+    margin-bottom: var(--space-lg);
+    opacity: 0.95;
+  }
+  
+  .hero-title {
+    font-family: var(--font-primary);
+    font-size: 1.75rem;
+    font-weight: var(--weight-bold);
+    margin: var(--space-lg) 0 var(--space-sm);
+    color: var(--text-on-gradient);
+  }
+  
+  .hero-subtitle {
+    font-size: 0.9rem;
+    opacity: 0.85;
+    margin-bottom: var(--space-md);
+    color: var(--text-on-gradient);
+  }
+  
+  /* === CHAT MESSAGES AREA === */
+  .chat-messages {
+    flex: 1;
+    background: var(--bg-primary);
+    padding: var(--space-md);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    
+    /* Ensure scrolling */
+    min-height: 0;
+  }
+  
+  .chat-message {
+    margin-bottom: var(--space-md);
+    padding: var(--space-md);
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .chat-message.user {
+    background: var(--primary);
+    color: var(--text-inverse);
+    margin-left: var(--space-xl);
+  }
+  
+  .chat-message.ai {
+    background: var(--bg-secondary);
+    margin-right: var(--space-xl);
+  }
+  
+  /* === CHAT INPUT (FIXED AT BOTTOM) === */
+  .chat-input-container {
+    background: var(--bg-primary);
+    border-top: 1px solid var(--border-color);
+    padding: var(--space-md);
+    
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    
+    flex-shrink: 0;
+    
+    /* iOS safe area */
+    padding-bottom: calc(var(--space-md) + env(safe-area-inset-bottom));
+  }
+  
+  .chat-input {
+    flex: 1;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    font-size: 0.95rem;
+    font-family: var(--font-secondary);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    resize: none;
+    min-height: 44px;
+    max-height: 120px;
+  }
+  
+  .chat-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+  
+  .send-btn {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    
+    border-radius: 50%;
+    background: var(--primary);
+    color: var(--text-inverse);
+    border: none;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    cursor: pointer;
+    transition: var(--transition);
+    
+    flex-shrink: 0;
+  }
+  
+  .send-btn:hover {
+    background: var(--primary-dark);
+    transform: scale(1.05);
+  }
+  
+  .send-btn:active {
+    transform: scale(0.95);
+  }
+  
+  .char-count {
+    position: absolute;
+    bottom: calc(var(--space-md) + 4px + env(safe-area-inset-bottom));
+    left: calc(var(--space-md) + var(--space-sm));
+    font-size: var(--text-tiny);
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+  
+  /* === FOOTER (SIMPLIFIED) === */
+  .pmerit-footer {
+    background: var(--bg-primary);
+    border-top: 1px solid var(--border-color);
+    padding: var(--space-md) var(--space-lg);
+    
+    text-align: center;
+    font-size: var(--text-small);
+    color: var(--text-secondary);
+    
+    flex-shrink: 0;
+    
+    /* iOS safe area */
+    padding-bottom: calc(var(--space-md) + env(safe-area-inset-bottom));
+  }
+  
+  .footer-link {
+    color: var(--text-link);
+    text-decoration: none;
+    transition: var(--transition-fast);
+  }
+  
+  .footer-link:hover {
+    color: var(--text-link-hover);
+  }
+  
+  .footer-status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    color: var(--text-secondary);
+  }
+  
+  .footer-status::before {
+    content: "•";
+    color: var(--color-success);
+    font-size: 1.25rem;
+  }
+  
+  /* === HAMBURGER MENU === */
+  .side-menu {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 280px;
+    height: 100%;
+    
+    background: var(--bg-primary);
+    box-shadow: var(--shadow-xl);
+    
+    transition: left 0.3s ease-in-out;
+    z-index: var(--z-modal);
+    
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    
+    padding: var(--space-xl) var(--space-lg);
+    padding-top: calc(var(--header-height) + var(--space-md));
+  }
+  
+  .side-menu.active {
+    left: 0;
+  }
+  
+  .menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    
+    background: var(--bg-overlay);
+    opacity: 0;
+    visibility: hidden;
+    
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    z-index: calc(var(--z-modal) - 1);
+  }
+  
+  .menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .menu-item {
+    padding: var(--space-md);
+    margin-bottom: var(--space-sm);
+    
+    border-radius: var(--radius-md);
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    
+    cursor: pointer;
+    transition: var(--transition);
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    min-height: 44px;
+  }
+  
+  .menu-item:hover {
+    border-color: var(--primary);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .menu-item.active {
+    background: var(--primary);
+    color: var(--text-inverse);
+    border-color: var(--primary);
+  }
+  
+  .menu-title {
+    font-family: var(--font-primary);
+    font-weight: var(--weight-semibold);
+    font-size: 1rem;
+    margin-bottom: var(--space-lg);
+    color: var(--text-primary);
+  }
+  
+  /* === TOGGLE SWITCHES === */
+  .toggle-switch {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    background: var(--border-color);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  
+  .toggle-switch::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: var(--text-inverse);
+    border-radius: 50%;
+    transition: var(--transition);
+  }
+  
+  .toggle-switch.active {
+    background: var(--primary);
+  }
+  
+  .toggle-switch.active::after {
+    transform: translateX(20px);
+  }
+  
+  /* === CTA BUTTONS === */
+  .cta-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    padding: var(--space-lg);
+  }
+  
+  .cta-btn {
+    padding: var(--space-md) var(--space-xl);
+    
+    background: var(--primary);
+    color: var(--text-inverse);
+    
+    border: none;
+    border-radius: var(--radius-md);
+    
+    font-family: var(--font-primary);
+    font-size: var(--text-body);
+    font-weight: var(--weight-semibold);
+    
+    cursor: pointer;
+    transition: var(--transition);
+    
+    min-height: 44px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .cta-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .cta-btn:active {
+    transform: translateY(0);
+  }
+  
+  .cta-btn.secondary {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 2px solid var(--border-color);
+  }
+  
+  .cta-btn.secondary:hover {
+    border-color: var(--primary);
+    background: var(--bg-secondary);
+  }
+  
+  /* === MOBILE RESPONSIVE ADJUSTMENTS === */
+  @media (max-width: 480px) {
+    .hero-section {
+      padding: var(--space-lg) var(--space-md);
+      min-height: 240px;
+    }
+    
+    .hero-text {
+      font-size: 0.9rem;
+    }
+    
+    .hero-title {
+      font-size: 1.5rem;
+    }
+    
+    .hero-subtitle {
+      font-size: 0.85rem;
+    }
+    
+    .chat-input-container {
+      padding: var(--space-sm);
+    }
+    
+    .side-menu {
+      width: 260px;
+      left: -260px;
+    }
+  }
+  
+  /* === ORIENTATION: LANDSCAPE === */
+  @media (max-width: 1023px) and (orientation: landscape) {
+    .hero-section {
+      max-height: 60vh;
+      padding: var(--space-lg);
+    }
+    
+    .hero-title {
+      font-size: 1.5rem;
+    }
+    
+    .hero-text,
+    .hero-subtitle {
+      font-size: 0.85rem;
+    }
+  }
+  
+  /* === ACCESSIBILITY === */
+  .chat-input:focus,
+  .send-btn:focus,
+  .hamburger-btn:focus,
+  .sign-in-btn:focus,
+  .menu-item:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+  
+  /* === ANIMATIONS === */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .chat-message {
+    animation: fadeIn 0.3s ease-out;
+  }
+}
+
+/* ========================================
+   TABLET (768px - 1023px)
+   ======================================== */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-section {
+    max-height: 35vh;
+    padding: var(--space-2xl) var(--space-xl);
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .hero-text {
+    font-size: 1.1rem;
+  }
+  
+  .chat-messages {
+    padding: var(--space-lg);
+  }
+  
+  .side-menu {
+    width: 320px;
+    left: -320px;
+  }
+}
