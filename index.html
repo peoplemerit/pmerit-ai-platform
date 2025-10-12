@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="description" content="PMERIT - Accessible Global Education powered by AI. Breaking poverty cycles through high-quality, personalized learning."/>
+  <meta name="theme-color" content="#2A5B8C"/>
+  
+  <title>PMERIT – Accessible Global Education</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+  <!-- MODULAR CSS FILES (Load Order Matters!) -->
+  <link rel="stylesheet" href="assets/css/light-theme.css">        <!-- Theme variables -->
+  <link rel="stylesheet" href="assets/css/mobile-mockup-match.css"> <!-- Mobile layout -->
+  <link rel="stylesheet" href="assets/css/components.css">          <!-- Components (toasts, buttons, cards) -->
+  
+  <!-- MODULAR JAVASCRIPT FILES (Load at end of body for performance) -->
+  <!-- See bottom of file for <script> tags -->
+</head>
+<body>
+
+  <!-- ========================================
+       MOBILE LAYOUT (< 1024px)
+       Matches Mobile-UI-Blueprint.jpg
+       ======================================== -->
+  
+  <div class="mobile-layout">
+    <!-- Mobile Header -->
+    <header class="pmerit-header">
+      <div class="pmerit-logo">PMERIT</div>
+      <div class="header-actions">
+        <button class="lang-selector" aria-label="Change language">En</button>
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">☰</button>
+        <button class="sign-in-btn" id="signInBtn">Sign In</button>
+      </div>
+    </header>
+
+    <!-- Hero Section with Purple Gradient -->
+    <section class="hero-section">
+      <p class="hero-text">
+        Hi there! I'm your learning companion, empowering your education through innovation. 
+        PMERIT provides accessible, high-quality education that opens doors to endless 
+        opportunities worldwide. Ready to discover your potential and start your learning journey?
+      </p>
+      
+      <h2 class="hero-title">Ask Your Learning Companion</h2>
+      
+      <p class="hero-subtitle">
+        Get personalized guidance on courses, career paths, and learning objectives
+      </p>
+    </section>
+
+    <!-- Chat Messages Area (Scrollable) -->
+    <div class="chat-messages" id="chatMessages">
+      <div class="chat-message ai">
+        <p><strong>👋 Welcome!</strong></p>
+        <p>I'm here to help you explore courses, career paths, and learning opportunities. What would you like to know?</p>
+      </div>
+    </div>
+
+    <!-- Chat Input (Fixed at Bottom) -->
+    <div class="chat-input-container">
+      <textarea 
+        class="chat-input" 
+        id="chatInput"
+        placeholder="Try: 'What programming courses do you offer?'"
+        maxlength="1000"
+        rows="1"
+      ></textarea>
+      <button class="send-btn" id="sendBtn" aria-label="Send message">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+      <span class="char-count" id="charCount">0/1000</span>
+    </div>
+
+    <!-- Mobile Footer -->
+    <footer class="pmerit-footer">
+      <a href="/privacy.html" class="footer-link">Privacy & Terms</a>
+      <span> • </span>
+      <span class="footer-status">Connected to Educational Services</span>
+    </footer>
+
+    <!-- Hamburger Menu (Slide-in) -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <nav class="side-menu" id="sideMenu">
+      <h3 class="menu-title">Quick Actions</h3>
+      <div class="menu-item" data-toggle="vh">
+        <span><i class="fas fa-robot"></i> Virtual Human Mode</span>
+        <div class="toggle-switch"></div>
+      </div>
+      <div class="menu-item">
+        <span><i class="fas fa-route"></i> Career Track & Explore Paths</span>
+      </div>
+      <div class="menu-item" data-toggle="cs">
+        <span><i class="fas fa-headset"></i> Customer Service Mode</span>
+        <div class="toggle-switch"></div>
+      </div>
+      
+      <h3 class="menu-title">Settings</h3>
+      <div class="menu-item" data-toggle="dark">
+        <span><i class="fas fa-moon"></i> Dark Mode</span>
+        <div class="toggle-switch"></div>
+      </div>
+      <div class="menu-item" data-toggle="tts">
+        <span><i class="fas fa-volume-up"></i> Text-to-Speech</span>
+        <div class="toggle-switch"></div>
+      </div>
+      <div class="menu-item">
+        <span><i class="fas fa-microphone"></i> Preview Voices</span>
+      </div>
+      
+      <h3 class="menu-title">Account</h3>
+      <div class="menu-item">
+        <span><i class="fas fa-tachometer-alt"></i> Dashboard</span>
+      </div>
+      <div class="menu-item">
+        <span><i class="fas fa-clipboard-list"></i> Begin Assessment</span>
+      </div>
+    </nav>
+  </div>
+
+  <!-- ========================================
+       DESKTOP LAYOUT (>= 1024px)
+       Matches blueprint-index.html
+       ======================================== -->
+  
+  <div class="desktop-layout">
+    <!-- Desktop Header -->
+    <header class="pmerit-header" style="grid-column: 1 / -1;">
+      <div class="pmerit-logo">PMERIT</div>
+      <nav class="header-nav">
+        <select class="lang-selector" aria-label="Change language">
+          <option value="en">English</option>
+          <option value="yo">Yorùbá</option>
+          <option value="ig">Igbo</option>
+          <option value="ha">Hausa</option>
+        </select>
+        <button class="nav-btn">Donate</button>
+        <button class="nav-btn" id="desktopSignInBtn">Sign In</button>
+        <button class="nav-btn primary">Start Learning</button>
+      </nav>
+    </header>
+
+    <!-- Left Sidebar -->
+    <aside class="left-sidebar">
+      <h3 class="pane-title">Quick Actions</h3>
+      
+      <div class="toggle" data-toggle="vh">
+        <span><i class="fas fa-robot icon"></i>Virtual Human Mode</span>
+        <div class="toggle-switch"></div>
+      </div>
+      
+      <div class="action">
+        <span><i class="fas fa-route icon"></i>Career Track & Explore Paths</span>
+        <i class="fas fa-chevron-right"></i>
+      </div>
+      
+      <div class="toggle" data-toggle="cs">
+        <span><i class="fas fa-headset icon"></i>Customer Service Mode</span>
+        <div class="toggle-switch"></div>
+      </div>
+      
+      <div class="collapsible" id="settingsCollapsible">
+        <div class="collapsible-header">
+          <h4><i class="fas fa-cog icon"></i>Settings</h4>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="collapsible-body">
+          <div class="toggle" data-toggle="dark">
+            <span>Dark Mode</span>
+            <div class="toggle-switch"></div>
+          </div>
+          <div class="toggle" data-toggle="tts">
+            <span>Text-to-Speech</span>
+            <div class="toggle-switch"></div>
+          </div>
+          <div class="action">
+            <span>Preview Voices</span>
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+      </div>
+      
+      <button class="dashboard-btn">
+        <i class="fas fa-tachometer-alt"></i> Dashboard
+      </button>
+    </aside>
+
+    <!-- Center Panel (Purple Gradient Hero) -->
+    <main class="main-content">
+      <div class="hero-content">
+        <p class="greeting-text">
+          Hi there! I'm your learning companion, empowering your education through innovation. 
+          PMERIT provides accessible, high-quality education that opens doors to endless 
+          opportunities worldwide. Ready to discover your potential and start your learning journey?
+        </p>
+        
+        <div class="chat-preview">
+          <h2>Ask Your Learning Companion</h2>
+          <p class="chat-description">
+            Get personalized guidance on courses, career paths, and learning objectives
+          </p>
+        </div>
+        
+        <div class="sample-prompts">
+          <button class="prompt-btn">What courses do you offer?</button>
+          <button class="prompt-btn">Explore career paths</button>
+          <button class="prompt-btn">Assess my skills</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Right Sidebar -->
+    <aside class="right-sidebar">
+      <h3 class="pane-title">Support Assistant</h3>
+      
+      <div class="support-card">
+        <h3>Need Help?</h3>
+        <p style="font-size: 0.85rem; color: var(--text-secondary);">
+          Our AI assistant is here 24/7 to answer your questions
+        </p>
+        <div class="support-buttons">
+          <button class="support-btn">
+            <i class="fas fa-robot"></i> Virtual Human
+          </button>
+          <button class="support-btn">
+            <i class="fas fa-headset"></i> Support
+          </button>
+        </div>
+      </div>
+      
+      <div class="support-card">
+        <h3>Discover Your Path (AI)</h3>
+        <p style="font-size: 0.85rem; color: var(--text-secondary);">
+          Let AI create a personalized learning plan tailored to your goals and interests
+        </p>
+        <button class="cta-large">
+          <i class="fas fa-compass"></i> Begin Assessment
+        </button>
+      </div>
+    </aside>
+
+    <!-- Desktop Footer (Minimal Height) -->
+    <footer class="pmerit-footer">
+      <div class="footer-container">
+        <!-- Left: Status Indicator -->
+        <div class="footer-left">
+          <i class="fas fa-signal"></i>
+          <span class="footer-status">Connected to Educational Services</span>
+        </div>
+        
+        <!-- Right: Informational Links -->
+        <div class="footer-right">
+          <a href="/privacy.html" class="footer-link">Privacy & Terms</a>
+          <a href="/contact.html" class="footer-link">Contact</a>
+          <a href="/partnerships.html" class="footer-link">Partnerships</a>
+          <a href="/support.html" class="footer-link">Support</a>
+          <a href="/about.html" class="footer-link">About PMERIT</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ========================================
+       MODULAR JAVASCRIPT (Load at end for performance)
+       ======================================== -->
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/chat.js"></script>
+  
+  <!-- Inline styles needed for desktop layout (will be moved to desktop.css later) -->
+  <style>
+    /* Mobile-first layout control */
+    .mobile-layout {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+    }
+
+    .desktop-layout {
+      display: none;
+    }
+
+    /* Desktop override (>= 1024px) */
+    @media (min-width: 1024px) {
+      .mobile-layout {
+        display: none !important;
+      }
+
+      .desktop-layout {
+        display: grid !important;
+      }
+      
+      /* Desktop three-panel grid */
+      .desktop-layout {
+        grid-template-columns: 280px 1fr 320px;
+        height: calc(100vh - var(--header-height) - 40px);
+        overflow: hidden;
+        gap: 0;
+      }
+
+      /* Desktop header */
+      .pmerit-header {
+        height: var(--header-height);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1.5rem;
+        background-color: var(--bg-card);
+        border-bottom: 1px solid var(--border-color);
+        box-shadow: var(--shadow);
+        z-index: 50;
+      }
+
+      .pmerit-logo {
+        font-weight: 700;
+        font-size: 1.5rem;
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .pmerit-logo::before {
+        content: "🎓";
+        font-size: 1.5rem;
+      }
+
+      .header-nav {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .nav-btn, .lang-selector {
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-weight: 500;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: var(--transition);
+        border: 1px solid var(--border-color);
+        background-color: var(--bg-card);
+        color: var(--text-primary);
+        min-height: 44px;
+      }
+
+      .nav-btn:hover, .lang-selector:hover {
+        border-color: var(--primary);
+        transform: translateY(-1px);
+      }
+
+      .nav-btn.primary {
+        background-color: var(--primary);
+        color: white;
+        border-color: var(--primary);
+      }
+
+      .nav-btn.primary:hover {
+        background-color: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      /* Left Sidebar */
+      .left-sidebar {
+        background-color: var(--bg-secondary);
+        border-right: 1px solid var(--border-color);
+        padding: 1.5rem 1rem;
+        overflow-y: auto;
+      }
+
+      .pane-title {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--primary);
+        margin-bottom: 1rem;
+      }
+
+      .toggle, .action, .dashboard-btn {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem;
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+        cursor: pointer;
+        transition: var(--transition);
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        min-height: 44px;
+      }
+
+      .toggle:hover, .action:hover, .dashboard-btn:hover {
+        border-color: var(--primary);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow);
+      }
+
+      .icon {
+        color: var(--primary);
+        margin-right: 0.5rem;
+      }
+
+      .toggle-switch {
+        width: 40px;
+        height: 20px;
+        background: #ccc;
+        border-radius: 34px;
+        position: relative;
+        transition: .4s;
+      }
+
+      .toggle-switch::after {
+        content: "";
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        border-radius: 50%;
+        transition: .4s;
+      }
+
+      .toggle.active .toggle-switch {
+        background-color: var(--primary);
+      }
+
+      .toggle.active .toggle-switch::after {
+        transform: translateX(20px);
+      }
+
+      .dashboard-btn {
+        justify-content: center;
+        font-weight: 600;
+        background-color: var(--text-secondary);
+        color: white;
+        box-shadow: var(--shadow-lg);
+      }
+
+      .dashboard-btn:hover {
+        background-color: #4B5563;
+      }
+
+      .collapsible {
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: var(--bg-card);
+        margin-bottom: 0.5rem;
+      }
+
+      .collapsible-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem;
+        cursor: pointer;
+        background-color: var(--bg-secondary);
+        transition: var(--transition);
+      }
+
+      .collapsible-header:hover {
+        background-color: var(--border-color);
+      }
+
+      .collapsible-body {
+        display: none;
+        padding: 0.75rem;
+        background-color: var(--bg-card);
+        border-top: 1px solid var(--border-color);
+      }
+
+      .collapsible.open .collapsible-body {
+        display: block;
+      }
+
+      /* Center Panel */
+      .main-content {
+        background: var(--gradient-purple);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        overflow-y: auto;
+        color: white;
+      }
+
+      .hero-content {
+        text-align: center;
+        max-width: 800px;
+      }
+
+      .greeting-text {
+        font-size: 1.3rem;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+      }
+
+      .chat-preview h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .chat-description {
+        font-size: 1rem;
+        opacity: 0.9;
+        margin-bottom: 2rem;
+      }
+
+      .sample-prompts {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .prompt-btn {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 0.75rem 1.5rem;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: var(--transition);
+        backdrop-filter: blur(10px);
+      }
+
+      .prompt-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        border-color: rgba(255, 255, 255, 0.5);
+      }
+
+      /* Right Sidebar */
+      .right-sidebar {
+        background-color: var(--bg-secondary);
+        border-left: 1px solid var(--border-color);
+        padding: 1.5rem 1rem;
+        overflow-y: auto;
+      }
+
+      .support-card {
+        background-color: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .support-card h3 {
+        margin-bottom: 0.5rem;
+        color: var(--primary);
+      }
+
+      .support-buttons {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      .support-btn {
+        flex: 1;
+        padding: 0.5rem;
+        border-radius: 6px;
+        border: 1px solid var(--border-color);
+        background: var(--bg-card);
+        cursor: pointer;
+        transition: var(--transition);
+        font-size: 0.85rem;
+      }
+
+      .support-btn:hover {
+        border-color: var(--primary);
+        background: var(--bg-secondary);
+      }
+
+      .cta-large {
+        background: var(--primary);
+        color: white;
+        padding: 1rem;
+        border-radius: 8px;
+        text-align: center;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        margin-top: 1rem;
+      }
+
+      .cta-large:hover {
+        background: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      /* Desktop Footer */
+      .pmerit-footer {
+        grid-column: 1 / -1;
+        padding: 0.5rem 1.5rem !important;
+        background-color: var(--bg-card);
+        border-top: 1px solid var(--border-color);
+        box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.05);
+        min-height: auto !important;
+        height: auto !important;
+        line-height: 1.2;
+      }
+      
+      .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+      }
+      
+      .footer-left {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-weight: 500;
+        font-size: 0.85rem;
+        line-height: 1.2;
+        color: var(--text-primary);
+      }
+      
+      .footer-left i {
+        font-size: 0.75rem;
+        color: var(--color-success);
+      }
+      
+      .footer-status {
+        color: var(--primary);
+      }
+      
+      .footer-right {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      
+      .footer-link {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 0.8rem;
+        line-height: 1.2;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        transition: var(--transition-fast);
+        margin: 0;
+      }
+      
+      .footer-link:hover {
+        color: var(--primary);
+        background-color: var(--bg-secondary);
+      }
+      
+      .pmerit-footer *,
+      .footer-container * {
+        margin-block-start: 0 !important;
+        margin-block-end: 0 !important;
+        padding-block-start: 0 !important;
+        padding-block-end: 0 !important;
+      }
+    }
+  </style>
+
+</body>
+</html>
