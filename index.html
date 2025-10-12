@@ -4,9 +4,9 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <meta name="description" content="PMERIT - Accessible Global Education powered by AI. Breaking poverty cycles through high-quality, personalized learning."/>
-  <meta name="theme-color" content="#2563EB"/>
+  <meta name="theme-color" content="#2A5B8C"/>
   
-  <title>PMERIT — Accessible Global Education</title>
+  <title>PMERIT – Accessible Global Education</title>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,20 +22,37 @@
   
   <style>
     /* ========================================
-       DEFAULT: Desktop Layout (Hide Mobile)
+       MOBILE-FIRST LAYOUT CONTROL
+       CRITICAL: Mobile shows by default, desktop hides it
        ======================================== */
 
+    /* Mobile Default (< 1024px) */
     .mobile-layout {
-      display: none;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
     }
 
     .desktop-layout {
-      display: grid;
+      display: none;
+    }
+
+    /* Desktop Override (>= 1024px) */
+    @media (min-width: 1024px) {
+      .mobile-layout {
+        display: none !important;
+      }
+
+      .desktop-layout {
+        display: grid !important;
+      }
     }
 
     /* ========================================
        DESKTOP THREE-PANEL LAYOUT
        Based on blueprint-index.html
+       Only applies >= 1024px
        ======================================== */
     
     @media (min-width: 1024px) {
@@ -106,7 +123,7 @@
       .desktop-layout {
         display: grid;
         grid-template-columns: 280px 1fr 320px;
-        height: calc(100vh - var(--header-height) - 40px); /* 40px = minimal footer */
+        height: calc(100vh - var(--header-height) - 40px);
         overflow: hidden;
         gap: 0;
       }
@@ -343,23 +360,14 @@
         box-shadow: var(--shadow-lg);
       }
 
-      /* ========================================
-         DESKTOP FOOTER - MINIMAL HEIGHT
-         CONSOLIDATED - NO CONFLICTS
-         Height: ~35-40px total
-         ======================================== */
+      /* === DESKTOP FOOTER - MINIMAL HEIGHT === */
       
       .pmerit-footer {
         grid-column: 1 / -1;
-        
-        /* CRITICAL: Minimal padding for compact footer */
         padding: 0.5rem 1.5rem !important;
-        
         background-color: var(--bg-card);
         border-top: 1px solid var(--border-color);
         box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.05);
-        
-        /* Force minimal height */
         min-height: auto !important;
         height: auto !important;
         line-height: 1.2;
@@ -369,7 +377,6 @@
         max-width: 1200px;
         margin: 0 auto;
         padding: 0;
-        
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -380,7 +387,6 @@
         display: flex;
         align-items: center;
         gap: 0.4rem;
-        
         font-weight: 500;
         font-size: 0.85rem;
         line-height: 1.2;
@@ -405,14 +411,11 @@
       .footer-link {
         color: var(--text-secondary);
         text-decoration: none;
-        
         font-size: 0.8rem;
         line-height: 1.2;
-        
         padding: 0.25rem 0.5rem;
         border-radius: 4px;
         transition: var(--transition-fast);
-        
         margin: 0;
       }
       
@@ -421,7 +424,6 @@
         background-color: var(--bg-secondary);
       }
       
-      /* Remove any default margins */
       .pmerit-footer *,
       .footer-container * {
         margin-block-start: 0 !important;
@@ -433,16 +435,16 @@
 
     /* ========================================
        MOBILE FOOTER - MINIMAL
+       Already defined in mobile-mockup-match.css
+       But included here for completeness
        ======================================== */
     
     @media (max-width: 1023px) {
       .pmerit-footer {
         background: var(--bg-primary);
         border-top: 1px solid var(--border-color);
-        
         padding: 0.75rem 1rem;
         padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
-        
         text-align: center;
         font-size: 0.8rem;
         line-height: 1.3;
