@@ -1,8 +1,8 @@
 /**
  * PMERIT Light Theme (Default)
- * Matches blueprint-index.html and mobile mockup designs
- * Version: 2.0
- * Last Updated: October 2025
+ * 100% Aligned with Pmerit-theme_typography.html specification
+ * Version: 2.1 (Brand Corrected)
+ * Last Updated: October 12, 2025
  */
 
 /* ========================================
@@ -10,59 +10,57 @@
    ======================================== */
 
 :root {
-  /* === BRAND COLORS (from Pmerit-theme_typography.html) === */
-  --color-dark-blue: #2A5B8C;
-  --color-teal: #4AA4B9;
-  --color-light-teal: #7ED0D9;
-  --color-coral: #FF6B6B;
-  --color-coral-dark: #E05A5A;
-  
-  /* === NEUTRAL GRAYS === */
-  --color-light-gray: #F8F9FA;
-  --color-dark-gray: #2C2C2C;
-  --color-medium-gray: #6C757D;
-  --color-charcoal: #3A3A3A;
+  /* === PMERIT BRAND COLORS (Official Spec) === */
+  --color-primary: #2A5B8C;      /* Dark Blue - Main brand */
+  --color-secondary: #4AA4B9;    /* Teal - Secondary brand */
+  --color-accent: #FF6B6B;       /* Coral - CTAs */
+  --color-light-teal: #7ED0D9;   /* Light Teal - Highlights */
+  --color-coral-dark: #E05A5A;   /* Dark Coral - Hover states */
   
   /* === SEMANTIC COLORS === */
-  --color-success: #3A7F5C;
-  --color-warning: #E67E22;
-  --color-error: #DC3545;
-  --color-info: #4AA4B9;
+  --color-success: #3A7F5C;      /* Green - Success states */
+  --color-warning: #E67E22;      /* Orange - Warning states */
+  --color-error: #DC3545;        /* Red - Error states */
+  --color-info: #4AA4B9;         /* Teal - Info states */
   
-  /* === BLUEPRINT COLORS (from blueprint-index.html) === */
-  --primary: #2563EB;        /* Primary blue */
-  --primary-dark: #1D4ED8;   /* Darker primary for hover */
-  --accent: #7E22CE;         /* Accent purple */
-  --success: #059669;        /* Success green */
+  /* === NEUTRAL GRAYS (Pmerit Spec) === */
+  --color-light-gray: #F8F9FA;   /* Lightest gray */
+  --color-dark-gray: #2C2C2C;    /* Dark gray */
+  --color-medium-gray: #6C757D;  /* Medium gray */
+  --color-charcoal: #3A3A3A;     /* Charcoal */
+  
+  /* === PRIMARY SHORTCUTS (Use Pmerit Brand Colors) === */
+  --primary: #2A5B8C;            /* Dark Blue (NOT blueprint blue) */
+  --primary-dark: #1f4567;       /* Darker Dark Blue for hover */
+  --secondary: #4AA4B9;          /* Teal */
+  --accent: #FF6B6B;             /* Coral */
+  --success: #3A7F5C;            /* Success green */
   
   /* === PURPLE GRADIENT (Signature PMERIT Visual) === */
   --gradient-start: #667eea;
   --gradient-end: #764ba2;
   --gradient-purple: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   
-  /* === BACKGROUND & SURFACES === */
-  --bg-primary: #FFFFFF;      /* White background */
-  --bg-secondary: #F3F4F6;    /* Light gray background */
-  --bg-tertiary: #F8F9FA;     /* Lighter gray */
-  --bg-card: #FFFFFF;         /* Card background */
-  --bg-elevated: #FFFFFF;     /* Elevated surface */
-  --bg-dark: #111827;         /* Dark background (for dark mode) */
+  /* === BACKGROUND & SURFACES (Pmerit Spec) === */
+  --bg-primary: #F8F9FA;         /* Light gray background (NOT white) */
+  --bg-secondary: #FFFFFF;       /* White (cards, elevated) */
+  --bg-card: #FFFFFF;            /* Card background */
+  --bg-elevated: #FFFFFF;        /* Elevated surface */
   --bg-overlay: rgba(0, 0, 0, 0.5);
   
-  /* === BORDERS === */
-  --border-color: #E5E7EB;
-  --border-color-light: #F1F3F5;
-  --border-color-medium: #DEE2E6;
+  /* === BORDERS (Pmerit Spec) === */
+  --border-color: #E9ECEF;       /* Default border */
+  --border-color-light: #F1F3F5; /* Light border */
+  --border-color-medium: #DEE2E6;/* Medium border */
   
-  /* === TEXT COLORS === */
-  --text-primary: #1F2937;    /* Almost black */
-  --text-secondary: #6B7280;  /* Gray text */
-  --text-tertiary: #8E9499;   /* Lighter gray */
-  --text-muted: #9CA3AF;      /* Muted gray */
-  --text-inverse: #FFFFFF;    /* White text for dark backgrounds */
-  --text-on-gradient: #FFFFFF; /* White text for purple gradient */
-  --text-link: #FF6B6B;       /* Coral links */
-  --text-link-hover: #E05A5A; /* Darker coral on hover */
+  /* === TEXT COLORS (Pmerit Spec) === */
+  --text-primary: #2C2C2C;       /* Dark gray (NOT almost black) */
+  --text-secondary: #6C757D;     /* Medium gray */
+  --text-muted: #8E9499;         /* Muted gray */
+  --text-inverse: #FFFFFF;       /* White text for dark backgrounds */
+  --text-on-gradient: #FFFFFF;   /* White text for purple gradient */
+  --text-link: #FF6B6B;          /* Coral links */
+  --text-link-hover: #E05A5A;    /* Darker coral on hover */
   
   /* === INTERACTIVE COLORS === */
   --interactive-primary: #2A5B8C;
@@ -79,7 +77,8 @@
   --sidebar-right-width: 320px;
   
   /* === SHADOWS === */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
   --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.12);
   --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
@@ -141,46 +140,46 @@
 }
 
 /* ========================================
-   DARK MODE
+   DARK MODE (Phase 6 - Optional Feature)
    ======================================== */
 
 [data-theme="dark"],
 .dark {
   /* === ADJUSTED BRAND COLORS FOR DARK === */
-  --color-dark-blue: #4A8BC8;
-  --color-teal: #5FC8E5;
-  --color-light-teal: #7ED0D9;
-  --color-coral: #FF7B7B;
-  --color-coral-dark: #FF6B6B;
-  --color-success: #4CAF7A;
-  --color-warning: #FF9800;
+  --color-primary: #4A8BC8;      /* Lighter Dark Blue for dark mode */
+  --color-secondary: #5FC8E5;    /* Lighter Teal */
+  --color-accent: #FF7B7B;       /* Lighter Coral */
+  --color-light-teal: #7ED0D9;   /* Keep same */
+  --color-coral-dark: #FF6B6B;   /* Adjust for dark */
+  --color-success: #4CAF7A;      /* Lighter Green */
+  --color-warning: #FF9800;      /* Lighter Orange */
   
-  /* === BLUEPRINT COLORS (DARK) === */
-  --primary: #3B82F6;        /* Lighter blue for dark mode */
-  --primary-dark: #2563EB;
-  --accent: #9333EA;         /* Lighter purple */
-  --success: #10B981;        /* Lighter green */
+  /* === PRIMARY SHORTCUTS (DARK) === */
+  --primary: #4A8BC8;            /* Lighter blue for dark mode */
+  --primary-dark: #5A9BD8;       /* Even lighter for hover */
+  --secondary: #5FC8E5;          /* Lighter teal */
+  --accent: #FF7B7B;             /* Lighter coral */
+  --success: #4CAF7A;            /* Lighter green */
   
-  /* === BACKGROUND & SURFACES === */
-  --bg-primary: #111827;     /* Dark background */
-  --bg-secondary: #1F2937;   /* Lighter dark */
-  --bg-tertiary: #252525;
-  --bg-card: #1F2937;        /* Card background */
-  --bg-elevated: #252525;    /* Elevated surface */
-  --border-color: #374151;   /* Dark border */
+  /* === BACKGROUND & SURFACES (DARK) === */
+  --bg-primary: #121212;         /* Dark background */
+  --bg-secondary: #1E1E1E;       /* Lighter dark */
+  --bg-card: #1E1E1E;            /* Card background */
+  --bg-elevated: #252525;        /* Elevated surface */
+  --border-color: #333333;       /* Dark border */
   
-  /* === TEXT COLORS === */
-  --text-primary: #F9FAFB;   /* Almost white */
-  --text-secondary: #D1D5DB; /* Light gray */
-  --text-tertiary: #B0B0B0;
-  --text-muted: #8A8A8A;
-  --text-inverse: #1F2937;   /* Dark text for light backgrounds */
+  /* === TEXT COLORS (DARK) === */
+  --text-primary: #E9E9E9;       /* Light text */
+  --text-secondary: #B0B0B0;     /* Secondary light text */
+  --text-muted: #8A8A8A;         /* Muted light text */
+  --text-inverse: #121212;       /* Dark text for light backgrounds */
   
   /* === SHADOWS (DARKER) === */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5);
-  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.6);
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.6);
+  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.7);
   --shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
 }
 
@@ -276,6 +275,10 @@ a:hover {
 .bg-gradient-purple {
   background: var(--gradient-purple);
   color: var(--text-on-gradient);
+}
+
+.shadow-xs {
+  box-shadow: var(--shadow-xs);
 }
 
 .shadow-sm {
