@@ -1,8 +1,8 @@
 /**
  * PMERIT Mobile Layout - Match Mobile-UI-Blueprint.jpg
  * Makes mobile layout match the Word document mockup design
- * Version: 2.0
- * Last Updated: October 2025
+ * Version: 2.1 (Enhanced with explicit desktop query)
+ * Last Updated: October 12, 2025
  * 
  * CRITICAL: This file makes mobile look exactly like the reference design
  * - Purple gradient hero full-width at top
@@ -38,7 +38,7 @@
   
   /* === SHOW MOBILE LAYOUT === */
   .mobile-layout {
-    display: flex;
+    display: flex !important; /* CRITICAL: Force display on mobile */
     flex-direction: column;
     height: 100%;
     width: 100%;
@@ -61,7 +61,7 @@
     font-family: var(--font-primary);
     font-weight: var(--weight-bold);
     font-size: 1.25rem;
-    color: var(--color-dark-blue);
+    color: var(--color-primary); /* Uses Pmerit Dark Blue */
     display: flex;
     align-items: center;
     gap: var(--space-sm);
@@ -99,7 +99,7 @@
   }
   
   .sign-in-btn {
-    background: var(--primary);
+    background: var(--primary); /* Uses Pmerit Dark Blue */
     color: var(--text-inverse);
     border-color: var(--primary);
   }
@@ -181,7 +181,7 @@
   }
   
   .chat-message.user {
-    background: var(--primary);
+    background: var(--primary); /* Uses Pmerit Dark Blue */
     color: var(--text-inverse);
     margin-left: var(--space-xl);
   }
@@ -223,8 +223,8 @@
   
   .chat-input:focus {
     outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    border-color: var(--primary); /* Uses Pmerit Dark Blue */
+    box-shadow: 0 0 0 3px rgba(42, 91, 140, 0.1); /* Pmerit blue with opacity */
   }
   
   .send-btn {
@@ -234,7 +234,7 @@
     min-height: 44px;
     
     border-radius: 50%;
-    background: var(--primary);
+    background: var(--primary); /* Uses Pmerit Dark Blue */
     color: var(--text-inverse);
     border: none;
     
@@ -283,13 +283,13 @@
   }
   
   .footer-link {
-    color: var(--text-link);
+    color: var(--text-link); /* Uses Pmerit Coral */
     text-decoration: none;
     transition: var(--transition-fast);
   }
   
   .footer-link:hover {
-    color: var(--text-link-hover);
+    color: var(--text-link-hover); /* Uses Pmerit Dark Coral */
   }
   
   .footer-status {
@@ -301,7 +301,7 @@
   
   .footer-status::before {
     content: "•";
-    color: var(--color-success);
+    color: var(--color-success); /* Uses Pmerit Green */
     font-size: 1.25rem;
   }
   
@@ -369,13 +369,13 @@
   }
   
   .menu-item:hover {
-    border-color: var(--primary);
+    border-color: var(--primary); /* Uses Pmerit Dark Blue */
     transform: translateY(-1px);
     box-shadow: var(--shadow-sm);
   }
   
   .menu-item.active {
-    background: var(--primary);
+    background: var(--primary); /* Uses Pmerit Dark Blue */
     color: var(--text-inverse);
     border-color: var(--primary);
   }
@@ -412,7 +412,7 @@
   }
   
   .toggle-switch.active {
-    background: var(--primary);
+    background: var(--primary); /* Uses Pmerit Dark Blue */
   }
   
   .toggle-switch.active::after {
@@ -430,7 +430,7 @@
   .cta-btn {
     padding: var(--space-md) var(--space-xl);
     
-    background: var(--primary);
+    background: var(--primary); /* Uses Pmerit Dark Blue */
     color: var(--text-inverse);
     
     border: none;
@@ -467,7 +467,7 @@
   }
   
   .cta-btn.secondary:hover {
-    border-color: var(--primary);
+    border-color: var(--primary); /* Uses Pmerit Dark Blue */
     background: var(--bg-secondary);
   }
   
@@ -523,7 +523,7 @@
   .hamburger-btn:focus,
   .sign-in-btn:focus,
   .menu-item:focus {
-    outline: 2px solid var(--primary);
+    outline: 2px solid var(--primary); /* Uses Pmerit Dark Blue */
     outline-offset: 2px;
   }
   
@@ -569,5 +569,20 @@
   .side-menu {
     width: 320px;
     left: -320px;
+  }
+}
+
+/* ========================================
+   DESKTOP (1024px+)
+   CRITICAL: Explicitly hide mobile, show desktop
+   ======================================== */
+
+@media (min-width: 1024px) {
+  .mobile-layout {
+    display: none !important;
+  }
+  
+  .desktop-layout {
+    display: grid !important;
   }
 }
