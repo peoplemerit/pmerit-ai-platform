@@ -16,7 +16,7 @@
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 
-  <!-- MODULAR CSS FILES (Load Order Matters!) -->
+  <!-- MODULAR CSS FILES -->
   <link rel="stylesheet" href="assets/css/light-theme.css">
   <link rel="stylesheet" href="assets/css/mobile-mockup-match.css">
   <link rel="stylesheet" href="assets/css/components.css">
@@ -25,6 +25,7 @@
 
   <!-- ========================================
        MOBILE LAYOUT (< 1024px)
+       UPDATED: Consistent chat interface (no purple gradient hero)
        ======================================== -->
   
   <div class="mobile-layout">
@@ -38,20 +39,8 @@
       </div>
     </header>
 
-    <!-- Hero Section with Purple Gradient -->
-    <section class="hero-section">
-      <p class="hero-text">
-        Hi there! I'm your learning companion, empowering your education through innovation. 
-        PMERIT provides accessible, high-quality education that opens doors to endless 
-        opportunities worldwide. Ready to discover your potential and start your learning journey?
-      </p>
-      
-      <h2 class="hero-title">Ask Your Learning Companion</h2>
-      
-      <p class="hero-subtitle">
-        Get personalized guidance on courses, career paths, and learning objectives
-      </p>
-    </section>
+    <!-- REMOVED: Purple gradient hero section -->
+    <!-- NOW: Direct to chat interface for consistency with desktop -->
 
     <!-- Chat Messages Area (Scrollable) -->
     <div class="chat-messages" id="chatMessages">
@@ -124,11 +113,11 @@
 
   <!-- ========================================
        DESKTOP LAYOUT (>= 1024px)
-       WITH WORKING CHAT INTERFACE
+       Consistent chat interface with mobile
        ======================================== -->
   
   <div class="desktop-layout">
-    <!-- Desktop Header (Row 1, Spans All Columns) -->
+    <!-- Desktop Header (Row 1) -->
     <header class="pmerit-header">
       <div class="pmerit-logo">PMERIT</div>
       <nav class="header-nav">
@@ -191,7 +180,7 @@
 
     <!-- Center Panel (Row 2, Column 2) - CHAT INTERFACE -->
     <main class="main-content">
-      <!-- Chat Container (Scrollable Messages Area) -->
+      <!-- Chat Messages Container (Scrollable) -->
       <div class="desktop-chat-container" id="desktopChatMessages">
         <!-- Initial AI Message -->
         <div class="desktop-chat-message ai-message">
@@ -207,7 +196,7 @@
         </div>
       </div>
 
-      <!-- Chat Input Area (Fixed at Bottom of Center Panel) -->
+      <!-- Chat Input Area (Fixed at Bottom) -->
       <div class="desktop-chat-input-area">
         <div class="desktop-input-wrapper">
           <textarea 
@@ -270,7 +259,7 @@
       </div>
     </aside>
 
-    <!-- Desktop Footer (Row 3, Spans All Columns) -->
+    <!-- Desktop Footer (Row 3) -->
     <footer class="pmerit-footer">
       <div class="footer-container">
         <div class="footer-left">
@@ -292,13 +281,17 @@
   <script src="assets/js/main.js"></script>
   <script src="assets/js/chat.js"></script>
   
-  <!-- DESKTOP LAYOUT STYLES -->
+  <!-- INLINE STYLES FOR LAYOUT -->
   <style>
-    /* Mobile-first layout control */
+    /* ========================================
+       BASE LAYOUT CONTROL
+       ======================================== */
+    
+    /* Mobile-first: Show mobile layout by default */
     .mobile-layout {
       display: flex;
       flex-direction: column;
-      height: 100%;
+      height: 100vh;
       width: 100%;
     }
 
@@ -310,6 +303,7 @@
        DESKTOP OVERRIDE (>= 1024px)
        ======================================== */
     @media (min-width: 1024px) {
+      /* Hide mobile, show desktop */
       .mobile-layout {
         display: none !important;
       }
@@ -324,7 +318,9 @@
         overflow: hidden;
       }
 
-      /* HEADER */
+      /* ========================================
+         DESKTOP HEADER
+         ======================================== */
       .desktop-layout .pmerit-header {
         grid-row: 1;
         grid-column: 1 / -1;
@@ -359,7 +355,7 @@
         gap: 0.75rem;
       }
 
-      .nav-btn, .lang-selector {
+      .nav-btn, .desktop-layout .lang-selector {
         padding: 0.5rem 1rem;
         border-radius: 50px;
         font-weight: 500;
@@ -372,7 +368,7 @@
         min-height: 44px;
       }
 
-      .nav-btn:hover, .lang-selector:hover {
+      .nav-btn:hover, .desktop-layout .lang-selector:hover {
         border-color: var(--primary);
         transform: translateY(-1px);
       }
@@ -389,7 +385,9 @@
         box-shadow: var(--shadow-lg);
       }
 
-      /* LEFT SIDEBAR */
+      /* ========================================
+         LEFT SIDEBAR
+         ======================================== */
       .desktop-layout .left-sidebar {
         grid-row: 2;
         grid-column: 1;
@@ -568,7 +566,7 @@
         color: var(--text-primary);
       }
 
-      /* User Message (for when user sends) */
+      /* User Message */
       .desktop-chat-message.user-message {
         flex-direction: row-reverse;
       }
@@ -696,7 +694,9 @@
         box-shadow: var(--shadow-lg);
       }
 
-      /* RIGHT SIDEBAR */
+      /* ========================================
+         RIGHT SIDEBAR
+         ======================================== */
       .desktop-layout .right-sidebar {
         grid-row: 2;
         grid-column: 3;
@@ -770,7 +770,9 @@
         box-shadow: var(--shadow-lg);
       }
 
-      /* FOOTER */
+      /* ========================================
+         DESKTOP FOOTER
+         ======================================== */
       .desktop-layout .pmerit-footer {
         grid-row: 3;
         grid-column: 1 / -1;
