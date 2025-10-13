@@ -17,15 +17,14 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 
   <!-- MODULAR CSS FILES (Load Order Matters!) -->
-  <link rel="stylesheet" href="assets/css/light-theme.css">        <!-- Theme variables -->
-  <link rel="stylesheet" href="assets/css/mobile-mockup-match.css"> <!-- Mobile layout -->
-  <link rel="stylesheet" href="assets/css/components.css">          <!-- Components (toasts, buttons, cards) -->
+  <link rel="stylesheet" href="assets/css/light-theme.css">
+  <link rel="stylesheet" href="assets/css/mobile-mockup-match.css">
+  <link rel="stylesheet" href="assets/css/components.css">
 </head>
 <body>
 
   <!-- ========================================
        MOBILE LAYOUT (< 1024px)
-       Matches Mobile-UI-Blueprint.jpg
        ======================================== -->
   
   <div class="mobile-layout">
@@ -125,8 +124,7 @@
 
   <!-- ========================================
        DESKTOP LAYOUT (>= 1024px)
-       Matches blueprint-index.html structure
-       FIXED: Footer now INSIDE grid for proper positioning
+       WITH WORKING CHAT INTERFACE
        ======================================== -->
   
   <div class="desktop-layout">
@@ -140,7 +138,7 @@
           <option value="ig">Igbo</option>
           <option value="ha">Hausa</option>
         </select>
-        <button class="nav-btn">Donate</button>
+        <button class="nav-btn">Pricing</button>
         <button class="nav-btn" id="desktopSignInBtn">Sign In</button>
         <button class="nav-btn primary">Start Learning</button>
       </nav>
@@ -191,26 +189,50 @@
       </button>
     </aside>
 
-    <!-- Center Panel (Row 2, Column 2) - Purple Gradient Hero -->
+    <!-- Center Panel (Row 2, Column 2) - CHAT INTERFACE -->
     <main class="main-content">
-      <div class="hero-content">
-        <p class="greeting-text">
-          Hi there! I'm your learning companion, empowering your education through innovation. 
-          PMERIT provides accessible, high-quality education that opens doors to endless 
-          opportunities worldwide. Ready to discover your potential and start your learning journey?
-        </p>
-        
-        <div class="chat-preview">
-          <h2>Ask Your Learning Companion</h2>
-          <p class="chat-description">
-            Get personalized guidance on courses, career paths, and learning objectives
-          </p>
+      <!-- Chat Container (Scrollable Messages Area) -->
+      <div class="desktop-chat-container" id="desktopChatMessages">
+        <!-- Initial AI Message -->
+        <div class="desktop-chat-message ai-message">
+          <div class="message-avatar">
+            <i class="fas fa-robot"></i>
+          </div>
+          <div class="message-content">
+            <div class="message-header">
+              <strong>PMERIT AI:</strong>
+            </div>
+            <p>Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Input Area (Fixed at Bottom of Center Panel) -->
+      <div class="desktop-chat-input-area">
+        <div class="desktop-input-wrapper">
+          <textarea 
+            class="desktop-chat-input" 
+            id="desktopChatInput"
+            placeholder="Ask about courses, learning paths, or your goals..."
+            maxlength="1000"
+            rows="1"
+          ></textarea>
+          <span class="desktop-char-count" id="desktopCharCount">0/1000</span>
         </div>
         
-        <div class="sample-prompts">
-          <button class="prompt-btn">What courses do you offer?</button>
-          <button class="prompt-btn">Explore career paths</button>
-          <button class="prompt-btn">Assess my skills</button>
+        <div class="desktop-input-controls">
+          <button class="control-btn" data-mode="vh">
+            <i class="fas fa-robot"></i> VH Mode
+          </button>
+          <button class="control-btn" data-action="read-about">
+            <i class="fas fa-book"></i> Read About
+          </button>
+          <span class="status-indicator">
+            <i class="fas fa-circle"></i> Connected to Educational Services
+          </span>
+          <button class="send-btn-desktop" id="sendBtnDesktop">
+            Send <i class="fas fa-paper-plane"></i>
+          </button>
         </div>
       </div>
     </main>
@@ -220,10 +242,7 @@
       <h3 class="pane-title">Support Assistant</h3>
       
       <div class="support-card">
-        <h3>Need Help?</h3>
-        <p style="font-size: 0.85rem; color: var(--text-secondary);">
-          Our AI assistant is here 24/7 to answer your questions
-        </p>
+        <h3>Ask me about PMERIT</h3>
         <div class="support-buttons">
           <button class="support-btn">
             <i class="fas fa-robot"></i> Virtual Human
@@ -236,49 +255,46 @@
       
       <div class="support-card">
         <h3>Discover Your Path (AI)</h3>
-        <p style="font-size: 0.85rem; color: var(--text-secondary);">
-          Let AI create a personalized learning plan tailored to your goals and interests
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+          Personalized learning plan
+        </p>
+        <p style="font-size: 0.75rem; color: var(--text-secondary); font-style: italic; margin-bottom: 1rem;">
+          Start a short flow that blends learning style, interests, and skills into a plan.
         </p>
         <button class="cta-large">
           <i class="fas fa-compass"></i> Begin Assessment
         </button>
+        <p style="font-size: 0.7rem; color: var(--text-secondary); font-style: italic; margin-top: 0.75rem;">
+          Short, frequent study sessions are more effective than long cramming sessions.
+        </p>
       </div>
     </aside>
 
-    <!-- Desktop Footer (Row 3, Spans All Columns) ✅ FIXED! -->
+    <!-- Desktop Footer (Row 3, Spans All Columns) -->
     <footer class="pmerit-footer">
       <div class="footer-container">
-        <!-- Left: Status Indicator -->
         <div class="footer-left">
           <i class="fas fa-signal"></i>
           <span class="footer-status">Connected to Educational Services</span>
         </div>
         
-        <!-- Right: Informational Links -->
         <div class="footer-right">
           <a href="/privacy.html" class="footer-link">Privacy & Terms</a>
           <a href="/contact.html" class="footer-link">Contact</a>
           <a href="/partnerships.html" class="footer-link">Partnerships</a>
           <a href="/support.html" class="footer-link">Support</a>
-          <a href="/about.html" class="footer-link">About PMERIT</a>
         </div>
       </div>
     </footer>
   </div>
 
-  <!-- ========================================
-       MODULAR JAVASCRIPT (Load at end for performance)
-       ======================================== -->
+  <!-- MODULAR JAVASCRIPT -->
   <script src="assets/js/main.js"></script>
   <script src="assets/js/chat.js"></script>
   
-  <!-- ========================================
-       DESKTOP LAYOUT STYLES (Google-style Full Height)
-       ======================================== -->
+  <!-- DESKTOP LAYOUT STYLES -->
   <style>
-    /* ========================================
-       MOBILE-FIRST LAYOUT CONTROL
-       ======================================== */
+    /* Mobile-first layout control */
     .mobile-layout {
       display: flex;
       flex-direction: column;
@@ -292,37 +308,26 @@
 
     /* ========================================
        DESKTOP OVERRIDE (>= 1024px)
-       Full-height grid with sticky footer
        ======================================== */
     @media (min-width: 1024px) {
-      /* Hide mobile layout on desktop */
       .mobile-layout {
         display: none !important;
       }
 
-      /* Show desktop layout on desktop */
       .desktop-layout {
         display: grid !important;
-        
-        /* ✅ FIX: Explicit grid rows for header/content/footer */
         grid-template-rows: auto 1fr auto;
         grid-template-columns: 280px 1fr 320px;
-        
-        /* ✅ FIX: Full viewport height */
         min-height: 100vh;
         height: 100vh;
-        
         gap: 0;
         overflow: hidden;
       }
 
-      /* ========================================
-         DESKTOP HEADER (Row 1, Spans All Columns)
-         ======================================== */
+      /* HEADER */
       .desktop-layout .pmerit-header {
         grid-row: 1;
-        grid-column: 1 / -1; /* Span all columns */
-        
+        grid-column: 1 / -1;
         height: var(--header-height, 70px);
         display: flex;
         align-items: center;
@@ -384,18 +389,15 @@
         box-shadow: var(--shadow-lg);
       }
 
-      /* ========================================
-         LEFT SIDEBAR (Row 2, Column 1)
-         ======================================== */
+      /* LEFT SIDEBAR */
       .desktop-layout .left-sidebar {
         grid-row: 2;
         grid-column: 1;
-        
         background-color: var(--bg-secondary);
         border-right: 1px solid var(--border-color);
         padding: 1.5rem 1rem;
         overflow-y: auto;
-        min-height: 0; /* Allow flex child to shrink */
+        min-height: 0;
       }
 
       .pane-title {
@@ -505,81 +507,204 @@
       }
 
       /* ========================================
-         CENTER PANEL (Row 2, Column 2)
-         Purple Gradient Hero
+         CENTER PANEL - CHAT INTERFACE
          ======================================== */
       .desktop-layout .main-content {
         grid-row: 2;
         grid-column: 2;
-        
-        background: var(--gradient-purple);
+        background-color: var(--bg-primary);
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem;
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      /* Chat Messages Container (Scrollable) */
+      .desktop-chat-container {
+        flex: 1;
         overflow-y: auto;
-        color: white;
-        min-height: 0; /* Allow flex child to shrink */
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
       }
 
-      .hero-content {
-        text-align: center;
-        max-width: 800px;
-      }
-
-      .greeting-text {
-        font-size: 1.3rem;
-        line-height: 1.6;
-        margin-bottom: 2rem;
-      }
-
-      .chat-preview h2 {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-      }
-
-      .chat-description {
-        font-size: 1rem;
-        opacity: 0.9;
-        margin-bottom: 2rem;
-      }
-
-      .sample-prompts {
+      /* AI Message Bubble */
+      .desktop-chat-message {
         display: flex;
         gap: 1rem;
-        justify-content: center;
-        flex-wrap: wrap;
+        align-items: flex-start;
       }
 
-      .prompt-btn {
-        background: rgba(255, 255, 255, 0.2);
+      .message-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--primary);
         color: white;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        padding: 0.75rem 1.5rem;
-        border-radius: 50px;
-        cursor: pointer;
-        transition: var(--transition);
-        backdrop-filter: blur(10px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
       }
 
-      .prompt-btn:hover {
-        background: rgba(255, 255, 255, 0.3);
-        border-color: rgba(255, 255, 255, 0.5);
+      .message-content {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1rem;
+        max-width: 80%;
+        box-shadow: var(--shadow);
+      }
+
+      .message-header {
+        margin-bottom: 0.5rem;
+        color: var(--primary);
+      }
+
+      .message-content p {
+        margin: 0;
+        line-height: 1.6;
+        color: var(--text-primary);
+      }
+
+      /* User Message (for when user sends) */
+      .desktop-chat-message.user-message {
+        flex-direction: row-reverse;
+      }
+
+      .user-message .message-avatar {
+        background: var(--secondary);
+      }
+
+      .user-message .message-content {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+      }
+
+      .user-message .message-content p {
+        color: white;
       }
 
       /* ========================================
-         RIGHT SIDEBAR (Row 2, Column 3)
+         CHAT INPUT AREA (Fixed at Bottom)
          ======================================== */
+      .desktop-chat-input-area {
+        border-top: 1px solid var(--border-color);
+        background: var(--bg-card);
+        padding: 1rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .desktop-input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .desktop-chat-input {
+        width: 100%;
+        padding: 0.75rem 4rem 0.75rem 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+        resize: none;
+        min-height: 44px;
+        max-height: 120px;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        transition: var(--transition);
+      }
+
+      .desktop-chat-input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(42, 91, 140, 0.1);
+      }
+
+      .desktop-char-count {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+      }
+
+      /* Input Controls Row */
+      .desktop-input-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .control-btn {
+        padding: 0.5rem 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .control-btn:hover {
+        border-color: var(--primary);
+        background: var(--bg-secondary);
+      }
+
+      .status-indicator {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+        color: var(--primary);
+        margin-left: auto;
+      }
+
+      .status-indicator i {
+        color: var(--color-success);
+        font-size: 0.6rem;
+      }
+
+      .send-btn-desktop {
+        padding: 0.5rem 1.5rem;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .send-btn-desktop:hover {
+        background: var(--primary-dark);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      /* RIGHT SIDEBAR */
       .desktop-layout .right-sidebar {
         grid-row: 2;
         grid-column: 3;
-        
         background-color: var(--bg-secondary);
         border-left: 1px solid var(--border-color);
         padding: 1.5rem 1rem;
         overflow-y: auto;
-        min-height: 0; /* Allow flex child to shrink */
+        min-height: 0;
       }
 
       .support-card {
@@ -593,6 +718,7 @@
       .support-card h3 {
         margin-bottom: 0.5rem;
         color: var(--primary);
+        font-size: 1rem;
       }
 
       .support-buttons {
@@ -603,13 +729,17 @@
 
       .support-btn {
         flex: 1;
-        padding: 0.5rem;
+        padding: 0.6rem;
         border-radius: 6px;
         border: 1px solid var(--border-color);
         background: var(--bg-card);
         cursor: pointer;
         transition: var(--transition);
         font-size: 0.85rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
       }
 
       .support-btn:hover {
@@ -621,14 +751,13 @@
         width: 100%;
         background: var(--primary);
         color: white;
-        padding: 1rem;
+        padding: 0.75rem;
         border-radius: 8px;
         border: none;
         text-align: center;
         font-weight: 600;
         cursor: pointer;
         transition: var(--transition);
-        margin-top: 1rem;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -641,20 +770,14 @@
         box-shadow: var(--shadow-lg);
       }
 
-      /* ========================================
-         DESKTOP FOOTER (Row 3, Spans All Columns)
-         ✅ FIXED: Now properly positioned at bottom!
-         ======================================== */
+      /* FOOTER */
       .desktop-layout .pmerit-footer {
         grid-row: 3;
-        grid-column: 1 / -1; /* Span all columns */
-        
+        grid-column: 1 / -1;
         padding: 0.75rem 1.5rem;
         background-color: var(--bg-card);
         border-top: 1px solid var(--border-color);
         box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.05);
-        
-        /* Minimal height for compact footer */
         min-height: auto;
         height: auto;
         line-height: 1.2;
@@ -709,24 +832,10 @@
       }
     }
 
-    /* ========================================
-       LARGE DESKTOP (1440px+)
-       Wider sidebars for better use of space
-       ======================================== */
+    /* Large Desktop */
     @media (min-width: 1440px) {
       .desktop-layout {
-        grid-template-columns: 320px 1fr 360px;
-      }
-    }
-
-    /* ========================================
-       ULTRA-WIDE DESKTOP (1920px+)
-       Max-width container for readability
-       ======================================== */
-    @media (min-width: 1920px) {
-      .desktop-layout {
-        max-width: 1920px;
-        margin: 0 auto;
+        grid-template-columns: 280px 1fr 360px;
       }
     }
   </style>
