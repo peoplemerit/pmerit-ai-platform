@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-  <meta name="description" content="PMERIT - Accessible Global Education powered by AI. Breaking poverty cycles through high-quality, personalized learning."/>
+  <meta name="description" content="PMERIT - Accessible Global Education powered by AI"/>
   <meta name="theme-color" content="#2A5B8C"/>
   
   <title>PMERIT — Accessible Global Education</title>
@@ -19,15 +19,11 @@
   <!-- MODULAR CSS FILES -->
   <link rel="stylesheet" href="assets/css/light-theme.css">
   <link rel="stylesheet" href="assets/css/mobile-mockup-match.css">
-  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/components.css"> <!-- NEW ChatGPT-style input -->
 </head>
 <body>
 
-  <!-- ========================================
-       MOBILE LAYOUT (< 1024px)
-       UPDATED: Consistent chat interface (no purple gradient hero)
-       ======================================== -->
-  
+  <!-- MOBILE LAYOUT -->
   <div class="mobile-layout">
     <!-- Mobile Header -->
     <header class="pmerit-header">
@@ -39,10 +35,7 @@
       </div>
     </header>
 
-    <!-- REMOVED: Purple gradient hero section -->
-    <!-- NOW: Direct to chat interface for consistency with desktop -->
-
-    <!-- Chat Messages Area (Scrollable) -->
+    <!-- Chat Messages -->
     <div class="chat-messages" id="chatMessages">
       <div class="chat-message ai">
         <p><strong>👋 Welcome!</strong></p>
@@ -50,19 +43,39 @@
       </div>
     </div>
 
-    <!-- Chat Input (Fixed at Bottom) -->
+    <!-- ChatGPT-Style Input (Mobile) -->
     <div class="chat-input-container">
-      <textarea 
-        class="chat-input" 
-        id="chatInput"
-        placeholder="Try: 'What programming courses do you offer?'"
-        maxlength="1000"
-        rows="1"
-      ></textarea>
-      <button class="send-btn" id="sendBtn" aria-label="Send message">
-        <i class="fas fa-paper-plane"></i>
-      </button>
-      <span class="char-count" id="charCount">0/1000</span>
+      <div class="chat-input-wrapper">
+        <!-- Add/Attachment Button -->
+        <button class="input-add-btn" aria-label="Add attachment">
+          <i class="fas fa-plus"></i>
+        </button>
+        
+        <!-- Text Input -->
+        <textarea 
+          class="chat-input" 
+          id="chatInput"
+          placeholder="Ask anything"
+          maxlength="1000"
+          rows="1"
+        ></textarea>
+        
+        <!-- Right Side Actions -->
+        <div class="input-actions">
+          <!-- Voice Button -->
+          <button class="input-voice-btn" aria-label="Voice input">
+            <i class="fas fa-microphone"></i>
+          </button>
+          
+          <!-- Send Button -->
+          <button class="send-btn" id="sendBtn" aria-label="Send message">
+            <i class="fas fa-arrow-up"></i>
+          </button>
+        </div>
+        
+        <!-- Character Counter (Shows on focus) -->
+        <span class="char-count" id="charCount">0/1000</span>
+      </div>
     </div>
 
     <!-- Mobile Footer -->
@@ -72,7 +85,7 @@
       <span class="footer-status">Connected to Educational Services</span>
     </footer>
 
-    <!-- Hamburger Menu (Slide-in) -->
+    <!-- Hamburger Menu -->
     <div class="menu-overlay" id="menuOverlay"></div>
     <nav class="side-menu" id="sideMenu">
       <h3 class="menu-title">Quick Actions</h3>
@@ -111,13 +124,9 @@
     </nav>
   </div>
 
-  <!-- ========================================
-       DESKTOP LAYOUT (>= 1024px)
-       Consistent chat interface with mobile
-       ======================================== -->
-  
+  <!-- DESKTOP LAYOUT -->
   <div class="desktop-layout">
-    <!-- Desktop Header (Row 1) -->
+    <!-- Desktop Header -->
     <header class="pmerit-header">
       <div class="pmerit-logo">PMERIT</div>
       <nav class="header-nav">
@@ -133,7 +142,7 @@
       </nav>
     </header>
 
-    <!-- Left Sidebar (Row 2, Column 1) -->
+    <!-- Left Sidebar -->
     <aside class="left-sidebar">
       <h3 class="pane-title">Quick Actions</h3>
       
@@ -178,11 +187,10 @@
       </button>
     </aside>
 
-    <!-- Center Panel (Row 2, Column 2) - CHAT INTERFACE -->
+    <!-- Center Panel - Chat Interface -->
     <main class="main-content">
-      <!-- Chat Messages Container (Scrollable) -->
+      <!-- Chat Messages Container -->
       <div class="desktop-chat-container" id="desktopChatMessages">
-        <!-- Initial AI Message -->
         <div class="desktop-chat-message ai-message">
           <div class="message-avatar">
             <i class="fas fa-robot"></i>
@@ -196,9 +204,16 @@
         </div>
       </div>
 
-      <!-- Chat Input Area (Fixed at Bottom) -->
+      <!-- ChatGPT-Style Input Area (Desktop) -->
       <div class="desktop-chat-input-area">
+        <!-- Input Wrapper with Icons -->
         <div class="desktop-input-wrapper">
+          <!-- Add Button -->
+          <button class="desktop-add-btn" aria-label="Add attachment">
+            <i class="fas fa-plus"></i>
+          </button>
+          
+          <!-- Text Input -->
           <textarea 
             class="desktop-chat-input" 
             id="desktopChatInput"
@@ -206,9 +221,30 @@
             maxlength="1000"
             rows="1"
           ></textarea>
+          
+          <!-- Right Actions -->
+          <div class="desktop-input-actions">
+            <!-- Attachment Button -->
+            <button class="desktop-attach-btn" aria-label="Attach file">
+              <i class="fas fa-paperclip"></i>
+            </button>
+            
+            <!-- Voice Button -->
+            <button class="desktop-voice-btn" aria-label="Voice input">
+              <i class="fas fa-microphone"></i>
+            </button>
+            
+            <!-- Send Button -->
+            <button class="desktop-send-btn" id="sendBtnDesktop" aria-label="Send message">
+              <i class="fas fa-arrow-up"></i>
+            </button>
+          </div>
+          
+          <!-- Character Counter -->
           <span class="desktop-char-count" id="desktopCharCount">0/1000</span>
         </div>
         
+        <!-- Control Buttons Row -->
         <div class="desktop-input-controls">
           <button class="control-btn" data-mode="vh">
             <i class="fas fa-robot"></i> VH Mode
@@ -219,14 +255,11 @@
           <span class="status-indicator">
             <i class="fas fa-circle"></i> Connected to Educational Services
           </span>
-          <button class="send-btn-desktop" id="sendBtnDesktop">
-            Send <i class="fas fa-paper-plane"></i>
-          </button>
         </div>
       </div>
     </main>
 
-    <!-- Right Sidebar (Row 2, Column 3) -->
+    <!-- Right Sidebar -->
     <aside class="right-sidebar">
       <h3 class="pane-title">Support Assistant</h3>
       
@@ -259,7 +292,7 @@
       </div>
     </aside>
 
-    <!-- Desktop Footer (Row 3) -->
+    <!-- Desktop Footer -->
     <footer class="pmerit-footer">
       <div class="footer-container">
         <div class="footer-left">
@@ -277,17 +310,13 @@
     </footer>
   </div>
 
-  <!-- MODULAR JAVASCRIPT -->
+  <!-- JavaScript -->
   <script src="assets/js/main.js"></script>
   <script src="assets/js/chat.js"></script>
   
-  <!-- INLINE STYLES FOR LAYOUT -->
+  <!-- Layout Styles (Will be moved to separate CSS file) -->
   <style>
-    /* ========================================
-       BASE LAYOUT CONTROL
-       ======================================== */
-    
-    /* Mobile-first: Show mobile layout by default */
+    /* Mobile-first layout control */
     .mobile-layout {
       display: flex;
       flex-direction: column;
@@ -299,11 +328,8 @@
       display: none;
     }
 
-    /* ========================================
-       DESKTOP OVERRIDE (>= 1024px)
-       ======================================== */
+    /* Desktop Override */
     @media (min-width: 1024px) {
-      /* Hide mobile, show desktop */
       .mobile-layout {
         display: none !important;
       }
@@ -318,9 +344,7 @@
         overflow: hidden;
       }
 
-      /* ========================================
-         DESKTOP HEADER
-         ======================================== */
+      /* Header */
       .desktop-layout .pmerit-header {
         grid-row: 1;
         grid-column: 1 / -1;
@@ -385,19 +409,146 @@
         box-shadow: var(--shadow-lg);
       }
 
-      /* ========================================
-         LEFT SIDEBAR
-         ======================================== */
-      .desktop-layout .left-sidebar {
+      /* Sidebars */
+      .desktop-layout .left-sidebar,
+      .desktop-layout .right-sidebar {
         grid-row: 2;
-        grid-column: 1;
         background-color: var(--bg-secondary);
-        border-right: 1px solid var(--border-color);
         padding: 1.5rem 1rem;
         overflow-y: auto;
         min-height: 0;
       }
 
+      .desktop-layout .left-sidebar {
+        grid-column: 1;
+        border-right: 1px solid var(--border-color);
+      }
+
+      .desktop-layout .right-sidebar {
+        grid-column: 3;
+        border-left: 1px solid var(--border-color);
+      }
+
+      /* Center Panel */
+      .desktop-layout .main-content {
+        grid-row: 2;
+        grid-column: 2;
+        background-color: var(--bg-primary);
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      .desktop-chat-container {
+        flex: 1;
+        overflow-y: auto;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .desktop-chat-message {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+
+      .message-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--primary);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .message-content {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1rem;
+        max-width: 80%;
+        box-shadow: var(--shadow);
+      }
+
+      .message-header {
+        margin-bottom: 0.5rem;
+        color: var(--primary);
+      }
+
+      .message-content p {
+        margin: 0;
+        line-height: 1.6;
+        color: var(--text-primary);
+      }
+
+      /* Footer */
+      .desktop-layout .pmerit-footer {
+        grid-row: 3;
+        grid-column: 1 / -1;
+        padding: 0.75rem 1.5rem;
+        background-color: var(--bg-card);
+        border-top: 1px solid var(--border-color);
+        box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.05);
+        min-height: auto;
+        height: auto;
+        line-height: 1.2;
+      }
+      
+      .footer-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+      }
+      
+      .footer-left {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 500;
+        font-size: 0.85rem;
+        color: var(--text-primary);
+      }
+      
+      .footer-left i {
+        font-size: 0.75rem;
+        color: var(--color-success);
+      }
+      
+      .footer-status {
+        color: var(--primary);
+      }
+      
+      .footer-right {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      
+      .footer-link {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 0.85rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        transition: var(--transition-fast);
+      }
+      
+      .footer-link:hover {
+        color: var(--primary);
+        background-color: var(--bg-secondary);
+      }
+
+      /* Sidebar Components */
       .pane-title {
         font-weight: 700;
         font-size: 1.1rem;
@@ -467,10 +618,6 @@
         box-shadow: var(--shadow-lg);
       }
 
-      .dashboard-btn:hover {
-        background-color: #4B5563;
-      }
-
       .collapsible {
         border: 1px solid var(--border-color);
         border-radius: 8px;
@@ -502,209 +649,6 @@
 
       .collapsible.open .collapsible-body {
         display: block;
-      }
-
-      /* ========================================
-         CENTER PANEL - CHAT INTERFACE
-         ======================================== */
-      .desktop-layout .main-content {
-        grid-row: 2;
-        grid-column: 2;
-        background-color: var(--bg-primary);
-        display: flex;
-        flex-direction: column;
-        min-height: 0;
-        overflow: hidden;
-      }
-
-      /* Chat Messages Container (Scrollable) */
-      .desktop-chat-container {
-        flex: 1;
-        overflow-y: auto;
-        padding: 2rem;
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-      }
-
-      /* AI Message Bubble */
-      .desktop-chat-message {
-        display: flex;
-        gap: 1rem;
-        align-items: flex-start;
-      }
-
-      .message-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: var(--primary);
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-      }
-
-      .message-content {
-        background: var(--bg-card);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        padding: 1rem;
-        max-width: 80%;
-        box-shadow: var(--shadow);
-      }
-
-      .message-header {
-        margin-bottom: 0.5rem;
-        color: var(--primary);
-      }
-
-      .message-content p {
-        margin: 0;
-        line-height: 1.6;
-        color: var(--text-primary);
-      }
-
-      /* User Message */
-      .desktop-chat-message.user-message {
-        flex-direction: row-reverse;
-      }
-
-      .user-message .message-avatar {
-        background: var(--secondary);
-      }
-
-      .user-message .message-content {
-        background: var(--primary);
-        color: white;
-        border-color: var(--primary);
-      }
-
-      .user-message .message-content p {
-        color: white;
-      }
-
-      /* ========================================
-         CHAT INPUT AREA (Fixed at Bottom)
-         ======================================== */
-      .desktop-chat-input-area {
-        border-top: 1px solid var(--border-color);
-        background: var(--bg-card);
-        padding: 1rem 1.5rem;
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
-      }
-
-      .desktop-input-wrapper {
-        position: relative;
-        display: flex;
-        align-items: center;
-      }
-
-      .desktop-chat-input {
-        width: 100%;
-        padding: 0.75rem 4rem 0.75rem 1rem;
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        font-family: 'Inter', sans-serif;
-        font-size: 0.95rem;
-        resize: none;
-        min-height: 44px;
-        max-height: 120px;
-        background: var(--bg-primary);
-        color: var(--text-primary);
-        transition: var(--transition);
-      }
-
-      .desktop-chat-input:focus {
-        outline: none;
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(42, 91, 140, 0.1);
-      }
-
-      .desktop-char-count {
-        position: absolute;
-        right: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 0.75rem;
-        color: var(--text-secondary);
-      }
-
-      /* Input Controls Row */
-      .desktop-input-controls {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-      }
-
-      .control-btn {
-        padding: 0.5rem 1rem;
-        border: 1px solid var(--border-color);
-        border-radius: 6px;
-        background: var(--bg-primary);
-        color: var(--text-primary);
-        font-size: 0.85rem;
-        cursor: pointer;
-        transition: var(--transition);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .control-btn:hover {
-        border-color: var(--primary);
-        background: var(--bg-secondary);
-      }
-
-      .status-indicator {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 0.85rem;
-        color: var(--primary);
-        margin-left: auto;
-      }
-
-      .status-indicator i {
-        color: var(--color-success);
-        font-size: 0.6rem;
-      }
-
-      .send-btn-desktop {
-        padding: 0.5rem 1.5rem;
-        background: var(--primary);
-        color: white;
-        border: none;
-        border-radius: 6px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: var(--transition);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .send-btn-desktop:hover {
-        background: var(--primary-dark);
-        transform: translateY(-1px);
-        box-shadow: var(--shadow-lg);
-      }
-
-      /* ========================================
-         RIGHT SIDEBAR
-         ======================================== */
-      .desktop-layout .right-sidebar {
-        grid-row: 2;
-        grid-column: 3;
-        background-color: var(--bg-secondary);
-        border-left: 1px solid var(--border-color);
-        padding: 1.5rem 1rem;
-        overflow-y: auto;
-        min-height: 0;
       }
 
       .support-card {
@@ -769,72 +713,8 @@
         transform: translateY(-2px);
         box-shadow: var(--shadow-lg);
       }
-
-      /* ========================================
-         DESKTOP FOOTER
-         ======================================== */
-      .desktop-layout .pmerit-footer {
-        grid-row: 3;
-        grid-column: 1 / -1;
-        padding: 0.75rem 1.5rem;
-        background-color: var(--bg-card);
-        border-top: 1px solid var(--border-color);
-        box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.05);
-        min-height: auto;
-        height: auto;
-        line-height: 1.2;
-      }
-      
-      .footer-container {
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 0;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1.5rem;
-      }
-      
-      .footer-left {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-weight: 500;
-        font-size: 0.85rem;
-        color: var(--text-primary);
-      }
-      
-      .footer-left i {
-        font-size: 0.75rem;
-        color: var(--color-success);
-      }
-      
-      .footer-status {
-        color: var(--primary);
-      }
-      
-      .footer-right {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-      }
-      
-      .footer-link {
-        color: var(--text-secondary);
-        text-decoration: none;
-        font-size: 0.85rem;
-        padding: 0.25rem 0.5rem;
-        border-radius: 4px;
-        transition: var(--transition-fast);
-      }
-      
-      .footer-link:hover {
-        color: var(--primary);
-        background-color: var(--bg-secondary);
-      }
     }
 
-    /* Large Desktop */
     @media (min-width: 1440px) {
       .desktop-layout {
         grid-template-columns: 280px 1fr 360px;
