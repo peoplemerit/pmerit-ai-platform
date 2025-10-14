@@ -19,7 +19,7 @@
   <!-- MODULAR CSS FILES -->
   <link rel="stylesheet" href="assets/css/light-theme.css">
   <link rel="stylesheet" href="assets/css/mobile-mockup-match.css">
-  <link rel="stylesheet" href="assets/css/components.css"> <!-- NEW ChatGPT-style input -->
+  <link rel="stylesheet" href="assets/css/components.css">
 </head>
 <body>
 
@@ -51,13 +51,14 @@
           <i class="fas fa-plus"></i>
         </button>
         
-        <!-- Text Input -->
+        <!-- ✅ FIX #5: Improved placeholder (was "Ask anything") -->
         <textarea 
           class="chat-input" 
           id="chatInput"
-          placeholder="Ask anything"
+          placeholder="Ask about courses, learning paths, or your goals..."
           maxlength="1000"
           rows="1"
+          aria-label="Chat input"
         ></textarea>
         
         <!-- Right Side Actions -->
@@ -73,53 +74,88 @@
           </button>
         </div>
         
-        <!-- Character Counter (Shows on focus) -->
-        <span class="char-count" id="charCount">0/1000</span>
+        <!-- ✅ FIX #4: Character Counter hidden initially (add "hidden" class in CSS) -->
+        <span class="char-counter hidden" id="charCount">0/1000</span>
       </div>
     </div>
 
-    <!-- Mobile Footer -->
-    <footer class="pmerit-footer">
-      <a href="/privacy.html" class="footer-link">Privacy & Terms</a>
-      <span> • </span>
-      <span class="footer-status">Connected to Educational Services</span>
+    <!-- ✅ FIX #2: Mobile Footer with better structure for contrast -->
+    <footer class="pmerit-footer mobile-footer">
+      <a href="/privacy.html" class="footer-link-mobile">Privacy & Terms</a>
+      <span class="footer-separator"> • </span>
+      <span class="footer-status-mobile">Connected to Educational Services</span>
     </footer>
 
     <!-- Hamburger Menu -->
     <div class="menu-overlay" id="menuOverlay"></div>
     <nav class="side-menu" id="sideMenu">
+      <!-- ✅ FIX #1: Dashboard moved to TOP of Quick Actions -->
       <h3 class="menu-title">Quick Actions</h3>
-      <div class="menu-item" data-toggle="vh">
-        <span><i class="fas fa-robot"></i> Virtual Human Mode</span>
-        <div class="toggle-switch"></div>
+      
+      <!-- Dashboard as FIRST item -->
+      <div class="menu-item menu-item-primary">
+        <span><i class="fas fa-tachometer-alt"></i> Dashboard</span>
+        <i class="fas fa-chevron-right"></i>
       </div>
+      
+      <!-- ✅ FIX #6: Proper checkbox structure for toggles -->
+      <div class="menu-item">
+        <label class="menu-toggle-label">
+          <span><i class="fas fa-robot"></i> Virtual Human Mode</span>
+          <div class="toggle-switch">
+            <input type="checkbox" id="mobileVhToggle" data-toggle="vh" aria-label="Toggle Virtual Human Mode">
+            <span class="toggle-slider"></span>
+          </div>
+        </label>
+      </div>
+      
       <div class="menu-item">
         <span><i class="fas fa-route"></i> Career Track & Explore Paths</span>
+        <i class="fas fa-chevron-right"></i>
       </div>
-      <div class="menu-item" data-toggle="cs">
-        <span><i class="fas fa-headset"></i> Customer Service Mode</span>
-        <div class="toggle-switch"></div>
+      
+      <div class="menu-item">
+        <label class="menu-toggle-label">
+          <span><i class="fas fa-headset"></i> Customer Service Mode</span>
+          <div class="toggle-switch">
+            <input type="checkbox" id="mobileCsToggle" data-toggle="cs" aria-label="Toggle Customer Service Mode">
+            <span class="toggle-slider"></span>
+          </div>
+        </label>
       </div>
       
       <h3 class="menu-title">Settings</h3>
-      <div class="menu-item" data-toggle="dark">
-        <span><i class="fas fa-moon"></i> Dark Mode</span>
-        <div class="toggle-switch"></div>
-      </div>
-      <div class="menu-item" data-toggle="tts">
-        <span><i class="fas fa-volume-up"></i> Text-to-Speech</span>
-        <div class="toggle-switch"></div>
-      </div>
+      
       <div class="menu-item">
-        <span><i class="fas fa-microphone"></i> Preview Voices</span>
+        <label class="menu-toggle-label">
+          <span><i class="fas fa-moon"></i> Dark Mode</span>
+          <div class="toggle-switch">
+            <input type="checkbox" id="mobileDarkToggle" data-toggle="dark" aria-label="Toggle Dark Mode">
+            <span class="toggle-slider"></span>
+          </div>
+        </label>
       </div>
       
-      <h3 class="menu-title">Account</h3>
       <div class="menu-item">
-        <span><i class="fas fa-tachometer-alt"></i> Dashboard</span>
+        <label class="menu-toggle-label">
+          <span><i class="fas fa-volume-up"></i> Text-to-Speech</span>
+          <div class="toggle-switch">
+            <input type="checkbox" id="mobileTtsToggle" data-toggle="tts" aria-label="Toggle Text-to-Speech">
+            <span class="toggle-slider"></span>
+          </div>
+        </label>
       </div>
+      
+      <div class="menu-item">
+        <span><i class="fas fa-microphone"></i> Preview Voices</span>
+        <i class="fas fa-chevron-right"></i>
+      </div>
+      
+      <h3 class="menu-title">Learning</h3>
+      
       <div class="menu-item">
         <span><i class="fas fa-clipboard-list"></i> Begin Assessment</span>
+        <i class="fas fa-chevron-right"></i>
       </div>
     </nav>
   </div>
@@ -146,9 +182,20 @@
     <aside class="left-sidebar">
       <h3 class="pane-title">Quick Actions</h3>
       
-      <div class="toggle" data-toggle="vh">
-        <span><i class="fas fa-robot icon"></i>Virtual Human Mode</span>
-        <div class="toggle-switch"></div>
+      <!-- ✅ FIX #1: Dashboard moved to TOP with primary styling -->
+      <button class="dashboard-btn dashboard-btn-primary">
+        <i class="fas fa-tachometer-alt"></i> Dashboard
+      </button>
+      
+      <!-- ✅ FIX #6: Proper checkbox structure for desktop toggles -->
+      <div class="toggle">
+        <label class="toggle-label">
+          <span><i class="fas fa-robot icon"></i>Virtual Human Mode</span>
+          <div class="toggle-switch">
+            <input type="checkbox" id="desktopVhToggle" data-toggle="vh" aria-label="Toggle Virtual Human Mode">
+            <span class="toggle-slider"></span>
+          </div>
+        </label>
       </div>
       
       <div class="action">
@@ -156,9 +203,14 @@
         <i class="fas fa-chevron-right"></i>
       </div>
       
-      <div class="toggle" data-toggle="cs">
-        <span><i class="fas fa-headset icon"></i>Customer Service Mode</span>
-        <div class="toggle-switch"></div>
+      <div class="toggle">
+        <label class="toggle-label">
+          <span><i class="fas fa-headset icon"></i>Customer Service Mode</span>
+          <div class="toggle-switch">
+            <input type="checkbox" id="desktopCsToggle" data-toggle="cs" aria-label="Toggle Customer Service Mode">
+            <span class="toggle-slider"></span>
+          </div>
+        </label>
       </div>
       
       <div class="collapsible" id="settingsCollapsible">
@@ -167,13 +219,23 @@
           <i class="fas fa-chevron-down"></i>
         </div>
         <div class="collapsible-body">
-          <div class="toggle" data-toggle="dark">
-            <span>Dark Mode</span>
-            <div class="toggle-switch"></div>
+          <div class="toggle">
+            <label class="toggle-label">
+              <span>Dark Mode</span>
+              <div class="toggle-switch">
+                <input type="checkbox" id="desktopDarkToggle" data-toggle="dark" aria-label="Toggle Dark Mode">
+                <span class="toggle-slider"></span>
+              </div>
+            </label>
           </div>
-          <div class="toggle" data-toggle="tts">
-            <span>Text-to-Speech</span>
-            <div class="toggle-switch"></div>
+          <div class="toggle">
+            <label class="toggle-label">
+              <span>Text-to-Speech</span>
+              <div class="toggle-switch">
+                <input type="checkbox" id="desktopTtsToggle" data-toggle="tts" aria-label="Toggle Text-to-Speech">
+                <span class="toggle-slider"></span>
+              </div>
+            </label>
           </div>
           <div class="action">
             <span>Preview Voices</span>
@@ -181,10 +243,6 @@
           </div>
         </div>
       </div>
-      
-      <button class="dashboard-btn">
-        <i class="fas fa-tachometer-alt"></i> Dashboard
-      </button>
     </aside>
 
     <!-- Center Panel - Chat Interface -->
@@ -220,6 +278,7 @@
             placeholder="Ask about courses, learning paths, or your goals..."
             maxlength="1000"
             rows="1"
+            aria-label="Chat input"
           ></textarea>
           
           <!-- Right Actions -->
@@ -240,8 +299,8 @@
             </button>
           </div>
           
-          <!-- Character Counter -->
-          <span class="desktop-char-count" id="desktopCharCount">0/1000</span>
+          <!-- ✅ FIX #4: Character Counter hidden initially -->
+          <span class="desktop-char-counter hidden" id="desktopCharCount">0/1000</span>
         </div>
         
         <!-- Control Buttons Row -->
@@ -265,12 +324,16 @@
       
       <div class="support-card">
         <h3>Ask me about PMERIT</h3>
+        
+        <!-- ✅ FIX #3: Renamed "Support" → "Tech Help" for clarity -->
         <div class="support-buttons">
-          <button class="support-btn">
-            <i class="fas fa-robot"></i> Virtual Human
+          <button class="support-btn" data-support-type="virtual-human">
+            <i class="fas fa-robot"></i>
+            <span>Virtual Human</span>
           </button>
-          <button class="support-btn">
-            <i class="fas fa-headset"></i> Support
+          <button class="support-btn" data-support-type="tech-help">
+            <i class="fas fa-life-ring"></i>
+            <span>Tech Help</span>
           </button>
         </div>
       </div>
@@ -293,7 +356,7 @@
     </aside>
 
     <!-- Desktop Footer -->
-    <footer class="pmerit-footer">
+    <footer class="pmerit-footer desktop-footer">
       <div class="footer-container">
         <div class="footer-left">
           <i class="fas fa-signal"></i>
@@ -314,7 +377,7 @@
   <script src="assets/js/main.js"></script>
   <script src="assets/js/chat.js"></script>
   
-  <!-- Layout Styles (Will be moved to separate CSS file) -->
+  <!-- Layout Styles -->
   <style>
     /* Mobile-first layout control */
     .mobile-layout {
@@ -326,6 +389,30 @@
 
     .desktop-layout {
       display: none;
+    }
+
+    /* ✅ FIX #4: Hide character counter initially */
+    .char-counter.hidden,
+    .desktop-char-counter.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    /* Show character counter when input is focused */
+    .chat-input-wrapper:focus-within .char-counter,
+    .desktop-input-wrapper:focus-within .desktop-char-counter {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* ✅ FIX #6: Toggle label full width for better clickability */
+    .menu-toggle-label,
+    .toggle-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      cursor: pointer;
     }
 
     /* Desktop Override */
@@ -556,7 +643,7 @@
         margin-bottom: 1rem;
       }
 
-      .toggle, .action, .dashboard-btn {
+      .toggle, .action {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -570,7 +657,7 @@
         min-height: 44px;
       }
 
-      .toggle:hover, .action:hover, .dashboard-btn:hover {
+      .toggle:hover, .action:hover {
         border-color: var(--primary);
         transform: translateY(-1px);
         box-shadow: var(--shadow);
@@ -581,16 +668,35 @@
         margin-right: 0.5rem;
       }
 
+      /* ✅ FIX #6: Toggle switch proper structure for :checked */
       .toggle-switch {
+        position: relative;
         width: 40px;
         height: 20px;
-        background: #ccc;
-        border-radius: 34px;
-        position: relative;
-        transition: .4s;
+        display: inline-block;
+        flex-shrink: 0;
       }
 
-      .toggle-switch::after {
+      .toggle-switch input[type="checkbox"] {
+        opacity: 0;
+        width: 0;
+        height: 0;
+        position: absolute;
+      }
+
+      .toggle-slider {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #ccc;
+        border-radius: 34px;
+        transition: .4s;
+        cursor: pointer;
+      }
+
+      .toggle-slider::before {
         content: "";
         position: absolute;
         width: 16px;
@@ -602,19 +708,49 @@
         transition: .4s;
       }
 
-      .toggle.active .toggle-switch {
+      .toggle-switch input[type="checkbox"]:checked + .toggle-slider {
         background-color: var(--primary);
       }
 
-      .toggle.active .toggle-switch::after {
+      .toggle-switch input[type="checkbox"]:checked + .toggle-slider::before {
         transform: translateX(20px);
       }
 
+      /* ✅ FIX #1: Dashboard button with PRIMARY color at TOP */
       .dashboard-btn {
+        width: 100%;
+        display: flex;
+        align-items: center;
         justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        cursor: pointer;
+        transition: var(--transition);
+        border: 1px solid var(--border-color);
+        background-color: var(--bg-card);
         font-weight: 600;
-        background-color: var(--text-secondary);
+        min-height: 44px;
+      }
+
+      .dashboard-btn:hover {
+        border-color: var(--primary);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow);
+      }
+
+      /* Dashboard primary variant (at top of Quick Actions) */
+      .dashboard-btn-primary {
+        background-color: var(--primary);
         color: white;
+        border-color: var(--primary);
+        box-shadow: var(--shadow-md);
+      }
+
+      .dashboard-btn-primary:hover {
+        background-color: var(--primary-dark);
+        transform: translateY(-2px);
         box-shadow: var(--shadow-lg);
       }
 
@@ -689,6 +825,12 @@
       .support-btn:hover {
         border-color: var(--primary);
         background: var(--bg-secondary);
+        transform: translateY(-1px);
+      }
+
+      .support-btn i {
+        font-size: 1.2rem;
+        color: var(--primary);
       }
 
       .cta-large {
