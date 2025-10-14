@@ -1,9 +1,12 @@
 /**
  * PMERIT Components CSS
- * Version: 3.1 - Enhanced ChatGPT-Style Input
- * Last Updated: October 2025
+ * Version: 3.2 - Fixed Desktop Control Layout
+ * Last Updated: October 14, 2025
  * 
- * Polished, professional input styling with smooth interactions
+ * FIXES:
+ * - Control buttons now horizontal (VH Mode + Read About on same line)
+ * - Removed redundant "Connected to Educational Services" text
+ * - Polished ChatGPT-style input with smooth interactions
  */
 
 /* ========================================
@@ -212,7 +215,8 @@
 }
 
 /* === CHARACTER COUNTER === */
-.char-counter {
+.char-counter,
+.desktop-char-counter {
   position: absolute;
   bottom: 4px;
   right: 48px;
@@ -221,18 +225,30 @@
   color: var(--text-tertiary);
   
   opacity: 0;
-  transition: opacity 0.2s ease;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  pointer-events: none;
 }
 
-.chat-input-wrapper:focus-within .char-counter {
+.chat-input-wrapper:focus-within .char-counter,
+.desktop-input-wrapper:focus-within .desktop-char-counter {
   opacity: 1;
+  visibility: visible;
 }
 
-.char-counter.warning {
+.char-counter.hidden,
+.desktop-char-counter.hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+.char-counter.warning,
+.desktop-char-counter.warning {
   color: var(--warning);
 }
 
-.char-counter.error {
+.char-counter.error,
+.desktop-char-counter.error {
   color: var(--error);
 }
 
@@ -269,6 +285,8 @@
   transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
   
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  
+  position: relative;
 }
 
 .desktop-input-wrapper:focus-within {
@@ -432,25 +450,17 @@
   box-shadow: none;
 }
 
-/* === DESKTOP CONTROL ROW === */
-.desktop-control-row {
+/* ==========================================
+   ✅ FIX #1: DESKTOP CONTROL BUTTONS HORIZONTAL
+   VH Mode and Read About on the same line
+   ========================================== */
+
+.desktop-input-controls {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  
+  justify-content: flex-start; /* Align to left */
+  gap: 8px; /* Space between buttons */
   padding: 0 4px;
-}
-
-.desktop-control-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.desktop-control-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
 /* === CONTROL BUTTONS === */
@@ -472,6 +482,8 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  
+  white-space: nowrap; /* Prevent text wrapping */
 }
 
 .control-btn:hover {
@@ -482,21 +494,42 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
+.control-btn:active {
+  transform: translateY(0);
+}
+
 .control-btn.active {
   background: var(--primary);
   border-color: var(--primary);
   color: white;
 }
 
-/* === STATUS INDICATOR === */
+.control-btn i {
+  font-size: 12px;
+}
+
+/* ==========================================
+   ✅ FIX #2: HIDE REDUNDANT STATUS INDICATOR
+   "Connected to Educational Services" already in footer
+   ========================================== */
+
+.status-indicator {
+  display: none !important; /* Hide redundant status */
+}
+
+/* If you want to keep it but make it less prominent, use this instead:
 .status-indicator {
   display: flex;
   align-items: center;
   gap: 6px;
   
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-tertiary);
+  opacity: 0.6;
+  
+  margin-left: auto;
 }
+*/
 
 .status-dot {
   width: 8px;
@@ -541,6 +574,11 @@
   .chat-input-wrapper {
     padding: 10px 14px;
   }
+  
+  /* Hide desktop controls on mobile */
+  .desktop-input-controls {
+    display: none !important;
+  }
 }
 
 /* ========================================
@@ -582,6 +620,10 @@
   .desktop-send-btn {
     border: 2px solid white;
   }
+  
+  .control-btn {
+    border-width: 2px;
+  }
 }
 
 /* ========================================
@@ -615,6 +657,18 @@
    ======================================== */
 
 /**
+ * v3.2 FIXES:
+ * 
+ * ✅ FIX #1: Control buttons now horizontal
+ *    - VH Mode and Read About on same line
+ *    - Better spacing (8px gap)
+ *    - Aligned to left side
+ * 
+ * ✅ FIX #2: Removed redundant status
+ *    - "Connected to Educational Services" hidden
+ *    - Already present in footer
+ *    - Reduces visual clutter
+ * 
  * IMPROVEMENTS OVER CHATGPT:
  * 
  * ✅ Smoother hover transitions (cubic-bezier easing)
@@ -627,7 +681,6 @@
  * ✅ High contrast mode support
  * ✅ Better shadows (layered for depth)
  * ✅ Micro-interactions (scale, rotate, lift)
- * ✅ Status indicator with animated dot
  * ✅ Control buttons with active states
  * 
  * POLISH DETAILS:
@@ -639,4 +692,5 @@
  * - Character counter fades in on focus
  * - Smooth transitions for all states
  * - Perfect spacing and alignment
+ * - Control buttons horizontal (not stacked)
  */
