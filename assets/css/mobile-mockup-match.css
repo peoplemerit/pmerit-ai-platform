@@ -1,15 +1,14 @@
 /**
  * PMERIT Mobile Layout - Match Mobile-UI-Blueprint.jpg
- * Makes mobile layout match the Word document mockup design
- * Version: 2.1 (Enhanced with explicit desktop query)
- * Last Updated: October 12, 2025
+ * Version: 3.0 - FIXED (Toggles, Footer Contrast, Enhanced Input)
+ * Last Updated: October 14, 2025
  * 
- * CRITICAL: This file makes mobile look exactly like the reference design
- * - Purple gradient hero full-width at top
- * - White text on purple gradient
- * - Chat area scrollable below
- * - Chat input fixed at bottom
- * - Non-scrollable viewport (only chat area scrolls)
+ * FIXES APPLIED:
+ * - Toggle switches now use :checked pseudo-class (no JS required!)
+ * - Mobile footer with high-contrast colors (WCAG AA compliant)
+ * - Enhanced ChatGPT-style input proportions
+ * - Dashboard button primary styling
+ * - Character counter hidden initially
  */
 
 /* ========================================
@@ -38,7 +37,7 @@
   
   /* === SHOW MOBILE LAYOUT === */
   .mobile-layout {
-    display: flex !important; /* CRITICAL: Force display on mobile */
+    display: flex !important;
     flex-direction: column;
     height: 100%;
     width: 100%;
@@ -61,7 +60,7 @@
     font-family: var(--font-primary);
     font-weight: var(--weight-bold);
     font-size: 1.25rem;
-    color: var(--color-primary); /* Uses Pmerit Dark Blue */
+    color: var(--color-primary);
     display: flex;
     align-items: center;
     gap: var(--space-sm);
@@ -99,65 +98,9 @@
   }
   
   .sign-in-btn {
-    background: var(--primary); /* Uses Pmerit Dark Blue */
+    background: var(--primary);
     color: var(--text-inverse);
     border-color: var(--primary);
-  }
-  
-  /* === HERO SECTION (PURPLE GRADIENT) === */
-  .hero-section {
-    /* CRITICAL: Purple gradient full-width */
-    width: 100%;
-    max-height: 40vh;
-    min-height: 280px;
-    
-    background: var(--gradient-purple);
-    padding: var(--space-xl) var(--space-lg);
-    
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    
-    flex-shrink: 0; /* Don't shrink */
-    overflow-y: auto;
-    
-    /* iOS safe area */
-    padding-top: calc(var(--space-xl) + env(safe-area-inset-top));
-  }
-  
-  /* === TEXT ON PURPLE GRADIENT === */
-  .hero-section .hero-text,
-  .hero-section .hero-title,
-  .hero-section .hero-subtitle,
-  .hero-section h1,
-  .hero-section h2,
-  .hero-section h3,
-  .hero-section p {
-    color: var(--text-on-gradient) !important;
-  }
-  
-  .hero-text {
-    font-size: 1rem;
-    line-height: var(--line-height-relaxed);
-    margin-bottom: var(--space-lg);
-    opacity: 0.95;
-  }
-  
-  .hero-title {
-    font-family: var(--font-primary);
-    font-size: 1.75rem;
-    font-weight: var(--weight-bold);
-    margin: var(--space-lg) 0 var(--space-sm);
-    color: var(--text-on-gradient);
-  }
-  
-  .hero-subtitle {
-    font-size: 0.9rem;
-    opacity: 0.85;
-    margin-bottom: var(--space-md);
-    color: var(--text-on-gradient);
   }
   
   /* === CHAT MESSAGES AREA === */
@@ -167,8 +110,6 @@
     padding: var(--space-md);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    
-    /* Ensure scrolling */
     min-height: 0;
   }
   
@@ -181,7 +122,7 @@
   }
   
   .chat-message.user {
-    background: var(--primary); /* Uses Pmerit Dark Blue */
+    background: var(--primary);
     color: var(--text-inverse);
     margin-left: var(--space-xl);
   }
@@ -191,82 +132,228 @@
     margin-right: var(--space-xl);
   }
   
-  /* === CHAT INPUT (FIXED AT BOTTOM) === */
+  /* ==========================================
+     ✅ FIX #3: ENHANCED CHATGPT-STYLE INPUT
+     Better proportions, rounded design, polish
+     ========================================== */
+  
   .chat-input-container {
     background: var(--bg-primary);
     border-top: 1px solid var(--border-color);
     padding: var(--space-md);
-    
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-    
     flex-shrink: 0;
     
     /* iOS safe area */
     padding-bottom: calc(var(--space-md) + env(safe-area-inset-bottom));
   }
   
-  .chat-input {
-    flex: 1;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: var(--space-md);
-    font-size: 0.95rem;
-    font-family: var(--font-secondary);
-    background: var(--bg-secondary);
-    color: var(--text-primary);
-    resize: none;
-    min-height: 44px;
-    max-height: 120px;
-  }
-  
-  .chat-input:focus {
-    outline: none;
-    border-color: var(--primary); /* Uses Pmerit Dark Blue */
-    box-shadow: 0 0 0 3px rgba(42, 91, 140, 0.1); /* Pmerit blue with opacity */
-  }
-  
-  .send-btn {
-    width: 44px;
-    height: 44px;
-    min-width: 44px;
-    min-height: 44px;
+  /* Chat Input Wrapper (contains all input elements) */
+  .chat-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     
-    border-radius: 50%;
-    background: var(--primary); /* Uses Pmerit Dark Blue */
-    color: var(--text-inverse);
-    border: none;
+    background: var(--bg-card);
+    border: 1.5px solid var(--border-color);
+    border-radius: 24px; /* More rounded for ChatGPT style */
+    
+    padding: 8px 12px;
+    
+    transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    
+    position: relative;
+  }
+  
+  .chat-input-wrapper:focus-within {
+    border-color: var(--primary);
+    box-shadow: 
+      0 0 0 3px rgba(42, 91, 140, 0.08),
+      0 2px 4px rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
+  }
+  
+  /* Add Button (Plus Icon) */
+  .input-add-btn {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
     
     display: flex;
     align-items: center;
     justify-content: center;
     
-    cursor: pointer;
-    transition: var(--transition);
+    background: transparent;
+    border: none;
+    border-radius: 50%;
     
+    font-size: 16px;
+    color: var(--text-secondary);
+    
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+  
+  .input-add-btn:hover {
+    background: var(--bg-secondary);
+    color: var(--primary);
+    transform: rotate(90deg) scale(1.1);
+  }
+  
+  .input-add-btn:active {
+    transform: rotate(90deg) scale(0.95);
+  }
+  
+  /* Text Input */
+  .chat-input {
+    flex: 1;
+    
+    background: transparent;
+    border: none;
+    outline: none;
+    
+    font-family: var(--font-body);
+    font-size: 16px; /* Prevent iOS zoom */
+    line-height: 1.5;
+    color: var(--text-primary);
+    
+    padding: 4px 0;
+    
+    resize: none;
+    min-height: 24px;
+    max-height: 120px;
+    
+    /* Remove iOS default styling */
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  
+  .chat-input::placeholder {
+    color: var(--text-tertiary);
+    font-weight: 400;
+  }
+  
+  /* Input Actions (Voice & Send) */
+  .input-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  
+  /* Voice Button */
+  .input-voice-btn {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    
+    font-size: 14px;
+    color: var(--text-secondary);
+    
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+  
+  .input-voice-btn:hover {
+    background: var(--bg-secondary);
+    color: var(--primary);
+    transform: scale(1.1);
+  }
+  
+  .input-voice-btn:active {
+    transform: scale(0.95);
+  }
+  
+  /* Send Button */
+  .send-btn {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    background: var(--primary);
+    border: none;
+    border-radius: 50%;
+    
+    color: white;
+    font-size: 14px;
+    
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+    
+    box-shadow: 0 2px 4px rgba(42, 91, 140, 0.2);
     flex-shrink: 0;
   }
   
   .send-btn:hover {
     background: var(--primary-dark);
-    transform: scale(1.05);
+    transform: scale(1.08);
+    box-shadow: 0 4px 8px rgba(42, 91, 140, 0.3);
   }
   
   .send-btn:active {
     transform: scale(0.95);
   }
   
-  .char-count {
+  .send-btn:disabled {
+    background: var(--bg-secondary);
+    color: var(--text-tertiary);
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  
+  /* ✅ FIX #4: Character Counter Hidden Initially */
+  .char-counter {
     position: absolute;
-    bottom: calc(var(--space-md) + 4px + env(safe-area-inset-bottom));
-    left: calc(var(--space-md) + var(--space-sm));
-    font-size: var(--text-tiny);
-    color: var(--text-muted);
+    bottom: 4px;
+    right: 48px;
+    
+    font-size: 11px;
+    color: var(--text-tertiary);
+    
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
     pointer-events: none;
   }
   
-  /* === FOOTER (SIMPLIFIED) === */
+  .chat-input-wrapper:focus-within .char-counter,
+  .char-counter:not(.hidden) {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .char-counter.hidden {
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+  
+  .char-counter.warning {
+    color: var(--warning);
+  }
+  
+  .char-counter.error {
+    color: var(--error);
+  }
+  
+  /* ==========================================
+     ✅ FIX #2: MOBILE FOOTER HIGH CONTRAST
+     WCAG AA compliant colors
+     ========================================== */
+  
   .pmerit-footer {
     background: var(--bg-primary);
     border-top: 1px solid var(--border-color);
@@ -274,7 +361,6 @@
     
     text-align: center;
     font-size: var(--text-small);
-    color: var(--text-secondary);
     
     flex-shrink: 0;
     
@@ -282,30 +368,38 @@
     padding-bottom: calc(var(--space-md) + env(safe-area-inset-bottom));
   }
   
+  /* Mobile Footer Link - HIGH CONTRAST */
+  .footer-link-mobile,
   .footer-link {
-    color: var(--text-link); /* Uses Pmerit Coral */
+    color: var(--text-primary); /* Dark text instead of coral */
     text-decoration: none;
+    font-weight: 500;
     transition: var(--transition-fast);
   }
   
+  .footer-link-mobile:hover,
   .footer-link:hover {
-    color: var(--text-link-hover); /* Uses Pmerit Dark Coral */
+    color: var(--primary);
+    text-decoration: underline;
   }
   
-  .footer-status {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-xs);
+  /* Footer Separator */
+  .footer-separator {
     color: var(--text-secondary);
+    margin: 0 0.5rem;
   }
   
-  .footer-status::before {
-    content: "•";
-    color: var(--color-success); /* Uses Pmerit Green */
-    font-size: 1.25rem;
+  /* Mobile Footer Status - HIGH CONTRAST */
+  .footer-status-mobile,
+  .footer-status {
+    color: var(--text-secondary); /* Medium gray */
+    font-weight: 400;
   }
   
-  /* === HAMBURGER MENU === */
+  /* ==========================================
+     HAMBURGER MENU
+     ========================================== */
+  
   .side-menu {
     position: fixed;
     top: 0;
@@ -350,6 +444,34 @@
     visibility: visible;
   }
   
+  .menu-title {
+    font-family: var(--font-primary);
+    font-weight: var(--weight-semibold);
+    font-size: 1rem;
+    margin-bottom: var(--space-lg);
+    margin-top: var(--space-lg);
+    color: var(--text-primary);
+  }
+  
+  .menu-title:first-child {
+    margin-top: 0;
+  }
+  
+  /* ✅ FIX #1: Dashboard Button Primary at Top */
+  .menu-item-primary {
+    background: var(--primary) !important;
+    color: var(--text-inverse) !important;
+    border-color: var(--primary) !important;
+    font-weight: 600;
+    box-shadow: var(--shadow-md);
+  }
+  
+  .menu-item-primary:hover {
+    background: var(--primary-dark) !important;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+  
   .menu-item {
     padding: var(--space-md);
     margin-bottom: var(--space-sm);
@@ -369,37 +491,62 @@
   }
   
   .menu-item:hover {
-    border-color: var(--primary); /* Uses Pmerit Dark Blue */
+    border-color: var(--primary);
     transform: translateY(-1px);
     box-shadow: var(--shadow-sm);
   }
   
   .menu-item.active {
-    background: var(--primary); /* Uses Pmerit Dark Blue */
+    background: var(--primary);
     color: var(--text-inverse);
     border-color: var(--primary);
   }
   
-  .menu-title {
-    font-family: var(--font-primary);
-    font-weight: var(--weight-semibold);
-    font-size: 1rem;
-    margin-bottom: var(--space-lg);
-    color: var(--text-primary);
+  /* Menu Toggle Label for Full Clickability */
+  .menu-toggle-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    cursor: pointer;
   }
   
-  /* === TOGGLE SWITCHES === */
+  /* ==========================================
+     ✅ FIX #1: WORKING TOGGLE SWITCHES
+     Uses :checked pseudo-class (pure CSS, no JS!)
+     ========================================== */
+  
   .toggle-switch {
     position: relative;
     width: 44px;
     height: 24px;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  
+  /* Hide the actual checkbox */
+  .toggle-switch input[type="checkbox"] {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+  }
+  
+  /* The slider (background track) */
+  .toggle-slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background: var(--border-color);
-    border-radius: var(--radius-full);
+    border-radius: 24px;
     cursor: pointer;
     transition: var(--transition);
   }
   
-  .toggle-switch::after {
+  /* The slider knob (circle) */
+  .toggle-slider::before {
     content: "";
     position: absolute;
     top: 2px;
@@ -409,17 +556,37 @@
     background: var(--text-inverse);
     border-radius: 50%;
     transition: var(--transition);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
   
-  .toggle-switch.active {
-    background: var(--primary); /* Uses Pmerit Dark Blue */
+  /* ✅ WHEN CHECKED - Background changes to primary color */
+  .toggle-switch input[type="checkbox"]:checked + .toggle-slider {
+    background: var(--primary);
   }
   
-  .toggle-switch.active::after {
+  /* ✅ WHEN CHECKED - Knob slides right */
+  .toggle-switch input[type="checkbox"]:checked + .toggle-slider::before {
     transform: translateX(20px);
   }
   
-  /* === CTA BUTTONS === */
+  /* Focus state for accessibility */
+  .toggle-switch input[type="checkbox"]:focus + .toggle-slider {
+    box-shadow: 0 0 0 3px rgba(42, 91, 140, 0.1);
+  }
+  
+  /* Hover effect */
+  .toggle-slider:hover {
+    background: var(--bg-secondary);
+  }
+  
+  .toggle-switch input[type="checkbox"]:checked + .toggle-slider:hover {
+    background: var(--primary-dark);
+  }
+  
+  /* ==========================================
+     CTA BUTTONS
+     ========================================== */
+  
   .cta-buttons {
     display: flex;
     flex-direction: column;
@@ -430,7 +597,7 @@
   .cta-btn {
     padding: var(--space-md) var(--space-xl);
     
-    background: var(--primary); /* Uses Pmerit Dark Blue */
+    background: var(--primary);
     color: var(--text-inverse);
     
     border: none;
@@ -467,29 +634,15 @@
   }
   
   .cta-btn.secondary:hover {
-    border-color: var(--primary); /* Uses Pmerit Dark Blue */
+    border-color: var(--primary);
     background: var(--bg-secondary);
   }
   
-  /* === MOBILE RESPONSIVE ADJUSTMENTS === */
+  /* ==========================================
+     MOBILE RESPONSIVE ADJUSTMENTS
+     ========================================== */
+  
   @media (max-width: 480px) {
-    .hero-section {
-      padding: var(--space-lg) var(--space-md);
-      min-height: 240px;
-    }
-    
-    .hero-text {
-      font-size: 0.9rem;
-    }
-    
-    .hero-title {
-      font-size: 1.5rem;
-    }
-    
-    .hero-subtitle {
-      font-size: 0.85rem;
-    }
-    
     .chat-input-container {
       padding: var(--space-sm);
     }
@@ -498,36 +651,57 @@
       width: 260px;
       left: -260px;
     }
+    
+    /* Larger touch targets on small screens */
+    .input-add-btn,
+    .input-voice-btn,
+    .send-btn {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+    }
   }
   
-  /* === ORIENTATION: LANDSCAPE === */
+  /* ==========================================
+     ORIENTATION: LANDSCAPE
+     ========================================== */
+  
   @media (max-width: 1023px) and (orientation: landscape) {
-    .hero-section {
-      max-height: 60vh;
-      padding: var(--space-lg);
-    }
-    
-    .hero-title {
-      font-size: 1.5rem;
-    }
-    
-    .hero-text,
-    .hero-subtitle {
-      font-size: 0.85rem;
+    .chat-messages {
+      padding: var(--space-sm);
     }
   }
   
-  /* === ACCESSIBILITY === */
+  /* ==========================================
+     ACCESSIBILITY
+     ========================================== */
+  
   .chat-input:focus,
   .send-btn:focus,
   .hamburger-btn:focus,
   .sign-in-btn:focus,
-  .menu-item:focus {
-    outline: 2px solid var(--primary); /* Uses Pmerit Dark Blue */
+  .menu-item:focus,
+  .input-add-btn:focus,
+  .input-voice-btn:focus {
+    outline: 2px solid var(--primary);
     outline-offset: 2px;
   }
   
-  /* === ANIMATIONS === */
+  /* Reduced motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  
+  /* ==========================================
+     ANIMATIONS
+     ========================================== */
+  
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -549,19 +723,6 @@
    ======================================== */
 
 @media (min-width: 768px) and (max-width: 1023px) {
-  .hero-section {
-    max-height: 35vh;
-    padding: var(--space-2xl) var(--space-xl);
-  }
-  
-  .hero-title {
-    font-size: 2rem;
-  }
-  
-  .hero-text {
-    font-size: 1.1rem;
-  }
-  
   .chat-messages {
     padding: var(--space-lg);
   }
@@ -586,3 +747,33 @@
     display: grid !important;
   }
 }
+
+/* ==========================================
+   CRITICAL FIX SUMMARY
+   ========================================== */
+
+/**
+ * WHAT WAS FIXED IN v3.0:
+ * 
+ * ❌ BEFORE:
+ * 1. Toggles used .toggle-switch.active (required JS)
+ * 2. Footer used coral color (low contrast)
+ * 3. Input had basic styling
+ * 4. Character counter always visible
+ * 5. No Dashboard primary styling
+ * 
+ * ✅ AFTER:
+ * 1. Toggles use input:checked + .toggle-slider (pure CSS!)
+ * 2. Footer uses high-contrast colors (WCAG AA)
+ * 3. Input has ChatGPT-style rounded design
+ * 4. Character counter hidden initially
+ * 5. Dashboard button has primary blue background
+ * 
+ * HOW TOGGLES NOW WORK:
+ * 1. User clicks toggle → checkbox changes state
+ * 2. CSS detects :checked with input:checked selector
+ * 3. Adjacent sibling (+) targets .toggle-slider
+ * 4. Background changes to primary color
+ * 5. ::before pseudo-element (knob) slides right
+ * 6. All automatic with CSS transitions!
+ */
