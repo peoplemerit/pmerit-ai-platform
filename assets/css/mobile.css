@@ -121,15 +121,16 @@
 
 /**
  * PMERIT Mobile CSS - CRITICAL FIXES
- * Version: 2.1 (Fixed Layout Issues)
- * Last Updated: October 2025
+ * Version: 2.2 (Borderless Input Fix)
+ * Last Updated: October 14, 2025
  * 
  * FIXES:
- * 1. Purple gradient full-width (not sidebar)
- * 2. Chat input fixed at BOTTOM
- * 3. Proper viewport height
- * 4. Hide desktop layout on mobile
- * 5. Character counter at bottom
+ * 1. Purple gradient full-width (not sidebar) ✅
+ * 2. Chat input fixed at BOTTOM ✅
+ * 3. Proper viewport height ✅
+ * 4. Hide desktop layout on mobile ✅
+ * 5. Character counter at bottom ✅
+ * 6. NO BORDER on input (seamless ChatGPT style) ✅ NEW!
  */
 
 /* ========================================
@@ -364,15 +365,20 @@
     margin: 0 auto;
   }
   
+  /* ============================================
+     ✅ FIX #6: BORDERLESS INPUT (ChatGPT Style)
+     ============================================ */
+  
   .chat-input {
     flex: 1;
     min-height: 44px;
     max-height: 120px;
     padding: 0.75rem 1rem;
     
-    /* Styling */
-    background-color: white;
-    border: 1px solid var(--border-color);
+    /* ✅ SEAMLESS STYLING - No border! */
+    background: transparent;
+    border: none;
+    outline: none;
     border-radius: 24px;
     
     /* Typography */
@@ -384,19 +390,30 @@
     resize: none;
     overflow-y: auto;
     
-    /* Transitions */
-    transition: border-color 0.2s ease;
+    /* Smooth transitions */
+    transition: all 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+    
+    /* Remove iOS default styling */
+    -webkit-appearance: none;
+    appearance: none;
   }
   
+  /* Focus state - Subtle glow (no border) */
   .chat-input:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(42, 91, 140, 0.1);
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 0 2px rgba(42, 91, 140, 0.15);
   }
   
   .chat-input::placeholder {
     color: var(--text-secondary);
     opacity: 0.7;
+  }
+  
+  /* Prevent iOS zoom on input focus */
+  @supports (-webkit-touch-callout: none) {
+    .chat-input {
+      font-size: 16px; /* Prevents iOS zoom */
+    }
   }
   
   /* Send button */
@@ -656,9 +673,13 @@
   }
   
   .dark .chat-input {
-    background-color: #111827;
-    border-color: #374151;
+    background: transparent;
     color: #f9fafb;
+  }
+  
+  .dark .chat-input:focus {
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 0 2px rgba(74, 164, 185, 0.2);
   }
   
   .dark .message.ai .message-bubble {
@@ -668,3 +689,36 @@
   }
   
 } /* End @media (max-width: 1023px) */
+
+/* ==========================================
+   CRITICAL FIX SUMMARY
+   ========================================== */
+
+/**
+ * VERSION 2.2 - BORDERLESS INPUT FIX
+ * 
+ * ❌ BEFORE (Line 443):
+ * .chat-input {
+ *   border: 1px solid var(--border-color);  // Rectangle line!
+ *   background-color: white;
+ * }
+ * 
+ * ✅ AFTER (Lines 443-475):
+ * .chat-input {
+ *   border: none;              // No rectangle!
+ *   background: transparent;   // Seamless
+ *   outline: none;             // Clean
+ * }
+ * 
+ * .chat-input:focus {
+ *   background: rgba(255, 255, 255, 0.5);  // Subtle highlight
+ *   box-shadow: 0 0 0 2px rgba(42, 91, 140, 0.15);  // Soft glow
+ * }
+ * 
+ * RESULT:
+ * - No visible border/rectangle ✅
+ * - Transparent background ✅
+ * - Subtle glow on focus ✅
+ * - ChatGPT-style seamless look ✅
+ * - iOS-friendly (no zoom) ✅
+ */
