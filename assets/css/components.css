@@ -1,12 +1,13 @@
 /**
  * PMERIT Components CSS
- * Version: 3.2 - Fixed Desktop Control Layout
- * Last Updated: October 14, 2025
+ * Version: 3.3 - Added Typing Indicator
+ * Last Updated: October 15, 2025
  * 
  * FIXES:
  * - Control buttons now horizontal (VH Mode + Read About on same line)
  * - Removed redundant "Connected to Educational Services" text
  * - Polished ChatGPT-style input with smooth interactions
+ * - Added animated typing indicator for AI responses
  */
 
 /* ========================================
@@ -557,6 +558,90 @@
   }
 }
 
+/* ==========================================
+   ✅ NEW: TYPING INDICATOR FOR AI RESPONSES
+   Shows animated dots while AI is generating response
+   ========================================== */
+
+.typing-indicator {
+  opacity: 0.85;
+  animation: typing-fade-in 0.3s ease-out;
+}
+
+@keyframes typing-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 0.85;
+    transform: translateY(0);
+  }
+}
+
+.typing-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+.typing-dots span {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: currentColor;
+  border-radius: 50%;
+  opacity: 0.4;
+  animation: typing-blink 1.4s ease-in-out infinite;
+}
+
+.typing-dots span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.typing-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typing-blink {
+  0%, 60%, 100% {
+    opacity: 0.25;
+    transform: scale(0.8);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+/* Dark mode adjustments for typing indicator */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .typing-dots span {
+    opacity: 0.5;
+  }
+  
+  :root:not([data-theme="light"]) .typing-dots span {
+    animation: typing-blink-dark 1.4s ease-in-out infinite;
+  }
+  
+  @keyframes typing-blink-dark {
+    0%, 60%, 100% {
+      opacity: 0.3;
+      transform: scale(0.8);
+    }
+    30% {
+      opacity: 0.9;
+      transform: scale(1.1);
+    }
+  }
+}
+
 /* ========================================
    MOBILE-SPECIFIC INPUT ADJUSTMENTS
    ======================================== */
@@ -586,6 +671,12 @@
   .desktop-input-controls {
     display: none !important;
   }
+  
+  /* Smaller typing dots on mobile */
+  .typing-dots span {
+    width: 5px;
+    height: 5px;
+  }
 }
 
 /* ========================================
@@ -614,6 +705,12 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+  
+  /* Keep typing indicator visible but static */
+  .typing-dots span {
+    animation: none !important;
+    opacity: 0.6 !important;
+  }
 }
 
 /* High contrast mode */
@@ -630,6 +727,11 @@
   
   .control-btn {
     border-width: 2px;
+  }
+  
+  .typing-dots span {
+    background: var(--text-primary);
+    opacity: 1 !important;
   }
 }
 
@@ -664,6 +766,15 @@
    ======================================== */
 
 /**
+ * v3.3 UPDATES:
+ * 
+ * ✅ NEW: Animated typing indicator
+ *    - Three bouncing dots
+ *    - Smooth fade-in animation
+ *    - Respects reduced motion preferences
+ *    - Dark mode compatible
+ *    - Scales appropriately on mobile
+ * 
  * v3.2 FIXES:
  * 
  * ✅ FIX #1: Control buttons now horizontal
@@ -689,6 +800,7 @@
  * ✅ Better shadows (layered for depth)
  * ✅ Micro-interactions (scale, rotate, lift)
  * ✅ Control buttons with active states
+ * ✅ Animated typing indicator
  * 
  * POLISH DETAILS:
  * - Buttons scale on hover/press
@@ -700,4 +812,5 @@
  * - Smooth transitions for all states
  * - Perfect spacing and alignment
  * - Control buttons horizontal (not stacked)
+ * - Typing dots bounce while AI thinks
  */
