@@ -3,12 +3,32 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-  <meta name="description" content="PMERIT - Accessible Global Education powered by AI"/>
+  <meta name="description" content="PMERIT - Accessible Global Education powered by AI. Discover personalized learning paths, career guidance, and quality courses designed to unlock your potential."/>
+  <meta name="keywords" content="education, online learning, AI tutoring, career guidance, courses, PMERIT, accessible education"/>
+  <meta name="author" content="PMERIT"/>
   <meta name="theme-color" content="#2A5B8C"/>
   
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://pmerit-ai-platform.pages.dev/"/>
+  <meta property="og:title" content="PMERIT — Accessible Global Education"/>
+  <meta property="og:description" content="Discover personalized learning paths and career guidance powered by AI"/>
+  <meta property="og:image" content="https://pmerit-ai-platform.pages.dev/assets/images/og-image.jpg"/>
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image"/>
+  <meta property="twitter:url" content="https://pmerit-ai-platform.pages.dev/"/>
+  <meta property="twitter:title" content="PMERIT — Accessible Global Education"/>
+  <meta property="twitter:description" content="Discover personalized learning paths and career guidance powered by AI"/>
+  <meta property="twitter:image" content="https://pmerit-ai-platform.pages.dev/assets/images/og-image.jpg"/>
+  
   <title>PMERIT — Accessible Global Education</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png"/>
 
-  <!-- Fonts -->
+  <!-- Fonts - Preconnect for performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -16,14 +36,16 @@
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 
-  <!-- MODULAR CSS FILES -->
-  <link rel="stylesheet" href="assets/css/light-theme.css">
-  <link rel="stylesheet" href="assets/css/mobile-mockup-match.css">
-  <link rel="stylesheet" href="assets/css/components.css">
+  <!-- MODULAR CSS FILES - Version 2 (Cache-busting) -->
+  <link rel="stylesheet" href="assets/css/light-theme.css?v=2">
+  <link rel="stylesheet" href="assets/css/mobile-mockup-match.css?v=2">
+  <link rel="stylesheet" href="assets/css/components.css?v=2">
 </head>
 <body>
 
-  <!-- MOBILE LAYOUT -->
+  <!-- ============================================ -->
+  <!-- MOBILE LAYOUT (< 1024px)                   -->
+  <!-- ============================================ -->
   <div class="mobile-layout">
     <!-- Mobile Header -->
     <header class="pmerit-header">
@@ -35,7 +57,7 @@
       </div>
     </header>
 
-    <!-- Chat Messages -->
+    <!-- Chat Messages Container -->
     <div class="chat-messages" id="chatMessages">
       <div class="chat-message ai">
         <p><strong>👋 Welcome!</strong></p>
@@ -51,7 +73,7 @@
           <i class="fas fa-plus"></i>
         </button>
         
-        <!-- ✅ FIX #5: Improved placeholder (was "Ask anything") -->
+        <!-- Text Input -->
         <textarea 
           class="chat-input" 
           id="chatInput"
@@ -74,31 +96,33 @@
           </button>
         </div>
         
-        <!-- ✅ FIX #4: Character Counter hidden initially (add "hidden" class in CSS) -->
+        <!-- Character Counter (hidden initially) -->
         <span class="char-counter hidden" id="charCount">0/1000</span>
       </div>
     </div>
 
-    <!-- ✅ FIX #2: Mobile Footer with better structure for contrast -->
+    <!-- Mobile Footer -->
     <footer class="pmerit-footer mobile-footer">
       <a href="/privacy.html" class="footer-link-mobile">Privacy & Terms</a>
       <span class="footer-separator"> • </span>
       <span class="footer-status-mobile">Connected to Educational Services</span>
     </footer>
 
-    <!-- Hamburger Menu -->
+    <!-- Hamburger Menu Overlay -->
     <div class="menu-overlay" id="menuOverlay"></div>
+    
+    <!-- Hamburger Menu -->
     <nav class="side-menu" id="sideMenu">
-      <!-- ✅ FIX #1: Dashboard moved to TOP of Quick Actions -->
+      <!-- Quick Actions Section -->
       <h3 class="menu-title">Quick Actions</h3>
       
-      <!-- Dashboard as FIRST item -->
+      <!-- Dashboard (Primary Item) -->
       <div class="menu-item menu-item-primary">
         <span><i class="fas fa-tachometer-alt"></i> Dashboard</span>
         <i class="fas fa-chevron-right"></i>
       </div>
       
-      <!-- ✅ FIX #6: Proper checkbox structure for toggles -->
+      <!-- Virtual Human Mode Toggle -->
       <div class="menu-item">
         <label class="menu-toggle-label">
           <span><i class="fas fa-robot"></i> Virtual Human Mode</span>
@@ -109,11 +133,13 @@
         </label>
       </div>
       
+      <!-- Career Track -->
       <div class="menu-item">
         <span><i class="fas fa-route"></i> Career Track & Explore Paths</span>
         <i class="fas fa-chevron-right"></i>
       </div>
       
+      <!-- Customer Service Mode Toggle -->
       <div class="menu-item">
         <label class="menu-toggle-label">
           <span><i class="fas fa-headset"></i> Customer Service Mode</span>
@@ -124,8 +150,10 @@
         </label>
       </div>
       
+      <!-- Settings Section -->
       <h3 class="menu-title">Settings</h3>
       
+      <!-- Dark Mode Toggle -->
       <div class="menu-item">
         <label class="menu-toggle-label">
           <span><i class="fas fa-moon"></i> Dark Mode</span>
@@ -136,6 +164,7 @@
         </label>
       </div>
       
+      <!-- Text-to-Speech Toggle -->
       <div class="menu-item">
         <label class="menu-toggle-label">
           <span><i class="fas fa-volume-up"></i> Text-to-Speech</span>
@@ -146,13 +175,16 @@
         </label>
       </div>
       
+      <!-- Preview Voices -->
       <div class="menu-item">
         <span><i class="fas fa-microphone"></i> Preview Voices</span>
         <i class="fas fa-chevron-right"></i>
       </div>
       
+      <!-- Learning Section -->
       <h3 class="menu-title">Learning</h3>
       
+      <!-- Begin Assessment -->
       <div class="menu-item">
         <span><i class="fas fa-clipboard-list"></i> Begin Assessment</span>
         <i class="fas fa-chevron-right"></i>
@@ -160,7 +192,9 @@
     </nav>
   </div>
 
-  <!-- DESKTOP LAYOUT -->
+  <!-- ============================================ -->
+  <!-- DESKTOP LAYOUT (≥ 1024px)                  -->
+  <!-- ============================================ -->
   <div class="desktop-layout">
     <!-- Desktop Header -->
     <header class="pmerit-header">
@@ -182,12 +216,12 @@
     <aside class="left-sidebar">
       <h3 class="pane-title">Quick Actions</h3>
       
-      <!-- ✅ FIX #1: Dashboard moved to TOP with primary styling -->
+      <!-- Dashboard (Primary Button) -->
       <button class="dashboard-btn dashboard-btn-primary">
         <i class="fas fa-tachometer-alt"></i> Dashboard
       </button>
       
-      <!-- ✅ FIX #6: Proper checkbox structure for desktop toggles -->
+      <!-- Virtual Human Mode Toggle -->
       <div class="toggle">
         <label class="toggle-label">
           <span><i class="fas fa-robot icon"></i>Virtual Human Mode</span>
@@ -198,11 +232,13 @@
         </label>
       </div>
       
+      <!-- Career Track -->
       <div class="action">
         <span><i class="fas fa-route icon"></i>Career Track & Explore Paths</span>
         <i class="fas fa-chevron-right"></i>
       </div>
       
+      <!-- Customer Service Mode Toggle -->
       <div class="toggle">
         <label class="toggle-label">
           <span><i class="fas fa-headset icon"></i>Customer Service Mode</span>
@@ -213,12 +249,14 @@
         </label>
       </div>
       
+      <!-- Settings Collapsible -->
       <div class="collapsible" id="settingsCollapsible">
         <div class="collapsible-header">
           <h4><i class="fas fa-cog icon"></i>Settings</h4>
           <i class="fas fa-chevron-down"></i>
         </div>
         <div class="collapsible-body">
+          <!-- Dark Mode Toggle -->
           <div class="toggle">
             <label class="toggle-label">
               <span>Dark Mode</span>
@@ -228,6 +266,8 @@
               </div>
             </label>
           </div>
+          
+          <!-- Text-to-Speech Toggle -->
           <div class="toggle">
             <label class="toggle-label">
               <span>Text-to-Speech</span>
@@ -237,6 +277,8 @@
               </div>
             </label>
           </div>
+          
+          <!-- Preview Voices -->
           <div class="action">
             <span>Preview Voices</span>
             <i class="fas fa-chevron-right"></i>
@@ -299,7 +341,7 @@
             </button>
           </div>
           
-          <!-- ✅ FIX #4: Character Counter hidden initially -->
+          <!-- Character Counter (hidden initially) -->
           <span class="desktop-char-counter hidden" id="desktopCharCount">0/1000</span>
         </div>
         
@@ -322,10 +364,10 @@
     <aside class="right-sidebar">
       <h3 class="pane-title">Support Assistant</h3>
       
+      <!-- Support Card -->
       <div class="support-card">
         <h3>Ask me about PMERIT</h3>
         
-        <!-- ✅ FIX #3: Renamed "Support" → "Tech Help" for clarity -->
         <div class="support-buttons">
           <button class="support-btn" data-support-type="virtual-human">
             <i class="fas fa-robot"></i>
@@ -338,6 +380,7 @@
         </div>
       </div>
       
+      <!-- Assessment Card -->
       <div class="support-card">
         <h3>Discover Your Path (AI)</h3>
         <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
@@ -373,13 +416,15 @@
     </footer>
   </div>
 
-  <!-- JavaScript -->
-  <script src="assets/js/main.js"></script>
-  <script src="assets/js/chat.js"></script>
+  <!-- JavaScript - Version 2 (Cache-busting) -->
+  <script src="assets/js/main.js?v=2"></script>
+  <script src="assets/js/chat.js?v=2"></script>
   
-  <!-- Layout Styles -->
+  <!-- Layout Styles (Embedded for Performance) -->
   <style>
-    /* Mobile-first layout control */
+    /* ============================================ */
+    /* MOBILE-FIRST LAYOUT CONTROL                */
+    /* ============================================ */
     .mobile-layout {
       display: flex;
       flex-direction: column;
@@ -391,21 +436,21 @@
       display: none;
     }
 
-    /* ✅ FIX #4: Hide character counter initially */
+    /* Character counter hidden state */
     .char-counter.hidden,
     .desktop-char-counter.hidden {
       opacity: 0;
       visibility: hidden;
     }
 
-    /* Show character counter when input is focused */
+    /* Show character counter when input focused */
     .chat-input-wrapper:focus-within .char-counter,
     .desktop-input-wrapper:focus-within .desktop-char-counter {
       opacity: 1;
       visibility: visible;
     }
 
-    /* ✅ FIX #6: Toggle label full width for better clickability */
+    /* Toggle label full width for better clickability */
     .menu-toggle-label,
     .toggle-label {
       display: flex;
@@ -415,7 +460,9 @@
       cursor: pointer;
     }
 
-    /* Desktop Override */
+    /* ============================================ */
+    /* DESKTOP LAYOUT (≥ 1024px)                  */
+    /* ============================================ */
     @media (min-width: 1024px) {
       .mobile-layout {
         display: none !important;
@@ -431,7 +478,7 @@
         overflow: hidden;
       }
 
-      /* Header */
+      /* Header Styling */
       .desktop-layout .pmerit-header {
         grid-row: 1;
         grid-column: 1 / -1;
@@ -668,7 +715,7 @@
         margin-right: 0.5rem;
       }
 
-      /* ✅ FIX #6: Toggle switch proper structure for :checked */
+      /* Toggle Switch Component */
       .toggle-switch {
         position: relative;
         width: 40px;
@@ -716,7 +763,7 @@
         transform: translateX(20px);
       }
 
-      /* ✅ FIX #1: Dashboard button with PRIMARY color at TOP */
+      /* Dashboard Button - Primary at TOP */
       .dashboard-btn {
         width: 100%;
         display: flex;
@@ -740,7 +787,6 @@
         box-shadow: var(--shadow);
       }
 
-      /* Dashboard primary variant (at top of Quick Actions) */
       .dashboard-btn-primary {
         background-color: var(--primary);
         color: white;
@@ -754,6 +800,7 @@
         box-shadow: var(--shadow-lg);
       }
 
+      /* Collapsible Component */
       .collapsible {
         border: 1px solid var(--border-color);
         border-radius: 8px;
@@ -787,6 +834,7 @@
         display: block;
       }
 
+      /* Support Cards */
       .support-card {
         background-color: var(--bg-card);
         border: 1px solid var(--border-color);
@@ -833,6 +881,7 @@
         color: var(--primary);
       }
 
+      /* CTA Button */
       .cta-large {
         width: 100%;
         background: var(--primary);
@@ -857,6 +906,9 @@
       }
     }
 
+    /* ============================================ */
+    /* LARGER DESKTOP (≥ 1440px)                  */
+    /* ============================================ */
     @media (min-width: 1440px) {
       .desktop-layout {
         grid-template-columns: 280px 1fr 360px;
