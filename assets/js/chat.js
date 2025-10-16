@@ -8,8 +8,9 @@
  */
 
 // ========== CONFIGURATION ==========
+// NEW - Use Cloudflare Pages Function proxy
 const CONFIG = {
-  API_URL: 'https://ai.pmerit.com/api/chat',
+  API_URL: '/api/chat',  // ← Changed to relative path
   MODEL: 'mistral:7b-instruct',
   MAX_HISTORY: 10,
   SYSTEM_PROMPT: 'You are PMERIT AI, a helpful educational assistant for the PMERIT platform. Provide clear, friendly, and concise answers about courses, careers, learning paths, and educational guidance. Keep responses under 200 words unless more detail is specifically requested. Be encouraging and supportive.'
