@@ -1,19 +1,35 @@
 /**
  * PMERIT Chat Interface - Unified for Mobile & Desktop
- * Version: 4.0 (Real Ollama API Integration)
- * Last Updated: October 15, 2025
+ * Version: 4.1 (Phi3 Mini - Optimized for Speed)
+ * Last Updated: October 17, 2025
  * 
+ * Changes: Switched to Phi3 Mini for 2-3x faster responses
  * Handles: Mobile + Desktop inputs, Ollama AI, typing indicators, TTS
  * Connects to: https://ai.pmerit.com/api/chat
  */
 
 // ========== CONFIGURATION ==========
-// NEW - Use Cloudflare Pages Function proxy
 const CONFIG = {
-  API_URL: '/api/chat',  // ← Changed to relative path
-  MODEL: 'mistral:7b-instruct',
+  API_URL: '/api/chat',  // Cloudflare Pages Function proxy
+  MODEL: 'phi3:mini',  // ✅ CHANGED: Faster model (3.8B params vs 7B)
   MAX_HISTORY: 10,
-  SYSTEM_PROMPT: 'You are PMERIT AI, a helpful educational assistant for the PMERIT platform. Provide clear, friendly, and concise answers about courses, careers, learning paths, and educational guidance. Keep responses under 200 words unless more detail is specifically requested. Be encouraging and supportive.'
+  SYSTEM_PROMPT: `You are PMERIT AI, an educational assistant. Keep responses under 100 words unless asked for more detail.
+
+Specializing in:
+- Programming and technology
+- Study skills and learning strategies
+- Career guidance and professional development
+- Educational course recommendations
+
+CRITICAL RULES:
+- Be concise and direct (2-3 sentences by default)
+- Only elaborate if asked for more detail
+- If asked about current events, politics, or recent news, say: "I focus on educational topics. For current information, please check reputable news sources."
+- For any statistics or dates, add: "(based on 2023 data)"
+- Never give medical, legal, or financial advice
+- If uncertain about ANY fact, say: "I'm not certain about this. Please verify with authoritative sources."
+
+Be encouraging and supportive!`
 };
 
 // ========== SHARED CONVERSATION HISTORY ==========
@@ -31,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
   initializeDesktopChat();
   console.log('✅ Chat interface ready');
   console.log('🤖 Connected to:', CONFIG.API_URL);
+  console.log('🚀 Model:', CONFIG.MODEL);
 });
 
 // ========== MOBILE CHAT INITIALIZATION ==========
@@ -183,7 +200,7 @@ async function sendMessage(source) {
   const typingIndicator = addTypingIndicator(source);
 
   try {
-    console.log('🚀 Calling Ollama API...');
+    console.log('🚀 Calling Ollama API with Phi3 Mini...');
     
     // Call real Ollama API
     const response = await fetch(CONFIG.API_URL, {
@@ -197,7 +214,8 @@ async function sendMessage(source) {
         stream: false,
         options: {
           temperature: 0.7,
-          top_p: 0.9
+          top_p: 0.9,
+          num_predict: 150  // ✅ ADDED: Limit response length for speed
         }
       })
     });
@@ -474,5 +492,6 @@ window.clearChat = clearChat;
 console.log('📋 Chat Configuration:', {
   apiUrl: CONFIG.API_URL,
   model: CONFIG.MODEL,
-  maxHistory: CONFIG.MAX_HISTORY
+  maxHistory: CONFIG.MAX_HISTORY,
+  optimizations: 'Phi3 Mini + Response length limit'
 });
