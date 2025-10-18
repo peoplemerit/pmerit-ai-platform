@@ -2,7 +2,6 @@
  * Cloudflare Pages Function - AI Chat Proxy with CORS
  * Proxies requests to Ollama AI and adds CORS headers
  */
-
 export async function onRequestPost(context) {
   // CORS headers
   const corsHeaders = {
@@ -22,6 +21,13 @@ export async function onRequestPost(context) {
   try {
     // Get request body
     const body = await context.request.json();
+    
+    // ✅ ADD THIS: Log what we're sending to Ollama
+    console.log('📤 Forwarding to Ollama:', JSON.stringify({
+      model: body.model,
+      messageCount: body.messages?.length,
+      stream: body.stream
+    }));
 
     // Forward to Ollama
     const response = await fetch('https://ai.pmerit.com/api/chat', {
@@ -34,6 +40,9 @@ export async function onRequestPost(context) {
 
     // Get response data
     const data = await response.json();
+    
+    // ✅ ADD THIS: Log what we got back
+    console.log('📥 Received from Ollama:', data.model || 'unknown model');
 
     // Return with CORS headers
     return new Response(JSON.stringify(data), {
@@ -44,6 +53,7 @@ export async function onRequestPost(context) {
       },
     });
   } catch (error) {
+    console.error('❌ Proxy error:', error.message);
     return new Response(JSON.stringify({ 
       error: 'Failed to connect to AI service',
       details: error.message 
