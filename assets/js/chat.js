@@ -1,44 +1,22 @@
 /**
  * PMERIT Chat Interface - Unified for Mobile & Desktop
- * Version: 4.1 (Phi3 Mini - Optimized for Speed)
- * Last Updated: October 17, 2025
+ * Version: 5.0 (Cloudflare Workers AI - Llama 3 8B)
+ * Last Updated: October 20, 2025
  * 
- * Changes: Switched to Phi3 Mini for 2-3x faster responses
- * Handles: Mobile + Desktop inputs, Ollama AI, typing indicators, TTS
- * Connects to: https://ai.pmerit.com/api/chat
+ * Changes: Migrated from laptop Ollama to Cloudflare Workers AI
+ * Handles: Mobile + Desktop inputs, Workers AI, typing indicators, TTS
+ * Connects to: Cloudflare Workers API
  */
 
 // ========== CONFIGURATION ==========
 const CONFIG = {
-  API_URL: '/api/chat',  // Cloudflare Pages Function proxy
-  MODEL: 'phi3:mini',  // ✅ CHANGED: Faster model (3.8B params vs 7B)
+  API_URL: 'https://pmerit-api.peoplemerit.workers.dev/api/v1/ai/chat',  // ✅ TODO: Replace YOUR_SUBDOMAIN with your actual Workers subdomain
   MAX_HISTORY: 10,
-  SYSTEM_PROMPT: `You are PMERIT AI, an educational assistant. Keep responses under 100 words unless asked for more detail.
-
-Specializing in:
-- Programming and technology
-- Study skills and learning strategies
-- Career guidance and professional development
-- Educational course recommendations
-
-CRITICAL RULES:
-- Be concise and direct (2-3 sentences by default)
-- Only elaborate if asked for more detail
-- If asked about current events, politics, or recent news, say: "I focus on educational topics. For current information, please check reputable news sources."
-- For any statistics or dates, add: "(based on 2023 data)"
-- Never give medical, legal, or financial advice
-- If uncertain about ANY fact, say: "I'm not certain about this. Please verify with authoritative sources."
-
-Be encouraging and supportive!`
+  SYSTEM_PROMPT: ''  // System prompt now handled by backend
 };
 
 // ========== SHARED CONVERSATION HISTORY ==========
-let conversationHistory = [
-  {
-    role: 'system',
-    content: CONFIG.SYSTEM_PROMPT
-  }
-];
+let conversationHistory = [];
 
 // ========== INITIALIZATION ==========
 document.addEventListener('DOMContentLoaded', function() {
@@ -47,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
   initializeDesktopChat();
   console.log('✅ Chat interface ready');
   console.log('🤖 Connected to:', CONFIG.API_URL);
-  console.log('🚀 Model:', CONFIG.MODEL);
+  console.log('🚀 Model: Llama 3 8B Instruct (Cloudflare Workers AI)');
 });
 
 // ========== MOBILE CHAT INITIALIZATION ==========
@@ -68,7 +46,6 @@ function initializeMobileChat() {
     if (charCount) {
       charCount.textContent = `${this.value.length}/1000`;
       
-      // Toggle hidden class
       if (this.value.length > 0) {
         charCount.classList.remove('hidden');
       } else {
@@ -110,7 +87,6 @@ function initializeDesktopChat() {
     if (desktopCharCount) {
       desktopCharCount.textContent = `${this.value.length}/1000`;
       
-      // Toggle hidden class
       if (this.value.length > 0) {
         desktopCharCount.classList.remove('hidden');
       } else {
@@ -170,18 +146,15 @@ async function sendMessage(source) {
   // Add user message to UI
   addMessage(source, 'user', message);
 
-  // Add to shared conversation history
+  // Add to conversation history
   conversationHistory.push({
     role: 'user',
     content: message
   });
 
   // Maintain history limit
-  if (conversationHistory.length > CONFIG.MAX_HISTORY * 2 + 1) {
-    conversationHistory = [
-      conversationHistory[0], // Keep system prompt
-      ...conversationHistory.slice(-(CONFIG.MAX_HISTORY * 2))
-    ];
+  if (conversationHistory.length > CONFIG.MAX_HISTORY * 2) {
+    conversationHistory = conversationHistory.slice(-(CONFIG.MAX_HISTORY * 2));
   }
 
   // Clear input
@@ -200,23 +173,18 @@ async function sendMessage(source) {
   const typingIndicator = addTypingIndicator(source);
 
   try {
-    console.log('🚀 Calling Ollama API with Phi3 Mini...');
+    console.log('🚀 Calling Cloudflare Workers AI (Llama 3 8B Instruct)...');
+    const startTime = performance.now();
     
-    // Call real Ollama API
+    // ✅ NEW: Simplified request to Workers
     const response = await fetch(CONFIG.API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: CONFIG.MODEL,
         messages: conversationHistory,
-        stream: false,
-        options: {
-          temperature: 0.7,
-          top_p: 0.9,
-          num_predict: 150  // ✅ ADDED: Limit response length for speed
-        }
+        stream: false  // Phase 2: Will enable streaming
       })
     });
 
@@ -229,18 +197,25 @@ async function sendMessage(source) {
       throw new Error(`API returned ${response.status}: ${response.statusText}`);
     }
 
-    const data = await response.json();
-    console.log('✅ Received response from Ollama');
+    // ✅ NEW: Handle Workers response format
+    const result = await response.json();
     
-    const aiResponse = data.message.content;
+    if (!result.success) {
+      throw new Error(result.error?.message || 'AI request failed');
+    }
     
-    // Add to shared conversation history
+    const aiResponse = result.data.message.content;
+    const responseTime = ((performance.now() - startTime) / 1000).toFixed(2);
+    
+    console.log(`✅ Received response from Llama 3 in ${responseTime}s`);
+    
+    // Add to conversation history
     conversationHistory.push({
       role: 'assistant',
       content: aiResponse
     });
 
-    // Add AI response to UI
+    // Display in UI
     addMessage(source, 'ai', aiResponse);
     
     // Speak if TTS enabled
@@ -478,8 +453,8 @@ function clearChat() {
     desktopMessages.innerHTML = '';
   }
   
-  // Reset conversation history (keep system prompt)
-  conversationHistory = [conversationHistory[0]];
+  // Reset conversation history
+  conversationHistory = [];
   
   console.log('🧹 Chat cleared');
 }
@@ -491,7 +466,7 @@ window.clearChat = clearChat;
 // ========== DEBUG INFO ==========
 console.log('📋 Chat Configuration:', {
   apiUrl: CONFIG.API_URL,
-  model: CONFIG.MODEL,
+  model: 'Llama 3 8B Instruct (Cloudflare Workers AI)',
   maxHistory: CONFIG.MAX_HISTORY,
-  optimizations: 'Phi3 Mini + Response length limit'
+  backend: 'Cloudflare Workers (Edge Network)'
 });
