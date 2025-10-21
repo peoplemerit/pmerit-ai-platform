@@ -1,16 +1,16 @@
 /**
  * PMERIT Chat Interface - Unified for Mobile & Desktop
- * Version: 5.0 (Cloudflare Workers AI - Llama 3 8B)
- * Last Updated: October 20, 2025
+ * Version: 6.0 (Cloudflare Workers AI - Streaming Enabled)
+ * Last Updated: October 21, 2025
  * 
- * Changes: Migrated from laptop Ollama to Cloudflare Workers AI
- * Handles: Mobile + Desktop inputs, Workers AI, typing indicators, TTS
+ * Changes: Enabled streaming for instant AI responses
+ * Handles: Mobile + Desktop inputs, Streaming AI, typing indicators, TTS
  * Connects to: Cloudflare Workers API
  */
 
 // ========== CONFIGURATION ==========
 const CONFIG = {
-  API_URL: 'https://pmerit-api.peoplemerit.workers.dev/api/v1/ai/chat',  // ✅ TODO: Replace YOUR_SUBDOMAIN with your actual Workers subdomain
+  API_URL: 'https://pmerit-api.peoplemerit.workers.dev/api/v1/ai/chat',
   MAX_HISTORY: 10,
   SYSTEM_PROMPT: ''  // System prompt now handled by backend
 };
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
   initializeDesktopChat();
   console.log('✅ Chat interface ready');
   console.log('🤖 Connected to:', CONFIG.API_URL);
-  console.log('🚀 Model: Llama 3 8B Instruct (Cloudflare Workers AI)');
+  console.log('🚀 Model: Llama 3 8B Instruct (Streaming Enabled)');
 });
 
 // ========== MOBILE CHAT INITIALIZATION ==========
@@ -110,7 +110,7 @@ function initializeDesktopChat() {
   console.log('✅ Desktop chat initialized');
 }
 
-// ========== UNIFIED SEND MESSAGE ==========
+// ========== UNIFIED SEND MESSAGE WITH STREAMING ==========
 async function sendMessage(source) {
   // Get the correct elements based on source
   const chatInput = source === 'mobile' 
@@ -173,10 +173,10 @@ async function sendMessage(source) {
   const typingIndicator = addTypingIndicator(source);
 
   try {
-    console.log('🚀 Calling Cloudflare Workers AI (Llama 3 8B Instruct)...');
+    console.log('🚀 Calling Cloudflare Workers AI (Streaming)...');
     const startTime = performance.now();
     
-    // ✅ NEW: Simplified request to Workers
+    // Call Workers API with streaming enabled
     const response = await fetch(CONFIG.API_URL, {
       method: 'POST',
       headers: {
@@ -184,7 +184,7 @@ async function sendMessage(source) {
       },
       body: JSON.stringify({
         messages: conversationHistory,
-        stream: false  // Phase 2: Will enable streaming
+        stream: true  // ✅ STREAMING ENABLED
       })
     });
 
@@ -197,26 +197,75 @@ async function sendMessage(source) {
       throw new Error(`API returned ${response.status}: ${response.statusText}`);
     }
 
-    // ✅ NEW: Handle Workers response format
-    const result = await response.json();
+    // ✅ HANDLE STREAMING RESPONSE
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let aiResponse = '';
     
-    if (!result.success) {
-      throw new Error(result.error?.message || 'AI request failed');
+    // Create AI message bubble (empty at first)
+    const messageDiv = source === 'mobile' 
+      ? createMobileMessageBubble('ai')
+      : createDesktopMessageBubble('ai');
+    
+    chatMessages.appendChild(messageDiv);
+    
+    // Get the text content element
+    const contentElement = source === 'mobile'
+      ? messageDiv.querySelector('p')
+      : messageDiv.querySelector('.message-content p');
+    
+    console.log('📡 Streaming response...');
+    
+    // Read stream chunks
+    while (true) {
+      const { done, value } = await reader.read();
+      
+      if (done) {
+        console.log('✅ Stream complete');
+        break;
+      }
+      
+      // Decode chunk
+      const chunk = decoder.decode(value, { stream: true });
+      
+      // Parse SSE data (Server-Sent Events format)
+      const lines = chunk.split('\n');
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          try {
+            const data = JSON.parse(line.slice(6));
+            
+            if (data.response) {
+              // Append to response
+              aiResponse += data.response;
+              
+              // Update UI in real-time
+              if (contentElement) {
+                contentElement.textContent = aiResponse;
+              }
+              
+              // Auto-scroll as text appears
+              chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            if (data.done) {
+              break;
+            }
+          } catch (e) {
+            // Skip invalid JSON lines
+          }
+        }
+      }
     }
     
-    const aiResponse = result.data.message.content;
     const responseTime = ((performance.now() - startTime) / 1000).toFixed(2);
-    
-    console.log(`✅ Received response from Llama 3 in ${responseTime}s`);
+    console.log(`✅ Complete response received in ${responseTime}s`);
     
     // Add to conversation history
     conversationHistory.push({
       role: 'assistant',
       content: aiResponse
     });
-
-    // Display in UI
-    addMessage(source, 'ai', aiResponse);
     
     // Speak if TTS enabled
     if (document.body.classList.contains('tts-enabled')) {
@@ -224,7 +273,7 @@ async function sendMessage(source) {
     }
 
   } catch (error) {
-    // Remove typing indicator
+    // Remove typing indicator if still present
     if (typingIndicator) {
       typingIndicator.remove();
     }
@@ -253,11 +302,8 @@ async function sendMessage(source) {
   }
 }
 
-// ========== ADD MESSAGE (MOBILE) ==========
-function addMessageMobile(sender, text) {
-  const chatMessages = document.getElementById('chatMessages');
-  if (!chatMessages) return;
-
+// ========== CREATE MOBILE MESSAGE BUBBLE ==========
+function createMobileMessageBubble(sender) {
   const messageDiv = document.createElement('div');
   messageDiv.className = `chat-message ${sender}`;
   
@@ -269,11 +315,7 @@ function addMessageMobile(sender, text) {
     messageContent.appendChild(strong);
   }
   
-  const textNode = document.createTextNode(text);
-  messageContent.appendChild(textNode);
-  
   messageDiv.appendChild(messageContent);
-  chatMessages.appendChild(messageDiv);
 
   // Fade-in animation
   messageDiv.style.opacity = '0';
@@ -285,15 +327,11 @@ function addMessageMobile(sender, text) {
     messageDiv.style.transform = 'translateY(0)';
   }, 10);
 
-  // Auto-scroll
-  chatMessages.scrollTop = chatMessages.scrollHeight;
+  return messageDiv;
 }
 
-// ========== ADD MESSAGE (DESKTOP) ==========
-function addMessageDesktop(sender, text) {
-  const chatMessages = document.getElementById('desktopChatMessages');
-  if (!chatMessages) return;
-
+// ========== CREATE DESKTOP MESSAGE BUBBLE ==========
+function createDesktopMessageBubble(sender) {
   const messageDiv = document.createElement('div');
   messageDiv.className = `desktop-chat-message ${sender === 'ai' ? 'ai-message' : 'user-message'}`;
   
@@ -316,12 +354,10 @@ function addMessageDesktop(sender, text) {
   }
   
   const p = document.createElement('p');
-  p.textContent = text;
   content.appendChild(p);
   
   messageDiv.appendChild(avatar);
   messageDiv.appendChild(content);
-  chatMessages.appendChild(messageDiv);
 
   // Fade-in animation
   messageDiv.style.opacity = '0';
@@ -333,7 +369,39 @@ function addMessageDesktop(sender, text) {
     messageDiv.style.transform = 'translateY(0)';
   }, 10);
 
-  // Auto-scroll
+  return messageDiv;
+}
+
+// ========== ADD MESSAGE (MOBILE) ==========
+function addMessageMobile(sender, text) {
+  const chatMessages = document.getElementById('chatMessages');
+  if (!chatMessages) return;
+
+  const messageDiv = createMobileMessageBubble(sender);
+  const messageContent = messageDiv.querySelector('p');
+  
+  if (sender === 'ai') {
+    // Text goes after "PMERIT AI: "
+    const textNode = document.createTextNode(text);
+    messageContent.appendChild(textNode);
+  } else {
+    messageContent.textContent = text;
+  }
+  
+  chatMessages.appendChild(messageDiv);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// ========== ADD MESSAGE (DESKTOP) ==========
+function addMessageDesktop(sender, text) {
+  const chatMessages = document.getElementById('desktopChatMessages');
+  if (!chatMessages) return;
+
+  const messageDiv = createDesktopMessageBubble(sender);
+  const p = messageDiv.querySelector('.message-content p');
+  p.textContent = text;
+  
+  chatMessages.appendChild(messageDiv);
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
@@ -467,6 +535,7 @@ window.clearChat = clearChat;
 console.log('📋 Chat Configuration:', {
   apiUrl: CONFIG.API_URL,
   model: 'Llama 3 8B Instruct (Cloudflare Workers AI)',
+  streaming: 'ENABLED',
   maxHistory: CONFIG.MAX_HISTORY,
   backend: 'Cloudflare Workers (Edge Network)'
 });
