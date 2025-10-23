@@ -212,7 +212,9 @@ isAuthenticated: async function () {
 }
 ```
 
-**Note:** Since this is now async, you'll need to update `auth-check.js` to use `await`:
+**⚠️ BREAKING CHANGE:** This changes `isAuthenticated()` from synchronous to asynchronous. You'll need to update all callers throughout the codebase.
+
+**Update auth-check.js:**
 ```javascript
 (async function () {
   'use strict';
@@ -232,6 +234,16 @@ isAuthenticated: async function () {
 })();
 ```
 
+**Update learner-portal.html and other protected pages:**
+Any code that checks `AUTH.isAuthenticated()` must now use `await`:
+```javascript
+// Old (Phase 1):
+if (AUTH.isAuthenticated()) { ... }
+
+// New (Phase 2):
+if (await AUTH.isAuthenticated()) { ... }
+```
+
 ### 4. Security Enhancements
 
 #### Switch to httpOnly Cookies (Recommended)
@@ -239,7 +251,7 @@ Instead of storing tokens in localStorage, use httpOnly cookies set by the backe
 
 **Backend Response:**
 ```javascript
-Set-Cookie: pmerit_token=<jwt>; HttpOnly; Secure; SameSite=Strict; Max-Age=86400
+Set-Cookie: pmerit_token=<jwt>; HttpOnly; Secure; SameSite=Strict; Path=/; Max-Age=86400
 ```
 
 **Frontend Changes:**
@@ -261,32 +273,45 @@ headers: {
 Implement automatic token refresh:
 ```javascript
 async function refreshToken() {
-  const response = await fetch(`${window.CONFIG.API_BASE_URL}/auth/refresh`, {
-    method: 'POST',
-    credentials: 'include'
-  });
-  
-  if (response.ok) {
-    const data = await response.json();
-    localStorage.setItem('pmerit_token', data.token);
-    return true;
+  try {
+    const response = await fetch(`${window.CONFIG.API_BASE_URL}/auth/refresh`, {
+      method: 'POST',
+      credentials: 'include'
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      localStorage.setItem('pmerit_token', data.token);
+      return true;
+    }
+    
+    // Refresh token expired or invalid - logout user
+    console.warn('Token refresh failed, logging out user');
+    localStorage.removeItem('pmerit_token');
+    localStorage.removeItem('pmerit_user');
+    return false;
+  } catch (error) {
+    console.error('Token refresh error:', error);
+    return false;
   }
-  
-  return false;
 }
 ```
 
 ### 5. Error Handling
 
-Add comprehensive error handling:
+Add comprehensive error handling with automatic retry after token refresh:
 ```javascript
-async function handleApiError(response) {
+async function handleApiError(response, originalRequest) {
   if (response.status === 401) {
     // Unauthorized - try to refresh token
     const refreshed = await refreshToken();
-    if (!refreshed) {
+    if (refreshed) {
+      // Token refreshed successfully, retry original request
+      return fetch(originalRequest.url, originalRequest);
+    } else {
       // Refresh failed, redirect to login
       window.location.href = '/signin.html';
+      return null;
     }
   } else if (response.status === 429) {
     // Rate limited
@@ -307,6 +332,15 @@ async function handleApiError(response) {
     success: false,
     message: data.message || 'An error occurred'
   };
+}
+
+// Example usage in signin function:
+const response = await fetch(url, options);
+if (!response.ok && response.status === 401) {
+  const retryResponse = await handleApiError(response, { url, ...options });
+  if (retryResponse) {
+    return retryResponse;
+  }
 }
 ```
 
