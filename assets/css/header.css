@@ -1,0 +1,9 @@
+.site-header { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; border-bottom:1px solid rgba(0,0,0,0.04); }
+.brand { display:flex; align-items:center; gap:8px; text-decoration:none; color:inherit; }
+.header-nav a { margin: 0 10px; text-decoration:none; color:var(--muted); }
+#hamburger { display:none; }
+
+@media (max-width: 768px) {
+  #desktop-nav { display: none; }
+  #hamburger { display:inline-flex; }
+}

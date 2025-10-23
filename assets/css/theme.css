@@ -1,0 +1,11 @@
+:root {
+  --brand-primary: #0a66c2;
+  --brand-accent: #ff7a59;
+  --text-color: #0b1a2b;
+  --bg: #ffffff;
+  --muted: #6b7b8c;
+
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+body { font-family: var(--font-sans); color: var(--text-color); background: var(--bg); }
