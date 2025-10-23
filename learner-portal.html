@@ -4,11 +4,71 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Learner Portal | PMERIT</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico"/>
+  
   <link rel="stylesheet" href="assets/css/base.css">
-  <link rel="stylesheet" href="assets/css/brand.css">
   <link rel="stylesheet" href="assets/css/components.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
   <style>
+    :root {
+      --primary: #2A5B8C;
+      --card-bg: #ffffff;
+      --border-color: #e0e0e0;
+      --shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    body {
+      margin: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f7fa;
+    }
+    
+    header {
+      background: #2A5B8C;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    
+    nav {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    
+    .nav-btn {
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+    
+    .nav-btn:hover {
+      background: rgba(255,255,255,0.1);
+    }
+    
+    #logoutBtn {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      cursor: pointer;
+      font: inherit;
+    }
+    
+    #logoutBtn:hover {
+      background: rgba(255,255,255,0.3);
+    }
+    
     .portal-section { margin-bottom: 2.5rem; }
     .portal-section h2 { color: var(--primary); margin-bottom: 0.5rem; }
     .feature-list { list-style: disc; margin-left: 2rem; }
@@ -30,7 +90,7 @@
       <a href="/career.html" class="nav-btn">Career Paths</a>
       <a href="/assessment.html" class="nav-btn">Assessment</a>
       <a href="/profile.html" class="nav-btn">Profile</a>
-      <a href="/logout" class="nav-btn">Logout</a>
+      <button id="logoutBtn" class="nav-btn">Logout</button>
     </nav>
   </header>
   <main class="panel" style="max-width:1100px;margin:2rem auto;">
@@ -179,20 +239,47 @@
       </div>
     </section>
   </main>
-  <footer>
+  <footer style="background: #f8f9fa; padding: 2rem; text-align: center; margin-top: 4rem; border-top: 1px solid #e0e0e0;">
     <span class="footer-status-main">
       <i class="fas fa-signal"></i> Connected to Educational Services
     </span>
-    <div class="footer-links">
-      <a href="/privacy.html" class="nav-btn">Privacy & Terms</a>
-      <a href="/contact.html" class="nav-btn">Contact</a>
-      <a href="/support.html" class="nav-btn">Support</a>
-      <a href="/about.html" class="nav-btn">About PMERIT</a>
+    <div class="footer-links" style="margin-top: 1rem; display: flex; gap: 1.5rem; justify-content: center;">
+      <a href="/privacy.html" style="color: #2A5B8C; text-decoration: none;">Privacy & Terms</a>
+      <a href="/contact.html" style="color: #2A5B8C; text-decoration: none;">Contact</a>
+      <a href="/support.html" style="color: #2A5B8C; text-decoration: none;">Support</a>
+      <a href="/about-us.html" style="color: #2A5B8C; text-decoration: none;">About PMERIT</a>
     </div>
   </footer>
+  
+  <!-- Load configuration and authentication -->
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/auth-check.js"></script>
+  
   <script>
-    // Example: Set user name from session/localStorage
-    document.getElementById('userName').textContent = localStorage.getItem('userName') || 'Learner';
+    (function() {
+      'use strict';
+      
+      // Set user name from AUTH module
+      const user = window.AUTH.getCurrentUser();
+      if (user && user.name) {
+        document.getElementById('userName').textContent = user.name;
+      }
+      
+      // Handle logout button
+      const logoutBtn = document.getElementById('logoutBtn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Call AUTH.logout
+          window.AUTH.logout().then(function() {
+            // Redirect to homepage after logout
+            window.location.href = '/';
+          });
+        });
+      }
+    })();
   </script>
 </body>
 </html>

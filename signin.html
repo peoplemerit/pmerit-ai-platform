@@ -4,62 +4,241 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign In - PMERIT Platform</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico"/>
+  
   <!-- PMERIT Standard CSS Imports -->
   <link rel="stylesheet" href="assets/css/theme-variables.css">
   <link rel="stylesheet" href="assets/css/typography.css">
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/components.css">
   
+  <style>
+    .auth-container {
+      max-width: 450px;
+      margin: 3rem auto;
+      padding: 2rem;
+    }
+    
+    .auth-form {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 2.5rem;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .auth-form h2 {
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      color: #2A5B8C;
+      text-align: center;
+    }
+    
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #333;
+    }
+    
+    .form-group input[type="email"],
+    .form-group input[type="password"] {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    
+    .form-group input:focus {
+      outline: none;
+      border-color: #2A5B8C;
+      box-shadow: 0 0 0 3px rgba(42, 91, 140, 0.1);
+    }
+    
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: normal;
+      cursor: pointer;
+    }
+    
+    .btn {
+      padding: 0.875rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .btn-primary {
+      background: #2A5B8C;
+      color: white;
+      width: 100%;
+    }
+    
+    .btn-primary:hover {
+      background: #1e4266;
+    }
+    
+    .btn-primary:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    
+    .auth-links {
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+    
+    .auth-links a {
+      color: #2A5B8C;
+      text-decoration: none;
+    }
+    
+    .auth-links a:hover {
+      text-decoration: underline;
+    }
+    
+    .auth-links p {
+      margin-top: 1rem;
+      color: #666;
+    }
+    
+    .error-message {
+      background: #fee;
+      border: 1px solid #fcc;
+      color: #c33;
+      padding: 0.75rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+      display: none;
+    }
+    
+    .error-message.show {
+      display: block;
+    }
+    
+    .hero-section {
+      background: linear-gradient(135deg, #2A5B8C 0%, #1e4266 100%);
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    
+    .hero-section h1 {
+      margin: 0;
+      color: white;
+    }
+    
+    .hero-section p {
+      margin: 0.5rem 0 0;
+      opacity: 0.9;
+    }
+  </style>
 </head>
-<body class="page-layout">
-  <div id="nav-container"></div>
-  
-  <main class="main-content">
+<body>
+  <main>
     <section class="hero-section">
-      <div class="container">
-        <h1>Sign In</h1>
-        <p>Welcome back to PMERIT</p>
-      </div>
+      <h1>Sign In</h1>
+      <p>Welcome back to PMERIT</p>
     </section>
     
-    <section class="content-section">
-      <div class="container">
-        <div class="auth-container">
-          <div class="auth-form">
-            <h2>Sign In to Your Account</h2>
-            
-            <form>
-              <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-              </div>
-              
-              <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-              </div>
-              
-              <div class="form-group">
-                <label class="checkbox-label">
-                  <input type="checkbox" name="remember"> Remember me
-                </label>
-              </div>
-              
-              <button type="submit" class="btn btn-primary btn-full">Sign In</button>
-            </form>
-            
-            <div class="auth-links">
-              <a href="#" class="link">Forgot password?</a>
-              <p>Don't have an account? <a href="#" class="link">Sign up here</a></p>
-            </div>
+    <div class="auth-container">
+      <div class="auth-form">
+        <h2>Sign In to Your Account</h2>
+        
+        <div id="errorMessage" class="error-message"></div>
+        
+        <form id="signinForm">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required autocomplete="email">
           </div>
+          
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required autocomplete="current-password">
+          </div>
+          
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" name="remember"> Remember me
+            </label>
+          </div>
+          
+          <button type="submit" class="btn btn-primary" id="submitBtn">Sign In</button>
+        </form>
+        
+        <div class="auth-links">
+          <a href="#" class="link">Forgot password?</a>
+          <p>Don't have an account? <a href="#" class="link">Sign up here</a></p>
         </div>
       </div>
-    </section>
+    </div>
   </main>
   
-  <div id="footer-container"></div>
+  <!-- Load configuration and authentication -->
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/auth.js"></script>
   
-  <script src="assets/js/boot-includes.js"></script>
+  <!-- Sign in form handler -->
+  <script>
+    (function() {
+      'use strict';
+      
+      const form = document.getElementById('signinForm');
+      const submitBtn = document.getElementById('submitBtn');
+      const errorMessage = document.getElementById('errorMessage');
+      
+      // Show error message
+      function showError(message) {
+        errorMessage.textContent = message;
+        errorMessage.classList.add('show');
+      }
+      
+      // Hide error message
+      function hideError() {
+        errorMessage.classList.remove('show');
+      }
+      
+      // Handle form submission
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        hideError();
+        
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        
+        // Disable submit button
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Signing in...';
+        
+        // Call AUTH.signin
+        window.AUTH.signin(email, password)
+          .then(function(response) {
+            // Success - redirect to stored location or learner portal
+            const redirectUrl = sessionStorage.getItem('redirect_after_login') || '/learner-portal.html';
+            sessionStorage.removeItem('redirect_after_login');
+            window.location.href = redirectUrl;
+          })
+          .catch(function(error) {
+            // Show error
+            showError(error.message || 'Sign in failed. Please try again.');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Sign In';
+          });
+      });
+    })();
+  </script>
 </body>
 </html>

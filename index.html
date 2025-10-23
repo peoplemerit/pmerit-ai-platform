@@ -916,5 +916,37 @@
     }
   </style>
 
+  <!-- Sign In Redirect Script -->
+  <script>
+    (function() {
+      'use strict';
+      
+      // Function to redirect to sign in page
+      function redirectToSignIn(e) {
+        if (e) e.preventDefault();
+        window.location.href = '/signin.html';
+      }
+      
+      // Handle mobile Sign In button
+      const mobileSignInBtn = document.getElementById('signInBtn');
+      if (mobileSignInBtn) {
+        mobileSignInBtn.addEventListener('click', redirectToSignIn);
+      }
+      
+      // Handle desktop Sign In button
+      const desktopSignInBtn = document.getElementById('desktopSignInBtn');
+      if (desktopSignInBtn) {
+        desktopSignInBtn.addEventListener('click', redirectToSignIn);
+      }
+      
+      // Also add id="header-signin" to the mobile button for compatibility
+      if (mobileSignInBtn && !document.getElementById('header-signin')) {
+        mobileSignInBtn.id = 'header-signin';
+        // Keep signInBtn class for styling
+        mobileSignInBtn.classList.add('sign-in-btn');
+      }
+    })();
+  </script>
+
 </body>
 </html>
