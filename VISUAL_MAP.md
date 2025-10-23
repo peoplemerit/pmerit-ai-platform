@@ -189,7 +189,6 @@ pmerit-ai-platform/
     ├── ⭐ README.md (39 lines)
     ├── ⭐ FILE_DOCUMENTATION.md (1294 lines) ← COMPREHENSIVE GUIDE
     ├── ⭐ QUICK_REFERENCE.md (145 lines) ← FAST LOOKUP
-    ├── SUMMARY.md (111 lines)
     ├── PR18_ANALYSIS.md
     ├── PR-18-VISUAL-STATUS.md
     └── canonical.md
