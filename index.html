@@ -916,5 +916,26 @@
     }
   </style>
 
+  <!-- Wire Sign In buttons to /signin.html -->
+  <script>
+    (function () {
+      'use strict';
+      
+      // Wire all Sign In buttons
+      const signInButtons = [
+        document.getElementById('signInBtn'),
+        document.getElementById('desktopSignInBtn')
+      ];
+      
+      signInButtons.forEach(function (btn) {
+        if (btn) {
+          btn.addEventListener('click', function () {
+            window.location.href = '/signin.html';
+          });
+        }
+      });
+    })();
+  </script>
+
 </body>
 </html>
