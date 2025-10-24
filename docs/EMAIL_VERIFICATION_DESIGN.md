@@ -359,11 +359,20 @@ function validateRedirectUrl(returnUrl) {
 ```javascript
 function redactEmail(email) {
   // Validate email format
-  if (!email || !email.includes('@')) {
+  if (!email || typeof email !== 'string') {
     return '***@***'; // Return generic redaction for invalid emails
   }
   
-  const [local, domain] = email.split('@');
+  // Find the last @ symbol to handle edge cases
+  const atIndex = email.lastIndexOf('@');
+  
+  // Validate email structure
+  if (atIndex === -1 || atIndex === 0 || atIndex === email.length - 1) {
+    return '***@***'; // Invalid format
+  }
+  
+  const local = email.substring(0, atIndex);
+  const domain = email.substring(atIndex + 1);
   
   // Additional validation
   if (!local || !domain) {
@@ -381,6 +390,7 @@ function redactEmail(email) {
 // "a@example.com" → "a***@example.com"
 // "invalid-email" → "***@***"
 // "@example.com" → "***@***"
+// "user@@example.com" → "us***@example.com" (handles multiple @)
 ```
 
 #### Consent Management
