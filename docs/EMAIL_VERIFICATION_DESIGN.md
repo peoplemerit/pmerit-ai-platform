@@ -390,9 +390,9 @@ function redactEmail(email) {
 // "a@example.com" → "a***@example.com"
 // "invalid-email" → "***@***"
 // "@example.com" → "***@***"
-// "user@example.com" with trailing @ → uses lastIndexOf to find the actual domain separator
 // 
-// Note: For production use, validate emails before storing them in the database.
+// Note: Uses lastIndexOf('@') to handle edge cases where @ appears in unusual positions.
+// For production use, validate emails before storing them in the database.
 // This function is for log redaction only and handles malformed emails gracefully.
 ```
 
