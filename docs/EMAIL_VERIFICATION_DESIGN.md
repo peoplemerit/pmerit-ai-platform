@@ -173,12 +173,15 @@ If you didn't request this, please ignore this email.
 #### SPF (Sender Policy Framework)
 ```dns
 pmerit.com. IN TXT "v=spf1 include:_spf.mail.pmerit.com ~all"
-mail.pmerit.com. IN TXT "v=spf1 ip4:x.x.x.x/32 -all"
+mail.pmerit.com. IN TXT "v=spf1 ip4:<SERVER_IP>/32 -all"
+# Note: Replace <SERVER_IP> with your actual email server's IPv4 address
 ```
 
 #### DKIM (DomainKeys Identified Mail)
 ```dns
-default._domainkey.mail.pmerit.com. IN TXT "v=DKIM1; k=rsa; p=<public_key>"
+default._domainkey.mail.pmerit.com. IN TXT "v=DKIM1; k=rsa; p=<RSA_2048_PUBLIC_KEY_BASE64>"
+# Note: Replace <RSA_2048_PUBLIC_KEY_BASE64> with your RSA 2048-bit public key in base64 format
+# Generate with: openssl genrsa -out dkim_private.pem 2048 && openssl rsa -in dkim_private.pem -pubout -outform DER | base64 -w 0
 ```
 
 #### DMARC (Domain-based Message Authentication)
@@ -356,11 +359,15 @@ function validateRedirectUrl(returnUrl) {
 ```javascript
 function redactEmail(email) {
   const [local, domain] = email.split('@');
-  const redactedLocal = local.substring(0, 2) + '***';
+  // Handle short local parts (e.g., "a@domain.com")
+  const visibleChars = Math.min(local.length, 2);
+  const redactedLocal = local.substring(0, visibleChars) + '***';
   return `${redactedLocal}@${domain}`;
 }
 
-// Example: "john.doe@example.com" → "jo***@example.com"
+// Examples:
+// "john.doe@example.com" → "jo***@example.com"
+// "a@example.com" → "a***@example.com"
 ```
 
 #### Consent Management
