@@ -358,7 +358,18 @@ function validateRedirectUrl(returnUrl) {
 #### Log Redaction
 ```javascript
 function redactEmail(email) {
+  // Validate email format
+  if (!email || !email.includes('@')) {
+    return '***@***'; // Return generic redaction for invalid emails
+  }
+  
   const [local, domain] = email.split('@');
+  
+  // Additional validation
+  if (!local || !domain) {
+    return '***@***';
+  }
+  
   // Handle short local parts (e.g., "a@domain.com")
   const visibleChars = Math.min(local.length, 2);
   const redactedLocal = local.substring(0, visibleChars) + '***';
@@ -368,6 +379,8 @@ function redactEmail(email) {
 // Examples:
 // "john.doe@example.com" → "jo***@example.com"
 // "a@example.com" → "a***@example.com"
+// "invalid-email" → "***@***"
+// "@example.com" → "***@***"
 ```
 
 #### Consent Management
