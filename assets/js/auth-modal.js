@@ -30,7 +30,7 @@
     init: function () {
       // Get modal elements
       this.modal = document.getElementById('auth-modal');
-      
+
       if (!this.modal) {
         console.warn('AuthModal: Modal element not found. Include partials/auth-modal.html');
         return;
@@ -51,6 +51,7 @@
       // Check for URL parameter to auto-open
       this.checkAutoOpen();
 
+      // eslint-disable-next-line no-console
       console.log('✅ AuthModal initialized');
     },
 
@@ -135,7 +136,7 @@
      * @param {string} tab - 'signup' or 'signin'
      */
     open: function (tab = 'signup') {
-      if (this.isOpen || !this.modal) return;
+      if (this.isOpen || !this.modal) {return;}
 
       // Dispatch analytics event
       this.dispatchAnalytics('auth_modal_open', { initialTab: tab });
@@ -165,7 +166,7 @@
      * Close the modal
      */
     close: function () {
-      if (!this.isOpen || !this.modal) return;
+      if (!this.isOpen || !this.modal) {return;}
 
       this.isOpen = false;
 
@@ -191,7 +192,7 @@
      * @param {boolean} silent - Don't dispatch analytics
      */
     switchTab: function (tab, silent = false) {
-      if (this.currentTab === tab) return;
+      if (this.currentTab === tab) {return;}
 
       this.currentTab = tab;
 
@@ -284,7 +285,7 @@
 
         if (result.success) {
           this.showMessage('signup', 'success', 'Account created! Redirecting...');
-          
+
           // Redirect after short delay
           setTimeout(() => {
             window.location.href = '/learner-portal.html';
@@ -342,7 +343,7 @@
 
         if (result.success) {
           this.showMessage('signin', 'success', 'Signed in! Redirecting...');
-          
+
           // Redirect after short delay
           setTimeout(() => {
             window.location.href = '/learner-portal.html';
@@ -363,7 +364,7 @@
      */
     showMessage: function (panel, type, message) {
       const messageEl = document.getElementById(`${panel}-message`);
-      if (!messageEl) return;
+      if (!messageEl) {return;}
 
       messageEl.textContent = message;
       messageEl.className = `auth-modal-message ${type}`;
@@ -389,8 +390,8 @@
      * Clear all forms
      */
     clearForms: function () {
-      if (this.signupForm) this.signupForm.reset();
-      if (this.signinForm) this.signinForm.reset();
+      if (this.signupForm) {this.signupForm.reset();}
+      if (this.signinForm) {this.signinForm.reset();}
     },
 
     /**
@@ -399,16 +400,20 @@
     setFormLoading: function (panel, loading) {
       const form = panel === 'signup' ? this.signupForm : this.signinForm;
       const submitBtn = form?.querySelector('button[type="submit"]');
-      
-      if (!submitBtn) return;
+
+      if (!submitBtn) {return;}
 
       const inputs = form.querySelectorAll('input, button');
-      
+
       if (loading) {
-        inputs.forEach(input => input.disabled = true);
+        inputs.forEach(input => {
+          input.disabled = true;
+        });
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
       } else {
-        inputs.forEach(input => input.disabled = false);
+        inputs.forEach(input => {
+          input.disabled = false;
+        });
         submitBtn.textContent = panel === 'signup' ? 'Create Account' : 'Sign In';
       }
     },
@@ -453,7 +458,7 @@
     checkAutoOpen: function () {
       const urlParams = new URLSearchParams(window.location.search);
       const openParam = urlParams.get('open');
-      
+
       if (openParam === 'dashboard' && !window.AUTH?.isAuthenticated()) {
         // Auto-open modal if user is not authenticated
         setTimeout(() => this.open('signup'), 100);
@@ -465,8 +470,9 @@
      */
     dispatchAnalytics: function (eventName, data = {}) {
       // Log to console for Phase 3.1
+      // eslint-disable-next-line no-console
       console.log(`📊 Analytics: ${eventName}`, data);
-      
+
       // Dispatch custom event for future analytics integration
       window.dispatchEvent(new CustomEvent('pmerit-analytics', {
         detail: { event: eventName, ...data }
@@ -484,5 +490,6 @@
   // Export globally
   window.AuthModal = AuthModal;
 
+  // eslint-disable-next-line no-console
   console.log('🔐 AuthModal controller loaded');
 })();
