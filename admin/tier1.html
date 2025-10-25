@@ -1,1 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Admin Portal - Tier 1 | PMERIT</title>
+  <meta name="description" content="PMERIT Admin Portal - Staff Management and Infrastructure">
 
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  
+  <!-- PMERIT Standard CSS Imports -->
+  <link rel="stylesheet" href="../assets/css/theme-variables.css">
+  <link rel="stylesheet" href="../assets/css/typography.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  
+  <!-- Auth protection -->
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/auth-check.js"></script>
+
+  <style>
+    body {
+      display: flex;
+      min-height: 100vh;
+      background: var(--bg-primary);
+    }
+
+    .admin-sidebar {
+      width: 280px;
+      background: var(--bg-card);
+      border-right: 1px solid var(--border-color);
+      padding: var(--space-6);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .admin-logo {
+      font-size: var(--text-2xl);
+      font-weight: var(--font-bold);
+      color: var(--color-primary);
+      margin-bottom: var(--space-2);
+    }
+
+    .admin-tier-badge {
+      background: var(--color-primary);
+      color: white;
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--border-radius-md);
+      font-size: var(--text-sm);
+      font-weight: var(--font-semibold);
+      display: inline-block;
+      margin-bottom: var(--space-6);
+    }
+
+    .admin-nav {
+      flex: 1;
+    }
+
+    .nav-section {
+      margin-bottom: var(--space-6);
+    }
+
+    .nav-section-title {
+      font-size: var(--text-sm);
+      font-weight: var(--font-bold);
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: var(--space-3);
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3);
+      border-radius: var(--border-radius-md);
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--text-primary);
+      text-decoration: none;
+      margin-bottom: var(--space-2);
+    }
+
+    .nav-item:hover {
+      background: var(--bg-secondary);
+      color: var(--color-primary);
+    }
+
+    .nav-item.active {
+      background: var(--color-primary);
+      color: white;
+    }
+
+    .nav-icon {
+      font-size: 1.2rem;
+      width: 24px;
+      text-align: center;
+    }
+
+    .admin-content {
+      flex: 1;
+      padding: var(--space-6);
+      overflow-y: auto;
+    }
+
+    .content-header {
+      margin-bottom: var(--space-8);
+    }
+
+    .content-title {
+      font-size: var(--text-4xl);
+      font-weight: var(--font-bold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-2);
+    }
+
+    .content-subtitle {
+      color: var(--text-secondary);
+      font-size: var(--text-lg);
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--space-6);
+      margin-bottom: var(--space-8);
+    }
+
+    .dashboard-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-lg);
+      padding: var(--space-6);
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+
+    .dashboard-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      margin-bottom: var(--space-4);
+    }
+
+    .card-icon {
+      font-size: 2rem;
+      color: var(--color-primary);
+    }
+
+    .card-title {
+      font-size: var(--text-xl);
+      font-weight: var(--font-bold);
+      color: var(--text-primary);
+    }
+
+    .card-content {
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .card-actions {
+      margin-top: var(--space-4);
+      display: flex;
+      gap: var(--space-3);
+    }
+
+    .btn {
+      padding: var(--space-2) var(--space-4);
+      border-radius: var(--border-radius-md);
+      font-weight: var(--font-semibold);
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      font-size: var(--text-sm);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .btn-primary {
+      background: var(--color-primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--color-primary-dark);
+    }
+
+    .btn-secondary {
+      background: var(--bg-secondary);
+      color: var(--color-primary);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--color-primary);
+    }
+
+    @media (max-width: 1024px) {
+      body {
+        flex-direction: column;
+      }
+      
+      .admin-sidebar {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Admin Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="admin-logo">🎓 PMERIT Admin</div>
+    <span class="admin-tier-badge">Tier 1 - System Admin</span>
+
+    <nav class="admin-nav">
+      <div class="nav-section">
+        <div class="nav-section-title">Overview</div>
+        <a href="#" class="nav-item active">
+          <i class="fas fa-tachometer-alt nav-icon"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="#analytics" class="nav-item">
+          <i class="fas fa-chart-bar nav-icon"></i>
+          <span>Analytics</span>
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Administration</div>
+        <a href="#staff" class="nav-item">
+          <i class="fas fa-users-cog nav-icon"></i>
+          <span>Staff Management</span>
+        </a>
+        <a href="#infrastructure" class="nav-item">
+          <i class="fas fa-server nav-icon"></i>
+          <span>Infrastructure</span>
+        </a>
+        <a href="#security" class="nav-item">
+          <i class="fas fa-shield-alt nav-icon"></i>
+          <span>Security</span>
+        </a>
+        <a href="#reports" class="nav-item">
+          <i class="fas fa-file-alt nav-icon"></i>
+          <span>Reports</span>
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Operations</div>
+        <a href="tier2.html" class="nav-item">
+          <i class="fas fa-graduation-cap nav-icon"></i>
+          <span>Tier 2 Dashboard</span>
+        </a>
+        <a href="#settings" class="nav-item">
+          <i class="fas fa-cog nav-icon"></i>
+          <span>System Settings</span>
+        </a>
+      </div>
+    </nav>
+
+    <div style="margin-top: auto; padding-top: var(--space-6); border-top: 1px solid var(--border-color);">
+      <a href="../index.html" class="nav-item">
+        <i class="fas fa-sign-out-alt nav-icon"></i>
+        <span>Exit Admin</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="admin-content">
+    <div class="content-header">
+      <h1 class="content-title">Tier 1 Admin Dashboard</h1>
+      <p class="content-subtitle">System-wide administration and management</p>
+    </div>
+
+    <!-- Dashboard Cards -->
+    <div class="dashboard-grid">
+      <!-- Staff Management -->
+      <div class="dashboard-card">
+        <div class="card-header">
+          <i class="fas fa-users-cog card-icon"></i>
+          <h2 class="card-title">Staff Management</h2>
+        </div>
+        <div class="card-content">
+          <p>Manage administrative staff, assign roles and permissions, and oversee user access across the platform.</p>
+          <ul style="margin-top: var(--space-3); margin-left: var(--space-5);">
+            <li>Add/remove staff members</li>
+            <li>Assign Tier 1 & Tier 2 roles</li>
+            <li>Manage permissions</li>
+            <li>View activity logs</li>
+          </ul>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-primary">
+            <i class="fas fa-users"></i>
+            Manage Staff
+          </button>
+        </div>
+      </div>
+
+      <!-- Infrastructure -->
+      <div class="dashboard-card">
+        <div class="card-header">
+          <i class="fas fa-server card-icon"></i>
+          <h2 class="card-title">Infrastructure</h2>
+        </div>
+        <div class="card-content">
+          <p>Monitor system health, manage servers, databases, and ensure platform uptime and performance.</p>
+          <ul style="margin-top: var(--space-3); margin-left: var(--space-5);">
+            <li>Server monitoring</li>
+            <li>Database management</li>
+            <li>Performance metrics</li>
+            <li>Backup & recovery</li>
+          </ul>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-primary">
+            <i class="fas fa-chart-line"></i>
+            View Status
+          </button>
+        </div>
+      </div>
+
+      <!-- Security -->
+      <div class="dashboard-card">
+        <div class="card-header">
+          <i class="fas fa-shield-alt card-icon"></i>
+          <h2 class="card-title">Security</h2>
+        </div>
+        <div class="card-content">
+          <p>Manage platform security, review audit logs, and handle security incidents and compliance.</p>
+          <ul style="margin-top: var(--space-3); margin-left: var(--space-5);">
+            <li>Security audit logs</li>
+            <li>User authentication</li>
+            <li>Incident response</li>
+            <li>Compliance monitoring</li>
+          </ul>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-primary">
+            <i class="fas fa-lock"></i>
+            Security Center
+          </button>
+        </div>
+      </div>
+
+      <!-- Reports -->
+      <div class="dashboard-card">
+        <div class="card-header">
+          <i class="fas fa-file-alt card-icon"></i>
+          <h2 class="card-title">System Reports</h2>
+        </div>
+        <div class="card-content">
+          <p>Generate comprehensive reports on platform usage, performance, and administrative activities.</p>
+          <ul style="margin-top: var(--space-3); margin-left: var(--space-5);">
+            <li>Usage analytics</li>
+            <li>Performance reports</li>
+            <li>Financial summaries</li>
+            <li>Custom reports</li>
+          </ul>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-primary">
+            <i class="fas fa-chart-bar"></i>
+            View Reports
+          </button>
+        </div>
+      </div>
+
+      <!-- Tier 2 Access -->
+      <div class="dashboard-card">
+        <div class="card-header">
+          <i class="fas fa-graduation-cap card-icon"></i>
+          <h2 class="card-title">Tier 2 Dashboard</h2>
+        </div>
+        <div class="card-content">
+          <p>Access Tier 2 administrative functions for content management, student oversight, and class operations.</p>
+          <ul style="margin-top: var(--space-3); margin-left: var(--space-5);">
+            <li>Curriculum management</li>
+            <li>Student administration</li>
+            <li>Class operations</li>
+            <li>Performance tracking</li>
+          </ul>
+        </div>
+        <div class="card-actions">
+          <a href="tier2.html" class="btn btn-primary">
+            <i class="fas fa-arrow-right"></i>
+            Go to Tier 2
+          </a>
+        </div>
+      </div>
+
+      <!-- System Settings -->
+      <div class="dashboard-card">
+        <div class="card-header">
+          <i class="fas fa-cog card-icon"></i>
+          <h2 class="card-title">System Settings</h2>
+        </div>
+        <div class="card-content">
+          <p>Configure platform-wide settings, integrations, and system parameters.</p>
+          <ul style="margin-top: var(--space-3); margin-left: var(--space-5);">
+            <li>General settings</li>
+            <li>Email configuration</li>
+            <li>API integrations</li>
+            <li>Feature flags</li>
+          </ul>
+        </div>
+        <div class="card-actions">
+          <button class="btn btn-primary">
+            <i class="fas fa-wrench"></i>
+            Configure
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>
