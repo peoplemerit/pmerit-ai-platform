@@ -16,8 +16,8 @@ class CareerGrid {
     }
 
     this.options = {
-      dataUrl: options.dataUrl || '/assets/data/career_showcase.json',
-      i18nUrl: options.i18nUrl || '/assets/i18n/en.json',
+      dataUrl: options.dataUrl || 'assets/data/career_showcase.json',
+      i18nUrl: options.i18nUrl || 'assets/i18n/en.json',
       showBadge: options.showBadge !== false,
       showCTAs: options.showCTAs !== false,
       ...options
@@ -188,15 +188,15 @@ class CareerGrid {
     return `
       <div class="career-cta-section">
         <div class="career-cta-buttons">
-          <a href="/assessment.html" class="career-cta-btn career-cta-btn-primary" data-cta="discover">
+          <a href="assessment.html" class="career-cta-btn career-cta-btn-primary" data-cta="discover">
             <i class="fas fa-compass" aria-hidden="true"></i>
             ${this.i18n.cta_discover}
           </a>
-          <a href="/courses.html" class="career-cta-btn career-cta-btn-secondary" data-cta="see_all_courses">
+          <a href="courses.html" class="career-cta-btn career-cta-btn-secondary" data-cta="see_all_courses">
             <i class="fas fa-book" aria-hidden="true"></i>
             ${this.i18n.cta_courses}
           </a>
-          <a href="/signin.html" class="career-cta-btn career-cta-btn-secondary" data-cta="signin">
+          <a href="signin.html" class="career-cta-btn career-cta-btn-secondary" data-cta="signin">
             <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
             ${this.i18n.cta_signin}
           </a>
@@ -346,12 +346,22 @@ class CareerGrid {
 document.addEventListener('DOMContentLoaded', () => {
   const autoInitContainers = document.querySelectorAll('[data-career-grid]');
   autoInitContainers.forEach(container => {
-    const options = {
-      dataUrl: container.dataset.dataUrl,
-      i18nUrl: container.dataset.i18nUrl,
-      showBadge: container.dataset.showBadge !== 'false',
-      showCTAs: container.dataset.showCtas !== 'false'
-    };
+    const options = {};
+    
+    // Only set options if they're explicitly provided
+    if (container.dataset.dataUrl) {
+      options.dataUrl = container.dataset.dataUrl;
+    }
+    if (container.dataset.i18nUrl) {
+      options.i18nUrl = container.dataset.i18nUrl;
+    }
+    if (container.dataset.showBadge) {
+      options.showBadge = container.dataset.showBadge !== 'false';
+    }
+    if (container.dataset.showCtas) {
+      options.showCTAs = container.dataset.showCtas !== 'false';
+    }
+    
     new CareerGrid(container.id, options);
   });
 });

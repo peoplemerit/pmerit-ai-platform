@@ -7,7 +7,7 @@
   <meta name="description" content="Learn more about PMERIT career tracks and pathways.">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,10 +18,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   
   <!-- PMERIT Standard CSS Imports -->
-  <link rel="stylesheet" href="/assets/css/theme-variables.css">
-  <link rel="stylesheet" href="/assets/css/typography.css">
-  <link rel="stylesheet" href="/assets/css/base.css">
-  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/theme-variables.css">
+  <link rel="stylesheet" href="assets/css/typography.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/components.css">
 
   <style>
     body {
@@ -143,15 +143,15 @@
       </p>
 
       <div class="placeholder-actions">
-        <a href="/career-paths.html" class="placeholder-btn placeholder-btn-primary">
+        <a href="career-paths.html" class="placeholder-btn placeholder-btn-primary">
           <i class="fas fa-arrow-left" aria-hidden="true"></i>
           Back to Career Paths
         </a>
-        <a href="/courses.html" class="placeholder-btn placeholder-btn-secondary">
+        <a href="courses.html" class="placeholder-btn placeholder-btn-secondary">
           <i class="fas fa-book" aria-hidden="true"></i>
           Browse Courses
         </a>
-        <a href="/assessment.html" class="placeholder-btn placeholder-btn-secondary">
+        <a href="assessment.html" class="placeholder-btn placeholder-btn-secondary">
           <i class="fas fa-compass" aria-hidden="true"></i>
           Take Assessment
         </a>
@@ -163,8 +163,8 @@
   <div id="footer-container"></div>
 
   <!-- JavaScript -->
-  <script src="/assets/js/config.js"></script>
-  <script src="/assets/js/auth.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/auth.js"></script>
 
   <!-- Load Header and Footer Partials -->
   <script>
@@ -172,7 +172,7 @@
       'use strict';
 
       // Load header
-      fetch('/partials/header.html')
+      fetch('partials/header.html')
         .then(response => response.text())
         .then(html => {
           const container = document.getElementById('header-container');
@@ -183,7 +183,7 @@
         .catch(error => console.error('Error loading header:', error));
 
       // Load footer
-      fetch('/partials/footer.html')
+      fetch('partials/footer.html')
         .then(response => response.text())
         .then(html => {
           const container = document.getElementById('footer-container');
