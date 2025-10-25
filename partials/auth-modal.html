@@ -1,0 +1,192 @@
+<!-- 
+  PMERIT Auth Modal Component
+  Version: 1.0
+  Last Updated: October 25, 2025
+  
+  Reusable modal for Sign Up / Sign In flows
+  Features: Tab switching, keyboard navigation, accessibility
+  
+  Usage: Include this partial and call AuthModal.open('signup') or AuthModal.open('signin')
+-->
+
+<div id="auth-modal" class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title" aria-hidden="true">
+  <div class="auth-modal-backdrop">
+    <div class="auth-modal-content">
+      <!-- Close Button -->
+      <button class="auth-modal-close" aria-label="Close modal">
+        <i class="fas fa-times"></i>
+      </button>
+      
+      <!-- Modal Header with Tabs -->
+      <div class="auth-modal-header">
+        <div class="auth-modal-tabs" role="tablist">
+          <button 
+            class="auth-modal-tab active" 
+            id="signup-tab" 
+            role="tab" 
+            aria-selected="true" 
+            aria-controls="signup-panel"
+            data-tab="signup">
+            Sign Up
+          </button>
+          <button 
+            class="auth-modal-tab" 
+            id="signin-tab" 
+            role="tab" 
+            aria-selected="false" 
+            aria-controls="signin-panel"
+            data-tab="signin">
+            Sign In
+          </button>
+        </div>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="auth-modal-body">
+        <!-- Sign Up Panel -->
+        <div 
+          id="signup-panel" 
+          class="auth-modal-panel active" 
+          role="tabpanel" 
+          aria-labelledby="signup-tab"
+          aria-hidden="false">
+          
+          <h2 id="auth-modal-title" class="auth-modal-title">Create Your Account</h2>
+          <p class="auth-modal-subtitle">Join PMERIT and start your learning journey</p>
+          
+          <!-- Error/Success Messages -->
+          <div id="signup-message" class="auth-modal-message" role="alert" aria-live="polite"></div>
+          
+          <form id="signup-form" class="auth-modal-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="signup-firstname">First Name</label>
+                <input 
+                  type="text" 
+                  id="signup-firstname" 
+                  name="firstname" 
+                  autocomplete="given-name"
+                  required
+                  aria-required="true">
+              </div>
+              
+              <div class="form-group">
+                <label for="signup-lastname">Last Name</label>
+                <input 
+                  type="text" 
+                  id="signup-lastname" 
+                  name="lastname" 
+                  autocomplete="family-name"
+                  required
+                  aria-required="true">
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="signup-email">Email Address</label>
+              <input 
+                type="email" 
+                id="signup-email" 
+                name="email" 
+                autocomplete="email"
+                required
+                aria-required="true">
+            </div>
+            
+            <div class="form-group">
+              <label for="signup-password">Password</label>
+              <div class="password-wrapper">
+                <input 
+                  type="password" 
+                  id="signup-password" 
+                  name="password"
+                  autocomplete="new-password"
+                  minlength="6"
+                  required
+                  aria-required="true"
+                  aria-describedby="password-hint">
+                <button type="button" class="password-toggle" data-target="signup-password" aria-label="Toggle password visibility">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+              <small id="password-hint" class="form-hint">At least 6 characters</small>
+            </div>
+            
+            <button type="submit" class="auth-modal-button primary">
+              Create Account
+            </button>
+          </form>
+          
+          <p class="auth-modal-footer-text">
+            Already have an account? 
+            <button type="button" class="auth-modal-link" data-switch-to="signin">Sign in here</button>
+          </p>
+        </div>
+        
+        <!-- Sign In Panel -->
+        <div 
+          id="signin-panel" 
+          class="auth-modal-panel" 
+          role="tabpanel" 
+          aria-labelledby="signin-tab"
+          aria-hidden="true">
+          
+          <h2 class="auth-modal-title">Welcome Back</h2>
+          <p class="auth-modal-subtitle">Sign in to continue your learning</p>
+          
+          <!-- Error/Success Messages -->
+          <div id="signin-message" class="auth-modal-message" role="alert" aria-live="polite"></div>
+          
+          <form id="signin-form" class="auth-modal-form">
+            <div class="form-group">
+              <label for="signin-email">Email Address</label>
+              <input 
+                type="email" 
+                id="signin-email" 
+                name="email" 
+                autocomplete="email"
+                required
+                aria-required="true">
+            </div>
+            
+            <div class="form-group">
+              <label for="signin-password">Password</label>
+              <div class="password-wrapper">
+                <input 
+                  type="password" 
+                  id="signin-password" 
+                  name="password"
+                  autocomplete="current-password"
+                  minlength="6"
+                  required
+                  aria-required="true">
+                <button type="button" class="password-toggle" data-target="signin-password" aria-label="Toggle password visibility">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+            </div>
+            
+            <div class="form-group-inline">
+              <a href="#" class="auth-modal-link-small">Forgot password?</a>
+            </div>
+            
+            <button type="submit" class="auth-modal-button primary">
+              Sign In
+            </button>
+          </form>
+          
+          <p class="auth-modal-footer-text">
+            Don't have an account? 
+            <button type="button" class="auth-modal-link" data-switch-to="signup">Sign up here</button>
+          </p>
+        </div>
+      </div>
+      
+      <!-- Cookie Warning (shown if localStorage is blocked) -->
+      <div id="cookie-warning" class="auth-modal-warning hidden" role="alert">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span>Cookies/Storage appear to be blocked. Please enable them to sign in.</span>
+      </div>
+    </div>
+  </div>
+</div>

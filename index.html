@@ -416,9 +416,15 @@
     </footer>
   </div>
 
+  <!-- Auth Modal Component (Phase 3.1) -->
+  <div id="auth-modal-container"></div>
+  
   <!-- JavaScript - Version 2 (Cache-busting) -->
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/auth.js"></script>
   <script src="assets/js/main.js?v=2"></script>
   <script src="assets/js/chat.js?v=2"></script>
+  <script src="assets/js/auth-modal.js"></script>
   
   <!-- Layout Styles (Embedded for Performance) -->
   <style>
@@ -916,24 +922,99 @@
     }
   </style>
 
-  <!-- Wire Sign In buttons to /signin.html -->
+  <!-- Phase 3.1: Load Auth Modal partial and wire Dashboard buttons -->
   <script>
     (function () {
       'use strict';
       
-      // Wire all Sign In buttons
-      const signInButtons = [
-        document.getElementById('signInBtn'),
-        document.getElementById('desktopSignInBtn')
-      ];
+      // Load auth modal partial
+      fetch('/partials/auth-modal.html')
+        .then(response => response.text())
+        .then(html => {
+          const container = document.getElementById('auth-modal-container');
+          if (container) {
+            container.innerHTML = html;
+            // Re-initialize AuthModal after DOM injection
+            if (window.AuthModal) {
+              window.AuthModal.init();
+            }
+          }
+        })
+        .catch(error => console.error('Error loading auth modal:', error));
       
-      signInButtons.forEach(function (btn) {
-        if (btn) {
-          btn.addEventListener('click', function () {
-            window.location.href = '/signin.html';
-          });
-        }
-      });
+      // Wire Sign In buttons - now opens Auth Modal if available
+      function initAuthButtons() {
+        const signInButtons = [
+          document.getElementById('signInBtn'),
+          document.getElementById('desktopSignInBtn')
+        ];
+        
+        signInButtons.forEach(function (btn) {
+          if (btn) {
+            btn.addEventListener('click', function (e) {
+              // If AUTH module is loaded and AuthModal is available, use modal
+              if (window.AUTH && window.AuthModal) {
+                e.preventDefault();
+                window.AuthModal.open('signin');
+              } else {
+                // Fallback to sign-in page
+                window.location.href = '/signin.html';
+              }
+            });
+          }
+        });
+      }
+      
+      // Wire Dashboard buttons (Phase 3.1)
+      function initDashboardButtons() {
+        // Get all dashboard buttons (mobile and desktop)
+        const dashboardButtons = [
+          document.querySelector('.menu-item-primary'), // Mobile
+          document.querySelector('.dashboard-btn-primary') // Desktop
+        ];
+        
+        dashboardButtons.forEach(function (btn) {
+          if (btn) {
+            btn.addEventListener('click', function (e) {
+              e.preventDefault();
+              
+              // Dispatch analytics event
+              const isAuth = window.AUTH && window.AUTH.isAuthenticated();
+              const eventName = isAuth ? 'dashboard_click_auth' : 'dashboard_click_guest';
+              console.log('📊 Analytics:', eventName);
+              window.dispatchEvent(new CustomEvent('pmerit-analytics', {
+                detail: { event: eventName }
+              }));
+              
+              // Branch behavior based on authentication
+              if (isAuth) {
+                // Authenticated: Navigate to learner portal
+                window.location.href = '/learner-portal.html';
+              } else {
+                // Guest: Open Auth Modal with Sign-Up tab
+                if (window.AuthModal) {
+                  window.AuthModal.open('signup');
+                } else {
+                  // Fallback to sign-in page if modal not loaded
+                  console.warn('AuthModal not loaded, redirecting to signin page');
+                  window.location.href = '/signin.html';
+                }
+              }
+            });
+          }
+        });
+      }
+      
+      // Initialize when DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+          initAuthButtons();
+          initDashboardButtons();
+        });
+      } else {
+        initAuthButtons();
+        initDashboardButtons();
+      }
     })();
   </script>
 
