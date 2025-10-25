@@ -1,0 +1,144 @@
+{
+  "global_remote_tracks": [
+    {
+      "id": "data-analytics",
+      "title": "Data Analytics",
+      "blurb": "Transform data into insights and drive business decisions",
+      "level_tag": "Beginner to Advanced",
+      "icon": "chart-line",
+      "href": "/about-tracks.html?track=data-analytics"
+    },
+    {
+      "id": "ui-ux-design",
+      "title": "UI/UX Design",
+      "blurb": "Create beautiful, user-centered digital experiences",
+      "level_tag": "Beginner to Advanced",
+      "icon": "palette",
+      "href": "/about-tracks.html?track=ui-ux"
+    },
+    {
+      "id": "digital-marketing",
+      "title": "Digital Marketing",
+      "blurb": "Master online marketing strategies and grow businesses",
+      "level_tag": "Beginner to Intermediate",
+      "icon": "bullhorn",
+      "href": "/about-tracks.html?track=digital-marketing"
+    },
+    {
+      "id": "customer-support",
+      "title": "Customer Support",
+      "blurb": "Deliver exceptional service and build lasting relationships",
+      "level_tag": "Beginner",
+      "icon": "headset",
+      "href": "/about-tracks.html?track=customer-support"
+    },
+    {
+      "id": "cloud-devops",
+      "title": "Cloud & DevOps Intro",
+      "blurb": "Learn cloud platforms and modern deployment practices",
+      "level_tag": "Intermediate",
+      "icon": "cloud",
+      "href": "/about-tracks.html?track=cloud-devops"
+    }
+  ],
+  "local_education": [
+    {
+      "id": "early-years",
+      "title": "Early Years (Ages 3-5)",
+      "blurb": "Foundation skills for young learners",
+      "level_tag": "Preschool",
+      "icon": "baby",
+      "href": "/local-education.html?level=early-years"
+    },
+    {
+      "id": "primary",
+      "title": "Primary (Grades 1-6)",
+      "blurb": "Core subjects and essential learning skills",
+      "level_tag": "Primary",
+      "icon": "school",
+      "href": "/local-education.html?level=primary"
+    },
+    {
+      "id": "jss",
+      "title": "Junior Secondary (JSS)",
+      "blurb": "Building knowledge in core academic subjects",
+      "level_tag": "JSS 1-3",
+      "icon": "book-reader",
+      "href": "/local-education.html?level=jss"
+    },
+    {
+      "id": "sss",
+      "title": "Senior Secondary (SSS)",
+      "blurb": "Advanced preparation for higher education",
+      "level_tag": "SSS 1-3",
+      "icon": "graduation-cap",
+      "href": "/local-education.html?level=sss"
+    },
+    {
+      "id": "post-secondary",
+      "title": "Post-Secondary & College",
+      "blurb": "Professional certifications and degree programs",
+      "level_tag": "College",
+      "icon": "university",
+      "href": "/local-education.html?level=college"
+    }
+  ],
+  "local_career_pathways": [
+    {
+      "id": "agritech",
+      "title": "Agritech",
+      "blurb": "Modern farming techniques and agricultural technology",
+      "level_tag": "Vocational",
+      "icon": "seedling",
+      "href": "/about-tracks.html?pathway=agritech"
+    },
+    {
+      "id": "healthcare-support",
+      "title": "Healthcare Support",
+      "blurb": "Essential skills for healthcare assistance roles",
+      "level_tag": "Vocational",
+      "icon": "heartbeat",
+      "href": "/about-tracks.html?pathway=healthcare"
+    },
+    {
+      "id": "building-trades",
+      "title": "Building Trades",
+      "blurb": "Construction, carpentry, and building maintenance",
+      "level_tag": "Vocational",
+      "icon": "hammer",
+      "href": "/about-tracks.html?pathway=building"
+    },
+    {
+      "id": "automotive",
+      "title": "Automotive",
+      "blurb": "Vehicle maintenance, repair, and mechanics",
+      "level_tag": "Vocational",
+      "icon": "car",
+      "href": "/about-tracks.html?pathway=automotive"
+    },
+    {
+      "id": "retail",
+      "title": "Retail & Sales",
+      "blurb": "Customer service and retail management skills",
+      "level_tag": "Vocational",
+      "icon": "shopping-cart",
+      "href": "/about-tracks.html?pathway=retail"
+    },
+    {
+      "id": "logistics",
+      "title": "Logistics & Supply Chain",
+      "blurb": "Transportation, warehousing, and distribution",
+      "level_tag": "Vocational",
+      "icon": "truck",
+      "href": "/about-tracks.html?pathway=logistics"
+    },
+    {
+      "id": "hospitality",
+      "title": "Hospitality & Tourism",
+      "blurb": "Hotel, restaurant, and tourism services",
+      "level_tag": "Vocational",
+      "icon": "concierge-bell",
+      "href": "/about-tracks.html?pathway=hospitality"
+    }
+  ]
+}

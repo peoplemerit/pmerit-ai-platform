@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Career Paths - PMERIT Platform</title>
+  <meta name="description" content="Explore diverse career tracks and educational paths with PMERIT. From global remote opportunities to local vocational training.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  
+  <!-- PMERIT Standard CSS Imports -->
+  <link rel="stylesheet" href="/assets/css/theme-variables.css">
+  <link rel="stylesheet" href="/assets/css/typography.css">
+  <link rel="stylesheet" href="/assets/css/base.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="/assets/css/career-grid.css">
+
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    .page-intro {
+      background: linear-gradient(135deg, var(--color-primary, #2A5B8C), var(--color-secondary, #4AA4B9));
+      color: white;
+      padding: var(--space-8, 3rem) var(--space-4, 1rem);
+      text-align: center;
+      margin-bottom: var(--space-8, 3rem);
+    }
+
+    .page-intro h1 {
+      font-size: var(--text-4xl, 2.5rem);
+      font-weight: var(--font-bold, 700);
+      margin-bottom: var(--space-4, 1rem);
+      line-height: 1.2;
+    }
+
+    .page-intro p {
+      font-size: var(--text-lg, 1.125rem);
+      max-width: 800px;
+      margin: 0 auto;
+      opacity: 0.95;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .page-intro h1 {
+        font-size: var(--text-3xl, 2rem);
+      }
+      
+      .page-intro p {
+        font-size: var(--text-base, 1rem);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header (loaded from partial) -->
+  <div id="header-container"></div>
+
+  <main>
+    <!-- Page Introduction -->
+    <section class="page-intro">
+      <h1>Discover Your Career Path</h1>
+      <p>
+        Whether you're seeking global remote opportunities, local education, or vocational training, 
+        PMERIT offers diverse pathways to help you achieve your goals and unlock your potential.
+      </p>
+    </section>
+
+    <!-- Career Grid Component -->
+    <div 
+      id="career-showcase" 
+      class="career-grid-container"
+      data-career-grid
+      data-show-badge="false"
+      data-show-ctas="true"
+    ></div>
+  </main>
+
+  <!-- Footer (loaded from partial) -->
+  <div id="footer-container"></div>
+
+  <!-- JavaScript -->
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script src="/assets/js/career-grid.js"></script>
+
+  <!-- Load Header and Footer Partials -->
+  <script>
+    (function() {
+      'use strict';
+
+      // Load header
+      fetch('/partials/header.html')
+        .then(response => response.text())
+        .then(html => {
+          const container = document.getElementById('header-container');
+          if (container) {
+            container.innerHTML = html;
+            // Initialize menu if needed
+            if (window.mobileMenu) {
+              window.mobileMenu.init();
+            }
+          }
+        })
+        .catch(error => console.error('Error loading header:', error));
+
+      // Load footer
+      fetch('/partials/footer.html')
+        .then(response => response.text())
+        .then(html => {
+          const container = document.getElementById('footer-container');
+          if (container) {
+            container.innerHTML = html;
+          }
+        })
+        .catch(error => console.error('Error loading footer:', error));
+    })();
+  </script>
+
+</body>
+</html>

@@ -1005,15 +1005,42 @@
         });
       }
       
+      // Wire Career Track buttons (Phase 3.2)
+      function initCareerTrackButtons() {
+        // Get career track elements from both mobile and desktop layouts
+        const careerTrackElements = document.querySelectorAll('.menu-item:not(.menu-item-primary), .action');
+        
+        careerTrackElements.forEach(function (elem) {
+          const text = elem.textContent || '';
+          if (text.includes('Career Track & Explore Paths')) {
+            elem.style.cursor = 'pointer';
+            elem.addEventListener('click', function (e) {
+              e.preventDefault();
+              
+              // Dispatch analytics event
+              console.log('📊 Analytics: career_track_nav_click');
+              window.dispatchEvent(new CustomEvent('pmerit-analytics', {
+                detail: { event: 'career_track_nav_click' }
+              }));
+              
+              // Navigate to career paths page
+              window.location.href = '/career-paths.html';
+            });
+          }
+        });
+      }
+      
       // Initialize when DOM is ready
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() {
           initAuthButtons();
           initDashboardButtons();
+          initCareerTrackButtons();
         });
       } else {
         initAuthButtons();
         initDashboardButtons();
+        initCareerTrackButtons();
       }
     })();
   </script>
