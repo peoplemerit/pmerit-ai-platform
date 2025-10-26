@@ -488,7 +488,16 @@
         state.notes.content = dom.notesText.value;
         state.notes.timestamp = new Date().toISOString();
         localStorage.setItem(`pmerit_notes_${courseId}`, JSON.stringify(state.notes));
-        alert('Notes saved successfully!');
+        
+        // Show success feedback (better UX than alert)
+        const btn = dom.saveNotesBtn;
+        const originalText = btn.textContent;
+        btn.textContent = '✓ Saved!';
+        btn.style.backgroundColor = '#66fcf1';
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.style.backgroundColor = '';
+        }, 2000);
       }
 
       // Handle file upload

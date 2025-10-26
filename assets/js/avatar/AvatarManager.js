@@ -219,7 +219,12 @@
           reject(error);
         });
 
-        audio.play();
+        // Handle autoplay blocking
+        audio.play().catch(error => {
+          console.warn('Audio autoplay blocked:', error);
+          // User interaction required - this is expected behavior
+          // The error is logged but not thrown to avoid breaking the flow
+        });
       });
     }
 

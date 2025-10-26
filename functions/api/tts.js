@@ -98,8 +98,9 @@ async function generateMockTTSResponse(text, voice, speed) {
   // In production, this would come from the TTS service
   const visemes = generateVisemeTimeline(text, durationSeconds);
 
-  // For MVP, return a data URL or placeholder
-  // In production, this would be a signed R2 URL or Workers AI response
+  // For MVP, return a data URL placeholder (silent WAV file)
+  // This is intentionally silent for the MVP phase
+  // In production, this would be a signed R2 URL or Workers AI response with actual audio
   const audioUrl = `data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=`;
 
   return {
