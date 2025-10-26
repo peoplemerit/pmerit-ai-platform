@@ -594,13 +594,24 @@
     }
 
     /**
+     * Generate cryptographically secure random ID
+     * @private
+     */
+    _generateSecureId() {
+      // Use crypto.getRandomValues for secure randomness
+      const array = new Uint8Array(16);
+      crypto.getRandomValues(array);
+      return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('').substring(0, 12);
+    }
+
+    /**
      * Start guest session
      * @private
      */
     _startSession() {
       if (this.state.sessionId) return; // Already started
 
-      this.state.sessionId = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      this.state.sessionId = `guest_${Date.now()}_${this._generateSecureId()}`;
       this.state.startedAt = new Date().toISOString();
       this.state.interactions = 0;
       this.state.ctaClicks = {};
