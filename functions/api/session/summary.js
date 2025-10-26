@@ -1,17 +1,22 @@
 /**
  * Cloudflare Pages Function - Session Summary API
  * Phase 3.3-A: Persist classroom session data
+ * Phase 3.3-B: Support guest sessions from home page
  * 
  * POST /api/session/summary
  * Body: { 
- *   userId: string, 
- *   courseId: string, 
+ *   sessionId?: string,         // Provided for guest sessions
+ *   userId?: string,            // Required for authenticated sessions
+ *   courseId?: string,          // Required for classroom sessions
  *   startedAt: string, 
  *   endedAt: string, 
  *   durationSec: number,
  *   lastPrompt?: string,
  *   lastReplyHash?: string,
- *   vhMode: boolean
+ *   vhMode: boolean,
+ *   guestMode?: boolean,        // Phase 3.3-B: Guest session flag
+ *   interactions?: number,      // Phase 3.3-B: Conversation starter clicks
+ *   ctaClicks?: object          // Phase 3.3-B: CTA click tracking
  * }
  * Response: { success: boolean, sessionId: string }
  */
@@ -34,43 +39,81 @@ export async function onRequestPost(context) {
   try {
     const body = await context.request.json();
     
-    // Validate required fields
-    const requiredFields = ['userId', 'courseId', 'startedAt', 'endedAt', 'durationSec'];
-    for (const field of requiredFields) {
-      if (!body[field]) {
-        return new Response(JSON.stringify({ 
-          error: 'Invalid input',
-          message: `Missing required field: ${field}`
-        }), {
-          status: 400,
-          headers: { 'Content-Type': 'application/json', ...corsHeaders },
-        });
+    // Phase 3.3-B: Support both guest and authenticated sessions
+    const guestMode = body.guestMode === true;
+    
+    // Validate required fields based on mode
+    if (guestMode) {
+      // Guest mode: Only sessionId and time fields required
+      const requiredFields = ['sessionId', 'startedAt', 'endedAt', 'durationSec'];
+      for (const field of requiredFields) {
+        if (!body[field]) {
+          return new Response(JSON.stringify({ 
+            error: 'Invalid input',
+            message: `Missing required field for guest session: ${field}`
+          }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json', ...corsHeaders },
+          });
+        }
+      }
+    } else {
+      // Authenticated mode: userId and courseId required
+      const requiredFields = ['userId', 'courseId', 'startedAt', 'endedAt', 'durationSec'];
+      for (const field of requiredFields) {
+        if (!body[field]) {
+          return new Response(JSON.stringify({ 
+            error: 'Invalid input',
+            message: `Missing required field: ${field}`
+          }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json', ...corsHeaders },
+          });
+        }
       }
     }
 
     // Extract session data
     const {
-      userId,
-      courseId,
+      sessionId: providedSessionId,
+      userId = null,
+      courseId = null,
       startedAt,
       endedAt,
       durationSec,
       lastPrompt = null,
       lastReplyHash = null,
-      vhMode = false
+      vhMode = false,
+      interactions = 0,        // Phase 3.3-B: Guest interactions
+      ctaClicks = {}           // Phase 3.3-B: CTA tracking
     } = body;
 
-    // Generate session ID
-    const sessionId = `session_${userId}_${courseId}_${Date.now()}`;
+    // Generate or use provided session ID
+    const sessionId = guestMode 
+      ? providedSessionId 
+      : `session_${userId}_${courseId}_${Date.now()}`;
 
     // Log session (redact PII completely)
-    console.log('Session summary:', {
+    const logData = {
       sessionId,
-      courseId,
       durationSec,
       vhMode,
+      guestMode,
       timestamp: new Date().toISOString()
-    });
+    };
+    
+    // Include courseId only if present (not for guest sessions)
+    if (courseId) {
+      logData.courseId = courseId;
+    }
+    
+    // Include guest-specific metrics
+    if (guestMode) {
+      logData.interactions = interactions;
+      logData.ctaClicks = ctaClicks;
+    }
+    
+    console.log('Session summary:', logData);
 
     // Phase 3.3-A MVP: Store in KV or log
     // TODO (Phase 3.3-B): Persist to D1 database or Oracle backend
@@ -103,6 +146,9 @@ export async function onRequestPost(context) {
         lastPrompt,
         lastReplyHash,
         vhMode,
+        guestMode,              // Phase 3.3-B
+        interactions,           // Phase 3.3-B
+        ctaClicks,              // Phase 3.3-B
         createdAt: new Date().toISOString()
       };
 
@@ -110,7 +156,9 @@ export async function onRequestPost(context) {
         sessionId,
         JSON.stringify(summaryData),
         {
-          expirationTtl: 60 * 60 * 24 * 90 // 90 days
+          expirationTtl: guestMode 
+            ? 60 * 60 * 24 * 7    // 7 days for guest sessions
+            : 60 * 60 * 24 * 90   // 90 days for authenticated sessions
         }
       );
     }
