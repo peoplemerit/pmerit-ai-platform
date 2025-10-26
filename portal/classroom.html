@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Classroom | PMERIT Learner Portal</title>
+  <meta name="description" content="Interactive classroom with AI Tutor and Virtual Human">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link 
+    rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer">
+  
+  <!-- PMERIT Unified Design System -->
+  <link rel="stylesheet" href="../assets/css/theme-variables.css">
+  <link rel="stylesheet" href="../assets/css/typography.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/avatar.css">
+  
+  <!-- Three.js for WebGL avatar -->
+  <script 
+    src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+    integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"></script>
+  
+  <!-- Auth protection -->
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/auth-check.js"></script>
+  
+  <!-- Avatar modules -->
+  <script src="../assets/js/avatar/AudioPlayer.js"></script>
+  <script src="../assets/js/avatar/LipSyncVisemes.js"></script>
+  <script src="../assets/js/avatar/WebGLProvider.js"></script>
+  <script src="../assets/js/avatar/AvatarManager.js"></script>
+  
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { 
+      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background-color: #0b0c10; 
+      color: #e8eef8; 
+      line-height: 1.6; 
+      overflow-x: hidden; 
+    }
+    
+    .portal-header {
+      background: linear-gradient(135deg, #1f2833 0%, #0b0c10 100%);
+      padding: 1rem 2rem;
+      border-bottom: 2px solid #45a29e;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .portal-header h1 {
+      color: #66fcf1;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    
+    .portal-nav {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+    
+    .portal-nav a {
+      color: #e8eef8;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      transition: background-color 0.2s;
+    }
+    
+    .portal-nav a:hover {
+      background-color: rgba(69, 162, 158, 0.2);
+    }
+    
+    .app-container { 
+      display: grid; 
+      grid-template-columns: 280px 1fr 320px; 
+      height: calc(100vh - 80px); 
+      gap: 1px; 
+      background-color: #1f2833; 
+    }
+    
+    .panel { 
+      background-color: #0b0c10; 
+      padding: 15px; 
+      overflow-y: auto; 
+    }
+    
+    .panel-title { 
+      font-weight: bold; 
+      margin-bottom: 15px; 
+      padding-bottom: 8px; 
+      border-bottom: 1px solid #45a29e; 
+      color: #66fcf1; 
+    }
+    
+    .outline-item { 
+      padding: 10px; 
+      border-left: 3px solid transparent; 
+      cursor: pointer; 
+      transition: all 0.2s; 
+    }
+    
+    .outline-item:hover { 
+      background-color: #1f2833; 
+      border-left-color: #45a29e; 
+    }
+    
+    .outline-item.active { 
+      background-color: #1f2833; 
+      border-left-color: #66fcf1; 
+      font-weight: bold; 
+    }
+    
+    textarea { 
+      width: 100%; 
+      min-height: 120px; 
+      background-color: #1f2833; 
+      color: #e8eef8; 
+      border: 1px solid #45a29e; 
+      border-radius: 4px; 
+      padding: 10px; 
+      margin-bottom: 10px; 
+      resize: vertical; 
+    }
+    
+    button { 
+      background-color: #45a29e; 
+      color: #0b0c10; 
+      border: none; 
+      padding: 8px 15px; 
+      border-radius: 4px; 
+      cursor: pointer; 
+      font-weight: bold; 
+      transition: background-color 0.2s; 
+    }
+    
+    button:hover { 
+      background-color: #66fcf1; 
+    }
+    
+    .topbar { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      margin-bottom: 15px; 
+      padding-bottom: 10px; 
+      border-bottom: 1px solid #45a29e; 
+    }
+    
+    .player-area { 
+      background-color: #1f2833; 
+      border-radius: 8px; 
+      padding: 15px; 
+      margin-bottom: 15px; 
+    }
+    
+    .messages-container { 
+      height: calc(100vh - 280px); 
+      overflow-y: auto; 
+      margin-bottom: 15px; 
+      padding: 10px; 
+      background-color: #1f2833; 
+      border-radius: 8px; 
+    }
+    
+    .message { 
+      padding: 10px; 
+      border-radius: 8px; 
+      margin-bottom: 10px; 
+      max-width: 90%; 
+    }
+    
+    .message.user { 
+      background-color: #1d3557; 
+      margin-left: auto; 
+    }
+    
+    .message.ai { 
+      background-color: #2d3142; 
+    }
+    
+    .chat-form { 
+      display: flex; 
+      gap: 10px; 
+    }
+    
+    .chat-form input { 
+      flex-grow: 1; 
+      padding: 10px; 
+      background-color: #1f2833; 
+      color: #e8eef8; 
+      border: 1px solid #45a29e; 
+      border-radius: 4px; 
+    }
+    
+    @media (max-width: 1024px) { 
+      .app-container { 
+        grid-template-columns: 220px 1fr 280px; 
+      } 
+    }
+    
+    @media (max-width: 768px) { 
+      .app-container { 
+        grid-template-columns: 1fr; 
+        grid-template-rows: auto 1fr auto; 
+        height: auto;
+      } 
+      .panel { 
+        max-height: 400px; 
+      } 
+    }
+  </style>
+</head>
+<body>
+  <!-- Portal Header -->
+  <header class="portal-header">
+    <h1><i class="fas fa-chalkboard-teacher"></i> PMERIT Classroom</h1>
+    <nav class="portal-nav">
+      <a href="../learner-portal.html"><i class="fas fa-home"></i> Portal</a>
+      <a href="../courses.html"><i class="fas fa-book"></i> Courses</a>
+      <span id="user-display">User</span>
+    </nav>
+  </header>
+
+  <div class="app-container">
+    <!-- Left Panel: Outline & Notes -->
+    <aside class="panel left-panel">
+      <div class="panel-title">Class Outline</div>
+      <div id="outline-container"></div>
+      
+      <div class="panel-title">Notes</div>
+      <textarea id="notes-text" placeholder="Write your notes here..."></textarea>
+      <button id="save-notes">Save Notes</button>
+      
+      <div class="panel-title">Resources</div>
+      <input type="file" id="file-upload" accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg" multiple style="margin-top: 10px;">
+      <div id="resources-container"></div>
+    </aside>
+
+    <!-- Center Panel: Content & Avatar -->
+    <main class="panel main-panel">
+      <div class="topbar">
+        <h2 id="lesson-title">Loading course...</h2>
+        <button id="end-class">End Class</button>
+      </div>
+
+      <!-- Virtual Human Toggle -->
+      <div class="vh-toggle-container">
+        <button class="vh-toggle" id="vh-toggle" aria-label="Toggle Virtual Human">
+          <span class="sr-only">Virtual Human Mode</span>
+        </button>
+        <label for="vh-toggle" class="vh-toggle-label">
+          <i class="fas fa-robot"></i> Virtual Human Mode
+        </label>
+      </div>
+
+      <!-- Avatar Container -->
+      <div class="player-area">
+        <div class="vh-container" id="vh-container">
+          <canvas id="vh-canvas"></canvas>
+          <div id="vh-captions" aria-live="polite"></div>
+          <div class="vh-speaking-indicator">Speaking</div>
+          
+          <!-- Audio-only placeholder -->
+          <div class="audio-only-placeholder">
+            <div class="avatar-icon">
+              <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="status-text">Audio-only mode</div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Right Panel: AI Tutor Chat -->
+    <aside class="panel right-panel">
+      <div class="panel-title">AI Tutor Chat</div>
+      <div class="messages-container" id="chat-messages"></div>
+      <form class="chat-form" id="chat-form">
+        <input type="text" id="chat-input" placeholder="Ask your AI tutor..." required>
+        <button type="submit">Send</button>
+      </form>
+    </aside>
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      // Parse courseId from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const courseId = urlParams.get('courseId') || 'demo-course-001';
+
+      // State management
+      const state = {
+        courseId: courseId,
+        courseData: null,
+        notes: { content: "", timestamp: null },
+        resources: [],
+        avatarManager: null,
+        sessionStart: Date.now()
+      };
+
+      // DOM elements
+      const dom = {
+        lessonTitle: document.getElementById('lesson-title'),
+        outlineContainer: document.getElementById('outline-container'),
+        notesText: document.getElementById('notes-text'),
+        saveNotesBtn: document.getElementById('save-notes'),
+        resourcesContainer: document.getElementById('resources-container'),
+        fileUpload: document.getElementById('file-upload'),
+        endClassBtn: document.getElementById('end-class'),
+        chatMessages: document.getElementById('chat-messages'),
+        chatForm: document.getElementById('chat-form'),
+        chatInput: document.getElementById('chat-input'),
+        vhToggle: document.getElementById('vh-toggle'),
+        vhContainer: document.getElementById('vh-container'),
+        userDisplay: document.getElementById('user-display')
+      };
+
+      // Initialize
+      async function init() {
+        console.log('🎓 Initializing classroom for course:', courseId);
+        
+        // Set user display
+        const user = window.AUTH.getCurrentUser();
+        if (user) {
+          const displayName = user.firstName || user.email.split('@')[0];
+          dom.userDisplay.textContent = displayName;
+        }
+
+        // Load saved VH preference
+        const vhEnabled = localStorage.getItem('pmerit_vh_enabled') !== 'false';
+        updateVHToggle(vhEnabled);
+
+        bindEvents();
+        await loadCourseData();
+        loadUserNotes();
+        initializeChat();
+        renderOutline();
+
+        // Initialize avatar manager
+        await initAvatarManager(vhEnabled);
+
+        console.log('✅ Classroom initialized');
+      }
+
+      // Initialize Avatar Manager
+      async function initAvatarManager(enabled) {
+        try {
+          state.avatarManager = new window.AvatarManager({
+            canvasId: 'vh-canvas',
+            captionsId: 'vh-captions',
+            enabled: enabled,
+            apiBaseUrl: window.CONFIG.API_BASE_URL,
+            onSpeakStart: () => {
+              dom.vhContainer.classList.add('speaking');
+            },
+            onSpeakEnd: () => {
+              dom.vhContainer.classList.remove('speaking');
+            },
+            onError: (error) => {
+              console.error('Avatar error:', error);
+              showAvatarError(error);
+            }
+          });
+
+          if (enabled) {
+            dom.vhContainer.classList.add('loading');
+            await state.avatarManager.init();
+            dom.vhContainer.classList.remove('loading');
+          } else {
+            dom.vhContainer.classList.add('audio-only');
+          }
+        } catch (error) {
+          console.error('Failed to initialize avatar:', error);
+          showAvatarError(error);
+        }
+      }
+
+      // Bind event handlers
+      function bindEvents() {
+        dom.saveNotesBtn.addEventListener('click', saveNotes);
+        dom.fileUpload.addEventListener('change', handleFileUpload);
+        dom.endClassBtn.addEventListener('click', endClass);
+        dom.chatForm.addEventListener('submit', handleChatSubmit);
+        dom.vhToggle.addEventListener('click', toggleVirtualHuman);
+      }
+
+      // Toggle Virtual Human
+      function toggleVirtualHuman() {
+        const currentlyEnabled = !dom.vhToggle.classList.contains('off');
+        const newState = !currentlyEnabled;
+        
+        updateVHToggle(newState);
+        
+        if (state.avatarManager) {
+          state.avatarManager.setEnabled(newState);
+        }
+
+        if (newState) {
+          dom.vhContainer.classList.remove('audio-only');
+          if (state.avatarManager && !state.avatarManager.state.initialized) {
+            initAvatarManager(true);
+          }
+        } else {
+          dom.vhContainer.classList.add('audio-only');
+        }
+      }
+
+      // Update VH toggle UI
+      function updateVHToggle(enabled) {
+        if (enabled) {
+          dom.vhToggle.classList.remove('off');
+        } else {
+          dom.vhToggle.classList.add('off');
+        }
+      }
+
+      // Load course data
+      async function loadCourseData() {
+        // TODO: Fetch from API based on courseId
+        // For now, use demo data
+        const demoData = {
+          id: courseId,
+          title: "Introduction to PMERIT Classroom",
+          modules: [
+            { 
+              title: "Module 1: Getting Started", 
+              lessons: [ 
+                { title: "Welcome to PMERIT", type: "video", duration: "2:30" }, 
+                { title: "How to Use This Platform", type: "video", duration: "5:15" } 
+              ] 
+            },
+            { 
+              title: "Module 2: Core Concepts", 
+              lessons: [ 
+                { title: "Basic Principles", type: "video", duration: "7:20" }, 
+                { title: "Advanced Techniques", type: "reading", duration: "10:00" } 
+              ] 
+            }
+          ]
+        };
+
+        dom.lessonTitle.textContent = demoData.title;
+        state.courseData = demoData;
+      }
+
+      // Load user notes
+      function loadUserNotes() {
+        const savedNotes = localStorage.getItem(`pmerit_notes_${courseId}`);
+        if (savedNotes) {
+          state.notes = JSON.parse(savedNotes);
+          dom.notesText.value = state.notes.content || "";
+        }
+      }
+
+      // Initialize chat
+      function initializeChat() {
+        addChatMessage("ai", "Hello! I'm your AI tutor. How can I help you today?");
+      }
+
+      // Render course outline
+      function renderOutline() {
+        if (!state.courseData || !state.courseData.modules) return;
+        
+        let outlineHTML = '';
+        state.courseData.modules.forEach((module, moduleIndex) => {
+          outlineHTML += `<div class="outline-item module">${module.title}</div>`;
+          if (module.lessons) {
+            module.lessons.forEach((lesson, lessonIndex) => {
+              outlineHTML += `<div class="outline-item lesson" style="padding-left: 20px;">${lesson.title} (${lesson.duration})</div>`;
+            });
+          }
+        });
+        dom.outlineContainer.innerHTML = outlineHTML;
+      }
+
+      // Save notes
+      function saveNotes() {
+        state.notes.content = dom.notesText.value;
+        state.notes.timestamp = new Date().toISOString();
+        localStorage.setItem(`pmerit_notes_${courseId}`, JSON.stringify(state.notes));
+        
+        // Show success feedback (better UX than alert)
+        const btn = dom.saveNotesBtn;
+        const originalText = btn.textContent;
+        btn.textContent = '✓ Saved!';
+        btn.style.backgroundColor = '#66fcf1';
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.style.backgroundColor = '';
+        }, 2000);
+      }
+
+      // Handle file upload
+      function handleFileUpload(event) {
+        const files = Array.from(event.target.files);
+        files.forEach(file => {
+          state.resources.push({ name: file.name, size: file.size, type: file.type });
+        });
+        renderResources();
+      }
+
+      // Render resources
+      function renderResources() {
+        let resourcesHTML = '';
+        state.resources.forEach(resource => {
+          resourcesHTML += `<div class="resource-item"><strong>${resource.name}</strong> <small>(${formatFileSize(resource.size)})</small></div>`;
+        });
+        dom.resourcesContainer.innerHTML = resourcesHTML || '<p>No resources uploaded yet.</p>';
+      }
+
+      // Format file size
+      function formatFileSize(bytes) {
+        if (bytes < 1024) return bytes + ' bytes';
+        else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+        else return (bytes / 1048576).toFixed(1) + ' MB';
+      }
+
+      // Handle chat submit
+      async function handleChatSubmit(event) {
+        event.preventDefault();
+        const message = dom.chatInput.value.trim();
+        if (!message) return;
+
+        addChatMessage('user', message);
+        dom.chatInput.value = '';
+
+        // Simulate AI response
+        setTimeout(async () => {
+          const responses = [
+            "That's a great question! Based on what we've covered, the key concept is...",
+            "I'd be happy to explain that. The main idea here is...",
+            "Let me break that down for you. First, consider...",
+            "Good observation! This relates to what we discussed earlier about..."
+          ];
+          const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+          
+          addChatMessage('ai', randomResponse);
+
+          // Speak with avatar if enabled
+          if (state.avatarManager && state.avatarManager.isEnabled()) {
+            await state.avatarManager.speak(randomResponse);
+          }
+        }, 1000);
+      }
+
+      // Add chat message
+      function addChatMessage(sender, message) {
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message', sender);
+        messageDiv.textContent = message;
+        dom.chatMessages.appendChild(messageDiv);
+        dom.chatMessages.scrollTop = dom.chatMessages.scrollHeight;
+      }
+
+      // Show avatar error
+      function showAvatarError(error) {
+        const errorHTML = `
+          <div class="vh-error">
+            <div class="error-icon"><i class="fas fa-exclamation-triangle"></i></div>
+            <div class="error-message">Avatar initialization failed. Using audio-only mode.</div>
+          </div>
+        `;
+        dom.vhContainer.innerHTML = errorHTML;
+        dom.vhContainer.classList.add('audio-only');
+      }
+
+      // End class session
+      async function endClass() {
+        if (!confirm('Are you sure you want to end this class session?')) {
+          return;
+        }
+
+        // Save session summary
+        const sessionData = {
+          userId: window.AUTH.getCurrentUser()?.id || 'guest',
+          courseId: courseId,
+          startedAt: new Date(state.sessionStart).toISOString(),
+          endedAt: new Date().toISOString(),
+          durationSec: Math.floor((Date.now() - state.sessionStart) / 1000),
+          vhMode: state.avatarManager?.isEnabled() || false
+        };
+
+        try {
+          // TODO: Send to API endpoint /api/session/summary
+          console.log('Session summary:', sessionData);
+          localStorage.setItem(`pmerit_session_${courseId}_last`, JSON.stringify(sessionData));
+        } catch (error) {
+          console.error('Failed to save session:', error);
+        }
+
+        // Clean up avatar
+        if (state.avatarManager) {
+          state.avatarManager.dispose();
+        }
+
+        // Redirect to portal
+        window.location.href = '../learner-portal.html';
+      }
+
+      // Start initialization
+      document.addEventListener('DOMContentLoaded', init);
+    })();
+  </script>
+</body>
+</html>
