@@ -68,10 +68,10 @@
         this._startRenderLoop();
 
         // Handle window resize
-        window.addEventListener('resize', this._onResize.bind(this));
+        window.addEventListener('resize', this._onResizeBound);
 
         // Handle tab visibility
-        document.addEventListener('visibilitychange', this._onVisibilityChange.bind(this));
+        document.addEventListener('visibilitychange', this._onVisibilityChangeBound);
 
         this.state.initialized = true;
         console.log('✅ WebGLProvider initialized');
@@ -99,6 +99,10 @@
       this.camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 1000);
       this.camera.position.set(0, 1.6, 2.5);
       this.camera.lookAt(0, 1.5, 0);
+
+      // Store bound handlers for proper cleanup
+      this._onResizeBound = this._onResize.bind(this);
+      this._onVisibilityChangeBound = this._onVisibilityChange.bind(this);
     }
 
     /**
@@ -303,8 +307,12 @@
       }
 
       // Remove event listeners
-      window.removeEventListener('resize', this._onResize.bind(this));
-      document.removeEventListener('visibilitychange', this._onVisibilityChange.bind(this));
+      if (this._onResizeBound) {
+        window.removeEventListener('resize', this._onResizeBound);
+      }
+      if (this._onVisibilityChangeBound) {
+        document.removeEventListener('visibilitychange', this._onVisibilityChangeBound);
+      }
 
       // Dispose Three.js resources
       if (this.state.model) {

@@ -63,10 +63,9 @@ export async function onRequestPost(context) {
     // Generate session ID
     const sessionId = `session_${userId}_${courseId}_${Date.now()}`;
 
-    // Log session (redact PII)
+    // Log session (redact PII completely)
     console.log('Session summary:', {
       sessionId,
-      userId: userId.substring(0, 8) + '...',
       courseId,
       durationSec,
       vhMode,
