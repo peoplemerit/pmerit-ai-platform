@@ -1,0 +1,377 @@
+/**
+ * PMERIT Avatar Home Page Styles
+ * Phase 3.3-B: Virtual Human receptionist for front page
+ * 
+ * This file extends avatar.css with home-specific variants
+ */
+
+/* Home Page Avatar Container - Minimal Footprint */
+.vh-home-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 360px;
+  max-width: calc(100vw - 40px);
+  background: linear-gradient(135deg, #1f2833 0%, #0b0c10 100%);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  z-index: 1000;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.vh-home-container.hidden {
+  transform: translateY(20px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.vh-home-container.collapsed {
+  transform: translateY(calc(100% - 60px));
+}
+
+/* Home Canvas - Smaller Than Classroom */
+#vh-home-canvas {
+  display: block;
+  width: 100%;
+  height: 280px;
+  background: #1f2833;
+  cursor: default;
+}
+
+/* Home Captions - Overlay Style */
+#vh-home-captions {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.9);
+  color: #e8eef8;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  text-align: center;
+  display: none;
+  max-height: 100px;
+  overflow-y: auto;
+  backdrop-filter: blur(10px);
+  border-top: 2px solid rgba(102, 252, 241, 0.3);
+}
+
+#vh-home-captions:empty {
+  display: none;
+}
+
+/* Avatar Header - Toggle and Controls */
+.vh-home-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: rgba(31, 40, 51, 0.8);
+  border-bottom: 1px solid rgba(102, 252, 241, 0.2);
+}
+
+.vh-home-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #66fcf1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.vh-home-title i {
+  font-size: 1.1rem;
+}
+
+.vh-home-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Toggle Button - Compact */
+.vh-home-toggle {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  background: #666;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border: none;
+  padding: 0;
+  outline: none;
+}
+
+.vh-home-toggle:focus {
+  box-shadow: 0 0 0 3px rgba(102, 252, 241, 0.3);
+}
+
+.vh-home-toggle.on {
+  background: #45a29e;
+}
+
+.vh-home-toggle::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.vh-home-toggle.on::after {
+  transform: translateX(20px);
+}
+
+/* Close/Minimize Button */
+.vh-home-close,
+.vh-home-minimize {
+  background: transparent;
+  border: none;
+  color: #e8eef8;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.vh-home-close:hover,
+.vh-home-minimize:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #66fcf1;
+}
+
+/* Conversation Starters */
+.vh-conversation-starters {
+  padding: 1rem;
+  background: rgba(31, 40, 51, 0.5);
+  border-top: 1px solid rgba(102, 252, 241, 0.2);
+}
+
+.vh-starters-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #e8eef8;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.vh-starter-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.vh-starter-btn {
+  background: rgba(69, 162, 158, 0.2);
+  border: 1px solid rgba(102, 252, 241, 0.3);
+  color: #66fcf1;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  text-align: left;
+  transition: background-color 0.2s, border-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.vh-starter-btn:hover {
+  background: rgba(69, 162, 158, 0.3);
+  border-color: rgba(102, 252, 241, 0.5);
+}
+
+.vh-starter-btn i {
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+/* CTA Buttons in Chat */
+.vh-cta-button {
+  display: inline-block;
+  margin: 0.5rem 0.25rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #45a29e 0%, #2a5b8c 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+}
+
+.vh-cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(69, 162, 158, 0.4);
+}
+
+.vh-cta-button.primary {
+  background: linear-gradient(135deg, #66fcf1 0%, #45a29e 100%);
+  color: #0b0c10;
+}
+
+/* Audio-Only Mode for Home */
+.vh-home-container.audio-only #vh-home-canvas {
+  display: none;
+}
+
+.vh-home-container.audio-only .audio-only-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  color: #66fcf1;
+  text-align: center;
+}
+
+.vh-home-container .audio-only-placeholder {
+  display: none;
+}
+
+.vh-home-container .audio-only-placeholder .avatar-icon {
+  font-size: 3rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.7;
+}
+
+.vh-home-container .audio-only-placeholder .status-text {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* Lazy Loading Placeholder */
+.vh-loading-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 280px;
+  color: #66fcf1;
+  background: #1f2833;
+}
+
+.vh-loading-placeholder .loading-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.vh-loading-placeholder .loading-text {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Speaking Indicator for Home */
+.vh-home-speaking-indicator {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  display: none;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  background: rgba(102, 252, 241, 0.2);
+  border-radius: 16px;
+  color: #66fcf1;
+  font-size: 0.75rem;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+}
+
+.vh-home-container.speaking .vh-home-speaking-indicator {
+  display: flex;
+}
+
+.vh-home-speaking-indicator::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: #66fcf1;
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .vh-home-container {
+    bottom: 10px;
+    right: 10px;
+    left: 10px;
+    width: auto;
+    max-width: none;
+  }
+
+  #vh-home-canvas {
+    height: 240px;
+  }
+
+  .vh-conversation-starters {
+    padding: 0.75rem;
+  }
+
+  .vh-starter-btn {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.6rem;
+  }
+
+  .vh-cta-button {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.75rem;
+  }
+}
+
+/* Tablet Landscape - Adjust positioning */
+@media (min-width: 769px) and (max-width: 1023px) {
+  .vh-home-container {
+    width: 320px;
+  }
+
+  #vh-home-canvas {
+    height: 260px;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .vh-home-container,
+  .vh-home-toggle::after,
+  .vh-home-speaking-indicator::before {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  #vh-home-captions {
+    background: #000;
+    border-top-width: 3px;
+  }
+
+  .vh-home-toggle {
+    border: 2px solid currentColor;
+  }
+
+  .vh-starter-btn {
+    border-width: 2px;
+  }
+}
+
+/* Print - Hide Avatar */
+@media print {
+  .vh-home-container {
+    display: none;
+  }
+}
