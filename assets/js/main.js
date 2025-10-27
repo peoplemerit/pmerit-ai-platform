@@ -32,6 +32,7 @@ function init() {
   initializeMenu();
   initializeToggles();
   initializeCollapsible();
+  initializeCareerTrack();
   
   console.log('✅ PMERIT Platform initialized');
 }
@@ -180,6 +181,45 @@ function initializeCollapsible() {
       settingsCollapsible.classList.toggle('open');
     });
   }
+}
+
+// ========== CAREER TRACK & EXPLORE PATHS ==========
+function initializeCareerTrack() {
+  // Get all Career Track elements (both mobile and desktop)
+  const careerTrackElements = document.querySelectorAll('.menu-item, .action');
+  
+  careerTrackElements.forEach(element => {
+    const text = element.textContent?.trim();
+    
+    // Check if this is a Career Track element
+    if (text && text.includes('Career Track')) {
+      element.style.cursor = 'pointer';
+      
+      element.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log('🎯 Career Track clicked - Navigating to career.html');
+        
+        // Navigate to career page
+        window.location.href = '/career.html';
+        
+        // Show confirmation toast
+        showToast('Opening Career Paths...', 'info');
+      });
+    }
+  });
+  
+  // Also handle the specific button ID from partials/header.html
+  const careerTrackBtn = document.getElementById('career-track-btn');
+  if (careerTrackBtn) {
+    careerTrackBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('🎯 Career Track button clicked - Navigating to career.html');
+      window.location.href = '/career.html';
+      showToast('Opening Career Paths...', 'info');
+    });
+  }
+  
+  console.log('✅ Career Track navigation initialized');
 }
 
 // ========== TOAST NOTIFICATIONS ==========
