@@ -14,7 +14,9 @@ const state = {
   darkMode: false,
   textToSpeech: false,
   language: 'en',
-  authenticated: false
+  authenticated: false,
+  avatarManager: null,
+  threeJSLoaded: false
 };
 
 // ========== INITIALIZATION ==========
@@ -35,6 +37,189 @@ function init() {
   initializeCareerTrack();
   
   console.log('✅ PMERIT Platform initialized');
+}
+
+// ========== VIRTUAL HUMAN MODE ==========
+/**
+ * Lazy load Three.js and related dependencies
+ * @returns {Promise<void>}
+ */
+async function loadThreeJS() {
+  if (state.threeJSLoaded) {
+    return;
+  }
+
+  try {
+    console.log('📦 Loading Three.js...');
+
+    // Load Three.js from CDN
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r152/three.min.js');
+
+    // Load GLTFLoader
+    await loadScript('https://cdn.jsdelivr.net/npm/three@0.152.0/examples/js/loaders/GLTFLoader.js');
+
+    state.threeJSLoaded = true;
+    console.log('✅ Three.js loaded');
+  } catch (error) {
+    console.error('❌ Failed to load Three.js:', error);
+    throw error;
+  }
+}
+
+/**
+ * Load external script dynamically
+ * @param {string} src - Script URL
+ * @returns {Promise<void>}
+ */
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = src;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+    document.head.appendChild(script);
+  });
+}
+
+/**
+ * Enable or disable Virtual Human mode
+ * @param {boolean} isEnabled - Whether to enable VH mode
+ */
+async function enableVirtualHuman(isEnabled) {
+  console.log(`🤖 Virtual Human Mode: ${isEnabled ? 'ON' : 'OFF'}`);
+
+  const vhCanvasRoot = document.getElementById('vh-canvas-root');
+  const chatContainer = document.getElementById('desktopChatMessages') || document.getElementById('desktop-chat-messages');
+  const statusText = document.getElementById('vh-status-text');
+
+  if (isEnabled) {
+    // Check WebGL support
+    if (!isWebGLSupported()) {
+      showToast('WebGL not supported. Falling back to chat mode.', 'warning');
+      // Auto-switch to CSM
+      state.virtualHuman = false;
+      state.customerService = true;
+      updateToggleStates();
+      return;
+    }
+
+    try {
+      // Show loading status
+      if (statusText) {
+        statusText.textContent = 'Virtual Human is loading...';
+      }
+
+      // Lazy load Three.js if not already loaded
+      await loadThreeJS();
+
+      // Hide chat container
+      if (chatContainer) {
+        chatContainer.style.display = 'none';
+      }
+
+      // Show VH canvas container
+      if (vhCanvasRoot) {
+        vhCanvasRoot.style.display = 'flex';
+      }
+
+      // Initialize AvatarManager if not already initialized
+      if (!state.avatarManager && window.AvatarManager) {
+        state.avatarManager = new window.AvatarManager({
+          canvasId: 'vh-canvas',
+          captionsId: 'vh-captions',
+          enabled: true,
+          apiBaseUrl: window.CONFIG.API_BASE_URL
+        });
+        await state.avatarManager.init();
+
+        // Update status
+        if (statusText) {
+          statusText.textContent = 'Virtual Human is ready.';
+        }
+
+        // Dispatch ready event
+        window.dispatchEvent(new CustomEvent('avatar_ready'));
+      } else if (state.avatarManager) {
+        state.avatarManager.setEnabled(true);
+        if (statusText) {
+          statusText.textContent = 'Virtual Human is ready.';
+        }
+      }
+
+      // Ensure CSM is OFF when VH is ON
+      state.customerService = false;
+
+      // Dispatch custom event
+      window.dispatchEvent(new CustomEvent('vh_toggle_on'));
+
+    } catch (error) {
+      console.error('❌ Failed to enable Virtual Human:', error);
+      showToast('Failed to load Virtual Human. Please try again.', 'error');
+
+      // Fallback to chat mode
+      if (vhCanvasRoot) {
+        vhCanvasRoot.style.display = 'none';
+      }
+      if (chatContainer) {
+        chatContainer.style.display = 'flex';
+      }
+
+      state.virtualHuman = false;
+      updateToggleStates();
+    }
+
+  } else {
+    // Disable VH mode
+    if (state.avatarManager) {
+      state.avatarManager.setEnabled(false);
+    }
+
+    // Hide VH canvas
+    if (vhCanvasRoot) {
+      vhCanvasRoot.style.display = 'none';
+    }
+
+    // Show chat container
+    if (chatContainer) {
+      chatContainer.style.display = 'flex';
+    }
+
+    // Dispatch custom event
+    window.dispatchEvent(new CustomEvent('vh_toggle_off'));
+  }
+
+  updateToggleStates();
+}
+
+/**
+ * Check if WebGL is supported
+ * @returns {boolean}
+ */
+function isWebGLSupported() {
+  try {
+    const canvas = document.createElement('canvas');
+    return !!(window.WebGLRenderingContext &&
+      (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
+  } catch (e) {
+    return false;
+  }
+}
+
+/**
+ * Update toggle states across all toggle elements
+ */
+function updateToggleStates() {
+  // Get all VH toggles
+  const vhToggles = document.querySelectorAll('[data-toggle="vh"]');
+  vhToggles.forEach(toggle => {
+    toggle.checked = state.virtualHuman;
+  });
+
+  // Get all CS toggles
+  const csToggles = document.querySelectorAll('[data-toggle="cs"]');
+  csToggles.forEach(toggle => {
+    toggle.checked = state.customerService;
+  });
 }
 
 // ========== MENU SYSTEM ==========
@@ -73,22 +258,30 @@ function initializeMenu() {
 function initializeToggles() {
   // Get all toggle elements
   const toggles = document.querySelectorAll('[data-toggle]');
-  
+
   toggles.forEach(toggle => {
     const toggleType = toggle.getAttribute('data-toggle');
-    
-    toggle.addEventListener('click', () => {
-      toggle.classList.toggle('active');
-      const isActive = toggle.classList.contains('active');
-      
+
+    toggle.addEventListener('change', async () => {
+      const isActive = toggle.checked;
+
       // Handle different toggle types
       switch(toggleType) {
         case 'vh':
           state.virtualHuman = isActive;
-          toggleVirtualHumanMode(isActive);
+          // VH and CS are mutually exclusive
+          if (isActive && state.customerService) {
+            state.customerService = false;
+          }
+          await enableVirtualHuman(isActive);
           break;
         case 'cs':
           state.customerService = isActive;
+          // VH and CS are mutually exclusive
+          if (isActive && state.virtualHuman) {
+            state.virtualHuman = false;
+            await enableVirtualHuman(false);
+          }
           toggleCustomerServiceMode(isActive);
           break;
         case 'dark':
@@ -100,22 +293,22 @@ function initializeToggles() {
           toggleTextToSpeech(isActive);
           break;
       }
-      
+
       saveState();
     });
-    
+
     // Set initial state from saved data
     if (toggleType === 'vh' && state.virtualHuman) {
-      toggle.classList.add('active');
+      toggle.checked = true;
     }
     if (toggleType === 'cs' && state.customerService) {
-      toggle.classList.add('active');
+      toggle.checked = true;
     }
     if (toggleType === 'dark' && state.darkMode) {
-      toggle.classList.add('active');
+      toggle.checked = true;
     }
     if (toggleType === 'tts' && state.textToSpeech) {
-      toggle.classList.add('active');
+      toggle.checked = true;
     }
   });
 }
@@ -123,10 +316,8 @@ function initializeToggles() {
 function toggleVirtualHumanMode(enabled) {
   if (enabled) {
     document.body.classList.add('virtual-human-mode');
-    showToast('Virtual Human Mode Enabled', 'success');
   } else {
     document.body.classList.remove('virtual-human-mode');
-    showToast('Virtual Human Mode Disabled', 'info');
   }
 }
 
@@ -316,11 +507,13 @@ function debounce(func, wait) {
 }
 
 // ========== EXPORT FOR EXTERNAL ACCESS ==========
-window.PMERIT = {
+window.PMERIT = window.PMERIT || {};
+Object.assign(window.PMERIT, {
   state,
+  enableVirtualHuman,
   toggleVirtualHumanMode,
   toggleCustomerServiceMode,
   toggleDarkMode,
   toggleTextToSpeech,
   showToast
-};
+});

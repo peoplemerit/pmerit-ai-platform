@@ -45,6 +45,11 @@
   // Make config globally available
   window.CONFIG = Object.freeze(config);
 
+  // Avatar configuration (Phase 1)
+  window.PMERIT = window.PMERIT || {};
+  window.PMERIT.AVATAR_BASE_URL = window.PMERIT.AVATAR_BASE_URL || '/assets/avatars';
+  window.PMERIT.AVATAR_MODEL = window.PMERIT.AVATAR_MODEL || 'placeholder.glb';
+
   // Log environment in development
   if (config.ENV === 'development') {
     console.log('🔧 PMERIT Config loaded:', config);
