@@ -99,30 +99,6 @@
         Quick Actions
       </h3>
       
-      <!-- Virtual Human Mode -->
-      <div class="sidebar-toggle-item">
-        <div class="toggle-label-group">
-          <i class="fas fa-user-astronaut"></i>
-          <span>Virtual Human Mode</span>
-        </div>
-        <label class="toggle-switch">
-          <input type="checkbox" id="desktop-vh-toggle" class="modern-toggle">
-          <span class="toggle-slider"></span>
-        </label>
-      </div>
-
-      <!-- Customer Service Mode -->
-      <div class="sidebar-toggle-item">
-        <div class="toggle-label-group">
-          <i class="fas fa-headset"></i>
-          <span>Customer Service</span>
-        </div>
-        <label class="toggle-switch">
-          <input type="checkbox" id="desktop-cs-toggle" class="modern-toggle">
-          <span class="toggle-slider"></span>
-        </label>
-      </div>
-
       <!-- Career Track -->
       <button class="sidebar-action-btn" id="desktop-career-btn">
         <i class="fas fa-route"></i>
@@ -146,18 +122,36 @@
         </summary>
         <div class="collapsible-content">
           
+          <!-- Virtual Human Mode -->
+          <div class="sidebar-toggle-item">
+            <span><i class="fas fa-user-astronaut"></i> Virtual Human Mode</span>
+            <label class="toggle-switch" aria-label="Toggle Virtual Human Mode">
+              <input type="checkbox" id="virtual-human-toggle" class="modern-toggle" data-toggle="vh">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <!-- Customer Service Mode -->
+          <div class="sidebar-toggle-item">
+            <span><i class="fas fa-headset"></i> Customer Service Mode</span>
+            <label class="toggle-switch" aria-label="Toggle Customer Service Mode">
+              <input type="checkbox" id="customer-service-toggle" class="modern-toggle" data-toggle="cs">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          
           <div class="sidebar-toggle-item">
             <span><i class="fas fa-moon"></i> Dark Mode</span>
-            <label class="toggle-switch">
-              <input type="checkbox" id="desktop-dark-toggle" class="modern-toggle">
+            <label class="toggle-switch" aria-label="Toggle Dark Mode">
+              <input type="checkbox" id="desktop-dark-toggle" class="modern-toggle" data-toggle="dark">
               <span class="toggle-slider"></span>
             </label>
           </div>
 
           <div class="sidebar-toggle-item">
             <span><i class="fas fa-volume-high"></i> Text-to-Speech</span>
-            <label class="toggle-switch">
-              <input type="checkbox" id="desktop-tts-toggle" class="modern-toggle">
+            <label class="toggle-switch" aria-label="Toggle Text-to-Speech">
+              <input type="checkbox" id="desktop-tts-toggle" class="modern-toggle" data-toggle="tts">
               <span class="toggle-slider"></span>
             </label>
           </div>
