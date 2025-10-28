@@ -867,6 +867,7 @@
         border-radius: 6px;
         border: 1px solid var(--border-color);
         background: var(--bg-card);
+        color: var(--text-primary);
         cursor: pointer;
         transition: var(--transition);
         font-size: 0.85rem;
@@ -878,8 +879,14 @@
 
       .support-btn:hover {
         border-color: var(--primary);
-        background: var(--bg-secondary);
+        background: var(--primary);
+        color: #FFFFFF;
         transform: translateY(-1px);
+      }
+
+      [data-theme="dark"] .support-btn:hover {
+        background: #2A5B8C;
+        border-color: #2A5B8C;
       }
 
       .support-btn i {
