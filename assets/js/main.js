@@ -35,6 +35,7 @@ function init() {
   initializeToggles();
   initializeCollapsible();
   initializeCareerTrack();
+  initializeSupportButtons();
   
   console.log('✅ PMERIT Platform initialized');
 }
@@ -224,6 +225,114 @@ function updateToggleStates() {
   csToggles.forEach(toggle => {
     toggle.checked = state.customerService;
   });
+
+  // Update support button states
+  updateSupportButtonStates();
+}
+
+/**
+ * Update support button active states and aria attributes
+ */
+function updateSupportButtonStates() {
+  const vhBtn = document.getElementById('support-vh-btn');
+  const csmBtn = document.getElementById('support-csm-btn');
+
+  if (vhBtn) {
+    if (state.virtualHuman) {
+      vhBtn.classList.add('active');
+      vhBtn.setAttribute('aria-pressed', 'true');
+    } else {
+      vhBtn.classList.remove('active');
+      vhBtn.setAttribute('aria-pressed', 'false');
+    }
+  }
+
+  if (csmBtn) {
+    if (state.customerService) {
+      csmBtn.classList.add('active');
+      csmBtn.setAttribute('aria-pressed', 'true');
+    } else {
+      csmBtn.classList.remove('active');
+      csmBtn.setAttribute('aria-pressed', 'false');
+    }
+  }
+}
+
+// ========== SUPPORT ASSISTANT BUTTONS ==========
+/**
+ * Initialize Support Assistant buttons in right sidebar
+ */
+function initializeSupportButtons() {
+  const vhBtn = document.getElementById('support-vh-btn');
+  const csmBtn = document.getElementById('support-csm-btn');
+
+  if (vhBtn) {
+    vhBtn.addEventListener('click', async () => {
+      console.log('🤖 Support VH button clicked');
+      
+      // Toggle VH mode
+      const newState = !state.virtualHuman;
+      state.virtualHuman = newState;
+
+      // Add loading state
+      if (newState) {
+        vhBtn.classList.add('loading');
+        showToast('Virtual Human loading...', 'info');
+      }
+
+      // Update the settings toggle to match
+      const vhToggle = document.getElementById('virtual-human-toggle');
+      if (vhToggle) {
+        vhToggle.checked = newState;
+      }
+
+      // Dispatch custom event for consistency
+      window.dispatchEvent(new CustomEvent('virtualHumanChanged', { 
+        detail: { enabled: newState } 
+      }));
+
+      // Enable/disable VH mode
+      await enableVirtualHuman(newState);
+
+      // Remove loading state
+      vhBtn.classList.remove('loading');
+
+      // Show success toast
+      if (newState) {
+        showToast('Virtual Human active', 'success');
+      } else {
+        showToast('Virtual Human deactivated', 'info');
+      }
+
+      // Save state
+      saveState();
+    });
+  }
+
+  if (csmBtn) {
+    csmBtn.addEventListener('click', () => {
+      console.log('📞 Support CSM button clicked');
+      
+      // Toggle CSM mode
+      const newState = !state.customerService;
+      state.customerService = newState;
+
+      // If enabling CSM, disable VH
+      if (newState && state.virtualHuman) {
+        state.virtualHuman = false;
+        enableVirtualHuman(false);
+      }
+
+      toggleCustomerServiceMode(newState);
+      updateSupportButtonStates();
+
+      // Save state
+      saveState();
+    });
+  }
+
+  // Set initial button states
+  updateSupportButtonStates();
 }
 
 // ========== MENU SYSTEM ==========
