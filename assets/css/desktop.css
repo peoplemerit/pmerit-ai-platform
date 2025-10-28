@@ -455,7 +455,8 @@
     padding: 0.5rem;
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    background-color: white;
+    background-color: var(--bg-card);
+    color: var(--text-primary);
     cursor: pointer;
     transition: all 0.2s ease;
     display: flex;
@@ -468,7 +469,7 @@
   .support-btn:hover {
     border-color: var(--primary);
     background-color: var(--primary);
-    color: white;
+    color: #FFFFFF;
     transform: translateY(-2px);
   }
 
@@ -782,6 +783,11 @@
   .dark .discover {
     background-color: #111827;
     border-color: #374151;
+  }
+
+  .dark .support-btn:hover {
+    background-color: #2A5B8C;
+    border-color: #2A5B8C;
   }
 
   .dark .human-frame {
