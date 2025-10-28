@@ -208,11 +208,11 @@
      */
     async _loadAvatar() {
       try {
-        // Build full model URL
-        const modelUrl = new URL(
-          this.config.modelFile,
-          window.location.origin + this.config.avatarBaseUrl
-        ).toString();
+        // Build full model URL - handle both relative and absolute base URLs
+        const baseUrl = this.config.avatarBaseUrl.startsWith('http')
+          ? this.config.avatarBaseUrl
+          : window.location.origin + this.config.avatarBaseUrl;
+        const modelUrl = new URL(this.config.modelFile, baseUrl).toString();
 
         console.log(`📦 Attempting to load avatar from: ${modelUrl}`);
 
@@ -236,6 +236,10 @@
      */
     async _loadGLBModel(url) {
       return new Promise((resolve, reject) => {
+        if (!THREE.GLTFLoader) {
+          reject(new Error('GLTFLoader not available'));
+          return;
+        }
         const loader = new THREE.GLTFLoader();
         
         // Set configurable timeout for loading
