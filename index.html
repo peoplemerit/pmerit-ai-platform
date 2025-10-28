@@ -213,6 +213,17 @@
           <i class="fas fa-chevron-down"></i>
         </div>
         <div class="collapsible-body">
+          <!-- Virtual Human Toggle -->
+          <div class="toggle">
+            <label class="toggle-label">
+              <span>Virtual Human Mode</span>
+              <div class="toggle-switch">
+                <input type="checkbox" id="virtual-human-toggle" data-toggle="vh" aria-label="Toggle Virtual Human Mode">
+                <span class="toggle-slider"></span>
+              </div>
+            </label>
+          </div>
+          
           <!-- Dark Mode Toggle -->
           <div class="toggle">
             <label class="toggle-label">
@@ -337,11 +348,11 @@
         <h3>Ask me about PMERIT</h3>
         
         <div class="support-buttons">
-          <button class="support-btn" data-support-type="virtual-human">
+          <button id="support-vh-btn" class="support-btn" data-support-type="virtual-human" aria-pressed="false" aria-label="Activate Virtual Human Mode">
             <i class="fas fa-robot"></i>
             <span>Virtual Human</span>
           </button>
-          <button class="support-btn" data-support-type="tech-help">
+          <button id="support-csm-btn" class="support-btn" data-support-type="tech-help" aria-pressed="false" aria-label="Activate Tech Help">
             <i class="fas fa-life-ring"></i>
             <span>Tech Help</span>
           </button>
