@@ -40,6 +40,7 @@
   <link rel="stylesheet" href="assets/css/light-theme.css?v=2">
   <link rel="stylesheet" href="assets/css/mobile-mockup-match.css?v=2">
   <link rel="stylesheet" href="assets/css/components.css?v=2">
+  <link rel="stylesheet" href="assets/css/avatar.css?v=2">
 </head>
 <body>
 
@@ -289,6 +290,17 @@
 
     <!-- Center Panel - Chat Interface -->
     <main class="main-content">
+      <!-- Virtual Human Canvas Container (Hidden by default) -->
+      <div id="vh-canvas-root" class="vh-canvas-root" style="display: none;">
+        <div class="vh-container">
+          <canvas id="vh-canvas"></canvas>
+          <div id="vh-captions"></div>
+          <div class="vh-status-strip">
+            <span id="vh-status-text">Virtual Human is loading...</span>
+          </div>
+        </div>
+      </div>
+
       <!-- Chat Messages Container -->
       <div class="desktop-chat-container" id="desktopChatMessages">
         <div class="desktop-chat-message ai-message">
