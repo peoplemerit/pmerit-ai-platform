@@ -57,28 +57,10 @@
     <div class="menu-section">
       <h3 class="section-title">Quick Actions</h3>
       
-      <button class="menu-item" id="virtual-human-toggle-btn">
-        <span class="menu-icon">🤖</span>
-        <span class="menu-text">Virtual Human Mode</span>
-        <label class="toggle-switch" aria-label="Toggle Virtual Human Mode">
-          <input type="checkbox" id="virtual-human-toggle" class="modern-toggle">
-          <span class="toggle-slider"></span>
-        </label>
-      </button>
-
       <button class="menu-item" id="career-track-btn">
         <span class="menu-icon">🎯</span>
         <span class="menu-text">Career Track & Explore Paths</span>
         <i class="fas fa-chevron-right menu-arrow"></i>
-      </button>
-
-      <button class="menu-item" id="customer-service-toggle-btn">
-        <span class="menu-icon">💬</span>
-        <span class="menu-text">Customer Service Mode</span>
-        <label class="toggle-switch" aria-label="Toggle Customer Service Mode">
-          <input type="checkbox" id="customer-service-toggle" class="modern-toggle">
-          <span class="toggle-slider"></span>
-        </label>
       </button>
     </div>
 
@@ -86,11 +68,29 @@
     <div class="menu-section">
       <h3 class="section-title">Settings</h3>
       
+      <button class="menu-item" id="virtual-human-toggle-btn">
+        <span class="menu-icon">🤖</span>
+        <span class="menu-text">Virtual Human Mode</span>
+        <label class="toggle-switch" aria-label="Toggle Virtual Human Mode">
+          <input type="checkbox" id="virtual-human-toggle" class="modern-toggle" data-toggle="vh">
+          <span class="toggle-slider"></span>
+        </label>
+      </button>
+
+      <button class="menu-item" id="customer-service-toggle-btn">
+        <span class="menu-icon">💬</span>
+        <span class="menu-text">Customer Service Mode</span>
+        <label class="toggle-switch" aria-label="Toggle Customer Service Mode">
+          <input type="checkbox" id="customer-service-toggle" class="modern-toggle" data-toggle="cs">
+          <span class="toggle-slider"></span>
+        </label>
+      </button>
+      
       <button class="menu-item">
         <span class="menu-icon">🌙</span>
         <span class="menu-text">Dark Mode</span>
         <label class="toggle-switch" aria-label="Toggle Dark Mode">
-          <input type="checkbox" id="dark-mode-toggle" class="modern-toggle">
+          <input type="checkbox" id="dark-mode-toggle" class="modern-toggle" data-toggle="dark">
           <span class="toggle-slider"></span>
         </label>
       </button>
@@ -99,7 +99,7 @@
         <span class="menu-icon">🔊</span>
         <span class="menu-text">Text-to-Speech</span>
         <label class="toggle-switch" aria-label="Toggle Text-to-Speech">
-          <input type="checkbox" id="tts-toggle" class="modern-toggle">
+          <input type="checkbox" id="tts-toggle" class="modern-toggle" data-toggle="tts">
           <span class="toggle-slider"></span>
         </label>
       </button>
