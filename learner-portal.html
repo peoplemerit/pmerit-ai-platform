@@ -43,6 +43,75 @@
     .logout-btn:hover {
       background: #c82333;
     }
+    
+    /* Classroom section styles */
+    .classroom-section {
+      display: none;
+      margin-bottom: 2rem;
+    }
+    
+    .classroom-section.active {
+      display: block;
+    }
+    
+    .classroom-iframe-container {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow);
+      background: #0b0c10;
+    }
+    
+    .classroom-iframe {
+      width: 100%;
+      height: 800px;
+      border: none;
+      display: block;
+    }
+    
+    @media (max-width: 768px) {
+      .classroom-iframe {
+        height: 600px;
+      }
+    }
+    
+    /* Navigation tabs */
+    .portal-nav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid var(--border-color);
+      flex-wrap: wrap;
+    }
+    
+    .portal-nav-tab {
+      padding: 0.75rem 1.5rem;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #666;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+      min-width: 44px;
+      min-height: 44px;
+    }
+    
+    .portal-nav-tab:hover {
+      color: var(--primary);
+      background: rgba(69, 162, 158, 0.1);
+    }
+    
+    .portal-nav-tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+    
+    .dashboard-content.hidden {
+      display: none;
+    }
   </style>
   <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
   
@@ -69,6 +138,19 @@
   </header>
   <main class="panel" style="max-width:1100px;margin:2rem auto;">
     <h1>Learner Portal</h1>
+    
+    <!-- Navigation Tabs -->
+    <nav class="portal-nav-tabs" role="tablist">
+      <button class="portal-nav-tab active" data-tab="dashboard" role="tab" aria-selected="true" aria-controls="dashboard-content">
+        <i class="fas fa-home"></i> Dashboard
+      </button>
+      <button class="portal-nav-tab" data-tab="classroom" role="tab" aria-selected="false" aria-controls="classroom-content">
+        <i class="fas fa-chalkboard-teacher"></i> Classroom
+      </button>
+    </nav>
+    
+    <!-- Dashboard Content -->
+    <div id="dashboard-content" class="dashboard-content" role="tabpanel" aria-labelledby="dashboard-tab">
     <section class="portal-section">
       <h2>Welcome, <span id="userName">Learner</span>!</h2>
       <p>This is your personalized hub for managing your academic journey, career goals, and community engagement on PMERIT.</p>
@@ -88,7 +170,7 @@
           <ul>
             <li>View enrolled courses and recommended paths</li>
             <li>Access interactive modules, quizzes, and offline content</li>
-            <li><a href="/portal/classroom.html?courseId=demo-course-001" style="color: #45a29e; font-weight: 500;">🎓 Enter Classroom (with Virtual Human)</a></li>
+            <li><a href="#classroom" style="color: #45a29e; font-weight: 500;">🎓 Enter Classroom (with Virtual Human)</a></li>
           </ul>
         </div>
         <div class="dashboard-card">
@@ -213,6 +295,32 @@
             style Child fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
       </div>
     </section>
+    </div>
+    
+    <!-- Classroom Section -->
+    <section id="classroom-content" class="classroom-section" role="tabpanel" aria-labelledby="classroom-tab">
+      <div class="portal-section">
+        <h2><i class="fas fa-chalkboard-teacher"></i> PMERIT Classroom</h2>
+        <p>Interactive learning environment with AI Tutor and Virtual Human support.</p>
+        <p style="margin-top: 0.5rem;">
+          <small>
+            <a href="/portal/classroom.html" target="_blank" style="color: #45a29e;">
+              <i class="fas fa-external-link-alt"></i> Open in new window
+            </a>
+          </small>
+        </p>
+      </div>
+      <div class="classroom-iframe-container">
+        <iframe 
+          id="classroom-iframe"
+          class="classroom-iframe" 
+          src="/portal/classroom.html?courseId=demo-course-001" 
+          title="PMERIT Classroom"
+          allow="microphone; camera; fullscreen"
+          loading="lazy">
+        </iframe>
+      </div>
+    </section>
   </main>
   <footer>
     <span class="footer-status-main">
@@ -246,6 +354,62 @@
           }
         });
       }
+
+      // Tab navigation
+      const tabs = document.querySelectorAll('.portal-nav-tab');
+      const dashboardContent = document.getElementById('dashboard-content');
+      const classroomSection = document.getElementById('classroom-content');
+
+      function switchTab(tabName) {
+        // Update tabs
+        tabs.forEach(tab => {
+          const isActive = tab.dataset.tab === tabName;
+          tab.classList.toggle('active', isActive);
+          tab.setAttribute('aria-selected', isActive);
+        });
+
+        // Update content
+        if (tabName === 'classroom') {
+          dashboardContent.classList.add('hidden');
+          classroomSection.classList.add('active');
+        } else {
+          dashboardContent.classList.remove('hidden');
+          classroomSection.classList.remove('active');
+        }
+      }
+
+      // Handle tab clicks
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function () {
+          const tabName = this.dataset.tab;
+          switchTab(tabName);
+          window.location.hash = tabName === 'dashboard' ? '' : tabName;
+        });
+      });
+
+      // Handle hash changes (for direct navigation)
+      function handleHashChange() {
+        const hash = window.location.hash.substring(1);
+        if (hash === 'classroom') {
+          switchTab('classroom');
+        } else {
+          switchTab('dashboard');
+        }
+      }
+
+      // Handle links within dashboard that point to #classroom
+      document.addEventListener('click', function (e) {
+        const link = e.target.closest('a[href="#classroom"]');
+        if (link) {
+          e.preventDefault();
+          switchTab('classroom');
+          window.location.hash = 'classroom';
+        }
+      });
+
+      // Initialize on load
+      window.addEventListener('hashchange', handleHashChange);
+      handleHashChange();
     })();
   </script>
 </body>
