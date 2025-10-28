@@ -1060,8 +1060,8 @@
             throw new Error(`HTTP ${response.status}`);
           }
           
-          // Redirect to classroom or dashboard
-          window.location.href = `/classroom.html?course=${courseId}`;
+          // Redirect to classroom in learner portal
+          window.location.href = `/learner-portal.html#classroom`;
           
         } catch (error) {
           console.error('Failed to enroll in course:', error);
