@@ -1,0 +1,128 @@
+{
+  "global_remote_tracks": [
+    {
+      "id": "data-analytics",
+      "section": "global",
+      "title": "Data Analytics",
+      "summary": "Learn to clean, analyze, and visualize data for business decisions.",
+      "audience_tag": "Adult / Remote",
+      "badge": "Showcase Demo",
+      "icon": "assets/img/icons/data-analytics.svg",
+      "learn_more_href": "/courses.html#data-analytics"
+    },
+    {
+      "id": "web-development",
+      "section": "global",
+      "title": "Web Development",
+      "summary": "Build modern websites and web applications using cutting-edge technologies.",
+      "audience_tag": "Adult / Remote",
+      "badge": "Showcase Demo",
+      "icon": "assets/img/icons/web-development.svg",
+      "learn_more_href": "/courses.html#web-development"
+    },
+    {
+      "id": "digital-marketing",
+      "section": "global",
+      "title": "Digital Marketing",
+      "summary": "Master online marketing strategies, SEO, social media, and content creation.",
+      "audience_tag": "Adult / Remote",
+      "badge": "Showcase Demo",
+      "icon": "assets/img/icons/digital-marketing.svg",
+      "learn_more_href": "/courses.html#digital-marketing"
+    },
+    {
+      "id": "graphic-design",
+      "section": "global",
+      "title": "Graphic Design",
+      "summary": "Create stunning visual content for digital and print media.",
+      "audience_tag": "Adult / Remote",
+      "badge": "Showcase Demo",
+      "icon": "assets/img/icons/graphic-design.svg",
+      "learn_more_href": "/courses.html#graphic-design"
+    }
+  ],
+  "local_education_tracks": [
+    {
+      "id": "nursery-prep",
+      "section": "local-edu",
+      "title": "Nursery & Prep",
+      "summary": "Foundation learning for early childhood development and basic literacy.",
+      "audience_tag": "Ages 3-5 / Local",
+      "badge": "Education Track",
+      "icon": "assets/img/icons/nursery.svg",
+      "learn_more_href": "/courses.html#nursery-prep"
+    },
+    {
+      "id": "primary-school",
+      "section": "local-edu",
+      "title": "Primary School",
+      "summary": "Core subjects including mathematics, science, languages, and social studies.",
+      "audience_tag": "Ages 6-11 / Local",
+      "badge": "Education Track",
+      "icon": "assets/img/icons/primary.svg",
+      "learn_more_href": "/courses.html#primary-school"
+    },
+    {
+      "id": "secondary-school",
+      "section": "local-edu",
+      "title": "Secondary School",
+      "summary": "Advanced curriculum preparing students for higher education and careers.",
+      "audience_tag": "Ages 12-17 / Local",
+      "badge": "Education Track",
+      "icon": "assets/img/icons/secondary.svg",
+      "learn_more_href": "/courses.html#secondary-school"
+    },
+    {
+      "id": "college-university",
+      "section": "local-edu",
+      "title": "College & University",
+      "summary": "Higher education pathways including undergraduate and professional degrees.",
+      "audience_tag": "Ages 18+ / Local",
+      "badge": "Education Track",
+      "icon": "assets/img/icons/college.svg",
+      "learn_more_href": "/courses.html#college-university"
+    }
+  ],
+  "local_career_pathways": [
+    {
+      "id": "healthcare",
+      "section": "local-career",
+      "title": "Healthcare & Nursing",
+      "summary": "Local healthcare training including nursing, community health, and medical assistance.",
+      "audience_tag": "Local / In-Person",
+      "badge": "Career Path",
+      "icon": "assets/img/icons/healthcare.svg",
+      "learn_more_href": "/courses.html#healthcare"
+    },
+    {
+      "id": "teaching",
+      "section": "local-career",
+      "title": "Teaching & Education",
+      "summary": "Become an educator with certifications in primary, secondary, and adult education.",
+      "audience_tag": "Local / In-Person",
+      "badge": "Career Path",
+      "icon": "assets/img/icons/teaching.svg",
+      "learn_more_href": "/courses.html#teaching"
+    },
+    {
+      "id": "agriculture",
+      "section": "local-career",
+      "title": "Agriculture & Agribusiness",
+      "summary": "Modern farming techniques, sustainable agriculture, and agribusiness management.",
+      "audience_tag": "Local / In-Person",
+      "badge": "Career Path",
+      "icon": "assets/img/icons/agriculture.svg",
+      "learn_more_href": "/courses.html#agriculture"
+    },
+    {
+      "id": "trades",
+      "section": "local-career",
+      "title": "Skilled Trades",
+      "summary": "Hands-on training in construction, electrical work, plumbing, and mechanical skills.",
+      "audience_tag": "Local / In-Person",
+      "badge": "Career Path",
+      "icon": "assets/img/icons/trades.svg",
+      "learn_more_href": "/courses.html#trades"
+    }
+  ]
+}
