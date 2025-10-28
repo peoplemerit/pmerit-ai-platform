@@ -1,0 +1,120 @@
+{
+  "globalRemoteTracks": [
+    {
+      "id": "data-analytics",
+      "title": "Data Analytics",
+      "icon": "fa-chart-line",
+      "summary": "Learn to analyze data, create visualizations, and drive business insights with modern analytics tools.",
+      "tags": ["Python", "SQL", "Tableau", "Statistics"],
+      "section": "global"
+    },
+    {
+      "id": "digital-marketing",
+      "title": "Digital Marketing",
+      "icon": "fa-bullhorn",
+      "summary": "Master SEO, social media marketing, content strategy, and analytics to grow businesses online.",
+      "tags": ["SEO", "Social Media", "Analytics", "Content"],
+      "section": "global"
+    },
+    {
+      "id": "ux-design",
+      "title": "UX Design",
+      "icon": "fa-palette",
+      "summary": "Create user-centered designs, conduct research, and build intuitive interfaces for web and mobile.",
+      "tags": ["Figma", "User Research", "Prototyping", "UI Design"],
+      "section": "global"
+    },
+    {
+      "id": "web-development",
+      "title": "Web Development",
+      "icon": "fa-code",
+      "summary": "Build modern, responsive websites and web applications using the latest technologies and frameworks.",
+      "tags": ["HTML/CSS", "JavaScript", "React", "Node.js"],
+      "section": "global"
+    },
+    {
+      "id": "project-management",
+      "title": "Project Management",
+      "icon": "fa-tasks",
+      "summary": "Lead teams, manage projects, and deliver results using agile methodologies and PM best practices.",
+      "tags": ["Agile", "Scrum", "Leadership", "Planning"],
+      "section": "global"
+    },
+    {
+      "id": "business-analysis",
+      "title": "Business Analysis",
+      "icon": "fa-briefcase",
+      "summary": "Bridge the gap between business needs and technical solutions through strategic analysis.",
+      "tags": ["Requirements", "Process Modeling", "Strategy", "Communication"],
+      "section": "global"
+    }
+  ],
+  "localEducationTracks": [
+    {
+      "id": "early-childhood",
+      "title": "Early Childhood Education",
+      "icon": "fa-child",
+      "summary": "Foundational programs for nursery and kindergarten focusing on holistic child development.",
+      "tags": ["Ages 3-5", "Play-Based", "Social Skills", "Early Literacy"],
+      "section": "local-edu"
+    },
+    {
+      "id": "primary-education",
+      "title": "Primary School",
+      "icon": "fa-book-open",
+      "summary": "Core academic subjects and essential skills for grades 1-6 with personalized learning support.",
+      "tags": ["Math", "Reading", "Science", "Art"],
+      "section": "local-edu"
+    },
+    {
+      "id": "secondary-education",
+      "title": "Secondary School",
+      "icon": "fa-graduation-cap",
+      "summary": "Advanced curricula preparing students for college and career pathways through grades 7-12.",
+      "tags": ["STEM", "Humanities", "College Prep", "Career Ready"],
+      "section": "local-edu"
+    },
+    {
+      "id": "college-programs",
+      "title": "College & University",
+      "icon": "fa-university",
+      "summary": "Higher education programs with degree and certification pathways in partnership with institutions.",
+      "tags": ["Bachelor's", "Associate", "Certificates", "Online"],
+      "section": "local-edu"
+    }
+  ],
+  "localCareerPathways": [
+    {
+      "id": "healthcare",
+      "title": "Healthcare Careers",
+      "icon": "fa-heartbeat",
+      "summary": "Training for medical assistants, nursing, and healthcare administration roles in local facilities.",
+      "tags": ["Nursing", "Medical Tech", "Admin", "Certified"],
+      "section": "local-career"
+    },
+    {
+      "id": "skilled-trades",
+      "title": "Skilled Trades",
+      "icon": "fa-tools",
+      "summary": "Hands-on training in electrical, plumbing, HVAC, and construction trades with apprenticeships.",
+      "tags": ["Electrical", "Plumbing", "HVAC", "Apprenticeship"],
+      "section": "local-career"
+    },
+    {
+      "id": "hospitality",
+      "title": "Hospitality & Service",
+      "icon": "fa-concierge-bell",
+      "summary": "Customer service, culinary arts, and hotel management programs for the tourism industry.",
+      "tags": ["Culinary", "Hotel Mgmt", "Customer Service", "Tourism"],
+      "section": "local-career"
+    },
+    {
+      "id": "public-service",
+      "title": "Public Service",
+      "icon": "fa-hands-helping",
+      "summary": "Career preparation for public safety, social work, and government administration positions.",
+      "tags": ["Fire/EMS", "Social Work", "Admin", "Community"],
+      "section": "local-career"
+    }
+  ]
+}

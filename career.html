@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Career Track & Explore Paths - PMERIT</title>
-  <meta name="description" content="Explore career paths and find your perfect learning journey with PMERIT.">
+  <title>Career Paths & Learning Tracks - PMERIT</title>
+  <meta name="description" content="Explore global remote tracks, local education, and career pathways with PMERIT.">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,55 +18,293 @@
   <link rel="stylesheet" href="assets/css/theme-variables.css">
   <link rel="stylesheet" href="assets/css/typography.css">
   <link rel="stylesheet" href="assets/css/base.css">
-  <link rel="stylesheet" href="assets/css/components.css">
 
   <style>
     body {
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      font-family: var(--font-secondary);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
     }
 
-    .career-container {
+    /* Skip Link for Accessibility */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: var(--color-primary);
+      color: white;
+      padding: var(--space-2) var(--space-4);
+      text-decoration: none;
+      border-radius: var(--border-radius-md);
+      z-index: 100;
+    }
+
+    .skip-link:focus {
+      top: var(--space-2);
+      left: var(--space-2);
+    }
+
+    /* Header */
+    header {
+      background: var(--bg-card);
+      padding: var(--space-4);
+      border-bottom: 1px solid var(--border-color);
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 0;
+      z-index: var(--z-sticky);
+    }
+
+    .header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+    }
+
+    .logo {
+      text-decoration: none;
+      color: var(--color-primary);
+      font-weight: var(--weight-bold);
+      font-size: var(--text-2xl);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .header-nav {
+      display: flex;
+      gap: var(--space-4);
+      align-items: center;
+    }
+
+    .header-nav a {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-weight: var(--weight-medium);
+      transition: color var(--transition-fast);
+    }
+
+    .header-nav a:hover {
+      color: var(--color-primary);
+    }
+
+    .header-nav a.active {
+      color: var(--color-primary);
+      font-weight: var(--weight-semibold);
+    }
+
+    .btn-primary {
+      background: var(--color-primary);
+      color: white;
+      padding: var(--space-2) var(--space-4);
+      border-radius: var(--border-radius-md);
+      text-decoration: none;
+      font-weight: var(--weight-semibold);
+      border: none;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      min-height: var(--mobile-touch-target);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-primary:hover {
+      background: var(--interactive-primary-hover);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+      color: white;
+      padding: var(--space-16) var(--space-6);
+      text-align: center;
+    }
+
+    .hero-content {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: var(--text-4xl);
+      font-weight: var(--weight-bold);
+      margin-bottom: var(--space-4);
+      line-height: var(--leading-tight);
+    }
+
+    .hero p {
+      font-size: var(--text-xl);
+      margin-bottom: var(--space-8);
+      opacity: 0.95;
+      line-height: var(--leading-relaxed);
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: var(--space-4);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-hero-primary {
+      background: white;
+      color: var(--color-primary);
+      padding: var(--space-4) var(--space-8);
+      border-radius: var(--border-radius-md);
+      text-decoration: none;
+      font-weight: var(--weight-semibold);
+      font-size: var(--text-lg);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      transition: all var(--transition-fast);
+      border: 2px solid white;
+      min-height: var(--mobile-touch-target);
+    }
+
+    .btn-hero-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn-hero-secondary {
+      background: transparent;
+      color: white;
+      padding: var(--space-4) var(--space-8);
+      border-radius: var(--border-radius-md);
+      text-decoration: none;
+      font-weight: var(--weight-semibold);
+      font-size: var(--text-lg);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      border: 2px solid white;
+      transition: all var(--transition-fast);
+      min-height: var(--mobile-touch-target);
+    }
+
+    .btn-hero-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    /* Sticky Sub-Nav */
+    .section-nav {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 72px;
+      z-index: var(--z-sticky);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .section-nav-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      gap: var(--space-2);
+      padding: var(--space-3) var(--space-4);
+      overflow-x: auto;
+    }
+
+    .section-nav a {
+      padding: var(--space-2) var(--space-4);
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-weight: var(--weight-medium);
+      border-radius: var(--border-radius-md);
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+      min-height: var(--mobile-touch-target);
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .section-nav a:hover {
+      background: var(--bg-secondary);
+      color: var(--color-primary);
+    }
+
+    .section-nav a.active {
+      background: var(--color-primary);
+      color: white;
+      font-weight: var(--weight-semibold);
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
       max-width: 1400px;
       margin: 0 auto;
       padding: var(--space-8) var(--space-6);
-      flex: 1;
+      width: 100%;
     }
 
-    .career-header {
-      text-align: center;
+    /* Section Styles */
+    .track-section {
+      margin-bottom: var(--space-16);
+      scroll-margin-top: 150px;
+    }
+
+    .section-header {
       margin-bottom: var(--space-8);
     }
 
-    .career-title {
-      font-size: var(--text-4xl);
-      font-weight: var(--font-bold);
+    .section-header h2 {
+      font-size: var(--text-3xl);
+      font-weight: var(--weight-bold);
       color: var(--text-primary);
-      margin-bottom: var(--space-4);
+      margin-bottom: var(--space-3);
     }
 
-    .career-subtitle {
-      font-size: var(--text-xl);
+    .section-header p {
+      font-size: var(--text-lg);
       color: var(--text-secondary);
-      max-width: 700px;
-      margin: 0 auto;
+      line-height: var(--leading-relaxed);
+      max-width: 800px;
     }
 
-    .career-grid {
+    /* Card Grid - Responsive 3/2/1 */
+    .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: var(--space-6);
-      margin-top: var(--space-8);
+      grid-template-columns: repeat(3, 1fr);
     }
 
+    @media (max-width: 1023px) {
+      .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 639px) {
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Career Card Component */
     .career-card {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: var(--border-radius-lg);
       padding: var(--space-6);
-      transition: var(--transition);
-      box-shadow: var(--shadow);
+      transition: all var(--transition-base);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
     }
 
     .career-card:hover {
@@ -75,228 +313,369 @@
       border-color: var(--color-primary);
     }
 
-    .career-icon {
-      font-size: 3rem;
-      color: var(--color-primary);
-      margin-bottom: var(--space-4);
+    .career-card:focus-within {
+      outline: 3px solid var(--color-primary);
+      outline-offset: 2px;
     }
 
-    .career-card-title {
+    .card-icon {
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      border-radius: var(--border-radius-md);
+      margin-bottom: var(--space-4);
+      color: white;
+      font-size: var(--text-3xl);
+    }
+
+    .card-title {
       font-size: var(--text-2xl);
-      font-weight: var(--font-bold);
+      font-weight: var(--weight-bold);
       color: var(--text-primary);
       margin-bottom: var(--space-3);
+      line-height: var(--leading-tight);
     }
 
-    .career-card-desc {
+    .card-summary {
       color: var(--text-secondary);
       margin-bottom: var(--space-4);
-      line-height: 1.6;
+      line-height: var(--leading-relaxed);
+      flex-grow: 1;
     }
 
-    .career-skills {
+    .card-tags {
       display: flex;
       flex-wrap: wrap;
       gap: var(--space-2);
       margin-bottom: var(--space-4);
     }
 
-    .skill-tag {
+    .tag {
       background: var(--bg-secondary);
       color: var(--color-primary);
       padding: var(--space-1) var(--space-3);
-      border-radius: var(--border-radius-md);
+      border-radius: var(--border-radius-full);
       font-size: var(--text-sm);
+      font-weight: var(--weight-medium);
       border: 1px solid var(--border-color);
     }
 
-    .enroll-btn {
+    .card-cta {
       background: var(--color-primary);
       color: white;
       padding: var(--space-3) var(--space-6);
       border-radius: var(--border-radius-md);
       text-decoration: none;
-      font-weight: var(--font-semibold);
+      font-weight: var(--weight-semibold);
       display: inline-flex;
       align-items: center;
-      gap: var(--space-2);
-      transition: var(--transition);
-      width: 100%;
       justify-content: center;
+      gap: var(--space-2);
+      transition: all var(--transition-fast);
       border: none;
       cursor: pointer;
+      width: 100%;
+      min-height: var(--mobile-touch-target);
     }
 
-    .enroll-btn:hover {
-      background: var(--color-primary-dark);
+    .card-cta:hover {
+      background: var(--interactive-primary-hover);
       transform: translateY(-2px);
     }
 
+    .card-cta:focus {
+      outline: 3px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-color);
+      padding: var(--space-6) var(--space-4);
+      margin-top: auto;
+    }
+
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--space-4);
+    }
+
+    .footer-status {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+    }
+
+    .status-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-success);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: var(--text-sm);
+      transition: color var(--transition-fast);
+    }
+
+    .footer-links a:hover {
+      color: var(--color-primary);
+    }
+
+    /* Responsive Adjustments */
     @media (max-width: 768px) {
-      .career-grid {
-        grid-template-columns: 1fr;
+      .hero h1 {
+        font-size: var(--text-3xl);
+      }
+
+      .hero p {
+        font-size: var(--text-lg);
+      }
+
+      .section-header h2 {
+        font-size: var(--text-2xl);
+      }
+
+      .header-nav {
+        display: none;
+      }
+
+      .section-nav {
+        top: 64px;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .btn-hero-primary,
+      .btn-hero-secondary {
+        width: 100%;
       }
     }
   </style>
 </head>
 <body>
+  <!-- Skip to Main Content Link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
   <!-- Header -->
-  <header style="background: var(--bg-card); padding: var(--space-4); border-bottom: 1px solid var(--border-color); box-shadow: var(--shadow);">
-    <div style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
-      <a href="index.html" style="text-decoration: none; color: var(--color-primary); font-weight: var(--font-bold); font-size: var(--text-2xl);">
-        🎓 PMERIT
+  <header role="banner">
+    <div class="header-content">
+      <a href="index.html" class="logo" aria-label="PMERIT Home">
+        <span aria-hidden="true">🎓</span> PMERIT
       </a>
-      <nav style="display: flex; gap: var(--space-4); align-items: center;">
-        <a href="index.html" style="text-decoration: none; color: var(--text-secondary);">Home</a>
-        <a href="career.html" style="text-decoration: none; color: var(--color-primary); font-weight: var(--font-semibold);">Career Track</a>
-        <a href="assessment.html" style="text-decoration: none; color: var(--text-secondary);">Assessment</a>
-        <a href="profile.html" style="text-decoration: none; color: var(--text-secondary);">Profile</a>
-        <a href="signin.html" style="background: var(--color-primary); color: white; padding: var(--space-2) var(--space-4); border-radius: var(--border-radius-md); text-decoration: none; font-weight: var(--font-semibold);">Sign In</a>
+      <nav class="header-nav" role="navigation" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="career.html" class="active" aria-current="page">Career Paths</a>
+        <a href="assessment.html">Assessment</a>
+        <a href="courses.html">Courses</a>
+        <a href="signin.html" class="btn-primary">Sign In</a>
       </nav>
     </div>
   </header>
 
-  <main class="career-container">
-    <div class="career-header">
-      <h1 class="career-title">Career Track & Explore Paths</h1>
-      <p class="career-subtitle">
-        Discover your ideal career path with personalized recommendations based on your skills, interests, and goals.
+  <!-- Hero Section -->
+  <section class="hero" role="banner">
+    <div class="hero-content">
+      <h1>Discover Your Perfect Learning Path</h1>
+      <p>
+        Explore career tracks, educational programs, and pathways designed to unlock your potential—from early childhood to professional development.
       </p>
-    </div>
-
-    <div class="career-grid">
-      <!-- Data Analytics -->
-      <div class="career-card">
-        <div class="career-icon"><i class="fas fa-chart-line"></i></div>
-        <h2 class="career-card-title">Data Analytics</h2>
-        <p class="career-card-desc">
-          Learn to analyze data, create visualizations, and drive business insights with modern analytics tools.
-        </p>
-        <div class="career-skills">
-          <span class="skill-tag">Python</span>
-          <span class="skill-tag">SQL</span>
-          <span class="skill-tag">Tableau</span>
-          <span class="skill-tag">Statistics</span>
-        </div>
-        <button class="enroll-btn" onclick="window.location.href='learner-portal.html'">
-          <i class="fas fa-graduation-cap"></i>
-          Enroll
-        </button>
-      </div>
-
-      <!-- Digital Marketing -->
-      <div class="career-card">
-        <div class="career-icon"><i class="fas fa-bullhorn"></i></div>
-        <h2 class="career-card-title">Digital Marketing</h2>
-        <p class="career-card-desc">
-          Master SEO, social media marketing, content strategy, and analytics to grow businesses online.
-        </p>
-        <div class="career-skills">
-          <span class="skill-tag">SEO</span>
-          <span class="skill-tag">Social Media</span>
-          <span class="skill-tag">Analytics</span>
-          <span class="skill-tag">Content</span>
-        </div>
-        <button class="enroll-btn" onclick="window.location.href='learner-portal.html'">
-          <i class="fas fa-graduation-cap"></i>
-          Enroll
-        </button>
-      </div>
-
-      <!-- UX Design -->
-      <div class="career-card">
-        <div class="career-icon"><i class="fas fa-palette"></i></div>
-        <h2 class="career-card-title">UX Design</h2>
-        <p class="career-card-desc">
-          Create user-centered designs, conduct research, and build intuitive interfaces for web and mobile.
-        </p>
-        <div class="career-skills">
-          <span class="skill-tag">Figma</span>
-          <span class="skill-tag">User Research</span>
-          <span class="skill-tag">Prototyping</span>
-          <span class="skill-tag">UI Design</span>
-        </div>
-        <button class="enroll-btn" onclick="window.location.href='learner-portal.html'">
-          <i class="fas fa-graduation-cap"></i>
-          Enroll
-        </button>
-      </div>
-
-      <!-- Web Development -->
-      <div class="career-card">
-        <div class="career-icon"><i class="fas fa-code"></i></div>
-        <h2 class="career-card-title">Web Development</h2>
-        <p class="career-card-desc">
-          Build modern, responsive websites and web applications using the latest technologies and frameworks.
-        </p>
-        <div class="career-skills">
-          <span class="skill-tag">HTML/CSS</span>
-          <span class="skill-tag">JavaScript</span>
-          <span class="skill-tag">React</span>
-          <span class="skill-tag">Node.js</span>
-        </div>
-        <button class="enroll-btn" onclick="window.location.href='learner-portal.html'">
-          <i class="fas fa-graduation-cap"></i>
-          Enroll
-        </button>
-      </div>
-
-      <!-- Project Management -->
-      <div class="career-card">
-        <div class="career-icon"><i class="fas fa-tasks"></i></div>
-        <h2 class="career-card-title">Project Management</h2>
-        <p class="career-card-desc">
-          Lead teams, manage projects, and deliver results using agile methodologies and PM best practices.
-        </p>
-        <div class="career-skills">
-          <span class="skill-tag">Agile</span>
-          <span class="skill-tag">Scrum</span>
-          <span class="skill-tag">Leadership</span>
-          <span class="skill-tag">Planning</span>
-        </div>
-        <button class="enroll-btn" onclick="window.location.href='learner-portal.html'">
-          <i class="fas fa-graduation-cap"></i>
-          Enroll
-        </button>
-      </div>
-
-      <!-- Business Analysis -->
-      <div class="career-card">
-        <div class="career-icon"><i class="fas fa-briefcase"></i></div>
-        <h2 class="career-card-title">Business Analysis</h2>
-        <p class="career-card-desc">
-          Bridge the gap between business needs and technical solutions through strategic analysis.
-        </p>
-        <div class="career-skills">
-          <span class="skill-tag">Requirements</span>
-          <span class="skill-tag">Process Modeling</span>
-          <span class="skill-tag">Strategy</span>
-          <span class="skill-tag">Communication</span>
-        </div>
-        <button class="enroll-btn" onclick="window.location.href='learner-portal.html'">
-          <i class="fas fa-graduation-cap"></i>
-          Enroll
-        </button>
+      <div class="hero-actions">
+        <a href="assessment.html" class="btn-hero-primary">
+          <i class="fas fa-compass" aria-hidden="true"></i>
+          Discover Your Path
+        </a>
+        <a href="courses.html" class="btn-hero-secondary">
+          <i class="fas fa-book-open" aria-hidden="true"></i>
+          See All Courses
+        </a>
       </div>
     </div>
+  </section>
+
+  <!-- Sticky Section Navigation -->
+  <nav class="section-nav" role="navigation" aria-label="Section navigation">
+    <div class="section-nav-content">
+      <a href="#global-remote-tracks">Global Remote Tracks</a>
+      <a href="#local-education-tracks">Local Education</a>
+      <a href="#local-career-pathways">Local Career Pathways</a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main id="main-content" role="main">
+    <!-- Global Remote Tracks Section -->
+    <section id="global-remote-tracks" class="track-section" aria-labelledby="global-heading">
+      <div class="section-header">
+        <h2 id="global-heading">Global Remote Tracks</h2>
+        <p>
+          Professional skills and career tracks accessible worldwide. Learn from anywhere and build in-demand capabilities for the global market.
+        </p>
+      </div>
+      <div id="global-cards" class="card-grid" role="list">
+        <!-- Cards will be rendered here by JavaScript -->
+      </div>
+    </section>
+
+    <!-- Local Education Tracks Section -->
+    <section id="local-education-tracks" class="track-section" aria-labelledby="education-heading">
+      <div class="section-header">
+        <h2 id="education-heading">Local Education Tracks</h2>
+        <p>
+          Comprehensive educational programs from nursery through college, aligned with local standards and delivered with personalized support.
+        </p>
+      </div>
+      <div id="education-cards" class="card-grid" role="list">
+        <!-- Cards will be rendered here by JavaScript -->
+      </div>
+    </section>
+
+    <!-- Local Career Pathways Section -->
+    <section id="local-career-pathways" class="track-section" aria-labelledby="career-heading">
+      <div class="section-header">
+        <h2 id="career-heading">Local Career Pathways</h2>
+        <p>
+          Career-focused training programs preparing you for local employment opportunities in high-demand fields with hands-on experience.
+        </p>
+      </div>
+      <div id="career-cards" class="card-grid" role="list">
+        <!-- Cards will be rendered here by JavaScript -->
+      </div>
+    </section>
   </main>
 
   <!-- Footer -->
-  <footer style="background: var(--bg-card); border-top: 1px solid var(--border-color); padding: var(--space-4); margin-top: auto;">
-    <div style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4);">
-      <div style="display: flex; align-items: center; gap: var(--space-2);">
-        <i class="fas fa-circle" style="color: var(--color-success); font-size: 0.5rem;"></i>
-        <span style="color: var(--text-secondary); font-size: var(--text-sm);">Connected to Educational Services</span>
+  <footer role="contentinfo">
+    <div class="footer-content">
+      <div class="footer-status">
+        <span class="status-indicator" aria-hidden="true"></span>
+        <span>Connected to Educational Services</span>
       </div>
-      <div style="display: flex; gap: var(--space-4);">
-        <a href="privacy.html" style="color: var(--text-secondary); text-decoration: none; font-size: var(--text-sm);">Privacy & Terms</a>
-        <a href="contact.html" style="color: var(--text-secondary); text-decoration: none; font-size: var(--text-sm);">Contact</a>
-        <a href="partnerships.html" style="color: var(--text-secondary); text-decoration: none; font-size: var(--text-sm);">Partnerships</a>
-        <a href="support.html" style="color: var(--text-secondary); text-decoration: none; font-size: var(--text-sm);">Support</a>
-      </div>
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="privacy.html">Privacy & Terms</a>
+        <a href="contact.html">Contact</a>
+        <a href="partnerships.html">Partnerships</a>
+        <a href="support.html">Support</a>
+      </nav>
     </div>
   </footer>
 
-  <script src="assets/js/main.js"></script>
+  <!-- JavaScript for Dynamic Card Rendering -->
+  <script>
+    // Fetch and render career tracks
+    async function loadCareerTracks() {
+      try {
+        const response = await fetch('assets/data/career-tracks.json');
+        const data = await response.json();
+
+        // Render Global Remote Tracks
+        renderCards(data.globalRemoteTracks, 'global-cards');
+        
+        // Render Local Education Tracks
+        renderCards(data.localEducationTracks, 'education-cards');
+        
+        // Render Local Career Pathways
+        renderCards(data.localCareerPathways, 'career-cards');
+      } catch (error) {
+        console.error('Error loading career tracks:', error);
+      }
+    }
+
+    function renderCards(tracks, containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      tracks.forEach(track => {
+        const card = document.createElement('article');
+        card.className = 'career-card';
+        card.setAttribute('role', 'listitem');
+        
+        card.innerHTML = `
+          <div class="card-icon" aria-hidden="true">
+            <i class="fas ${track.icon}"></i>
+          </div>
+          <h3 class="card-title">${track.title}</h3>
+          <p class="card-summary">${track.summary}</p>
+          <div class="card-tags" role="list" aria-label="Skills and topics">
+            ${track.tags.map(tag => `<span class="tag" role="listitem">${tag}</span>`).join('')}
+          </div>
+          <a href="courses.html#${track.id}" class="card-cta" aria-label="Learn more about ${track.title}">
+            Learn More
+            <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        `;
+        
+        container.appendChild(card);
+      });
+    }
+
+    // Highlight active section in navigation
+    function updateActiveSection() {
+      const sections = document.querySelectorAll('.track-section');
+      const navLinks = document.querySelectorAll('.section-nav a');
+      
+      let currentSection = '';
+      
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 200;
+        const sectionHeight = section.offsetHeight;
+        
+        if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+          currentSection = section.getAttribute('id');
+        }
+      });
+      
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${currentSection}`) {
+          link.classList.add('active');
+        }
+      });
+    }
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      loadCareerTracks();
+      updateActiveSection();
+    });
+
+    // Update active section on scroll
+    window.addEventListener('scroll', updateActiveSection);
+  </script>
 </body>
 </html>
