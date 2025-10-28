@@ -240,6 +240,10 @@
           reject(new Error('GLTFLoader not available'));
           return;
         }
+        if (!THREE.GLTFLoader) {
+          reject(new Error('GLTFLoader not available'));
+          return;
+        }
         const loader = new THREE.GLTFLoader();
         
         // Set configurable timeout for loading
