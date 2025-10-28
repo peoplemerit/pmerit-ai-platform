@@ -20,6 +20,7 @@
         avatarScale: config.avatarScale || PMERIT.AVATAR_SCALE || 1.0,
         cameraPos: config.cameraPos || PMERIT.CAMERA_POS || [0, 1.4, 2.2],
         lightPreset: config.lightPreset || PMERIT.LIGHT_PRESET || 'hemi-dir-soft',
+        modelLoadTimeout: config.modelLoadTimeout || 10000, // 10 seconds default
         pixelRatio: Math.min(window.devicePixelRatio || 1, 2),
         targetFPS: config.targetFPS || 30,
         ...config
@@ -215,11 +216,12 @@
 
         console.log(`📦 Attempting to load avatar from: ${modelUrl}`);
 
-        // Check if GLTFLoader is available
-        if (typeof THREE.GLTFLoader !== 'undefined') {
+        // Attempt to load GLB model with try-catch for GLTFLoader availability
+        try {
           await this._loadGLBModel(modelUrl);
-        } else {
-          console.warn('⚠️ GLTFLoader not available, using placeholder');
+        } catch (loadError) {
+          // GLTFLoader not available or model load failed
+          console.warn('⚠️ GLTFLoader not available or load failed, using placeholder');
           this._createPlaceholderAvatar();
         }
       } catch (error) {
@@ -236,10 +238,10 @@
       return new Promise((resolve, reject) => {
         const loader = new THREE.GLTFLoader();
         
-        // Set timeout for loading
+        // Set configurable timeout for loading
         const timeout = setTimeout(() => {
           reject(new Error('Model loading timeout'));
-        }, 10000);
+        }, this.config.modelLoadTimeout);
 
         loader.load(
           url,
