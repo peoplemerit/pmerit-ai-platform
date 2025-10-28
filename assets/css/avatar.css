@@ -3,6 +3,19 @@
  * Phase 3.3-A: Virtual Human avatar UI components
  */
 
+/* VH Canvas Root Container */
+.vh-canvas-root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1f2833 0%, #0b0c10 100%);
+  padding: 2rem;
+}
+
 /* Avatar Canvas Container */
 .vh-container {
   position: relative;
@@ -13,6 +26,34 @@
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Status Strip */
+.vh-status-strip {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  background: rgba(0, 0, 0, 0.8);
+  color: #66fcf1;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(102, 252, 241, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 10;
+}
+
+.vh-status-strip::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: #66fcf1;
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
 }
 
 /* WebGL Canvas */
