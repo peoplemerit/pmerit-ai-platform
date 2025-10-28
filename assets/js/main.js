@@ -310,7 +310,7 @@ function initializeSupportButtons() {
   }
 
   if (csmBtn) {
-    csmBtn.addEventListener('click', () => {
+    csmBtn.addEventListener('click', async () => {
       console.log('📞 Support CSM button clicked');
       
       // Toggle CSM mode
@@ -320,7 +320,7 @@ function initializeSupportButtons() {
       // If enabling CSM, disable VH
       if (newState && state.virtualHuman) {
         state.virtualHuman = false;
-        enableVirtualHuman(false);
+        await enableVirtualHuman(false);
       }
 
       toggleCustomerServiceMode(newState);
