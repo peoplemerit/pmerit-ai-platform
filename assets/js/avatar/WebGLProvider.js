@@ -12,9 +12,14 @@
   class WebGLProvider {
     constructor(canvas, config = {}) {
       this.canvas = canvas;
+      // Use PMERIT global config with fallbacks
+      const PMERIT = window.PMERIT || {};
       this.config = {
-        avatarBaseUrl: config.avatarBaseUrl || '/assets/avatars',
-        modelFile: config.modelFile || 'avatar.glb',
+        avatarBaseUrl: config.avatarBaseUrl || PMERIT.AVATAR_BASE_URL || '/assets/avatars/',
+        modelFile: config.modelFile || PMERIT.AVATAR_MODEL || 'pm_classic.glb',
+        avatarScale: config.avatarScale || PMERIT.AVATAR_SCALE || 1.0,
+        cameraPos: config.cameraPos || PMERIT.CAMERA_POS || [0, 1.4, 2.2],
+        lightPreset: config.lightPreset || PMERIT.LIGHT_PRESET || 'hemi-dir-soft',
         pixelRatio: Math.min(window.devicePixelRatio || 1, 2),
         targetFPS: config.targetFPS || 30,
         ...config
@@ -27,7 +32,8 @@
         model: null,
         mixer: null,
         idleAction: null,
-        speakAction: null
+        speakAction: null,
+        reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches
       };
 
       this.scene = null;
@@ -73,8 +79,22 @@
         // Handle tab visibility
         document.addEventListener('visibilitychange', this._onVisibilityChangeBound);
 
+        // Handle reduced motion changes
+        this._onReducedMotionBound = this._onReducedMotionChange.bind(this);
+        const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+        if (mediaQuery.addEventListener) {
+          mediaQuery.addEventListener('change', this._onReducedMotionBound);
+        } else {
+          // Fallback for older browsers
+          mediaQuery.addListener(this._onReducedMotionBound);
+        }
+
         this.state.initialized = true;
         console.log('✅ WebGLProvider initialized');
+        
+        if (this.state.reducedMotion) {
+          console.log('ℹ️ Reduced motion mode detected');
+        }
       } catch (error) {
         console.error('❌ WebGLProvider initialization failed:', error);
         throw error;
@@ -97,8 +117,11 @@
     _setupCamera() {
       const aspect = this.canvas.clientWidth / this.canvas.clientHeight;
       this.camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 1000);
-      this.camera.position.set(0, 1.6, 2.5);
-      this.camera.lookAt(0, 1.5, 0);
+      
+      // Use configured camera position
+      const camPos = this.config.cameraPos;
+      this.camera.position.set(camPos[0], camPos[1], camPos[2]);
+      this.camera.lookAt(0, camPos[1] - 0.1, 0);
 
       // Store bound handlers for proper cleanup
       this._onResizeBound = this._onResize.bind(this);
@@ -123,34 +146,161 @@
     }
 
     /**
-     * Set up scene lighting
+     * Set up scene lighting based on preset
      * @private
      */
     _setupLights() {
-      // Ambient light
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-      this.scene.add(ambientLight);
+      const preset = this.config.lightPreset;
+      
+      if (preset === 'hemi-dir-soft') {
+        // Hemisphere + Directional + Soft fill (default)
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        this.scene.add(ambientLight);
 
-      // Main directional light
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-      directionalLight.position.set(2, 3, 2);
-      directionalLight.castShadow = true;
-      this.scene.add(directionalLight);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight.position.set(2, 3, 2);
+        directionalLight.castShadow = true;
+        this.scene.add(directionalLight);
 
-      // Fill light
-      const fillLight = new THREE.DirectionalLight(0x66fcf1, 0.3);
-      fillLight.position.set(-2, 1, -2);
-      this.scene.add(fillLight);
+        const fillLight = new THREE.DirectionalLight(0x66fcf1, 0.3);
+        fillLight.position.set(-2, 1, -2);
+        this.scene.add(fillLight);
+      } else if (preset === 'hemi-dir-hard') {
+        // Stronger contrast lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+        this.scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1.2);
+        directionalLight.position.set(2, 3, 2);
+        directionalLight.castShadow = true;
+        this.scene.add(directionalLight);
+      } else if (preset === 'three-point') {
+        // Traditional three-point lighting
+        const keyLight = new THREE.DirectionalLight(0xffffff, 1.0);
+        keyLight.position.set(2, 3, 2);
+        keyLight.castShadow = true;
+        this.scene.add(keyLight);
+
+        const fillLight = new THREE.DirectionalLight(0xffffff, 0.4);
+        fillLight.position.set(-2, 1, 1);
+        this.scene.add(fillLight);
+
+        const backLight = new THREE.DirectionalLight(0x66fcf1, 0.6);
+        backLight.position.set(0, 2, -2);
+        this.scene.add(backLight);
+      } else {
+        // Fallback to default soft lighting
+        console.warn(`Unknown light preset: ${preset}, using default`);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        this.scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight.position.set(2, 3, 2);
+        directionalLight.castShadow = true;
+        this.scene.add(directionalLight);
+      }
     }
 
     /**
-     * Load avatar model
+     * Load avatar model from config or fallback to placeholder
      * @private
      */
     async _loadAvatar() {
-      // For Phase 3.3-A MVP, create a simple placeholder sphere
-      // In production, this will load a GLB model using GLTFLoader
-      console.log('📦 Creating placeholder avatar...');
+      try {
+        // Build full model URL
+        const modelUrl = new URL(
+          this.config.modelFile,
+          window.location.origin + this.config.avatarBaseUrl
+        ).toString();
+
+        console.log(`📦 Attempting to load avatar from: ${modelUrl}`);
+
+        // Check if GLTFLoader is available
+        if (typeof THREE.GLTFLoader !== 'undefined') {
+          await this._loadGLBModel(modelUrl);
+        } else {
+          console.warn('⚠️ GLTFLoader not available, using placeholder');
+          this._createPlaceholderAvatar();
+        }
+      } catch (error) {
+        console.warn('⚠️ Failed to load avatar model, using placeholder:', error.message);
+        this._createPlaceholderAvatar();
+      }
+    }
+
+    /**
+     * Load GLB model using GLTFLoader
+     * @private
+     */
+    async _loadGLBModel(url) {
+      return new Promise((resolve, reject) => {
+        const loader = new THREE.GLTFLoader();
+        
+        // Set timeout for loading
+        const timeout = setTimeout(() => {
+          reject(new Error('Model loading timeout'));
+        }, 10000);
+
+        loader.load(
+          url,
+          (gltf) => {
+            clearTimeout(timeout);
+            this.state.model = gltf.scene;
+            
+            // Apply configured scale
+            this.state.model.scale.setScalar(this.config.avatarScale);
+            
+            // Center the model
+            const box = new THREE.Box3().setFromObject(this.state.model);
+            const center = box.getCenter(new THREE.Vector3());
+            this.state.model.position.set(-center.x, -box.min.y, -center.z);
+            
+            // Enable shadows
+            this.state.model.traverse((node) => {
+              if (node.isMesh) {
+                node.castShadow = true;
+                node.receiveShadow = true;
+              }
+            });
+
+            this.scene.add(this.state.model);
+
+            // Set up animation mixer
+            this.state.mixer = new THREE.AnimationMixer(this.state.model);
+            
+            // Look for idle and speaking animations
+            if (gltf.animations && gltf.animations.length > 0) {
+              gltf.animations.forEach((clip) => {
+                if (clip.name.toLowerCase().includes('idle')) {
+                  this.state.idleAction = this.state.mixer.clipAction(clip);
+                  this.state.idleAction.play();
+                } else if (clip.name.toLowerCase().includes('speak')) {
+                  this.state.speakAction = this.state.mixer.clipAction(clip);
+                }
+              });
+            }
+
+            console.log('✅ Avatar model loaded successfully');
+            resolve();
+          },
+          (progress) => {
+            const percent = (progress.loaded / progress.total * 100).toFixed(0);
+            console.log(`Loading avatar: ${percent}%`);
+          },
+          (error) => {
+            clearTimeout(timeout);
+            reject(error);
+          }
+        );
+      });
+    }
+
+    /**
+     * Create placeholder sphere avatar
+     * @private
+     */
+    _createPlaceholderAvatar() {
+      console.log('📦 Creating placeholder avatar (orb)...');
 
       // Create a simple sphere as avatar placeholder
       const geometry = new THREE.SphereGeometry(0.3, 32, 32);
@@ -239,13 +389,15 @@
 
         this.lastFrameTime = currentTime - (deltaTime % frameInterval);
 
-        // Update animations
+        // Update animations (skip if reduced motion is enabled)
         const delta = deltaTime / 1000;
-        if (this.state.mixer) {
-          this.state.mixer.update(delta);
-        }
-        if (this.idleAnimation) {
-          this.idleAnimation.update(delta);
+        if (!this.state.reducedMotion) {
+          if (this.state.mixer) {
+            this.state.mixer.update(delta);
+          }
+          if (this.idleAnimation) {
+            this.idleAnimation.update(delta);
+          }
         }
 
         // Render scene
@@ -297,6 +449,29 @@
     }
 
     /**
+     * Handle reduced motion preference change
+     * @private
+     */
+    _onReducedMotionChange(event) {
+      this.state.reducedMotion = event.matches;
+      console.log(`ℹ️ Reduced motion: ${this.state.reducedMotion ? 'enabled' : 'disabled'}`);
+      
+      // Pause animations if reduced motion is enabled
+      if (this.state.reducedMotion) {
+        if (this.state.idleAction) {
+          this.state.idleAction.paused = true;
+        }
+        if (this.state.speakAction) {
+          this.state.speakAction.paused = true;
+        }
+      } else {
+        if (this.state.idleAction && !this.state.speaking) {
+          this.state.idleAction.paused = false;
+        }
+      }
+    }
+
+    /**
      * Clean up resources
      */
     dispose() {
@@ -312,6 +487,15 @@
       }
       if (this._onVisibilityChangeBound) {
         document.removeEventListener('visibilitychange', this._onVisibilityChangeBound);
+      }
+      if (this._onReducedMotionBound) {
+        const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+        if (mediaQuery.removeEventListener) {
+          mediaQuery.removeEventListener('change', this._onReducedMotionBound);
+        } else {
+          // Fallback for older browsers
+          mediaQuery.removeListener(this._onReducedMotionBound);
+        }
       }
 
       // Dispose Three.js resources
