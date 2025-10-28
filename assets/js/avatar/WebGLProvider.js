@@ -286,8 +286,12 @@
             resolve();
           },
           (progress) => {
-            const percent = (progress.loaded / progress.total * 100).toFixed(0);
-            console.log(`Loading avatar: ${percent}%`);
+            if (progress.total > 0) {
+              const percent = (progress.loaded / progress.total * 100).toFixed(0);
+              console.log(`Loading avatar: ${percent}%`);
+            } else {
+              console.log('Loading avatar...');
+            }
           },
           (error) => {
             clearTimeout(timeout);
