@@ -276,6 +276,7 @@ function initializeToggles() {
           // VH and CS are mutually exclusive
           if (isActive && state.customerService) {
             state.customerService = false;
+            updateToggleStates();
           }
           await enableVirtualHuman(isActive);
           break;
@@ -285,6 +286,7 @@ function initializeToggles() {
           if (isActive && state.virtualHuman) {
             state.virtualHuman = false;
             await enableVirtualHuman(false);
+            updateToggleStates();
           }
           toggleCustomerServiceMode(isActive);
           break;
