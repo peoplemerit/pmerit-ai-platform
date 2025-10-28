@@ -203,7 +203,7 @@
       background: var(--bg-card);
       border-bottom: 1px solid var(--border-color);
       position: sticky;
-      top: 72px;
+      top: 72px; /* Header height + padding */
       z-index: var(--z-sticky);
       box-shadow: var(--shadow-sm);
     }
@@ -460,7 +460,7 @@
       }
 
       .section-nav {
-        top: 64px;
+        top: 64px; /* Mobile header height */
       }
 
       .hero-actions {
@@ -587,6 +587,12 @@
     async function loadCareerTracks() {
       try {
         const response = await fetch('assets/data/career-tracks.json');
+        
+        // Check if response is OK
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
         const data = await response.json();
 
         // Render Global Remote Tracks
@@ -599,7 +605,25 @@
         renderCards(data.localCareerPathways, 'career-cards');
       } catch (error) {
         console.error('Error loading career tracks:', error);
+        
+        // Display user-friendly error message
+        displayErrorMessage('Unable to load career tracks. Please refresh the page or try again later.');
       }
+    }
+
+    function displayErrorMessage(message) {
+      const sections = ['global-cards', 'education-cards', 'career-cards'];
+      sections.forEach(sectionId => {
+        const container = document.getElementById(sectionId);
+        if (container) {
+          container.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: var(--space-8); color: var(--text-secondary);">
+              <i class="fas fa-exclamation-circle" style="font-size: 3rem; margin-bottom: var(--space-4);"></i>
+              <p>${message}</p>
+            </div>
+          `;
+        }
+      });
     }
 
     function renderCards(tracks, containerId) {
