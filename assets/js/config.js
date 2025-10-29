@@ -45,10 +45,12 @@
   // Make config globally available
   window.CONFIG = Object.freeze(config);
 
-  // Avatar configuration (Phase 1)
+  // Avatar configuration (Phase 5)
   window.PMERIT = window.PMERIT || {};
   window.PMERIT.AVATAR_BASE_URL = window.PMERIT.AVATAR_BASE_URL || '/assets/avatars';
-  window.PMERIT.AVATAR_MODEL = window.PMERIT.AVATAR_MODEL || 'placeholder.glb';
+  window.PMERIT.AVATAR_MODEL = window.PMERIT.AVATAR_MODEL || 'pm_classic.glb';
+  window.PMERIT.AVATAR_SCALE = window.PMERIT.AVATAR_SCALE || 1.0;
+  window.PMERIT.CAMERA_POS = window.PMERIT.CAMERA_POS || { x: 0, y: 1.6, z: 2.5 };
 
   // Log environment in development
   if (config.ENV === 'development') {

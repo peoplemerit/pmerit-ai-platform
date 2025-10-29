@@ -12,9 +12,15 @@
   class WebGLProvider {
     constructor(canvas, config = {}) {
       this.canvas = canvas;
+      
+      // Get config from global PMERIT namespace (Phase 5)
+      const pmeritConfig = window.PMERIT || {};
+      
       this.config = {
-        avatarBaseUrl: config.avatarBaseUrl || '/assets/avatars',
-        modelFile: config.modelFile || 'avatar.glb',
+        avatarBaseUrl: config.avatarBaseUrl || pmeritConfig.AVATAR_BASE_URL || '/assets/avatars',
+        modelFile: config.modelFile || pmeritConfig.AVATAR_MODEL || 'pm_classic.glb',
+        avatarScale: config.avatarScale || pmeritConfig.AVATAR_SCALE || 1.0,
+        cameraPos: config.cameraPos || pmeritConfig.CAMERA_POS || { x: 0, y: 1.6, z: 2.5 },
         pixelRatio: Math.min(window.devicePixelRatio || 1, 2),
         targetFPS: config.targetFPS || 30,
         ...config
@@ -97,7 +103,10 @@
     _setupCamera() {
       const aspect = this.canvas.clientWidth / this.canvas.clientHeight;
       this.camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 1000);
-      this.camera.position.set(0, 1.6, 2.5);
+      
+      // Use camera position from config (Phase 5)
+      const pos = this.config.cameraPos;
+      this.camera.position.set(pos.x, pos.y, pos.z);
       this.camera.lookAt(0, 1.5, 0);
 
       // Store bound handlers for proper cleanup
@@ -148,12 +157,61 @@
      * @private
      */
     async _loadAvatar() {
-      // For Phase 3.3-A MVP, create a simple placeholder sphere
-      // In production, this will load a GLB model using GLTFLoader
-      console.log('📦 Creating placeholder avatar...');
+      try {
+        // Build model URL from config (Phase 5)
+        const modelUrl = `${this.config.avatarBaseUrl}/${this.config.modelFile}`;
+        console.log(`📦 Loading avatar from: ${modelUrl}`);
 
-      // Create a simple sphere as avatar placeholder
-      const geometry = new THREE.SphereGeometry(0.3, 32, 32);
+        // Check if GLTFLoader is available for loading .glb models
+        if (typeof THREE.GLTFLoader !== 'undefined' && this.config.modelFile.endsWith('.glb')) {
+          const loader = new THREE.GLTFLoader();
+          
+          try {
+            const gltf = await new Promise((resolve, reject) => {
+              loader.load(
+                modelUrl,
+                resolve,
+                undefined,
+                reject
+              );
+            });
+
+            this.state.model = gltf.scene;
+            this.state.model.scale.setScalar(this.config.avatarScale);
+            this.state.model.position.set(0, 0, 0);
+            this.scene.add(this.state.model);
+
+            // Set up animations if available
+            if (gltf.animations && gltf.animations.length > 0) {
+              this.state.mixer = new THREE.AnimationMixer(this.state.model);
+              // Could set up idle and speak animations here
+            }
+
+            console.log('✅ Avatar model loaded successfully');
+            return;
+          } catch (loadError) {
+            console.warn('⚠️ Failed to load GLB model, using fallback:', loadError.message);
+            // Fall through to fallback
+          }
+        }
+
+        // Fallback: Create placeholder orb (Phase 5 requirement)
+        console.log('📦 Creating fallback orb avatar...');
+        this._createFallbackOrb();
+
+      } catch (error) {
+        console.error('❌ Avatar load error:', error);
+        // Even on error, create fallback orb
+        this._createFallbackOrb();
+      }
+    }
+
+    /**
+     * Create fallback orb when model can't be loaded
+     * @private
+     */
+    _createFallbackOrb() {
+      const geometry = new THREE.SphereGeometry(0.3 * this.config.avatarScale, 32, 32);
       const material = new THREE.MeshStandardMaterial({
         color: 0x45a29e,
         metalness: 0.3,
@@ -171,7 +229,7 @@
       // Simple idle animation (gentle bobbing)
       this._createIdleAnimation();
 
-      console.log('✅ Placeholder avatar created');
+      console.log('✅ Fallback orb created');
     }
 
     /**

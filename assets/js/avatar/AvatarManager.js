@@ -46,6 +46,13 @@
       try {
         console.log('🎭 Initializing AvatarManager...');
 
+        // Check for reduced motion preference (Phase 5 - Accessibility)
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReducedMotion && this.config.respectReducedMotion !== false) {
+          console.log('♿ Reduced motion detected - using audio-only mode');
+          this.config.enabled = false;
+        }
+
         // Initialize WebGL provider if enabled
         if (this.config.enabled) {
           const canvas = document.getElementById(this.config.canvasId);

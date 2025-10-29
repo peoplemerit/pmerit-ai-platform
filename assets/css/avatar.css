@@ -26,6 +26,8 @@
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  /* Phase 5: Prevent layout shift on load */
+  min-height: 400px;
 }
 
 /* Status Strip */
@@ -63,6 +65,9 @@
   height: 400px;
   background: #1f2833;
   cursor: default;
+  /* Phase 5: Prevent layout shift */
+  min-height: 400px;
+  contain: layout style paint;
 }
 
 /* Avatar loading state */
@@ -136,6 +141,13 @@
   border: none;
   padding: 0;
   outline: none;
+}
+
+/* Phase 5: Enhanced focus ring visibility */
+.vh-toggle:focus-visible {
+  box-shadow: 0 0 0 3px rgba(102, 252, 241, 0.5);
+  outline: 2px solid #66fcf1;
+  outline-offset: 2px;
 }
 
 .vh-toggle:focus {
