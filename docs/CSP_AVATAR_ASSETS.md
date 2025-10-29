@@ -64,14 +64,20 @@ Configure in web server or Cloudflare Pages.
 
 #### Cloudflare Pages (_headers file)
 
-Create `_headers` file in project root:
+A `_headers` file has been created in the project root with the following configuration:
 
 ```
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https://cdn.pmerit.com; media-src 'self' https://cdn.pmerit.com; connect-src 'self' https://cdn.pmerit.com
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://pmerit-api.peoplemerit.workers.dev https://pmerit-ai-chat.openai.azure.com; media-src 'self'; worker-src 'self' blob:; frame-src 'self'
 ```
 
-**Pros:** Centralized, applies to all pages  
+This configuration allows:
+- Three.js from cdnjs.cloudflare.com
+- GLTFLoader from cdn.jsdelivr.net
+- Avatar assets from same origin
+- API connections to PMERIT services
+
+**Pros:** Centralized, applies to all pages, already implemented  
 **Cons:** Requires redeployment to change
 
 #### Cloudflare Workers
