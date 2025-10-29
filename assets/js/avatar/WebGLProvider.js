@@ -215,17 +215,20 @@
         const modelUrl = new URL(this.config.modelFile, baseUrl).toString();
 
         console.log(`📦 Attempting to load avatar from: ${modelUrl}`);
+        console.log(`📦 Config: avatarBaseUrl="${this.config.avatarBaseUrl}", modelFile="${this.config.modelFile}"`);
 
         // Attempt to load GLB model with try-catch for GLTFLoader availability
         try {
           await this._loadGLBModel(modelUrl);
+          console.log(`✅ Successfully loaded GLB model from ${modelUrl}`);
         } catch (loadError) {
           // GLTFLoader not available or model load failed
-          console.warn('⚠️ GLTFLoader not available or load failed, using placeholder');
+          console.warn('⚠️ GLTFLoader not available or load failed, using placeholder orb fallback');
+          console.warn('⚠️ Error details:', loadError.message);
           this._createPlaceholderAvatar();
         }
       } catch (error) {
-        console.warn('⚠️ Failed to load avatar model, using placeholder:', error.message);
+        console.warn('⚠️ Failed to load avatar model, using placeholder orb fallback:', error.message);
         this._createPlaceholderAvatar();
       }
     }
@@ -237,17 +240,17 @@
     async _loadGLBModel(url) {
       return new Promise((resolve, reject) => {
         if (!THREE.GLTFLoader) {
-          reject(new Error('GLTFLoader not available'));
-          return;
-        }
-        if (!THREE.GLTFLoader) {
+          console.error('❌ THREE.GLTFLoader is not available. Make sure GLTFLoader.js is loaded after Three.js');
           reject(new Error('GLTFLoader not available'));
           return;
         }
         const loader = new THREE.GLTFLoader();
         
+        console.log(`🔄 Starting GLB load from: ${url}`);
+        
         // Set configurable timeout for loading
         const timeout = setTimeout(() => {
+          console.error(`❌ Model loading timeout (${this.config.modelLoadTimeout}ms) - ${url}`);
           reject(new Error('Model loading timeout'));
         }, this.config.modelLoadTimeout);
 
@@ -280,29 +283,40 @@
             
             // Look for idle and speaking animations
             if (gltf.animations && gltf.animations.length > 0) {
+              console.log(`🎬 Found ${gltf.animations.length} animation(s) in model`);
               gltf.animations.forEach((clip) => {
                 if (clip.name.toLowerCase().includes('idle')) {
                   this.state.idleAction = this.state.mixer.clipAction(clip);
                   this.state.idleAction.play();
+                  console.log(`▶️ Playing idle animation: ${clip.name}`);
                 } else if (clip.name.toLowerCase().includes('speak')) {
                   this.state.speakAction = this.state.mixer.clipAction(clip);
+                  console.log(`🔊 Found speaking animation: ${clip.name}`);
                 }
               });
+            } else {
+              console.log('ℹ️ No animations found in model');
             }
 
-            console.log('✅ Avatar model loaded successfully');
+            console.log('✅ Avatar model loaded and initialized successfully');
             resolve();
           },
           (progress) => {
             if (progress.total > 0) {
               const percent = (progress.loaded / progress.total * 100).toFixed(0);
-              console.log(`Loading avatar: ${percent}%`);
+              console.log(`📦 Loading avatar: ${percent}% (${progress.loaded}/${progress.total} bytes)`);
             } else {
-              console.log('Loading avatar...');
+              console.log(`📦 Loading avatar: ${progress.loaded} bytes received...`);
             }
           },
           (error) => {
             clearTimeout(timeout);
+            console.error(`❌ GLB load error for ${url}:`, error);
+            console.error('   Check Network tab for HTTP status. Common issues:');
+            console.error('   - 404: File not found at path');
+            console.error('   - 403: Permission denied');
+            console.error('   - CORS: Cross-origin request blocked');
+            console.error('   - CSP: Content Security Policy violation');
             reject(error);
           }
         );
