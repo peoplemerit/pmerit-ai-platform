@@ -9,7 +9,7 @@
 
 // ========== STATE MANAGEMENT ==========
 const state = {
-  virtualHuman: false,
+  virtualHuman: true,  // Changed to true to make Virtual Human visible by default
   customerService: false,
   darkMode: false,
   textToSpeech: false,
@@ -42,6 +42,16 @@ function init() {
   initializeCollapsible();
   initializeCareerTrack();
   initializeSupportButtons();
+  
+  // Auto-enable Virtual Human if it's set to true in state
+  if (state.virtualHuman) {
+    // Use setTimeout to allow DOM to be fully ready
+    setTimeout(() => {
+      enableVirtualHuman(true).catch(error => {
+        console.error('Failed to auto-enable Virtual Human:', error);
+      });
+    }, 100);
+  }
   
   console.log('✅ PMERIT Platform initialized');
 }
@@ -150,7 +160,7 @@ async function enableVirtualHuman(isEnabled) {
 
         // Dispatch ready event
         window.dispatchEvent(new CustomEvent('avatar_ready'));
-      } else if (state.avatarManager) {
+      } else if (state.avatarManager && typeof state.avatarManager.setEnabled === 'function') {
         state.avatarManager.setEnabled(true);
         if (statusText) {
           statusText.textContent = 'Virtual Human is ready.';
