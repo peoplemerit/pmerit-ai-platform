@@ -41,7 +41,7 @@ window.vhBoot = async function vhBoot() {
       showToast('Virtual Human requires WebGL support', 'error');
       return;
     }
-    if (typeof GLTFLoader !== "function") {
+    if (typeof GLTFLoader !== "function" && typeof THREE?.GLTFLoader !== "function") {
       console.error("[VH] GLTFLoader not available; check CDN include.");
       showToast('Virtual Human loader not available', 'error');
       return;
@@ -61,7 +61,7 @@ window.vhBoot = async function vhBoot() {
         canvasId: 'vh-canvas',
         captionsId: 'vh-captions',
         enabled: true,
-        apiBaseUrl: window.CONFIG?.API_BASE_URL || '/api',
+        apiBaseUrl: (window.CONFIG && window.CONFIG.API_BASE_URL) || '/api',
         // Configure to use pm_classic.glb model
         modelFile: 'pm_classic.glb',
         avatarBaseUrl: '/assets/avatars/'
