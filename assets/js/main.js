@@ -33,22 +33,17 @@ document.addEventListener('DOMContentLoaded', function() {
 function init() {
   console.log('🚀 PMERIT Platform initializing...');
   
-  try {
-    // Load saved state
-    loadState();
-    
-    // Initialize all components
-    initializeMenu();
-    initializeToggles();
-    initializeCollapsible();
-    initializeCareerTrack();
-    initializeSupportButtons();
-    
-    console.log('✅ PMERIT Platform initialized');
-  } catch (error) {
-    console.error('❌ Error during initialization:', error);
-    throw error; // Re-throw to be caught by outer try-catch
-  }
+  // Load saved state
+  loadState();
+  
+  // Initialize all components - each has its own error handling
+  initializeMenu();
+  initializeToggles();
+  initializeCollapsible();
+  initializeCareerTrack();
+  initializeSupportButtons();
+  
+  console.log('✅ PMERIT Platform initialized');
 }
 
 // ========== VIRTUAL HUMAN MODE ==========
@@ -443,8 +438,16 @@ function initializeToggles() {
 
           saveState();
         } catch (error) {
-          console.error(`❌ Error handling ${toggleType} toggle:`, error);
-          showToast(`Failed to toggle ${toggleType}. Please try again.`, 'error');
+          // Map toggle types to user-friendly names
+          const toggleNames = {
+            'vh': 'Virtual Human',
+            'cs': 'Customer Service',
+            'dark': 'Dark Mode',
+            'tts': 'Text-to-Speech'
+          };
+          const friendlyName = toggleNames[toggleType] || toggleType;
+          console.error(`❌ Error handling ${friendlyName} toggle:`, error);
+          showToast(`Failed to toggle ${friendlyName}. Please try again.`, 'error');
         }
       });
 
