@@ -41,6 +41,7 @@
   <link rel="stylesheet" href="assets/css/mobile-mockup-match.css?v=2">
   <link rel="stylesheet" href="assets/css/components.css?v=2">
   <link rel="stylesheet" href="assets/css/avatar.css?v=2">
+  <link rel="stylesheet" href="assets/css/components/tech-help.css">
 </head>
 <body>
 
@@ -105,6 +106,8 @@
     <!-- Mobile Footer -->
     <footer class="pmerit-footer mobile-footer">
       <a href="/privacy.html" class="footer-link-mobile">Privacy & Terms</a>
+      <span class="footer-separator"> • </span>
+      <a href="#" class="footer-link-mobile" id="mobile-tech-help-link">Tech Help</a>
       <span class="footer-separator"> • </span>
       <span class="footer-status-mobile">Connected to Educational Services</span>
     </footer>
@@ -390,6 +393,7 @@
           <a href="/contact.html" class="footer-link">Contact</a>
           <a href="/partnerships.html" class="footer-link">Partnerships</a>
           <a href="/support.html" class="footer-link">Support</a>
+          <a href="#" class="footer-link" id="desktop-tech-help-link">Tech Help</a>
         </div>
       </div>
     </footer>
@@ -397,6 +401,9 @@
 
   <!-- Auth Modal Component (Phase 3.1) -->
   <div id="auth-modal-container"></div>
+
+  <!-- Tech Help Modal Component -->
+  <div id="tech-help-modal-container"></div>
   
   <!-- JavaScript - Version 2 (Cache-busting) -->
   <script src="assets/js/config.js"></script>
@@ -426,6 +433,7 @@
     onerror="console.warn('⚠️ GLTFLoader failed to load from CDN')"></script>
   <script src="assets/js/chat.js?v=2"></script>
   <script src="assets/js/auth-modal.js"></script>
+  <script src="assets/js/ui/tech-help.js"></script>
   
   <!-- Layout Styles (Embedded for Performance) -->
   <style>
@@ -949,6 +957,21 @@
           }
         })
         .catch(error => console.error('Error loading auth modal:', error));
+
+      // Load tech help modal partial
+      fetch('/partials/tech-help-modal.html')
+        .then(response => response.text())
+        .then(html => {
+          const container = document.getElementById('tech-help-modal-container');
+          if (container) {
+            container.innerHTML = html;
+            // Re-initialize TechHelpModal after DOM injection
+            if (window.TechHelpModal) {
+              window.TechHelpModal.init();
+            }
+          }
+        })
+        .catch(error => console.error('Error loading tech help modal:', error));
       
       // Wire Sign In buttons - now opens Auth Modal if available
       function initAuthButtons() {
@@ -1012,16 +1035,42 @@
           }
         });
       }
+
+      // Wire Tech Help button and links
+      function initTechHelpButton() {
+        const techHelpElements = [
+          document.getElementById('support-csm-btn'),
+          document.getElementById('mobile-tech-help-link'),
+          document.getElementById('desktop-tech-help-link')
+        ];
+
+        techHelpElements.forEach(function (element) {
+          if (element) {
+            element.addEventListener('click', function (e) {
+              e.preventDefault();
+
+              // Open Tech Help Modal if available
+              if (window.TechHelpModal) {
+                window.TechHelpModal.open();
+              } else {
+                console.warn('TechHelpModal not loaded yet');
+              }
+            });
+          }
+        });
+      }
       
       // Initialize when DOM is ready
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() {
           initAuthButtons();
           initDashboardButtons();
+          initTechHelpButton();
         });
       } else {
         initAuthButtons();
         initDashboardButtons();
+        initTechHelpButton();
       }
     })();
   </script>
