@@ -9,7 +9,7 @@
 
 // ========== STATE MANAGEMENT ==========
 const state = {
-  virtualHuman: true,  // Changed to true to make Virtual Human visible by default
+  virtualHuman: false,  // Default to false to show chat interface on page load
   customerService: false,
   darkMode: false,
   textToSpeech: false,
