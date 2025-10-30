@@ -12,7 +12,8 @@ export async function onRequestPost(context) {
   try {
     // CORS headers
     const corsHeaders = {
-      'Access-Control-Allow-Origin': '*',  // TODO: Restrict to actual domain in production
+      // TODO: Replace '*' with actual domain in production (e.g., 'https://peoplemerit.com')
+      'Access-Control-Allow-Origin': env.ALLOWED_ORIGIN || '*',
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
     };
@@ -41,7 +42,7 @@ export async function onRequestPost(context) {
 
     // Sanitize inputs
     const ticket = {
-      id: `TH-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      id: `TH-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`,
       name: body.name || null,
       email: body.email || null,
       category: body.category,

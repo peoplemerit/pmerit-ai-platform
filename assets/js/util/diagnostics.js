@@ -133,18 +133,23 @@
       let version = 'Unknown';
 
       // Detect browser
+      let match;
       if (ua.indexOf('Firefox') > -1) {
         browser = 'Firefox';
-        version = ua.match(/Firefox\/([0-9.]+)/)?.[1] || 'Unknown';
+        match = ua.match(/Firefox\/([0-9.]+)/);
+        version = match && match[1] ? match[1] : 'Unknown';
       } else if (ua.indexOf('Chrome') > -1 && ua.indexOf('Edg') === -1) {
         browser = 'Chrome';
-        version = ua.match(/Chrome\/([0-9.]+)/)?.[1] || 'Unknown';
+        match = ua.match(/Chrome\/([0-9.]+)/);
+        version = match && match[1] ? match[1] : 'Unknown';
       } else if (ua.indexOf('Safari') > -1 && ua.indexOf('Chrome') === -1) {
         browser = 'Safari';
-        version = ua.match(/Version\/([0-9.]+)/)?.[1] || 'Unknown';
+        match = ua.match(/Version\/([0-9.]+)/);
+        version = match && match[1] ? match[1] : 'Unknown';
       } else if (ua.indexOf('Edg') > -1) {
         browser = 'Edge';
-        version = ua.match(/Edg\/([0-9.]+)/)?.[1] || 'Unknown';
+        match = ua.match(/Edg\/([0-9.]+)/);
+        version = match && match[1] ? match[1] : 'Unknown';
       }
 
       return {
