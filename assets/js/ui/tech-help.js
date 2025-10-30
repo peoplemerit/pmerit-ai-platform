@@ -425,7 +425,7 @@
     /**
      * Handle form submission
      */
-    handleSubmit: function (e) {
+    handleSubmit: async function (e) {
       e.preventDefault();
 
       // Get form data
@@ -452,16 +452,39 @@
       // Dispatch analytics event
       this.dispatchAnalytics('tech_help_submit', { category });
 
-      // Simulate submission (since this is a stub)
-      setTimeout(() => {
-        this.showMessage('success', 'Your request has been submitted. Our team will respond soon!');
+      try {
+        // Submit via API if available
+        if (window.TechHelpAPI) {
+          const response = await window.TechHelpAPI.submit({
+            message: description,
+            category: category,
+            includeDiagnostics: true
+          });
+
+          if (response.success) {
+            this.showMessage('success', `Your request has been submitted (Ticket ID: ${response.ticketId}). Our team will respond soon!`);
+            this.dispatchAnalytics('tech_help_submit_success', { category, ticketId: response.ticketId });
+          } else {
+            throw new Error('Submission failed');
+          }
+        } else {
+          // Fallback: simulate submission
+          await new Promise(resolve => setTimeout(resolve, SUBMIT_DELAY));
+          this.showMessage('success', 'Your request has been submitted. Our team will respond soon!');
+        }
+
         this.setFormLoading(false);
 
         // Close modal after a delay
         setTimeout(() => {
           this.close();
         }, CLOSE_DELAY);
-      }, SUBMIT_DELAY);
+      } catch (error) {
+        console.error('Error submitting tech help request:', error);
+        this.showMessage('error', 'Failed to submit your request. Please try again.');
+        this.setFormLoading(false);
+        this.dispatchAnalytics('tech_help_submit_error', { category, error: error.message });
+      }
     },
 
     /**
