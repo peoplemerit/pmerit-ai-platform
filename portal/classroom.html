@@ -353,8 +353,10 @@
           dom.userDisplay.textContent = displayName;
         }
 
-        // Load saved VH preference
-        const vhEnabled = localStorage.getItem('pmerit_vh_enabled') !== 'false';
+        // Load saved VH preference, defaulting to true (enabled)
+        const savedPreference = localStorage.getItem('pmerit_vh_enabled');
+        // Explicitly check for 'true' or 'false' strings, default to true for new users
+        const vhEnabled = savedPreference === 'false' ? false : true;
         updateVHToggle(vhEnabled);
 
         bindEvents();

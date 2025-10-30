@@ -55,7 +55,7 @@
   }
   
   window.PMERIT.AVATAR_BASE_URL = avatarBaseUrl;
-  window.PMERIT.AVATAR_MODEL = window.PMERIT.AVATAR_MODEL || 'pm_classic.glb';
+  window.PMERIT.AVATAR_MODEL = window.PMERIT.AVATAR_MODEL || 'chris_redfield__re6_bad.glb';
   window.PMERIT.AVATAR_SCALE = window.PMERIT.AVATAR_SCALE || 1.0;
   window.PMERIT.CAMERA_POS = window.PMERIT.CAMERA_POS || [0, 1.4, 2.2];
   window.PMERIT.LIGHT_PRESET = window.PMERIT.LIGHT_PRESET || 'hemi-dir-soft';

@@ -16,7 +16,7 @@
       const PMERIT = window.PMERIT || {};
       this.config = {
         avatarBaseUrl: config.avatarBaseUrl || PMERIT.AVATAR_BASE_URL || '/assets/avatars/',
-        modelFile: config.modelFile || PMERIT.AVATAR_MODEL || 'pm_classic.glb',
+        modelFile: config.modelFile || PMERIT.AVATAR_MODEL || 'chris_redfield__re6_bad.glb',
         avatarScale: config.avatarScale || PMERIT.AVATAR_SCALE || 1.0,
         cameraPos: config.cameraPos || PMERIT.CAMERA_POS || [0, 1.4, 2.2],
         lightPreset: config.lightPreset || PMERIT.LIGHT_PRESET || 'hemi-dir-soft',
