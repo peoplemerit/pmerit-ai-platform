@@ -10,6 +10,12 @@
 (function () {
   'use strict';
 
+  // Constants
+  const SUBMIT_DELAY = 1000;
+  const CLOSE_DELAY = 2000;
+  const DEFAULT_BUTTON_HTML = '<i class="fas fa-paper-plane"></i> Send';
+  const FOCUSABLE_ELEMENTS_SELECTOR = 'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
   const TechHelpModal = {
     modal: null,
     backdrop: null,
@@ -180,8 +186,8 @@
         // Close modal after a delay
         setTimeout(() => {
           this.close();
-        }, 2000);
-      }, 1000);
+        }, CLOSE_DELAY);
+      }, SUBMIT_DELAY);
     },
 
     /**
@@ -263,7 +269,7 @@
           input.disabled = false;
         });
         if (submitBtn) {
-          submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send';
+          submitBtn.innerHTML = DEFAULT_BUTTON_HTML;
         }
       }
     },
@@ -276,9 +282,7 @@
         return;
       }
 
-      const focusableElements = this.modal.querySelectorAll(
-        'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
-      );
+      const focusableElements = this.modal.querySelectorAll(FOCUSABLE_ELEMENTS_SELECTOR);
 
       if (focusableElements.length === 0) {
         return;
