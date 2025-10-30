@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PMerit AI Platform - Career Track</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #1a1a1a;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        nav {
+            background: #2d2d2d;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00d4ff;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        nav .nav-links a:hover {
+            color: #00d4ff;
+        }
+
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #00d4ff;
+            margin-bottom: 1rem;
+        }
+
+        .career-paths {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .career-card {
+            background: #2d2d2d;
+            padding: 2rem;
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+
+        .career-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .career-card h3 {
+            color: #00d4ff;
+            margin-bottom: 1rem;
+        }
+
+        .career-card ul {
+            list-style-position: inside;
+            margin-top: 1rem;
+        }
+
+        .career-card li {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">PMerit AI Platform</div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/portal/classroom/">Classroom</a></li>
+            <li><a href="/portal/career/">Career Track</a></li>
+            <li><a href="/about/">About</a></li>
+        </ul>
+    </nav>
+
+    <div class="content">
+        <div class="header">
+            <h1>Career Track</h1>
+            <p>Explore career paths and develop the skills you need to succeed in the AI-powered future.</p>
+        </div>
+
+        <div class="career-paths">
+            <div class="career-card">
+                <h3>AI/ML Engineer</h3>
+                <p>Build and deploy machine learning models and AI systems.</p>
+                <ul>
+                    <li>Python & TensorFlow</li>
+                    <li>Neural Networks</li>
+                    <li>Model Deployment</li>
+                    <li>Data Engineering</li>
+                </ul>
+            </div>
+
+            <div class="career-card">
+                <h3>Data Scientist</h3>
+                <p>Extract insights from data and drive business decisions.</p>
+                <ul>
+                    <li>Statistics & Analytics</li>
+                    <li>Data Visualization</li>
+                    <li>Predictive Modeling</li>
+                    <li>Business Intelligence</li>
+                </ul>
+            </div>
+
+            <div class="career-card">
+                <h3>Full Stack Developer</h3>
+                <p>Create complete web applications from front to back.</p>
+                <ul>
+                    <li>Frontend Frameworks</li>
+                    <li>Backend APIs</li>
+                    <li>Database Design</li>
+                    <li>DevOps & Deployment</li>
+                </ul>
+            </div>
+
+            <div class="career-card">
+                <h3>Cloud Architect</h3>
+                <p>Design and manage scalable cloud infrastructure.</p>
+                <ul>
+                    <li>AWS/Azure/GCP</li>
+                    <li>Containerization</li>
+                    <li>Microservices</li>
+                    <li>Security & Compliance</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

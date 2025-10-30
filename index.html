@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PMerit AI Platform - Home</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #1a1a1a;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        nav {
+            background: #2d2d2d;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00d4ff;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        nav .nav-links a:hover {
+            color: #00d4ff;
+        }
+
+        .settings-panel {
+            background: #2d2d2d;
+            padding: 2rem;
+            margin: 2rem;
+            border-radius: 8px;
+        }
+
+        .settings-panel h2 {
+            margin-bottom: 1rem;
+            color: #00d4ff;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background: #1a1a1a;
+            border-radius: 4px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 34px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #555;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #00d4ff;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .vh-container {
+            display: none;
+            margin: 2rem;
+            padding: 2rem;
+            background: #2d2d2d;
+            border-radius: 8px;
+        }
+
+        .vh-container.active {
+            display: block;
+        }
+
+        .vh-container h3 {
+            margin-bottom: 1rem;
+            color: #00d4ff;
+        }
+
+        #vh-canvas {
+            width: 100%;
+            height: 500px;
+            background: #1a1a1a;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+
+        .content {
+            padding: 2rem;
+        }
+
+        .error-message {
+            background: #ff4444;
+            color: white;
+            padding: 1rem;
+            margin: 1rem 2rem;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">PMerit AI Platform</div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/portal/classroom/">Classroom</a></li>
+            <!-- FIX: Corrected Career Track link from /career.html to /portal/career/ -->
+            <li><a href="/portal/career/">Career Track</a></li>
+            <li><a href="/about/">About</a></li>
+        </ul>
+    </nav>
+
+    <div class="content">
+        <h1>Welcome to PMerit AI Platform</h1>
+        <p>Your gateway to AI-powered learning and career development.</p>
+    </div>
+
+    <div class="settings-panel">
+        <h2>Settings</h2>
+        
+        <div class="setting-item">
+            <label for="dark-mode-toggle">Dark Mode</label>
+            <label class="toggle-switch">
+                <input type="checkbox" id="dark-mode-toggle" checked>
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="setting-item">
+            <label for="vh-toggle">Virtual Human Mode</label>
+            <label class="toggle-switch">
+                <input type="checkbox" id="vh-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <div class="setting-item">
+            <label for="tts-toggle">Text-to-Speech</label>
+            <label class="toggle-switch">
+                <input type="checkbox" id="tts-toggle">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+
+    <div id="error-container" class="error-message"></div>
+
+    <div class="vh-container" id="vh-container">
+        <h3>Virtual Human Assistant</h3>
+        <div id="vh-canvas">
+            <p>Loading avatar...</p>
+        </div>
+    </div>
+
+    <!-- CRITICAL FIX: Load avatar module with proper error handling -->
+    <script type="module" src="/assets/avatars/avatar-init.js"></script>
+    
+    <!-- Main application script -->
+    <script>
+        // CRITICAL FIX: Wrap initialization in DOMContentLoaded and try/catch
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Main app: DOM ready');
+
+            // Dark Mode Toggle (working independently)
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            darkModeToggle.addEventListener('change', function() {
+                console.log('Dark mode:', this.checked ? 'ON' : 'OFF');
+                // Implementation would go here
+            });
+
+            // TTS Toggle (working independently)
+            const ttsToggle = document.getElementById('tts-toggle');
+            ttsToggle.addEventListener('change', function() {
+                console.log('TTS:', this.checked ? 'ON' : 'OFF');
+                // Implementation would go here
+            });
+
+            // Virtual Human Toggle
+            const vhToggle = document.getElementById('vh-toggle');
+            const vhContainer = document.getElementById('vh-container');
+            const errorContainer = document.getElementById('error-container');
+            let avatarInitialized = false;
+
+            vhToggle.addEventListener('change', async function() {
+                console.log('VH toggle:', this.checked ? 'ON' : 'OFF');
+                
+                if (this.checked) {
+                    // Show container
+                    vhContainer.classList.add('active');
+                    
+                    // Initialize avatar if not already done
+                    if (!avatarInitialized && window.AvatarManager) {
+                        try {
+                            console.log('Attempting to initialize avatar...');
+                            const success = await window.AvatarManager.init(
+                                '#vh-canvas',
+                                '/assets/avatars/chris_redfield__re6_bad.glb'
+                            );
+                            
+                            if (success) {
+                                avatarInitialized = true;
+                                console.log('Avatar initialized successfully');
+                            } else {
+                                throw new Error('Avatar initialization returned false');
+                            }
+                        } catch (error) {
+                            console.error('Failed to initialize avatar:', error);
+                            errorContainer.textContent = 'Failed to load Virtual Human. Please check console for details.';
+                            errorContainer.classList.add('show');
+                            
+                            // Reset toggle
+                            setTimeout(() => {
+                                this.checked = false;
+                                vhContainer.classList.remove('active');
+                            }, 100);
+                        }
+                    } else if (!window.AvatarManager) {
+                        console.error('AvatarManager not available');
+                        errorContainer.textContent = 'Virtual Human module failed to load. Please refresh the page.';
+                        errorContainer.classList.add('show');
+                        
+                        // Reset toggle
+                        setTimeout(() => {
+                            this.checked = false;
+                            vhContainer.classList.remove('active');
+                        }, 100);
+                    }
+                } else {
+                    // Hide container (but don't dispose - user might toggle back)
+                    vhContainer.classList.remove('active');
+                    errorContainer.classList.remove('show');
+                }
+            });
+
+            console.log('Main app: All event listeners attached');
+            console.log('Virtual Human toggle ready - waiting for user interaction');
+        });
+
+        // Global error handler to catch module loading errors
+        window.addEventListener('error', (event) => {
+            if (event.filename && event.filename.includes('avatar-init.js')) {
+                console.error('Error loading avatar module:', event.message);
+                const errorContainer = document.getElementById('error-container');
+                if (errorContainer) {
+                    errorContainer.textContent = 'Failed to load Virtual Human module. Check CSP headers.';
+                    errorContainer.classList.add('show');
+                }
+            }
+        });
+
+        console.log('Main app: Script loaded, waiting for DOMContentLoaded');
+    </script>
+</body>
+</html>

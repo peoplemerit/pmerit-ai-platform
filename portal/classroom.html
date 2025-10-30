@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PMerit AI Platform - Classroom</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #1a1a1a;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        nav {
+            background: #2d2d2d;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00d4ff;
+        }
+
+        nav .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        nav .nav-links a:hover {
+            color: #00d4ff;
+        }
+
+        .classroom-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            height: calc(100vh - 70px);
+        }
+
+        .sidebar {
+            background: #2d2d2d;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            color: #00d4ff;
+            margin-bottom: 1rem;
+        }
+
+        .vh-toggle-section {
+            background: #1a1a1a;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 34px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #555;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #00d4ff;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .main-content {
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .vh-container {
+            display: none;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #2d2d2d;
+            border-radius: 8px;
+        }
+
+        .vh-container.active {
+            display: block;
+        }
+
+        #vh-canvas {
+            width: 100%;
+            height: 400px;
+            background: #1a1a1a;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+
+        .lesson-content {
+            background: #2d2d2d;
+            padding: 2rem;
+            border-radius: 8px;
+        }
+
+        .error-message {
+            background: #ff4444;
+            color: white;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">PMerit AI Platform</div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/portal/classroom/">Classroom</a></li>
+            <!-- FIX: Corrected Career Track link from /career.html to /portal/career/ -->
+            <li><a href="/portal/career/">Career Track</a></li>
+            <li><a href="/about/">About</a></li>
+        </ul>
+    </nav>
+
+    <div class="classroom-container">
+        <aside class="sidebar">
+            <h2>Classroom Tools</h2>
+            
+            <div class="vh-toggle-section">
+                <label for="vh-toggle" style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>Virtual Tutor</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="vh-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </label>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Lessons</h3>
+                <ul style="list-style: none;">
+                    <li style="padding: 0.5rem; margin-bottom: 0.5rem; background: #1a1a1a; border-radius: 4px;">
+                        <a href="#" style="color: #fff; text-decoration: none;">Lesson 1: Introduction</a>
+                    </li>
+                    <li style="padding: 0.5rem; margin-bottom: 0.5rem; background: #1a1a1a; border-radius: 4px;">
+                        <a href="#" style="color: #fff; text-decoration: none;">Lesson 2: Basics</a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div id="error-container" class="error-message"></div>
+
+            <div class="vh-container" id="vh-container">
+                <h3 style="color: #00d4ff; margin-bottom: 1rem;">Virtual Tutor</h3>
+                <div id="vh-canvas">
+                    <p>Loading virtual tutor...</p>
+                </div>
+            </div>
+
+            <div class="lesson-content">
+                <h1>Welcome to the Classroom</h1>
+                <p>This is your interactive learning environment. Toggle the Virtual Tutor to get personalized assistance.</p>
+                
+                <h2 style="margin-top: 2rem; color: #00d4ff;">Current Lesson</h2>
+                <p>Introduction to AI-powered learning systems and career development tools.</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- CRITICAL FIX: Load avatar module with proper error handling -->
+    <script type="module" src="/assets/avatars/avatar-init.js"></script>
+    
+    <!-- Classroom application script -->
+    <script>
+        // CRITICAL FIX: Wrap initialization in DOMContentLoaded and try/catch
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Classroom app: DOM ready');
+
+            // Virtual Human Toggle
+            const vhToggle = document.getElementById('vh-toggle');
+            const vhContainer = document.getElementById('vh-container');
+            const errorContainer = document.getElementById('error-container');
+            let avatarInitialized = false;
+
+            vhToggle.addEventListener('change', async function() {
+                console.log('VH toggle in classroom:', this.checked ? 'ON' : 'OFF');
+                
+                if (this.checked) {
+                    // Show container
+                    vhContainer.classList.add('active');
+                    
+                    // Initialize avatar if not already done
+                    if (!avatarInitialized && window.AvatarManager) {
+                        try {
+                            console.log('Attempting to initialize virtual tutor...');
+                            
+                            // CRITICAL: Check if canvas exists before initializing
+                            const canvasElement = document.querySelector('#vh-canvas');
+                            if (!canvasElement) {
+                                throw new Error('Canvas element not found');
+                            }
+                            
+                            const success = await window.AvatarManager.init(
+                                '#vh-canvas',
+                                '/assets/avatars/chris_redfield__re6_bad.glb'
+                            );
+                            
+                            if (success) {
+                                avatarInitialized = true;
+                                console.log('Virtual tutor initialized successfully');
+                            } else {
+                                throw new Error('Virtual tutor initialization returned false');
+                            }
+                        } catch (error) {
+                            console.error('Failed to initialize virtual tutor:', error);
+                            errorContainer.textContent = 'Failed to load Virtual Tutor. Please check console for details.';
+                            errorContainer.classList.add('show');
+                            
+                            // Reset toggle
+                            setTimeout(() => {
+                                this.checked = false;
+                                vhContainer.classList.remove('active');
+                            }, 100);
+                        }
+                    } else if (!window.AvatarManager) {
+                        console.error('AvatarManager not available');
+                        errorContainer.textContent = 'Virtual Tutor module failed to load. Please refresh the page.';
+                        errorContainer.classList.add('show');
+                        
+                        // Reset toggle
+                        setTimeout(() => {
+                            this.checked = false;
+                            vhContainer.classList.remove('active');
+                        }, 100);
+                    }
+                } else {
+                    // Hide container (but don't dispose - user might toggle back)
+                    vhContainer.classList.remove('active');
+                    errorContainer.classList.remove('show');
+                }
+            });
+
+            console.log('Classroom app: All event listeners attached');
+            console.log('Virtual Tutor toggle ready - waiting for user interaction');
+        });
+
+        // Global error handler to catch module loading errors
+        window.addEventListener('error', (event) => {
+            if (event.filename && event.filename.includes('avatar-init.js')) {
+                console.error('Error loading avatar module:', event.message);
+                const errorContainer = document.getElementById('error-container');
+                if (errorContainer) {
+                    errorContainer.textContent = 'Failed to load Virtual Tutor module. Check CSP headers.';
+                    errorContainer.classList.add('show');
+                }
+            }
+        });
+
+        console.log('Classroom app: Script loaded, waiting for DOMContentLoaded');
+    </script>
+</body>
+</html>
