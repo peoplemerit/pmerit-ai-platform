@@ -114,7 +114,11 @@ README.md                         # Full documentation
 
 If issues occur:
 ```bash
+# Revert the main hotfix commit
 git revert 7349128
+git push
+# Or revert the entire branch
+git revert f623c6b..7349128
 git push
 ```
 
