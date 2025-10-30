@@ -1,0 +1,88 @@
+{
+  "faqs": [
+    {
+      "id": "password-reset",
+      "title": "How do I reset my password?",
+      "tags": ["account", "password", "signin", "login"],
+      "body": "To reset your password:\n1. Click 'Sign In' in the top navigation\n2. Click 'Forgot password?' below the sign-in form\n3. Enter your email address\n4. Check your email for a reset link\n5. Click the link and set your new password\n\nThe reset link expires after 24 hours. If you don't receive an email, check your spam folder.",
+      "link": "/help.html#password-reset"
+    },
+    {
+      "id": "course-access",
+      "title": "I can't access my course content",
+      "tags": ["courses", "content", "access", "enrollment"],
+      "body": "If you're having trouble accessing course content:\n1. Verify you're signed in to your account\n2. Check that you're enrolled in the course\n3. Try refreshing the page or clearing your browser cache\n4. Make sure your subscription is active\n5. Check if the course has started (some courses have start dates)\n\nIf the issue persists, contact support with your course name and enrollment date.",
+      "link": "/help.html#course-access"
+    },
+    {
+      "id": "video-playback",
+      "title": "Videos won't play or keep buffering",
+      "tags": ["technical", "video", "playback", "streaming", "buffer"],
+      "body": "To fix video playback issues:\n1. Check your internet connection speed (minimum 5 Mbps recommended)\n2. Close other bandwidth-heavy applications\n3. Try a different browser (Chrome, Firefox, or Safari recommended)\n4. Disable browser extensions that might interfere with video\n5. Clear your browser cache and cookies\n6. Try lowering the video quality setting\n\nIf videos still won't play, your network may be blocking streaming content.",
+      "link": "/help.html#video-issues"
+    },
+    {
+      "id": "certificate-download",
+      "title": "How do I download my certificate?",
+      "tags": ["certificate", "download", "completion", "achievement"],
+      "body": "To download your course certificate:\n1. Complete all required course modules and assessments\n2. Navigate to your 'Certificates' page from the main menu\n3. Find the course you completed\n4. Click the 'Download Certificate' button\n5. Your certificate will download as a PDF\n\nCertificates are typically available within 24 hours of course completion.",
+      "link": "/certificates.html"
+    },
+    {
+      "id": "payment-failed",
+      "title": "My payment failed or was declined",
+      "tags": ["payment", "billing", "card", "transaction", "declined"],
+      "body": "If your payment was declined:\n1. Verify your card details are correct (number, expiry, CVV)\n2. Ensure you have sufficient funds\n3. Check with your bank - they may have blocked the transaction\n4. Try a different payment method\n5. Make sure your billing address matches your card\n\nPayments may be declined due to security checks, expired cards, or bank restrictions on international transactions.",
+      "link": "/help.html#payment-issues"
+    },
+    {
+      "id": "dark-mode",
+      "title": "How do I enable dark mode?",
+      "tags": ["accessibility", "dark mode", "theme", "display", "settings"],
+      "body": "To enable dark mode:\n1. Look for the theme toggle button (sun/moon icon) in the top navigation\n2. Click it to switch between light and dark themes\n3. Your preference is saved automatically\n\nDark mode reduces eye strain in low-light conditions and can help conserve battery on OLED screens.",
+      "link": "/help.html#dark-mode"
+    },
+    {
+      "id": "screen-reader",
+      "title": "Screen reader support and keyboard navigation",
+      "tags": ["accessibility", "screen reader", "keyboard", "navigation", "a11y"],
+      "body": "PMERIT is designed to be accessible:\n- All interactive elements are keyboard navigable (use Tab/Shift+Tab)\n- ARIA labels are provided for screen readers\n- Skip links are available to jump to main content\n- Videos include captions and transcripts\n- Images have descriptive alt text\n\nFor best results, use the latest version of NVDA, JAWS, or VoiceOver.",
+      "link": "/accessibility.html"
+    },
+    {
+      "id": "mobile-app",
+      "title": "Is there a mobile app?",
+      "tags": ["mobile", "app", "ios", "android", "smartphone"],
+      "body": "Currently, PMERIT is a responsive web application that works on all devices through your browser. You can:\n- Access the full platform on any smartphone or tablet\n- Add PMERIT to your home screen for app-like experience\n- Use all features without downloading an app\n\nA dedicated mobile app is in development and coming soon.",
+      "link": "/help.html#mobile"
+    },
+    {
+      "id": "avatar-not-loading",
+      "title": "The virtual human avatar isn't loading",
+      "tags": ["technical", "avatar", "virtual human", "loading", "3d"],
+      "body": "If the avatar doesn't load:\n1. Ensure you're using a WebGL-compatible browser (Chrome, Firefox, Safari, Edge)\n2. Check that hardware acceleration is enabled in browser settings\n3. Update your browser to the latest version\n4. Try disabling browser extensions that might block 3D content\n5. Check your internet connection\n\nThe avatar feature requires WebGL 2.0 support and may not work on older devices or browsers.",
+      "link": "/help.html#avatar-issues"
+    },
+    {
+      "id": "tts-not-working",
+      "title": "Text-to-speech isn't working",
+      "tags": ["accessibility", "tts", "text-to-speech", "audio", "voice"],
+      "body": "To troubleshoot text-to-speech:\n1. Check that TTS is enabled in your settings\n2. Verify your device volume is turned up\n3. Ensure your browser has permission to play audio\n4. Try a different browser if the issue persists\n5. Check that you're not in a browser's private/incognito mode\n\nSome browsers require user interaction before playing audio. Try clicking on the page first.",
+      "link": "/help.html#tts-issues"
+    },
+    {
+      "id": "account-deletion",
+      "title": "How do I delete my account?",
+      "tags": ["account", "delete", "privacy", "data", "removal"],
+      "body": "To delete your account:\n1. Sign in to your account\n2. Go to Settings from the main menu\n3. Scroll to 'Account Management'\n4. Click 'Delete Account'\n5. Confirm your decision\n\nDeleting your account will:\n- Remove all your personal data\n- Cancel any active subscriptions\n- Delete your progress and certificates\n- This action cannot be undone\n\nWe recommend downloading your data and certificates before deletion.",
+      "link": "/settings.html#account-deletion"
+    },
+    {
+      "id": "browser-compatibility",
+      "title": "Which browsers are supported?",
+      "tags": ["technical", "browser", "compatibility", "requirements"],
+      "body": "PMERIT works best on:\n- Google Chrome (version 90+)\n- Mozilla Firefox (version 88+)\n- Safari (version 14+)\n- Microsoft Edge (version 90+)\n\nFeatures requiring WebGL (like the virtual human) need:\n- Hardware acceleration enabled\n- WebGL 2.0 support\n- Up-to-date graphics drivers\n\nInternet Explorer is not supported. Please use a modern browser for the best experience.",
+      "link": "/help.html#browser-support"
+    }
+  ]
+}
