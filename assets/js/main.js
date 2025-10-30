@@ -30,6 +30,54 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
+/**
+ * VH Bootstrap function - runs once to initialize avatar
+ * Called when Virtual Human toggle is enabled
+ */
+window.vhBoot = async function vhBoot() {
+  try {
+    if (!window.THREE || typeof THREE.WebGLRenderer !== "function") {
+      console.error("[VH] THREE not loaded; check script includes.");
+      showToast('Virtual Human requires WebGL support', 'error');
+      return;
+    }
+    if (typeof GLTFLoader !== "function") {
+      console.error("[VH] GLTFLoader not available; check CDN include.");
+      showToast('Virtual Human loader not available', 'error');
+      return;
+    }
+    // Initialize only once
+    if (window.__VH_INITED__) {
+      console.log('[VH] Already initialized, skipping vhBoot');
+      return;
+    }
+    window.__VH_INITED__ = true;
+
+    console.log('[VH] Initializing AvatarManager with pm_classic.glb...');
+
+    // AvatarManager should handle renderer/scene and accept modelUrl + canvas
+    if (!state.avatarManager && window.AvatarManager) {
+      state.avatarManager = new window.AvatarManager({
+        canvasId: 'vh-canvas',
+        captionsId: 'vh-captions',
+        enabled: true,
+        apiBaseUrl: window.CONFIG?.API_BASE_URL || '/api',
+        // Configure to use pm_classic.glb model
+        modelFile: 'pm_classic.glb',
+        avatarBaseUrl: '/assets/avatars/'
+      });
+      await state.avatarManager.init();
+      console.info("[VH] AvatarManager initialized with pm_classic.glb");
+      showToast('Virtual Human ready', 'success');
+    } else {
+      console.warn('[VH] AvatarManager already exists or not available');
+    }
+  } catch (e) {
+    console.error("[VH] init failed:", e);
+    showToast('Virtual Human initialization failed', 'error');
+  }
+};
+
 function init() {
   console.log('🚀 PMERIT Platform initializing...');
   
@@ -57,55 +105,6 @@ function init() {
 }
 
 // ========== VIRTUAL HUMAN MODE ==========
-/**
- * Lazy load Three.js and related dependencies
- * @returns {Promise<void>}
- */
-async function loadThreeJS() {
-  if (state.threeJSLoaded) {
-    return;
-  }
-
-  try {
-    console.log('📦 Loading Three.js...');
-
-    // Try to load from CDN, fall back to local mock if needed
-    try {
-      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js');
-      await loadScript('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js');
-    } catch (cdnError) {
-      console.warn('⚠️ CDN unavailable, using local fallback');
-      // Load local mock for testing/development
-      await loadScript('/assets/js/vendor/three-mock.js');
-    }
-
-    state.threeJSLoaded = true;
-    console.log('✅ Three.js loaded');
-  } catch (error) {
-    console.error('❌ Failed to load Three.js:', error);
-    throw error;
-  }
-}
-
-/**
- * Load external script dynamically
- * @param {string} src - Script URL
- * @returns {Promise<void>}
- */
-function loadScript(src) {
-  return new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = src;
-    script.onload = () => resolve();
-    script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
-    document.head.appendChild(script);
-  });
-}
-
-/**
- * Enable or disable Virtual Human mode
- * @param {boolean} isEnabled - Whether to enable VH mode
- */
 async function enableVirtualHuman(isEnabled) {
   console.log(`🤖 Virtual Human Mode: ${isEnabled ? 'ON' : 'OFF'}`);
 
@@ -130,9 +129,6 @@ async function enableVirtualHuman(isEnabled) {
         statusText.textContent = 'Virtual Human is loading...';
       }
 
-      // Lazy load Three.js if not already loaded
-      await loadThreeJS();
-
       // Hide chat container
       if (chatContainer) {
         chatContainer.style.display = 'none';
@@ -143,24 +139,13 @@ async function enableVirtualHuman(isEnabled) {
         vhCanvasRoot.style.display = 'flex';
       }
 
-      // Initialize AvatarManager if not already initialized
-      if (!state.avatarManager && window.AvatarManager) {
-        state.avatarManager = new window.AvatarManager({
-          canvasId: 'vh-canvas',
-          captionsId: 'vh-captions',
-          enabled: true,
-          apiBaseUrl: window.CONFIG.API_BASE_URL
-        });
-        await state.avatarManager.init();
+      // Use vhBoot() to initialize if not already initialized
+      if (window.vhBoot) {
+        await window.vhBoot();
+      }
 
-        // Update status
-        if (statusText) {
-          statusText.textContent = 'Virtual Human is ready.';
-        }
-
-        // Dispatch ready event
-        window.dispatchEvent(new CustomEvent('avatar_ready'));
-      } else if (state.avatarManager && typeof state.avatarManager.setEnabled === 'function') {
+      // If already initialized, just enable it
+      if (state.avatarManager && typeof state.avatarManager.setEnabled === 'function') {
         state.avatarManager.setEnabled(true);
         if (statusText) {
           statusText.textContent = 'Virtual Human is ready.';
