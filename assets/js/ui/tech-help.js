@@ -1,10 +1,10 @@
 /**
  * PMERIT Tech Help Modal Controller
- * Version: 1.0
+ * Version: 1.1
  * Last Updated: October 30, 2025
  *
  * Manages the Tech Help modal component
- * Features: Form handling, focus management, accessibility, keyboard navigation
+ * Features: Form handling, focus management, accessibility, keyboard navigation, FAQ search
  */
 
 (function () {
@@ -15,6 +15,7 @@
   const CLOSE_DELAY = 2000;
   const DEFAULT_BUTTON_HTML = '<i class="fas fa-paper-plane"></i> Send';
   const FOCUSABLE_ELEMENTS_SELECTOR = 'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  const FAQ_DATA_URL = '/assets/data/tech-help-faq.json';
 
   const TechHelpModal = {
     modal: null,
@@ -23,9 +24,25 @@
     form: null,
     descriptionField: null,
     categoryField: null,
-    commonFixesLink: null,
     previousFocus: null,
     isOpen: false,
+    
+    // Tab elements
+    formTab: null,
+    faqTab: null,
+    formPanel: null,
+    faqPanel: null,
+    currentTab: 'form',
+    
+    // FAQ elements
+    faqSearch: null,
+    faqResults: null,
+    faqDetail: null,
+    faqDetailContent: null,
+    faqBackBtn: null,
+    faqContactSupport: null,
+    faqData: [],
+    currentQuery: '',
 
     /**
      * Initialize the Tech Help Modal
@@ -44,10 +61,29 @@
       this.form = document.getElementById('tech-help-form');
       this.descriptionField = document.getElementById('tech-help-description');
       this.categoryField = document.getElementById('tech-help-category');
-      this.commonFixesLink = document.getElementById('common-fixes-link');
+      
+      // Tab elements
+      this.formTab = document.getElementById('help-form-tab');
+      this.faqTab = document.getElementById('help-faq-tab');
+      this.formPanel = document.getElementById('help-form-panel');
+      this.faqPanel = document.getElementById('help-faq-panel');
+      
+      // FAQ elements
+      this.faqSearch = document.getElementById('faq-search');
+      this.faqResults = document.getElementById('faq-results');
+      this.faqDetail = document.getElementById('faq-detail');
+      this.faqDetailContent = document.getElementById('faq-detail-content');
+      this.faqBackBtn = document.getElementById('faq-back-btn');
+      this.faqContactSupport = document.getElementById('faq-contact-support');
+
+      // Load FAQ data
+      this.loadFAQData();
 
       // Bind event listeners
       this.bindEvents();
+      
+      // Check for deep link
+      this.checkDeepLink();
 
       // eslint-disable-next-line no-console
       console.log('✅ TechHelpModal initialized');
@@ -83,16 +119,243 @@
         this.form.addEventListener('submit', (e) => this.handleSubmit(e));
       }
 
-      // Common fixes link
-      if (this.commonFixesLink) {
-        this.commonFixesLink.addEventListener('click', (e) => {
-          e.preventDefault();
-          this.handleCommonFixes();
-        });
+      // Tab switching
+      if (this.formTab) {
+        this.formTab.addEventListener('click', () => this.switchTab('form'));
+      }
+      if (this.faqTab) {
+        this.faqTab.addEventListener('click', () => this.switchTab('faq'));
+      }
+      
+      // FAQ search
+      if (this.faqSearch) {
+        this.faqSearch.addEventListener('input', (e) => this.handleFAQSearch(e));
+      }
+      
+      // FAQ back button
+      if (this.faqBackBtn) {
+        this.faqBackBtn.addEventListener('click', () => this.showFAQResults());
+      }
+      
+      // FAQ contact support
+      if (this.faqContactSupport) {
+        this.faqContactSupport.addEventListener('click', () => this.switchTab('form'));
       }
 
       // Focus trap
       this.modal.addEventListener('keydown', (e) => this.handleFocusTrap(e));
+    },
+    
+    /**
+     * Load FAQ data
+     */
+    loadFAQData: async function () {
+      try {
+        const response = await fetch(FAQ_DATA_URL);
+        if (!response.ok) {
+          throw new Error('Failed to load FAQ data');
+        }
+        const data = await response.json();
+        this.faqData = data.faqs || [];
+        
+        // Show all FAQs initially
+        this.renderFAQResults(this.faqData);
+      } catch (error) {
+        console.error('Error loading FAQ data:', error);
+        this.faqData = [];
+      }
+    },
+    
+    /**
+     * Switch between tabs
+     */
+    switchTab: function (tab) {
+      if (this.currentTab === tab) {
+        return;
+      }
+      
+      this.currentTab = tab;
+      
+      // Update tab states
+      if (tab === 'form') {
+        this.formTab?.classList.add('active');
+        this.formTab?.setAttribute('aria-selected', 'true');
+        this.faqTab?.classList.remove('active');
+        this.faqTab?.setAttribute('aria-selected', 'false');
+        
+        this.formPanel?.classList.add('active');
+        this.formPanel?.removeAttribute('hidden');
+        this.faqPanel?.classList.remove('active');
+        this.faqPanel?.setAttribute('hidden', '');
+        
+        // Focus first input
+        setTimeout(() => this.descriptionField?.focus(), 100);
+      } else {
+        this.faqTab?.classList.add('active');
+        this.faqTab?.setAttribute('aria-selected', 'true');
+        this.formTab?.classList.remove('active');
+        this.formTab?.setAttribute('aria-selected', 'false');
+        
+        this.faqPanel?.classList.add('active');
+        this.faqPanel?.removeAttribute('hidden');
+        this.formPanel?.classList.remove('active');
+        this.formPanel?.setAttribute('hidden', '');
+        
+        // Focus search input
+        setTimeout(() => this.faqSearch?.focus(), 100);
+        
+        // Dispatch analytics
+        this.dispatchAnalytics('tech_help_faq_open');
+      }
+    },
+    
+    /**
+     * Handle FAQ search
+     */
+    handleFAQSearch: function (e) {
+      const query = e.target.value.toLowerCase().trim();
+      this.currentQuery = query;
+      
+      if (!query) {
+        this.renderFAQResults(this.faqData);
+        return;
+      }
+      
+      // Search FAQs by title, tags, and body
+      const results = this.faqData.filter(faq => {
+        const titleMatch = faq.title.toLowerCase().includes(query);
+        const tagsMatch = faq.tags.some(tag => tag.toLowerCase().includes(query));
+        const bodyMatch = faq.body.toLowerCase().includes(query);
+        return titleMatch || tagsMatch || bodyMatch;
+      });
+      
+      this.renderFAQResults(results);
+    },
+    
+    /**
+     * Render FAQ results
+     */
+    renderFAQResults: function (results) {
+      if (!this.faqResults) {
+        return;
+      }
+      
+      // Hide detail view
+      this.showFAQResults();
+      
+      if (results.length === 0) {
+        this.faqResults.innerHTML = `
+          <div class="faq-empty">
+            <i class="fas fa-search"></i>
+            <p>No results found. Try different keywords or contact support.</p>
+          </div>
+        `;
+        return;
+      }
+      
+      const query = this.currentQuery.toLowerCase();
+      
+      this.faqResults.innerHTML = results.map(faq => {
+        const matchingTags = query ? faq.tags.filter(tag => tag.toLowerCase().includes(query)) : [];
+        
+        return `
+          <div class="faq-item" role="button" tabindex="0" data-faq-id="${faq.id}">
+            <h3 class="faq-item-title">${this.highlightText(faq.title, query)}</h3>
+            <div class="faq-item-tags">
+              ${faq.tags.slice(0, 4).map(tag => {
+                const isMatch = matchingTags.includes(tag);
+                return `<span class="faq-tag ${isMatch ? 'match' : ''}">${tag}</span>`;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      }).join('');
+      
+      // Add click handlers
+      this.faqResults.querySelectorAll('.faq-item').forEach(item => {
+        const faqId = item.getAttribute('data-faq-id');
+        item.addEventListener('click', () => this.showFAQDetail(faqId));
+        item.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.showFAQDetail(faqId);
+          }
+        });
+      });
+    },
+    
+    /**
+     * Highlight matching text
+     */
+    highlightText: function (text, query) {
+      if (!query) {
+        return text;
+      }
+      const regex = new RegExp(`(${query})`, 'gi');
+      return text.replace(regex, '<mark>$1</mark>');
+    },
+    
+    /**
+     * Show FAQ detail
+     */
+    showFAQDetail: function (faqId) {
+      const faq = this.faqData.find(f => f.id === faqId);
+      if (!faq) {
+        return;
+      }
+      
+      // Dispatch analytics
+      this.dispatchAnalytics('tech_help_faq_view', { faqId: faq.id, title: faq.title });
+      
+      if (!this.faqDetail || !this.faqDetailContent) {
+        return;
+      }
+      
+      this.faqDetailContent.innerHTML = `
+        <h3 class="faq-detail-title">${faq.title}</h3>
+        <div class="faq-detail-body">${faq.body}</div>
+        ${faq.link ? `<a href="${faq.link}" class="faq-detail-link" target="_blank">
+          Learn more <i class="fas fa-external-link-alt"></i>
+        </a>` : ''}
+      `;
+      
+      // Hide results, show detail
+      this.faqResults.style.display = 'none';
+      this.faqDetail.removeAttribute('hidden');
+      this.faqBackBtn?.focus();
+    },
+    
+    /**
+     * Show FAQ results (hide detail)
+     */
+    showFAQResults: function () {
+      if (!this.faqResults || !this.faqDetail) {
+        return;
+      }
+      
+      this.faqResults.style.display = '';
+      this.faqDetail.setAttribute('hidden', '');
+      this.faqSearch?.focus();
+    },
+    
+    /**
+     * Check for deep link
+     */
+    checkDeepLink: function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const helpQuery = urlParams.get('help');
+      
+      if (helpQuery) {
+        // Open modal and switch to FAQ tab
+        this.open();
+        this.switchTab('faq');
+        
+        // Set search query
+        if (this.faqSearch) {
+          this.faqSearch.value = helpQuery;
+          this.handleFAQSearch({ target: this.faqSearch });
+        }
+      }
     },
 
     /**
@@ -103,8 +366,8 @@
         return;
       }
 
-      // Dispatch analytics event
-      this.dispatchAnalytics('tech_help_modal_open');
+      // Dispatch analytics event (only once per session)
+      this.dispatchAnalytics('tech_help_open');
 
       this.isOpen = true;
       this.previousFocus = document.activeElement;
@@ -114,9 +377,11 @@
       this.modal.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
 
-      // Focus first input after a short delay
+      // Focus appropriate input after a short delay
       setTimeout(() => {
-        if (this.descriptionField) {
+        if (this.currentTab === 'faq' && this.faqSearch) {
+          this.faqSearch.focus();
+        } else if (this.descriptionField) {
           this.descriptionField.focus();
         }
       }, 100);
@@ -140,6 +405,15 @@
       // Clear form and messages
       this.clearForm();
       this.clearMessage();
+      
+      // Reset to form tab
+      this.switchTab('form');
+      
+      // Clear FAQ search
+      if (this.faqSearch) {
+        this.faqSearch.value = '';
+        this.currentQuery = '';
+      }
 
       // Restore focus
       if (this.previousFocus) {
@@ -188,27 +462,6 @@
           this.close();
         }, CLOSE_DELAY);
       }, SUBMIT_DELAY);
-    },
-
-    /**
-     * Handle common fixes link
-     */
-    handleCommonFixes: function () {
-      // Dispatch analytics event
-      this.dispatchAnalytics('tech_help_common_fixes_click');
-
-      // For now, just log a message
-      // In a real implementation, this would show a help center or FAQ
-      this.showMessage('success', 'Opening common fixes guide...');
-
-      // Simulate navigation
-      setTimeout(() => {
-        // eslint-disable-next-line no-console
-        console.log('Navigate to help center/FAQ');
-        // In production, you might do:
-        // window.location.href = '/help.html#common-fixes';
-        this.close();
-      }, 1000);
     },
 
     /**
