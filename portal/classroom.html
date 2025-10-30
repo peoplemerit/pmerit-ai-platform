@@ -26,9 +26,8 @@
   <link rel="stylesheet" href="../assets/css/components.css">
   <link rel="stylesheet" href="../assets/css/avatar.css">
   
-  <!-- Three.js for WebGL avatar - loaded asynchronously to not block page -->
+  <!-- Three.js for WebGL avatar - loaded synchronously before app scripts -->
   <script 
-    async
     src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
     integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ=="
     crossorigin="anonymous"
@@ -37,7 +36,6 @@
   
   <!-- GLTFLoader addon for loading .glb models -->
   <script 
-    async
     src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"
     onerror="console.warn('⚠️ GLTFLoader failed to load from CDN')"></script>
   

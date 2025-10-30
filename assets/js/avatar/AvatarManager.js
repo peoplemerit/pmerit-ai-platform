@@ -16,6 +16,8 @@
         captionsId: config.captionsId || 'vh-captions',
         enabled: config.enabled !== undefined ? config.enabled : true,
         apiBaseUrl: config.apiBaseUrl || '/api',
+        modelFile: config.modelFile || 'pm_classic.glb',
+        avatarBaseUrl: config.avatarBaseUrl || '/assets/avatars/',
         ...config
       };
 

@@ -9,6 +9,23 @@
 (function (window) {
   'use strict';
 
+  // Non-breaking guard: Check if THREE is available
+  if (!window.THREE) {
+    console.warn('[VH] THREE not found; WebGLProvider will noop.');
+    // Export a minimal no-op to avoid runtime crash
+    window.WebGLProvider = class WebGLProviderNoOp {
+      constructor() { this.state = { initialized: false }; }
+      async init() { console.warn('[VH] WebGLProvider noop: THREE not available'); }
+      startSpeaking() {}
+      stopSpeaking() {}
+      setVisemeWeights() {}
+      pause() {}
+      resume() {}
+      dispose() {}
+    };
+    return;
+  }
+
   class WebGLProvider {
     constructor(canvas, config = {}) {
       this.canvas = canvas;
