@@ -2,8 +2,8 @@
 # This file configures HTTP headers for the PMERIT platform
 
 /*
-  # Content Security Policy - Allow Three.js and GLTFLoader from CDNs
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://pmerit-api.peoplemerit.workers.dev https://pmerit-ai-chat.openai.azure.com; media-src 'self'; worker-src 'self' blob:; frame-src 'self'
+  # Content Security Policy - Allow Three.js, GLTFLoader from CDNs, and blob:/data: for textures
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: blob: https:; connect-src 'self' https://pmerit-api.peoplemerit.workers.dev https://pmerit-ai-chat.openai.azure.com; media-src 'self' data: blob:; worker-src 'self' blob:; frame-src 'self'
   
   # Security Headers
   X-Content-Type-Options: nosniff
