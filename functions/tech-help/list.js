@@ -12,7 +12,8 @@ export async function onRequestGet(context) {
   try {
     // CORS headers
     const corsHeaders = {
-      'Access-Control-Allow-Origin': '*',  // TODO: Restrict to actual domain in production
+      // TODO: Replace '*' with actual domain in production (e.g., 'https://peoplemerit.com')
+      'Access-Control-Allow-Origin': env.ALLOWED_ORIGIN || '*',
       'Access-Control-Allow-Methods': 'GET, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     };
@@ -22,17 +23,20 @@ export async function onRequestGet(context) {
       return new Response(null, { headers: corsHeaders });
     }
 
-    // TODO: Add authentication check
-    // const authHeader = request.headers.get('Authorization');
-    // if (!authHeader || !isValidToken(authHeader)) {
-    //   return new Response(JSON.stringify({
-    //     success: false,
-    //     error: 'Unauthorized'
-    //   }), {
-    //     status: 401,
-    //     headers: { 'Content-Type': 'application/json', ...corsHeaders }
-    //   });
-    // }
+    // Authentication check - REQUIRED for production
+    // For MVP, use a simple secret token. For production, implement proper auth (JWT, OAuth, etc.)
+    const authHeader = request.headers.get('Authorization');
+    const validToken = env.TECH_HELP_ADMIN_TOKEN;
+    
+    if (validToken && authHeader !== `Bearer ${validToken}`) {
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'Unauthorized - Valid authentication required'
+      }), {
+        status: 401,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders }
+      });
+    }
 
     // Get query parameters
     const url = new URL(request.url);
