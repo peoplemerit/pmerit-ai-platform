@@ -801,7 +801,7 @@
             // For African users, emphasize donation
             if (location === 'africa') {
                 ctaButton.textContent = '❤️ Support Our Mission';
-                ctaButton.onclick = () => window.location.href = '/donate.html';
+                ctaButton.onclick = () => window.location.href = '/contact.html?subject=support';
             } else {
                 ctaButton.textContent = 'Start Learning Free';
                 ctaButton.onclick = () => window.location.href = '/register.html';
@@ -827,7 +827,7 @@
                     window.location.href = '/register.html?module=career-center';
                     break;
                 case 'certification':
-                    window.location.href = '/certificates.html';
+                    window.location.href = '/courses.html';
                     break;
             }
         }
@@ -837,7 +837,7 @@
         }
 
         function donate() {
-            window.location.href = '/donate.html';
+            window.location.href = '/contact.html?subject=support';
         }
 
         function sponsor() {
