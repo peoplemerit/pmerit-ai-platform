@@ -1,0 +1,32 @@
+name: Phase 5 – Virtual Human (CSP + Wireup)
+description: Create and track tasks to complete Phase 5 Virtual Human visibility and initialization.
+labels: [phase-5, frontend, feature, priority]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Context:** The Virtual Human toggle is functional; GLB + loader need to be fully wired on Home and Classroom with proper CSP.
+  - type: input
+    id: page
+    attributes:
+      label: Page
+      description: Which page is this for? (Home or Classroom)
+      placeholder: e.g., Home (index.html)
+  - type: textarea
+    id: tasks
+    attributes:
+      label: Tasks
+      description: Keep the checklist updated as you work
+      value: |
+        - [ ] Add/verify <script type="module"> /assets/avatars/avatar-init.js on the page
+        - [ ] Ensure container <div id="vh-canvas"> exists and has a height
+        - [ ] Call AvatarManager.init('#vh-canvas', '/assets/avatars/chris_redfield__re6_bad.glb') on DOMContentLoaded
+        - [ ] Validate rendering locally and on Cloudflare Pages
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      value: |
+        - Avatar visible and centered on the page
+        - No CSP errors in console
+        - Page reloads cleanly without memory leaks (no duplicate canvases)
