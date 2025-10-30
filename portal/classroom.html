@@ -355,7 +355,8 @@
 
         // Load saved VH preference, defaulting to true (enabled)
         const savedPreference = localStorage.getItem('pmerit_vh_enabled');
-        const vhEnabled = savedPreference !== null ? savedPreference !== 'false' : true;
+        // Explicitly check for 'true' or 'false' strings, default to true for new users
+        const vhEnabled = savedPreference === 'false' ? false : true;
         updateVHToggle(vhEnabled);
 
         bindEvents();

@@ -45,12 +45,12 @@ function init() {
   
   // Auto-enable Virtual Human if it's set to true in state
   if (state.virtualHuman) {
-    // Use setTimeout to allow DOM to be fully ready
-    setTimeout(() => {
+    // Use requestAnimationFrame to ensure DOM is ready after all synchronous code completes
+    requestAnimationFrame(() => {
       enableVirtualHuman(true).catch(error => {
         console.error('Failed to auto-enable Virtual Human:', error);
       });
-    }, 100);
+    });
   }
   
   console.log('✅ PMERIT Platform initialized');
