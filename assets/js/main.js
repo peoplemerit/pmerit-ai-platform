@@ -21,7 +21,13 @@ const state = {
 
 // ========== INITIALIZATION ==========
 document.addEventListener('DOMContentLoaded', function() {
-  init();
+  try {
+    init();
+  } catch (error) {
+    console.error('❌ PMERIT Platform initialization failed:', error);
+    // Show user-friendly error
+    showToast('Platform initialization error. Some features may not work.', 'error');
+  }
 });
 
 function init() {
@@ -30,7 +36,7 @@ function init() {
   // Load saved state
   loadState();
   
-  // Initialize all components
+  // Initialize all components - each has its own error handling
   initializeMenu();
   initializeToggles();
   initializeCollapsible();
@@ -263,154 +269,187 @@ function updateSupportButtonStates() {
  * Initialize Support Assistant buttons in right sidebar
  */
 function initializeSupportButtons() {
-  const vhBtn = document.getElementById('support-vh-btn');
-  const csmBtn = document.getElementById('support-csm-btn');
+  try {
+    const vhBtn = document.getElementById('support-vh-btn');
+    const csmBtn = document.getElementById('support-csm-btn');
 
-  if (vhBtn) {
-    vhBtn.addEventListener('click', async () => {
-      console.log('🤖 Support VH button clicked');
-      
-      // Toggle VH mode
-      const newState = !state.virtualHuman;
-      state.virtualHuman = newState;
+    if (vhBtn) {
+      vhBtn.addEventListener('click', async () => {
+        try {
+          console.log('🤖 Support VH button clicked');
+          
+          // Toggle VH mode
+          const newState = !state.virtualHuman;
+          state.virtualHuman = newState;
 
-      // Add loading state
-      if (newState) {
-        vhBtn.classList.add('loading');
-        showToast('Virtual Human loading...', 'info');
-      }
+          // Add loading state
+          if (newState) {
+            vhBtn.classList.add('loading');
+            showToast('Virtual Human loading...', 'info');
+          }
 
-      // Update the settings toggle to match
-      const vhToggle = document.getElementById('virtual-human-toggle');
-      if (vhToggle) {
-        vhToggle.checked = newState;
-      }
+          // Update the settings toggle to match
+          const vhToggle = document.getElementById('virtual-human-toggle');
+          if (vhToggle) {
+            vhToggle.checked = newState;
+          }
 
-      // Dispatch custom event for consistency
-      window.dispatchEvent(new CustomEvent('virtualHumanChanged', { 
-        detail: { enabled: newState } 
-      }));
+          // Dispatch custom event for consistency
+          window.dispatchEvent(new CustomEvent('virtualHumanChanged', { 
+            detail: { enabled: newState } 
+          }));
 
-      // Enable/disable VH mode
-      await enableVirtualHuman(newState);
+          // Enable/disable VH mode
+          await enableVirtualHuman(newState);
 
-      // Remove loading state
-      vhBtn.classList.remove('loading');
+          // Remove loading state
+          vhBtn.classList.remove('loading');
 
-      // Show success toast
-      if (newState) {
-        showToast('Virtual Human active', 'success');
-      } else {
-        showToast('Virtual Human deactivated', 'info');
-      }
+          // Show success toast
+          if (newState) {
+            showToast('Virtual Human active', 'success');
+          } else {
+            showToast('Virtual Human deactivated', 'info');
+          }
 
-      // Save state
-      saveState();
-    });
+          // Save state
+          saveState();
+        } catch (error) {
+          console.error('❌ Error handling VH button:', error);
+          vhBtn.classList.remove('loading');
+          showToast('Failed to toggle Virtual Human', 'error');
+        }
+      });
+    }
+
+    if (csmBtn) {
+      csmBtn.addEventListener('click', async () => {
+        try {
+          console.log('📞 Support CSM button clicked');
+          
+          // Toggle CSM mode
+          const newState = !state.customerService;
+          state.customerService = newState;
+
+          // If enabling CSM, disable VH
+          if (newState && state.virtualHuman) {
+            state.virtualHuman = false;
+            await enableVirtualHuman(false);
+          }
+
+          toggleCustomerServiceMode(newState);
+          updateSupportButtonStates();
+
+          // Save state
+          saveState();
+        } catch (error) {
+          console.error('❌ Error handling CSM button:', error);
+          showToast('Failed to toggle Customer Service Mode', 'error');
+        }
+      });
+    }
+
+    // Set initial button states
+    updateSupportButtonStates();
+  } catch (error) {
+    console.error('❌ Error initializing support buttons:', error);
   }
-
-  if (csmBtn) {
-    csmBtn.addEventListener('click', async () => {
-      console.log('📞 Support CSM button clicked');
-      
-      // Toggle CSM mode
-      const newState = !state.customerService;
-      state.customerService = newState;
-
-      // If enabling CSM, disable VH
-      if (newState && state.virtualHuman) {
-        state.virtualHuman = false;
-        await enableVirtualHuman(false);
-      }
-
-      toggleCustomerServiceMode(newState);
-      updateSupportButtonStates();
-
-      // Save state
-      saveState();
-    });
-  }
-
-  // Set initial button states
-  updateSupportButtonStates();
 }
 
 // ========== MENU SYSTEM ==========
 function initializeMenu() {
-  const hamburgerBtn = document.getElementById('hamburgerBtn');
-  const sideMenu = document.getElementById('sideMenu');
-  const menuOverlay = document.getElementById('menuOverlay');
+  try {
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const sideMenu = document.getElementById('sideMenu');
+    const menuOverlay = document.getElementById('menuOverlay');
 
-  if (hamburgerBtn && sideMenu && menuOverlay) {
-    // Open menu
-    hamburgerBtn.addEventListener('click', () => {
-      sideMenu.classList.add('active');
-      menuOverlay.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    });
+    if (hamburgerBtn && sideMenu && menuOverlay) {
+      // Open menu
+      hamburgerBtn.addEventListener('click', () => {
+        sideMenu.classList.add('active');
+        menuOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
 
-    // Close menu (overlay click)
-    menuOverlay.addEventListener('click', () => {
-      sideMenu.classList.remove('active');
-      menuOverlay.classList.remove('active');
-      document.body.style.overflow = '';
-    });
-
-    // ESC key closes menu
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && sideMenu.classList.contains('active')) {
+      // Close menu (overlay click)
+      menuOverlay.addEventListener('click', () => {
         sideMenu.classList.remove('active');
         menuOverlay.classList.remove('active');
         document.body.style.overflow = '';
-      }
-    });
+      });
+
+      // ESC key closes menu
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && sideMenu.classList.contains('active')) {
+          sideMenu.classList.remove('active');
+          menuOverlay.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      });
+    }
+  } catch (error) {
+    console.error('❌ Error initializing menu:', error);
   }
 }
 
 // ========== TOGGLE SWITCHES ==========
 function initializeToggles() {
-  // Get all toggle elements
-  const toggles = document.querySelectorAll('[data-toggle]');
+  try {
+    // Get all toggle elements
+    const toggles = document.querySelectorAll('[data-toggle]');
 
-  toggles.forEach(toggle => {
-    const toggleType = toggle.getAttribute('data-toggle');
+    toggles.forEach(toggle => {
+      const toggleType = toggle.getAttribute('data-toggle');
 
-    toggle.addEventListener('change', async () => {
-      const isActive = toggle.checked;
+      toggle.addEventListener('change', async () => {
+        const isActive = toggle.checked;
 
-      // Handle different toggle types
-      switch(toggleType) {
-        case 'vh':
-          state.virtualHuman = isActive;
-          // VH and CS are mutually exclusive
-          if (isActive && state.customerService) {
-            state.customerService = false;
-            updateToggleStates();
+        try {
+          // Handle different toggle types
+          switch(toggleType) {
+            case 'vh':
+              state.virtualHuman = isActive;
+              // VH and CS are mutually exclusive
+              if (isActive && state.customerService) {
+                state.customerService = false;
+                updateToggleStates();
+              }
+              await enableVirtualHuman(isActive);
+              break;
+            case 'cs':
+              state.customerService = isActive;
+              // VH and CS are mutually exclusive
+              if (isActive && state.virtualHuman) {
+                state.virtualHuman = false;
+                await enableVirtualHuman(false);
+                updateToggleStates();
+              }
+              toggleCustomerServiceMode(isActive);
+              break;
+            case 'dark':
+              state.darkMode = isActive;
+              toggleDarkMode(isActive);
+              break;
+            case 'tts':
+              state.textToSpeech = isActive;
+              toggleTextToSpeech(isActive);
+              break;
           }
-          await enableVirtualHuman(isActive);
-          break;
-        case 'cs':
-          state.customerService = isActive;
-          // VH and CS are mutually exclusive
-          if (isActive && state.virtualHuman) {
-            state.virtualHuman = false;
-            await enableVirtualHuman(false);
-            updateToggleStates();
-          }
-          toggleCustomerServiceMode(isActive);
-          break;
-        case 'dark':
-          state.darkMode = isActive;
-          toggleDarkMode(isActive);
-          break;
-        case 'tts':
-          state.textToSpeech = isActive;
-          toggleTextToSpeech(isActive);
-          break;
-      }
 
-      saveState();
-    });
+          saveState();
+        } catch (error) {
+          // Map toggle types to user-friendly names
+          const toggleNames = {
+            'vh': 'Virtual Human',
+            'cs': 'Customer Service',
+            'dark': 'Dark Mode',
+            'tts': 'Text-to-Speech'
+          };
+          const friendlyName = toggleNames[toggleType] || toggleType;
+          console.error(`❌ Error handling ${friendlyName} toggle:`, error);
+          showToast(`Failed to toggle ${friendlyName}. Please try again.`, 'error');
+        }
+      });
 
     // Set initial state from saved data
     if (toggleType === 'vh' && state.virtualHuman) {
@@ -426,6 +465,12 @@ function initializeToggles() {
       toggle.checked = true;
     }
   });
+  
+  console.log('✅ Toggle switches initialized');
+} catch (error) {
+  console.error('❌ Error initializing toggles:', error);
+  showToast('Some toggles may not be working. Please refresh the page.', 'warning');
+}
 }
 
 function toggleVirtualHumanMode(enabled) {
@@ -478,54 +523,63 @@ function testTextToSpeech() {
 
 // ========== COLLAPSIBLE SECTIONS ==========
 function initializeCollapsible() {
-  const settingsCollapsible = document.getElementById('settingsCollapsible');
-  
-  if (settingsCollapsible) {
-    const header = settingsCollapsible.querySelector('.collapsible-header');
+  try {
+    const settingsCollapsible = document.getElementById('settingsCollapsible');
     
-    header?.addEventListener('click', () => {
-      settingsCollapsible.classList.toggle('open');
-    });
+    if (settingsCollapsible) {
+      const header = settingsCollapsible.querySelector('.collapsible-header');
+      
+      header?.addEventListener('click', () => {
+        settingsCollapsible.classList.toggle('open');
+      });
+    }
+  } catch (error) {
+    console.error('❌ Error initializing collapsible:', error);
   }
 }
 
 // ========== CAREER TRACK & EXPLORE PATHS ==========
 function initializeCareerTrack() {
-  // Get all Career Track elements (both mobile and desktop)
-  const careerTrackElements = document.querySelectorAll('.menu-item, .action');
-  
-  careerTrackElements.forEach(element => {
-    const text = element.textContent?.trim();
+  try {
+    // Get all Career Track elements (both mobile and desktop)
+    const careerTrackElements = document.querySelectorAll('.menu-item, .action');
     
-    // Check if this is a Career Track element
-    if (text && text.includes('Career Track')) {
-      element.style.cursor = 'pointer';
+    careerTrackElements.forEach(element => {
+      const text = element.textContent?.trim();
       
-      element.addEventListener('click', (e) => {
+      // Check if this is a Career Track element
+      if (text && text.includes('Career Track')) {
+        element.style.cursor = 'pointer';
+        
+        element.addEventListener('click', (e) => {
+          e.preventDefault();
+          console.log('🎯 Career Track clicked - Navigating to career.html');
+          
+          // Navigate to career page
+          window.location.href = '/career.html';
+          
+          // Show confirmation toast
+          showToast('Opening Career Paths...', 'info');
+        });
+      }
+    });
+    
+    // Also handle the specific button ID from partials/header.html
+    const careerTrackBtn = document.getElementById('career-track-btn');
+    if (careerTrackBtn) {
+      careerTrackBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        console.log('🎯 Career Track clicked - Navigating to career.html');
-        
-        // Navigate to career page
+        console.log('🎯 Career Track button clicked - Navigating to career.html');
         window.location.href = '/career.html';
-        
-        // Show confirmation toast
         showToast('Opening Career Paths...', 'info');
       });
     }
-  });
-  
-  // Also handle the specific button ID from partials/header.html
-  const careerTrackBtn = document.getElementById('career-track-btn');
-  if (careerTrackBtn) {
-    careerTrackBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      console.log('🎯 Career Track button clicked - Navigating to career.html');
-      window.location.href = '/career.html';
-      showToast('Opening Career Paths...', 'info');
-    });
+    
+    console.log('✅ Career Track navigation initialized');
+  } catch (error) {
+    console.error('❌ Error initializing Career Track:', error);
+    // Don't show toast for this - fail silently as it's not critical
   }
-  
-  console.log('✅ Career Track navigation initialized');
 }
 
 // ========== TOAST NOTIFICATIONS ==========
