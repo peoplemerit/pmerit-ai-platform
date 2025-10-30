@@ -1,0 +1,91 @@
+<!--
+  PMERIT Tech Help Modal Component
+  Version: 1.0
+  Last Updated: October 30, 2025
+
+  Reusable modal for tech help and support requests
+  Features: Form submission, category selection, attachment stub, accessibility
+
+  Usage: Include this partial and call TechHelpModal.open()
+-->
+
+<div id="tech-help-modal" class="tech-help-modal" role="dialog" aria-modal="true" aria-labelledby="tech-help-modal-title" aria-hidden="true">
+  <div class="tech-help-modal-backdrop">
+    <div class="tech-help-modal-content">
+      <!-- Close Button -->
+      <button class="tech-help-modal-close" aria-label="Close modal">
+        <i class="fas fa-times"></i>
+      </button>
+
+      <!-- Modal Header -->
+      <div class="tech-help-modal-header">
+        <h2 id="tech-help-modal-title" class="tech-help-modal-title">
+          <i class="fas fa-life-ring"></i> Tech Help
+        </h2>
+        <p class="tech-help-modal-subtitle">Describe your issue and we'll help you resolve it</p>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="tech-help-modal-body">
+        <!-- Success/Error Messages -->
+        <div id="tech-help-message" class="tech-help-modal-message" role="alert" aria-live="polite"></div>
+
+        <form id="tech-help-form" class="tech-help-modal-form">
+          <!-- Description Field -->
+          <div class="form-group">
+            <label for="tech-help-description">What's the issue?</label>
+            <textarea
+              id="tech-help-description"
+              name="description"
+              placeholder="Describe the problem you're experiencing..."
+              rows="5"
+              maxlength="1000"
+              required
+              aria-required="true"
+              aria-describedby="description-hint"></textarea>
+            <small id="description-hint" class="form-hint">Be as specific as possible (max 1000 characters)</small>
+          </div>
+
+          <!-- Category Dropdown -->
+          <div class="form-group">
+            <label for="tech-help-category">Category</label>
+            <select
+              id="tech-help-category"
+              name="category"
+              required
+              aria-required="true">
+              <option value="">Select a category</option>
+              <option value="account">Account & Sign In</option>
+              <option value="courses">Courses & Content</option>
+              <option value="technical">Technical Issues</option>
+              <option value="payment">Payment & Billing</option>
+              <option value="accessibility">Accessibility</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <!-- Attachment Button (Non-functional stub) -->
+          <div class="form-group">
+            <label>Attachments</label>
+            <button type="button" class="attachment-btn" id="tech-help-attachment" aria-label="Add attachment (coming soon)" disabled>
+              <i class="fas fa-paperclip"></i>
+              <span>Add Attachment</span>
+              <span class="badge-soon">Coming Soon</span>
+            </button>
+            <small class="form-hint">Screenshots and files (feature coming soon)</small>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="tech-help-modal-actions">
+            <button type="submit" class="tech-help-modal-button primary">
+              <i class="fas fa-paper-plane"></i> Send
+            </button>
+            <a href="#common-fixes" class="tech-help-modal-link" id="common-fixes-link">
+              <i class="fas fa-lightbulb"></i> See common fixes
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
