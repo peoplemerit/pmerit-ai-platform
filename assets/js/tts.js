@@ -17,6 +17,9 @@
   let analyser = null;
   let source = null;
   let meterInterval = null;
+  
+  // TTS state management (module-level)
+  let isSpeaking = false;
 
   /**
    * Start audio metering from MediaStream
@@ -183,12 +186,12 @@
    */
   async function speakViaServer(text) {
     // Prevent multiple simultaneous TTS sessions
-    if (window.__TTS_SPEAKING__) {
+    if (isSpeaking) {
       throw new Error('TTS already in progress');
     }
     
     try {
-      window.__TTS_SPEAKING__ = true;
+      isSpeaking = true;
       
       // Call server-side TTS endpoint
       const res = await fetch('/functions/tts/speak', {
@@ -228,7 +231,7 @@
           BUS.dispatchEvent(new Event('tts:end'));
           stopMeter();
           URL.revokeObjectURL(url);
-          window.__TTS_SPEAKING__ = false;
+          isSpeaking = false;
           
           // Remove event listeners to prevent memory leaks
           audio.removeEventListener('play', handlePlay);
@@ -244,7 +247,7 @@
         audio.play().catch(reject);
       });
     } catch (error) {
-      window.__TTS_SPEAKING__ = false;
+      isSpeaking = false;
       console.error('Server TTS error:', error);
       throw error;
     }
