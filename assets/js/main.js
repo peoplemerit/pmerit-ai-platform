@@ -136,9 +136,12 @@ async function enableVirtualHuman(isEnabled) {
         vhCanvasRoot.removeAttribute('aria-hidden');
       }
 
-      // Ensure chat remains visible
+      // Ensure chat remains visible (don't modify display, just ensure it's not hidden)
       if (chatContainer) {
-        chatContainer.style.display = 'block';
+        // Remove any inline display:none that might have been set
+        if (chatContainer.style.display === 'none') {
+          chatContainer.style.display = '';
+        }
         chatContainer.removeAttribute('aria-hidden');
       }
 
@@ -175,7 +178,10 @@ async function enableVirtualHuman(isEnabled) {
         vhCanvasRoot.setAttribute('aria-hidden', 'true');
       }
       if (chatContainer) {
-        chatContainer.style.display = 'block';
+        // Remove any inline display:none that might have been set
+        if (chatContainer.style.display === 'none') {
+          chatContainer.style.display = '';
+        }
         chatContainer.removeAttribute('aria-hidden');
       }
 
@@ -197,9 +203,12 @@ async function enableVirtualHuman(isEnabled) {
       vhCanvasRoot.setAttribute('aria-hidden', 'true');
     }
 
-    // Ensure chat container remains visible
+    // Ensure chat container remains visible (don't override its display property)
     if (chatContainer) {
-      chatContainer.style.display = 'block';
+      // Remove any inline display:none that might have been set
+      if (chatContainer.style.display === 'none') {
+        chatContainer.style.display = '';
+      }
       chatContainer.removeAttribute('aria-hidden');
     }
 

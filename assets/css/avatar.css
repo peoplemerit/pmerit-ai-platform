@@ -320,24 +320,14 @@
   }
 }
 
-/* Chat panel must remain visible regardless of VH mode */
+/* Ensure chat containers have proper positioning and stacking */
 .chat-panel,
 .desktop-chat-messages,
 .desktop-chat-container,
 #desktopChatMessages,
 #desktop-chat-messages { 
-  display: block !important; 
   position: relative; 
   z-index: 0; 
-}
-
-/* If there is a global .vh-mode on body, do NOT hide .chat-panel */
-body.vh-mode .chat-panel,
-body.vh-mode .desktop-chat-messages,
-body.vh-mode .desktop-chat-container,
-body.vh-mode #desktopChatMessages,
-body.vh-mode #desktop-chat-messages { 
-  display: block !important; 
 }
 
 /* Accessibility improvements */
