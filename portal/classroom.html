@@ -359,7 +359,7 @@
       }
 
       // Show/hide VH mode - toggles only VH visibility, never hides chat
-      function showVH(on) {
+      async function showVH(on) {
         // Toggle body class
         document.body.classList.toggle("vh-mode", !!on);
 
@@ -378,7 +378,7 @@
         // Initialize/enable VH if turning on
         if (on) {
           if (!state.avatarManager) {
-            initAvatarManager(true);
+            await initAvatarManager(true);
           } else if (state.avatarManager.setEnabled) {
             state.avatarManager.setEnabled(true);
           }

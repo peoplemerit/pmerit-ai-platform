@@ -102,13 +102,26 @@ function showVH(on) {
   }
 
   // Initialize VH if turning on
-  if (on && window.AvatarManager?.init) {
-    if (!window.__VH_INITED__) {
+  if (on && window.AvatarManager && !state.avatarManager) {
+    try {
       window.__VH_INITED__ = true;
-      AvatarManager.init({
-        canvasSelector: "#vh-canvas",
-        modelUrl: "/assets/avatars/pm_classic.glb"
-      }).catch(e => console.error("[VH] init error", e));
+      state.avatarManager = new window.AvatarManager({
+        canvasId: 'vh-canvas',
+        enabled: true,
+        apiBaseUrl: (window.CONFIG && window.CONFIG.API_BASE_URL) || '/api',
+        modelFile: 'pm_classic.glb',
+        avatarBaseUrl: '/assets/avatars/'
+      });
+      state.avatarManager.init().then(() => {
+        console.info("[VH] AvatarManager initialized with pm_classic.glb");
+        showToast('Virtual Human ready', 'success');
+      }).catch(e => {
+        console.error("[VH] init error", e);
+        showToast('Virtual Human initialization failed', 'error');
+      });
+    } catch (e) {
+      console.error("[VH] AvatarManager instantiation failed", e);
+      showToast('Virtual Human initialization failed', 'error');
     }
   }
 }
