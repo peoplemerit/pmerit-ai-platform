@@ -266,7 +266,13 @@
     <main class="panel main-panel">
       <div class="topbar">
         <h2 id="lesson-title">Loading course...</h2>
-        <button id="end-class">End Class</button>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="checkbox" id="vh-toggle" style="cursor: pointer;" aria-label="Toggle Virtual Human">
+            <span>VH Mode</span>
+          </label>
+          <button id="end-class">End Class</button>
+        </div>
       </div>
 
       <!-- Virtual Human Canvas Container -->
@@ -317,7 +323,8 @@
         chatForm: document.getElementById('chat-form'),
         chatInput: document.getElementById('chat-input'),
         vhToggle: document.getElementById('vh-toggle'),
-        vhContainer: document.getElementById('vh-container'),
+        vhRoot: document.getElementById('vh-root'),
+        chatPanel: document.getElementById('chat-panel'),
         userDisplay: document.getElementById('user-display')
       };
 
@@ -332,11 +339,12 @@
           dom.userDisplay.textContent = displayName;
         }
 
-        // Load saved VH preference, defaulting to true (enabled)
+        // Load saved VH preference, defaulting to false (chat visible)
         const savedPreference = localStorage.getItem('pmerit_vh_enabled');
-        // Explicitly check for 'true' or 'false' strings, default to true for new users
-        const vhEnabled = savedPreference === 'false' ? false : true;
-        updateVHToggle(vhEnabled);
+        const vhEnabled = savedPreference === 'true';
+        if (dom.vhToggle) {
+          dom.vhToggle.checked = vhEnabled;
+        }
 
         bindEvents();
         await loadCourseData();
@@ -344,42 +352,68 @@
         initializeChat();
         renderOutline();
 
-        // Initialize avatar manager
-        await initAvatarManager(vhEnabled);
+        // Show VH based on saved preference
+        showVH(vhEnabled);
 
         console.log('✅ Classroom initialized');
+      }
+
+      // Show/hide VH mode - toggles only VH visibility, never hides chat
+      function showVH(on) {
+        // Toggle body class
+        document.body.classList.toggle("vh-mode", !!on);
+
+        // Toggle VH visibility
+        if (dom.vhRoot) {
+          dom.vhRoot.classList.toggle("is-hidden", !on);
+          dom.vhRoot.toggleAttribute("aria-hidden", !on);
+        }
+
+        // Ensure chat is always visible
+        if (dom.chatPanel) {
+          dom.chatPanel.style.display = "block";
+          dom.chatPanel.removeAttribute("aria-hidden");
+        }
+
+        // Initialize/enable VH if turning on
+        if (on) {
+          if (!state.avatarManager) {
+            initAvatarManager(true);
+          } else if (state.avatarManager.setEnabled) {
+            state.avatarManager.setEnabled(true);
+          }
+        } else {
+          if (state.avatarManager && state.avatarManager.setEnabled) {
+            state.avatarManager.setEnabled(false);
+          }
+        }
+
+        // Save preference
+        localStorage.setItem('pmerit_vh_enabled', on.toString());
       }
 
       // Initialize Avatar Manager
       async function initAvatarManager(enabled) {
         try {
+          if (!window.AvatarManager) {
+            console.warn('AvatarManager not available');
+            return;
+          }
+
           state.avatarManager = new window.AvatarManager({
             canvasId: 'vh-canvas',
-            captionsId: 'vh-captions',
             enabled: enabled,
-            apiBaseUrl: window.CONFIG.API_BASE_URL,
-            onSpeakStart: () => {
-              dom.vhContainer.classList.add('speaking');
-            },
-            onSpeakEnd: () => {
-              dom.vhContainer.classList.remove('speaking');
-            },
+            apiBaseUrl: window.CONFIG?.API_BASE_URL || '/api',
             onError: (error) => {
               console.error('Avatar error:', error);
-              showAvatarError(error);
             }
           });
 
           if (enabled) {
-            dom.vhContainer.classList.add('loading');
             await state.avatarManager.init();
-            dom.vhContainer.classList.remove('loading');
-          } else {
-            dom.vhContainer.classList.add('audio-only');
           }
         } catch (error) {
           console.error('Failed to initialize avatar:', error);
-          showAvatarError(error);
         }
       }
 
@@ -389,36 +423,8 @@
         dom.fileUpload.addEventListener('change', handleFileUpload);
         dom.endClassBtn.addEventListener('click', endClass);
         dom.chatForm.addEventListener('submit', handleChatSubmit);
-        dom.vhToggle.addEventListener('click', toggleVirtualHuman);
-      }
-
-      // Toggle Virtual Human
-      function toggleVirtualHuman() {
-        const currentlyEnabled = !dom.vhToggle.classList.contains('off');
-        const newState = !currentlyEnabled;
-        
-        updateVHToggle(newState);
-        
-        if (state.avatarManager) {
-          state.avatarManager.setEnabled(newState);
-        }
-
-        if (newState) {
-          dom.vhContainer.classList.remove('audio-only');
-          if (state.avatarManager && !state.avatarManager.state.initialized) {
-            initAvatarManager(true);
-          }
-        } else {
-          dom.vhContainer.classList.add('audio-only');
-        }
-      }
-
-      // Update VH toggle UI
-      function updateVHToggle(enabled) {
-        if (enabled) {
-          dom.vhToggle.classList.remove('off');
-        } else {
-          dom.vhToggle.classList.add('off');
+        if (dom.vhToggle) {
+          dom.vhToggle.addEventListener('change', (e) => showVH(e.target.checked));
         }
       }
 
