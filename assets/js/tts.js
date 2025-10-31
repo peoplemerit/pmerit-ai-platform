@@ -68,11 +68,13 @@
       analyser = audioCtx.createAnalyser();
       analyser.fftSize = 512;
       
-      // Connect to analyser and destination (speakers)
+      // Connect: audio element -> analyser -> destination (speakers)
+      // Note: Audio element output is rerouted through the analyser
       source.connect(analyser);
       analyser.connect(audioCtx.destination);
 
       const data = new Uint8Array(analyser.frequencyBinCount);
+      const INTENSITY_AMPLIFIER = 2; // Amplify intensity for more visible mouth movement
       
       meterInterval = setInterval(() => {
         analyser.getByteFrequencyData(data);
@@ -82,7 +84,7 @@
         for (let i = 0; i < data.length; i++) {
           sum += data[i];
         }
-        const intensity = Math.min(1, (sum / (data.length * 255)) * 2);
+        const intensity = Math.min(1, (sum / (data.length * 255)) * INTENSITY_AMPLIFIER);
         
         // Emit viseme event with intensity
         BUS.dispatchEvent(new CustomEvent('tts:viseme', { 
@@ -165,15 +167,9 @@
         reject(e.error || e);
       };
 
-      // Best-effort: Try to get output stream for metering (Chrome experimental)
-      if (speechSynthesis.speakWithStream) {
-        speechSynthesis.speakWithStream(utter)
-          .then(stream => startMeterFromMediaStream(stream))
-          .catch(() => {
-            // Fallback: no metering available
-            console.warn('Audio metering not available for Web Speech');
-          });
-      }
+      // Note: Web Speech API doesn't provide audio stream access
+      // so we cannot meter the audio for viseme hints
+      // The avatar will use fallback animation instead
 
       // Speak
       speechSynthesis.speak(utter);

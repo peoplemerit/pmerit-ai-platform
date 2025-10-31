@@ -278,14 +278,14 @@
             this.state.lipSync = new window.LipSyncVisemes(this.state.provider, []);
             this.state.lipSync.startIntensityMode();
             
-            // Update lip sync in animation loop
-            const updateLipSync = () => {
+            // Update lip sync in animation loop with proper timing
+            const updateLipSync = (timestamp) => {
               if (this.state.lipSync && this.state.lipSync.intensityMode) {
-                this.state.lipSync.update(Date.now());
+                this.state.lipSync.update(timestamp);
                 requestAnimationFrame(updateLipSync);
               }
             };
-            updateLipSync();
+            requestAnimationFrame(updateLipSync);
           }
         }
       });
