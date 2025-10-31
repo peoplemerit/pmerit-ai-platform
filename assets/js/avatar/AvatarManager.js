@@ -26,7 +26,8 @@
         speaking: false,
         currentAudio: null,
         provider: null,
-        lipSync: null
+        lipSync: null,
+        animationFrameId: null
       };
 
       this.callbacks = {
@@ -278,6 +279,12 @@
             this.state.lipSync = new window.LipSyncVisemes(this.state.provider, []);
             this.state.lipSync.startIntensityMode();
             
+            // Cancel any existing animation loop
+            if (this.state.animationFrameId) {
+              cancelAnimationFrame(this.state.animationFrameId);
+              this.state.animationFrameId = null;
+            }
+            
             // Update lip sync in animation loop with proper timing
             // Safety: Loop will stop when intensityMode is false or after 5 minutes
             const startTime = Date.now();
@@ -289,20 +296,29 @@
                 if (Date.now() - startTime > MAX_DURATION) {
                   console.warn('Lip sync animation exceeded maximum duration, stopping');
                   this.state.lipSync.stopIntensityMode();
+                  this.state.animationFrameId = null;
                   return;
                 }
                 
                 this.state.lipSync.update(timestamp);
-                requestAnimationFrame(updateLipSync);
+                this.state.animationFrameId = requestAnimationFrame(updateLipSync);
+              } else {
+                this.state.animationFrameId = null;
               }
             };
-            requestAnimationFrame(updateLipSync);
+            this.state.animationFrameId = requestAnimationFrame(updateLipSync);
           }
         }
       });
 
       // Listen for TTS end
       document.addEventListener('tts:end', () => {
+        // Cancel animation frame if running
+        if (this.state.animationFrameId) {
+          cancelAnimationFrame(this.state.animationFrameId);
+          this.state.animationFrameId = null;
+        }
+        
         if (this.state.lipSync) {
           this.state.lipSync.stopIntensityMode();
           this.state.lipSync.reset();
@@ -320,6 +336,12 @@
      */
     dispose() {
       this.stop();
+      
+      // Cancel any running animation frame
+      if (this.state.animationFrameId) {
+        cancelAnimationFrame(this.state.animationFrameId);
+        this.state.animationFrameId = null;
+      }
       
       // Clean up lip sync
       if (this.state.lipSync) {
