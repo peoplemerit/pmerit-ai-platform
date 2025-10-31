@@ -12,6 +12,11 @@
  * - Generate audio with viseme/phoneme timing data
  */
 
+// Minimal silent WAV file (base64)
+// Format: RIFF header, PCM 8kHz mono, 0 samples
+// Used as placeholder until actual TTS is implemented
+const SILENT_WAV_BASE64 = 'UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=';
+
 export async function onRequestPost(context) {
   const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
@@ -65,10 +70,7 @@ export async function onRequestPost(context) {
 
     // For now, return a minimal silent WAV file as placeholder
     // This allows the client-side code to work without errors
-    const silentWav = Buffer.from(
-      'UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=',
-      'base64'
-    );
+    const silentWav = Buffer.from(SILENT_WAV_BASE64, 'base64');
 
     return new Response(silentWav, {
       status: 200,
