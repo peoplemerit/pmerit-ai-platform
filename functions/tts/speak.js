@@ -17,8 +17,13 @@
 // Used as placeholder until actual TTS is implemented
 const SILENT_WAV_BASE64 = 'UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=';
 
+// Configuration
+const MAX_TEXT_LENGTH = 5000; // Maximum characters for TTS input
+
 export async function onRequestPost(context) {
   const corsHeaders = {
+    // TODO: Restrict to site origin in production
+    // 'Access-Control-Allow-Origin': 'https://your-domain.com',
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type'
@@ -41,6 +46,17 @@ export async function onRequestPost(context) {
       return new Response(JSON.stringify({ 
         error: 'Invalid input',
         message: 'Text is required and must be a non-empty string'
+      }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders }
+      });
+    }
+
+    // Validate text length to prevent resource exhaustion
+    if (text.length > MAX_TEXT_LENGTH) {
+      return new Response(JSON.stringify({ 
+        error: 'Invalid input',
+        message: `Text exceeds maximum length of ${MAX_TEXT_LENGTH} characters`
       }), {
         status: 400,
         headers: { 'Content-Type': 'application/json', ...corsHeaders }
