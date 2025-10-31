@@ -24,6 +24,8 @@
   // Constants
   const INTENSITY_AMPLIFIER = 2; // Amplify intensity for more visible mouth movement
   const VISEME_UPDATE_INTERVAL = 33; // ~30 FPS
+  const SERVER_TTS_TIMEOUT = 30000; // 30 seconds timeout for server TTS requests
+  const MAX_TEXT_LENGTH = 5000; // Maximum text length for TTS
 
   /**
    * Start audio metering from MediaStream
@@ -141,6 +143,15 @@
    */
   function speakWebSpeech(text, voiceName) {
     return new Promise((resolve, reject) => {
+      // Validate input
+      if (!text || typeof text !== 'string' || text.trim().length === 0) {
+        return reject(new Error('Text is required and must be a non-empty string'));
+      }
+      
+      if (text.length > MAX_TEXT_LENGTH) {
+        return reject(new Error(`Text exceeds maximum length of ${MAX_TEXT_LENGTH} characters`));
+      }
+      
       if (!window.speechSynthesis) {
         return reject(new Error('speechSynthesis not supported'));
       }
@@ -194,6 +205,12 @@
     }
     isSpeaking = true;
     
+    // Timeout mechanism to prevent hung requests
+    const timeoutId = setTimeout(() => {
+      isSpeaking = false;
+      throw new Error('Server TTS request timed out');
+    }, SERVER_TTS_TIMEOUT);
+    
     try {
       // Call server-side TTS endpoint
       const res = await fetch('/functions/tts/speak', {
@@ -205,6 +222,9 @@
       if (!res.ok) {
         throw new Error(`TTS server ${res.status}`);
       }
+
+      // Clear timeout on successful response
+      clearTimeout(timeoutId);
 
       // Get audio blob
       const blob = await res.blob();
@@ -234,6 +254,7 @@
           stopMeter();
           URL.revokeObjectURL(url);
           isSpeaking = false;
+          clearTimeout(timeoutId);
           
           // Remove event listeners to prevent memory leaks
           audio.removeEventListener('play', handlePlay);
@@ -249,6 +270,7 @@
         audio.play().catch(reject);
       });
     } catch (error) {
+      clearTimeout(timeoutId);
       isSpeaking = false;
       console.error('Server TTS error:', error);
       throw error;
