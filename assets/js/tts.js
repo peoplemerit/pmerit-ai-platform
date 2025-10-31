@@ -203,31 +203,30 @@
       const url = URL.createObjectURL(blob);
       const audio = new Audio(url);
 
-      // Set up event handlers
-      audio.addEventListener('play', () => {
-        BUS.dispatchEvent(new Event('tts:start'));
-        startMeterFromAudio(audio);
-      });
-
-      audio.addEventListener('ended', () => {
-        BUS.dispatchEvent(new Event('tts:end'));
-        stopMeter();
-        URL.revokeObjectURL(url);
-      });
-
-      audio.addEventListener('error', () => {
-        BUS.dispatchEvent(new Event('tts:end'));
-        stopMeter();
-        URL.revokeObjectURL(url);
-      });
-
-      // Play audio
-      await audio.play();
-
       // Wait for audio to finish
       return new Promise((resolve, reject) => {
-        audio.addEventListener('ended', resolve);
-        audio.addEventListener('error', reject);
+        // Set up event handlers
+        audio.addEventListener('play', () => {
+          BUS.dispatchEvent(new Event('tts:start'));
+          startMeterFromAudio(audio);
+        });
+
+        audio.addEventListener('ended', () => {
+          BUS.dispatchEvent(new Event('tts:end'));
+          stopMeter();
+          URL.revokeObjectURL(url);
+          resolve();
+        });
+
+        audio.addEventListener('error', (error) => {
+          BUS.dispatchEvent(new Event('tts:end'));
+          stopMeter();
+          URL.revokeObjectURL(url);
+          reject(error);
+        });
+
+        // Play audio
+        audio.play().catch(reject);
       });
     } catch (error) {
       console.error('Server TTS error:', error);
