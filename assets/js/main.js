@@ -163,6 +163,7 @@ async function enableVirtualHuman(isEnabled) {
 
       // Show VH container (never hide chat)
       if (vhContainer) {
+        // Use 'block' for new vh-root (grid child), 'flex' for legacy vh-canvas-root
         vhContainer.style.display = vhRoot ? 'block' : 'flex';
         vhContainer.classList.remove('is-hidden');
         vhContainer.removeAttribute('aria-hidden');
