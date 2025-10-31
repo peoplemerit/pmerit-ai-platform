@@ -279,8 +279,19 @@
             this.state.lipSync.startIntensityMode();
             
             // Update lip sync in animation loop with proper timing
+            // Safety: Loop will stop when intensityMode is false or after 5 minutes
+            const startTime = Date.now();
+            const MAX_DURATION = 5 * 60 * 1000; // 5 minutes maximum
+            
             const updateLipSync = (timestamp) => {
               if (this.state.lipSync && this.state.lipSync.intensityMode) {
+                // Safety check: stop after maximum duration
+                if (Date.now() - startTime > MAX_DURATION) {
+                  console.warn('Lip sync animation exceeded maximum duration, stopping');
+                  this.state.lipSync.stopIntensityMode();
+                  return;
+                }
+                
                 this.state.lipSync.update(timestamp);
                 requestAnimationFrame(updateLipSync);
               }

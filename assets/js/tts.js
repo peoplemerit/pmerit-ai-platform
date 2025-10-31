@@ -182,7 +182,14 @@
    * @returns {Promise<void>}
    */
   async function speakViaServer(text) {
+    // Prevent multiple simultaneous TTS sessions
+    if (window.__TTS_SPEAKING__) {
+      throw new Error('TTS already in progress');
+    }
+    
     try {
+      window.__TTS_SPEAKING__ = true;
+      
       // Call server-side TTS endpoint
       const res = await fetch('/functions/tts/speak', {
         method: 'POST',
@@ -202,29 +209,42 @@
       // Wait for audio to finish
       return new Promise((resolve, reject) => {
         // Set up event handlers
-        audio.addEventListener('play', () => {
+        const handlePlay = () => {
           BUS.dispatchEvent(new Event('tts:start'));
           startMeterFromAudio(audio);
-        });
+        };
 
-        audio.addEventListener('ended', () => {
-          BUS.dispatchEvent(new Event('tts:end'));
-          stopMeter();
-          URL.revokeObjectURL(url);
+        const handleEnd = () => {
+          cleanup();
           resolve();
-        });
+        };
 
-        audio.addEventListener('error', (error) => {
+        const handleError = (error) => {
+          cleanup();
+          reject(error);
+        };
+
+        const cleanup = () => {
           BUS.dispatchEvent(new Event('tts:end'));
           stopMeter();
           URL.revokeObjectURL(url);
-          reject(error);
-        });
+          window.__TTS_SPEAKING__ = false;
+          
+          // Remove event listeners to prevent memory leaks
+          audio.removeEventListener('play', handlePlay);
+          audio.removeEventListener('ended', handleEnd);
+          audio.removeEventListener('error', handleError);
+        };
+
+        audio.addEventListener('play', handlePlay);
+        audio.addEventListener('ended', handleEnd);
+        audio.addEventListener('error', handleError);
 
         // Play audio
         audio.play().catch(reject);
       });
     } catch (error) {
+      window.__TTS_SPEAKING__ = false;
       console.error('Server TTS error:', error);
       throw error;
     }
