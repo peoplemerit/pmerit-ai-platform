@@ -25,7 +25,8 @@
         initialized: false,
         speaking: false,
         currentAudio: null,
-        provider: null
+        provider: null,
+        lipSync: null
       };
 
       this.callbacks = {
@@ -63,6 +64,10 @@
         }
 
         this.state.initialized = true;
+        
+        // Set up TTS event listeners if TTS module is available
+        this._setupTTSListeners();
+        
         console.log('✅ AvatarManager initialized');
       } catch (error) {
         console.error('❌ AvatarManager initialization failed:', error);
@@ -255,10 +260,61 @@
     }
 
     /**
+     * Set up TTS event listeners
+     * @private
+     */
+    _setupTTSListeners() {
+      if (!window.TTS) {
+        return;
+      }
+
+      // Listen for TTS start
+      document.addEventListener('tts:start', () => {
+        if (this.state.provider && this.config.enabled) {
+          this.state.provider.startSpeaking();
+          
+          // Create lip sync with intensity mode for TTS-driven animation
+          if (window.LipSyncVisemes) {
+            this.state.lipSync = new window.LipSyncVisemes(this.state.provider, []);
+            this.state.lipSync.startIntensityMode();
+            
+            // Update lip sync in animation loop
+            const updateLipSync = () => {
+              if (this.state.lipSync && this.state.lipSync.intensityMode) {
+                this.state.lipSync.update(Date.now());
+                requestAnimationFrame(updateLipSync);
+              }
+            };
+            updateLipSync();
+          }
+        }
+      });
+
+      // Listen for TTS end
+      document.addEventListener('tts:end', () => {
+        if (this.state.lipSync) {
+          this.state.lipSync.stopIntensityMode();
+          this.state.lipSync.reset();
+          this.state.lipSync = null;
+        }
+        
+        if (this.state.provider && this.config.enabled) {
+          this.state.provider.stopSpeaking();
+        }
+      });
+    }
+
+    /**
      * Clean up resources
      */
     dispose() {
       this.stop();
+      
+      // Clean up lip sync
+      if (this.state.lipSync) {
+        this.state.lipSync.stopIntensityMode();
+        this.state.lipSync = null;
+      }
       
       if (this.state.provider) {
         this.state.provider.dispose();
