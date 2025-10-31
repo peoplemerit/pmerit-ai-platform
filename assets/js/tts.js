@@ -20,6 +20,10 @@
   
   // TTS state management (module-level)
   let isSpeaking = false;
+  
+  // Constants
+  const INTENSITY_AMPLIFIER = 2; // Amplify intensity for more visible mouth movement
+  const VISEME_UPDATE_INTERVAL = 33; // ~30 FPS
 
   /**
    * Start audio metering from MediaStream
@@ -46,13 +50,13 @@
         for (let i = 0; i < data.length; i++) {
           sum += data[i];
         }
-        const intensity = Math.min(1, (sum / (data.length * 255)) * 2);
+        const intensity = Math.min(1, (sum / (data.length * 255)) * INTENSITY_AMPLIFIER);
         
         // Emit viseme event with intensity
         BUS.dispatchEvent(new CustomEvent('tts:viseme', { 
           detail: { intensity } 
         }));
-      }, 33); // ~30 FPS
+      }, VISEME_UPDATE_INTERVAL);
     } catch (error) {
       console.error('Failed to start audio meter:', error);
     }
@@ -77,7 +81,6 @@
       analyser.connect(audioCtx.destination);
 
       const data = new Uint8Array(analyser.frequencyBinCount);
-      const INTENSITY_AMPLIFIER = 2; // Amplify intensity for more visible mouth movement
       
       meterInterval = setInterval(() => {
         analyser.getByteFrequencyData(data);
@@ -93,7 +96,7 @@
         BUS.dispatchEvent(new CustomEvent('tts:viseme', { 
           detail: { intensity } 
         }));
-      }, 33); // ~30 FPS
+      }, VISEME_UPDATE_INTERVAL);
     } catch (error) {
       console.error('Failed to start audio meter:', error);
     }
@@ -185,14 +188,13 @@
    * @returns {Promise<void>}
    */
   async function speakViaServer(text) {
-    // Prevent multiple simultaneous TTS sessions
+    // Prevent multiple simultaneous TTS sessions (atomic check-and-set)
     if (isSpeaking) {
       throw new Error('TTS already in progress');
     }
+    isSpeaking = true;
     
     try {
-      isSpeaking = true;
-      
       // Call server-side TTS endpoint
       const res = await fetch('/functions/tts/speak', {
         method: 'POST',
