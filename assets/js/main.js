@@ -523,15 +523,33 @@ function toggleTextToSpeech(enabled) {
   if (enabled) {
     document.body.classList.add('tts-enabled');
     showToast('Text-to-Speech Enabled', 'success');
-    testTextToSpeech();
+    
+    // Test TTS if available
+    if (window.TTS && window.TTS.isAvailable()) {
+      testTextToSpeech();
+    } else {
+      console.warn('TTS module not available');
+      showToast('TTS module loading...', 'info');
+    }
   } else {
     document.body.classList.remove('tts-enabled');
     showToast('Text-to-Speech Disabled', 'info');
+    
+    // Stop any ongoing speech
+    if (window.TTS) {
+      window.TTS.stop();
+    }
   }
 }
 
 function testTextToSpeech() {
-  if ('speechSynthesis' in window) {
+  // Use TTS module if available, fall back to speechSynthesis
+  if (window.TTS && window.TTS.isAvailable()) {
+    window.TTS.speak('Text-to-speech is now enabled.', { useServer: false })
+      .catch(error => {
+        console.error('TTS test failed:', error);
+      });
+  } else if ('speechSynthesis' in window) {
     const utterance = new SpeechSynthesisUtterance('Text-to-speech is now enabled.');
     utterance.rate = 1.0;
     utterance.pitch = 1.0;

@@ -44,6 +44,9 @@
       this.visemes = visemes.sort((a, b) => a.t - b.t);
       this.currentIndex = 0;
       this.lastViseme = null;
+      this.intensityMode = false;
+      this.currentIntensity = 0;
+      this._boundVisemeHandler = null;
     }
 
     /**
@@ -51,6 +54,12 @@
      * @param {number} currentTimeMs - Current audio playback time in milliseconds
      */
     update(currentTimeMs) {
+      // If in intensity mode, apply intensity-based animation
+      if (this.intensityMode) {
+        this._applyIntensityAnimation(this.currentIntensity);
+        return;
+      }
+
       if (!this.visemes || this.visemes.length === 0) {
         this._applyFallbackAnimation(currentTimeMs);
         return;
@@ -101,11 +110,56 @@
     }
 
     /**
+     * Apply intensity-based animation (from TTS viseme events)
+     * @param {number} intensity - Intensity value [0..1]
+     * @private
+     */
+    _applyIntensityAnimation(intensity) {
+      if (this.provider && this.provider.setVisemeWeights) {
+        // Map intensity to jaw open and mouth funnel
+        this.provider.setVisemeWeights({
+          jawOpen: intensity * 0.6,
+          mouthFunnel: intensity * 0.4
+        });
+      }
+    }
+
+    /**
+     * Start listening to TTS viseme events
+     * Used when TTS is driving lip-sync via intensity
+     */
+    startIntensityMode() {
+      this.intensityMode = true;
+      this.currentIntensity = 0;
+
+      // Listen for tts:viseme events
+      this._boundVisemeHandler = (event) => {
+        this.currentIntensity = event.detail.intensity || 0;
+      };
+      
+      document.addEventListener('tts:viseme', this._boundVisemeHandler);
+    }
+
+    /**
+     * Stop listening to TTS viseme events
+     */
+    stopIntensityMode() {
+      this.intensityMode = false;
+      this.currentIntensity = 0;
+
+      if (this._boundVisemeHandler) {
+        document.removeEventListener('tts:viseme', this._boundVisemeHandler);
+        this._boundVisemeHandler = null;
+      }
+    }
+
+    /**
      * Reset lip-sync state
      */
     reset() {
       this.currentIndex = 0;
       this.lastViseme = null;
+      this.stopIntensityMode();
       
       if (this.provider && this.provider.setVisemeWeights) {
         this.provider.setVisemeWeights({});
