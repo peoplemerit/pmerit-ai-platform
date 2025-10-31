@@ -9,6 +9,9 @@
 (function (window) {
   'use strict';
 
+  // Constants
+  const MAX_LIPSYNC_DURATION = 5 * 60 * 1000; // 5 minutes maximum
+
   class AvatarManager {
     constructor(config = {}) {
       this.config = {
@@ -35,6 +38,10 @@
         onSpeakEnd: config.onSpeakEnd || null,
         onError: config.onError || null
       };
+      
+      // Bound event handlers for cleanup
+      this.boundTTSStartHandler = null;
+      this.boundTTSEndHandler = null;
     }
 
     /**
@@ -269,8 +276,8 @@
         return;
       }
 
-      // Listen for TTS start
-      document.addEventListener('tts:start', () => {
+      // Create bound handlers for cleanup
+      this.boundTTSStartHandler = () => {
         if (this.state.provider && this.config.enabled) {
           this.state.provider.startSpeaking();
           
@@ -286,14 +293,13 @@
             }
             
             // Update lip sync in animation loop with proper timing
-            // Safety: Loop will stop when intensityMode is false or after 5 minutes
+            // Safety: Loop will stop when intensityMode is false or after MAX_LIPSYNC_DURATION
             const startTime = Date.now();
-            const MAX_DURATION = 5 * 60 * 1000; // 5 minutes maximum
             
             const updateLipSync = (timestamp) => {
               if (this.state.lipSync && this.state.lipSync.intensityMode) {
                 // Safety check: stop after maximum duration
-                if (Date.now() - startTime > MAX_DURATION) {
+                if (Date.now() - startTime > MAX_LIPSYNC_DURATION) {
                   console.warn('Lip sync animation exceeded maximum duration, stopping');
                   this.state.lipSync.stopIntensityMode();
                   this.state.animationFrameId = null;
@@ -309,10 +315,9 @@
             this.state.animationFrameId = requestAnimationFrame(updateLipSync);
           }
         }
-      });
+      };
 
-      // Listen for TTS end
-      document.addEventListener('tts:end', () => {
+      this.boundTTSEndHandler = () => {
         // Cancel animation frame if running
         if (this.state.animationFrameId) {
           cancelAnimationFrame(this.state.animationFrameId);
@@ -328,7 +333,11 @@
         if (this.state.provider && this.config.enabled) {
           this.state.provider.stopSpeaking();
         }
-      });
+      };
+
+      // Listen for TTS events
+      document.addEventListener('tts:start', this.boundTTSStartHandler);
+      document.addEventListener('tts:end', this.boundTTSEndHandler);
     }
 
     /**
@@ -336,6 +345,16 @@
      */
     dispose() {
       this.stop();
+      
+      // Remove TTS event listeners
+      if (this.boundTTSStartHandler) {
+        document.removeEventListener('tts:start', this.boundTTSStartHandler);
+        this.boundTTSStartHandler = null;
+      }
+      if (this.boundTTSEndHandler) {
+        document.removeEventListener('tts:end', this.boundTTSEndHandler);
+        this.boundTTSEndHandler = null;
+      }
       
       // Cancel any running animation frame
       if (this.state.animationFrameId) {
