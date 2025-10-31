@@ -104,6 +104,32 @@ function init() {
   console.log('✅ PMERIT Platform initialized');
 }
 
+/**
+ * Ensure chat container is visible by removing display:none if set
+ * @param {HTMLElement} chatContainer - The chat container element
+ */
+function ensureChatVisible(chatContainer) {
+  if (chatContainer) {
+    // Remove any inline display:none that might have been set
+    if (chatContainer.style.display === 'none') {
+      chatContainer.style.display = '';
+    }
+    chatContainer.removeAttribute('aria-hidden');
+  }
+}
+
+/**
+ * Hide the VH container
+ * @param {HTMLElement} vhCanvasRoot - The VH canvas root element
+ */
+function hideVHContainer(vhCanvasRoot) {
+  if (vhCanvasRoot) {
+    vhCanvasRoot.style.display = 'none';
+    vhCanvasRoot.classList.add('is-hidden');
+    vhCanvasRoot.setAttribute('aria-hidden', 'true');
+  }
+}
+
 // ========== VIRTUAL HUMAN MODE ==========
 async function enableVirtualHuman(isEnabled) {
   console.log(`🤖 Virtual Human Mode: ${isEnabled ? 'ON' : 'OFF'}`);
@@ -137,13 +163,7 @@ async function enableVirtualHuman(isEnabled) {
       }
 
       // Ensure chat remains visible (don't modify display, just ensure it's not hidden)
-      if (chatContainer) {
-        // Remove any inline display:none that might have been set
-        if (chatContainer.style.display === 'none') {
-          chatContainer.style.display = '';
-        }
-        chatContainer.removeAttribute('aria-hidden');
-      }
+      ensureChatVisible(chatContainer);
 
       // Add body class for any additional styling needs
       document.body.classList.add('vh-mode');
@@ -172,18 +192,8 @@ async function enableVirtualHuman(isEnabled) {
       showToast('Failed to load Virtual Human. Please try again.', 'error');
 
       // Hide VH on error, but keep chat visible
-      if (vhCanvasRoot) {
-        vhCanvasRoot.style.display = 'none';
-        vhCanvasRoot.classList.add('is-hidden');
-        vhCanvasRoot.setAttribute('aria-hidden', 'true');
-      }
-      if (chatContainer) {
-        // Remove any inline display:none that might have been set
-        if (chatContainer.style.display === 'none') {
-          chatContainer.style.display = '';
-        }
-        chatContainer.removeAttribute('aria-hidden');
-      }
+      hideVHContainer(vhCanvasRoot);
+      ensureChatVisible(chatContainer);
 
       document.body.classList.remove('vh-mode');
       state.virtualHuman = false;
@@ -197,20 +207,8 @@ async function enableVirtualHuman(isEnabled) {
     }
 
     // Hide VH canvas, keep chat visible
-    if (vhCanvasRoot) {
-      vhCanvasRoot.style.display = 'none';
-      vhCanvasRoot.classList.add('is-hidden');
-      vhCanvasRoot.setAttribute('aria-hidden', 'true');
-    }
-
-    // Ensure chat container remains visible (don't override its display property)
-    if (chatContainer) {
-      // Remove any inline display:none that might have been set
-      if (chatContainer.style.display === 'none') {
-        chatContainer.style.display = '';
-      }
-      chatContainer.removeAttribute('aria-hidden');
-    }
+    hideVHContainer(vhCanvasRoot);
+    ensureChatVisible(chatContainer);
 
     // Remove body class
     document.body.classList.remove('vh-mode');

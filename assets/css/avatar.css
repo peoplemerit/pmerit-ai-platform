@@ -3,12 +3,18 @@
  * Phase 3.3-A: Virtual Human avatar UI components
  */
 
+:root {
+  /* VH container dimensions */
+  --vh-container-max-width: 680px;
+  --vh-container-height: 420px;
+}
+
 /* VH Root Container */
 .vh-root {
   position: relative;
   width: 100%;
-  max-width: 680px;
-  height: 420px;       /* finite height so chat below is visible */
+  max-width: var(--vh-container-max-width);
+  height: var(--vh-container-height);  /* finite height so chat below is visible */
   margin: 0 auto 1rem; /* keep spacing from chat */
   overflow: hidden;
   z-index: 1;          /* keep under any sticky headers/tooltips */
@@ -23,8 +29,8 @@
 .vh-canvas-root {
   position: relative;
   width: 100%;
-  max-width: 680px;
-  height: 420px;       /* finite height so chat below is visible */
+  max-width: var(--vh-container-max-width);
+  height: var(--vh-container-height);  /* finite height so chat below is visible */
   margin: 0 auto 1rem; /* keep spacing from chat */
   overflow: hidden;
   z-index: 1;          /* keep under any sticky headers/tooltips */
