@@ -1,6 +1,7 @@
 /**
  * PMERIT Avatar Styles
  * Phase 3.3-A: Virtual Human avatar UI components
+ * Updated: Hotfix to ensure VH and chat coexist
  */
 
 :root {
@@ -9,20 +10,41 @@
   --vh-container-height: 420px;
 }
 
-/* VH Root Container */
+/* VH Root Container - finite height so chat is always visible */
 .vh-root {
   position: relative;
   width: 100%;
   max-width: var(--vh-container-max-width);
-  height: var(--vh-container-height);  /* finite height so chat below is visible */
-  margin: 0 auto 1rem; /* keep spacing from chat */
+  height: var(--vh-container-height);
+  margin: 0 auto 1rem;
   overflow: hidden;
-  z-index: 1;          /* keep under any sticky headers/tooltips */
+  z-index: 1;
 }
 
-.vh-root[hidden],
-.vh-root.is-hidden { 
+.vh-root.is-hidden,
+.vh-root[hidden] { 
   display: none !important; 
+}
+
+/* VH Canvas */
+#vh-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: #1f2833;
+  cursor: default;
+}
+
+/* Chat must always be visible even in VH mode */
+.chat-panel {
+  display: block !important;
+  position: relative;
+  z-index: 0;
+}
+
+/* Neutralize any prior global hide */
+body.vh-mode .chat-panel {
+  display: block !important;
 }
 
 /* VH Canvas Root Container */

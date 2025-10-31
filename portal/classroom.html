@@ -269,36 +269,14 @@
         <button id="end-class">End Class</button>
       </div>
 
-      <!-- Virtual Human Toggle -->
-      <div class="vh-toggle-container">
-        <button class="vh-toggle" id="vh-toggle" aria-label="Toggle Virtual Human">
-          <span class="sr-only">Virtual Human Mode</span>
-        </button>
-        <label for="vh-toggle" class="vh-toggle-label">
-          <i class="fas fa-robot"></i> Virtual Human Mode
-        </label>
-      </div>
-
-      <!-- Avatar Container -->
-      <div class="player-area">
-        <div class="vh-container" id="vh-container">
-          <canvas id="vh-canvas"></canvas>
-          <div id="vh-captions" aria-live="polite"></div>
-          <div class="vh-speaking-indicator">Speaking</div>
-          
-          <!-- Audio-only placeholder -->
-          <div class="audio-only-placeholder">
-            <div class="avatar-icon">
-              <i class="fas fa-user-circle"></i>
-            </div>
-            <div class="status-text">Audio-only mode</div>
-          </div>
-        </div>
+      <!-- Virtual Human Canvas Container -->
+      <div id="vh-root" class="vh-root is-hidden">
+        <canvas id="vh-canvas"></canvas>
       </div>
     </main>
 
     <!-- Right Panel: AI Tutor Chat -->
-    <aside class="panel right-panel">
+    <aside class="panel right-panel chat-panel" id="chat-panel">
       <div class="panel-title">AI Tutor Chat</div>
       <div class="messages-container" id="chat-messages"></div>
       <form class="chat-form" id="chat-form">

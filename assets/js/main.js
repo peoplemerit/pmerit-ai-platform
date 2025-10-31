@@ -78,6 +78,42 @@ window.vhBoot = async function vhBoot() {
   }
 };
 
+/**
+ * Show/hide VH mode - toggles only VH visibility, never hides chat
+ * @param {boolean} on - Whether to enable VH mode
+ */
+function showVH(on) {
+  const vhRoot = document.getElementById("vh-root");
+  const chat = document.getElementById("chat-panel");
+
+  // Toggle body class
+  document.body.classList.toggle("vh-mode", !!on);
+
+  // Toggle VH visibility
+  if (vhRoot) {
+    vhRoot.classList.toggle("is-hidden", !on);
+    vhRoot.toggleAttribute("aria-hidden", !on);
+  }
+
+  // Ensure chat is always visible
+  if (chat) {
+    chat.style.display = "block";
+    chat.removeAttribute("aria-hidden");
+  }
+
+  // Initialize VH if turning on
+  if (on && window.AvatarManager?.init) {
+    if (!window.__VH_INITED__) {
+      window.__VH_INITED__ = true;
+      AvatarManager.init({
+        canvasSelector: "#vh-canvas",
+        modelUrl: "/assets/avatars/pm_classic.glb"
+      }).catch(e => console.error("[VH] init error", e));
+    }
+  }
+}
+
+
 function init() {
   console.log('🚀 PMERIT Platform initializing...');
   
@@ -91,14 +127,14 @@ function init() {
   initializeCareerTrack();
   initializeSupportButtons();
   
-  // Auto-enable Virtual Human if it's set to true in state
-  if (state.virtualHuman) {
-    // Use requestAnimationFrame to ensure DOM is ready after all synchronous code completes
-    requestAnimationFrame(() => {
-      enableVirtualHuman(true).catch(error => {
-        console.error('Failed to auto-enable Virtual Human:', error);
-      });
-    });
+  // Set up VH toggle listener - support both data-toggle values
+  const vhToggle = document.querySelector("[data-toggle='virtual-human']") || 
+                   document.querySelector("[data-toggle='vh']") ||
+                   document.getElementById("virtual-human-toggle");
+  if (vhToggle) {
+    vhToggle.addEventListener("change", e => showVH(e.target.checked));
+    // Normalize on load
+    showVH(vhToggle.checked);
   }
   
   console.log('✅ PMERIT Platform initialized');
