@@ -134,8 +134,14 @@ function hideVHContainer(vhCanvasRoot) {
 async function enableVirtualHuman(isEnabled) {
   console.log(`🤖 Virtual Human Mode: ${isEnabled ? 'ON' : 'OFF'}`);
 
+  // Support both new vh-root and legacy vh-canvas-root
+  const vhRoot = document.getElementById('vh-root');
   const vhCanvasRoot = document.getElementById('vh-canvas-root');
-  const chatContainer = document.getElementById('desktopChatMessages') || document.getElementById('desktop-chat-messages');
+  const vhContainer = vhRoot || vhCanvasRoot;
+  
+  // Support both new chat-stream and legacy containers
+  const chatStream = document.getElementById('chat-stream');
+  const chatContainer = chatStream || document.getElementById('desktopChatMessages') || document.getElementById('desktop-chat-messages');
   const statusText = document.getElementById('vh-status-text');
 
   if (isEnabled) {
@@ -155,14 +161,14 @@ async function enableVirtualHuman(isEnabled) {
         statusText.textContent = 'Virtual Human is loading...';
       }
 
-      // Show VH canvas container above chat (never hide chat)
-      if (vhCanvasRoot) {
-        vhCanvasRoot.style.display = 'flex';
-        vhCanvasRoot.classList.remove('is-hidden');
-        vhCanvasRoot.removeAttribute('aria-hidden');
+      // Show VH container (never hide chat)
+      if (vhContainer) {
+        vhContainer.style.display = vhRoot ? 'block' : 'flex';
+        vhContainer.classList.remove('is-hidden');
+        vhContainer.removeAttribute('aria-hidden');
       }
 
-      // Ensure chat remains visible (don't modify display, just ensure it's not hidden)
+      // Ensure chat remains visible (never hide it)
       ensureChatVisible(chatContainer);
 
       // Add body class for any additional styling needs
@@ -192,7 +198,7 @@ async function enableVirtualHuman(isEnabled) {
       showToast('Failed to load Virtual Human. Please try again.', 'error');
 
       // Hide VH on error, but keep chat visible
-      hideVHContainer(vhCanvasRoot);
+      hideVHContainer(vhContainer);
       ensureChatVisible(chatContainer);
 
       document.body.classList.remove('vh-mode');
@@ -206,8 +212,8 @@ async function enableVirtualHuman(isEnabled) {
       state.avatarManager.setEnabled(false);
     }
 
-    // Hide VH canvas, keep chat visible
-    hideVHContainer(vhCanvasRoot);
+    // Hide VH container, keep chat visible
+    hideVHContainer(vhContainer);
     ensureChatVisible(chatContainer);
 
     // Remove body class

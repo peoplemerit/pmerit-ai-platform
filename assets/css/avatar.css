@@ -1,6 +1,7 @@
 /**
  * PMERIT Avatar Styles
  * Phase 3.3-A: Virtual Human avatar UI components
+ * Updated: Fixed Viewport Architecture
  */
 
 :root {
@@ -9,15 +10,18 @@
   --vh-container-height: 420px;
 }
 
-/* VH Root Container */
+/* VH Root Container - Fixed Viewport */
 .vh-root {
   position: relative;
   width: 100%;
   max-width: var(--vh-container-max-width);
-  height: var(--vh-container-height);  /* finite height so chat below is visible */
-  margin: 0 auto 1rem; /* keep spacing from chat */
+  height: var(--vh-container-height);
+  margin: 0 auto 1rem;
   overflow: hidden;
-  z-index: 1;          /* keep under any sticky headers/tooltips */
+  z-index: 1;
+  background: linear-gradient(135deg, #1f2833 0%, #0b0c10 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .vh-root[hidden],
@@ -25,21 +29,26 @@
   display: none !important; 
 }
 
-/* VH Canvas Root Container */
+/* VH Canvas Root Container - Legacy support */
 .vh-canvas-root {
   position: relative;
   width: 100%;
   max-width: var(--vh-container-max-width);
-  height: var(--vh-container-height);  /* finite height so chat below is visible */
-  margin: 0 auto 1rem; /* keep spacing from chat */
+  height: var(--vh-container-height);
+  margin: 0 auto 1rem;
   overflow: hidden;
-  z-index: 1;          /* keep under any sticky headers/tooltips */
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #1f2833 0%, #0b0c10 100%);
   padding: 2rem;
+}
+
+.vh-canvas-root[hidden],
+.vh-canvas-root.is-hidden {
+  display: none !important;
 }
 
 /* Avatar Canvas Container */

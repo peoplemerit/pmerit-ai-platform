@@ -258,21 +258,21 @@
       </div>
     </aside>
 
-    <!-- Center Panel - Chat Interface -->
-    <main class="main-content">
-      <!-- Virtual Human Canvas Container (Hidden by default) -->
-      <div id="vh-canvas-root" class="vh-canvas-root" style="display: none;">
+    <!-- Center Panel - 3-Row Grid Layout -->
+    <section id="center-panel" class="center-panel">
+      <!-- Row 1: Virtual Human Fixed Viewport (Hidden by default) -->
+      <div id="vh-root" class="vh-root is-hidden">
         <div class="vh-container">
           <canvas id="vh-canvas"></canvas>
-          <div id="vh-captions"></div>
+          <div id="vh-captions" aria-live="polite"></div>
           <div class="vh-status-strip">
             <span id="vh-status-text">Virtual Human is loading...</span>
           </div>
         </div>
       </div>
 
-      <!-- Chat Messages Container -->
-      <div class="desktop-chat-container" id="desktopChatMessages">
+      <!-- Row 2: Chat Stream (Independently Scrollable) -->
+      <div id="chat-stream" class="chat-stream">
         <div class="desktop-chat-message ai-message">
           <div class="message-avatar">
             <i class="fas fa-robot"></i>
@@ -286,8 +286,8 @@
         </div>
       </div>
 
-      <!-- ChatGPT-Style Input Area (Desktop) -->
-      <div class="desktop-chat-input-area">
+      <!-- Row 3: Unified Interaction Bar -->
+      <div id="interaction-bar" class="interaction-bar">
         <!-- Input Wrapper with Icons -->
         <div class="desktop-input-wrapper">
           <!-- Add Button -->
@@ -340,7 +340,7 @@
           </span>
         </div>
       </div>
-    </main>
+    </section>
 
     <!-- Right Sidebar -->
     <aside class="right-sidebar">
@@ -581,30 +581,61 @@
         border-left: 1px solid var(--border-color);
       }
 
-      /* Center Panel */
-      .desktop-layout .main-content {
+      /* Center Panel - 3-Row Grid Layout */
+      .desktop-layout .center-panel {
         grid-row: 2;
         grid-column: 2;
         background-color: var(--bg-primary);
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
         min-height: 0;
-        overflow-y: auto;
+        overflow: hidden;
       }
 
-      /* VH Canvas Root - positioned at top of main content */
-      .desktop-layout .vh-canvas-root {
+      /* Row 1: VH Root - Fixed Viewport at Top */
+      .desktop-layout .vh-root {
+        grid-row: 1;
+        width: 100%;
+        max-width: var(--vh-container-max-width);
+        height: var(--vh-container-height);
+        margin: 1rem auto 0;
+        overflow: hidden;
         flex-shrink: 0;
-        margin: 1rem auto;
+        background: linear-gradient(135deg, #1f2833 0%, #0b0c10 100%);
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
       }
 
-      .desktop-chat-container {
-        flex: 1;
+      .desktop-layout .vh-root.is-hidden {
+        display: none;
+      }
+
+      /* Row 2: Chat Stream - Independently Scrollable */
+      .desktop-layout .chat-stream {
+        grid-row: 2;
         overflow-y: auto;
         padding: 2rem;
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
+        min-height: 0;
+      }
+
+      /* Row 3: Interaction Bar - Fixed at Bottom */
+      .desktop-layout .interaction-bar {
+        grid-row: 3;
+        padding: 1rem 2rem;
+        background-color: var(--bg-card);
+        border-top: 1px solid var(--border-color);
+        box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+        flex-shrink: 0;
+      }
+
+      /* Chat Messages */
+      .desktop-chat-message {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
       }
 
       .desktop-chat-message {
