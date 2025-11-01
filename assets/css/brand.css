@@ -1,0 +1,198 @@
+/**
+ * PMERIT Brand Styles
+ * Version: 1.0
+ * Last Updated: November 2025
+ * 
+ * PMERIT-specific branding including purple gradients, 
+ * brand color applications, and visual identity elements.
+ * Load after theme-variables.css
+ */
+
+/* ========================================
+   PMERIT BRAND COLOR EXTENSIONS
+   ======================================== */
+
+:root {
+    /* Purple gradient colors for hybrid design (from blueprint) */
+    --gradient-purple-start: #667eea;
+    --gradient-purple-end: #764ba2;
+    
+    /* Additional brand gradients */
+    --gradient-teal-start: #4AA4B9;
+    --gradient-teal-end: #7ED0D9;
+    
+    --gradient-coral-start: #FF6B6B;
+    --gradient-coral-end: #E05A5A;
+    
+    /* Three-panel layout widths */
+    --sidebar-width: 80px;
+    --nav-width: 220px;
+    --rightbar-width: 280px;
+    
+    /* Responsive breakpoints (from issue requirements) */
+    --bp-xs: 480px;
+    --bp-sm: 768px;
+    --bp-md: 1024px;
+    --bp-lg: 1280px;
+}
+
+/* ========================================
+   PURPLE GRADIENT UTILITIES
+   ======================================== */
+
+.gradient-purple {
+    background: linear-gradient(135deg, var(--gradient-purple-start), var(--gradient-purple-end));
+}
+
+.gradient-purple-text {
+    background: linear-gradient(135deg, var(--gradient-purple-start), var(--gradient-purple-end));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.gradient-teal {
+    background: linear-gradient(135deg, var(--gradient-teal-start), var(--gradient-teal-end));
+}
+
+.gradient-coral {
+    background: linear-gradient(135deg, var(--gradient-coral-start), var(--gradient-coral-end));
+}
+
+/* ========================================
+   GRADIENT ICON WRAPPERS
+   ======================================== */
+
+.icon-wrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--border-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    transition: var(--transition-base);
+}
+
+.icon-wrapper.purple {
+    background: linear-gradient(135deg, var(--gradient-purple-start), var(--gradient-purple-end));
+}
+
+.icon-wrapper.teal {
+    background: linear-gradient(135deg, var(--gradient-teal-start), var(--gradient-teal-end));
+}
+
+.icon-wrapper.coral {
+    background: linear-gradient(135deg, var(--gradient-coral-start), var(--gradient-coral-end));
+}
+
+.icon-wrapper.blue {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+}
+
+.icon-wrapper:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* ========================================
+   BRAND CARDS
+   ======================================== */
+
+.brand-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-base);
+}
+
+.brand-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.brand-card:focus-within {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+}
+
+/* ========================================
+   STAT CARDS (for welcome banner)
+   ======================================== */
+
+.stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    padding: var(--space-4);
+    text-align: center;
+    transition: var(--transition-base);
+}
+
+.stat-card:hover {
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-1px);
+}
+
+.stat-card .stat-value {
+    font-size: var(--text-3xl);
+    font-weight: var(--weight-bold);
+    color: var(--color-primary);
+    display: block;
+    margin-bottom: var(--space-1);
+}
+
+.stat-card .stat-label {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    display: block;
+}
+
+.stat-card .stat-icon {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-2);
+    display: block;
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+
+.hidden {
+    display: none !important;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* ========================================
+   ACCESSIBILITY ENHANCEMENTS
+   ======================================== */
+
+/* Enhanced focus states for brand components */
+.icon-wrapper:focus-visible,
+.brand-card:focus-visible,
+.stat-card:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+}
+
+/* Ensure touch targets on mobile */
+@media (max-width: 767px) {
+    .icon-wrapper {
+        min-width: var(--mobile-touch-target);
+        min-height: var(--mobile-touch-target);
+    }
+}
