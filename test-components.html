@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Test page for PMERIT common header and footer components">
+  <title>Component Test - PMERIT</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="assets/css/light-theme.css">
+  <link rel="stylesheet" href="assets/css/mobile-mockup-match.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  
+  <style>
+    /* Test page specific styles */
+    .test-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+      min-height: calc(100vh - var(--header-height, 70px) - 200px);
+    }
+    
+    .test-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow);
+    }
+    
+    .test-section h2 {
+      color: var(--primary);
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+    
+    .test-section p {
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    
+    .test-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    .test-card {
+      background: var(--bg-secondary);
+      padding: 1.5rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .test-card i {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+    
+    .test-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .status-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+    
+    .status-badge.success {
+      background: rgba(16, 185, 129, 0.1);
+      color: #059669;
+    }
+    
+    .status-badge.info {
+      background: rgba(59, 130, 246, 0.1);
+      color: #2563eb;
+    }
+    
+    /* Code block styling */
+    pre {
+      background: #1F2937;
+      color: #F9FAFB;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+    
+    code {
+      font-family: 'Courier New', monospace;
+    }
+  </style>
+</head>
+<body data-layout-auto-init>
+  
+  <!-- Header will be injected here by layout-loader.js -->
+  
+  <main class="test-content">
+    
+    <!-- Hero Section -->
+    <div class="test-section">
+      <h1 style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--primary);">
+        <i class="fas fa-check-circle" style="color: #059669;"></i>
+        Common Header & Footer Test Page
+      </h1>
+      <p style="font-size: 1.25rem; margin-bottom: 0.5rem;">
+        This page demonstrates the PMERIT common header and footer components loaded dynamically.
+      </p>
+      <div style="margin-top: 1rem;">
+        <span class="status-badge success">✓ Header Loaded</span>
+        <span class="status-badge success">✓ Footer Loaded</span>
+        <span class="status-badge info">Auto-Initialize Enabled</span>
+      </div>
+    </div>
+    
+    <!-- Features Section -->
+    <div class="test-section">
+      <h2><i class="fas fa-star"></i> Features Demonstrated</h2>
+      <p>
+        This page showcases all the interactive features of the common header and footer components:
+      </p>
+      
+      <div class="test-grid">
+        <div class="test-card">
+          <i class="fas fa-bars"></i>
+          <h3>Hamburger Menu</h3>
+          <p>Click the menu icon in the header to open the slide-in navigation menu.</p>
+        </div>
+        
+        <div class="test-card">
+          <i class="fas fa-globe"></i>
+          <h3>Language Selector</h3>
+          <p>Click the globe icon to choose from 6 supported languages.</p>
+        </div>
+        
+        <div class="test-card">
+          <i class="fas fa-moon"></i>
+          <h3>Dark Mode Toggle</h3>
+          <p>Open the menu and toggle dark mode in the settings section.</p>
+        </div>
+        
+        <div class="test-card">
+          <i class="fas fa-volume-up"></i>
+          <h3>Text-to-Speech</h3>
+          <p>Enable or disable TTS functionality from the menu settings.</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Integration Section -->
+    <div class="test-section">
+      <h2><i class="fas fa-code"></i> Integration Method</h2>
+      <p>
+        This page uses the <strong>automatic initialization</strong> method. Simply add the 
+        <code>data-layout-auto-init</code> attribute to the <code>&lt;body&gt;</code> tag:
+      </p>
+      
+      <pre><code>&lt;body data-layout-auto-init&gt;
+  &lt;!-- Your page content --&gt;
+&lt;/body&gt;
+
+&lt;!-- Include the layout loader script --&gt;
+&lt;script src="assets/js/layout-loader.js"&gt;&lt;/script&gt;</code></pre>
+      
+      <p style="margin-top: 1rem;">
+        The layout loader will automatically fetch and inject the header and footer components
+        when the DOM is ready, then initialize all interactive elements.
+      </p>
+    </div>
+    
+    <!-- Manual Method Section -->
+    <div class="test-section">
+      <h2><i class="fas fa-cogs"></i> Manual Initialization</h2>
+      <p>
+        For more control, you can manually initialize the layout loader:
+      </p>
+      
+      <pre><code>&lt;script src="assets/js/layout-loader.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  // Wait for DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLayout);
+  } else {
+    initLayout();
+  }
+
+  async function initLayout() {
+    const result = await window.LayoutLoader.init();
+    
+    if (result.success) {
+      console.log('✅ Layout loaded successfully');
+    } else {
+      console.error('❌ Failed to load layout', result);
+    }
+  }
+&lt;/script&gt;</code></pre>
+    </div>
+    
+    <!-- Testing Instructions -->
+    <div class="test-section">
+      <h2><i class="fas fa-clipboard-check"></i> Testing Checklist</h2>
+      <p>Verify the following functionality:</p>
+      
+      <ul style="list-style: none; padding: 0;">
+        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
+          <i class="fas fa-square" style="color: var(--text-secondary);"></i> 
+          Header appears at the top of the page
+        </li>
+        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
+          <i class="fas fa-square" style="color: var(--text-secondary);"></i> 
+          Footer appears at the bottom of the page
+        </li>
+        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
+          <i class="fas fa-square" style="color: var(--text-secondary);"></i> 
+          Hamburger menu opens when clicked
+        </li>
+        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
+          <i class="fas fa-square" style="color: var(--text-secondary);"></i> 
+          Menu closes with close button, overlay click, or Escape key
+        </li>
+        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
+          <i class="fas fa-square" style="color: var(--text-secondary);"></i> 
+          Language selector opens and allows language selection
+        </li>
+        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
+          <i class="fas fa-square" style="color: var(--text-secondary);"></i> 
+          Dark mode toggle works and persists in localStorage
+        </li>
+        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
+          <i class="fas fa-square" style="color: var(--text-secondary);"></i> 
+          TTS toggle works and persists in localStorage
+        </li>
+        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
+          <i class="fas fa-square" style="color: var(--text-secondary);"></i> 
+          All links navigate correctly
+        </li>
+        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
+          <i class="fas fa-square" style="color: var(--text-secondary);"></i> 
+          Keyboard navigation works (Tab, Enter, Escape)
+        </li>
+        <li style="padding: 0.5rem 0;">
+          <i class="fas fa-square" style="color: var(--text-secondary);"></i> 
+          Responsive design works on mobile, tablet, and desktop
+        </li>
+      </ul>
+    </div>
+    
+    <!-- Documentation Link -->
+    <div class="test-section">
+      <h2><i class="fas fa-book"></i> Documentation</h2>
+      <p>
+        For complete documentation on using the common header and footer components, see:
+      </p>
+      <p style="color: var(--primary); font-weight: 600;">
+        <i class="fas fa-arrow-right"></i> docs/ui-guide.md (UI Component Guide)
+      </p>
+      <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.5rem;">
+        <em>Note: View this file in your code editor or on GitHub for proper markdown rendering.</em>
+      </p>
+    </div>
+    
+  </main>
+  
+  <!-- Footer will be injected here by layout-loader.js -->
+  
+  <!-- JavaScript -->
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/layout-loader.js"></script>
+  
+  <!-- Console Logger for Testing -->
+  <script>
+    // Log initialization events
+    console.log('%c🎯 Component Test Page Loaded', 'color: #2563eb; font-weight: bold; font-size: 14px;');
+    console.log('%cWaiting for layout components to initialize...', 'color: #6B7280;');
+    
+    // Listen for when components are ready
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const header = document.getElementById('main-header');
+        const footer = document.getElementById('mobile-footer') || document.getElementById('desktop-footer');
+        
+        if (header && footer) {
+          console.log('%c✅ Header and Footer loaded successfully!', 'color: #059669; font-weight: bold;');
+          console.log('Header element:', header);
+          console.log('Footer element:', footer);
+        } else {
+          console.error('%c❌ Failed to load layout components', 'color: #DC2626; font-weight: bold;');
+          if (!header) console.error('Missing: Header');
+          if (!footer) console.error('Missing: Footer');
+        }
+      }, 500);
+    });
+  </script>
+  
+</body>
+</html>
