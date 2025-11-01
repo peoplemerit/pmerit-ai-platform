@@ -1,0 +1,18 @@
+# Cloudflare Pages + Workers AI Configuration
+# PMERIT AI Educational Platform
+name = "pmerit-ai-platform"
+compatibility_date = "2024-01-01"
+
+# Pages configuration
+pages_build_output_dir = "."
+
+# AI Binding for Workers AI
+# This provides access to Cloudflare's AI models in Functions
+[ai]
+binding = "AI"
+
+# Environment variables (optional - can also be set in Pages dashboard)
+[vars]
+# Add any non-sensitive configuration here
+TTS_DEFAULT_MODEL = "@cf/deepgram/aura-2-en"
+TTS_MAX_TEXT_LENGTH = "5000"
