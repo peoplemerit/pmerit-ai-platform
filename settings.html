@@ -24,43 +24,148 @@
   <script src="assets/js/config.js"></script>
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/auth-check.js"></script>
+  <script src="assets/js/tts.js" defer></script>
 
   <style>
-    .coming-soon-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 60vh;
+    .settings-container {
+      max-width: 800px;
+      margin: 0 auto;
       padding: var(--space-8);
-      text-align: center;
     }
-    
-    .coming-soon-icon {
-      font-size: 5rem;
-      color: var(--color-primary);
-      margin-bottom: var(--space-6);
+
+    .settings-header {
+      margin-bottom: var(--space-8);
     }
-    
-    .coming-soon-title {
+
+    .settings-header h1 {
       font-size: var(--text-4xl);
       font-weight: var(--font-bold);
       color: var(--text-primary);
-      margin-bottom: var(--space-4);
+      margin-bottom: var(--space-2);
     }
-    
-    .coming-soon-subtitle {
-      font-size: var(--text-xl);
+
+    .settings-header p {
       color: var(--text-secondary);
-      max-width: 600px;
-      margin-bottom: var(--space-8);
+      font-size: var(--text-lg);
     }
-    
-    .coming-soon-actions {
+
+    .settings-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-lg);
+      padding: var(--space-6);
+      margin-bottom: var(--space-6);
+      box-shadow: var(--shadow);
+    }
+
+    .settings-section h2 {
+      font-size: var(--text-2xl);
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-4);
       display: flex;
-      gap: var(--space-4);
-      flex-wrap: wrap;
-      justify-content: center;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .settings-section h2 i {
+      color: var(--color-primary);
+    }
+
+    .setting-item {
+      margin-bottom: var(--space-5);
+    }
+
+    .setting-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .setting-label {
+      display: block;
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-2);
+    }
+
+    .setting-description {
+      color: var(--text-secondary);
+      font-size: var(--text-sm);
+      margin-bottom: var(--space-3);
+    }
+
+    .setting-select {
+      width: 100%;
+      padding: var(--space-3);
+      border: 2px solid var(--border-color);
+      border-radius: var(--border-radius-md);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-size: var(--text-base);
+      transition: var(--transition);
+    }
+
+    .setting-select:focus {
+      outline: none;
+      border-color: var(--color-primary);
+    }
+
+    .test-button {
+      background-color: var(--color-primary);
+      color: white;
+      padding: var(--space-2) var(--space-4);
+      border: none;
+      border-radius: var(--border-radius-md);
+      font-weight: var(--font-semibold);
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-top: var(--space-3);
+    }
+
+    .test-button:hover {
+      background-color: var(--color-primary-dark);
+      transform: translateY(-2px);
+    }
+
+    .test-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .status-message {
+      padding: var(--space-3);
+      border-radius: var(--border-radius-md);
+      margin-top: var(--space-3);
+      font-size: var(--text-sm);
+      display: none;
+    }
+
+    .status-message.success {
+      background-color: rgba(16, 185, 129, 0.1);
+      color: var(--color-success);
+      border: 1px solid var(--color-success);
+      display: block;
+    }
+
+    .status-message.error {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: var(--color-error);
+      border: 1px solid var(--color-error);
+      display: block;
+    }
+
+    .status-message.info {
+      background-color: rgba(59, 130, 246, 0.1);
+      color: var(--color-info);
+      border: 1px solid var(--color-info);
+      display: block;
+    }
+
+    .coming-soon-container {
+      display: none;
     }
     
     .btn-primary {
@@ -119,21 +224,50 @@
     </div>
   </header>
 
-  <main class="coming-soon-container">
-    <i class="fas fa-cog coming-soon-icon"></i>
-    <h1 class="coming-soon-title">Account Settings</h1>
-    <p class="coming-soon-subtitle">
-      Manage your account preferences, notification settings, privacy options, and more. This feature is coming soon!
-    </p>
-    <div class="coming-soon-actions">
-      <a href="profile.html" class="btn-primary">
-        <i class="fas fa-user"></i>
-        View Profile
-      </a>
-      <a href="learner-portal.html" class="btn-secondary">
-        <i class="fas fa-tachometer-alt"></i>
-        Go to Dashboard
-      </a>
+  <main class="settings-container">
+    <div class="settings-header">
+      <h1>Settings</h1>
+      <p>Manage your PMERIT platform preferences</p>
+    </div>
+
+    <!-- TTS Settings Section -->
+    <div class="settings-section">
+      <h2>
+        <i class="fas fa-volume-up"></i>
+        Text-to-Speech Voice
+      </h2>
+
+      <div class="setting-item">
+        <label class="setting-label" for="voiceEngineSelect">Voice Engine</label>
+        <p class="setting-description">
+          Choose the voice engine for text-to-speech. Cloudflare Workers AI models provide high-quality, natural voices. Browser fallback uses your device's built-in speech synthesis.
+        </p>
+        <select id="voiceEngineSelect" class="setting-select">
+          <option value="aura-2-en">Deepgram Aura 2 (English) - Recommended</option>
+          <option value="aura-1">Deepgram Aura 1 (Multi-language)</option>
+          <option value="melotts">MeloTTS (Expressive)</option>
+          <option value="aura-2-es">Deepgram Aura 2 (Spanish)</option>
+          <option value="browser">Browser Speech (Fallback)</option>
+        </select>
+
+        <button id="testVoiceBtn" class="test-button">
+          <i class="fas fa-play"></i>
+          Test Voice
+        </button>
+
+        <div id="ttsStatus" class="status-message"></div>
+      </div>
+    </div>
+
+    <!-- Coming Soon Section -->
+    <div class="settings-section">
+      <h2>
+        <i class="fas fa-cog"></i>
+        Additional Settings
+      </h2>
+      <p class="setting-description">
+        More settings including notifications, privacy, and account preferences are coming soon.
+      </p>
     </div>
   </main>
 
@@ -154,5 +288,99 @@
   </footer>
 
   <script src="assets/js/main.js"></script>
+  <script>
+    // TTS Settings Management
+    (function() {
+      'use strict';
+
+      const voiceEngineSelect = document.getElementById('voiceEngineSelect');
+      const testVoiceBtn = document.getElementById('testVoiceBtn');
+      const ttsStatus = document.getElementById('ttsStatus');
+
+      // Load current settings
+      function loadSettings() {
+        if (window.TTS && window.TTS.getVoiceEngine) {
+          const currentEngine = window.TTS.getVoiceEngine();
+          voiceEngineSelect.value = currentEngine;
+        }
+      }
+
+      // Show status message
+      function showStatus(message, type = 'info') {
+        ttsStatus.textContent = message;
+        ttsStatus.className = `status-message ${type}`;
+      }
+
+      // Hide status message
+      function hideStatus() {
+        ttsStatus.className = 'status-message';
+      }
+
+      // Handle voice engine change
+      voiceEngineSelect.addEventListener('change', function() {
+        const selectedEngine = this.value;
+
+        if (window.TTS && window.TTS.setVoiceEngine) {
+          window.TTS.setVoiceEngine(selectedEngine);
+          showStatus('Voice engine updated successfully!', 'success');
+
+          // Hide success message after 3 seconds
+          setTimeout(hideStatus, 3000);
+        }
+      });
+
+      // Handle test voice button
+      testVoiceBtn.addEventListener('click', async function() {
+        const selectedEngine = voiceEngineSelect.value;
+
+        // Test text based on engine language
+        const testTexts = {
+          'aura-2-es': '¡Hola! Esta es una prueba del sistema de síntesis de voz. Espero que lo encuentres claro y natural.',
+          'default': 'Hello! This is a test of the text-to-speech voice. I hope you find it clear and natural.'
+        };
+        const testText = testTexts[selectedEngine] || testTexts['default'];
+
+        // Disable button during test
+        testVoiceBtn.disabled = true;
+        testVoiceBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testing...';
+        showStatus('Testing voice...', 'info');
+
+        try {
+          if (window.TTS && window.TTS.speak) {
+            await window.TTS.speak(testText, {
+              voiceEngine: selectedEngine,
+              useServer: selectedEngine !== 'browser'
+            });
+            showStatus('Voice test completed successfully!', 'success');
+          } else {
+            throw new Error('TTS module not loaded');
+          }
+        } catch (error) {
+          console.error('Voice test error:', error);
+          showStatus(`Error: ${error.message}. Using browser fallback.`, 'error');
+        } finally {
+          // Re-enable button
+          testVoiceBtn.disabled = false;
+          testVoiceBtn.innerHTML = '<i class="fas fa-play"></i> Test Voice';
+
+          // Hide status after 5 seconds
+          setTimeout(hideStatus, 5000);
+        }
+      });
+
+      // Listen for TTS fallback events
+      document.addEventListener('tts:fallback', function(e) {
+        showStatus(e.detail?.message || 'Fallback to browser speech', 'info');
+        setTimeout(hideStatus, 5000);
+      });
+
+      // Load settings when page loads
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadSettings);
+      } else {
+        loadSettings();
+      }
+    })();
+  </script>
 </body>
 </html>
