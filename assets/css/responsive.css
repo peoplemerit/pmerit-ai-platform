@@ -521,3 +521,235 @@
     margin: 0 auto;
   }
 }
+
+/* ========================================
+   PHASE 8.1 - RESPONSIVE LAYOUT SYSTEM
+   ======================================== */
+
+/* Responsive Container System */
+.responsive-container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--space-mobile-gutter);
+    padding-right: var(--space-mobile-gutter);
+}
+
+@media (min-width: 480px) {
+    .responsive-container {
+        max-width: 480px;
+    }
+}
+
+@media (min-width: 768px) {
+    .responsive-container {
+        max-width: 768px;
+        padding-left: var(--space-desktop-gutter);
+        padding-right: var(--space-desktop-gutter);
+    }
+}
+
+@media (min-width: 1024px) {
+    .responsive-container {
+        max-width: 1024px;
+    }
+}
+
+@media (min-width: 1280px) {
+    .responsive-container {
+        max-width: 1280px;
+    }
+}
+
+/* Responsive Grid System */
+.responsive-grid {
+    display: grid;
+    gap: var(--space-4);
+    width: 100%;
+}
+
+.responsive-grid-1 {
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 360px) {
+    .responsive-grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 768px) {
+    .responsive-grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .responsive-grid-4 {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.responsive-grid-auto {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* Prevent horizontal scroll (Critical) */
+html,
+body {
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
+/* Chat and avatar layout - no overlap */
+.chat-stream,
+.chat-messages {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.chat-message,
+.bubble {
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* ========================================
+   PHASE 8.4 - SAFE AREA SUPPORT
+   ======================================== */
+
+.safe-area-bottom {
+    padding-bottom: calc(var(--space-4) + var(--safe-area-bottom));
+}
+
+/* Chat input with safe area */
+.chat-input-container {
+    padding-bottom: calc(var(--space-4) + var(--safe-area-bottom));
+}
+
+.pmerit-footer {
+    padding-bottom: calc(var(--space-3) + var(--safe-area-bottom));
+}
+
+/* ========================================
+   PHASE 8.5 - AVATAR CANVAS RESPONSIVE
+   ======================================== */
+
+.vh-root,
+.avatar-canvas-container,
+#vh-canvas {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 40vh;
+}
+
+@media (min-width: 768px) {
+    .vh-root,
+    .avatar-canvas-container,
+    #vh-canvas {
+        max-height: 50vh;
+    }
+}
+
+@media (min-width: 1024px) {
+    .vh-root,
+    .avatar-canvas-container,
+    #vh-canvas {
+        max-height: 60vh;
+    }
+}
+
+.vh-root.focus-mode {
+    max-height: 70vh;
+    z-index: var(--z-modal);
+}
+
+/* ========================================
+   PHASE 8.6 - RESPONSIVE TYPOGRAPHY
+   ======================================== */
+
+body {
+    font-size: var(--text-mobile-body);
+    line-height: var(--leading-normal);
+}
+
+@media (min-width: 768px) {
+    body {
+        font-size: var(--text-base);
+    }
+}
+
+h1, .h1 {
+    font-size: var(--text-mobile-hero);
+    line-height: var(--leading-tight);
+    margin-bottom: var(--space-4);
+}
+
+@media (min-width: 768px) {
+    h1, .h1 {
+        font-size: var(--text-3xl);
+    }
+}
+
+h2, .h2 {
+    font-size: var(--text-mobile-heading);
+    line-height: var(--leading-tight);
+    margin-bottom: var(--space-3);
+}
+
+@media (min-width: 768px) {
+    h2, .h2 {
+        font-size: var(--text-2xl);
+    }
+}
+
+h3, .h3 {
+    font-size: var(--text-lg);
+    line-height: var(--leading-tight);
+    margin-bottom: var(--space-2);
+}
+
+@media (min-width: 768px) {
+    h3, .h3 {
+        font-size: var(--text-xl);
+    }
+}
+
+/* ========================================
+   PHASE 8.7 - RESPONSIVE IMAGES
+   ======================================== */
+
+img,
+picture,
+video {
+    max-width: 100%;
+    height: auto;
+}
+
+img[loading="lazy"] {
+    opacity: 0;
+    transition: opacity 0.3s ease-in;
+}
+
+img[loading="lazy"].loaded {
+    opacity: 1;
+}
+
+/* ========================================
+   PHASE 8.9 - LAYOUT SHIFT PREVENTION
+   ======================================== */
+
+.avatar-placeholder {
+    min-height: 200px;
+    background: var(--bg-secondary);
+}
+
+.image-placeholder {
+    min-height: 150px;
+    background: var(--bg-secondary);
+}
