@@ -262,8 +262,8 @@
       <div id="resources-container"></div>
     </aside>
 
-    <!-- Center Panel: Content & Avatar -->
-    <main class="panel main-panel">
+    <!-- Center Panel: Content & Avatar with Grid Layout -->
+    <main class="panel main-panel center-panel">
       <div class="topbar">
         <h2 id="lesson-title">Loading course...</h2>
         <button id="end-class">End Class</button>
@@ -279,20 +279,19 @@
         </label>
       </div>
 
-      <!-- Avatar Container -->
-      <div class="player-area">
-        <div class="vh-container" id="vh-container">
-          <canvas id="vh-canvas"></canvas>
-          <div id="vh-captions" aria-live="polite"></div>
-          <div class="vh-speaking-indicator">Speaking</div>
-          
-          <!-- Audio-only placeholder -->
-          <div class="audio-only-placeholder">
-            <div class="avatar-icon">
-              <i class="fas fa-user-circle"></i>
-            </div>
-            <div class="status-text">Audio-only mode</div>
-          </div>
+      <!-- Virtual Human Viewport (Hidden by default) -->
+      <div id="vh-root" class="vh-root is-hidden" hidden aria-hidden="true">
+        <canvas id="vh-canvas"></canvas>
+        <div id="vh-captions" aria-live="polite"></div>
+        <div class="vh-status-badge">
+          <span id="vh-status-text">Virtual Human is loading...</span>
+        </div>
+      </div>
+
+      <!-- Content Area (lesson content scrolls here) -->
+      <div class="content-area">
+        <div class="player-area">
+          <!-- Lesson content goes here -->
         </div>
       </div>
     </main>
