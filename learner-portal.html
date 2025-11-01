@@ -4,45 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Learner Portal | PMERIT</title>
+  <link rel="stylesheet" href="assets/css/theme-variables.css">
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/brand.css">
+  <link rel="stylesheet" href="assets/css/learner-portal-layout.css">
   <link rel="stylesheet" href="assets/css/components.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
   <style>
+    /* Hybrid Layout Specific Styles */
     .portal-section { margin-bottom: 2.5rem; }
-    .portal-section h2 { color: var(--primary); margin-bottom: 0.5rem; }
+    .portal-section h2 { color: var(--color-primary); margin-bottom: 0.5rem; }
     .feature-list { list-style: disc; margin-left: 2rem; }
     .dashboard-cards { display: flex; flex-wrap: wrap; gap: 1.5rem; margin: 2rem 0; }
-    .dashboard-card { flex: 1 1 260px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; box-shadow: var(--shadow); min-width: 220px; }
-    .dashboard-card h3 { margin-top: 0; color: var(--primary); }
+    .dashboard-card { flex: 1 1 260px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; box-shadow: var(--shadow-sm); min-width: 220px; transition: var(--transition-base); }
+    .dashboard-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .dashboard-card h3 { margin-top: 0; color: var(--color-primary); display: flex; align-items: center; gap: 0.5rem; }
     .dashboard-card ul { margin: 0.5rem 0 0 1.2rem; }
-    .mermaid { background: #f8fafc; border-radius: 8px; padding: 1rem; margin: 2rem 0; overflow-x: auto; }
-    @media (max-width: 900px) { .dashboard-cards { flex-direction: column; } }
-    
-    /* User header styles */
-    .user-info {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 1rem;
-      background: #f0f0f0;
-      border-radius: 8px;
-      font-size: 0.9rem;
-    }
-    
-    .logout-btn {
-      background: #dc3545;
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 500;
-    }
-    
-    .logout-btn:hover {
-      background: #c82333;
-    }
+    .mermaid { background: var(--bg-secondary); border-radius: 8px; padding: 1rem; margin: 2rem 0; overflow-x: auto; }
     
     /* Classroom section styles */
     .classroom-section {
@@ -59,7 +37,7 @@
       border-radius: 12px;
       overflow: hidden;
       border: 1px solid var(--border-color);
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-md);
       background: #0b0c10;
     }
     
@@ -71,46 +49,8 @@
     }
     
     @media (max-width: 768px) {
-      .classroom-iframe {
-        height: 600px;
-      }
-    }
-    
-    /* Navigation tabs */
-    .portal-nav-tabs {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 2rem;
-      border-bottom: 2px solid var(--border-color);
-      flex-wrap: wrap;
-    }
-    
-    .portal-nav-tab {
-      padding: 0.75rem 1.5rem;
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 500;
-      color: #666;
-      border-bottom: 3px solid transparent;
-      transition: all 0.2s;
-      min-width: 44px;
-      min-height: 44px;
-    }
-    
-    .portal-nav-tab:hover {
-      color: var(--primary);
-      background: rgba(69, 162, 158, 0.1);
-    }
-    
-    .portal-nav-tab.active {
-      color: var(--primary);
-      border-bottom-color: var(--primary);
-    }
-    
-    .dashboard-content.hidden {
-      display: none;
+      .dashboard-cards { flex-direction: column; }
+      .classroom-iframe { height: 600px; }
     }
   </style>
   <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
@@ -121,38 +61,331 @@
   <script src="assets/js/auth-check.js"></script>
 </head>
 <body>
-  <header>
-    <div class="logo">PMERIT</div>
-    <nav>
-      <a href="/" class="nav-btn">Home</a>
-      <a href="/courses.html" class="nav-btn">Courses</a>
-      <a href="/career.html" class="nav-btn">Career Paths</a>
-      <a href="/assessment.html" class="nav-btn">Assessment</a>
-      <a href="/profile.html" class="nav-btn">Profile</a>
-      <span class="user-info">
-        <i class="fas fa-user"></i>
-        <span id="user-display-name">User</span>
-      </span>
-      <button class="logout-btn" id="logout-btn">Logout</button>
+  <!-- Overlay for mobile panel toggling -->
+  <div class="panel-overlay" id="panel-overlay" aria-hidden="true"></div>
+
+  <!-- Icon Sidebar (Left) -->
+  <aside class="icon-sidebar" role="navigation" aria-label="Main navigation">
+    <nav class="icon-sidebar-nav">
+      <button class="icon-sidebar-item active" data-section="dashboard" aria-label="Dashboard" role="button">
+        <i class="fas fa-home"></i>
+      </button>
+      <button class="icon-sidebar-item" data-section="courses" aria-label="Courses" role="button">
+        <i class="fas fa-book"></i>
+      </button>
+      <button class="icon-sidebar-item" data-section="progress" aria-label="Progress" role="button">
+        <i class="fas fa-chart-line"></i>
+      </button>
+      <button class="icon-sidebar-item" data-section="career" aria-label="Career" role="button">
+        <i class="fas fa-briefcase"></i>
+      </button>
+      <button class="icon-sidebar-item" data-section="certificates" aria-label="Certificates" role="button">
+        <i class="fas fa-certificate"></i>
+      </button>
+      <button class="icon-sidebar-item" data-section="community" aria-label="Community" role="button">
+        <i class="fas fa-users"></i>
+      </button>
+      <button class="icon-sidebar-item" data-section="library" aria-label="Library" role="button">
+        <i class="fas fa-book-reader"></i>
+      </button>
+      <button class="icon-sidebar-item" data-section="support" aria-label="Support" role="button">
+        <i class="fas fa-life-ring"></i>
+      </button>
     </nav>
-  </header>
-  <main class="panel" style="max-width:1100px;margin:2rem auto;">
+    <div class="icon-sidebar-footer">
+      <button class="icon-sidebar-item" data-section="settings" aria-label="Settings" role="button">
+        <i class="fas fa-cog"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Navigation Panel -->
+  <aside class="nav-panel" id="nav-panel" role="complementary" aria-label="Section navigation">
+    <!-- User Profile Mini-Section -->
+    <div class="nav-panel-header">
+      <div class="user-profile-mini">
+        <div class="user-avatar" aria-hidden="true">
+          <span id="user-avatar-initial">U</span>
+        </div>
+        <div class="user-details">
+          <span class="user-name" id="user-name">Learner</span>
+          <span class="user-role">Student</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Content (Context-specific menus) -->
+    <div class="nav-panel-content">
+      <!-- Dashboard Section -->
+      <div class="nav-section active" id="nav-dashboard">
+        <h2 class="nav-section-title">Dashboard</h2>
+        <ul class="nav-menu">
+          <li class="nav-menu-item">
+            <a href="#overview" class="nav-menu-link">
+              <i class="fas fa-chart-pie"></i>
+              <span>Overview</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a href="#activity" class="nav-menu-link">
+              <i class="fas fa-clock"></i>
+              <span>Recent Activity</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a href="#classroom" class="nav-menu-link">
+              <i class="fas fa-chalkboard-teacher"></i>
+              <span>Enter Classroom</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Courses Section -->
+      <div class="nav-section" id="nav-courses">
+        <h2 class="nav-section-title">Courses</h2>
+        <ul class="nav-menu">
+          <li class="nav-menu-item">
+            <a href="courses.html" class="nav-menu-link">
+              <i class="fas fa-th-list"></i>
+              <span>All Courses</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a href="#enrolled" class="nav-menu-link">
+              <i class="fas fa-user-check"></i>
+              <span>My Courses</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a href="#paths" class="nav-menu-link">
+              <i class="fas fa-route"></i>
+              <span>Learning Paths</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a href="#recommendations" class="nav-menu-link">
+              <i class="fas fa-star"></i>
+              <span>Recommended</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Progress Section -->
+      <div class="nav-section" id="nav-progress">
+        <h2 class="nav-section-title">Progress</h2>
+        <ul class="nav-menu">
+          <li class="nav-menu-item">
+            <a href="progress.html" class="nav-menu-link">
+              <i class="fas fa-tachometer-alt"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a href="assessments.html" class="nav-menu-link">
+              <i class="fas fa-clipboard-check"></i>
+              <span>Assessments</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a href="#badges" class="nav-menu-link">
+              <i class="fas fa-trophy"></i>
+              <span>Badges & Awards</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a href="#milestones" class="nav-menu-link">
+              <i class="fas fa-flag-checkered"></i>
+              <span>Milestones</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Career Section -->
+      <div class="nav-section" id="nav-career">
+        <h2 class="nav-section-title">Career</h2>
+        <ul class="nav-menu">
+          <li class="nav-menu-item">
+            <a href="career.html" class="nav-menu-link">
+              <i class="fas fa-compass"></i>
+              <span>Career Paths</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a href="assessment.html" class="nav-menu-link">
+              <i class="fas fa-clipboard-list"></i>
+              <span>Career Assessment</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a href="#jobs" class="nav-menu-link">
+              <i class="fas fa-search"></i>
+              <span>Job Explorer</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a href="#skills" class="nav-menu-link">
+              <i class="fas fa-lightbulb"></i>
+              <span>Skills Matrix</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Certificates Section -->
+      <div class="nav-section" id="nav-certificates">
+        <h2 class="nav-section-title">Certificates</h2>
+        <ul class="nav-menu">
+          <li class="nav-menu-item">
+            <a href="#mycerts" class="nav-menu-link">
+              <i class="fas fa-award"></i>
+              <span>My Certificates</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a href="#verify" class="nav-menu-link">
+              <i class="fas fa-check-circle"></i>
+              <span>Verify Certificate</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a href="#download" class="nav-menu-link">
+              <i class="fas fa-download"></i>
+              <span>Download</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Community Section -->
+      <div class="nav-section" id="nav-community">
+        <h2 class="nav-section-title">Community</h2>
+        <ul class="nav-menu">
+          <li class="nav-menu-item">
+            <a href="community.html" class="nav-menu-link">
+              <i class="fas fa-comments"></i>
+              <span>Forum</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a href="#groups" class="nav-menu-link">
+              <i class="fas fa-user-friends"></i>
+              <span>Study Groups</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a href="#events" class="nav-menu-link">
+              <i class="fas fa-calendar-alt"></i>
+              <span>Events</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Library Section -->
+      <div class="nav-section" id="nav-library">
+        <h2 class="nav-section-title">Library</h2>
+        <ul class="nav-menu">
+          <li class="nav-menu-item">
+            <a href="#resources" class="nav-menu-link">
+              <i class="fas fa-book-open"></i>
+              <span>Resources</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a href="#saved" class="nav-menu-link">
+              <i class="fas fa-bookmark"></i>
+              <span>Saved Items</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a href="#downloads" class="nav-menu-link">
+              <i class="fas fa-download"></i>
+              <span>Offline Content</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Support Section -->
+      <div class="nav-section" id="nav-support">
+        <h2 class="nav-section-title">Support</h2>
+        <ul class="nav-menu">
+          <li class="nav-menu-item">
+            <a href="support.html" class="nav-menu-link">
+              <i class="fas fa-question-circle"></i>
+              <span>Help Center</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a href="#ai-chat" class="nav-menu-link">
+              <i class="fas fa-robot"></i>
+              <span>AI Assistant</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a href="contact.html" class="nav-menu-link">
+              <i class="fas fa-envelope"></i>
+              <span>Contact Support</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a href="#tickets" class="nav-menu-link">
+              <i class="fas fa-ticket-alt"></i>
+              <span>My Tickets</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Settings Section -->
+      <div class="nav-section" id="nav-settings">
+        <h2 class="nav-section-title">Settings</h2>
+        <ul class="nav-menu">
+          <li class="nav-menu-item">
+            <a href="profile.html" class="nav-menu-link">
+              <i class="fas fa-user-edit"></i>
+              <span>Edit Profile</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a href="settings.html" class="nav-menu-link">
+              <i class="fas fa-cog"></i>
+              <span>Preferences</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a href="#notifications" class="nav-menu-link">
+              <i class="fas fa-bell"></i>
+              <span>Notifications</span>
+            </a>
+          </li>
+          <li class="nav-menu-item">
+            <a href="#privacy" class="nav-menu-link">
+              <i class="fas fa-shield-alt"></i>
+              <span>Privacy</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Logout Button -->
+    <div class="nav-panel-footer">
+      <button class="logout-btn" id="logout-btn" aria-label="Log out of your account">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="main-content" id="main-content" role="main">
     <h1>Learner Portal</h1>
-    
-    <!-- Navigation Tabs -->
-    <nav class="portal-nav-tabs" role="tablist">
-      <button class="portal-nav-tab active" data-tab="dashboard" role="tab" aria-selected="true" aria-controls="dashboard-content">
-        <i class="fas fa-home"></i> Dashboard
-      </button>
-      <button class="portal-nav-tab" data-tab="classroom" role="tab" aria-selected="false" aria-controls="classroom-content">
-        <i class="fas fa-chalkboard-teacher"></i> Classroom
-      </button>
-    </nav>
-    
-    <!-- Dashboard Content -->
-    <div id="dashboard-content" class="dashboard-content" role="tabpanel" aria-labelledby="dashboard-tab">
     <section class="portal-section">
-      <h2>Welcome, <span id="userName">Learner</span>!</h2>
+      <h2>Welcome, <span id="user-name-display">Learner</span>!</h2>
       <p>This is your personalized hub for managing your academic journey, career goals, and community engagement on PMERIT.</p>
     </section>
     <section class="portal-section">
@@ -170,7 +403,7 @@
           <ul>
             <li>View enrolled courses and recommended paths</li>
             <li>Access interactive modules, quizzes, and offline content</li>
-            <li><a href="#classroom" style="color: #45a29e; font-weight: 500;">🎓 Enter Classroom (with Virtual Human)</a></li>
+            <li><a href="#classroom" class="text-accent">🎓 Enter Classroom (with Virtual Human)</a></li>
           </ul>
         </div>
         <div class="dashboard-card">
@@ -295,16 +528,15 @@
             style Child fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
       </div>
     </section>
-    </div>
     
     <!-- Classroom Section -->
     <section id="classroom-content" class="classroom-section" role="tabpanel" aria-labelledby="classroom-tab">
       <div class="portal-section">
         <h2><i class="fas fa-chalkboard-teacher"></i> PMERIT Classroom</h2>
         <p>Interactive learning environment with AI Tutor and Virtual Human support.</p>
-        <p style="margin-top: 0.5rem;">
+        <p>
           <small>
-            <a href="/portal/classroom.html" target="_blank" style="color: #45a29e;">
+            <a href="/portal/classroom.html" target="_blank" class="text-accent">
               <i class="fas fa-external-link-alt"></i> Open in new window
             </a>
           </small>
@@ -322,27 +554,43 @@
       </div>
     </section>
   </main>
-  <footer>
-    <span class="footer-status-main">
-      <i class="fas fa-signal"></i> Connected to Educational Services
-    </span>
-    <div class="footer-links">
-      <a href="/privacy.html" class="nav-btn">Privacy & Terms</a>
-      <a href="/contact.html" class="nav-btn">Contact</a>
-      <a href="/support.html" class="nav-btn">Support</a>
-      <a href="/about.html" class="nav-btn">About PMERIT</a>
+
+  <!-- Right Sidebar -->
+  <aside class="right-sidebar" id="right-sidebar" role="complementary" aria-label="Quick actions and tasks">
+    <!-- Quick Actions Section -->
+    <div class="right-sidebar-section">
+      <h2 class="right-sidebar-title">Quick Actions</h2>
+      <div class="placeholder-content">
+        <p><i class="fas fa-rocket"></i></p>
+        <p>Quick action widgets will be added here</p>
+        <small>(Issue 3)</small>
+      </div>
     </div>
-  </footer>
+
+    <!-- To-Do List Section -->
+    <div class="right-sidebar-section">
+      <h2 class="right-sidebar-title">To-Do List</h2>
+      <div class="placeholder-content">
+        <p><i class="fas fa-tasks"></i></p>
+        <p>Task list will be added here</p>
+        <small>(Issue 3)</small>
+      </div>
+    </div>
+  </aside>
+
   <script>
     (function () {
       'use strict';
 
-      // Set user name from authenticated user
+      // Set user name and avatar from authenticated user
       const user = window.AUTH.getCurrentUser();
       if (user) {
         const displayName = user.firstName || user.email.split('@')[0];
-        document.getElementById('userName').textContent = displayName;
-        document.getElementById('user-display-name').textContent = displayName;
+        const initial = displayName.charAt(0).toUpperCase();
+        
+        document.getElementById('user-name-display').textContent = displayName;
+        document.getElementById('user-name').textContent = displayName;
+        document.getElementById('user-avatar-initial').textContent = initial;
       }
 
       // Handle logout button
@@ -355,61 +603,125 @@
         });
       }
 
-      // Tab navigation
-      const tabs = document.querySelectorAll('.portal-nav-tab');
-      const dashboardContent = document.getElementById('dashboard-content');
-      const classroomSection = document.getElementById('classroom-content');
+      // Icon Sidebar Navigation
+      const iconItems = document.querySelectorAll('.icon-sidebar-item');
+      const navSections = document.querySelectorAll('.nav-section');
+      const panelOverlay = document.getElementById('panel-overlay');
+      const navPanel = document.getElementById('nav-panel');
+      const rightSidebar = document.getElementById('right-sidebar');
 
-      function switchTab(tabName) {
-        // Update tabs
-        tabs.forEach(tab => {
-          const isActive = tab.dataset.tab === tabName;
-          tab.classList.toggle('active', isActive);
-          tab.setAttribute('aria-selected', isActive);
+      // Screen reader announcements
+      const announcer = document.createElement('div');
+      announcer.setAttribute('role', 'status');
+      announcer.setAttribute('aria-live', 'polite');
+      announcer.className = 'visually-hidden';
+      document.body.appendChild(announcer);
+
+      function announce(message) {
+        announcer.textContent = message;
+        setTimeout(() => {
+          announcer.textContent = '';
+        }, 1000);
+      }
+
+      function switchNavSection(sectionName) {
+        // Remove active class from all icon items
+        iconItems.forEach(item => {
+          item.classList.remove('active');
+          item.setAttribute('aria-current', 'false');
         });
 
-        // Update content
-        if (tabName === 'classroom') {
-          dashboardContent.classList.add('hidden');
-          classroomSection.classList.add('active');
-        } else {
-          dashboardContent.classList.remove('hidden');
-          classroomSection.classList.remove('active');
+        // Add active class to clicked item
+        const activeItem = document.querySelector(`.icon-sidebar-item[data-section="${sectionName}"]`);
+        if (activeItem) {
+          activeItem.classList.add('active');
+          activeItem.setAttribute('aria-current', 'page');
+        }
+
+        // Hide all nav sections
+        navSections.forEach(section => {
+          section.classList.remove('active');
+        });
+
+        // Show selected nav section
+        const activeSection = document.getElementById(`nav-${sectionName}`);
+        if (activeSection) {
+          activeSection.classList.add('active');
+          const title = activeSection.querySelector('.nav-section-title').textContent;
+          announce(`Navigated to ${title}`);
         }
       }
 
-      // Handle tab clicks
-      tabs.forEach(tab => {
-        tab.addEventListener('click', function () {
-          const tabName = this.dataset.tab;
-          switchTab(tabName);
-          window.location.hash = tabName === 'dashboard' ? '' : tabName;
+      // Handle icon sidebar clicks
+      iconItems.forEach(item => {
+        item.addEventListener('click', function () {
+          const section = this.dataset.section;
+          switchNavSection(section);
+        });
+
+        // Keyboard support
+        item.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.click();
+          }
         });
       });
-
-      // Handle hash changes (for direct navigation)
-      function handleHashChange() {
-        const hash = window.location.hash.substring(1);
-        if (hash === 'classroom') {
-          switchTab('classroom');
-        } else {
-          switchTab('dashboard');
-        }
-      }
 
       // Handle links within dashboard that point to #classroom
       document.addEventListener('click', function (e) {
         const link = e.target.closest('a[href="#classroom"]');
         if (link) {
           e.preventDefault();
-          switchTab('classroom');
-          window.location.hash = 'classroom';
+          // Show classroom iframe in main content
+          const classroomSection = document.getElementById('classroom-content');
+          if (classroomSection) {
+            classroomSection.classList.add('active');
+            classroomSection.scrollIntoView({ behavior: 'smooth' });
+          }
         }
       });
 
-      // Initialize on load
-      window.addEventListener('hashchange', handleHashChange);
-      handleHashChange();
+      // Mobile panel toggles
+      function toggleNavPanel() {
+        const isOpen = navPanel.classList.toggle('open');
+        panelOverlay.classList.toggle('active', isOpen);
+        navPanel.setAttribute('aria-hidden', !isOpen);
+      }
+
+      function toggleRightSidebar() {
+        const isOpen = rightSidebar.classList.toggle('open');
+        panelOverlay.classList.toggle('active', isOpen);
+        rightSidebar.setAttribute('aria-hidden', !isOpen);
+      }
+
+      // Close panels when clicking overlay
+      panelOverlay.addEventListener('click', function () {
+        navPanel.classList.remove('open');
+        rightSidebar.classList.remove('open');
+        panelOverlay.classList.remove('active');
+        navPanel.setAttribute('aria-hidden', 'true');
+        rightSidebar.setAttribute('aria-hidden', 'true');
+      });
+
+      // Initialize Mermaid for diagrams
+      if (typeof mermaid !== 'undefined') {
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+      }
+
+      // Close mobile panels on escape key
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          navPanel.classList.remove('open');
+          rightSidebar.classList.remove('open');
+          panelOverlay.classList.remove('active');
+          navPanel.setAttribute('aria-hidden', 'true');
+          rightSidebar.setAttribute('aria-hidden', 'true');
+        }
+      });
+
+      // Initialize: Set default section
+      switchNavSection('dashboard');
     })();
   </script>
 </body>
