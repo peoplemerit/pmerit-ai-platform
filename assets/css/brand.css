@@ -34,6 +34,9 @@
     --bp-sm: 768px;
     --bp-md: 1024px;
     --bp-lg: 1280px;
+    
+    /* Error color hover (for logout button) */
+    --color-error-hover: #c82333;
 }
 
 /* ========================================
