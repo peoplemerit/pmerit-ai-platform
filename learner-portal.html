@@ -62,7 +62,7 @@
 </head>
 <body>
   <!-- Overlay for mobile panel toggling -->
-  <div class="panel-overlay" id="panel-overlay" aria-hidden="true"></div>
+  <div class="panel-overlay" id="panel-overlay" tabindex="-1" aria-hidden="true"></div>
 
   <!-- Icon Sidebar (Left) -->
   <aside class="icon-sidebar" role="navigation" aria-label="Main navigation">
@@ -374,7 +374,7 @@
 
     <!-- Logout Button -->
     <div class="nav-panel-footer">
-      <button class="logout-btn" id="logout-btn" aria-label="Log out of your account">
+      <button class="logout-btn" id="logout-btn">
         <i class="fas fa-sign-out-alt"></i>
         <span>Logout</span>
       </button>
