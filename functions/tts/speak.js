@@ -17,16 +17,28 @@
 // Configuration
 const MAX_TEXT_LENGTH = 5000; // Maximum characters for TTS input
 
-// Supported TTS models
+// Supported TTS models with language mappings
 const TTS_MODELS = {
-  'melotts': '@cf/myshell-ai/melotts',
-  'aura-1': '@cf/deepgram/aura-1',
-  'aura-2-en': '@cf/deepgram/aura-2-en',
-  'aura-2-es': '@cf/deepgram/aura-2-es'
+  'melotts': {
+    model: '@cf/myshell-ai/melotts',
+    lang: 'en'
+  },
+  'aura-1': {
+    model: '@cf/deepgram/aura-1',
+    lang: 'en'
+  },
+  'aura-2-en': {
+    model: '@cf/deepgram/aura-2-en',
+    lang: 'en'
+  },
+  'aura-2-es': {
+    model: '@cf/deepgram/aura-2-es',
+    lang: 'es'
+  }
 };
 
 // Default model
-const DEFAULT_MODEL = '@cf/deepgram/aura-2-en';
+const DEFAULT_MODEL = 'aura-2-en';
 
 export async function onRequestPost(context) {
   const corsHeaders = {
@@ -77,14 +89,17 @@ export async function onRequestPost(context) {
       });
     }
 
-    // Get the model identifier
-    const model = TTS_MODELS[voiceEngine] || DEFAULT_MODEL;
+    // Get the model configuration
+    const modelConfig = TTS_MODELS[voiceEngine] || TTS_MODELS[DEFAULT_MODEL];
+    const model = modelConfig.model;
+    const lang = modelConfig.lang;
 
     // Log request
     console.log('TTS speak request:', {
       textLength: text.length,
       voiceEngine: voiceEngine,
       model: model,
+      lang: lang,
       timestamp: new Date().toISOString()
     });
 
@@ -94,7 +109,7 @@ export async function onRequestPost(context) {
         // Call Workers AI for TTS
         const aiResponse = await context.env.AI.run(model, {
           text: text,
-          lang: voiceEngine.includes('es') ? 'es' : 'en'
+          lang: lang
         });
 
         const latency = Date.now() - startTime;
