@@ -415,12 +415,27 @@
       const signInBtn = document.getElementById('sign-in-btn');
 
       if (isAuth && userSection) {
-        // User is authenticated - update UI
+        // User is authenticated - update UI with safe text content
         const user = window.AUTH.getCurrentUser();
-        userSection.innerHTML = `
-          <p class="user-status">Welcome, ${user.name || 'User'}</p>
-          <a href="/learner-portal.html" class="menu-btn primary">Go to Dashboard</a>
-        `;
+        const userName = user.name || 'User';
+        
+        // Clear existing content
+        userSection.innerHTML = '';
+        
+        // Create paragraph with safe text content
+        const statusP = document.createElement('p');
+        statusP.className = 'user-status';
+        statusP.textContent = `Welcome, ${userName}`;
+        
+        // Create dashboard link
+        const dashboardLink = document.createElement('a');
+        dashboardLink.href = '/learner-portal.html';
+        dashboardLink.className = 'menu-btn primary';
+        dashboardLink.textContent = 'Go to Dashboard';
+        
+        // Append elements
+        userSection.appendChild(statusP);
+        userSection.appendChild(dashboardLink);
       }
 
       // Update header sign-in button
