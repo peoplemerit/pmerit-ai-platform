@@ -1,0 +1,221 @@
+/**
+ * PMERIT About Page Styles
+ * Version: 1.0
+ * Last Updated: November 2025
+ * 
+ * Styles specific to the About page including hero section,
+ * mission cards, and other About page components
+ */
+
+/* ========================================
+   ABOUT PAGE HERO SECTION
+   ======================================== */
+
+.about-hero {
+    background: linear-gradient(135deg, var(--gradient-purple-start), var(--gradient-purple-end));
+    color: white;
+    padding: 80px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.about-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.1), transparent);
+    pointer-events: none;
+}
+
+.about-hero-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.about-hero h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    color: white;
+}
+
+.about-hero-subtitle {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+    opacity: 0.95;
+}
+
+/* ========================================
+   MISSION SECTION
+   ======================================== */
+
+.mission-section {
+    padding: 80px 20px;
+    background: var(--bg-primary, #ffffff);
+}
+
+.mission-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.mission-section h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 3rem;
+    color: var(--text-primary, #1a1a1a);
+}
+
+.mission-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.mission-card {
+    background: var(--bg-card, #ffffff);
+    border: 1px solid var(--border-color, #e5e7eb);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.mission-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--gradient-purple-start), var(--gradient-purple-end));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+.mission-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.mission-card:hover::before {
+    transform: scaleX(1);
+}
+
+.mission-card-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, var(--gradient-purple-start), var(--gradient-purple-end));
+    color: white;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.mission-card h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-primary, #1a1a1a);
+}
+
+.mission-card p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-secondary, #4b5563);
+}
+
+/* ========================================
+   ACCESSIBILITY FOCUS STATES
+   ======================================== */
+
+.mission-card:focus-within {
+    outline: 2px solid var(--color-accent, #667eea);
+    outline-offset: 2px;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+/* Tablet (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .mission-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .about-hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .about-hero-subtitle {
+        font-size: 1.125rem;
+    }
+}
+
+/* Mobile (< 768px) */
+@media (max-width: 767px) {
+    .about-hero {
+        padding: 60px 20px;
+    }
+    
+    .about-hero h1 {
+        font-size: 2rem;
+    }
+    
+    .about-hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .mission-section {
+        padding: 60px 20px;
+    }
+    
+    .mission-section h2 {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .mission-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .mission-card {
+        padding: 1.5rem;
+    }
+    
+    .mission-card-icon {
+        width: 56px;
+        height: 56px;
+        font-size: 1.75rem;
+    }
+    
+    .mission-card h3 {
+        font-size: 1.25rem;
+    }
+}
+
+/* Desktop Large (≥ 1280px) */
+@media (min-width: 1280px) {
+    .mission-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
