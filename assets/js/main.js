@@ -7,6 +7,21 @@
  * IDs updated to match index.html camelCase naming
  */
 
+// ========== ANALYTICS SHIM ==========
+// Provider-agnostic analytics: no-op if vendor not present
+window.analytics = window.analytics || {
+  track: function(event, props = {}) {
+    if (window.PMERIT_DEBUG) {
+      console.log('[track]', event, props);
+    }
+  }
+};
+
+// Helper to get page identifier
+function pageId() {
+  return location.pathname.includes('/portal/classroom') ? 'classroom' : 'home';
+}
+
 // ========== STATE MANAGEMENT ==========
 const state = {
   virtualHuman: false,  // Default to false to show chat interface on page load
@@ -35,15 +50,29 @@ document.addEventListener('DOMContentLoaded', function() {
  * Called when Virtual Human toggle is enabled
  */
 window.vhBoot = async function vhBoot() {
+  const modelUrl = '/assets/avatars/pm_classic.glb';
+  
   try {
     if (!window.THREE || typeof THREE.WebGLRenderer !== "function") {
-      console.error("[VH] THREE not loaded; check script includes.");
+      const error = new Error('[VH] THREE not loaded; check script includes.');
+      console.error(error.message);
       showToast('Virtual Human requires WebGL support', 'error');
+      window.analytics.track('vh_init_error', {
+        page: pageId(),
+        ts: Date.now(),
+        message: error.message
+      });
       return;
     }
     if (typeof GLTFLoader !== "function" && typeof THREE?.GLTFLoader !== "function") {
-      console.error("[VH] GLTFLoader not available; check CDN include.");
+      const error = new Error('[VH] GLTFLoader not available; check CDN include.');
+      console.error(error.message);
       showToast('Virtual Human loader not available', 'error');
+      window.analytics.track('vh_init_error', {
+        page: pageId(),
+        ts: Date.now(),
+        message: error.message
+      });
       return;
     }
     // Initialize only once
@@ -69,12 +98,27 @@ window.vhBoot = async function vhBoot() {
       await state.avatarManager.init();
       console.info("[VH] AvatarManager initialized with pm_classic.glb");
       showToast('Virtual Human ready', 'success');
+      
+      // Track successful initialization
+      window.analytics.track('vh_init_success', {
+        page: pageId(),
+        ts: Date.now(),
+        modelUrl: modelUrl
+      });
     } else {
       console.warn('[VH] AvatarManager already exists or not available');
     }
   } catch (e) {
     console.error("[VH] init failed:", e);
     showToast('Virtual Human initialization failed', 'error');
+    
+    // Track initialization error
+    window.analytics.track('vh_init_error', {
+      page: pageId(),
+      ts: Date.now(),
+      message: String(e?.message || e),
+      stack: e?.stack
+    });
   }
 };
 
@@ -121,6 +165,12 @@ function isWebGLSupported() {
 // ========== VIRTUAL HUMAN MODE ==========
 async function enableVirtualHuman(isEnabled) {
   console.log(`🤖 Virtual Human Mode: ${isEnabled ? 'ON' : 'OFF'}`);
+  
+  // Track toggle event
+  window.analytics.track(isEnabled ? 'vh_toggle_on' : 'vh_toggle_off', {
+    page: pageId(),
+    ts: Date.now()
+  });
 
   const vhRoot = document.getElementById('vh-root');
   const chatStream = document.getElementById('chat-stream');
