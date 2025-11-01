@@ -294,19 +294,29 @@
 
     <!-- Load header and footer -->
     <script>
-        // Load header
+        // Load header safely
         fetch('partials/header.html')
             .then(response => response.text())
             .then(data => {
-                document.getElementById('header-container').innerHTML = data;
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, 'text/html');
+                const headerContainer = document.getElementById('header-container');
+                while (doc.body.firstChild) {
+                    headerContainer.appendChild(doc.body.firstChild);
+                }
             })
             .catch(error => console.error('Error loading header:', error));
 
-        // Load footer
+        // Load footer safely
         fetch('partials/footer.html')
             .then(response => response.text())
             .then(data => {
-                document.getElementById('footer-container').innerHTML = data;
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, 'text/html');
+                const footerContainer = document.getElementById('footer-container');
+                while (doc.body.firstChild) {
+                    footerContainer.appendChild(doc.body.firstChild);
+                }
             })
             .catch(error => console.error('Error loading footer:', error));
     </script>

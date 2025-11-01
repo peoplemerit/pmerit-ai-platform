@@ -105,7 +105,7 @@
         <section class="accountability-section" aria-labelledby="accountability-title">
             <div class="section-container">
                 <h2 id="accountability-title" class="section-title">Pay-for-Accountability Model</h2>
-                <p style="text-align: center; font-size: var(--text-lg); margin-bottom: var(--space-8); color: var(--text-secondary); max-width: 800px; margin-left: auto; margin-right: auto;">
+                <p class="section-description">
                     We believe accountability promotes success. Our compassionate approach encourages completion while supporting those who struggle.
                 </p>
                 <div class="accountability-steps">
@@ -140,7 +140,7 @@
         <section class="revenue-section" aria-labelledby="revenue-title">
             <div class="section-container">
                 <h2 id="revenue-title" class="section-title">How We Sustain Free Education</h2>
-                <p style="text-align: center; font-size: var(--text-lg); margin-bottom: var(--space-8); color: var(--text-secondary); max-width: 800px; margin-left: auto; margin-right: auto;">
+                <p class="section-description">
                     Transparency matters. Here's how PMERIT funds free education for billions of learners worldwide.
                 </p>
                 <div class="revenue-grid">
@@ -263,7 +263,7 @@
         <section class="projections-section" aria-labelledby="projections-title">
             <div class="section-container">
                 <h2 id="projections-title" class="section-title">Growth Projections & Transparency</h2>
-                <p style="text-align: center; font-size: var(--text-lg); margin-bottom: var(--space-8); color: var(--text-secondary); max-width: 800px; margin-left: auto; margin-right: auto;">
+                <p class="section-description">
                     Conservative revenue estimates showing how we plan to serve billions while maintaining free access for all.
                 </p>
                 <div class="projections-table-wrapper">
@@ -363,19 +363,29 @@
             });
         });
 
-        // Load header
+        // Load header safely
         fetch('partials/header.html')
             .then(response => response.text())
             .then(data => {
-                document.getElementById('header-container').innerHTML = data;
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, 'text/html');
+                const headerContainer = document.getElementById('header-container');
+                while (doc.body.firstChild) {
+                    headerContainer.appendChild(doc.body.firstChild);
+                }
             })
             .catch(error => console.error('Error loading header:', error));
 
-        // Load footer
+        // Load footer safely
         fetch('partials/footer.html')
             .then(response => response.text())
             .then(data => {
-                document.getElementById('footer-container').innerHTML = data;
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, 'text/html');
+                const footerContainer = document.getElementById('footer-container');
+                while (doc.body.firstChild) {
+                    footerContainer.appendChild(doc.body.firstChild);
+                }
             })
             .catch(error => console.error('Error loading footer:', error));
     </script>
