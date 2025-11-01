@@ -67,33 +67,33 @@
   <!-- Icon Sidebar (Left) -->
   <aside class="icon-sidebar" role="navigation" aria-label="Main navigation">
     <nav class="icon-sidebar-nav">
-      <button class="icon-sidebar-item active" data-section="dashboard" aria-label="Dashboard" role="button">
+      <button class="icon-sidebar-item active" data-section="dashboard" aria-label="Dashboard" aria-pressed="true">
         <i class="fas fa-home"></i>
       </button>
-      <button class="icon-sidebar-item" data-section="courses" aria-label="Courses" role="button">
+      <button class="icon-sidebar-item" data-section="courses" aria-label="Courses" aria-pressed="false">
         <i class="fas fa-book"></i>
       </button>
-      <button class="icon-sidebar-item" data-section="progress" aria-label="Progress" role="button">
+      <button class="icon-sidebar-item" data-section="progress" aria-label="Progress" aria-pressed="false">
         <i class="fas fa-chart-line"></i>
       </button>
-      <button class="icon-sidebar-item" data-section="career" aria-label="Career" role="button">
+      <button class="icon-sidebar-item" data-section="career" aria-label="Career" aria-pressed="false">
         <i class="fas fa-briefcase"></i>
       </button>
-      <button class="icon-sidebar-item" data-section="certificates" aria-label="Certificates" role="button">
+      <button class="icon-sidebar-item" data-section="certificates" aria-label="Certificates" aria-pressed="false">
         <i class="fas fa-certificate"></i>
       </button>
-      <button class="icon-sidebar-item" data-section="community" aria-label="Community" role="button">
+      <button class="icon-sidebar-item" data-section="community" aria-label="Community" aria-pressed="false">
         <i class="fas fa-users"></i>
       </button>
-      <button class="icon-sidebar-item" data-section="library" aria-label="Library" role="button">
+      <button class="icon-sidebar-item" data-section="library" aria-label="Library" aria-pressed="false">
         <i class="fas fa-book-reader"></i>
       </button>
-      <button class="icon-sidebar-item" data-section="support" aria-label="Support" role="button">
+      <button class="icon-sidebar-item" data-section="support" aria-label="Support" aria-pressed="false">
         <i class="fas fa-life-ring"></i>
       </button>
     </nav>
     <div class="icon-sidebar-footer">
-      <button class="icon-sidebar-item" data-section="settings" aria-label="Settings" role="button">
+      <button class="icon-sidebar-item" data-section="settings" aria-label="Settings" aria-pressed="false">
         <i class="fas fa-cog"></i>
       </button>
     </div>
@@ -403,7 +403,7 @@
           <ul>
             <li>View enrolled courses and recommended paths</li>
             <li>Access interactive modules, quizzes, and offline content</li>
-            <li><a href="#classroom" class="text-accent">🎓 Enter Classroom (with Virtual Human)</a></li>
+            <li><a href="#classroom" class="text-accent"><i class="fas fa-graduation-cap"></i> Enter Classroom (with Virtual Human)</a></li>
           </ul>
         </div>
         <div class="dashboard-card">
@@ -628,14 +628,14 @@
         // Remove active class from all icon items
         iconItems.forEach(item => {
           item.classList.remove('active');
-          item.setAttribute('aria-current', 'false');
+          item.setAttribute('aria-pressed', 'false');
         });
 
         // Add active class to clicked item
         const activeItem = document.querySelector(`.icon-sidebar-item[data-section="${sectionName}"]`);
         if (activeItem) {
           activeItem.classList.add('active');
-          activeItem.setAttribute('aria-current', 'page');
+          activeItem.setAttribute('aria-pressed', 'true');
         }
 
         // Hide all nav sections
