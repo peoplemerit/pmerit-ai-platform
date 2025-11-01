@@ -1422,7 +1422,7 @@ Break-even point = Self-hosted cost / Cloudflare per-character cost
 3. F5-TTS: https://github.com/SWivid/F5-TTS
 4. Dia TTS: https://github.com/dia-tts
 5. Cloudflare Workers AI Pricing: https://developers.cloudflare.com/workers-ai/platform/pricing/
-6. TTS Model Comparisons: https://huggingface.co/spaces/Inferless/Open-Source-TTS-Gallary
+6. TTS Model Comparisons: https://huggingface.co/spaces/Inferless/Open-Source-TTS-Gallery
 7. Docker GPU Support: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/
 8. Hetzner GPU Servers: https://www.hetzner.com/dedicated-rootserver/matrix-ax
 
