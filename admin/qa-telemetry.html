@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Telemetry QA | PMERIT Admin</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #333;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+    
+    header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+    
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    
+    .status {
+      display: inline-block;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+    
+    .content {
+      padding: 30px;
+    }
+    
+    .info-box {
+      background: #f8f9fa;
+      border-left: 4px solid #667eea;
+      padding: 15px 20px;
+      margin-bottom: 30px;
+      border-radius: 4px;
+    }
+    
+    .info-box p {
+      line-height: 1.6;
+      color: #555;
+    }
+    
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .btn-clear {
+      background: #dc3545;
+      color: white;
+    }
+    
+    .btn-clear:hover {
+      background: #c82333;
+    }
+    
+    .btn-toggle {
+      background: #28a745;
+      color: white;
+    }
+    
+    .btn-toggle:hover {
+      background: #218838;
+    }
+    
+    .btn-test {
+      background: #667eea;
+      color: white;
+    }
+    
+    .btn-test:hover {
+      background: #5568d3;
+    }
+    
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    
+    .stat-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .stat-label {
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+    
+    #events {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 20px;
+      max-height: 600px;
+      overflow-y: auto;
+    }
+    
+    .event {
+      background: white;
+      border-left: 4px solid #667eea;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      animation: slideIn 0.3s ease-out;
+    }
+    
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    .event-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .event-name {
+      font-weight: bold;
+      color: #667eea;
+      font-size: 1.1rem;
+    }
+    
+    .event-time {
+      font-size: 0.85rem;
+      color: #6c757d;
+    }
+    
+    .event-props {
+      background: #f8f9fa;
+      padding: 10px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #6c757d;
+    }
+    
+    .empty-state i {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      opacity: 0.3;
+    }
+    
+    /* Event type colors */
+    .event[data-event*="vh_toggle"] { border-left-color: #28a745; }
+    .event[data-event*="vh_init"] { border-left-color: #17a2b8; }
+    .event[data-event*="chat_message"] { border-left-color: #ffc107; }
+    .event[data-event*="tts_"] { border-left-color: #fd7e14; }
+    .event[data-event*="error"] { border-left-color: #dc3545; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🔍 Telemetry QA Dashboard</h1>
+      <div class="status" id="status">⏳ Waiting for events...</div>
+    </header>
+    
+    <div class="content">
+      <div class="info-box">
+        <p>
+          <strong>Instructions:</strong> Open the PMERIT platform in another tab and interact with it 
+          (toggle VH, send chat messages, use TTS). Events will appear here in real time if 
+          <code>PMERIT_DEBUG</code> is enabled. Set it in the browser console: 
+          <code>window.PMERIT_DEBUG = true</code>
+        </p>
+      </div>
+      
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-value" id="totalEvents">0</div>
+          <div class="stat-label">Total Events</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="vhEvents">0</div>
+          <div class="stat-label">VH Events</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="chatEvents">0</div>
+          <div class="stat-label">Chat Events</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="ttsEvents">0</div>
+          <div class="stat-label">TTS Events</div>
+        </div>
+      </div>
+      
+      <div class="controls">
+        <button class="btn-clear" onclick="clearEvents()">Clear Events</button>
+        <button class="btn-toggle" onclick="toggleDebug()">Toggle PMERIT_DEBUG</button>
+        <button class="btn-test" onclick="testEvent()">Send Test Event</button>
+      </div>
+      
+      <div id="events">
+        <div class="empty-state">
+          <div>📊</div>
+          <p>No events captured yet. Interact with the platform to see telemetry data.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize analytics shim to capture events
+    window.analytics = window.analytics || {
+      track: function(event, props = {}) {
+        if (window.PMERIT_DEBUG) {
+          console.log('[track]', event, props);
+        }
+        
+        // Dispatch custom event for this dashboard
+        window.dispatchEvent(new CustomEvent('analytics:track', {
+          detail: { event, props }
+        }));
+      }
+    };
+    
+    // Stats tracking
+    const stats = {
+      total: 0,
+      vh: 0,
+      chat: 0,
+      tts: 0
+    };
+    
+    // Listen for analytics events
+    window.addEventListener('analytics:track', (e) => {
+      const { event, props } = e.detail;
+      addEvent(event, props);
+      updateStats(event);
+      updateStatus('✅ Capturing events');
+    });
+    
+    function addEvent(eventName, props) {
+      const eventsContainer = document.getElementById('events');
+      
+      // Remove empty state if present
+      const emptyState = eventsContainer.querySelector('.empty-state');
+      if (emptyState) {
+        emptyState.remove();
+      }
+      
+      // Create event element
+      const eventDiv = document.createElement('div');
+      eventDiv.className = 'event';
+      eventDiv.setAttribute('data-event', eventName);
+      
+      // Format timestamp
+      const timestamp = props.ts ? new Date(props.ts).toLocaleTimeString() : new Date().toLocaleTimeString();
+      
+      eventDiv.innerHTML = `
+        <div class="event-header">
+          <span class="event-name">${eventName}</span>
+          <span class="event-time">${timestamp}</span>
+        </div>
+        <div class="event-props">${JSON.stringify(props, null, 2)}</div>
+      `;
+      
+      // Add to top of list
+      eventsContainer.insertBefore(eventDiv, eventsContainer.firstChild);
+      
+      // Limit to 50 events
+      const events = eventsContainer.querySelectorAll('.event');
+      if (events.length > 50) {
+        events[events.length - 1].remove();
+      }
+    }
+    
+    function updateStats(eventName) {
+      stats.total++;
+      
+      if (eventName.startsWith('vh_')) {
+        stats.vh++;
+      } else if (eventName.startsWith('chat_')) {
+        stats.chat++;
+      } else if (eventName.startsWith('tts_')) {
+        stats.tts++;
+      }
+      
+      document.getElementById('totalEvents').textContent = stats.total;
+      document.getElementById('vhEvents').textContent = stats.vh;
+      document.getElementById('chatEvents').textContent = stats.chat;
+      document.getElementById('ttsEvents').textContent = stats.tts;
+    }
+    
+    function updateStatus(text) {
+      document.getElementById('status').textContent = text;
+    }
+    
+    function clearEvents() {
+      const eventsContainer = document.getElementById('events');
+      eventsContainer.innerHTML = `
+        <div class="empty-state">
+          <div>📊</div>
+          <p>No events captured yet. Interact with the platform to see telemetry data.</p>
+        </div>
+      `;
+      
+      // Reset stats
+      stats.total = 0;
+      stats.vh = 0;
+      stats.chat = 0;
+      stats.tts = 0;
+      updateStats('');
+    }
+    
+    function toggleDebug() {
+      window.PMERIT_DEBUG = !window.PMERIT_DEBUG;
+      updateStatus(window.PMERIT_DEBUG ? '🐛 Debug mode: ON' : '⚠️ Debug mode: OFF');
+      
+      if (window.PMERIT_DEBUG) {
+        localStorage.setItem('PMERIT_DEBUG', 'true');
+      } else {
+        localStorage.removeItem('PMERIT_DEBUG');
+      }
+    }
+    
+    function testEvent() {
+      window.analytics.track('test_event', {
+        page: 'qa-telemetry',
+        ts: Date.now(),
+        message: 'This is a test event'
+      });
+    }
+    
+    // Initialize
+    if (localStorage.getItem('PMERIT_DEBUG') === 'true') {
+      window.PMERIT_DEBUG = true;
+      updateStatus('🐛 Debug mode: ON');
+    }
+    
+    // Also listen via localStorage for cross-tab communication
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'pmerit_analytics_event') {
+        try {
+          const data = JSON.parse(e.newValue);
+          addEvent(data.event, data.props);
+          updateStats(data.event);
+        } catch (err) {
+          // Ignore parse errors
+        }
+      }
+    });
+    
+    // Broadcast events to localStorage for cross-tab sync
+    const originalTrack = window.analytics.track;
+    window.analytics.track = function(event, props = {}) {
+      originalTrack.call(this, event, props);
+      
+      // Store in localStorage for cross-tab communication
+      try {
+        localStorage.setItem('pmerit_analytics_event', JSON.stringify({ event, props }));
+      } catch (err) {
+        // Ignore storage errors
+      }
+    };
+  </script>
+</body>
+</html>

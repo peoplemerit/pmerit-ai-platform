@@ -11,6 +11,11 @@
 
   // Event bus via document
   const BUS = document;
+  
+  // Helper to get page identifier for analytics
+  function aid() {
+    return location.pathname.includes('/portal/classroom') ? 'classroom' : 'home';
+  }
 
   // Audio context and analyzer state
   let audioCtx = null;
@@ -169,7 +174,7 @@
 
       // Event handlers
       utter.onstart = () => {
-        BUS.dispatchEvent(new Event('tts:start'));
+        BUS.dispatchEvent(new CustomEvent('tts:start', { detail: { text } }));
       };
 
       utter.onend = () => {
@@ -235,7 +240,7 @@
       return new Promise((resolve, reject) => {
         // Set up event handlers
         const handlePlay = () => {
-          BUS.dispatchEvent(new Event('tts:start'));
+          BUS.dispatchEvent(new CustomEvent('tts:start', { detail: { text } }));
           startMeterFromAudio(audio);
         };
 
@@ -355,6 +360,24 @@
       VISEME: 'tts:viseme'
     }
   };
+  
+  // Set up analytics tracking for TTS events
+  BUS.addEventListener('tts:start', (e) => {
+    // Get text from detail if available, otherwise we'll track without text length
+    const textChars = e.detail?.text?.length || 0;
+    window.analytics?.track('tts_start', {
+      page: aid(),
+      ts: Date.now(),
+      textChars: textChars
+    });
+  });
+  
+  BUS.addEventListener('tts:end', () => {
+    window.analytics?.track('tts_end', {
+      page: aid(),
+      ts: Date.now()
+    });
+  });
 
   console.log('✅ TTS module loaded');
 
