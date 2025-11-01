@@ -105,28 +105,16 @@ function init() {
 }
 
 /**
- * Ensure chat container is visible by removing display:none if set
- * @param {HTMLElement} chatContainer - The chat container element
+ * Check if WebGL is supported
+ * @returns {boolean}
  */
-function ensureChatVisible(chatContainer) {
-  if (chatContainer) {
-    // Remove any inline display:none that might have been set
-    if (chatContainer.style.display === 'none') {
-      chatContainer.style.display = '';
-    }
-    chatContainer.removeAttribute('aria-hidden');
-  }
-}
-
-/**
- * Hide the VH container
- * @param {HTMLElement} vhCanvasRoot - The VH canvas root element
- */
-function hideVHContainer(vhCanvasRoot) {
-  if (vhCanvasRoot) {
-    vhCanvasRoot.style.display = 'none';
-    vhCanvasRoot.classList.add('is-hidden');
-    vhCanvasRoot.setAttribute('aria-hidden', 'true');
+function isWebGLSupported() {
+  try {
+    const canvas = document.createElement('canvas');
+    return !!(window.WebGLRenderingContext &&
+      (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
+  } catch (e) {
+    return false;
   }
 }
 
@@ -134,8 +122,8 @@ function hideVHContainer(vhCanvasRoot) {
 async function enableVirtualHuman(isEnabled) {
   console.log(`🤖 Virtual Human Mode: ${isEnabled ? 'ON' : 'OFF'}`);
 
-  const vhCanvasRoot = document.getElementById('vh-canvas-root');
-  const chatContainer = document.getElementById('desktopChatMessages') || document.getElementById('desktop-chat-messages');
+  const vhRoot = document.getElementById('vh-root');
+  const chatStream = document.getElementById('chat-stream');
   const statusText = document.getElementById('vh-status-text');
 
   if (isEnabled) {
@@ -155,15 +143,18 @@ async function enableVirtualHuman(isEnabled) {
         statusText.textContent = 'Virtual Human is loading...';
       }
 
-      // Show VH canvas container above chat (never hide chat)
-      if (vhCanvasRoot) {
-        vhCanvasRoot.style.display = 'flex';
-        vhCanvasRoot.classList.remove('is-hidden');
-        vhCanvasRoot.removeAttribute('aria-hidden');
+      // Show VH viewport (remove hidden attributes)
+      if (vhRoot) {
+        vhRoot.classList.remove('is-hidden');
+        vhRoot.removeAttribute('hidden');
+        vhRoot.removeAttribute('aria-hidden');
       }
 
-      // Ensure chat remains visible (don't modify display, just ensure it's not hidden)
-      ensureChatVisible(chatContainer);
+      // Ensure chat stream remains visible and accessible
+      if (chatStream) {
+        chatStream.style.display = 'block';
+        chatStream.removeAttribute('aria-hidden');
+      }
 
       // Add body class for any additional styling needs
       document.body.classList.add('vh-mode');
@@ -192,8 +183,15 @@ async function enableVirtualHuman(isEnabled) {
       showToast('Failed to load Virtual Human. Please try again.', 'error');
 
       // Hide VH on error, but keep chat visible
-      hideVHContainer(vhCanvasRoot);
-      ensureChatVisible(chatContainer);
+      if (vhRoot) {
+        vhRoot.classList.add('is-hidden');
+        vhRoot.setAttribute('hidden', '');
+        vhRoot.setAttribute('aria-hidden', 'true');
+      }
+      if (chatStream) {
+        chatStream.style.display = 'block';
+        chatStream.removeAttribute('aria-hidden');
+      }
 
       document.body.classList.remove('vh-mode');
       state.virtualHuman = false;
@@ -206,9 +204,16 @@ async function enableVirtualHuman(isEnabled) {
       state.avatarManager.setEnabled(false);
     }
 
-    // Hide VH canvas, keep chat visible
-    hideVHContainer(vhCanvasRoot);
-    ensureChatVisible(chatContainer);
+    // Hide VH viewport, keep chat visible
+    if (vhRoot) {
+      vhRoot.classList.add('is-hidden');
+      vhRoot.setAttribute('hidden', '');
+      vhRoot.setAttribute('aria-hidden', 'true');
+    }
+    if (chatStream) {
+      chatStream.style.display = 'block';
+      chatStream.removeAttribute('aria-hidden');
+    }
 
     // Remove body class
     document.body.classList.remove('vh-mode');
@@ -218,20 +223,6 @@ async function enableVirtualHuman(isEnabled) {
   }
 
   updateToggleStates();
-}
-
-/**
- * Check if WebGL is supported
- * @returns {boolean}
- */
-function isWebGLSupported() {
-  try {
-    const canvas = document.createElement('canvas');
-    return !!(window.WebGLRenderingContext &&
-      (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
-  } catch (e) {
-    return false;
-  }
 }
 
 /**
