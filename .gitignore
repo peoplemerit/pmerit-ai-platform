@@ -47,3 +47,9 @@ Desktop.ini
 
 # Local development
 .local/
+
+# Backup files
+*.backup
+*-old.html
+pricing.html.backup
+pricing-old.html
