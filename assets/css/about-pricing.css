@@ -695,7 +695,7 @@
 }
 
 .faq-item.active .faq-answer {
-  max-height: 500px;
+  max-height: 1000px; /* Increased for longer answers */
 }
 
 /* ========================================
@@ -747,6 +747,17 @@
 
 .projections-table td {
   color: var(--text-secondary);
+}
+
+/* Section description text */
+.section-description {
+  text-align: center;
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-8);
+  color: var(--text-secondary);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* ========================================
