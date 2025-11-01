@@ -267,8 +267,8 @@ async function sendMessage(source) {
       content: aiResponse
     });
     
-    // Speak if TTS enabled
-    if (document.body.classList.contains('tts-enabled')) {
+    // Speak if TTS enabled OR if Virtual Human mode is active
+    if (document.body.classList.contains('tts-enabled') || document.body.classList.contains('vh-mode')) {
       speakMessage(aiResponse);
     }
 
@@ -488,17 +488,27 @@ function addTypingIndicator(source) {
 
 // ========== TEXT-TO-SPEECH ==========
 function speakMessage(text) {
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
-
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 1.0;
-    utterance.pitch = 1.0;
-    utterance.volume = 1.0;
-    utterance.lang = 'en-US';
-
-    window.speechSynthesis.speak(utterance);
+  // Prefer PMERIT_TTS module if available (better for VH integration)
+  if (window.PMERIT_TTS && typeof window.PMERIT_TTS.speak === 'function') {
+    window.PMERIT_TTS.speak(text, { via: 'auto' })
+      .catch(error => {
+        console.error('TTS error:', error);
+        // Fallback to browser TTS
+        fallbackToSpeechSynthesis(text);
+      });
+  } else if ('speechSynthesis' in window) {
+    fallbackToSpeechSynthesis(text);
   }
+}
+
+function fallbackToSpeechSynthesis(text) {
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.rate = 1.0;
+  utterance.pitch = 1.0;
+  utterance.volume = 1.0;
+  utterance.lang = 'en-US';
+  window.speechSynthesis.speak(utterance);
 }
 
 // ========== AUTO-RESIZE TEXTAREA ==========
