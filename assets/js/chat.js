@@ -15,6 +15,11 @@ const CONFIG = {
   SYSTEM_PROMPT: ''  // System prompt now handled by backend
 };
 
+// Helper to get page identifier for analytics
+function pageId() {
+  return location.pathname.includes('/portal/classroom') ? 'classroom' : 'home';
+}
+
 // ========== SHARED CONVERSATION HISTORY ==========
 let conversationHistory = [];
 
@@ -138,6 +143,13 @@ async function sendMessage(source) {
   if (message === '') return;
 
   console.log(`📤 Sending message from ${source}:`, message);
+  
+  // Track user message
+  window.analytics?.track('chat_message_user', {
+    page: pageId(),
+    ts: Date.now(),
+    chars: message.length
+  });
 
   // Disable input while processing
   chatInput.disabled = true;
@@ -260,6 +272,13 @@ async function sendMessage(source) {
     
     const responseTime = ((performance.now() - startTime) / 1000).toFixed(2);
     console.log(`✅ Complete response received in ${responseTime}s`);
+    
+    // Track assistant message
+    window.analytics?.track('chat_message_assistant', {
+      page: pageId(),
+      ts: Date.now(),
+      chars: aiResponse.length
+    });
     
     // Add to conversation history
     conversationHistory.push({
