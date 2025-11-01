@@ -1,7 +1,7 @@
 /**
  * PMERIT Layout Loader
  * Version: 1.0
- * Last Updated: November 2025
+ * Last Updated: November 2024
  * 
  * Purpose: Dynamically loads and initializes common header and footer components
  * Usage: Include this script and call LayoutLoader.init() after DOM is ready

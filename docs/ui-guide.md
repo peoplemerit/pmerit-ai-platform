@@ -1,7 +1,7 @@
 # PMERIT UI Component Guide
 
 **Version:** 1.0  
-**Last Updated:** November 2025  
+**Last Updated:** November 2024  
 **Maintainer:** PMERIT Development Team
 
 ## Table of Contents
@@ -659,5 +659,5 @@ For questions or issues with the common header/footer components:
 ---
 
 **Document Version:** 1.0  
-**Last Updated:** November 2025  
-**Next Review:** December 2025
+**Last Updated:** November 2024  
+**Next Review:** December 2024
