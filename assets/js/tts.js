@@ -285,120 +285,122 @@
 
     const startTime = Date.now();
 
-    // Timeout mechanism to prevent hung requests
-    const timeoutId = setTimeout(() => {
-      isSpeaking = false;
-      throw new Error('Server TTS request timed out');
-    }, SERVER_TTS_TIMEOUT);
+    return new Promise((resolve, reject) => {
+      // Timeout mechanism to prevent hung requests
+      const timeoutId = setTimeout(() => {
+        isSpeaking = false;
+        reject(new Error('Server TTS request timed out'));
+      }, SERVER_TTS_TIMEOUT);
 
-    try {
-      // Emit analytics event for TTS start with engine
-      window.analytics?.track('tts_start', {
-        page: aid(),
-        ts: startTime,
-        textChars: text.length,
-        engine: voiceEngine,
-        source: 'server'
-      });
-
-      // Call server-side TTS endpoint with voiceEngine parameter
-      const res = await fetch(`/functions/tts/speak?voiceEngine=${encodeURIComponent(voiceEngine)}`, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ text })
-      });
-
-      if (!res.ok) {
-        // Check if fallback is suggested
-        const fallbackHeader = res.headers.get('X-TTS-Fallback');
-        if (fallbackHeader === 'required' || res.status === 503) {
-          throw new Error('TTS_FALLBACK_REQUIRED');
-        }
-        throw new Error(`TTS server ${res.status}`);
-      }
-
-      // Clear timeout on successful response
-      clearTimeout(timeoutId);
-
-      // Get audio blob
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      const audio = new Audio(url);
-
-      const latency = Date.now() - startTime;
-      console.log('TTS audio received:', { latency, engine: voiceEngine });
-
-      // Wait for audio to finish
-      return new Promise((resolve, reject) => {
-        // Set up event handlers
-        const handlePlay = () => {
-          BUS.dispatchEvent(new CustomEvent('tts:start', { detail: { text, engine: voiceEngine } }));
-          startMeterFromAudio(audio);
-        };
-
-        const handleEnd = () => {
-          cleanup();
-
-          // Emit analytics event for TTS end
-          window.analytics?.track('tts_stop', {
+      // Main TTS logic
+      (async () => {
+        try {
+          // Emit analytics event for TTS start with engine
+          window.analytics?.track('tts_start', {
             page: aid(),
-            ts: Date.now(),
+            ts: startTime,
+            textChars: text.length,
             engine: voiceEngine,
-            duration: Date.now() - startTime
+            source: 'server'
           });
 
-          resolve();
-        };
+          // Call server-side TTS endpoint with voiceEngine parameter
+          const res = await fetch(`/functions/tts/speak?voiceEngine=${encodeURIComponent(voiceEngine)}`, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ text })
+          });
 
-        const handleError = (error) => {
-          cleanup();
+          if (!res.ok) {
+            // Check if fallback is suggested
+            const fallbackHeader = res.headers.get('X-TTS-Fallback');
+            if (fallbackHeader === 'required' || res.status === 503) {
+              throw new Error('TTS_FALLBACK_REQUIRED');
+            }
+            throw new Error(`TTS server ${res.status}`);
+          }
+
+          // Clear timeout on successful response
+          clearTimeout(timeoutId);
+
+          // Get audio blob
+          const blob = await res.blob();
+          const url = URL.createObjectURL(blob);
+          const audio = new Audio(url);
+
+          const latency = Date.now() - startTime;
+          console.log('TTS audio received:', { latency, engine: voiceEngine });
+
+          // Wait for audio to finish
+          const handlePlay = () => {
+            BUS.dispatchEvent(new CustomEvent('tts:start', { detail: { text, engine: voiceEngine } }));
+            startMeterFromAudio(audio);
+          };
+
+          const handleEnd = () => {
+            cleanup();
+
+            // Emit analytics event for TTS end
+            window.analytics?.track('tts_stop', {
+              page: aid(),
+              ts: Date.now(),
+              engine: voiceEngine,
+              duration: Date.now() - startTime
+            });
+
+            resolve();
+          };
+
+          const handleError = (error) => {
+            cleanup();
+
+            // Emit analytics event for TTS error
+            window.analytics?.track('tts_error', {
+              page: aid(),
+              ts: Date.now(),
+              engine: voiceEngine,
+              error: error.message || 'playback_error'
+            });
+
+            reject(error);
+          };
+
+          const cleanup = () => {
+            BUS.dispatchEvent(new Event('tts:end'));
+            stopMeter();
+            URL.revokeObjectURL(url);
+            isSpeaking = false;
+            clearTimeout(timeoutId);
+
+            // Remove event listeners to prevent memory leaks
+            audio.removeEventListener('play', handlePlay);
+            audio.removeEventListener('ended', handleEnd);
+            audio.removeEventListener('error', handleError);
+          };
+
+          audio.addEventListener('play', handlePlay);
+          audio.addEventListener('ended', handleEnd);
+          audio.addEventListener('error', handleError);
+
+          // Play audio
+          await audio.play();
+        } catch (error) {
+          clearTimeout(timeoutId);
+          isSpeaking = false;
+          console.error('Server TTS error:', error);
 
           // Emit analytics event for TTS error
           window.analytics?.track('tts_error', {
             page: aid(),
             ts: Date.now(),
             engine: voiceEngine,
-            error: error.message || 'playback_error'
+            error: error.message || 'unknown_error'
           });
 
           reject(error);
-        };
-
-        const cleanup = () => {
-          BUS.dispatchEvent(new Event('tts:end'));
-          stopMeter();
-          URL.revokeObjectURL(url);
-          isSpeaking = false;
-          clearTimeout(timeoutId);
-
-          // Remove event listeners to prevent memory leaks
-          audio.removeEventListener('play', handlePlay);
-          audio.removeEventListener('ended', handleEnd);
-          audio.removeEventListener('error', handleError);
-        };
-
-        audio.addEventListener('play', handlePlay);
-        audio.addEventListener('ended', handleEnd);
-        audio.addEventListener('error', handleError);
-
-        // Play audio
-        audio.play().catch(reject);
-      });
-    } catch (error) {
-      clearTimeout(timeoutId);
-      isSpeaking = false;
-      console.error('Server TTS error:', error);
-
-      // Emit analytics event for TTS error
-      window.analytics?.track('tts_error', {
-        page: aid(),
-        ts: Date.now(),
-        engine: voiceEngine,
-        error: error.message || 'unknown_error'
-      });
-
-      throw error;
-    }
+        }
+      })();
+    });
   }
 
   /**

@@ -331,8 +331,14 @@
 
       // Handle test voice button
       testVoiceBtn.addEventListener('click', async function() {
-        const testText = 'Hello! This is a test of the text-to-speech voice. I hope you find it clear and natural.';
         const selectedEngine = voiceEngineSelect.value;
+
+        // Test text based on engine language
+        const testTexts = {
+          'aura-2-es': '¡Hola! Esta es una prueba del sistema de síntesis de voz. Espero que lo encuentres claro y natural.',
+          'default': 'Hello! This is a test of the text-to-speech voice. I hope you find it clear and natural.'
+        };
+        const testText = testTexts[selectedEngine] || testTexts['default'];
 
         // Disable button during test
         testVoiceBtn.disabled = true;
