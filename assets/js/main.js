@@ -106,6 +106,19 @@ function init() {
 
 /**
  * Check if WebGL is supported
+ * @returns {boolean}
+ */
+function isWebGLSupported() {
+  try {
+    const canvas = document.createElement('canvas');
+    return !!(window.WebGLRenderingContext &&
+      (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
+  } catch (e) {
+    return false;
+  }
+}
+
+// ========== VIRTUAL HUMAN MODE ==========
 async function enableVirtualHuman(isEnabled) {
   console.log(`🤖 Virtual Human Mode: ${isEnabled ? 'ON' : 'OFF'}`);
 
@@ -210,20 +223,6 @@ async function enableVirtualHuman(isEnabled) {
   }
 
   updateToggleStates();
-}
-
-/**
- * Check if WebGL is supported
- * @returns {boolean}
- */
-function isWebGLSupported() {
-  try {
-    const canvas = document.createElement('canvas');
-    return !!(window.WebGLRenderingContext &&
-      (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
-  } catch (e) {
-    return false;
-  }
 }
 
 /**
