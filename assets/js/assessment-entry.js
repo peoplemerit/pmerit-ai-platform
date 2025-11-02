@@ -17,15 +17,15 @@
 (function () {
   'use strict';
 
-  // DOM Elements
-  const consentForm = document.getElementById('consentForm');
-  const consent1 = document.getElementById('consent1');
-  const consent2 = document.getElementById('consent2');
-  const beginBtn = document.getElementById('beginAssessmentBtn');
-  const loadingOverlay = document.getElementById('loadingOverlay');
-  const resumeCard = document.getElementById('resumeCard');
-  const resumeBtn = document.getElementById('resumeBtn');
-  const startFreshBtn = document.getElementById('startFreshBtn');
+  // DOM Elements - initialized in init() function after DOM is ready
+  let consentForm;
+  let consent1;
+  let consent2;
+  let beginBtn;
+  let loadingOverlay;
+  let resumeCard;
+  let resumeBtn;
+  let startFreshBtn;
 
   /**
    * Check if there is saved assessment progress in localStorage
@@ -37,7 +37,9 @@
       try {
         const progress = JSON.parse(savedProgress);
         if (progress.currentStep && progress.currentStep > 1) {
-          resumeCard.classList.add('active');
+          if (resumeCard) {
+            resumeCard.classList.add('active');
+          }
           return true;
         }
       } catch (e) {
@@ -61,13 +63,20 @@
    * Reads saved progress from localStorage and navigates to assessment page with resume parameters
    */
   function handleResumeAssessment() {
-    const savedProgress = JSON.parse(localStorage.getItem('pmerit-assessment-progress'));
-    if (savedProgress && savedProgress.currentStep) {
-      // Validate step number to prevent XSS
-      const stepNumber = parseInt(savedProgress.currentStep, 10);
-      if (!isNaN(stepNumber) && stepNumber > 0) {
-        // Navigate to assessment page with resume parameter
-        window.location.href = `assessment.html?resume=true&step=${stepNumber}`;
+    const savedProgressStr = localStorage.getItem('pmerit-assessment-progress');
+    if (savedProgressStr) {
+      try {
+        const savedProgress = JSON.parse(savedProgressStr);
+        if (savedProgress && savedProgress.currentStep) {
+          // Validate step number to prevent XSS
+          const stepNumber = parseInt(savedProgress.currentStep, 10);
+          if (!isNaN(stepNumber) && stepNumber > 0) {
+            // Navigate to assessment page with resume parameter
+            window.location.href = `assessment.html?resume=true&step=${stepNumber}`;
+          }
+        }
+      } catch (e) {
+        console.error('Error parsing saved progress:', e);
       }
     }
   }
@@ -81,7 +90,9 @@
     const userConfirmed = confirm('Are you sure you want to start fresh? Your previous progress will be lost.');
     if (userConfirmed) {
       localStorage.removeItem('pmerit-assessment-progress');
-      resumeCard.classList.remove('active');
+      if (resumeCard) {
+        resumeCard.classList.remove('active');
+      }
     }
   }
 
@@ -106,10 +117,11 @@
 
     try {
       // Collect consent data
+      const marketingCheckbox = document.getElementById('marketing');
       const consentData = {
         privacyPolicy: consent1.checked,
         dataProcessing: consent2.checked,
-        marketing: document.getElementById('marketing').checked,
+        marketing: marketingCheckbox ? marketingCheckbox.checked : false,
         timestamp: new Date().toISOString()
       };
 
@@ -164,15 +176,35 @@
    * Sets up event listeners and checks for saved progress
    */
   function init() {
+    // Initialize DOM elements
+    consentForm = document.getElementById('consentForm');
+    consent1 = document.getElementById('consent1');
+    consent2 = document.getElementById('consent2');
+    beginBtn = document.getElementById('beginAssessmentBtn');
+    loadingOverlay = document.getElementById('loadingOverlay');
+    resumeCard = document.getElementById('resumeCard');
+    resumeBtn = document.getElementById('resumeBtn');
+    startFreshBtn = document.getElementById('startFreshBtn');
+
+    // Verify required elements exist
+    if (!consentForm || !consent1 || !consent2 || !beginBtn) {
+      console.error('Required DOM elements not found');
+      return;
+    }
+
     // Event listeners for consent checkboxes
     consent1.addEventListener('change', updateButtonState);
     consent2.addEventListener('change', updateButtonState);
 
-    // Resume assessment handler
-    resumeBtn.addEventListener('click', handleResumeAssessment);
+    // Resume assessment handler (if elements exist)
+    if (resumeBtn) {
+      resumeBtn.addEventListener('click', handleResumeAssessment);
+    }
 
-    // Start fresh handler
-    startFreshBtn.addEventListener('click', handleStartFresh);
+    // Start fresh handler (if element exists)
+    if (startFreshBtn) {
+      startFreshBtn.addEventListener('click', handleStartFresh);
+    }
 
     // Form submission handler
     consentForm.addEventListener('submit', handleFormSubmit);
