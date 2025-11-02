@@ -1,0 +1,405 @@
+{
+  "version": "1.0",
+  "description": "Holland Code (RIASEC) Career Interest Assessment",
+  "types": [
+    {
+      "type_id": "R",
+      "type_name": "Realistic",
+      "description": "Doers who prefer working with things, machines, tools, plants, or animals",
+      "questions": [
+        {
+          "question_id": "R1",
+          "question_text": "I enjoy working with my hands",
+          "question_number": 1
+        },
+        {
+          "question_id": "R2",
+          "question_text": "I like working with tools and machinery",
+          "question_number": 2
+        },
+        {
+          "question_id": "R3",
+          "question_text": "I prefer practical, hands-on work",
+          "question_number": 3
+        },
+        {
+          "question_id": "R4",
+          "question_text": "I enjoy building or fixing things",
+          "question_number": 4
+        },
+        {
+          "question_id": "R5",
+          "question_text": "I like working outdoors",
+          "question_number": 5
+        },
+        {
+          "question_id": "R6",
+          "question_text": "I am good at operating equipment or machines",
+          "question_number": 6
+        }
+      ]
+    },
+    {
+      "type_id": "I",
+      "type_name": "Investigative",
+      "description": "Thinkers who prefer working with ideas and require extensive thinking",
+      "questions": [
+        {
+          "question_id": "I1",
+          "question_text": "I enjoy solving complex problems",
+          "question_number": 7
+        },
+        {
+          "question_id": "I2",
+          "question_text": "I like to analyze data and information",
+          "question_number": 8
+        },
+        {
+          "question_id": "I3",
+          "question_text": "I am curious about how things work",
+          "question_number": 9
+        },
+        {
+          "question_id": "I4",
+          "question_text": "I enjoy conducting research and experiments",
+          "question_number": 10
+        },
+        {
+          "question_id": "I5",
+          "question_text": "I like working with abstract ideas",
+          "question_number": 11
+        },
+        {
+          "question_id": "I6",
+          "question_text": "I prefer to think things through before taking action",
+          "question_number": 12
+        }
+      ]
+    },
+    {
+      "type_id": "A",
+      "type_name": "Artistic",
+      "description": "Creators who prefer working in unstructured situations using their imagination and creativity",
+      "questions": [
+        {
+          "question_id": "A1",
+          "question_text": "I enjoy creative and artistic activities",
+          "question_number": 13
+        },
+        {
+          "question_id": "A2",
+          "question_text": "I like to express myself through art, music, or writing",
+          "question_number": 14
+        },
+        {
+          "question_id": "A3",
+          "question_text": "I prefer work that allows me to be original and innovative",
+          "question_number": 15
+        },
+        {
+          "question_id": "A4",
+          "question_text": "I enjoy designing and creating new things",
+          "question_number": 16
+        },
+        {
+          "question_id": "A5",
+          "question_text": "I like working in unstructured environments",
+          "question_number": 17
+        },
+        {
+          "question_id": "A6",
+          "question_text": "I am imaginative and creative",
+          "question_number": 18
+        }
+      ]
+    },
+    {
+      "type_id": "S",
+      "type_name": "Social",
+      "description": "Helpers who prefer working with people to inform, enlighten, help, train, or cure them",
+      "questions": [
+        {
+          "question_id": "S1",
+          "question_text": "I enjoy helping and teaching others",
+          "question_number": 19
+        },
+        {
+          "question_id": "S2",
+          "question_text": "I like working with people and being part of a team",
+          "question_number": 20
+        },
+        {
+          "question_id": "S3",
+          "question_text": "I am good at understanding and relating to others",
+          "question_number": 21
+        },
+        {
+          "question_id": "S4",
+          "question_text": "I enjoy providing care and support to people",
+          "question_number": 22
+        },
+        {
+          "question_id": "S5",
+          "question_text": "I like communicating and interacting with others",
+          "question_number": 23
+        },
+        {
+          "question_id": "S6",
+          "question_text": "I prefer collaborative work over working alone",
+          "question_number": 24
+        }
+      ]
+    },
+    {
+      "type_id": "E",
+      "type_name": "Enterprising",
+      "description": "Persuaders who prefer working with people, influencing, persuading, leading, or managing for organizational goals",
+      "questions": [
+        {
+          "question_id": "E1",
+          "question_text": "I enjoy leading and persuading others",
+          "question_number": 25
+        },
+        {
+          "question_id": "E2",
+          "question_text": "I like taking risks and making decisions",
+          "question_number": 26
+        },
+        {
+          "question_id": "E3",
+          "question_text": "I am ambitious and goal-oriented",
+          "question_number": 27
+        },
+        {
+          "question_id": "E4",
+          "question_text": "I enjoy selling ideas or products",
+          "question_number": 28
+        },
+        {
+          "question_id": "E5",
+          "question_text": "I like managing projects and people",
+          "question_number": 29
+        },
+        {
+          "question_id": "E6",
+          "question_text": "I am confident in my ability to influence others",
+          "question_number": 30
+        }
+      ]
+    },
+    {
+      "type_id": "C",
+      "type_name": "Conventional",
+      "description": "Organizers who prefer working with data, following procedures, and organizing information",
+      "questions": [
+        {
+          "question_id": "C1",
+          "question_text": "I enjoy working with numbers and data",
+          "question_number": 31
+        },
+        {
+          "question_id": "C2",
+          "question_text": "I like following established procedures and routines",
+          "question_number": 32
+        },
+        {
+          "question_id": "C3",
+          "question_text": "I am detail-oriented and organized",
+          "question_number": 33
+        },
+        {
+          "question_id": "C4",
+          "question_text": "I enjoy keeping accurate records and files",
+          "question_number": 34
+        },
+        {
+          "question_id": "C5",
+          "question_text": "I like working in structured environments",
+          "question_number": 35
+        },
+        {
+          "question_id": "C6",
+          "question_text": "I prefer clear instructions and guidelines",
+          "question_number": 36
+        }
+      ]
+    }
+  ],
+  "career_mapping": [
+    {
+      "career_title": "Software Developer",
+      "onet_code": "15-1252.00",
+      "primary_type": "I",
+      "secondary_type": "R",
+      "match_threshold": 0.7
+    },
+    {
+      "career_title": "Mechanical Engineer",
+      "onet_code": "17-2141.00",
+      "primary_type": "R",
+      "secondary_type": "I",
+      "match_threshold": 0.7
+    },
+    {
+      "career_title": "Carpenter",
+      "onet_code": "47-2031.00",
+      "primary_type": "R",
+      "secondary_type": "C",
+      "match_threshold": 0.65
+    },
+    {
+      "career_title": "Electrician",
+      "onet_code": "47-2111.00",
+      "primary_type": "R",
+      "secondary_type": "I",
+      "match_threshold": 0.65
+    },
+    {
+      "career_title": "Data Scientist",
+      "onet_code": "15-2051.00",
+      "primary_type": "I",
+      "secondary_type": "C",
+      "match_threshold": 0.75
+    },
+    {
+      "career_title": "Chemist",
+      "onet_code": "19-2031.00",
+      "primary_type": "I",
+      "secondary_type": "R",
+      "match_threshold": 0.7
+    },
+    {
+      "career_title": "Biologist",
+      "onet_code": "19-1020.01",
+      "primary_type": "I",
+      "secondary_type": "A",
+      "match_threshold": 0.7
+    },
+    {
+      "career_title": "Graphic Designer",
+      "onet_code": "27-1024.00",
+      "primary_type": "A",
+      "secondary_type": "E",
+      "match_threshold": 0.7
+    },
+    {
+      "career_title": "Writer/Author",
+      "onet_code": "27-3043.00",
+      "primary_type": "A",
+      "secondary_type": "I",
+      "match_threshold": 0.7
+    },
+    {
+      "career_title": "Interior Designer",
+      "onet_code": "27-1025.00",
+      "primary_type": "A",
+      "secondary_type": "E",
+      "match_threshold": 0.65
+    },
+    {
+      "career_title": "Musician",
+      "onet_code": "27-2042.00",
+      "primary_type": "A",
+      "secondary_type": "S",
+      "match_threshold": 0.65
+    },
+    {
+      "career_title": "Teacher",
+      "onet_code": "25-2021.00",
+      "primary_type": "S",
+      "secondary_type": "A",
+      "match_threshold": 0.7
+    },
+    {
+      "career_title": "Nurse",
+      "onet_code": "29-1141.00",
+      "primary_type": "S",
+      "secondary_type": "I",
+      "match_threshold": 0.75
+    },
+    {
+      "career_title": "Social Worker",
+      "onet_code": "21-1021.00",
+      "primary_type": "S",
+      "secondary_type": "E",
+      "match_threshold": 0.7
+    },
+    {
+      "career_title": "Counselor",
+      "onet_code": "21-1014.00",
+      "primary_type": "S",
+      "secondary_type": "I",
+      "match_threshold": 0.7
+    },
+    {
+      "career_title": "Sales Manager",
+      "onet_code": "11-2022.00",
+      "primary_type": "E",
+      "secondary_type": "C",
+      "match_threshold": 0.7
+    },
+    {
+      "career_title": "Marketing Manager",
+      "onet_code": "11-2021.00",
+      "primary_type": "E",
+      "secondary_type": "A",
+      "match_threshold": 0.7
+    },
+    {
+      "career_title": "Business Executive",
+      "onet_code": "11-1021.00",
+      "primary_type": "E",
+      "secondary_type": "C",
+      "match_threshold": 0.75
+    },
+    {
+      "career_title": "Real Estate Agent",
+      "onet_code": "41-9021.00",
+      "primary_type": "E",
+      "secondary_type": "S",
+      "match_threshold": 0.65
+    },
+    {
+      "career_title": "Accountant",
+      "onet_code": "13-2011.00",
+      "primary_type": "C",
+      "secondary_type": "I",
+      "match_threshold": 0.7
+    },
+    {
+      "career_title": "Financial Analyst",
+      "onet_code": "13-2051.00",
+      "primary_type": "C",
+      "secondary_type": "I",
+      "match_threshold": 0.7
+    },
+    {
+      "career_title": "Administrative Assistant",
+      "onet_code": "43-6014.00",
+      "primary_type": "C",
+      "secondary_type": "S",
+      "match_threshold": 0.65
+    },
+    {
+      "career_title": "Database Administrator",
+      "onet_code": "15-1242.00",
+      "primary_type": "C",
+      "secondary_type": "I",
+      "match_threshold": 0.7
+    },
+    {
+      "career_title": "Architect",
+      "onet_code": "17-1011.00",
+      "primary_type": "A",
+      "secondary_type": "I",
+      "match_threshold": 0.75
+    },
+    {
+      "career_title": "Physical Therapist",
+      "onet_code": "29-1123.00",
+      "primary_type": "S",
+      "secondary_type": "R",
+      "match_threshold": 0.7
+    }
+  ]
+}
