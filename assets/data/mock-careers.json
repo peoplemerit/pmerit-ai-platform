@@ -1,0 +1,1382 @@
+{
+  "version": "1.0",
+  "description": "Mock Career Database - Comprehensive career information for matching and exploration",
+  "source": "O*NET Database (U.S. Department of Labor/Employment and Training Administration)",
+  "careers": [
+    {
+      "career_id": "c001",
+      "title": "Data Scientist",
+      "description": "Analyze complex data to help organizations make better decisions using statistical analysis and machine learning",
+      "onet_code": "15-2051.00",
+      "salary_range": {
+        "min": 60000,
+        "max": 150000,
+        "median": 95000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Much faster than average (36%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["Python", "Statistics", "Machine Learning", "SQL", "Data Visualization"],
+      "personality_fit": {
+        "openness": "high",
+        "conscientiousness": "high",
+        "extraversion": "medium",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["I", "C"],
+      "work_environment": "Office",
+      "typical_tasks": ["Analyze data", "Build predictive models", "Present findings", "Collaborate with teams"]
+    },
+    {
+      "career_id": "c002",
+      "title": "Software Developer",
+      "description": "Design, develop, and maintain software applications and systems",
+      "onet_code": "15-1252.00",
+      "salary_range": {
+        "min": 55000,
+        "max": 140000,
+        "median": 90000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Much faster than average (25%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["Programming", "Problem Solving", "Git", "Software Design", "Testing"],
+      "personality_fit": {
+        "openness": "high",
+        "conscientiousness": "high",
+        "extraversion": "low",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["I", "R"],
+      "work_environment": "Office or Remote",
+      "typical_tasks": ["Write code", "Debug applications", "Design software architecture", "Collaborate with team"]
+    },
+    {
+      "career_id": "c003",
+      "title": "Registered Nurse",
+      "description": "Provide and coordinate patient care, educate patients about health conditions",
+      "onet_code": "29-1141.00",
+      "salary_range": {
+        "min": 55000,
+        "max": 95000,
+        "median": 73000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Faster than average (9%)",
+      "education_required": "Bachelor's degree or Associate degree",
+      "skills_required": ["Patient Care", "Medical Knowledge", "Communication", "Critical Thinking", "Empathy"],
+      "personality_fit": {
+        "openness": "medium",
+        "conscientiousness": "high",
+        "extraversion": "medium",
+        "agreeableness": "high",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["S", "I"],
+      "work_environment": "Hospital or Healthcare Facility",
+      "typical_tasks": ["Assess patient health", "Administer treatments", "Monitor patient progress", "Educate patients"]
+    },
+    {
+      "career_id": "c004",
+      "title": "Marketing Manager",
+      "description": "Plan and execute marketing campaigns to promote products or services",
+      "onet_code": "11-2021.00",
+      "salary_range": {
+        "min": 60000,
+        "max": 150000,
+        "median": 95000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Average (10%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["Marketing Strategy", "Digital Marketing", "Analytics", "Communication", "Leadership"],
+      "personality_fit": {
+        "openness": "high",
+        "conscientiousness": "high",
+        "extraversion": "high",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["E", "A"],
+      "work_environment": "Office",
+      "typical_tasks": ["Develop marketing strategies", "Manage campaigns", "Analyze market trends", "Lead teams"]
+    },
+    {
+      "career_id": "c005",
+      "title": "Elementary School Teacher",
+      "description": "Educate young students in basic subjects such as math, reading, and science",
+      "onet_code": "25-2021.00",
+      "salary_range": {
+        "min": 40000,
+        "max": 75000,
+        "median": 57000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Average (4%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["Teaching", "Communication", "Patience", "Curriculum Development", "Classroom Management"],
+      "personality_fit": {
+        "openness": "high",
+        "conscientiousness": "high",
+        "extraversion": "high",
+        "agreeableness": "high",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["S", "A"],
+      "work_environment": "School",
+      "typical_tasks": ["Teach lessons", "Grade assignments", "Communicate with parents", "Create lesson plans"]
+    },
+    {
+      "career_id": "c006",
+      "title": "Mechanical Engineer",
+      "description": "Design, develop, and test mechanical and thermal devices and systems",
+      "onet_code": "17-2141.00",
+      "salary_range": {
+        "min": 60000,
+        "max": 120000,
+        "median": 85000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Average (7%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["CAD Software", "Thermodynamics", "Problem Solving", "Mathematics", "Project Management"],
+      "personality_fit": {
+        "openness": "high",
+        "conscientiousness": "high",
+        "extraversion": "low",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["I", "R"],
+      "work_environment": "Office or Manufacturing Plant",
+      "typical_tasks": ["Design mechanical systems", "Test prototypes", "Analyze data", "Collaborate with teams"]
+    },
+    {
+      "career_id": "c007",
+      "title": "Graphic Designer",
+      "description": "Create visual concepts to communicate ideas that inspire and inform consumers",
+      "onet_code": "27-1024.00",
+      "salary_range": {
+        "min": 35000,
+        "max": 85000,
+        "median": 52000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Average (4%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["Adobe Creative Suite", "Typography", "Color Theory", "Creativity", "Communication"],
+      "personality_fit": {
+        "openness": "high",
+        "conscientiousness": "medium",
+        "extraversion": "medium",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["A", "E"],
+      "work_environment": "Office or Remote",
+      "typical_tasks": ["Create designs", "Meet with clients", "Present concepts", "Revise designs"]
+    },
+    {
+      "career_id": "c008",
+      "title": "Financial Analyst",
+      "description": "Provide guidance to businesses and individuals making investment decisions",
+      "onet_code": "13-2051.00",
+      "salary_range": {
+        "min": 50000,
+        "max": 110000,
+        "median": 75000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Faster than average (9%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["Financial Modeling", "Excel", "Data Analysis", "Accounting", "Communication"],
+      "personality_fit": {
+        "openness": "medium",
+        "conscientiousness": "high",
+        "extraversion": "medium",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["C", "E"],
+      "work_environment": "Office",
+      "typical_tasks": ["Analyze financial data", "Create reports", "Forecast trends", "Advise clients"]
+    },
+    {
+      "career_id": "c009",
+      "title": "Electrician",
+      "description": "Install, maintain, and repair electrical power, communications, lighting, and control systems",
+      "onet_code": "47-2111.00",
+      "salary_range": {
+        "min": 40000,
+        "max": 85000,
+        "median": 56000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Faster than average (8%)",
+      "education_required": "High school diploma plus apprenticeship",
+      "skills_required": ["Electrical Systems", "Troubleshooting", "Safety Protocols", "Blueprint Reading", "Manual Dexterity"],
+      "personality_fit": {
+        "openness": "medium",
+        "conscientiousness": "high",
+        "extraversion": "low",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["R", "I"],
+      "work_environment": "Variable (Indoor/Outdoor)",
+      "typical_tasks": ["Install wiring", "Repair electrical systems", "Test equipment", "Follow building codes"]
+    },
+    {
+      "career_id": "c010",
+      "title": "Human Resources Manager",
+      "description": "Plan, direct, and coordinate administrative functions of an organization",
+      "onet_code": "11-3121.00",
+      "salary_range": {
+        "min": 65000,
+        "max": 140000,
+        "median": 95000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Average (7%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["Employee Relations", "Recruitment", "Communication", "Conflict Resolution", "HR Software"],
+      "personality_fit": {
+        "openness": "medium",
+        "conscientiousness": "high",
+        "extraversion": "high",
+        "agreeableness": "high",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["E", "S"],
+      "work_environment": "Office",
+      "typical_tasks": ["Recruit employees", "Manage benefits", "Resolve conflicts", "Develop policies"]
+    },
+    {
+      "career_id": "c011",
+      "title": "Physical Therapist",
+      "description": "Help injured or ill people improve movement and manage pain",
+      "onet_code": "29-1123.00",
+      "salary_range": {
+        "min": 65000,
+        "max": 110000,
+        "median": 85000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Much faster than average (17%)",
+      "education_required": "Doctoral or professional degree",
+      "skills_required": ["Patient Care", "Manual Therapy", "Exercise Prescription", "Communication", "Empathy"],
+      "personality_fit": {
+        "openness": "medium",
+        "conscientiousness": "high",
+        "extraversion": "high",
+        "agreeableness": "high",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["S", "I"],
+      "work_environment": "Healthcare Facility or Clinic",
+      "typical_tasks": ["Assess patients", "Design treatment plans", "Perform therapy", "Track progress"]
+    },
+    {
+      "career_id": "c012",
+      "title": "Accountant",
+      "description": "Prepare and examine financial records to ensure accuracy and compliance",
+      "onet_code": "13-2011.00",
+      "salary_range": {
+        "min": 45000,
+        "max": 95000,
+        "median": 65000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Average (6%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["Accounting", "Excel", "Tax Law", "Attention to Detail", "Analytical Thinking"],
+      "personality_fit": {
+        "openness": "low",
+        "conscientiousness": "high",
+        "extraversion": "low",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["C", "E"],
+      "work_environment": "Office",
+      "typical_tasks": ["Prepare tax returns", "Audit financial records", "Create reports", "Advise clients"]
+    },
+    {
+      "career_id": "c013",
+      "title": "Web Developer",
+      "description": "Design and create websites, responsible for the look and functionality",
+      "onet_code": "15-1254.00",
+      "salary_range": {
+        "min": 45000,
+        "max": 110000,
+        "median": 73000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Much faster than average (23%)",
+      "education_required": "Associate degree or Bachelor's degree",
+      "skills_required": ["HTML/CSS", "JavaScript", "Responsive Design", "Version Control", "Problem Solving"],
+      "personality_fit": {
+        "openness": "high",
+        "conscientiousness": "high",
+        "extraversion": "low",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["I", "A"],
+      "work_environment": "Office or Remote",
+      "typical_tasks": ["Build websites", "Write code", "Test functionality", "Collaborate with designers"]
+    },
+    {
+      "career_id": "c014",
+      "title": "Civil Engineer",
+      "description": "Design and oversee construction of infrastructure projects like roads, bridges, and buildings",
+      "onet_code": "17-2051.00",
+      "salary_range": {
+        "min": 60000,
+        "max": 115000,
+        "median": 82000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Average (8%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["AutoCAD", "Project Management", "Engineering Principles", "Mathematics", "Communication"],
+      "personality_fit": {
+        "openness": "medium",
+        "conscientiousness": "high",
+        "extraversion": "medium",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["I", "R"],
+      "work_environment": "Office and Construction Sites",
+      "typical_tasks": ["Design infrastructure", "Oversee construction", "Analyze data", "Ensure safety standards"]
+    },
+    {
+      "career_id": "c015",
+      "title": "Social Worker",
+      "description": "Help people cope with and solve issues in their everyday lives",
+      "onet_code": "21-1021.00",
+      "salary_range": {
+        "min": 40000,
+        "max": 75000,
+        "median": 51000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Faster than average (11%)",
+      "education_required": "Bachelor's degree or Master's degree",
+      "skills_required": ["Counseling", "Case Management", "Communication", "Empathy", "Problem Solving"],
+      "personality_fit": {
+        "openness": "high",
+        "conscientiousness": "high",
+        "extraversion": "high",
+        "agreeableness": "high",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["S", "I"],
+      "work_environment": "Office or Community Settings",
+      "typical_tasks": ["Assess client needs", "Develop treatment plans", "Connect clients to resources", "Advocate for clients"]
+    },
+    {
+      "career_id": "c016",
+      "title": "Dental Hygienist",
+      "description": "Clean teeth, examine patients for signs of oral diseases, and provide preventive dental care",
+      "onet_code": "29-1292.00",
+      "salary_range": {
+        "min": 55000,
+        "max": 90000,
+        "median": 73000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Faster than average (11%)",
+      "education_required": "Associate degree",
+      "skills_required": ["Patient Care", "Dental Knowledge", "Manual Dexterity", "Communication", "Attention to Detail"],
+      "personality_fit": {
+        "openness": "low",
+        "conscientiousness": "high",
+        "extraversion": "medium",
+        "agreeableness": "high",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["S", "R"],
+      "work_environment": "Dental Office",
+      "typical_tasks": ["Clean teeth", "Take x-rays", "Educate patients", "Document procedures"]
+    },
+    {
+      "career_id": "c017",
+      "title": "Chef",
+      "description": "Direct food preparation in kitchens and plan menus",
+      "onet_code": "35-1011.00",
+      "salary_range": {
+        "min": 35000,
+        "max": 85000,
+        "median": 50000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Faster than average (15%)",
+      "education_required": "High school diploma plus culinary training",
+      "skills_required": ["Culinary Skills", "Food Safety", "Creativity", "Leadership", "Time Management"],
+      "personality_fit": {
+        "openness": "high",
+        "conscientiousness": "high",
+        "extraversion": "medium",
+        "agreeableness": "medium",
+        "neuroticism": "medium"
+      },
+      "holland_codes": ["A", "R"],
+      "work_environment": "Restaurant Kitchen",
+      "typical_tasks": ["Prepare meals", "Create menus", "Manage kitchen staff", "Ensure quality"]
+    },
+    {
+      "career_id": "c018",
+      "title": "Paralegal",
+      "description": "Assist lawyers by investigating facts, preparing legal documents, and researching legal precedent",
+      "onet_code": "23-2011.00",
+      "salary_range": {
+        "min": 40000,
+        "max": 75000,
+        "median": 52000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Faster than average (12%)",
+      "education_required": "Associate degree or Certificate",
+      "skills_required": ["Legal Research", "Writing", "Organization", "Attention to Detail", "Communication"],
+      "personality_fit": {
+        "openness": "medium",
+        "conscientiousness": "high",
+        "extraversion": "low",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["C", "E"],
+      "work_environment": "Law Office",
+      "typical_tasks": ["Research cases", "Draft documents", "Organize files", "Assist attorneys"]
+    },
+    {
+      "career_id": "c019",
+      "title": "Occupational Therapist",
+      "description": "Help patients develop, recover, and improve skills needed for daily living and working",
+      "onet_code": "29-1122.00",
+      "salary_range": {
+        "min": 60000,
+        "max": 105000,
+        "median": 82000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Much faster than average (14%)",
+      "education_required": "Master's degree",
+      "skills_required": ["Patient Care", "Treatment Planning", "Communication", "Problem Solving", "Empathy"],
+      "personality_fit": {
+        "openness": "medium",
+        "conscientiousness": "high",
+        "extraversion": "high",
+        "agreeableness": "high",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["S", "I"],
+      "work_environment": "Healthcare Facility",
+      "typical_tasks": ["Assess patients", "Design therapy programs", "Teach adaptive techniques", "Monitor progress"]
+    },
+    {
+      "career_id": "c020",
+      "title": "Construction Manager",
+      "description": "Plan, coordinate, budget, and supervise construction projects",
+      "onet_code": "11-9021.00",
+      "salary_range": {
+        "min": 60000,
+        "max": 130000,
+        "median": 90000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Average (8%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["Project Management", "Construction Knowledge", "Leadership", "Budgeting", "Communication"],
+      "personality_fit": {
+        "openness": "medium",
+        "conscientiousness": "high",
+        "extraversion": "high",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["E", "R"],
+      "work_environment": "Office and Construction Sites",
+      "typical_tasks": ["Plan projects", "Coordinate workers", "Manage budgets", "Ensure safety"]
+    },
+    {
+      "career_id": "c021",
+      "title": "UX Designer",
+      "description": "Design and improve user experience for digital products and services",
+      "onet_code": "15-1255.00",
+      "salary_range": {
+        "min": 55000,
+        "max": 125000,
+        "median": 85000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Much faster than average (23%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["User Research", "Wireframing", "Prototyping", "Design Tools", "Communication"],
+      "personality_fit": {
+        "openness": "high",
+        "conscientiousness": "high",
+        "extraversion": "medium",
+        "agreeableness": "high",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["A", "I"],
+      "work_environment": "Office or Remote",
+      "typical_tasks": ["Research users", "Create wireframes", "Test designs", "Collaborate with developers"]
+    },
+    {
+      "career_id": "c022",
+      "title": "Pharmacist",
+      "description": "Dispense prescription medications and provide information about their safe use",
+      "onet_code": "29-1051.00",
+      "salary_range": {
+        "min": 90000,
+        "max": 150000,
+        "median": 120000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Slower than average (2%)",
+      "education_required": "Doctoral or professional degree",
+      "skills_required": ["Pharmaceutical Knowledge", "Patient Counseling", "Attention to Detail", "Communication", "Ethics"],
+      "personality_fit": {
+        "openness": "medium",
+        "conscientiousness": "high",
+        "extraversion": "medium",
+        "agreeableness": "high",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["I", "S"],
+      "work_environment": "Pharmacy or Hospital",
+      "typical_tasks": ["Dispense medications", "Counsel patients", "Review prescriptions", "Maintain records"]
+    },
+    {
+      "career_id": "c023",
+      "title": "Network Administrator",
+      "description": "Install, configure, and maintain computer networks for organizations",
+      "onet_code": "15-1244.00",
+      "salary_range": {
+        "min": 50000,
+        "max": 95000,
+        "median": 70000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Average (5%)",
+      "education_required": "Bachelor's degree or Associate degree",
+      "skills_required": ["Networking", "System Administration", "Troubleshooting", "Security", "Technical Support"],
+      "personality_fit": {
+        "openness": "medium",
+        "conscientiousness": "high",
+        "extraversion": "low",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["R", "I"],
+      "work_environment": "Office",
+      "typical_tasks": ["Maintain networks", "Troubleshoot issues", "Install hardware", "Monitor performance"]
+    },
+    {
+      "career_id": "c024",
+      "title": "Real Estate Agent",
+      "description": "Help clients buy, sell, and rent properties",
+      "onet_code": "41-9021.00",
+      "salary_range": {
+        "min": 30000,
+        "max": 100000,
+        "median": 50000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Average (5%)",
+      "education_required": "High school diploma plus licensing",
+      "skills_required": ["Sales", "Negotiation", "Communication", "Market Knowledge", "Customer Service"],
+      "personality_fit": {
+        "openness": "medium",
+        "conscientiousness": "medium",
+        "extraversion": "high",
+        "agreeableness": "high",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["E", "S"],
+      "work_environment": "Office and Variable",
+      "typical_tasks": ["Show properties", "Negotiate deals", "Market listings", "Advise clients"]
+    },
+    {
+      "career_id": "c025",
+      "title": "Veterinarian",
+      "description": "Care for the health of animals and diagnose and treat medical conditions",
+      "onet_code": "29-1131.00",
+      "salary_range": {
+        "min": 70000,
+        "max": 140000,
+        "median": 95000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Much faster than average (19%)",
+      "education_required": "Doctoral or professional degree",
+      "skills_required": ["Animal Medicine", "Surgery", "Diagnosis", "Communication", "Empathy"],
+      "personality_fit": {
+        "openness": "medium",
+        "conscientiousness": "high",
+        "extraversion": "medium",
+        "agreeableness": "high",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["I", "S"],
+      "work_environment": "Veterinary Clinic",
+      "typical_tasks": ["Examine animals", "Perform surgery", "Prescribe medications", "Educate owners"]
+    },
+    {
+      "career_id": "c026",
+      "title": "Interior Designer",
+      "description": "Plan and design interior spaces to be functional, safe, and aesthetically pleasing",
+      "onet_code": "27-1025.00",
+      "salary_range": {
+        "min": 35000,
+        "max": 85000,
+        "median": 55000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Average (5%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["Design Software", "Space Planning", "Color Theory", "Communication", "Creativity"],
+      "personality_fit": {
+        "openness": "high",
+        "conscientiousness": "medium",
+        "extraversion": "high",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["A", "E"],
+      "work_environment": "Office and Client Sites",
+      "typical_tasks": ["Design spaces", "Select materials", "Create plans", "Meet with clients"]
+    },
+    {
+      "career_id": "c027",
+      "title": "Environmental Scientist",
+      "description": "Conduct research to identify and eliminate pollutants and hazards",
+      "onet_code": "19-2041.00",
+      "salary_range": {
+        "min": 45000,
+        "max": 95000,
+        "median": 68000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Faster than average (8%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["Environmental Science", "Data Analysis", "Research", "Communication", "Problem Solving"],
+      "personality_fit": {
+        "openness": "high",
+        "conscientiousness": "high",
+        "extraversion": "low",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["I", "R"],
+      "work_environment": "Laboratory and Field",
+      "typical_tasks": ["Collect samples", "Analyze data", "Write reports", "Develop solutions"]
+    },
+    {
+      "career_id": "c028",
+      "title": "Project Manager",
+      "description": "Plan and oversee projects to ensure they are completed on time and within budget",
+      "onet_code": "11-9199.00",
+      "salary_range": {
+        "min": 55000,
+        "max": 130000,
+        "median": 85000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Average (7%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["Project Management", "Leadership", "Communication", "Risk Management", "Budgeting"],
+      "personality_fit": {
+        "openness": "medium",
+        "conscientiousness": "high",
+        "extraversion": "high",
+        "agreeableness": "high",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["E", "C"],
+      "work_environment": "Office",
+      "typical_tasks": ["Plan projects", "Coordinate teams", "Manage budgets", "Track progress"]
+    },
+    {
+      "career_id": "c029",
+      "title": "Medical Assistant",
+      "description": "Perform routine administrative and clinical tasks in medical offices",
+      "onet_code": "31-9092.00",
+      "salary_range": {
+        "min": 28000,
+        "max": 45000,
+        "median": 35000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Much faster than average (18%)",
+      "education_required": "Postsecondary nondegree award",
+      "skills_required": ["Patient Care", "Medical Knowledge", "Computer Skills", "Communication", "Organization"],
+      "personality_fit": {
+        "openness": "low",
+        "conscientiousness": "high",
+        "extraversion": "medium",
+        "agreeableness": "high",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["S", "C"],
+      "work_environment": "Medical Office",
+      "typical_tasks": ["Schedule appointments", "Take vital signs", "Assist physicians", "Maintain records"]
+    },
+    {
+      "career_id": "c030",
+      "title": "Architect",
+      "description": "Plan and design buildings and other structures",
+      "onet_code": "17-1011.00",
+      "salary_range": {
+        "min": 55000,
+        "max": 120000,
+        "median": 80000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Average (4%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["AutoCAD", "Design", "Creativity", "Mathematics", "Communication"],
+      "personality_fit": {
+        "openness": "high",
+        "conscientiousness": "high",
+        "extraversion": "medium",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["A", "I"],
+      "work_environment": "Office",
+      "typical_tasks": ["Design buildings", "Create blueprints", "Meet with clients", "Oversee construction"]
+    },
+    {
+      "career_id": "c031",
+      "title": "Police Officer",
+      "description": "Maintain law and order, protect citizens and property, and prevent crime",
+      "onet_code": "33-3051.00",
+      "salary_range": {
+        "min": 40000,
+        "max": 85000,
+        "median": 60000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Average (4%)",
+      "education_required": "High school diploma plus academy training",
+      "skills_required": ["Law Enforcement", "Physical Fitness", "Communication", "Judgment", "Problem Solving"],
+      "personality_fit": {
+        "openness": "low",
+        "conscientiousness": "high",
+        "extraversion": "medium",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["S", "R"],
+      "work_environment": "Variable (Patrol and Office)",
+      "typical_tasks": ["Patrol areas", "Respond to calls", "Investigate crimes", "Make arrests"]
+    },
+    {
+      "career_id": "c032",
+      "title": "Speech-Language Pathologist",
+      "description": "Assess and treat communication and swallowing disorders",
+      "onet_code": "29-1127.00",
+      "salary_range": {
+        "min": 60000,
+        "max": 105000,
+        "median": 77000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Much faster than average (25%)",
+      "education_required": "Master's degree",
+      "skills_required": ["Speech Therapy", "Patient Care", "Communication", "Assessment", "Empathy"],
+      "personality_fit": {
+        "openness": "medium",
+        "conscientiousness": "high",
+        "extraversion": "high",
+        "agreeableness": "high",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["S", "I"],
+      "work_environment": "Healthcare or School",
+      "typical_tasks": ["Assess patients", "Design therapy plans", "Provide treatment", "Monitor progress"]
+    },
+    {
+      "career_id": "c033",
+      "title": "Information Security Analyst",
+      "description": "Plan and carry out security measures to protect computer networks and systems",
+      "onet_code": "15-1212.00",
+      "salary_range": {
+        "min": 65000,
+        "max": 135000,
+        "median": 95000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Much faster than average (35%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["Cybersecurity", "Network Security", "Risk Assessment", "Problem Solving", "Technical Skills"],
+      "personality_fit": {
+        "openness": "medium",
+        "conscientiousness": "high",
+        "extraversion": "low",
+        "agreeableness": "low",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["I", "C"],
+      "work_environment": "Office",
+      "typical_tasks": ["Monitor networks", "Investigate breaches", "Implement security measures", "Train staff"]
+    },
+    {
+      "career_id": "c034",
+      "title": "Event Planner",
+      "description": "Coordinate and organize events such as meetings, weddings, and conferences",
+      "onet_code": "13-1121.00",
+      "salary_range": {
+        "min": 35000,
+        "max": 75000,
+        "median": 50000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Faster than average (8%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["Organization", "Communication", "Creativity", "Negotiation", "Time Management"],
+      "personality_fit": {
+        "openness": "high",
+        "conscientiousness": "high",
+        "extraversion": "high",
+        "agreeableness": "high",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["E", "A"],
+      "work_environment": "Office and Event Venues",
+      "typical_tasks": ["Plan events", "Coordinate vendors", "Manage budgets", "Oversee execution"]
+    },
+    {
+      "career_id": "c035",
+      "title": "Radiologic Technologist",
+      "description": "Perform diagnostic imaging examinations like x-rays and CT scans",
+      "onet_code": "29-2034.00",
+      "salary_range": {
+        "min": 45000,
+        "max": 80000,
+        "median": 60000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Faster than average (9%)",
+      "education_required": "Associate degree",
+      "skills_required": ["Medical Imaging", "Patient Care", "Technical Skills", "Attention to Detail", "Communication"],
+      "personality_fit": {
+        "openness": "medium",
+        "conscientiousness": "high",
+        "extraversion": "medium",
+        "agreeableness": "high",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["R", "S"],
+      "work_environment": "Hospital or Clinic",
+      "typical_tasks": ["Perform x-rays", "Position patients", "Operate equipment", "Maintain safety protocols"]
+    },
+    {
+      "career_id": "c036",
+      "title": "Video Game Designer",
+      "description": "Design core features of video games and develop storylines and characters",
+      "onet_code": "15-1255.01",
+      "salary_range": {
+        "min": 45000,
+        "max": 110000,
+        "median": 70000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Much faster than average (23%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["Game Design", "Programming", "Creativity", "Storytelling", "Collaboration"],
+      "personality_fit": {
+        "openness": "high",
+        "conscientiousness": "medium",
+        "extraversion": "medium",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["A", "I"],
+      "work_environment": "Office",
+      "typical_tasks": ["Design gameplay", "Create characters", "Write stories", "Test games"]
+    },
+    {
+      "career_id": "c037",
+      "title": "Respiratory Therapist",
+      "description": "Care for patients with breathing disorders and administer respiratory treatments",
+      "onet_code": "29-1126.00",
+      "salary_range": {
+        "min": 50000,
+        "max": 80000,
+        "median": 62000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Much faster than average (19%)",
+      "education_required": "Associate degree",
+      "skills_required": ["Respiratory Care", "Patient Care", "Medical Knowledge", "Technical Skills", "Communication"],
+      "personality_fit": {
+        "openness": "medium",
+        "conscientiousness": "high",
+        "extraversion": "medium",
+        "agreeableness": "high",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["S", "I"],
+      "work_environment": "Hospital",
+      "typical_tasks": ["Assess patients", "Administer treatments", "Monitor equipment", "Educate patients"]
+    },
+    {
+      "career_id": "c038",
+      "title": "Insurance Agent",
+      "description": "Sell insurance policies to individuals and businesses",
+      "onet_code": "41-3021.00",
+      "salary_range": {
+        "min": 35000,
+        "max": 95000,
+        "median": 52000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Average (6%)",
+      "education_required": "High school diploma plus licensing",
+      "skills_required": ["Sales", "Communication", "Customer Service", "Product Knowledge", "Negotiation"],
+      "personality_fit": {
+        "openness": "medium",
+        "conscientiousness": "medium",
+        "extraversion": "high",
+        "agreeableness": "high",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["E", "S"],
+      "work_environment": "Office",
+      "typical_tasks": ["Meet with clients", "Explain policies", "Process claims", "Maintain relationships"]
+    },
+    {
+      "career_id": "c039",
+      "title": "Landscape Architect",
+      "description": "Design outdoor areas such as parks, gardens, and campuses",
+      "onet_code": "17-1012.00",
+      "salary_range": {
+        "min": 45000,
+        "max": 95000,
+        "median": 67000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Average (4%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["Design Software", "Plant Knowledge", "Creativity", "Communication", "Project Management"],
+      "personality_fit": {
+        "openness": "high",
+        "conscientiousness": "high",
+        "extraversion": "medium",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["A", "R"],
+      "work_environment": "Office and Outdoor",
+      "typical_tasks": ["Design landscapes", "Create plans", "Select plants", "Oversee projects"]
+    },
+    {
+      "career_id": "c040",
+      "title": "Technical Writer",
+      "description": "Write technical materials such as user manuals, instruction guides, and articles",
+      "onet_code": "27-3042.00",
+      "salary_range": {
+        "min": 45000,
+        "max": 95000,
+        "median": 68000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Faster than average (12%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["Technical Writing", "Communication", "Research", "Attention to Detail", "Software Tools"],
+      "personality_fit": {
+        "openness": "medium",
+        "conscientiousness": "high",
+        "extraversion": "low",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["C", "I"],
+      "work_environment": "Office or Remote",
+      "typical_tasks": ["Write documentation", "Research technical topics", "Edit content", "Collaborate with teams"]
+    },
+    {
+      "career_id": "c041",
+      "title": "Counselor",
+      "description": "Advise people on issues affecting their mental health and well-being",
+      "onet_code": "21-1014.00",
+      "salary_range": {
+        "min": 38000,
+        "max": 70000,
+        "median": 47000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Much faster than average (22%)",
+      "education_required": "Master's degree",
+      "skills_required": ["Counseling", "Active Listening", "Empathy", "Communication", "Problem Solving"],
+      "personality_fit": {
+        "openness": "high",
+        "conscientiousness": "high",
+        "extraversion": "high",
+        "agreeableness": "high",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["S", "I"],
+      "work_environment": "Office or School",
+      "typical_tasks": ["Counsel clients", "Assess needs", "Develop treatment plans", "Maintain records"]
+    },
+    {
+      "career_id": "c042",
+      "title": "Statistician",
+      "description": "Use statistical methods to collect and analyze data and help solve real-world problems",
+      "onet_code": "15-2041.00",
+      "salary_range": {
+        "min": 55000,
+        "max": 120000,
+        "median": 85000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Much faster than average (33%)",
+      "education_required": "Master's degree",
+      "skills_required": ["Statistics", "Programming", "Data Analysis", "Mathematics", "Communication"],
+      "personality_fit": {
+        "openness": "high",
+        "conscientiousness": "high",
+        "extraversion": "low",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["I", "C"],
+      "work_environment": "Office",
+      "typical_tasks": ["Analyze data", "Design studies", "Interpret results", "Present findings"]
+    },
+    {
+      "career_id": "c043",
+      "title": "Plumber",
+      "description": "Install and repair pipes and fixtures for water, gas, and drainage systems",
+      "onet_code": "47-2152.00",
+      "salary_range": {
+        "min": 40000,
+        "max": 85000,
+        "median": 55000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Average (5%)",
+      "education_required": "High school diploma plus apprenticeship",
+      "skills_required": ["Plumbing", "Problem Solving", "Manual Dexterity", "Blueprint Reading", "Customer Service"],
+      "personality_fit": {
+        "openness": "low",
+        "conscientiousness": "high",
+        "extraversion": "low",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["R", "I"],
+      "work_environment": "Variable (Indoor/Outdoor)",
+      "typical_tasks": ["Install pipes", "Repair systems", "Diagnose problems", "Follow codes"]
+    },
+    {
+      "career_id": "c044",
+      "title": "Loan Officer",
+      "description": "Evaluate and authorize loan applications for people and businesses",
+      "onet_code": "13-2072.00",
+      "salary_range": {
+        "min": 40000,
+        "max": 95000,
+        "median": 62000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Average (4%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["Financial Analysis", "Sales", "Customer Service", "Attention to Detail", "Communication"],
+      "personality_fit": {
+        "openness": "low",
+        "conscientiousness": "high",
+        "extraversion": "high",
+        "agreeableness": "high",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["E", "C"],
+      "work_environment": "Office",
+      "typical_tasks": ["Evaluate applications", "Meet with clients", "Analyze finances", "Process loans"]
+    },
+    {
+      "career_id": "c045",
+      "title": "Public Relations Specialist",
+      "description": "Create and maintain a favorable public image for organizations",
+      "onet_code": "27-3031.00",
+      "salary_range": {
+        "min": 40000,
+        "max": 95000,
+        "median": 60000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Faster than average (8%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["Communication", "Writing", "Media Relations", "Creativity", "Crisis Management"],
+      "personality_fit": {
+        "openness": "high",
+        "conscientiousness": "high",
+        "extraversion": "high",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["E", "A"],
+      "work_environment": "Office",
+      "typical_tasks": ["Write press releases", "Manage media relations", "Plan events", "Handle crises"]
+    },
+    {
+      "career_id": "c046",
+      "title": "Biomedical Engineer",
+      "description": "Combine engineering principles with medical sciences to design healthcare devices",
+      "onet_code": "17-2031.00",
+      "salary_range": {
+        "min": 60000,
+        "max": 120000,
+        "median": 88000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Average (6%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["Engineering", "Biology", "Design", "Problem Solving", "Mathematics"],
+      "personality_fit": {
+        "openness": "high",
+        "conscientiousness": "high",
+        "extraversion": "low",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["I", "R"],
+      "work_environment": "Laboratory or Office",
+      "typical_tasks": ["Design medical devices", "Test equipment", "Analyze data", "Collaborate with teams"]
+    },
+    {
+      "career_id": "c047",
+      "title": "Firefighter",
+      "description": "Protect the public by responding to fires and other emergencies",
+      "onet_code": "33-2011.00",
+      "salary_range": {
+        "min": 35000,
+        "max": 75000,
+        "median": 50000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Average (8%)",
+      "education_required": "High school diploma plus academy training",
+      "skills_required": ["Physical Fitness", "Emergency Response", "Teamwork", "Problem Solving", "Communication"],
+      "personality_fit": {
+        "openness": "low",
+        "conscientiousness": "high",
+        "extraversion": "medium",
+        "agreeableness": "high",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["R", "S"],
+      "work_environment": "Fire Station and Emergency Scenes",
+      "typical_tasks": ["Respond to emergencies", "Fight fires", "Provide medical aid", "Maintain equipment"]
+    },
+    {
+      "career_id": "c048",
+      "title": "Industrial Designer",
+      "description": "Design and develop concepts for manufactured products",
+      "onet_code": "27-1021.00",
+      "salary_range": {
+        "min": 45000,
+        "max": 95000,
+        "median": 68000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Average (5%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["CAD Software", "Creativity", "Problem Solving", "Manufacturing Knowledge", "Communication"],
+      "personality_fit": {
+        "openness": "high",
+        "conscientiousness": "high",
+        "extraversion": "medium",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["A", "R"],
+      "work_environment": "Office or Studio",
+      "typical_tasks": ["Design products", "Create prototypes", "Research user needs", "Collaborate with teams"]
+    },
+    {
+      "career_id": "c049",
+      "title": "Court Reporter",
+      "description": "Create word-for-word transcriptions of legal proceedings and meetings",
+      "onet_code": "23-2091.00",
+      "salary_range": {
+        "min": 35000,
+        "max": 85000,
+        "median": 57000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Slower than average (3%)",
+      "education_required": "Postsecondary nondegree award",
+      "skills_required": ["Stenography", "Typing Speed", "Accuracy", "Concentration", "Technology"],
+      "personality_fit": {
+        "openness": "low",
+        "conscientiousness": "high",
+        "extraversion": "low",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["C", "R"],
+      "work_environment": "Courtroom",
+      "typical_tasks": ["Record proceedings", "Create transcripts", "Verify accuracy", "Operate equipment"]
+    },
+    {
+      "career_id": "c050",
+      "title": "Dietitian",
+      "description": "Plan and conduct food service or nutritional programs to assist in promoting health",
+      "onet_code": "29-1031.00",
+      "salary_range": {
+        "min": 45000,
+        "max": 80000,
+        "median": 60000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Faster than average (11%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["Nutrition", "Counseling", "Communication", "Assessment", "Problem Solving"],
+      "personality_fit": {
+        "openness": "medium",
+        "conscientiousness": "high",
+        "extraversion": "medium",
+        "agreeableness": "high",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["S", "I"],
+      "work_environment": "Healthcare Facility or Office",
+      "typical_tasks": ["Assess nutritional needs", "Create meal plans", "Counsel clients", "Monitor progress"]
+    },
+    {
+      "career_id": "c051",
+      "title": "Supply Chain Manager",
+      "description": "Coordinate and oversee the supply chain operations of an organization",
+      "onet_code": "11-3071.00",
+      "salary_range": {
+        "min": 60000,
+        "max": 130000,
+        "median": 88000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Much faster than average (28%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["Logistics", "Supply Chain Management", "Problem Solving", "Analytics", "Leadership"],
+      "personality_fit": {
+        "openness": "medium",
+        "conscientiousness": "high",
+        "extraversion": "medium",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["E", "C"],
+      "work_environment": "Office",
+      "typical_tasks": ["Manage inventory", "Coordinate shipments", "Analyze data", "Optimize processes"]
+    },
+    {
+      "career_id": "c052",
+      "title": "Photographer",
+      "description": "Capture professional-quality photographs for various purposes",
+      "onet_code": "27-4021.00",
+      "salary_range": {
+        "min": 25000,
+        "max": 75000,
+        "median": 38000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Average (4%)",
+      "education_required": "High school diploma plus training",
+      "skills_required": ["Photography", "Photo Editing", "Creativity", "Technical Skills", "Communication"],
+      "personality_fit": {
+        "openness": "high",
+        "conscientiousness": "medium",
+        "extraversion": "medium",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["A", "E"],
+      "work_environment": "Studio or Variable",
+      "typical_tasks": ["Take photographs", "Edit images", "Meet with clients", "Set up equipment"]
+    },
+    {
+      "career_id": "c053",
+      "title": "Urban Planner",
+      "description": "Develop plans and programs for land use in urban areas",
+      "onet_code": "19-3051.00",
+      "salary_range": {
+        "min": 50000,
+        "max": 100000,
+        "median": 73000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Faster than average (11%)",
+      "education_required": "Master's degree",
+      "skills_required": ["Urban Planning", "GIS", "Communication", "Analysis", "Policy Knowledge"],
+      "personality_fit": {
+        "openness": "high",
+        "conscientiousness": "high",
+        "extraversion": "medium",
+        "agreeableness": "high",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["I", "E"],
+      "work_environment": "Office",
+      "typical_tasks": ["Develop land use plans", "Analyze data", "Conduct meetings", "Review proposals"]
+    },
+    {
+      "career_id": "c054",
+      "title": "Chiropractor",
+      "description": "Diagnose and treat neuromuscular disorders through manual adjustment of the spine",
+      "onet_code": "29-1011.00",
+      "salary_range": {
+        "min": 45000,
+        "max": 110000,
+        "median": 70000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Faster than average (10%)",
+      "education_required": "Doctoral or professional degree",
+      "skills_required": ["Chiropractic Techniques", "Patient Care", "Diagnosis", "Communication", "Manual Dexterity"],
+      "personality_fit": {
+        "openness": "medium",
+        "conscientiousness": "high",
+        "extraversion": "high",
+        "agreeableness": "high",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["S", "I"],
+      "work_environment": "Chiropractic Office",
+      "typical_tasks": ["Examine patients", "Perform adjustments", "Develop treatment plans", "Educate patients"]
+    },
+    {
+      "career_id": "c055",
+      "title": "Database Administrator",
+      "description": "Use software to store and organize data, ensuring data availability and security",
+      "onet_code": "15-1242.00",
+      "salary_range": {
+        "min": 55000,
+        "max": 120000,
+        "median": 85000,
+        "currency": "USD"
+      },
+      "growth_outlook": "Faster than average (10%)",
+      "education_required": "Bachelor's degree",
+      "skills_required": ["SQL", "Database Management", "Problem Solving", "Security", "Backup Recovery"],
+      "personality_fit": {
+        "openness": "medium",
+        "conscientiousness": "high",
+        "extraversion": "low",
+        "agreeableness": "medium",
+        "neuroticism": "low"
+      },
+      "holland_codes": ["C", "I"],
+      "work_environment": "Office",
+      "typical_tasks": ["Manage databases", "Ensure security", "Troubleshoot issues", "Optimize performance"]
+    }
+  ]
+}
