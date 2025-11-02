@@ -1,0 +1,189 @@
+{
+  "version": "1.0",
+  "description": "Practical Constraints Assessment - evaluates real-world limitations and requirements that affect career choices",
+  "constraint_categories": [
+    {
+      "category_id": "education",
+      "category_name": "Educational Constraints",
+      "description": "Current education level and willingness to pursue further education",
+      "questions": [
+        {
+          "question_id": "C1",
+          "question_text": "What is your highest level of completed education?",
+          "question_number": 1,
+          "answer_type": "multiple_choice",
+          "options": [
+            {
+              "option_id": "less_than_hs",
+              "option_text": "Less than high school",
+              "value": 1
+            },
+            {
+              "option_id": "high_school",
+              "option_text": "High school diploma or equivalent",
+              "value": 2
+            },
+            {
+              "option_id": "some_college",
+              "option_text": "Some college or associate degree",
+              "value": 3
+            },
+            {
+              "option_id": "bachelors",
+              "option_text": "Bachelor's degree",
+              "value": 4
+            },
+            {
+              "option_id": "masters_plus",
+              "option_text": "Master's degree or higher",
+              "value": 5
+            }
+          ]
+        },
+        {
+          "question_id": "C2",
+          "question_text": "How many years are you willing to invest in additional training or education?",
+          "question_number": 2,
+          "answer_type": "multiple_choice",
+          "options": [
+            {
+              "option_id": "none",
+              "option_text": "None - I need to start working immediately",
+              "value": 0
+            },
+            {
+              "option_id": "less_than_1",
+              "option_text": "Less than 1 year (certificate programs)",
+              "value": 1
+            },
+            {
+              "option_id": "1_to_2",
+              "option_text": "1-2 years (associate degree or intensive training)",
+              "value": 2
+            },
+            {
+              "option_id": "3_to_4",
+              "option_text": "3-4 years (bachelor's degree)",
+              "value": 4
+            },
+            {
+              "option_id": "5_plus",
+              "option_text": "5+ years (advanced degrees)",
+              "value": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "category_id": "financial",
+      "category_name": "Financial Constraints",
+      "description": "Financial considerations and salary requirements",
+      "questions": [
+        {
+          "question_id": "C3",
+          "question_text": "What is your minimum acceptable starting salary (USD per year)?",
+          "question_number": 3,
+          "answer_type": "multiple_choice",
+          "options": [
+            {
+              "option_id": "below_25k",
+              "option_text": "Below $25,000",
+              "value": 25000
+            },
+            {
+              "option_id": "25k_35k",
+              "option_text": "$25,000 - $35,000",
+              "value": 30000
+            },
+            {
+              "option_id": "35k_50k",
+              "option_text": "$35,000 - $50,000",
+              "value": 42500
+            },
+            {
+              "option_id": "50k_75k",
+              "option_text": "$50,000 - $75,000",
+              "value": 62500
+            },
+            {
+              "option_id": "75k_plus",
+              "option_text": "$75,000 or more",
+              "value": 75000
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "category_id": "location",
+      "category_name": "Location and Mobility",
+      "description": "Geographic flexibility and relocation preferences",
+      "questions": [
+        {
+          "question_id": "C4",
+          "question_text": "Are you willing to relocate for the right career opportunity?",
+          "question_number": 4,
+          "answer_type": "multiple_choice",
+          "options": [
+            {
+              "option_id": "no_relocation",
+              "option_text": "No, I must stay in my current location",
+              "value": 0
+            },
+            {
+              "option_id": "local_only",
+              "option_text": "Only within my local area/region",
+              "value": 1
+            },
+            {
+              "option_id": "national",
+              "option_text": "Yes, anywhere in my country",
+              "value": 2
+            },
+            {
+              "option_id": "international",
+              "option_text": "Yes, including international opportunities",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "category_id": "time",
+      "category_name": "Time and Family Constraints",
+      "description": "Availability and time commitment considerations",
+      "questions": [
+        {
+          "question_id": "C5",
+          "question_text": "Do you have family or personal responsibilities that limit your work flexibility?",
+          "question_number": 5,
+          "answer_type": "multiple_choice",
+          "options": [
+            {
+              "option_id": "full_flexibility",
+              "option_text": "No significant constraints - Full flexibility",
+              "value": 0
+            },
+            {
+              "option_id": "some_constraints",
+              "option_text": "Some constraints (e.g., childcare, eldercare)",
+              "value": 1
+            },
+            {
+              "option_id": "significant_constraints",
+              "option_text": "Significant constraints - Need flexible hours",
+              "value": 2
+            },
+            {
+              "option_id": "major_constraints",
+              "option_text": "Major constraints - Need part-time or remote work",
+              "value": 3
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
