@@ -1,17 +1,42 @@
 /**
- * PMERIT Layout Loader
- * Version: 1.0
- * Last Updated: November 2024
+ * @fileoverview PMERIT Layout Loader - MOSA-Compliant Component Loader
+ * @version 1.1
+ * @description Dynamically loads header/footer partials with single source of truth
+ * @architecture MOSA-compliant modular design
+ * @author PMERIT Development Team
+ * @license MIT
  * 
  * Purpose: Dynamically loads and initializes common header and footer components
  * Usage: Include this script and call LayoutLoader.init() after DOM is ready
  * 
+ * MOSA Compliance:
+ * ✅ Single source of truth for header/footer partials
+ * ✅ Modular component design with clear separation of concerns
+ * ✅ Standard interfaces through public API methods
+ * ✅ Independent functionality - no tight coupling with other modules
+ * ✅ Reusable across different pages and contexts
+ * 
  * Features:
  * - Loads header.html and footer.html partials
  * - Initializes interactive elements (hamburger menu, language selector)
- * - Handles authentication state
- * - Supports custom insertion points
+ * - Handles authentication state dynamically
+ * - Supports custom insertion points and configuration
+ * - Manages settings (Dark Mode, TTS) with localStorage persistence
+ * - Accessible keyboard navigation and ARIA attributes
  * - No global namespace pollution
+ * 
+ * @example
+ * // Basic initialization
+ * document.addEventListener('DOMContentLoaded', () => {
+ *   window.LayoutLoader.init();
+ * });
+ * 
+ * @example
+ * // With custom configuration
+ * window.LayoutLoader.init({
+ *   headerPartialPath: '/custom/header.html',
+ *   footerPartialPath: '/custom/footer.html'
+ * });
  */
 
 (function (window) {
@@ -19,8 +44,24 @@
 
   /**
    * LayoutLoader - Main class for loading header/footer components
+   * 
+   * @class
+   * @description MOSA-compliant component loader that manages dynamic loading
+   * and initialization of site-wide header and footer elements. Provides a single
+   * source of truth for layout components across all pages.
+   * 
+   * @property {boolean} headerLoaded - Indicates if header has been loaded
+   * @property {boolean} footerLoaded - Indicates if footer has been loaded
+   * @property {Object} config - Configuration object for paths and insertion points
    */
   class LayoutLoader {
+    /**
+     * Creates a new LayoutLoader instance with default configuration
+     * 
+     * @constructor
+     * @description Initializes the loader with default paths and settings.
+     * Configuration can be overridden when calling init().
+     */
     constructor() {
       this.headerLoaded = false;
       this.footerLoaded = false;
@@ -36,8 +77,30 @@
 
     /**
      * Initialize the layout loader with custom config
-     * @param {Object} customConfig - Optional configuration overrides
-     * @returns {Promise<Object>} - Resolves with {header: boolean, footer: boolean}
+     * 
+     * @async
+     * @param {Object} [customConfig={}] - Optional configuration overrides
+     * @param {string} [customConfig.headerPartialPath='/partials/header.html'] - Path to header HTML
+     * @param {string} [customConfig.footerPartialPath='/partials/footer.html'] - Path to footer HTML
+     * @param {string} [customConfig.headerInsertPoint='body'] - CSS selector for header insertion
+     * @param {string} [customConfig.footerInsertPoint='body'] - CSS selector for footer insertion
+     * @param {string} [customConfig.headerPosition='afterbegin'] - Position for header (afterbegin/beforeend)
+     * @param {string} [customConfig.footerPosition='beforeend'] - Position for footer (afterbegin/beforeend)
+     * @returns {Promise<Object>} Resolves with status object {header: boolean, footer: boolean, success: boolean, error?: string}
+     * 
+     * @description Loads header and footer partials in parallel, then initializes
+     * all interactive components. This is the main entry point for the LayoutLoader.
+     * 
+     * @example
+     * // Basic usage
+     * await window.LayoutLoader.init();
+     * 
+     * @example
+     * // With custom paths
+     * await window.LayoutLoader.init({
+     *   headerPartialPath: '/custom-partials/header.html',
+     *   footerPartialPath: '/custom-partials/footer.html'
+     * });
      */
     async init(customConfig = {}) {
       // Merge custom config
@@ -78,8 +141,16 @@
     }
 
     /**
-     * Load header partial
+     * Load header partial from configured path
+     * 
+     * @async
      * @returns {Promise<void>}
+     * @throws {Error} If header fails to load or insert point is not found
+     * 
+     * @description Fetches the header HTML partial and injects it into the DOM
+     * at the configured insertion point. Uses fetch API for loading.
+     * 
+     * @private
      */
     async loadHeader() {
       try {
@@ -104,8 +175,16 @@
     }
 
     /**
-     * Load footer partial
+     * Load footer partial from configured path
+     * 
+     * @async
      * @returns {Promise<void>}
+     * @throws {Error} If footer fails to load or insert point is not found
+     * 
+     * @description Fetches the footer HTML partial and injects it into the DOM
+     * at the configured insertion point. Uses fetch API for loading.
+     * 
+     * @private
      */
     async loadFooter() {
       try {
@@ -131,7 +210,14 @@
 
     /**
      * Initialize interactive components after loading
+     * 
+     * @async
      * @returns {Promise<void>}
+     * 
+     * @description Waits for DOM to be ready, then initializes header and footer
+     * components including hamburger menu, language selector, auth buttons, and settings.
+     * 
+     * @private
      */
     async initializeComponents() {
       // Wait for DOM to settle
@@ -152,6 +238,11 @@
 
     /**
      * Initialize header interactive elements
+     * 
+     * @description Sets up hamburger menu, language selector, and authentication
+     * buttons for the header component. Called automatically after header is loaded.
+     * 
+     * @private
      */
     initHeader() {
       // Initialize hamburger menu
@@ -168,6 +259,12 @@
 
     /**
      * Initialize footer interactive elements
+     * 
+     * @description Sets up footer components including copyright year update.
+     * Footer is mostly static but can be extended for additional functionality.
+     * Called automatically after footer is loaded.
+     * 
+     * @private
      */
     initFooter() {
       // Footer is mostly static, but we can initialize any interactive elements here
@@ -179,6 +276,12 @@
 
     /**
      * Initialize hamburger menu functionality
+     * 
+     * @description Sets up the mobile hamburger menu with open/close functionality,
+     * overlay click handling, keyboard navigation (Escape key), and focus management
+     * for accessibility. Manages menu state with ARIA attributes.
+     * 
+     * @private
      */
     initHamburgerMenu() {
       const hamburgerToggle = document.getElementById('hamburger-toggle');
@@ -231,6 +334,12 @@
 
     /**
      * Initialize menu item interactions
+     * 
+     * @description Sets up click handlers for menu items including Career Track,
+     * Dashboard (with auth check), Begin Assessment, and Preview Voices buttons.
+     * Also initializes settings toggles (Dark Mode, TTS).
+     * 
+     * @private
      */
     initMenuItems() {
       // Career Track button
@@ -260,9 +369,7 @@
         });
       }
 
-      // Begin Assessment button - now handled by href in header.html
-      // No need for event listener since it's now an anchor tag with href="assessment-entry.html"
-
+      // Begin Assessment button - handled by href in header.html (no JS needed)
 
       // Preview Voices button
       const previewVoicesBtn = document.getElementById('preview-voices-btn');
@@ -279,6 +386,13 @@
 
     /**
      * Initialize settings toggles in menu
+     * 
+     * @description Sets up Dark Mode and Text-to-Speech (TTS) toggles with
+     * localStorage persistence. Loads saved preferences on initialization and
+     * updates theme/TTS state when toggled. Integrates with window.TTS module
+     * if available.
+     * 
+     * @private
      */
     initSettingsToggles() {
       // Dark Mode toggle
@@ -318,7 +432,13 @@
     }
 
     /**
-     * Initialize language selector
+     * Initialize language selector dropdown
+     * 
+     * @description Sets up language selection dropdown with open/close functionality.
+     * Loads saved language preference from localStorage and marks active option.
+     * Language options are identified by data-lang attribute.
+     * 
+     * @private
      */
     initLanguageSelector() {
       const languageBtn = document.getElementById('language-btn');
@@ -378,7 +498,13 @@
     }
 
     /**
-     * Initialize authentication buttons
+     * Initialize authentication buttons and handlers
+     * 
+     * @description Sets up click handlers for sign-in buttons in header and menu.
+     * Opens AuthModal if available, otherwise redirects to signin page.
+     * Also calls updateAuthUI to reflect current authentication state.
+     * 
+     * @private
      */
     initAuthButtons() {
       const signInBtn = document.getElementById('sign-in-btn');
@@ -404,6 +530,13 @@
 
     /**
      * Update UI based on authentication state
+     * 
+     * @description Checks window.AUTH module for authentication state and updates
+     * UI accordingly. For authenticated users, displays welcome message with username
+     * and dashboard link. Updates header sign-in button to show "Dashboard" link.
+     * Uses safe DOM manipulation to prevent XSS vulnerabilities.
+     * 
+     * @private
      */
     updateAuthUI() {
       const isAuth = window.AUTH && window.AUTH.isAuthenticated();
@@ -443,6 +576,12 @@
 
     /**
      * Update copyright year in footer
+     * 
+     * @description Automatically updates the copyright year to the current year.
+     * Looks for element with class 'footer-copyright' and sets the text to
+     * include the current year.
+     * 
+     * @private
      */
     updateCopyrightYear() {
       const copyrightEl = document.querySelector('.footer-copyright');
@@ -454,7 +593,15 @@
 
     /**
      * Wait for DOM elements to be available
+     * 
+     * @async
      * @returns {Promise<void>}
+     * 
+     * @description Utility method that waits for DOM to be ready before proceeding.
+     * If document is still loading, waits for DOMContentLoaded event. Includes
+     * a small delay (50ms) to ensure all elements are fully rendered.
+     * 
+     * @private
      */
     waitForDOM() {
       return new Promise((resolve) => {
