@@ -260,13 +260,9 @@
         });
       }
 
-      // Begin Assessment button
-      const beginAssessmentBtn = document.getElementById('begin-assessment-btn');
-      if (beginAssessmentBtn) {
-        beginAssessmentBtn.addEventListener('click', () => {
-          window.location.href = '/assessment.html';
-        });
-      }
+      // Begin Assessment button - now handled by href in header.html
+      // No need for event listener since it's now an anchor tag with href="assessment-entry.html"
+
 
       // Preview Voices button
       const previewVoicesBtn = document.getElementById('preview-voices-btn');
