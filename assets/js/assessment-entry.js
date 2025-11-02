@@ -177,14 +177,14 @@
    */
   function init() {
     // Initialize DOM elements
-    consentForm = document.getElementById('consentForm');
+    consentForm = document.getElementById('consent-form');
     consent1 = document.getElementById('consent1');
     consent2 = document.getElementById('consent2');
-    beginBtn = document.getElementById('beginAssessmentBtn');
-    loadingOverlay = document.getElementById('loadingOverlay');
-    resumeCard = document.getElementById('resumeCard');
-    resumeBtn = document.getElementById('resumeBtn');
-    startFreshBtn = document.getElementById('startFreshBtn');
+    beginBtn = document.getElementById('begin-assessment-btn');
+    loadingOverlay = document.getElementById('loading-overlay');
+    resumeCard = document.getElementById('resume-card');
+    resumeBtn = document.getElementById('resume-btn');
+    startFreshBtn = document.getElementById('start-fresh-btn');
 
     // Verify required elements exist
     if (!consentForm || !consent1 || !consent2 || !beginBtn) {
