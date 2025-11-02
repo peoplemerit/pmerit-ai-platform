@@ -133,6 +133,7 @@ function init() {
   initializeToggles();
   initializeCollapsible();
   initializeCareerTrack();
+  initializeReadAbout();
   initializeSupportButtons();
   
   // Auto-enable Virtual Human if it's set to true in state
@@ -655,6 +656,27 @@ function initializeCareerTrack() {
     console.log('✅ Career Track navigation initialized');
   } catch (error) {
     console.error('❌ Error initializing Career Track:', error);
+    // Don't show toast for this - fail silently as it's not critical
+  }
+}
+
+// ========== READ ABOUT BUTTON ==========
+function initializeReadAbout() {
+  try {
+    // Find all "Read About" buttons with data-action="read-about"
+    const readAboutButtons = document.querySelectorAll('[data-action="read-about"]');
+    
+    readAboutButtons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log('📖 Read About button clicked - Navigating to about-us.html');
+        window.location.href = '/about-us.html';
+      });
+    });
+    
+    console.log('✅ Read About navigation initialized');
+  } catch (error) {
+    console.error('❌ Error initializing Read About:', error);
     // Don't show toast for this - fail silently as it's not critical
   }
 }
