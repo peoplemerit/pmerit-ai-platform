@@ -1,0 +1,501 @@
+/**
+ * PMERIT Assessment System Styles
+ * Mobile-first responsive design
+ * Version: 1.0
+ * Last Updated: November 2025
+ */
+
+/* ========================================
+   BASE ASSESSMENT STYLES
+   Mobile-first (320px and up)
+   ======================================== */
+
+/* Layout */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  flex: 1;
+}
+
+/* Container */
+.assessment-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-6);
+}
+
+/* Section Styling */
+.section {
+  margin-bottom: var(--space-12);
+}
+
+.section-title {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-6);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.section-title i {
+  color: var(--color-primary);
+}
+
+/* Utility classes for common inline styles */
+.link-primary {
+  color: var(--color-primary);
+}
+
+.section-spacing-top {
+  margin-top: var(--space-12);
+}
+
+.text-xl {
+  font-size: var(--text-xl);
+}
+
+/* ========================================
+   ENTRY PAGE STYLES
+   ======================================== */
+
+/* Hero Section with Purple Gradient */
+.hero-section {
+  background: linear-gradient(135deg, #6b5ce7 0%, #8b7ce8 100%);
+  color: #ffffff;
+  padding: var(--space-12) var(--space-6);
+  text-align: center;
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero-title {
+  font-size: var(--text-mobile-hero);
+  font-weight: var(--weight-bold);
+  margin-bottom: var(--space-4);
+  line-height: var(--leading-tight);
+}
+
+.hero-subtitle {
+  font-size: var(--text-base);
+  margin-bottom: var(--space-6);
+  opacity: 0.95;
+  line-height: var(--leading-relaxed);
+}
+
+.hero-icon {
+  font-size: 4rem;
+  margin-bottom: var(--space-4);
+}
+
+/* Timeline - What to Expect */
+.timeline {
+  position: relative;
+  padding-left: var(--space-6);
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 30px;
+  bottom: 30px;
+  width: 2px;
+  background: var(--border-color);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: var(--space-8);
+  padding-left: var(--space-6);
+}
+
+.timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-icon {
+  position: absolute;
+  left: -23px;
+  top: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: var(--shadow-md);
+  z-index: 1;
+}
+
+.timeline-title {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.timeline-desc {
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+/* Privacy & Consent Card */
+.consent-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-8);
+  box-shadow: var(--shadow-md);
+}
+
+.privacy-text {
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+  margin-bottom: var(--space-6);
+}
+
+/* Checkboxes */
+.checkbox-group {
+  margin-bottom: var(--space-6);
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: start;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  padding: var(--space-4);
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius-md);
+  border: 2px solid transparent;
+  transition: var(--transition-base);
+  cursor: pointer;
+  min-height: var(--mobile-touch-target);
+}
+
+.checkbox-item:hover {
+  border-color: var(--color-primary);
+}
+
+.checkbox-item input[type='checkbox'] {
+  margin-top: 4px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.checkbox-label {
+  flex: 1;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-required {
+  color: var(--color-error);
+  font-weight: var(--weight-semibold);
+}
+
+.checkbox-optional {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+}
+
+/* FAQ Section */
+.faq-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-6) 0;
+}
+
+.faq-item {
+  margin-bottom: var(--space-4);
+  padding: var(--space-4);
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius-md);
+  border-left: 4px solid var(--color-primary);
+}
+
+.faq-question {
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.faq-answer {
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+/* Buttons */
+.btn-group {
+  display: flex;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+  flex-flow: column wrap;
+}
+
+.btn {
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--border-radius-md);
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-base);
+  cursor: pointer;
+  transition: var(--transition-base);
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  justify-content: center;
+  min-height: var(--mobile-touch-target);
+  text-decoration: none;
+  width: 100%;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: #ffffff;
+  flex: 1;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--interactive-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: var(--bg-secondary);
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
+
+.btn-secondary:hover {
+  background: var(--color-primary);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-resume {
+  background: var(--color-accent);
+  color: #ffffff;
+}
+
+.btn-resume:hover {
+  background: var(--interactive-accent-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Loading Overlay */
+.loading-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgb(0 0 0 / 80%);
+  z-index: var(--z-modal);
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-overlay.active {
+  display: flex;
+}
+
+.loading-content {
+  text-align: center;
+  color: #ffffff;
+}
+
+.loading-spinner {
+  border: 4px solid rgb(255 255 255 / 30%);
+  border-top: 4px solid #ffffff;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto var(--space-4);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+}
+
+/* Resume Assessment Card */
+.resume-card {
+  display: none;
+  background: linear-gradient(135deg, #ff6b6b 0%, #e05a5a 100%);
+  color: #ffffff;
+  padding: var(--space-6);
+  border-radius: var(--border-radius-lg);
+  margin-bottom: var(--space-8);
+  box-shadow: var(--shadow-lg);
+}
+
+.resume-card.active {
+  display: block;
+}
+
+.resume-card-title {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  margin-bottom: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.resume-card-text {
+  margin-bottom: var(--space-4);
+  opacity: 0.95;
+}
+
+/* Accessibility */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ========================================
+   QUESTIONS PAGE STYLES
+   (Placeholder for future implementation)
+   ======================================== */
+
+/* Progress bar */
+
+/* Question cards */
+
+/* Likert scales */
+
+/* ========================================
+   PROCESSING PAGE STYLES
+   (Placeholder for future implementation)
+   ======================================== */
+
+/* Loading animations */
+
+/* Progress steps */
+
+/* ========================================
+   RESULTS PAGE STYLES
+   (Placeholder for future implementation)
+   ======================================== */
+
+/* Radar chart */
+
+/* Trait cards */
+
+/* Career matches */
+
+/* ========================================
+   MOBILE RESPONSIVE BREAKPOINTS
+   Mobile-first approach with progressive enhancement
+   ======================================== */
+
+/* Small Mobile (481px - 768px) - Mobile Landscape */
+@media (width >= 481px) {
+  .hero-title {
+    font-size: var(--text-3xl);
+  }
+
+  .hero-subtitle {
+    font-size: var(--text-lg);
+  }
+
+  .section-title {
+    font-size: var(--text-2xl);
+  }
+
+  .timeline {
+    padding-left: var(--space-8);
+  }
+
+  .timeline::before {
+    left: 20px;
+  }
+
+  .timeline-icon {
+    left: -28px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+}
+
+/* Tablet Portrait (769px - 1024px) */
+@media (width >= 769px) {
+  .hero-title {
+    font-size: var(--text-4xl);
+  }
+
+  .btn-group {
+    flex-direction: row;
+  }
+
+  .btn {
+    width: auto;
+  }
+}
+
+/* Tablet Landscape / Small Desktop (1025px - 1440px) */
+@media (width >= 1025px) {
+  .assessment-container {
+    padding: var(--space-12) var(--space-6);
+  }
+
+  .consent-card {
+    padding: var(--space-10);
+  }
+}
+
+/* Large Desktop (1441px and up) */
+@media (width >= 1441px) {
+  .hero-content {
+    max-width: 1000px;
+  }
+
+  .assessment-container {
+    max-width: 1200px;
+  }
+}
