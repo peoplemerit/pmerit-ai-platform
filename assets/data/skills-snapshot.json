@@ -1,0 +1,142 @@
+{
+  "version": "1.0",
+  "description": "Skills Snapshot - Self-assessment of current skills and competencies across technical, soft, and professional domains",
+  "skill_areas": [
+    {
+      "area_id": "technical",
+      "area_name": "Technical Skills",
+      "description": "Proficiency in technical and digital tools",
+      "questions": [
+        {
+          "question_id": "SS1",
+          "question_text": "How would you rate your computer and technology skills?",
+          "question_number": 1,
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "min_label": "Beginner",
+            "max_label": "Expert"
+          },
+          "examples": ["Basic software, email, internet navigation"]
+        },
+        {
+          "question_id": "SS2",
+          "question_text": "How proficient are you with data analysis tools?",
+          "question_number": 2,
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "min_label": "No Experience",
+            "max_label": "Highly Proficient"
+          },
+          "examples": ["Excel, SQL, statistical software, data visualization"]
+        },
+        {
+          "question_id": "SS3",
+          "question_text": "How experienced are you with programming or coding?",
+          "question_number": 3,
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "min_label": "No Experience",
+            "max_label": "Highly Experienced"
+          },
+          "examples": ["Python, JavaScript, Java, HTML/CSS, any programming language"]
+        }
+      ]
+    },
+    {
+      "area_id": "communication",
+      "area_name": "Communication Skills",
+      "description": "Ability to communicate effectively in various contexts",
+      "questions": [
+        {
+          "question_id": "SS4",
+          "question_text": "How strong are your written communication skills?",
+          "question_number": 4,
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "min_label": "Needs Improvement",
+            "max_label": "Excellent"
+          },
+          "examples": ["Writing reports, emails, documentation, presentations"]
+        },
+        {
+          "question_id": "SS5",
+          "question_text": "How confident are you in public speaking and presentations?",
+          "question_number": 5,
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "min_label": "Not Confident",
+            "max_label": "Very Confident"
+          },
+          "examples": ["Speaking to groups, giving presentations, leading meetings"]
+        }
+      ]
+    },
+    {
+      "area_id": "interpersonal",
+      "area_name": "Interpersonal Skills",
+      "description": "Working with others and building relationships",
+      "questions": [
+        {
+          "question_id": "SS6",
+          "question_text": "How effective are you at working in teams?",
+          "question_number": 6,
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "min_label": "Prefer Solo Work",
+            "max_label": "Team Player"
+          },
+          "examples": ["Collaboration, conflict resolution, group projects"]
+        },
+        {
+          "question_id": "SS7",
+          "question_text": "How skilled are you at leadership and managing others?",
+          "question_number": 7,
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "min_label": "No Experience",
+            "max_label": "Strong Leader"
+          },
+          "examples": ["Managing teams, delegating, motivating others, decision-making"]
+        }
+      ]
+    },
+    {
+      "area_id": "problem_solving",
+      "area_name": "Problem Solving & Creativity",
+      "description": "Analytical thinking and creative problem-solving abilities",
+      "questions": [
+        {
+          "question_id": "SS8",
+          "question_text": "How would you rate your analytical and problem-solving skills?",
+          "question_number": 8,
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "min_label": "Developing",
+            "max_label": "Strong"
+          },
+          "examples": ["Critical thinking, troubleshooting, logical reasoning, creative solutions"]
+        },
+        {
+          "question_id": "SS9",
+          "question_text": "How comfortable are you with learning new skills quickly?",
+          "question_number": 9,
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "min_label": "Takes Time",
+            "max_label": "Quick Learner"
+          },
+          "examples": ["Adapting to new tools, learning new concepts, self-directed learning"]
+        }
+      ]
+    }
+  ]
+}
