@@ -1,0 +1,155 @@
+{
+  "version": "1.0",
+  "description": "Work Style Preferences Assessment - evaluates preferred work environments, schedules, and collaboration styles",
+  "categories": [
+    {
+      "category_id": "environment",
+      "category_name": "Work Environment Preferences",
+      "description": "Preferences regarding physical work setting and atmosphere",
+      "questions": [
+        {
+          "question_id": "WS1",
+          "question_text": "I prefer working in a structured office environment",
+          "question_number": 1,
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "min_label": "Strongly Disagree",
+            "max_label": "Strongly Agree"
+          }
+        },
+        {
+          "question_id": "WS2",
+          "question_text": "I work best in a quiet, distraction-free setting",
+          "question_number": 2,
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "min_label": "Strongly Disagree",
+            "max_label": "Strongly Agree"
+          }
+        },
+        {
+          "question_id": "WS3",
+          "question_text": "I enjoy working from home or remotely",
+          "question_number": 3,
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "min_label": "Strongly Disagree",
+            "max_label": "Strongly Agree"
+          }
+        }
+      ]
+    },
+    {
+      "category_id": "schedule",
+      "category_name": "Schedule and Flexibility",
+      "description": "Preferences about work hours and schedule flexibility",
+      "questions": [
+        {
+          "question_id": "WS4",
+          "question_text": "I prefer having a flexible work schedule",
+          "question_number": 4,
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "min_label": "Strongly Disagree",
+            "max_label": "Strongly Agree"
+          }
+        },
+        {
+          "question_id": "WS5",
+          "question_text": "I am comfortable working non-traditional hours (evenings/weekends)",
+          "question_number": 5,
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "min_label": "Strongly Disagree",
+            "max_label": "Strongly Agree"
+          }
+        },
+        {
+          "question_id": "WS6",
+          "question_text": "I need a predictable, consistent schedule",
+          "question_number": 6,
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "min_label": "Strongly Disagree",
+            "max_label": "Strongly Agree"
+          }
+        }
+      ]
+    },
+    {
+      "category_id": "collaboration",
+      "category_name": "Collaboration Style",
+      "description": "Preferences for teamwork and independent work",
+      "questions": [
+        {
+          "question_id": "WS7",
+          "question_text": "I prefer working independently rather than in teams",
+          "question_number": 7,
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "min_label": "Strongly Disagree",
+            "max_label": "Strongly Agree"
+          }
+        },
+        {
+          "question_id": "WS8",
+          "question_text": "I enjoy frequent interaction with colleagues throughout the day",
+          "question_number": 8,
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "min_label": "Strongly Disagree",
+            "max_label": "Strongly Agree"
+          }
+        },
+        {
+          "question_id": "WS9",
+          "question_text": "I thrive in competitive work environments",
+          "question_number": 9,
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "min_label": "Strongly Disagree",
+            "max_label": "Strongly Agree"
+          }
+        }
+      ]
+    },
+    {
+      "category_id": "workload",
+      "category_name": "Workload and Pace",
+      "description": "Preferences about work intensity and pace",
+      "questions": [
+        {
+          "question_id": "WS10",
+          "question_text": "I prefer a fast-paced, dynamic work environment",
+          "question_number": 10,
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "min_label": "Strongly Disagree",
+            "max_label": "Strongly Agree"
+          }
+        },
+        {
+          "question_id": "WS11",
+          "question_text": "I am comfortable with high-pressure deadlines",
+          "question_number": 11,
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "min_label": "Strongly Disagree",
+            "max_label": "Strongly Agree"
+          }
+        }
+      ]
+    }
+  ]
+}
