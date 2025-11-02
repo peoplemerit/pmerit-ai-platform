@@ -733,14 +733,20 @@
       resumeBtn.addEventListener('click', function() {
         const savedProgress = JSON.parse(localStorage.getItem('pmerit-assessment-progress'));
         if (savedProgress && savedProgress.currentStep) {
-          // Navigate to assessment page with resume parameter
-          window.location.href = `assessment.html?resume=true&step=${savedProgress.currentStep}`;
+          // Validate step number to prevent XSS
+          const stepNumber = parseInt(savedProgress.currentStep, 10);
+          if (!isNaN(stepNumber) && stepNumber > 0) {
+            // Navigate to assessment page with resume parameter
+            window.location.href = `assessment.html?resume=true&step=${stepNumber}`;
+          }
         }
       });
       
       // Start fresh handler
       startFreshBtn.addEventListener('click', function() {
-        if (confirm('Are you sure you want to start fresh? Your previous progress will be lost.')) {
+        // Simple confirmation - in production, consider using a custom modal
+        const userConfirmed = confirm('Are you sure you want to start fresh? Your previous progress will be lost.');
+        if (userConfirmed) {
           localStorage.removeItem('pmerit-assessment-progress');
           resumeCard.classList.remove('active');
         }
@@ -752,6 +758,7 @@
         
         // Validate required consents
         if (!consent1.checked || !consent2.checked) {
+          // Simple alert - in production, consider using inline error messages
           alert('Please accept all required consents to continue.');
           return;
         }
@@ -794,6 +801,7 @@
           }
         } catch (error) {
           console.error('Error starting assessment:', error);
+          // Simple alert - in production, consider using toast notifications or inline errors
           alert('An error occurred while starting the assessment. Please try again.');
           loadingOverlay.classList.remove('active');
           beginBtn.disabled = false;
