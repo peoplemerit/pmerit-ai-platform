@@ -77,6 +77,35 @@
   outline-offset: 2px;
 }
 
+/* Pricing Link in Header */
+.pricing-link {
+  display: none;
+  padding: 8px 16px;
+  border-radius: 24px;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.pricing-link:hover {
+  background: var(--bg-secondary);
+  color: var(--primary);
+}
+
+/* Show pricing link on desktop */
+@media (min-width: 768px) {
+  .pricing-link.desktop-only {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    height: 44px;
+  }
+}
+
 /* Hamburger Toggle */
 #hamburger-toggle {
   position: relative;
