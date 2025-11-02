@@ -265,11 +265,23 @@
     }
     
     /**
-     * Generate a unique session ID
+     * Generate a unique session ID using crypto for better security
      * @returns {string} - Session ID
      */
     generateSessionId() {
-      return `assessment_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      const timestamp = Date.now();
+      // Use crypto.getRandomValues for secure random generation if available
+      if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+        const randomBytes = new Uint8Array(16);
+        crypto.getRandomValues(randomBytes);
+        const randomString = Array.from(randomBytes)
+          .map(b => b.toString(36))
+          .join('')
+          .substring(0, 9);
+        return `assessment_${timestamp}_${randomString}`;
+      }
+      // Fallback to Math.random (non-security-critical context)
+      return `assessment_${timestamp}_${Math.random().toString(36).substring(2, 11)}`;
     }
     
     /**
