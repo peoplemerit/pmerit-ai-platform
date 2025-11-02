@@ -2,868 +2,392 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Knowledge as Liberation - PMERIT Pricing</title>
-    <meta name="description" content="Education should liberate, not indebt. Accessible learning with accountability for underserved communities worldwide.">
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing - Education That's Always Free | PMERIT</title>
+    <meta name="description" content="Education should liberate, not indebt. PMERIT offers free education with accountability-based pricing to serve 3+ billion underserved learners.">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
-    <!-- PMERIT Unified Design System -->
-    <!-- PMERIT Standard CSS Imports -->
-  <link rel="stylesheet" href="assets/css/theme-variables.css">
-  <link rel="stylesheet" href="assets/css/typography.css">
+    <!-- PMERIT Design System -->
+    <link rel="stylesheet" href="assets/css/theme-variables.css">
+    <link rel="stylesheet" href="assets/css/brand.css">
+    <link rel="stylesheet" href="assets/css/about-pricing.css">
     <link rel="stylesheet" href="assets/css/base.css">
-    <link rel="stylesheet" href="assets/css/components.css">
-    
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: var(--font-family);
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: var(--text);
-            line-height: 1.6;
-            min-height: 100vh;
-        }
-
-        .header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border);
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1.25rem;
-        }
-
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: var(--primary);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .nav-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: var(--border-radius);
-            transition: all 0.2s;
-        }
-
-        .nav-link:hover {
-            background: var(--surface);
-            color: var(--text);
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: var(--border-radius);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-        }
-
-        .main-content {
-            padding: 4rem 1rem;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .hero-section {
-            text-align: center;
-            margin-bottom: 4rem;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 4rem 2rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .hero-title {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero-subtitle {
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-        }
-
-        .biblical-quote {
-            font-size: 1.25rem;
-            font-style: italic;
-            color: var(--accent);
-            margin-bottom: 2rem;
-            font-weight: 500;
-        }
-
-        .philosophy-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 3rem;
-            border-radius: var(--border-radius);
-            margin-bottom: 4rem;
-            text-align: center;
-        }
-
-        .philosophy-card h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .philosophy-card p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-
-        .free-forever-section {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 3rem;
-            border-radius: var(--border-radius);
-            margin-bottom: 3rem;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .free-forever-section h2 {
-            font-size: 2.5rem;
-            text-align: center;
-            margin-bottom: 2rem;
-            color: var(--success);
-        }
-
-        .free-features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .free-feature {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: var(--surface);
-            border-radius: var(--border-radius);
-        }
-
-        .feature-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--success);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-
-        .accountability-section {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 3rem;
-            border-radius: var(--border-radius);
-            margin-bottom: 3rem;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .accountability-section h2 {
-            font-size: 2.5rem;
-            text-align: center;
-            margin-bottom: 2rem;
-            color: var(--warning);
-        }
-
-        .accountability-steps {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .step {
-            flex: 1;
-            min-width: 200px;
-            text-align: center;
-            padding: 1.5rem;
-            background: var(--surface);
-            border-radius: var(--border-radius);
-            position: relative;
-        }
-
-        .step-number {
-            width: 40px;
-            height: 40px;
-            background: var(--warning);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin: 0 auto 1rem;
-        }
-
-        .modular-pricing {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 3rem;
-            border-radius: var(--border-radius);
-            margin-bottom: 3rem;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .modular-pricing h2 {
-            font-size: 2.5rem;
-            text-align: center;
-            margin-bottom: 2rem;
-            color: var(--primary);
-        }
-
-        .modules-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .module-card {
-            background: var(--background);
-            border: 2px solid var(--border);
-            border-radius: var(--border-radius);
-            padding: 2rem;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .module-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--primary);
-        }
-
-        .module-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .module-name {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .module-price {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .module-description {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-        }
-
-        .module-features {
-            list-style: none;
-            margin-bottom: 2rem;
-        }
-
-        .module-features li {
-            padding: 0.5rem 0;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .module-cta {
-            width: 100%;
-            padding: 1rem;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: var(--border-radius);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .module-cta:hover {
-            background: var(--primary-dark);
-        }
-
-        .enterprise-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 4rem 3rem;
-            border-radius: var(--border-radius);
-            margin-bottom: 3rem;
-            text-align: center;
-        }
-
-        .support-section {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 3rem;
-            border-radius: var(--border-radius);
-            margin-bottom: 3rem;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .support-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .support-card {
-            text-align: center;
-            padding: 2rem;
-            background: var(--surface);
-            border-radius: var(--border-radius);
-            border: 2px solid var(--border);
-            transition: all 0.3s;
-        }
-
-        .support-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-5px);
-        }
-
-        .footer {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 2rem 0;
-            text-align: center;
-            color: var(--text-secondary);
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .footer-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-        }
-
-        .footer-link:hover {
-            color: var(--primary);
-        }
-
-        .compassion-note {
-            background: var(--info);
-            color: white;
-            padding: 1rem;
-            border-radius: var(--border-radius);
-            margin-top: 1rem;
-            text-align: center;
-        }
-
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2.5rem;
-            }
-            
-            .modules-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .accountability-steps {
-                flex-direction: column;
-            }
-            
-            .footer-links {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-        }
-    </style>
 </head>
-
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-content">
-            <a href="/" class="logo">
-                <div class="logo-icon">P</div>
-                <div>
-                    <div style="font-size: 1.25rem; font-weight: 700;">PMERIT</div>
-                    <div style="font-size: 0.75rem; color: var(--text-secondary);">Knowledge as Liberation</div>
-                </div>
-            </a>
-            
-            <nav class="nav-links">
-                <a href="/" class="nav-link">Home</a>
-                <a href="/about.html" class="nav-link">About</a>
-                <a href="/contact.html" class="nav-link">Contact</a>
-                <a href="/signin.html" class="nav-link">Sign In</a>
-                <button id="ctaButton" class="btn-primary">Start Learning Free</button>
-            </nav>
-        </div>
-    </header>
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main-content" class="skip-to-content">Skip to main content</a>
+    
+    <!-- Header (loaded via partial or included) -->
+    <div id="header-container"></div>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="container">
-            <!-- Hero Section -->
-            <div class="hero-section">
-                <h1 class="hero-title">Knowledge as Liberation</h1>
-                <p class="hero-subtitle">Education should liberate, not indebt</p>
-                <p class="biblical-quote">"My people perish for lack of knowledge" - Hosea 4:6</p>
-                <p style="font-size: 1.1rem; color: var(--text-secondary); max-width: 800px; margin: 0 auto;">
-                    Born from lived experience of walking 3.4km daily for education, PMERIT ensures that financial barriers never block the path to transformation.
-                </p>
+    <main id="main-content">
+        <!-- Pricing Hero Section (Issue 5) -->
+        <section class="pricing-hero" aria-labelledby="pricing-hero-title">
+            <div class="hero-content">
+                <h1 id="pricing-hero-title" class="hero-title">Education That's Always Free</h1>
+                <p class="hero-tagline">"My people perish for lack of knowledge" - Hosea 4:6</p>
+                <p class="hero-subtitle">PMERIT is committed to free education for all. Financial barriers will never block your path to transformation and opportunity.</p>
             </div>
+        </section>
 
-            <!-- Philosophy Card -->
-            <div class="philosophy-card">
-                <h2>🌍 Our Promise</h2>
-                <p>Every brilliant mind deserves access to world-class education. We've lived the struggle of limited resources, and we've designed PMERIT to ensure that poverty never again blocks the path to knowledge and transformation.</p>
-            </div>
+        <!-- Pricing Tier Cards Section (Issue 5) -->
+        <section class="pricing-section" aria-labelledby="pricing-title">
+            <div class="section-container">
+                <h2 id="pricing-title" class="section-title">Choose Your Learning Path</h2>
+                <div class="pricing-grid">
+                    <!-- Free Tier -->
+                    <article class="pricing-card">
+                        <div class="pricing-header">
+                            <h3 class="pricing-name">Always Free</h3>
+                            <div class="pricing-price">$0<span class="pricing-price-period">/forever</span></div>
+                            <p class="pricing-description">Complete access to world-class education. No credit card required.</p>
+                        </div>
+                        <ul class="pricing-features">
+                            <li>All course content and materials</li>
+                            <li>Basic AI tutoring (Gabriel AI)</li>
+                            <li>Community forums & peer support</li>
+                            <li>Progress tracking & analytics</li>
+                            <li>Mobile app access</li>
+                            <li>Offline content downloads</li>
+                            <li>First attempt at every assessment FREE</li>
+                            <li>Completion certificates</li>
+                        </ul>
+                        <a href="signin.html" class="pricing-button">Get Started Free</a>
+                    </article>
 
-            <!-- Free Forever Section -->
-            <div class="free-forever-section">
-                <h2>🎓 Always Free Forever</h2>
-                <p style="text-align: center; font-size: 1.2rem; margin-bottom: 2rem; color: var(--text-secondary);">
-                    Core education is a human right. These features will always be free, no matter what.
-                </p>
-                
-                <div class="free-features-grid">
-                    <div class="free-feature">
-                        <div class="feature-icon">📚</div>
-                        <div>
-                            <strong>All Course Content</strong>
-                            <p>Complete access to our entire library</p>
+                    <!-- Premium Tier -->
+                    <article class="pricing-card featured">
+                        <div class="pricing-badge">Most Popular</div>
+                        <div class="pricing-header">
+                            <h3 class="pricing-name">Premium</h3>
+                            <div class="pricing-price">$2.99<span class="pricing-price-period">/month</span></div>
+                            <p class="pricing-description">Enhanced AI tutoring and career acceleration</p>
                         </div>
-                    </div>
-                    <div class="free-feature">
-                        <div class="feature-icon">🤖</div>
-                        <div>
-                            <strong>Basic AI Tutoring</strong>
-                            <p>Gabriel AI provides 24/7 learning support</p>
+                        <ul class="pricing-features">
+                            <li><strong>Everything in Free, plus:</strong></li>
+                            <li>Advanced AI tutoring (GPT-4 level)</li>
+                            <li>Personalized learning paths</li>
+                            <li>Priority support</li>
+                            <li>No retry fees for assessments</li>
+                            <li>Verified certificates</li>
+                            <li>Career counseling sessions</li>
+                            <li>Job matching & recommendations</li>
+                        </ul>
+                        <a href="signin.html?plan=premium" class="pricing-button">Start Premium</a>
+                    </article>
+
+                    <!-- Pay It Forward Tier -->
+                    <article class="pricing-card">
+                        <div class="pricing-header">
+                            <h3 class="pricing-name">Pay It Forward</h3>
+                            <div class="pricing-price">Custom<span class="pricing-price-period">/your choice</span></div>
+                            <p class="pricing-description">Help others access education and break poverty cycles</p>
                         </div>
-                    </div>
-                    <div class="free-feature">
-                        <div class="feature-icon">👥</div>
-                        <div>
-                            <strong>Community Forums</strong>
-                            <p>Connect with learners worldwide</p>
-                        </div>
-                    </div>
-                    <div class="free-feature">
-                        <div class="feature-icon">📊</div>
-                        <div>
-                            <strong>Progress Tracking</strong>
-                            <p>Monitor your learning journey</p>
-                        </div>
-                    </div>
-                    <div class="free-feature">
-                        <div class="feature-icon">📱</div>
-                        <div>
-                            <strong>Mobile App</strong>
-                            <p>Learn anywhere, anytime</p>
-                        </div>
-                    </div>
-                    <div class="free-feature">
-                        <div class="feature-icon">⬇️</div>
-                        <div>
-                            <strong>Offline Content</strong>
-                            <p>Download and study without internet</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div style="text-align: center; background: var(--success); color: white; padding: 1.5rem; border-radius: var(--border-radius); font-size: 1.2rem; font-weight: 600;">
-                    ✨ First attempt at every course and assessment is always FREE
+                        <ul class="pricing-features">
+                            <li><strong>Everything in Premium, plus:</strong></li>
+                            <li>Sponsor a student's education</li>
+                            <li>1-5% of salary increase contribution</li>
+                            <li>Direct impact tracking</li>
+                            <li>Progress updates on sponsored students</li>
+                            <li>Recognition in community</li>
+                            <li>Tax-deductible donations</li>
+                            <li>Legacy of transformation</li>
+                        </ul>
+                        <a href="contact.html?subject=pay-it-forward" class="pricing-button">Learn More</a>
+                    </article>
                 </div>
             </div>
+        </section>
 
-            <!-- Accountability Section -->
-            <div class="accountability-section">
-                <h2>⚖️ Accountability Through Compassion</h2>
-                <p style="text-align: center; font-size: 1.1rem; margin-bottom: 2rem; color: var(--text-secondary);">
-                    We believe accountability promotes success. Our gentle approach encourages completion while supporting those who struggle.
+        <!-- Pay-for-Accountability Section (Issue 6) -->
+        <section class="accountability-section" aria-labelledby="accountability-title">
+            <div class="section-container">
+                <h2 id="accountability-title" class="section-title">Pay-for-Accountability Model</h2>
+                <p class="section-description">
+                    We believe accountability promotes success. Our compassionate approach encourages completion while supporting those who struggle.
                 </p>
-                
                 <div class="accountability-steps">
-                    <div class="step">
+                    <article class="step-card">
                         <div class="step-number">1</div>
-                        <h3>First Attempt</h3>
-                        <p><strong>FREE</strong></p>
-                        <p>Take any course or assessment at no cost</p>
-                    </div>
-                    <div class="step">
+                        <h3 class="step-title">Complete Courses</h3>
+                        <p class="step-description">Finish your learning journey and demonstrate mastery. First attempt is always free.</p>
+                    </article>
+                    
+                    <article class="step-card">
                         <div class="step-number">2</div>
-                        <h3>Second Attempt</h3>
-                        <p><strong>FREE + Tutoring</strong></p>
-                        <p>Mandatory support session to help you succeed</p>
-                    </div>
-                    <div class="step">
+                        <h3 class="step-title">Refer Friends</h3>
+                        <p class="step-description">Share PMERIT with your community. Help others discover accessible education.</p>
+                    </article>
+                    
+                    <article class="step-card">
                         <div class="step-number">3</div>
-                        <h3>Third Attempt</h3>
-                        <p><strong>$0.50</strong></p>
-                        <p>Small fee covers platform costs</p>
-                    </div>
-                    <div class="step">
-                        <div class="step-number">4+</div>
-                        <h3>Additional</h3>
-                        <p><strong>$1, $2, etc.</strong></p>
-                        <p>Graduated fee structure</p>
-                    </div>
-                </div>
-                
-                <div class="compassion-note">
-                    <strong>🤝 Compassionate Exemptions:</strong> Technical failures, documented hardships (illness, family emergency), or completion of remedial activities automatically waive fees. We're here to help, not hinder.
+                        <h3 class="step-title">Tutor Peers</h3>
+                        <p class="step-description">Give back by helping fellow learners. Teaching reinforces your own knowledge.</p>
+                    </article>
+                    
+                    <article class="step-card">
+                        <div class="step-number">4</div>
+                        <h3 class="step-title">Contribute Back</h3>
+                        <p class="step-description">When you succeed, consider supporting the next generation of learners.</p>
+                    </article>
                 </div>
             </div>
+        </section>
 
-            <!-- Modular Pricing -->
-            <div class="modular-pricing">
-                <h2>🚀 Optional Acceleration Modules</h2>
-                <p style="text-align: center; font-size: 1.1rem; margin-bottom: 3rem; color: var(--text-secondary);">
-                    Enhance your learning experience with these optional modules. All profits fund free education for more learners.
+        <!-- Revenue Streams Section (Issue 6) -->
+        <section class="revenue-section" aria-labelledby="revenue-title">
+            <div class="section-container">
+                <h2 id="revenue-title" class="section-title">How We Sustain Free Education</h2>
+                <p class="section-description">
+                    Transparency matters. Here's how PMERIT funds free education for billions of learners worldwide.
                 </p>
-                
-                <div class="modules-grid">
-                    <!-- AI Tutor Module -->
-                    <div class="module-card">
-                        <div class="module-header">
-                            <div class="module-name">🤖 Advanced AI Tutor</div>
-                            <div class="module-price">$2.99<span style="font-size: 1rem; font-weight: normal;">/month</span></div>
-                            <div class="module-description">Personalized AI assistance powered by advanced language models</div>
+                <div class="revenue-grid">
+                    <article class="vision-card">
+                        <div class="card-icon" aria-hidden="true">
+                            <i class="fas fa-heart"></i>
                         </div>
-                        
-                        <ul class="module-features">
-                            <li>
-                                <div class="feature-icon" style="background: var(--success);">✓</div>
-                                Advanced AI assistance (Llama3/GPT-4 level)
-                            </li>
-                            <li>
-                                <div class="feature-icon" style="background: var(--success);">✓</div>
-                                Personalized learning paths
-                            </li>
-                            <li>
-                                <div class="feature-icon" style="background: var(--success);">✓</div>
-                                24/7 availability
-                            </li>
-                            <li>
-                                <div class="feature-icon" style="background: var(--success);">✓</div>
-                                Multiple language support
-                            </li>
-                            <li>
-                                <div class="feature-icon" style="background: var(--success);">✓</div>
-                                No retry fees for premium users
-                            </li>
-                        </ul>
-                        
-                        <button class="module-cta" onclick="selectModule('ai-tutor')">Try Advanced AI</button>
-                    </div>
-
-                    <!-- Career Center Module -->
-                    <div class="module-card">
-                        <div class="module-header">
-                            <div class="module-name">💼 Career Center</div>
-                            <div class="module-price">$4.99<span style="font-size: 1rem; font-weight: normal;">/month</span></div>
-                            <div class="module-description">Complete career development and job placement support</div>
+                        <h3 class="card-title">Donations</h3>
+                        <p class="card-description">Individual and organizational contributions from those who believe in our mission to break poverty cycles through education.</p>
+                    </article>
+                    
+                    <article class="vision-card">
+                        <div class="card-icon" aria-hidden="true">
+                            <i class="fas fa-building"></i>
                         </div>
-                        
-                        <ul class="module-features">
-                            <li>
-                                <div class="feature-icon" style="background: var(--success);">✓</div>
-                                Job matching & recommendations
-                            </li>
-                            <li>
-                                <div class="feature-icon" style="background: var(--success);">✓</div>
-                                Career counseling sessions
-                            </li>
-                            <li>
-                                <div class="feature-icon" style="background: var(--success);">✓</div>
-                                Interview preparation
-                            </li>
-                            <li>
-                                <div class="feature-icon" style="background: var(--success);">✓</div>
-                                Employer connections
-                            </li>
-                            <li>
-                                <div class="feature-icon" style="background: var(--success);">✓</div>
-                                Resume & LinkedIn optimization
-                            </li>
-                        </ul>
-                        
-                        <button class="module-cta" onclick="selectModule('career-center')">Accelerate Career</button>
-                    </div>
-
-                    <!-- Certification Module -->
-                    <div class="module-card">
-                        <div class="module-header">
-                            <div class="module-name">🏆 Certifications</div>
-                            <div class="module-price">Pay-per-cert</div>
-                            <div class="module-description">Industry-recognized credentials to validate your skills</div>
+                        <h3 class="card-title">Corporate & Foundation Support</h3>
+                        <p class="card-description">Partnerships with corporations and foundations committed to global education equity and workforce development.</p>
+                    </article>
+                    
+                    <article class="vision-card">
+                        <div class="card-icon" aria-hidden="true">
+                            <i class="fas fa-handshake"></i>
                         </div>
-                        
-                        <ul class="module-features">
-                            <li>
-                                <div class="feature-icon" style="background: var(--success);">✓</div>
-                                Completion Certificate: <strong>FREE</strong>
-                            </li>
-                            <li>
-                                <div class="feature-icon" style="background: var(--warning);">$</div>
-                                Verified Certificate: <strong>$5</strong>
-                            </li>
-                            <li>
-                                <div class="feature-icon" style="background: var(--warning);">$</div>
-                                Professional Certification: <strong>$25</strong>
-                            </li>
-                            <li>
-                                <div class="feature-icon" style="background: var(--success);">✓</div>
-                                Blockchain verification
-                            </li>
-                            <li>
-                                <div class="feature-icon" style="background: var(--success);">✓</div>
-                                LinkedIn integration
-                            </li>
-                        </ul>
-                        
-                        <button class="module-cta" onclick="selectModule('certification')">View Certificates</button>
-                    </div>
+                        <h3 class="card-title">Enterprise Partnerships</h3>
+                        <p class="card-description">White-label solutions and custom training programs for organizations, with profits funding free education.</p>
+                    </article>
+                    
+                    <article class="vision-card">
+                        <div class="card-icon" aria-hidden="true">
+                            <i class="fas fa-certificate"></i>
+                        </div>
+                        <h3 class="card-title">Certifications</h3>
+                        <p class="card-description">Optional verified certificates and professional credentials for learners who need formal recognition.</p>
+                    </article>
                 </div>
             </div>
+        </section>
 
-            <!-- Enterprise Section -->
-            <div class="enterprise-section">
-                <h2>🏢 Enterprise Solutions</h2>
-                <p style="font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9;">
-                    Transform your organization's learning and development with PMERIT's enterprise platform
+        <!-- FAQ Section (Issue 7) -->
+        <section class="faq-section" aria-labelledby="faq-title">
+            <div class="section-container">
+                <h2 id="faq-title" class="section-title">Frequently Asked Questions</h2>
+                <div class="faq-list">
+                    <article class="faq-item">
+                        <button class="faq-question" aria-expanded="false" aria-controls="faq-answer-1">
+                            <span>Is PMERIT really free forever?</span>
+                            <i class="fas fa-chevron-down faq-icon" aria-hidden="true"></i>
+                        </button>
+                        <div id="faq-answer-1" class="faq-answer">
+                            <div class="faq-answer-content">
+                                Yes, absolutely. Core education - all courses, basic AI tutoring, community access, and progress tracking - will always be free. Financial barriers will never block access to knowledge at PMERIT.
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="faq-item">
+                        <button class="faq-question" aria-expanded="false" aria-controls="faq-answer-2">
+                            <span>What is the pay-for-accountability model?</span>
+                            <i class="fas fa-chevron-down faq-icon" aria-hidden="true"></i>
+                        </button>
+                        <div id="faq-answer-2" class="faq-answer">
+                            <div class="faq-answer-content">
+                                Your first attempt at every course and assessment is free. If you need to retry, small fees ($0.50+) encourage completion. However, we offer compassionate exemptions for technical failures, hardships, or completion of remedial activities.
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="faq-item">
+                        <button class="faq-question" aria-expanded="false" aria-controls="faq-answer-3">
+                            <span>How does Premium differ from the Free plan?</span>
+                            <i class="fas fa-chevron-down faq-icon" aria-hidden="true"></i>
+                        </button>
+                        <div id="faq-answer-3" class="faq-answer">
+                            <div class="faq-answer-content">
+                                Premium ($2.99/month) adds advanced AI tutoring (GPT-4 level), personalized learning paths, career counseling, job matching, verified certificates, and waives all retry fees. It's designed for learners who want acceleration and career support.
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="faq-item">
+                        <button class="faq-question" aria-expanded="false" aria-controls="faq-answer-4">
+                            <span>What is Pay It Forward?</span>
+                            <i class="fas fa-chevron-down faq-icon" aria-hidden="true"></i>
+                        </button>
+                        <div id="faq-answer-4" class="faq-answer">
+                            <div class="faq-answer-content">
+                                Successful graduates can contribute 1-5% of their salary increase to sponsor the next generation of learners. You get full Premium benefits, direct impact tracking, and the joy of transforming lives.
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="faq-item">
+                        <button class="faq-question" aria-expanded="false" aria-controls="faq-answer-5">
+                            <span>Can I switch between plans?</span>
+                            <i class="fas fa-chevron-down faq-icon" aria-hidden="true"></i>
+                        </button>
+                        <div id="faq-answer-5" class="faq-answer">
+                            <div class="faq-answer-content">
+                                Yes! You can upgrade to Premium anytime, or downgrade back to Free. There are no long-term commitments or penalties. Your learning progress is always preserved.
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="faq-item">
+                        <button class="faq-question" aria-expanded="false" aria-controls="faq-answer-6">
+                            <span>Are donations tax-deductible?</span>
+                            <i class="fas fa-chevron-down faq-icon" aria-hidden="true"></i>
+                        </button>
+                        <div id="faq-answer-6" class="faq-answer">
+                            <div class="faq-answer-content">
+                                Yes, PMERIT is organized to allow tax-deductible contributions. We'll provide donation receipts for your tax records. Consult your tax advisor for specific guidance.
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Growth Projections Section (Issue 7) -->
+        <section class="projections-section" aria-labelledby="projections-title">
+            <div class="section-container">
+                <h2 id="projections-title" class="section-title">Growth Projections & Transparency</h2>
+                <p class="section-description">
+                    Conservative revenue estimates showing how we plan to serve billions while maintaining free access for all.
                 </p>
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin: 2rem 0;">
-                    <div>
-                        <h3>White-Label Platform</h3>
-                        <p>Custom-branded learning management system</p>
-                    </div>
-                    <div>
-                        <h3>Custom Curriculum</h3>
-                        <p>Tailored content for your industry needs</p>
-                    </div>
-                    <div>
-                        <h3>API Access</h3>
-                        <p>Integrate with your existing systems</p>
-                    </div>
-                    <div>
-                        <h3>Dedicated Support</h3>
-                        <p>24/7 priority assistance for your team</p>
-                    </div>
+                <div class="projections-table-wrapper">
+                    <table class="projections-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Revenue Source</th>
+                                <th scope="col">Year 1</th>
+                                <th scope="col">Year 2</th>
+                                <th scope="col">Year 3</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Premium Subscriptions</td>
+                                <td>$50K</td>
+                                <td>$500K</td>
+                                <td>$2M</td>
+                            </tr>
+                            <tr>
+                                <td>Corporate Partnerships</td>
+                                <td>$100K</td>
+                                <td>$750K</td>
+                                <td>$3M</td>
+                            </tr>
+                            <tr>
+                                <td>Donations & Grants</td>
+                                <td>$200K</td>
+                                <td>$1M</td>
+                                <td>$5M</td>
+                            </tr>
+                            <tr>
+                                <td>Certifications</td>
+                                <td>$25K</td>
+                                <td>$250K</td>
+                                <td>$1M</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total Revenue</strong></td>
+                                <td><strong>$375K</strong></td>
+                                <td><strong>$2.5M</strong></td>
+                                <td><strong>$11M</strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Free Learners Served</strong></td>
+                                <td><strong>10K+</strong></td>
+                                <td><strong>100K+</strong></td>
+                                <td><strong>1M+</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                
-                <div style="font-size: 2rem; font-weight: bold; margin: 2rem 0;">$500 - $5,000/month</div>
-                <button class="btn-primary" style="background: white; color: var(--primary); font-size: 1.1rem; padding: 1rem 2rem;" onclick="contactEnterprise()">
-                    Contact Enterprise Sales
-                </button>
             </div>
+        </section>
 
-            <!-- Support Our Mission -->
-            <div class="support-section">
-                <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem;">❤️ Support Our Mission</h2>
-                <p style="text-align: center; font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2rem;">
-                    Help us serve more underserved learners worldwide. Every contribution directly funds free education.
-                </p>
-                
-                <div class="support-grid">
-                    <div class="support-card">
-                        <h3>💝 Donate</h3>
-                        <p>One-time or monthly donations to fund free education for underserved learners</p>
-                        <button class="btn-primary" onclick="donate()">Make a Donation</button>
-                    </div>
-                    <div class="support-card">
-                        <h3>🤝 Sponsor a Student</h3>
-                        <p>Directly sponsor a student's complete educational journey with progress updates</p>
-                        <button class="btn-primary" onclick="sponsor()">Sponsor a Student</button>
-                    </div>
-                    <div class="support-card">
-                        <h3>🏢 Corporate Partnership</h3>
-                        <p>Partner with us to train your workforce while funding education for underserved communities</p>
-                        <button class="btn-primary" onclick="partnership()">Explore Partnership</button>
-                    </div>
-                    <div class="support-card">
-                        <h3>💰 Pay-It-Forward</h3>
-                        <p>Successful graduates contribute 1-5% of salary increase to help the next generation</p>
-                        <button class="btn-primary" onclick="payItForward()">Pay It Forward</button>
-                    </div>
+        <!-- CTA Section -->
+        <section class="cta-section" aria-labelledby="pricing-cta-title">
+            <div class="section-container">
+                <h2 id="pricing-cta-title" class="cta-title">Ready to Start Your Journey?</h2>
+                <p class="cta-description">Join millions of learners breaking poverty cycles through accessible education. Your transformation begins today.</p>
+                <div class="cta-buttons">
+                    <a href="signin.html" class="cta-button">
+                        <i class="fas fa-rocket" aria-hidden="true"></i>
+                        Start Learning Free
+                    </a>
+                    <a href="contact.html?subject=support" class="cta-button secondary">
+                        <i class="fas fa-heart" aria-hidden="true"></i>
+                        Support Our Mission
+                    </a>
                 </div>
             </div>
-        </div>
+        </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-links">
-                <a href="/privacy.html" class="footer-link">Privacy & Terms</a>
-                <a href="/contact.html" class="footer-link">Contact</a>
-                <a href="/partnerships.html" class="footer-link">Partnerships</a>
-                <a href="/support.html" class="footer-link">Support</a>
-                <a href="/impact.html" class="footer-link">Impact Report</a>
-            </div>
-            <div>
-                &copy; 2025 PMERIT - Knowledge as Liberation | 
-                Serving 3+ billion underserved learners worldwide
-            </div>
-        </div>
-    </footer>
+    <!-- Footer (loaded via partial or included) -->
+    <div id="footer-container"></div>
 
+    <!-- FAQ Accordion Functionality -->
     <script>
-        // Detect user location for geo-aware CTAs
-        function detectLocation() {
-            // This would integrate with a geolocation service
-            // For now, defaulting to universal approach
-            return 'global';
-        }
-
-        // Update CTA button based on location
-        function updateCTAButton() {
-            const location = detectLocation();
-            const ctaButton = document.getElementById('ctaButton');
-            
-            // For African users, emphasize donation
-            if (location === 'africa') {
-                ctaButton.textContent = '❤️ Support Our Mission';
-                ctaButton.onclick = () => window.location.href = '/contact.html?subject=support';
-            } else {
-                ctaButton.textContent = 'Start Learning Free';
-                ctaButton.onclick = () => window.location.href = '/register.html';
-            }
-        }
-
-        function selectModule(module) {
-            // Track module selection
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'module_selected', {
-                    event_category: 'conversion',
-                    event_label: module,
-                    value: module === 'ai-tutor' ? 2.99 : module === 'career-center' ? 4.99 : 0
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const faqItem = button.parentElement;
+                const isActive = faqItem.classList.contains('active');
+                
+                // Close all FAQ items
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                    item.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
                 });
-            }
-            
-            // Redirect to appropriate page
-            switch(module) {
-                case 'ai-tutor':
-                    window.location.href = '/register.html?module=ai-tutor';
-                    break;
-                case 'career-center':
-                    window.location.href = '/register.html?module=career-center';
-                    break;
-                case 'certification':
-                    window.location.href = '/courses.html';
-                    break;
-            }
-        }
-
-        function contactEnterprise() {
-            window.location.href = '/contact.html?subject=enterprise-solutions';
-        }
-
-        function donate() {
-            window.location.href = '/contact.html?subject=support';
-        }
-
-        function sponsor() {
-            window.location.href = '/sponsor-student.html';
-        }
-
-        function partnership() {
-            window.location.href = '/partnerships.html';
-        }
-
-        function payItForward() {
-            window.location.href = '/pay-it-forward.html';
-        }
-
-        // Initialize page
-        document.addEventListener('DOMContentLoaded', function() {
-            updateCTAButton();
-            
-            // Track page view
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'page_view', {
-                    page_title: 'Knowledge as Liberation - Pricing',
-                    page_location: window.location.href
-                });
-            }
+                
+                // Open clicked item if it wasn't active
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                    button.setAttribute('aria-expanded', 'true');
+                }
+            });
         });
+
+        // Load header safely
+        fetch('partials/header.html')
+            .then(response => response.text())
+            .then(data => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, 'text/html');
+                const headerContainer = document.getElementById('header-container');
+                while (doc.body.firstChild) {
+                    headerContainer.appendChild(doc.body.firstChild);
+                }
+            })
+            .catch(error => console.error('Error loading header:', error));
+
+        // Load footer safely
+        fetch('partials/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, 'text/html');
+                const footerContainer = document.getElementById('footer-container');
+                while (doc.body.firstChild) {
+                    footerContainer.appendChild(doc.body.firstChild);
+                }
+            })
+            .catch(error => console.error('Error loading footer:', error));
     </script>
 </body>
 </html>
