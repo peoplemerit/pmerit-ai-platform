@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  
+  <!-- SEO Meta Tags -->
+  <title>Begin Your Career Assessment - PMERIT</title>
+  <meta name="description" content="Start your personalized PMERIT Career & Personality Assessment. Discover your ideal learning path and career opportunities through our AI-powered assessment.">
+  <meta name="keywords" content="career assessment, personality test, learning path, career guidance, PMERIT assessment, skills evaluation">
+  <meta name="author" content="PMERIT">
+  <meta name="theme-color" content="#6B5CE7">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pmerit-ai-platform.pages.dev/assessment-entry.html">
+  <meta property="og:title" content="Begin Your Career Assessment - PMERIT">
+  <meta property="og:description" content="Discover your ideal learning path and career opportunities through our AI-powered assessment.">
+  <meta property="og:image" content="https://pmerit-ai-platform.pages.dev/assets/images/og-assessment.jpg">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://pmerit-ai-platform.pages.dev/assessment-entry.html">
+  <meta property="twitter:title" content="Begin Your Career Assessment - PMERIT">
+  <meta property="twitter:description" content="Discover your ideal learning path and career opportunities through our AI-powered assessment.">
+  <meta property="twitter:image" content="https://pmerit-ai-platform.pages.dev/assets/images/og-assessment.jpg">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
+  
+  <!-- Fonts - Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="assets/css/theme-variables.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/typography.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  
+  <style>
+    /* Layout */
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+    
+    main {
+      flex: 1;
+    }
+    
+    /* Hero Section with Purple Gradient */
+    .hero-section {
+      background: linear-gradient(135deg, #6B5CE7 0%, #8B7CE8 100%);
+      color: white;
+      padding: var(--space-12) var(--space-6);
+      text-align: center;
+    }
+    
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .hero-title {
+      font-size: var(--text-4xl);
+      font-weight: var(--weight-bold);
+      margin-bottom: var(--space-4);
+      line-height: var(--leading-tight);
+    }
+    
+    .hero-subtitle {
+      font-size: var(--text-lg);
+      margin-bottom: var(--space-6);
+      opacity: 0.95;
+      line-height: var(--leading-relaxed);
+    }
+    
+    .hero-icon {
+      font-size: 4rem;
+      margin-bottom: var(--space-4);
+    }
+    
+    /* Container */
+    .assessment-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-6);
+    }
+    
+    /* Section Styling */
+    .section {
+      margin-bottom: var(--space-12);
+    }
+    
+    .section-title {
+      font-size: var(--text-2xl);
+      font-weight: var(--weight-bold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-6);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    
+    .section-title i {
+      color: var(--color-primary);
+    }
+    
+    /* Timeline - What to Expect */
+    .timeline {
+      position: relative;
+      padding-left: var(--space-8);
+    }
+    
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 20px;
+      top: 30px;
+      bottom: 30px;
+      width: 2px;
+      background: var(--border-color);
+    }
+    
+    .timeline-item {
+      position: relative;
+      margin-bottom: var(--space-8);
+      padding-left: var(--space-6);
+    }
+    
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+    
+    .timeline-icon {
+      position: absolute;
+      left: -28px;
+      top: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      box-shadow: var(--shadow-md);
+      z-index: 1;
+    }
+    
+    .timeline-title {
+      font-size: var(--text-lg);
+      font-weight: var(--weight-semibold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-2);
+    }
+    
+    .timeline-desc {
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+    }
+    
+    /* Privacy & Consent Card */
+    .consent-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-lg);
+      padding: var(--space-8);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .privacy-text {
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+      margin-bottom: var(--space-6);
+    }
+    
+    /* Checkboxes */
+    .checkbox-group {
+      margin-bottom: var(--space-6);
+    }
+    
+    .checkbox-item {
+      display: flex;
+      align-items: start;
+      gap: var(--space-3);
+      margin-bottom: var(--space-4);
+      padding: var(--space-4);
+      background: var(--bg-secondary);
+      border-radius: var(--border-radius-md);
+      border: 2px solid transparent;
+      transition: var(--transition-base);
+      cursor: pointer;
+    }
+    
+    .checkbox-item:hover {
+      border-color: var(--color-primary);
+    }
+    
+    .checkbox-item input[type="checkbox"] {
+      margin-top: 4px;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    
+    .checkbox-label {
+      flex: 1;
+      cursor: pointer;
+      user-select: none;
+    }
+    
+    .checkbox-required {
+      color: var(--color-error);
+      font-weight: var(--weight-semibold);
+    }
+    
+    .checkbox-optional {
+      color: var(--text-muted);
+      font-size: var(--text-sm);
+    }
+    
+    /* FAQ Section */
+    .faq-list {
+      list-style: none;
+      padding: 0;
+      margin: var(--space-6) 0;
+    }
+    
+    .faq-item {
+      margin-bottom: var(--space-4);
+      padding: var(--space-4);
+      background: var(--bg-secondary);
+      border-radius: var(--border-radius-md);
+      border-left: 4px solid var(--color-primary);
+    }
+    
+    .faq-question {
+      font-weight: var(--weight-semibold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-2);
+    }
+    
+    .faq-answer {
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+    }
+    
+    /* Buttons */
+    .btn-group {
+      display: flex;
+      gap: var(--space-4);
+      margin-top: var(--space-8);
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      padding: var(--space-4) var(--space-6);
+      border-radius: var(--border-radius-md);
+      font-weight: var(--weight-semibold);
+      font-size: var(--text-base);
+      cursor: pointer;
+      transition: var(--transition-base);
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      justify-content: center;
+      min-height: var(--mobile-touch-target);
+      text-decoration: none;
+    }
+    
+    .btn-primary {
+      background: var(--color-primary);
+      color: white;
+      flex: 1;
+    }
+    
+    .btn-primary:hover:not(:disabled) {
+      background: var(--interactive-primary-hover);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .btn-secondary {
+      background: var(--bg-secondary);
+      color: var(--color-primary);
+      border: 2px solid var(--color-primary);
+    }
+    
+    .btn-secondary:hover {
+      background: var(--color-primary);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .btn-resume {
+      background: var(--color-accent);
+      color: white;
+    }
+    
+    .btn-resume:hover {
+      background: var(--interactive-accent-hover);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    /* Loading Overlay */
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: var(--z-modal);
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .loading-overlay.active {
+      display: flex;
+    }
+    
+    .loading-content {
+      text-align: center;
+      color: white;
+    }
+    
+    .loading-spinner {
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top: 4px solid white;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto var(--space-4);
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .loading-text {
+      font-size: var(--text-lg);
+      font-weight: var(--weight-semibold);
+    }
+    
+    /* Resume Assessment Card */
+    .resume-card {
+      display: none;
+      background: linear-gradient(135deg, #FF6B6B 0%, #E05A5A 100%);
+      color: white;
+      padding: var(--space-6);
+      border-radius: var(--border-radius-lg);
+      margin-bottom: var(--space-8);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .resume-card.active {
+      display: block;
+    }
+    
+    .resume-card-title {
+      font-size: var(--text-xl);
+      font-weight: var(--weight-bold);
+      margin-bottom: var(--space-3);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+    
+    .resume-card-text {
+      margin-bottom: var(--space-4);
+      opacity: 0.95;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: var(--text-mobile-hero);
+      }
+      
+      .hero-subtitle {
+        font-size: var(--text-base);
+      }
+      
+      .section-title {
+        font-size: var(--text-xl);
+      }
+      
+      .timeline {
+        padding-left: var(--space-6);
+      }
+      
+      .timeline::before {
+        left: 15px;
+      }
+      
+      .timeline-icon {
+        left: -23px;
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+      }
+      
+      .btn-group {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+    }
+    
+    /* Accessibility */
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+  </style>
+</head>
+<body data-layout-auto-init>
+  
+  <!-- Skip Link for Accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  
+  <!-- Header will be loaded by layout-loader.js -->
+  
+  <main id="main-content">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-content">
+        <div class="hero-icon" aria-hidden="true">🚀</div>
+        <h1 class="hero-title">Welcome to Your Career Assessment</h1>
+        <p class="hero-subtitle">
+          Discover your ideal learning path and career opportunities through our personalized assessment. 
+          Takes approximately 10-15 minutes to complete.
+        </p>
+      </div>
+    </section>
+    
+    <div class="assessment-container">
+      
+      <!-- Resume Assessment Card (Hidden by default) -->
+      <div class="resume-card" id="resumeCard" role="alert" aria-live="polite">
+        <h2 class="resume-card-title">
+          <i class="fas fa-history"></i>
+          Continue Where You Left Off
+        </h2>
+        <p class="resume-card-text">
+          We found your previous assessment progress. Would you like to continue where you left off?
+        </p>
+        <div class="btn-group">
+          <button type="button" class="btn btn-resume" id="resumeBtn">
+            <i class="fas fa-play"></i>
+            Resume Assessment
+          </button>
+          <button type="button" class="btn btn-secondary" id="startFreshBtn">
+            <i class="fas fa-redo"></i>
+            Start Fresh
+          </button>
+        </div>
+      </div>
+      
+      <!-- What to Expect Section -->
+      <section class="section">
+        <h2 class="section-title">
+          <i class="fas fa-map-marked-alt"></i>
+          What to Expect
+        </h2>
+        
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-icon">
+              <i class="fas fa-file-signature"></i>
+            </div>
+            <h3 class="timeline-title">1. Consent & Privacy</h3>
+            <p class="timeline-desc">
+              Review our privacy policy and provide consent for data processing. Your information is secure and used only to personalize your learning experience.
+            </p>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="timeline-icon">
+              <i class="fas fa-clipboard-list"></i>
+            </div>
+            <h3 class="timeline-title">2. Assessment Questions</h3>
+            <p class="timeline-desc">
+              Answer questions about your interests, skills, learning style, and career goals. Be honest—there are no right or wrong answers.
+            </p>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="timeline-icon">
+              <i class="fas fa-brain"></i>
+            </div>
+            <h3 class="timeline-title">3. AI Analysis</h3>
+            <p class="timeline-desc">
+              Our AI analyzes your responses to identify patterns and match you with suitable career paths and learning resources.
+            </p>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="timeline-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h3 class="timeline-title">4. Personalized Results</h3>
+            <p class="timeline-desc">
+              Receive detailed insights about recommended career paths, skill gaps, and personalized learning recommendations.
+            </p>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="timeline-icon">
+              <i class="fas fa-rocket"></i>
+            </div>
+            <h3 class="timeline-title">5. Begin Your Journey</h3>
+            <p class="timeline-desc">
+              Start learning with curated courses and resources tailored to your goals. Track your progress and unlock new opportunities.
+            </p>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Privacy & Consent Section -->
+      <section class="section">
+        <h2 class="section-title">
+          <i class="fas fa-shield-alt"></i>
+          Privacy & Consent
+        </h2>
+        
+        <div class="consent-card">
+          <p class="privacy-text">
+            At PMERIT, we take your privacy seriously. The information you provide will be used to:
+          </p>
+          <ul class="privacy-text">
+            <li>Generate personalized learning recommendations</li>
+            <li>Match you with suitable career paths</li>
+            <li>Track your progress and achievements</li>
+            <li>Improve our assessment algorithms</li>
+          </ul>
+          <p class="privacy-text">
+            Your data is encrypted, stored securely, and never shared with third parties without your explicit consent. 
+            You can request to view, update, or delete your data at any time by contacting 
+            <a href="mailto:privacy@pmerit.com" style="color: var(--color-primary);">privacy@pmerit.com</a>.
+          </p>
+          
+          <!-- Consent Form -->
+          <form id="consentForm" aria-label="Consent form">
+            <div class="checkbox-group">
+              <div class="checkbox-item">
+                <input 
+                  type="checkbox" 
+                  id="consent1" 
+                  name="consent1" 
+                  required 
+                  aria-required="true"
+                >
+                <label for="consent1" class="checkbox-label">
+                  <strong>I have read and agree to the <a href="privacy.html" target="_blank" style="color: var(--color-primary);">Privacy Policy</a> and <a href="terms.html" target="_blank" style="color: var(--color-primary);">Terms of Service</a>.</strong>
+                  <span class="checkbox-required"> *Required</span>
+                </label>
+              </div>
+              
+              <div class="checkbox-item">
+                <input 
+                  type="checkbox" 
+                  id="consent2" 
+                  name="consent2" 
+                  required 
+                  aria-required="true"
+                >
+                <label for="consent2" class="checkbox-label">
+                  <strong>I consent to PMERIT collecting and processing my assessment data for personalization purposes.</strong>
+                  <span class="checkbox-required"> *Required</span>
+                </label>
+              </div>
+              
+              <div class="checkbox-item">
+                <input 
+                  type="checkbox" 
+                  id="marketing" 
+                  name="marketing"
+                >
+                <label for="marketing" class="checkbox-label">
+                  I'd like to receive updates about new courses, features, and learning tips via email.
+                  <span class="checkbox-optional"> (Optional)</span>
+                </label>
+              </div>
+            </div>
+            
+            <div class="btn-group">
+              <a href="index.html" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i>
+                Cancel
+              </a>
+              <button type="submit" class="btn btn-primary" id="beginAssessmentBtn" disabled>
+                <i class="fas fa-play"></i>
+                Begin Assessment
+              </button>
+            </div>
+          </form>
+          
+          <!-- FAQ Section -->
+          <div class="section" style="margin-top: var(--space-12);">
+            <h3 class="section-title" style="font-size: var(--text-xl);">
+              <i class="fas fa-question-circle"></i>
+              Frequently Asked Questions
+            </h3>
+            
+            <ul class="faq-list">
+              <li class="faq-item">
+                <div class="faq-question">How long does the assessment take?</div>
+                <div class="faq-answer">The assessment typically takes 10-15 minutes to complete. You can pause and resume at any time.</div>
+              </li>
+              
+              <li class="faq-item">
+                <div class="faq-question">Is my data secure?</div>
+                <div class="faq-answer">Yes! We use industry-standard encryption and security practices. Your data is stored securely and never shared without your consent.</div>
+              </li>
+              
+              <li class="faq-item">
+                <div class="faq-question">Can I retake the assessment?</div>
+                <div class="faq-answer">Absolutely! You can retake the assessment anytime from your dashboard to update your learning path.</div>
+              </li>
+              
+              <li class="faq-item">
+                <div class="faq-question">What happens after I complete the assessment?</div>
+                <div class="faq-answer">You'll receive personalized career recommendations, a learning roadmap, and curated course suggestions based on your responses.</div>
+              </li>
+              
+              <li class="faq-item">
+                <div class="faq-question">Do I need to create an account?</div>
+                <div class="faq-answer">You can take the assessment as a guest, but creating an account allows you to save your results and track your progress over time.</div>
+              </li>
+              
+              <li class="faq-item">
+                <div class="faq-question">Can I change my answers later?</div>
+                <div class="faq-answer">Yes, you can update your assessment responses at any time to refine your personalized recommendations.</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      
+    </div>
+  </main>
+  
+  <!-- Footer will be loaded by layout-loader.js -->
+  
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay" role="alert" aria-live="assertive" aria-busy="true">
+    <div class="loading-content">
+      <div class="loading-spinner" aria-hidden="true"></div>
+      <p class="loading-text">Starting your assessment...</p>
+    </div>
+  </div>
+  
+  <!-- JavaScript -->
+  <script src="assets/js/layout-loader.js"></script>
+  <script src="assets/js/assessment-api.js"></script>
+  
+  <script>
+    // Assessment Entry Page Logic
+    (function() {
+      'use strict';
+      
+      // DOM Elements
+      const consentForm = document.getElementById('consentForm');
+      const consent1 = document.getElementById('consent1');
+      const consent2 = document.getElementById('consent2');
+      const beginBtn = document.getElementById('beginAssessmentBtn');
+      const loadingOverlay = document.getElementById('loadingOverlay');
+      const resumeCard = document.getElementById('resumeCard');
+      const resumeBtn = document.getElementById('resumeBtn');
+      const startFreshBtn = document.getElementById('startFreshBtn');
+      
+      // Check for saved progress
+      function checkSavedProgress() {
+        const savedProgress = localStorage.getItem('pmerit-assessment-progress');
+        if (savedProgress) {
+          try {
+            const progress = JSON.parse(savedProgress);
+            if (progress.currentStep && progress.currentStep > 1) {
+              resumeCard.classList.add('active');
+              return true;
+            }
+          } catch (e) {
+            console.error('Error parsing saved progress:', e);
+          }
+        }
+        return false;
+      }
+      
+      // Enable/disable begin button based on required consents
+      function updateButtonState() {
+        const allChecked = consent1.checked && consent2.checked;
+        beginBtn.disabled = !allChecked;
+      }
+      
+      // Event listeners for checkboxes
+      consent1.addEventListener('change', updateButtonState);
+      consent2.addEventListener('change', updateButtonState);
+      
+      // Resume assessment handler
+      resumeBtn.addEventListener('click', function() {
+        const savedProgress = JSON.parse(localStorage.getItem('pmerit-assessment-progress'));
+        if (savedProgress && savedProgress.currentStep) {
+          // Validate step number to prevent XSS
+          const stepNumber = parseInt(savedProgress.currentStep, 10);
+          if (!isNaN(stepNumber) && stepNumber > 0) {
+            // Navigate to assessment page with resume parameter
+            window.location.href = `assessment.html?resume=true&step=${stepNumber}`;
+          }
+        }
+      });
+      
+      // Start fresh handler
+      startFreshBtn.addEventListener('click', function() {
+        // Simple confirmation - in production, consider using a custom modal
+        const userConfirmed = confirm('Are you sure you want to start fresh? Your previous progress will be lost.');
+        if (userConfirmed) {
+          localStorage.removeItem('pmerit-assessment-progress');
+          resumeCard.classList.remove('active');
+        }
+      });
+      
+      // Form submission handler
+      consentForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Validate required consents
+        if (!consent1.checked || !consent2.checked) {
+          // Simple alert - in production, consider using inline error messages
+          alert('Please accept all required consents to continue.');
+          return;
+        }
+        
+        // Show loading overlay
+        loadingOverlay.classList.add('active');
+        beginBtn.disabled = true;
+        
+        try {
+          // Collect consent data
+          const consentData = {
+            privacyPolicy: consent1.checked,
+            dataProcessing: consent2.checked,
+            marketing: document.getElementById('marketing').checked,
+            timestamp: new Date().toISOString()
+          };
+          
+          // Save consent to localStorage
+          localStorage.setItem('pmerit-assessment-consent', JSON.stringify(consentData));
+          
+          // Call assessment API to start assessment
+          if (window.AssessmentAPI && typeof window.AssessmentAPI.startAssessment === 'function') {
+            const result = await window.AssessmentAPI.startAssessment(consentData);
+            
+            if (result.success) {
+              // Navigate to assessment page
+              window.location.href = 'assessment.html';
+            } else {
+              throw new Error(result.error || 'Failed to start assessment');
+            }
+          } else {
+            // Fallback: Direct navigation if API not available
+            console.warn('Assessment API not loaded, using fallback navigation');
+            
+            // Simulate a brief delay
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            // Navigate to assessment page
+            window.location.href = 'assessment.html';
+          }
+        } catch (error) {
+          console.error('Error starting assessment:', error);
+          // Simple alert - in production, consider using toast notifications or inline errors
+          alert('An error occurred while starting the assessment. Please try again.');
+          loadingOverlay.classList.remove('active');
+          beginBtn.disabled = false;
+        }
+      });
+      
+      // Check for saved progress on page load
+      checkSavedProgress();
+      
+      // Analytics tracking (if available)
+      if (window.dispatchEvent) {
+        window.dispatchEvent(new CustomEvent('pmerit-analytics', {
+          detail: {
+            event: 'assessment_entry_page_view',
+            page: 'assessment-entry'
+          }
+        }));
+      }
+    })();
+  </script>
+</body>
+</html>
