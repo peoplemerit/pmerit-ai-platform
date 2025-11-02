@@ -1,0 +1,988 @@
+{
+  "version": "1.0",
+  "source": "IPIP (International Personality Item Pool)",
+  "license": "Public Domain",
+  "description": "120-item Big Five personality inventory based on the IPIP-NEO model",
+  "traits": [
+    {
+      "trait_id": "O",
+      "trait_name": "Openness to Experience",
+      "description": "Appreciation for art, emotion, adventure, unusual ideas, imagination, curiosity, and variety of experience",
+      "facets": [
+        {
+          "facet_id": "O1",
+          "facet_name": "Imagination",
+          "description": "Tendency to have a vivid imagination and fantasy life",
+          "questions": [
+            {
+              "question_id": "O1_1",
+              "question_text": "I have a vivid imagination",
+              "keyed": "plus",
+              "question_number": 1
+            },
+            {
+              "question_id": "O1_2",
+              "question_text": "I have difficulty imagining things",
+              "keyed": "minus",
+              "question_number": 25
+            },
+            {
+              "question_id": "O1_3",
+              "question_text": "I like to get lost in thought",
+              "keyed": "plus",
+              "question_number": 49
+            },
+            {
+              "question_id": "O1_4",
+              "question_text": "I do not have a good imagination",
+              "keyed": "minus",
+              "question_number": 73
+            }
+          ]
+        },
+        {
+          "facet_id": "O2",
+          "facet_name": "Artistic Interests",
+          "description": "Appreciation for art and beauty",
+          "questions": [
+            {
+              "question_id": "O2_1",
+              "question_text": "I believe in the importance of art",
+              "keyed": "plus",
+              "question_number": 2
+            },
+            {
+              "question_id": "O2_2",
+              "question_text": "I do not like art",
+              "keyed": "minus",
+              "question_number": 26
+            },
+            {
+              "question_id": "O2_3",
+              "question_text": "I love to reflect on things",
+              "keyed": "plus",
+              "question_number": 50
+            },
+            {
+              "question_id": "O2_4",
+              "question_text": "I seldom get lost in thought",
+              "keyed": "minus",
+              "question_number": 74
+            }
+          ]
+        },
+        {
+          "facet_id": "O3",
+          "facet_name": "Emotionality",
+          "description": "Receptivity to own emotions",
+          "questions": [
+            {
+              "question_id": "O3_1",
+              "question_text": "I experience my emotions intensely",
+              "keyed": "plus",
+              "question_number": 3
+            },
+            {
+              "question_id": "O3_2",
+              "question_text": "I seldom notice my emotional reactions",
+              "keyed": "minus",
+              "question_number": 27
+            },
+            {
+              "question_id": "O3_3",
+              "question_text": "I feel others' emotions",
+              "keyed": "plus",
+              "question_number": 51
+            },
+            {
+              "question_id": "O3_4",
+              "question_text": "I am not easily affected by my emotions",
+              "keyed": "minus",
+              "question_number": 75
+            }
+          ]
+        },
+        {
+          "facet_id": "O4",
+          "facet_name": "Adventurousness",
+          "description": "Willingness to try new activities",
+          "questions": [
+            {
+              "question_id": "O4_1",
+              "question_text": "I prefer variety to routine",
+              "keyed": "plus",
+              "question_number": 4
+            },
+            {
+              "question_id": "O4_2",
+              "question_text": "I dislike changes",
+              "keyed": "minus",
+              "question_number": 28
+            },
+            {
+              "question_id": "O4_3",
+              "question_text": "I like to visit new places",
+              "keyed": "plus",
+              "question_number": 52
+            },
+            {
+              "question_id": "O4_4",
+              "question_text": "I prefer to stick with things that I know",
+              "keyed": "minus",
+              "question_number": 76
+            }
+          ]
+        },
+        {
+          "facet_id": "O5",
+          "facet_name": "Intellect",
+          "description": "Intellectual curiosity",
+          "questions": [
+            {
+              "question_id": "O5_1",
+              "question_text": "I love to read challenging material",
+              "keyed": "plus",
+              "question_number": 5
+            },
+            {
+              "question_id": "O5_2",
+              "question_text": "I avoid philosophical discussions",
+              "keyed": "minus",
+              "question_number": 29
+            },
+            {
+              "question_id": "O5_3",
+              "question_text": "I enjoy thinking about things",
+              "keyed": "plus",
+              "question_number": 53
+            },
+            {
+              "question_id": "O5_4",
+              "question_text": "I will not probe deeply into a subject",
+              "keyed": "minus",
+              "question_number": 77
+            }
+          ]
+        },
+        {
+          "facet_id": "O6",
+          "facet_name": "Liberalism",
+          "description": "Readiness to challenge authority and conventional values",
+          "questions": [
+            {
+              "question_id": "O6_1",
+              "question_text": "I tend to vote for liberal political candidates",
+              "keyed": "plus",
+              "question_number": 6
+            },
+            {
+              "question_id": "O6_2",
+              "question_text": "I believe that too much tax money goes to support artists",
+              "keyed": "minus",
+              "question_number": 30
+            },
+            {
+              "question_id": "O6_3",
+              "question_text": "I believe that we should be tough on crime",
+              "keyed": "minus",
+              "question_number": 54
+            },
+            {
+              "question_id": "O6_4",
+              "question_text": "I tend to vote for conservative political candidates",
+              "keyed": "minus",
+              "question_number": 78
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "trait_id": "C",
+      "trait_name": "Conscientiousness",
+      "description": "Tendency to be organized, responsible, and hardworking",
+      "facets": [
+        {
+          "facet_id": "C1",
+          "facet_name": "Self-Efficacy",
+          "description": "Belief in one's own competence",
+          "questions": [
+            {
+              "question_id": "C1_1",
+              "question_text": "I complete tasks successfully",
+              "keyed": "plus",
+              "question_number": 7
+            },
+            {
+              "question_id": "C1_2",
+              "question_text": "I am not bothered by difficult social situations",
+              "keyed": "plus",
+              "question_number": 31
+            },
+            {
+              "question_id": "C1_3",
+              "question_text": "I know how to cope",
+              "keyed": "plus",
+              "question_number": 55
+            },
+            {
+              "question_id": "C1_4",
+              "question_text": "I misjudge situations",
+              "keyed": "minus",
+              "question_number": 79
+            }
+          ]
+        },
+        {
+          "facet_id": "C2",
+          "facet_name": "Orderliness",
+          "description": "Personal organization and neatness",
+          "questions": [
+            {
+              "question_id": "C2_1",
+              "question_text": "I like order",
+              "keyed": "plus",
+              "question_number": 8
+            },
+            {
+              "question_id": "C2_2",
+              "question_text": "I leave my belongings around",
+              "keyed": "minus",
+              "question_number": 32
+            },
+            {
+              "question_id": "C2_3",
+              "question_text": "I want everything to be \"just right\"",
+              "keyed": "plus",
+              "question_number": 56
+            },
+            {
+              "question_id": "C2_4",
+              "question_text": "I often forget to put things back in their proper place",
+              "keyed": "minus",
+              "question_number": 80
+            }
+          ]
+        },
+        {
+          "facet_id": "C3",
+          "facet_name": "Dutifulness",
+          "description": "Sense of duty and obligation",
+          "questions": [
+            {
+              "question_id": "C3_1",
+              "question_text": "I keep my promises",
+              "keyed": "plus",
+              "question_number": 9
+            },
+            {
+              "question_id": "C3_2",
+              "question_text": "I break my promises",
+              "keyed": "minus",
+              "question_number": 33
+            },
+            {
+              "question_id": "C3_3",
+              "question_text": "I tell the truth",
+              "keyed": "plus",
+              "question_number": 57
+            },
+            {
+              "question_id": "C3_4",
+              "question_text": "I break rules",
+              "keyed": "minus",
+              "question_number": 81
+            }
+          ]
+        },
+        {
+          "facet_id": "C4",
+          "facet_name": "Achievement-Striving",
+          "description": "Need for personal achievement and sense of direction",
+          "questions": [
+            {
+              "question_id": "C4_1",
+              "question_text": "I work hard",
+              "keyed": "plus",
+              "question_number": 10
+            },
+            {
+              "question_id": "C4_2",
+              "question_text": "I do just enough work to get by",
+              "keyed": "minus",
+              "question_number": 34
+            },
+            {
+              "question_id": "C4_3",
+              "question_text": "I excel in what I do",
+              "keyed": "plus",
+              "question_number": 58
+            },
+            {
+              "question_id": "C4_4",
+              "question_text": "I don't put my mind on the task at hand",
+              "keyed": "minus",
+              "question_number": 82
+            }
+          ]
+        },
+        {
+          "facet_id": "C5",
+          "facet_name": "Self-Discipline",
+          "description": "Ability to begin tasks and carry through to completion",
+          "questions": [
+            {
+              "question_id": "C5_1",
+              "question_text": "I start tasks right away",
+              "keyed": "plus",
+              "question_number": 11
+            },
+            {
+              "question_id": "C5_2",
+              "question_text": "I waste my time",
+              "keyed": "minus",
+              "question_number": 35
+            },
+            {
+              "question_id": "C5_3",
+              "question_text": "I get chores done right away",
+              "keyed": "plus",
+              "question_number": 59
+            },
+            {
+              "question_id": "C5_4",
+              "question_text": "I find it difficult to get down to work",
+              "keyed": "minus",
+              "question_number": 83
+            }
+          ]
+        },
+        {
+          "facet_id": "C6",
+          "facet_name": "Cautiousness",
+          "description": "Tendency to think before acting",
+          "questions": [
+            {
+              "question_id": "C6_1",
+              "question_text": "I think things through before acting",
+              "keyed": "plus",
+              "question_number": 12
+            },
+            {
+              "question_id": "C6_2",
+              "question_text": "I jump into things without thinking",
+              "keyed": "minus",
+              "question_number": 36
+            },
+            {
+              "question_id": "C6_3",
+              "question_text": "I make plans and stick to them",
+              "keyed": "plus",
+              "question_number": 60
+            },
+            {
+              "question_id": "C6_4",
+              "question_text": "I rush into things",
+              "keyed": "minus",
+              "question_number": 84
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "trait_id": "E",
+      "trait_name": "Extraversion",
+      "description": "Orientation toward the outer world of people and things rather than the inner world of subjective experience",
+      "facets": [
+        {
+          "facet_id": "E1",
+          "facet_name": "Friendliness",
+          "description": "Interest in and friendliness toward others",
+          "questions": [
+            {
+              "question_id": "E1_1",
+              "question_text": "I make friends easily",
+              "keyed": "plus",
+              "question_number": 13
+            },
+            {
+              "question_id": "E1_2",
+              "question_text": "I keep others at a distance",
+              "keyed": "minus",
+              "question_number": 37
+            },
+            {
+              "question_id": "E1_3",
+              "question_text": "I warm up quickly to others",
+              "keyed": "plus",
+              "question_number": 61
+            },
+            {
+              "question_id": "E1_4",
+              "question_text": "I am hard to get to know",
+              "keyed": "minus",
+              "question_number": 85
+            }
+          ]
+        },
+        {
+          "facet_id": "E2",
+          "facet_name": "Gregariousness",
+          "description": "Preference for the company of others",
+          "questions": [
+            {
+              "question_id": "E2_1",
+              "question_text": "I love large parties",
+              "keyed": "plus",
+              "question_number": 14
+            },
+            {
+              "question_id": "E2_2",
+              "question_text": "I prefer to be alone",
+              "keyed": "minus",
+              "question_number": 38
+            },
+            {
+              "question_id": "E2_3",
+              "question_text": "I talk to a lot of different people at parties",
+              "keyed": "plus",
+              "question_number": 62
+            },
+            {
+              "question_id": "E2_4",
+              "question_text": "I avoid crowds",
+              "keyed": "minus",
+              "question_number": 86
+            }
+          ]
+        },
+        {
+          "facet_id": "E3",
+          "facet_name": "Assertiveness",
+          "description": "Social assertiveness",
+          "questions": [
+            {
+              "question_id": "E3_1",
+              "question_text": "I take charge",
+              "keyed": "plus",
+              "question_number": 15
+            },
+            {
+              "question_id": "E3_2",
+              "question_text": "I wait for others to lead the way",
+              "keyed": "minus",
+              "question_number": 39
+            },
+            {
+              "question_id": "E3_3",
+              "question_text": "I am the first to act",
+              "keyed": "plus",
+              "question_number": 63
+            },
+            {
+              "question_id": "E3_4",
+              "question_text": "I have little to say",
+              "keyed": "minus",
+              "question_number": 87
+            }
+          ]
+        },
+        {
+          "facet_id": "E4",
+          "facet_name": "Activity Level",
+          "description": "Pace of living",
+          "questions": [
+            {
+              "question_id": "E4_1",
+              "question_text": "I am always busy",
+              "keyed": "plus",
+              "question_number": 16
+            },
+            {
+              "question_id": "E4_2",
+              "question_text": "I like to take it easy",
+              "keyed": "minus",
+              "question_number": 40
+            },
+            {
+              "question_id": "E4_3",
+              "question_text": "I am always on the go",
+              "keyed": "plus",
+              "question_number": 64
+            },
+            {
+              "question_id": "E4_4",
+              "question_text": "I do a lot in my spare time",
+              "keyed": "plus",
+              "question_number": 88
+            }
+          ]
+        },
+        {
+          "facet_id": "E5",
+          "facet_name": "Excitement-Seeking",
+          "description": "Need for environmental stimulation",
+          "questions": [
+            {
+              "question_id": "E5_1",
+              "question_text": "I love excitement",
+              "keyed": "plus",
+              "question_number": 17
+            },
+            {
+              "question_id": "E5_2",
+              "question_text": "I dislike loud music",
+              "keyed": "minus",
+              "question_number": 41
+            },
+            {
+              "question_id": "E5_3",
+              "question_text": "I seek adventure",
+              "keyed": "plus",
+              "question_number": 65
+            },
+            {
+              "question_id": "E5_4",
+              "question_text": "I would never go hang gliding or bungee jumping",
+              "keyed": "minus",
+              "question_number": 89
+            }
+          ]
+        },
+        {
+          "facet_id": "E6",
+          "facet_name": "Cheerfulness",
+          "description": "Tendency to experience positive emotions",
+          "questions": [
+            {
+              "question_id": "E6_1",
+              "question_text": "I am a very happy person",
+              "keyed": "plus",
+              "question_number": 18
+            },
+            {
+              "question_id": "E6_2",
+              "question_text": "I seldom joke around",
+              "keyed": "minus",
+              "question_number": 42
+            },
+            {
+              "question_id": "E6_3",
+              "question_text": "I love life",
+              "keyed": "plus",
+              "question_number": 66
+            },
+            {
+              "question_id": "E6_4",
+              "question_text": "I am not easily amused",
+              "keyed": "minus",
+              "question_number": 90
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "trait_id": "A",
+      "trait_name": "Agreeableness",
+      "description": "Orientation toward getting along with others",
+      "facets": [
+        {
+          "facet_id": "A1",
+          "facet_name": "Trust",
+          "description": "Belief in the sincerity and good intentions of others",
+          "questions": [
+            {
+              "question_id": "A1_1",
+              "question_text": "I believe that others have good intentions",
+              "keyed": "plus",
+              "question_number": 19
+            },
+            {
+              "question_id": "A1_2",
+              "question_text": "I distrust people",
+              "keyed": "minus",
+              "question_number": 43
+            },
+            {
+              "question_id": "A1_3",
+              "question_text": "I trust what people say",
+              "keyed": "plus",
+              "question_number": 67
+            },
+            {
+              "question_id": "A1_4",
+              "question_text": "I believe that people are essentially evil",
+              "keyed": "minus",
+              "question_number": 91
+            }
+          ]
+        },
+        {
+          "facet_id": "A2",
+          "facet_name": "Morality",
+          "description": "Straightforwardness and genuineness",
+          "questions": [
+            {
+              "question_id": "A2_1",
+              "question_text": "I use others for my own ends",
+              "keyed": "minus",
+              "question_number": 20
+            },
+            {
+              "question_id": "A2_2",
+              "question_text": "I love to help others",
+              "keyed": "plus",
+              "question_number": 44
+            },
+            {
+              "question_id": "A2_3",
+              "question_text": "I take advantage of others",
+              "keyed": "minus",
+              "question_number": 68
+            },
+            {
+              "question_id": "A2_4",
+              "question_text": "I would never cheat on my taxes",
+              "keyed": "plus",
+              "question_number": 92
+            }
+          ]
+        },
+        {
+          "facet_id": "A3",
+          "facet_name": "Altruism",
+          "description": "Active concern for the welfare of others",
+          "questions": [
+            {
+              "question_id": "A3_1",
+              "question_text": "I am concerned about others",
+              "keyed": "plus",
+              "question_number": 21
+            },
+            {
+              "question_id": "A3_2",
+              "question_text": "I am indifferent to the feelings of others",
+              "keyed": "minus",
+              "question_number": 45
+            },
+            {
+              "question_id": "A3_3",
+              "question_text": "I make people feel welcome",
+              "keyed": "plus",
+              "question_number": 69
+            },
+            {
+              "question_id": "A3_4",
+              "question_text": "I take no time for others",
+              "keyed": "minus",
+              "question_number": 93
+            }
+          ]
+        },
+        {
+          "facet_id": "A4",
+          "facet_name": "Cooperation",
+          "description": "Dislike of confrontations",
+          "questions": [
+            {
+              "question_id": "A4_1",
+              "question_text": "I hate to seem pushy",
+              "keyed": "plus",
+              "question_number": 22
+            },
+            {
+              "question_id": "A4_2",
+              "question_text": "I love a good fight",
+              "keyed": "minus",
+              "question_number": 46
+            },
+            {
+              "question_id": "A4_3",
+              "question_text": "I try to be compassionate",
+              "keyed": "plus",
+              "question_number": 70
+            },
+            {
+              "question_id": "A4_4",
+              "question_text": "I yell at people",
+              "keyed": "minus",
+              "question_number": 94
+            }
+          ]
+        },
+        {
+          "facet_id": "A5",
+          "facet_name": "Modesty",
+          "description": "Tendency to be humble and self-effacing",
+          "questions": [
+            {
+              "question_id": "A5_1",
+              "question_text": "I believe that I am better than others",
+              "keyed": "minus",
+              "question_number": 23
+            },
+            {
+              "question_id": "A5_2",
+              "question_text": "I think highly of myself",
+              "keyed": "minus",
+              "question_number": 47
+            },
+            {
+              "question_id": "A5_3",
+              "question_text": "I make myself the center of attention",
+              "keyed": "minus",
+              "question_number": 71
+            },
+            {
+              "question_id": "A5_4",
+              "question_text": "I consider myself an average person",
+              "keyed": "plus",
+              "question_number": 95
+            }
+          ]
+        },
+        {
+          "facet_id": "A6",
+          "facet_name": "Sympathy",
+          "description": "Attitude toward others who are in need",
+          "questions": [
+            {
+              "question_id": "A6_1",
+              "question_text": "I feel sympathy for those who are worse off than myself",
+              "keyed": "plus",
+              "question_number": 24
+            },
+            {
+              "question_id": "A6_2",
+              "question_text": "I tend to dislike soft-hearted people",
+              "keyed": "minus",
+              "question_number": 48
+            },
+            {
+              "question_id": "A6_3",
+              "question_text": "I suffer from others' sorrows",
+              "keyed": "plus",
+              "question_number": 72
+            },
+            {
+              "question_id": "A6_4",
+              "question_text": "I try not to think about the needy",
+              "keyed": "minus",
+              "question_number": 96
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "trait_id": "N",
+      "trait_name": "Neuroticism",
+      "description": "Tendency to experience negative emotions",
+      "facets": [
+        {
+          "facet_id": "N1",
+          "facet_name": "Anxiety",
+          "description": "Tendency to worry",
+          "questions": [
+            {
+              "question_id": "N1_1",
+              "question_text": "I worry about things",
+              "keyed": "plus",
+              "question_number": 97
+            },
+            {
+              "question_id": "N1_2",
+              "question_text": "I am relaxed most of the time",
+              "keyed": "minus",
+              "question_number": 98
+            },
+            {
+              "question_id": "N1_3",
+              "question_text": "I fear for the worst",
+              "keyed": "plus",
+              "question_number": 99
+            },
+            {
+              "question_id": "N1_4",
+              "question_text": "I am not easily bothered by things",
+              "keyed": "minus",
+              "question_number": 100
+            }
+          ]
+        },
+        {
+          "facet_id": "N2",
+          "facet_name": "Anger",
+          "description": "Tendency to experience anger and related states",
+          "questions": [
+            {
+              "question_id": "N2_1",
+              "question_text": "I get angry easily",
+              "keyed": "plus",
+              "question_number": 101
+            },
+            {
+              "question_id": "N2_2",
+              "question_text": "I rarely get irritated",
+              "keyed": "minus",
+              "question_number": 102
+            },
+            {
+              "question_id": "N2_3",
+              "question_text": "I get upset easily",
+              "keyed": "plus",
+              "question_number": 103
+            },
+            {
+              "question_id": "N2_4",
+              "question_text": "I seldom feel blue",
+              "keyed": "minus",
+              "question_number": 104
+            }
+          ]
+        },
+        {
+          "facet_id": "N3",
+          "facet_name": "Depression",
+          "description": "Tendency to experience depressive affect",
+          "questions": [
+            {
+              "question_id": "N3_1",
+              "question_text": "I often feel blue",
+              "keyed": "plus",
+              "question_number": 105
+            },
+            {
+              "question_id": "N3_2",
+              "question_text": "I feel comfortable with myself",
+              "keyed": "minus",
+              "question_number": 106
+            },
+            {
+              "question_id": "N3_3",
+              "question_text": "I dislike myself",
+              "keyed": "plus",
+              "question_number": 107
+            },
+            {
+              "question_id": "N3_4",
+              "question_text": "I am very pleased with myself",
+              "keyed": "minus",
+              "question_number": 108
+            }
+          ]
+        },
+        {
+          "facet_id": "N4",
+          "facet_name": "Self-Consciousness",
+          "description": "Shyness and social anxiety",
+          "questions": [
+            {
+              "question_id": "N4_1",
+              "question_text": "I am afraid to draw attention to myself",
+              "keyed": "plus",
+              "question_number": 109
+            },
+            {
+              "question_id": "N4_2",
+              "question_text": "I am comfortable in unfamiliar situations",
+              "keyed": "minus",
+              "question_number": 110
+            },
+            {
+              "question_id": "N4_3",
+              "question_text": "I get stressed out easily",
+              "keyed": "plus",
+              "question_number": 111
+            },
+            {
+              "question_id": "N4_4",
+              "question_text": "I am able to stand up for myself",
+              "keyed": "minus",
+              "question_number": 112
+            }
+          ]
+        },
+        {
+          "facet_id": "N5",
+          "facet_name": "Immoderation",
+          "description": "Inability to resist cravings and urges",
+          "questions": [
+            {
+              "question_id": "N5_1",
+              "question_text": "I go on binges",
+              "keyed": "plus",
+              "question_number": 113
+            },
+            {
+              "question_id": "N5_2",
+              "question_text": "I am able to control my cravings",
+              "keyed": "minus",
+              "question_number": 114
+            },
+            {
+              "question_id": "N5_3",
+              "question_text": "I often eat too much",
+              "keyed": "plus",
+              "question_number": 115
+            },
+            {
+              "question_id": "N5_4",
+              "question_text": "I easily resist temptations",
+              "keyed": "minus",
+              "question_number": 116
+            }
+          ]
+        },
+        {
+          "facet_id": "N6",
+          "facet_name": "Vulnerability",
+          "description": "Susceptibility to stress",
+          "questions": [
+            {
+              "question_id": "N6_1",
+              "question_text": "I panic easily",
+              "keyed": "plus",
+              "question_number": 117
+            },
+            {
+              "question_id": "N6_2",
+              "question_text": "I remain calm under pressure",
+              "keyed": "minus",
+              "question_number": 118
+            },
+            {
+              "question_id": "N6_3",
+              "question_text": "I become overwhelmed by events",
+              "keyed": "plus",
+              "question_number": 119
+            },
+            {
+              "question_id": "N6_4",
+              "question_text": "I can handle complex problems",
+              "keyed": "minus",
+              "question_number": 120
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "scale": "1-5 Likert",
+    "labels": {
+      "1": "Very Inaccurate",
+      "2": "Moderately Inaccurate",
+      "3": "Neither Accurate nor Inaccurate",
+      "4": "Moderately Accurate",
+      "5": "Very Accurate"
+    },
+    "interpretation": {
+      "reverse_scoring": "Items marked with 'keyed: minus' should be reverse-scored (6 - response)",
+      "trait_score": "Sum of all facet scores for that trait",
+      "facet_score": "Sum of all question responses (after reverse scoring) for that facet"
+    }
+  }
+}
