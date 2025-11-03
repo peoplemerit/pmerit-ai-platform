@@ -74,7 +74,6 @@ export async function onRequestGet(context) {
     return new Response(JSON.stringify({
       success: false,
       error: error.message,
-      stack: error.stack,
       timestamp: new Date().toISOString()
     }, null, 2), {
       status: 500,
