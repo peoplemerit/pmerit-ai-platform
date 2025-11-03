@@ -12,10 +12,10 @@ import CareerEnrichmentService from './CareerEnrichmentService.js';
 import DatabaseHelper from '../db/DatabaseHelper.js';
 
 class CareerMatchingService {
-  constructor(hyperdrive) {
+  constructor(hyperdrive, blsApiKey = null) {
     this.db = new DatabaseHelper(hyperdrive);
     this.matcher = new CareerMatcher(this.db);
-    this.bls = new BLSClient();
+    this.bls = new BLSClient(blsApiKey);
     this.enrichment = new CareerEnrichmentService(this.bls, this.db);
   }
 

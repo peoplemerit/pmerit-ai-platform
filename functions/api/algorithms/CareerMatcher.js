@@ -111,8 +111,6 @@ class CareerMatcher {
 
       const topMatches = scoredCareers.slice(0, limit);
 
-      console.warn('[CareerMatcher] No careers found in database');
-
       return topMatches;
 
     } catch (error) {
