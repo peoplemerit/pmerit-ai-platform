@@ -5,7 +5,7 @@
  * @note Run this from Cloudflare Workers or locally with wrangler dev
  */
 
-import DatabaseHelper from './DatabaseHelper.js';
+import DatabaseHelper from '../../db/DatabaseHelper.js';
 
 // ANSI color codes for terminal output
 const colors = {
