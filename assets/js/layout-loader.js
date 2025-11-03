@@ -106,6 +106,9 @@
       // Merge custom config
       this.config = { ...this.config, ...customConfig };
 
+      // Apply saved theme immediately on initialization
+      this.applyTheme();
+
       try {
         // Load header and footer in parallel
         const results = await Promise.allSettled([
@@ -206,6 +209,32 @@
         console.error('[LayoutLoader] Error loading footer:', error);
         throw error;
       }
+    }
+
+    /**
+     * Apply saved theme from localStorage or system preference
+     * 
+     * @description Applies the theme (dark/light) from localStorage if available,
+     * otherwise falls back to system preference (prefers-color-scheme).
+     * Sets the data-theme attribute on the HTML element.
+     * 
+     * @private
+     */
+    applyTheme() {
+      let theme = localStorage.getItem('theme');
+      
+      // If no saved preference, check system preference
+      if (!theme) {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          theme = 'dark';
+        } else {
+          theme = 'light';
+        }
+      }
+      
+      // Apply theme to document
+      document.documentElement.setAttribute('data-theme', theme);
+      console.log('[LayoutLoader] Theme applied:', theme);
     }
 
     /**
@@ -416,6 +445,11 @@
         // Load saved preference
         const ttsEnabled = localStorage.getItem('tts-enabled') === 'true';
         ttsToggle.checked = ttsEnabled;
+        
+        // Apply TTS state on initialization if TTS module is available
+        if (ttsEnabled && window.TTS) {
+          window.TTS.setEnabled(true);
+        }
 
         ttsToggle.addEventListener('change', (e) => {
           const enabled = e.target.checked;
