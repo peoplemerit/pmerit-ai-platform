@@ -731,10 +731,29 @@ function loadState() {
     if (savedState) {
       Object.assign(state, JSON.parse(savedState));
     }
+    
+    // Also check individual keys for theme and TTS (used by layout-loader.js)
+    // This ensures consistency across pages using different loaders
+    const theme = localStorage.getItem('theme');
+    if (theme) {
+      state.darkMode = theme === 'dark';
+    } else {
+      // No saved preference, check system preference
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        state.darkMode = true;
+      }
+    }
+    
+    const ttsEnabled = localStorage.getItem('tts-enabled');
+    if (ttsEnabled !== null) {
+      state.textToSpeech = ttsEnabled === 'true';
+    }
 
     // Apply saved state
     if (state.darkMode) {
       document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
     }
 
     if (state.virtualHuman) {
@@ -756,6 +775,10 @@ function loadState() {
 function saveState() {
   try {
     localStorage.setItem('pmerit-state', JSON.stringify(state));
+    
+    // Also save to individual keys for compatibility with layout-loader.js
+    localStorage.setItem('theme', state.darkMode ? 'dark' : 'light');
+    localStorage.setItem('tts-enabled', state.textToSpeech.toString());
   } catch (error) {
     console.error('Error saving state:', error);
   }
