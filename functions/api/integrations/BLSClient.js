@@ -7,8 +7,11 @@
  */
 
 class BLSClient {
-  constructor() {
-    this.apiKey = 'f3b54462bdd64a829a09dd23d1acb7cd';
+  constructor(apiKey = null) {
+    // [HUMAN REVIEW NEEDED]: API key should be moved to environment variables
+    // For production use: this.apiKey = apiKey || env.BLS_API_KEY
+    // Current implementation uses provided key for development/testing
+    this.apiKey = apiKey || 'f3b54462bdd64a829a09dd23d1acb7cd';
     this.baseURL = 'https://api.bls.gov/publicAPI/v2/';
     this.requestTimeout = 10000; // 10 seconds
     this.maxRetries = 2;
@@ -18,13 +21,14 @@ class BLSClient {
    * Get occupation data by SOC code
    * @param {string} socCode - Standard Occupational Classification code
    * @returns {Promise<Object>} Occupation data including salary, growth
+   * 
+   * [HUMAN REVIEW NEEDED]: BLS API integration is INCOMPLETE
+   * - Requires SOC-to-SeriesID mapping before production use
+   * - Current implementation returns placeholder structure
+   * - Real API calls are commented out and need completion
    */
   async getOccupationData(socCode) {
     try {
-      // [HUMAN REVIEW NEEDED]: BLS API requires specific series IDs, not just SOC codes
-      // This implementation provides a structure for integration
-      // May need to map SOC codes to BLS series IDs
-
       if (!socCode) {
         throw new Error('SOC code is required');
       }
