@@ -128,7 +128,7 @@ export async function runSchemaVerificationTests(env) {
     if (!verificationResult.success) {
       // Generate detailed report for debugging
       const report = generateReport(verificationResult);
-      console.log('\n' + colors.yellow + report + colors.reset);
+      console.log(`\n${colors.yellow}${report}${colors.reset}`);
       throw new Error('Schema verification failed - see report above');
     }
   });
