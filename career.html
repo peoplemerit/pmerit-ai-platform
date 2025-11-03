@@ -18,6 +18,9 @@
   <link rel="stylesheet" href="assets/css/theme-variables.css">
   <link rel="stylesheet" href="assets/css/typography.css">
   <link rel="stylesheet" href="assets/css/base.css">
+  
+  <!-- TTS module -->
+  <script src="assets/js/tts.js"></script>
 
   <style>
     body {
@@ -492,21 +495,8 @@
   <!-- Skip to Main Content Link -->
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
-  <!-- Header -->
-  <header role="banner">
-    <div class="header-content">
-      <a href="index.html" class="logo" aria-label="PMERIT Home">
-        <span aria-hidden="true">🎓</span> PMERIT
-      </a>
-      <nav class="header-nav" role="navigation" aria-label="Main navigation">
-        <a href="index.html">Home</a>
-        <a href="career.html" class="active" aria-current="page">Career Paths</a>
-        <a href="assessment.html">Assessment</a>
-        <a href="courses.html">Courses</a>
-        <a href="signin.html" class="btn-primary">Sign In</a>
-      </nav>
-    </div>
-  </header>
+  <!-- Header (loaded dynamically via layout-loader.js) -->
+  <div id="header-container"></div>
 
   <!-- Hero Section -->
   <section class="hero" role="banner">
@@ -579,24 +569,31 @@
     </section>
   </main>
 
-  <!-- Footer -->
-  <footer role="contentinfo">
-    <div class="footer-content">
-      <div class="footer-status">
-        <span class="status-indicator" aria-hidden="true"></span>
-        <span>Connected to Educational Services</span>
-      </div>
-      <nav class="footer-links" aria-label="Footer navigation">
-        <a href="privacy.html">Privacy & Terms</a>
-        <a href="contact.html">Contact</a>
-        <a href="partnerships.html">Partnerships</a>
-        <a href="support.html">Support</a>
-      </nav>
-    </div>
-  </footer>
+  <!-- Footer (loaded dynamically via layout-loader.js) -->
+  <div id="footer-container"></div>
 
-  <!-- JavaScript for Dynamic Card Rendering -->
+  <!-- MOSA-compliant layout loader -->
+  <script src="assets/js/layout-loader.js"></script>
   <script>
+    // Initialize layout loader first
+    document.addEventListener('DOMContentLoaded', function() {
+      window.LayoutLoader.init({
+        headerInsertPoint: '#header-container',
+        footerInsertPoint: '#footer-container',
+        headerPosition: 'beforeend',
+        footerPosition: 'beforeend'
+      }).then(function(result) {
+        if (result.success) {
+          console.log('[Career] Header and footer loaded successfully');
+          // Load career tracks after layout is ready
+          loadCareerTracks();
+          updateActiveSection();
+        } else {
+          console.error('[Career] Failed to load header/footer:', result);
+        }
+      });
+    });
+
     // Fetch and render career tracks
     async function loadCareerTracks() {
       try {
@@ -716,10 +713,7 @@
     });
 
     // Initialize
-    document.addEventListener('DOMContentLoaded', () => {
-      loadCareerTracks();
-      updateActiveSection();
-    });
+    // Note: loadCareerTracks and updateActiveSection are now called after layout is loaded
 
     // Update active section on scroll
     window.addEventListener('scroll', updateActiveSection);
