@@ -24,6 +24,9 @@
   <script src="assets/js/config.js"></script>
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/auth-check.js"></script>
+  
+  <!-- TTS module -->
+  <script src="assets/js/tts.js"></script>
 
   <style>
     .coming-soon-container {
@@ -103,21 +106,8 @@
   </style>
 </head>
 <body>
-  <!-- Simple header for placeholder page -->
-  <header style="background: var(--bg-card); padding: var(--space-4); border-bottom: 1px solid var(--border-color); box-shadow: var(--shadow);">
-    <div style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
-      <a href="index.html" style="text-decoration: none; color: var(--color-primary); font-weight: var(--font-bold); font-size: var(--text-2xl);">
-        🎓 PMERIT
-      </a>
-      <nav style="display: flex; gap: var(--space-4); align-items: center;">
-        <a href="index.html" style="text-decoration: none; color: var(--text-secondary);">Home</a>
-        <a href="career.html" style="text-decoration: none; color: var(--text-secondary);">Career Track</a>
-        <a href="assessment.html" style="text-decoration: none; color: var(--text-secondary);">Assessment</a>
-        <a href="profile.html" style="text-decoration: none; color: var(--color-primary); font-weight: var(--font-semibold);">Profile</a>
-        <a href="signin.html" class="btn-primary" style="font-size: var(--text-sm); padding: var(--space-2) var(--space-4);">Sign In</a>
-      </nav>
-    </div>
-  </header>
+  <!-- Header (loaded dynamically via layout-loader.js) -->
+  <div id="header-container"></div>
 
   <main class="coming-soon-container">
     <i class="fas fa-user-circle coming-soon-icon"></i>
@@ -137,22 +127,28 @@
     </div>
   </main>
 
-  <!-- Simple footer -->
-  <footer style="background: var(--bg-card); border-top: 1px solid var(--border-color); padding: var(--space-4); margin-top: auto;">
-    <div style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4);">
-      <div style="display: flex; align-items: center; gap: var(--space-2);">
-        <i class="fas fa-circle" style="color: var(--color-success); font-size: 0.5rem;"></i>
-        <span style="color: var(--text-secondary); font-size: var(--text-sm);">Connected to Educational Services</span>
-      </div>
-      <div style="display: flex; gap: var(--space-4);">
-        <a href="privacy.html" style="color: var(--text-secondary); text-decoration: none; font-size: var(--text-sm);">Privacy & Terms</a>
-        <a href="contact.html" style="color: var(--text-secondary); text-decoration: none; font-size: var(--text-sm);">Contact</a>
-        <a href="partnerships.html" style="color: var(--text-secondary); text-decoration: none; font-size: var(--text-sm);">Partnerships</a>
-        <a href="support.html" style="color: var(--text-secondary); text-decoration: none; font-size: var(--text-sm);">Support</a>
-      </div>
-    </div>
-  </footer>
+  <!-- Footer (loaded dynamically via layout-loader.js) -->
+  <div id="footer-container"></div>
 
+  <!-- MOSA-compliant layout loader -->
+  <script src="assets/js/layout-loader.js"></script>
   <script src="assets/js/main.js"></script>
+  <script>
+    // Initialize layout loader after DOM is ready
+    document.addEventListener('DOMContentLoaded', function() {
+      window.LayoutLoader.init({
+        headerInsertPoint: '#header-container',
+        footerInsertPoint: '#footer-container',
+        headerPosition: 'beforeend',
+        footerPosition: 'beforeend'
+      }).then(function(result) {
+        if (result.success) {
+          console.log('[Profile] Header and footer loaded successfully');
+        } else {
+          console.error('[Profile] Failed to load header/footer:', result);
+        }
+      });
+    });
+  </script>
 </body>
 </html>
