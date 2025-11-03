@@ -585,11 +585,15 @@
       }).then(function(result) {
         if (result.success) {
           console.log('[Career] Header and footer loaded successfully');
+          // Load career tracks after layout is ready
+          loadCareerTracks();
+          updateActiveSection();
         } else {
           console.error('[Career] Failed to load header/footer:', result);
         }
       });
     });
+
     // Fetch and render career tracks
     async function loadCareerTracks() {
       try {
@@ -709,10 +713,7 @@
     });
 
     // Initialize
-    document.addEventListener('DOMContentLoaded', () => {
-      loadCareerTracks();
-      updateActiveSection();
-    });
+    // Note: loadCareerTracks and updateActiveSection are now called after layout is loaded
 
     // Update active section on scroll
     window.addEventListener('scroll', updateActiveSection);
