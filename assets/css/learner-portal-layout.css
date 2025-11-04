@@ -40,12 +40,13 @@
     flex-direction: column;
     align-items: center;
     padding: var(--space-4) 0;
-    position: fixed;
+    position: sticky;
     left: 0;
     top: 0;
-    height: 100vh;
-    z-index: var(--z-fixed);
+    height: 100%;
+    align-self: stretch;
     overflow-y: auto;
+    flex-shrink: 0;
 }
 
 .icon-sidebar-nav {
@@ -111,12 +112,12 @@
     border-right: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
-    position: fixed;
-    left: var(--sidebar-width);
+    position: sticky;
     top: 0;
-    height: 100vh;
-    z-index: calc(var(--z-fixed) - 1);
+    height: 100%;
+    align-self: stretch;
     overflow-y: auto;
+    flex-shrink: 0;
 }
 
 /* User Profile Section */
@@ -267,11 +268,10 @@
 
 .main-content {
     grid-area: main-content;
-    margin-left: calc(var(--sidebar-width) + var(--nav-width));
-    margin-right: var(--rightbar-width);
     padding: var(--space-8) var(--space-6);
     background: var(--bg-primary);
-    min-height: 100vh;
+    flex: 1;
+    overflow-y: auto;
 }
 
 /* ========================================
@@ -283,13 +283,13 @@
     width: var(--rightbar-width);
     background: var(--bg-secondary);
     border-left: 1px solid var(--border-color);
-    position: fixed;
-    right: 0;
+    position: sticky;
     top: 0;
-    height: 100vh;
+    height: 100%;
+    align-self: stretch;
     overflow-y: auto;
     padding: var(--space-6) var(--space-4);
-    z-index: calc(var(--z-fixed) - 2);
+    flex-shrink: 0;
 }
 
 .right-sidebar-section {
