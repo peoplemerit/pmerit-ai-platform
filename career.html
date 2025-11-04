@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="assets/css/theme-variables.css">
   <link rel="stylesheet" href="assets/css/typography.css">
   <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/layout-fixes.css">
   
   <!-- TTS module -->
   <script src="assets/js/tts.js"></script>
@@ -491,12 +492,9 @@
     }
   </style>
 </head>
-<body>
+<body data-layout-auto-init>
   <!-- Skip to Main Content Link -->
   <a href="#main-content" class="skip-link">Skip to main content</a>
-
-  <!-- Header (loaded dynamically via layout-loader.js) -->
-  <div id="header-container"></div>
 
   <!-- Hero Section -->
   <section class="hero" role="banner">
@@ -569,31 +567,9 @@
     </section>
   </main>
 
-  <!-- Footer (loaded dynamically via layout-loader.js) -->
-  <div id="footer-container"></div>
-
-  <!-- MOSA-compliant layout loader -->
+  <script src="assets/js/config.js"></script>
   <script src="assets/js/layout-loader.js"></script>
   <script>
-    // Initialize layout loader first
-    document.addEventListener('DOMContentLoaded', function() {
-      window.LayoutLoader.init({
-        headerInsertPoint: '#header-container',
-        footerInsertPoint: '#footer-container',
-        headerPosition: 'beforeend',
-        footerPosition: 'beforeend'
-      }).then(function(result) {
-        if (result.success) {
-          console.log('[Career] Header and footer loaded successfully');
-          // Load career tracks after layout is ready
-          loadCareerTracks();
-          updateActiveSection();
-        } else {
-          console.error('[Career] Failed to load header/footer:', result);
-        }
-      });
-    });
-
     // Fetch and render career tracks
     async function loadCareerTracks() {
       try {
@@ -712,8 +688,16 @@
       });
     });
 
-    // Initialize
-    // Note: loadCareerTracks and updateActiveSection are now called after layout is loaded
+    // Initialize after DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        loadCareerTracks();
+        updateActiveSection();
+      });
+    } else {
+      loadCareerTracks();
+      updateActiveSection();
+    }
 
     // Update active section on scroll
     window.addEventListener('scroll', updateActiveSection);

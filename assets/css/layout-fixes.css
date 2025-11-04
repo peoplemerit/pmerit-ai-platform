@@ -1,0 +1,24 @@
+/* Defensive layout fixes for injected header/footer */
+.pmerit-shared-layout { box-sizing: border-box; }
+#pmerit-shared-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1200;
+  background: var(--bg-header, #fff);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+/* Add safe top padding to main content when loader is active */
+body[data-layout-auto-init] main#main-content {
+  padding-top: var(--header-safe-height, 76px);
+}
+
+/* Hide legacy static markers */
+header[data-pmerit-static-header], footer[data-pmerit-static-footer] { display: none !important; }
+
+/* Ensure overlays are above header */
+.menu-overlay, .mobile-panel, .hamburger-menu { z-index: 1300 !important; }
