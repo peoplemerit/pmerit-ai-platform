@@ -16,6 +16,16 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Header should be at the top level */
+    body.learner-portal-page > .pmerit-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      width: 100%;
     }
 
     /* Portal wrapper contains the custom portal layout */
@@ -24,6 +34,7 @@
       display: flex;
       position: relative;
       overflow: hidden;
+      width: 100%;
     }
 
     /* Adjust icon sidebar to work below header */
@@ -31,6 +42,13 @@
       top: 0;
       height: 100%;
       position: sticky;
+      z-index: 100;
+    }
+
+    /* Ensure hamburger menu and overlays appear above portal content */
+    .hamburger-menu,
+    .menu-overlay {
+      z-index: 1100 !important;
     }
 
     /* Skip to content link for accessibility */
