@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="assets/css/typography.css">
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/layout-fixes.css">
   
   <!-- TTS module -->
   <script src="assets/js/tts.js"></script>
@@ -255,11 +256,9 @@
     }
   </style>
 </head>
-<body>
-  <!-- Header (loaded dynamically via layout-loader.js) -->
-  <div id="header-container"></div>
+<body data-layout-auto-init>
 
-  <main class="support-container">
+  <main id="main-content" class="support-container">
     <div class="support-header">
       <h1 class="support-title">Customer Service & Support</h1>
       <p class="support-subtitle">
@@ -328,29 +327,10 @@
     </div>
   </main>
 
-  <!-- Footer (loaded dynamically via layout-loader.js) -->
-  <div id="footer-container"></div>
-
-  <!-- MOSA-compliant layout loader -->
+  <script src="assets/js/config.js"></script>
   <script src="assets/js/layout-loader.js"></script>
   <script src="assets/js/main.js"></script>
   <script>
-    // Initialize layout loader first
-    document.addEventListener('DOMContentLoaded', function() {
-      window.LayoutLoader.init({
-        headerInsertPoint: '#header-container',
-        footerInsertPoint: '#footer-container',
-        headerPosition: 'beforeend',
-        footerPosition: 'beforeend'
-      }).then(function(result) {
-        if (result.success) {
-          console.log('[Support] Header and footer loaded successfully');
-        } else {
-          console.error('[Support] Failed to load header/footer:', result);
-        }
-      });
-    });
-    // Simple chat functionality
     const chatMessages = document.getElementById('chatMessages');
     const chatInput = document.getElementById('chatInput');
     const sendBtn = document.getElementById('sendBtn');
