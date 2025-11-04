@@ -54,7 +54,8 @@
     /* Skip to content link for accessibility */
     .skip-to-content {
       position: absolute;
-      left: -9999px;
+      top: -9999px;
+      left: 0;
       z-index: 999;
       padding: 1em;
       background: var(--color-primary);
@@ -63,9 +64,9 @@
     }
 
     .skip-to-content:focus {
+      top: 1em;
       left: 50%;
       transform: translateX(-50%);
-      top: 1em;
     }
 
     /* Hybrid Layout Specific Styles */
