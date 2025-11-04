@@ -11,6 +11,64 @@
   <link rel="stylesheet" href="assets/css/components.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
   <style>
+    /* Portal Page Layout - MOSA Compliant with header/footer */
+    body.learner-portal-page {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Header should be at the top level */
+    body.learner-portal-page > .pmerit-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      width: 100%;
+    }
+
+    /* Portal wrapper contains the custom portal layout */
+    .portal-wrapper {
+      flex: 1;
+      display: flex;
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    /* Adjust icon sidebar to work below header */
+    .icon-sidebar {
+      top: 0;
+      height: 100%;
+      position: sticky;
+      z-index: 100;
+    }
+
+    /* Ensure hamburger menu and overlays appear above portal content */
+    .hamburger-menu,
+    .menu-overlay {
+      z-index: 1100 !important;
+    }
+
+    /* Skip to content link for accessibility */
+    .skip-to-content {
+      position: absolute;
+      top: -9999px;
+      left: 0;
+      z-index: 999;
+      padding: 1em;
+      background: var(--color-primary);
+      color: white;
+      text-decoration: none;
+    }
+
+    .skip-to-content:focus {
+      top: 1em;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
     /* Hybrid Layout Specific Styles */
     .portal-section { margin-bottom: 2.5rem; }
     .portal-section h2 { color: var(--color-primary); margin-bottom: 0.5rem; }
@@ -60,11 +118,16 @@
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/auth-check.js"></script>
 </head>
-<body>
+<body data-layout-auto-init class="learner-portal-page">
+  <!-- Skip to main content link for accessibility -->
+  <a href="#main-content" class="skip-to-content">Skip to main content</a>
+
   <!-- Overlay for mobile panel toggling -->
   <div class="panel-overlay" id="panel-overlay" tabindex="-1" aria-hidden="true"></div>
 
-  <!-- Icon Sidebar (Left) -->
+  <!-- Portal Container: Wraps portal-specific layout -->
+  <div class="portal-wrapper">
+    <!-- Icon Sidebar (Left) -->
   <aside class="icon-sidebar" role="navigation" aria-label="Main navigation">
     <nav class="icon-sidebar-nav">
       <button class="icon-sidebar-item active" data-section="dashboard" aria-label="Dashboard" aria-pressed="true">
@@ -724,5 +787,10 @@
       switchNavSection('dashboard');
     })();
   </script>
+
+  </div><!-- End .portal-wrapper -->
+
+  <!-- Load layout-loader.js for header/footer (MOSA compliance) -->
+  <script src="assets/js/layout-loader.js"></script>
 </body>
 </html>
