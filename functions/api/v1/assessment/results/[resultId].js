@@ -68,8 +68,7 @@ export async function onRequestGet(context) {
     
     return new Response(JSON.stringify({
       success: false,
-      error: 'Failed to retrieve results',
-      details: error.message
+      error: 'Failed to retrieve results. Please try again later.'
     }), {
       status: 500,
       headers: corsHeaders

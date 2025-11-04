@@ -72,8 +72,7 @@ export async function onRequestPost(context) {
     
     return new Response(JSON.stringify({
       success: false,
-      error: 'Failed to start assessment',
-      details: error.message
+      error: 'Failed to start assessment. Please try again later.'
     }), {
       status: 500,
       headers: corsHeaders

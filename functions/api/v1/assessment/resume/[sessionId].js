@@ -70,8 +70,7 @@ export async function onRequestGet(context) {
 
     return new Response(JSON.stringify({
       success: false,
-      error: 'Failed to resume assessment',
-      details: error.message
+      error: 'Failed to resume assessment. Please try again later.'
     }), {
       status: 500,
       headers: corsHeaders

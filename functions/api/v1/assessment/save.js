@@ -75,8 +75,7 @@ export async function onRequestPost(context) {
     
     return new Response(JSON.stringify({
       success: false,
-      error: 'Failed to save progress',
-      details: error.message
+      error: 'Failed to save progress. Please try again later.'
     }), {
       status: 500,
       headers: corsHeaders
