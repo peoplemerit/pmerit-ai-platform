@@ -57,9 +57,12 @@ export async function onRequestPost(context) {
       answers: body.answers
     });
 
-    // Success response
+    // Success response - return only necessary fields
     return new Response(JSON.stringify({
-      ...result,
+      success: result.success,
+      saved: result.saved,
+      currentQuestion: result.currentQuestion,
+      answerCount: result.answerCount,
       message: 'Progress saved',
       updatedAt: new Date().toISOString()
     }), {

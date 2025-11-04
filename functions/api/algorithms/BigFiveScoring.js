@@ -7,6 +7,28 @@
  * @created November 4, 2025
  */
 
+// IPIP-NEO-120 Configuration Constants
+const IPIP_CONFIG = {
+  TOTAL_QUESTIONS: 120,
+  TRAITS_COUNT: 5,
+  FACETS_PER_TRAIT: 6,
+  QUESTIONS_PER_FACET: 4,
+  MIN_ANSWER_VALUE: 1,
+  MAX_ANSWER_VALUE: 5
+};
+
+// Trait mapping configuration
+const TRAIT_MAPPING = {
+  'O': { start: 1, facets: ['O1', 'O2', 'O3', 'O4', 'O5', 'O6'] },
+  'C': { start: 25, facets: ['C1', 'C2', 'C3', 'C4', 'C5', 'C6'] },
+  'E': { start: 49, facets: ['E1', 'E2', 'E3', 'E4', 'E5', 'E6'] },
+  'A': { start: 73, facets: ['A1', 'A2', 'A3', 'A4', 'A5', 'A6'] },
+  'N': { start: 97, facets: ['N1', 'N2', 'N3', 'N4', 'N5', 'N6'] }
+};
+
+// Question keying configuration (which questions are reverse-scored)
+const REVERSE_KEYED_QUESTIONS = [2, 4]; // Question indices that are reverse-keyed
+
 /**
  * Calculate Big Five personality scores from 120 IPIP answers
  * @param {Object} answers - All 120 answers (key: question_id, value: 1-5)
@@ -25,8 +47,8 @@ export function calculateBigFiveScores(answers) {
   }
 
   const answerCount = Object.keys(answers).length;
-  if (answerCount !== 120) {
-    throw new Error(`Expected 120 answers, got ${answerCount}`);
+  if (answerCount !== IPIP_CONFIG.TOTAL_QUESTIONS) {
+    throw new Error(`Expected ${IPIP_CONFIG.TOTAL_QUESTIONS} answers, got ${answerCount}`);
   }
 
   // Calculate each trait
@@ -66,18 +88,18 @@ function calculateTraitScore(answers, traitCode) {
     }
 
     // Validate answer range
-    if (answer < 1 || answer > 5) {
-      throw new Error(`Answer for ${q.question_id} must be between 1 and 5, got ${answer}`);
+    if (answer < IPIP_CONFIG.MIN_ANSWER_VALUE || answer > IPIP_CONFIG.MAX_ANSWER_VALUE) {
+      throw new Error(`Answer for ${q.question_id} must be between ${IPIP_CONFIG.MIN_ANSWER_VALUE} and ${IPIP_CONFIG.MAX_ANSWER_VALUE}, got ${answer}`);
     }
 
     // Reverse score if needed (keyed "minus")
-    const score = q.keyed === 'minus' ? (6 - answer) : answer;
+    const score = q.keyed === 'minus' ? (IPIP_CONFIG.MAX_ANSWER_VALUE + 1 - answer) : answer;
     sum += score;
     count++;
   }
 
-  if (count !== 24) {
-    throw new Error(`Expected 24 questions for trait ${traitCode}, found ${count}`);
+  if (count !== IPIP_CONFIG.FACETS_PER_TRAIT * IPIP_CONFIG.QUESTIONS_PER_FACET) {
+    throw new Error(`Expected ${IPIP_CONFIG.FACETS_PER_TRAIT * IPIP_CONFIG.QUESTIONS_PER_FACET} questions for trait ${traitCode}, found ${count}`);
   }
 
   // Calculate raw score (mean of 24 questions)
@@ -96,22 +118,10 @@ function calculateTraitScore(answers, traitCode) {
 
 /**
  * Get all questions for a specific trait
- * Based on IPIP-NEO-120 structure: 5 facets × 4 questions per facet = 24 questions per trait
+ * Based on IPIP-NEO-120 structure
  */
 function getTraitQuestions(traitCode) {
-  // IPIP-NEO-120 question mapping
-  // Each trait has 5 facets, each facet has 4 questions
-  // Questions are organized in blocks of 24
-  
-  const traitMapping = {
-    'O': { start: 1, facets: ['O1', 'O2', 'O3', 'O4', 'O5', 'O6'] },
-    'C': { start: 25, facets: ['C1', 'C2', 'C3', 'C4', 'C5', 'C6'] },
-    'E': { start: 49, facets: ['E1', 'E2', 'E3', 'E4', 'E5', 'E6'] },
-    'A': { start: 73, facets: ['A1', 'A2', 'A3', 'A4', 'A5', 'A6'] },
-    'N': { start: 97, facets: ['N1', 'N2', 'N3', 'N4', 'N5', 'N6'] }
-  };
-
-  const trait = traitMapping[traitCode];
+  const trait = TRAIT_MAPPING[traitCode];
   if (!trait) {
     throw new Error(`Invalid trait code: ${traitCode}`);
   }
@@ -119,17 +129,15 @@ function getTraitQuestions(traitCode) {
   const questions = [];
   
   // IPIP-NEO-120 uses interleaved question numbering
-  // Questions for each facet are numbered: 1, 25, 49, 73 (offset by 24)
-  for (let facetIdx = 0; facetIdx < 6; facetIdx++) {
+  for (let facetIdx = 0; facetIdx < IPIP_CONFIG.FACETS_PER_TRAIT; facetIdx++) {
     const facetId = trait.facets[facetIdx];
     
-    for (let qIdx = 1; qIdx <= 4; qIdx++) {
+    for (let qIdx = 1; qIdx <= IPIP_CONFIG.QUESTIONS_PER_FACET; qIdx++) {
       // Calculate question number using interleaved pattern
-      const questionNum = (qIdx - 1) * 24 + facetIdx + trait.start;
+      const questionNum = (qIdx - 1) * (IPIP_CONFIG.FACETS_PER_TRAIT * IPIP_CONFIG.TRAITS_COUNT) + facetIdx + trait.start;
       
       // Determine keying based on question index
-      // In IPIP, typically questions 2 and 4 are reverse-keyed
-      const keyed = (qIdx === 2 || qIdx === 4) ? 'minus' : 'plus';
+      const keyed = REVERSE_KEYED_QUESTIONS.includes(qIdx) ? 'minus' : 'plus';
       
       questions.push({
         question_id: `${facetId}_${qIdx}`,

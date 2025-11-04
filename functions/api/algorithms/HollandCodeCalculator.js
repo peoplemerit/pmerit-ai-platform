@@ -7,6 +7,10 @@
  * @created November 4, 2025
  */
 
+// Configuration constants
+const REVERSE_KEYED_QUESTIONS = [2, 4]; // Same as BigFiveScoring - questions 2 and 4 are reverse-keyed
+const MAX_ANSWER_VALUE = 5;
+
 /**
  * Calculate Holland Code (RIASEC) from assessment answers
  * @param {Object} answers - All 120 answers
@@ -192,10 +196,10 @@ function calculateFacetAverages(answers) {
     
     for (const qId of questionIds) {
       if (answers[qId] !== undefined && answers[qId] !== null) {
-        // Apply reverse scoring for minus-keyed questions (typically Q2 and Q4)
+        // Apply reverse scoring using consistent logic with BigFiveScoring
         const qNum = parseInt(qId.split('_')[1]);
-        const isReversed = (qNum === 2 || qNum === 4);
-        const score = isReversed ? (6 - answers[qId]) : answers[qId];
+        const isReversed = REVERSE_KEYED_QUESTIONS.includes(qNum);
+        const score = isReversed ? (MAX_ANSWER_VALUE + 1 - answers[qId]) : answers[qId];
         
         sum += score;
         count++;

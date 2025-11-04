@@ -91,14 +91,12 @@ export async function onRequestPost(context) {
       careerMatches
     });
 
-    // Success response
+    // Success response - return minimal data, client should fetch details from results endpoint
     return new Response(JSON.stringify({
       success: true,
       resultId,
       sessionId: body.sessionId,
-      bigFive,
-      hollandCode,
-      careerMatches,
+      message: 'Assessment completed successfully',
       completedAt: new Date().toISOString()
     }), {
       status: 200,
@@ -108,10 +106,10 @@ export async function onRequestPost(context) {
   } catch (error) {
     console.error('[/api/v1/assessment/submit] Error:', error);
     
+    // Generic error message for security - avoid exposing internal details
     return new Response(JSON.stringify({
       success: false,
-      error: 'Failed to process assessment',
-      details: error.message
+      error: 'Failed to process assessment. Please try again later.'
     }), {
       status: 500,
       headers: corsHeaders
