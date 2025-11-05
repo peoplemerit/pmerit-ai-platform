@@ -38,6 +38,11 @@
     // TODO (Phase 2): Update this with actual backend API URL
     API_BASE_URL: '/api',
 
+    // Layout Partials Base Path
+    // Default to /shared for backwards compatibility
+    // Production can override to /partials via data attribute on body
+    LAYOUT_PARTIALS_BASE: '/shared',
+
     // App version
     VERSION: '1.0.0-phase1'
   };
@@ -47,13 +52,13 @@
 
   // Avatar configuration (Phase 5)
   window.PMERIT = window.PMERIT || {};
-  
+
   // Ensure AVATAR_BASE_URL always has trailing slash
   let avatarBaseUrl = window.PMERIT.AVATAR_BASE_URL || '/assets/avatars/';
   if (!avatarBaseUrl.endsWith('/')) {
     avatarBaseUrl += '/';
   }
-  
+
   window.PMERIT.AVATAR_BASE_URL = avatarBaseUrl;
   window.PMERIT.AVATAR_MODEL = window.PMERIT.AVATAR_MODEL || 'chris_redfield__re6_bad.glb';
   window.PMERIT.AVATAR_SCALE = window.PMERIT.AVATAR_SCALE || 1.0;

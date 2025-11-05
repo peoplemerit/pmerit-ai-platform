@@ -59,12 +59,32 @@ For even simpler integration, use the `data-layout-auto-init` attribute:
 
 ### 1. Dynamic Header/Footer Loading
 
-The Layout Loader fetches header and footer HTML partials from `/partials/` directory and injects them into the page:
+The Layout Loader fetches header and footer HTML partials and injects them into the page:
 
-- **Header**: Loaded from `/partials/header.html` (prepended to `<body>`)
-- **Footer**: Loaded from `/partials/footer.html` (appended to `<body>`)
+- **Header**: Loaded from configured path (prepended to `<body>`)
+- **Footer**: Loaded from configured path (appended to `<body>`)
 
-This ensures all pages share the same header and footer structure without duplication.
+By default, the loader attempts to fetch partials from `/shared/` first, then falls back to `/partials/` if the primary path fails. This ensures all pages share the same header and footer structure without duplication.
+
+#### Path Configuration
+
+You can configure the base path for partials in three ways (in order of precedence):
+
+1. **Data Attribute**: Set `data-layout-partials-base` on the `<body>` element
+   ```html
+   <body data-layout-partials-base="/partials">
+   ```
+
+2. **Global Configuration**: Set `window.CONFIG.LAYOUT_PARTIALS_BASE` before loading the script
+   ```javascript
+   window.CONFIG = { LAYOUT_PARTIALS_BASE: '/partials' };
+   ```
+
+3. **Default**: If neither is set, defaults to `/shared`
+
+The loader will try the configured path first (e.g., `/shared/header.html`), and if that fails (404 or network error), it will automatically fall back to `/partials/header.html` and `/partials/footer.html`.
+
+This ensures compatibility across environments without requiring code changes.
 
 ### 2. Hamburger Menu Management
 
@@ -120,44 +140,58 @@ if (window.TTS) {
 
 ## Advanced Usage
 
-### Custom Configuration
+### Configuration Options
 
-Override default paths and insertion points:
+The Layout Loader supports configuration through multiple methods:
 
-```javascript
-await window.LayoutLoader.init({
-  headerPartialPath: '/custom-partials/header.html',
-  footerPartialPath: '/custom-partials/footer.html',
-  headerInsertPoint: '#header-container',
-  footerInsertPoint: '#footer-container',
-  headerPosition: 'beforeend',
-  footerPosition: 'afterbegin'
-});
+#### Method 1: Data Attribute (Recommended for per-page configuration)
+
+Set the `data-layout-partials-base` attribute on the `<body>` element:
+
+```html
+<body data-layout-partials-base="/partials" data-layout-auto-init>
+  <!-- Page content -->
+</body>
 ```
 
-#### Configuration Options
+#### Method 2: Global Configuration (Recommended for application-wide settings)
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `headerPartialPath` | string | `/partials/header.html` | Path to header HTML file |
-| `footerPartialPath` | string | `/partials/footer.html` | Path to footer HTML file |
-| `headerInsertPoint` | string | `body` | CSS selector for header insertion |
-| `footerInsertPoint` | string | `body` | CSS selector for footer insertion |
-| `headerPosition` | string | `afterbegin` | Position: `afterbegin` or `beforeend` |
-| `footerPosition` | string | `beforeend` | Position: `afterbegin` or `beforeend` |
+Configure via `window.CONFIG` before loading the layout-loader script:
+
+```html
+<script src="/assets/js/config.js"></script>
+<script>
+  // Override in config.js or inline
+  window.CONFIG.LAYOUT_PARTIALS_BASE = '/partials';
+</script>
+<script src="/assets/js/layout-loader.js"></script>
+```
+
+#### Method 3: Default Behavior
+
+If no configuration is provided, the loader defaults to `/shared` as the primary path and automatically falls back to `/partials` if files are not found.
+
+**Configuration Precedence:**
+
+1. `data-layout-partials-base` attribute (highest priority)
+2. `window.CONFIG.LAYOUT_PARTIALS_BASE`
+3. Default value: `/shared`
+
+**Note:** The loader no longer supports runtime configuration via `init()` parameters. Use data attributes or global config instead for MOSA compliance and consistency.
 
 ### Checking Load Status
 
-The `init()` method returns a Promise with load status:
+The `init()` method returns a Promise that resolves with a result object containing load status:
 
 ```javascript
-const result = await window.LayoutLoader.init();
+const result = await window.PMERIT.layout.init();
 
 console.log(result);
 // {
-//   header: true,
-//   footer: true,
-//   success: true
+//   success: true,    // true if at least one partial loaded
+//   header: true,     // true if header loaded successfully
+//   footer: true,     // true if footer loaded successfully
+//   error: null       // error message if any partial failed, null otherwise
 // }
 
 if (result.success) {
@@ -167,24 +201,50 @@ if (result.success) {
 }
 ```
 
+**Result Object Properties:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `success` | boolean | `true` if at least one partial (header or footer) loaded successfully |
+| `header` | boolean | `true` if header loaded from primary or fallback path |
+| `footer` | boolean | `true` if footer loaded from primary or fallback path |
+| `error` | string \| null | Error message describing what failed, or `null` if no errors |
+```
+
 ### Error Handling
+
+The loader implements automatic fallback for partial loading. If a partial is not found at the primary path, it automatically tries the fallback path before reporting an error.
 
 ```javascript
 try {
-  const result = await window.LayoutLoader.init();
+  const result = await window.PMERIT.layout.init();
   
   if (!result.success) {
-    // Handle partial failure
+    // Handle failure - neither primary nor fallback paths worked
+    console.error('Failed to load layout:', result.error);
+    
+    // Check individual partial status
     if (!result.header) {
-      console.warn('Header failed to load');
+      console.warn('Header failed to load from all paths');
     }
     if (!result.footer) {
-      console.warn('Footer failed to load');
+      console.warn('Footer failed to load from all paths');
     }
+  } else {
+    // Success - at least one partial loaded
+    console.log('Layout initialized');
   }
 } catch (error) {
   console.error('Initialization error:', error);
 }
+```
+
+**Fallback Behavior:**
+
+1. Attempts to fetch from primary path (e.g., `/shared/header.html`)
+2. If primary fails (404, network error), logs a warning and tries fallback path (`/partials/header.html`)
+3. If both fail, sets `error` property and `success: false` (or `success: true` if the other partial loaded)
+4. Continues initialization even if one partial fails, allowing pages to render with partial content
 ```
 
 ## MOSA Compliance
@@ -328,12 +388,14 @@ Always load Layout Loader before initializing:
 If you need to interact with header/footer elements, wait for initialization:
 
 ```javascript
-const result = await window.LayoutLoader.init();
+const result = await window.PMERIT.layout.init();
 
 if (result.success) {
   // Now safe to interact with header/footer elements
   const menuBtn = document.getElementById('custom-menu-item');
-  menuBtn.addEventListener('click', handleClick);
+  if (menuBtn) {
+    menuBtn.addEventListener('click', handleClick);
+  }
 }
 ```
 
@@ -342,11 +404,13 @@ if (result.success) {
 Always handle potential load failures:
 
 ```javascript
-const result = await window.LayoutLoader.init();
+const result = await window.PMERIT.layout.init();
 
 if (!result.success) {
   // Fallback behavior
-  document.body.innerHTML = '<p>Failed to load layout. Please refresh.</p>';
+  console.error('Layout failed to load:', result.error);
+  // Optionally show user message
+  document.body.innerHTML += '<p>Failed to load layout. Please refresh.</p>';
 }
 ```
 
@@ -367,10 +431,13 @@ Ensure your CSS is loaded before the layout for consistent rendering:
 **Problem**: Partials don't appear on page
 
 **Solutions**:
-- Check browser console for fetch errors
-- Verify partial paths are correct (`/partials/header.html`, `/partials/footer.html`)
+- Check browser console for fetch errors and fallback messages
+- The loader will automatically try `/partials/` if `/shared/` fails
+- Verify at least one of the paths has valid header.html and footer.html files
 - Ensure local server is running (partials can't load from `file://`)
-- Check network tab for 404 errors
+- Check network tab for 404 errors on both primary and fallback paths
+- Verify `data-layout-auto-init` attribute is set on `<body>` or call `window.PMERIT.layout.init()` manually
+- Check the console for the result object to see which partials failed
 
 ### Menu Not Opening
 
@@ -444,8 +511,11 @@ If using SSI or other server-side includes:
 
   <script src="/assets/js/layout-loader.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      window.LayoutLoader.init();
+    document.addEventListener('DOMContentLoaded', async () => {
+      const result = await window.PMERIT.layout.init();
+      if (!result.success) {
+        console.error('Layout failed:', result.error);
+      }
     });
   </script>
 </body>
@@ -478,10 +548,12 @@ If using SSI or other server-side includes:
       }
 
       // Load layout
-      const result = await window.LayoutLoader.init();
+      const result = await window.PMERIT.layout.init();
       
       if (result.success) {
         console.log('Dashboard ready');
+      } else {
+        console.error('Layout load failed:', result.error);
       }
     });
   </script>
@@ -496,7 +568,12 @@ If using SSI or other server-side includes:
 class SPARouter {
   async init() {
     // Load layout once
-    await window.LayoutLoader.init();
+    const result = await window.PMERIT.layout.init();
+    
+    if (!result.success) {
+      console.error('Failed to load layout:', result.error);
+      return;
+    }
     
     // Set up route handling
     this.setupRoutes();
