@@ -2,268 +2,141 @@
  * Career Enrichment Service
  * Adds real-time data to career recommendations
  *
- * @module CareerEnrichmentService
- * @version 1.0.0
+ * - Uses Cloudflare Workers KV when kvBinding is provided (expects KV namespace object with get/put/delete).
+ * - KV key format: bls:{onetCode}
+ * - TTL: 86400 seconds (24 hours)
+ * - Falls back to in-memory Map cache when KV is not provided.
  */
 
 class CareerEnrichmentService {
-  constructor(blsClient, databaseHelper) {
+  constructor(blsClient, databaseHelper, options = {}) {
     this.bls = blsClient;
     this.db = databaseHelper;
-    this.cache = new Map();
-    this.cacheTTL = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+    this.kv = options.kvBinding || null;
+    this.inMemoryCache = new Map();
+    this.ttlSeconds = options.ttlSeconds ?? 86400;
+    this.maxConcurrent = options.maxConcurrent ?? 5;
   }
 
-  /**
-   * Enrich career matches with live data
-   * @param {Array} matches - Base career matches from algorithm
-   * @returns {Promise<Array>} Enriched matches with current data
-   */
   async enrichMatches(matches) {
-    try {
-      if (!Array.isArray(matches) || matches.length === 0) {
-        return matches;
-      }
+    const results = [];
+    const executing = [];
 
-      console.log('[CareerEnrichmentService] Enriching', matches.length, 'matches');
-
-      // Enrich each match with BLS data
-      const enrichedMatches = await Promise.all(
-        matches.map(async (match) => {
-          try {
-            return await this.enrichSingleMatch(match);
-          } catch (error) {
-            console.error('[CareerEnrichmentService] Error enriching match:', match.career_id, error);
-            // Return original match if enrichment fails
-            return match;
-          }
-        })
-      );
-
-      console.log('[CareerEnrichmentService] Enrichment complete');
-
-      return enrichedMatches;
-
-    } catch (error) {
-      console.error('[CareerEnrichmentService] enrichMatches error:', error);
-      // Return original matches if enrichment fails
-      return matches;
-    }
-  }
-
-  /**
-   * Enrich a single career match
-   * @param {Object} match - Career match data
-   * @returns {Promise<Object>} Enriched match
-   * @private
-   */
-  async enrichSingleMatch(match) {
-    try {
-      // Check cache first
-      const cacheKey = `career_${match.career_id}`;
-      const cached = this.getFromCache(cacheKey);
-
-      if (cached) {
-        console.log('[CareerEnrichmentService] Using cached data for:', match.career_id);
-        return {
+    for (const match of matches) {
+      const p = this._enrichSingle(match).then((enriched) => results.push(enriched)).catch((err) => {
+        results.push({
           ...match,
-          ...cached
-        };
+          salary_median: null,
+          salary_min: null,
+          salary_max: null,
+          growth_outlook: null,
+          enrichment_error: err.message
+        });
+      });
+
+      executing.push(p);
+
+      if (executing.length >= this.maxConcurrent) {
+        await Promise.race(executing);
       }
-
-      // Fetch BLS data if SOC code is available
-      let blsData = null;
-      if (match.onet_code) {
-        // Convert O*NET code to SOC code (they are similar formats)
-        const socCode = this.convertONETtoSOC(match.onet_code);
-        blsData = await this.bls.getOccupationData(socCode);
-      }
-
-      // Calculate "hot" factor (trending career score)
-      const hotFactor = this.calculateHotFactor(match, blsData);
-
-      // Prepare enriched data
-      const enrichmentData = {
-        bls_salary: blsData?.salary || null,
-        bls_growth: blsData?.growth || null,
-        hot_factor: hotFactor,
-        data_updated: new Date().toISOString()
-      };
-
-      // Cache the enrichment data
-      this.cacheCareerData(cacheKey, enrichmentData);
-
-      // Return enriched match
-      return {
-        ...match,
-        ...enrichmentData
-      };
-
-    } catch (error) {
-      console.error('[CareerEnrichmentService] enrichSingleMatch error:', error);
-      return match;
-    }
-  }
-
-  /**
-   * Calculate "hot" factor for trending careers
-   * @param {Object} career - Career data
-   * @param {Object} blsData - BLS data
-   * @returns {number} Hot factor score (0-100)
-   * @private
-   */
-  calculateHotFactor(career, blsData) {
-    try {
-      let score = 50; // Base score
-
-      // Factor 1: Growth outlook (40% weight)
-      if (blsData?.growth?.growthRate) {
-        const growthRate = parseFloat(blsData.growth.growthRate);
-        if (growthRate > 10) {
-          score += 20;
-        } else if (growthRate > 5) {
-          score += 10;
-        } else if (growthRate < 0) {
-          score -= 10;
-        }
-      } else if (career.growth_outlook) {
-        const outlook = career.growth_outlook.toLowerCase();
-        if (outlook.includes('much faster') || outlook.includes('excellent')) {
-          score += 20;
-        } else if (outlook.includes('faster') || outlook.includes('good')) {
-          score += 10;
-        } else if (outlook.includes('decline')) {
-          score -= 10;
-        }
-      }
-
-      // Factor 2: Salary level (30% weight)
-      const salary = career.salary_median || blsData?.salary?.median;
-      if (salary) {
-        if (salary > 100000) {
-          score += 15;
-        } else if (salary > 70000) {
-          score += 10;
-        } else if (salary < 40000) {
-          score -= 5;
-        }
-      }
-
-      // Factor 3: Education requirements (30% weight)
-      // Lower education requirements increase accessibility = higher hot factor
-      if (career.education_required) {
-        const education = career.education_required.toLowerCase();
-        if (education.includes('high school') || education.includes('associate')) {
-          score += 15;
-        } else if (education.includes('bachelor')) {
-          score += 10;
-        } else if (education.includes('master') || education.includes('doctoral')) {
-          score += 5;
-        }
-      }
-
-      return Math.max(0, Math.min(100, score));
-
-    } catch (error) {
-      console.error('[CareerEnrichmentService] calculateHotFactor error:', error);
-      return 50; // Return neutral score on error
-    }
-  }
-
-  /**
-   * Convert O*NET code to SOC code
-   * @param {string} onetCode - O*NET occupation code
-   * @returns {string} SOC code
-   * @private
-   */
-  convertONETtoSOC(onetCode) {
-    // O*NET codes are typically in format: XX-XXXX.XX
-    // SOC codes are typically: XX-XXXX
-    // Extract first 7 characters (including hyphen)
-    if (!onetCode || typeof onetCode !== 'string') {
-      return '';
     }
 
-    // Remove any decimal portion
-    const socCode = onetCode.split('.')[0];
-    return socCode;
+    await Promise.all(executing);
+    results.sort((a, b) => (b.fit_score || 0) - (a.fit_score || 0));
+    return results;
   }
 
-  /**
-   * Get data from cache
-   * @param {string} key - Cache key
-   * @returns {Object|null} Cached data or null
-   * @private
-   */
-  getFromCache(key) {
-    const cached = this.cache.get(key);
+  async _enrichSingle(match) {
+    const careerId = match.career_id ?? match.onet_code ?? match.title;
+    const onetCode = match.onet_code ?? match.onetCode ?? null;
+    const cacheKey = onetCode ? `bls:${onetCode}` : `career:${careerId}`;
 
-    if (!cached) {
-      return null;
+    const cached = await this._getCached(cacheKey);
+    if (cached) {
+      return { ...match, ...cached };
     }
 
-    // Check if cache has expired
-    const now = Date.now();
-    if (now - cached.timestamp > this.cacheTTL) {
-      this.cache.delete(key);
-      return null;
-    }
-
-    return cached.data;
-  }
-
-  /**
-   * Cache enrichment data to reduce API calls
-   * @param {string} careerId - Career identifier
-   * @param {Object} data - Data to cache
-   */
-  cacheCareerData(careerId, data) {
-    try {
-      const cacheEntry = {
-        data: data,
-        timestamp: Date.now()
-      };
-
-      this.cache.set(careerId, cacheEntry);
-
-      console.log('[CareerEnrichmentService] Cached data for:', careerId);
-
-      // Implement cache size limit to prevent memory issues
-      if (this.cache.size > 1000) {
-        // Remove oldest entries
-        const entries = Array.from(this.cache.entries());
-        entries.sort((a, b) => a[1].timestamp - b[1].timestamp);
-
-        // Remove oldest 10%
-        const toRemove = Math.floor(entries.length * 0.1);
-        for (let i = 0; i < toRemove; i++) {
-          this.cache.delete(entries[i][0]);
-        }
+    let salary = null;
+    let growth = null;
+    if (onetCode) {
+      try {
+        salary = await this.bls.getSalaryData(onetCode);
+        growth = await this.bls.getGrowthOutlook(onetCode);
+      } catch (err) {
+        salary = { error: err.message };
+        growth = { error: err.message };
       }
-
-    } catch (error) {
-      console.error('[CareerEnrichmentService] cacheCareerData error:', error);
-      // Don't throw - caching failure shouldn't break the workflow
+    } else {
+      salary = { error: 'No O*NET code for career' };
+      growth = { error: 'No O*NET code for career' };
     }
-  }
 
-  /**
-   * Clear all cached data
-   */
-  clearCache() {
-    this.cache.clear();
-    console.log('[CareerEnrichmentService] Cache cleared');
-  }
+    const median = salary?.median ?? null;
+    let min = null;
+    let max = null;
+    if (typeof median === 'number') {
+      min = Math.round(median * 0.8);
+      max = Math.round(median * 1.2);
+    }
 
-  /**
-   * Get cache statistics
-   * @returns {Object} Cache stats
-   */
-  getCacheStats() {
-    return {
-      size: this.cache.size,
-      ttl_hours: this.cacheTTL / (60 * 60 * 1000)
+    const enriched = {
+      salary_median: median,
+      salary_min: min,
+      salary_max: max,
+      growth_outlook: growth,
+      salary_raw: salary,
+      holland_codes: match.holland_codes ?? match.hollandCode ?? null,
+      career_id,
+      title: match.title,
+      fit_score: match.fit_score,
+      rationale: match.rationale,
+      education_required: match.education_required ?? match.education ?? null,
+      skills_required: match.skills_required ?? match.skills ?? null,
+      onet_code: onetCode ?? null
     };
+
+    await this.cacheCareerData(cacheKey, enriched);
+    return enriched;
+  }
+
+  async _getCached(key) {
+    if (!key) return null;
+    if (this.kv) {
+      try {
+        const raw = await this.kv.get(key);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        const now = Date.now();
+        if (parsed.expiresAt && parsed.expiresAt < now) {
+          await this.kv.delete(key);
+          return null;
+        }
+        return parsed.data ?? null;
+      } catch (err) {
+        return null;
+      }
+    } else {
+      const entry = this.inMemoryCache.get(key);
+      if (!entry) return null;
+      if (Date.now() > entry.expiresAt) {
+        this.inMemoryCache.delete(key);
+        return null;
+      }
+      return entry.data;
+    }
+  }
+
+  async cacheCareerData(key, data) {
+    if (!key) return;
+    const payload = { data, expiresAt: Date.now() + (this.ttlSeconds * 1000) };
+    if (this.kv) {
+      try {
+        await this.kv.put(key, JSON.stringify(payload));
+        return;
+      } catch (err) {
+      }
+    }
+    this.inMemoryCache.set(key, payload);
   }
 }
 

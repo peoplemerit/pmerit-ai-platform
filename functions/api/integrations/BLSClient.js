@@ -2,221 +2,90 @@
  * BLS API Client
  * Fetches labor statistics for career matching
  *
- * @module BLSClient
- * @version 1.0.0
+ * - API key is read from environment variable BLS_API_KEY by default.
+ * - For tests, pass { apiKey, fetch } to constructor.
+ *
+ * Implements O*NET SOC -> BLS series ID mapping per TECHNICAL_SPECS_ISSUE_19.md
+ *
+ * [HUMAN REVIEW NEEDED]: Confirm Cloudflare env binding name and whether non-national area series are needed.
  */
 
 class BLSClient {
-  constructor(apiKey = null) {
-    // [HUMAN REVIEW NEEDED]: API key should be moved to environment variables
-    // For production use: this.apiKey = apiKey || env.BLS_API_KEY
-    // Current implementation uses provided key for development/testing
-    this.apiKey = apiKey || 'f3b54462bdd64a829a09dd23d1acb7cd';
+  constructor(options = {}) {
+    this.fetch = options.fetch || (typeof fetch !== 'undefined' ? fetch.bind(globalThis) : null);
+    this.apiKey = options.apiKey || (typeof process !== 'undefined' && process.env && process.env.BLS_API_KEY) || null;
     this.baseURL = 'https://api.bls.gov/publicAPI/v2/';
-    this.requestTimeout = 10000; // 10 seconds
-    this.maxRetries = 2;
+    this.lastRequestAt = 0;
+    this.minIntervalMs = options.minIntervalMs ?? 150;
   }
 
-  /**
-   * Get occupation data by SOC code
-   * @param {string} socCode - Standard Occupational Classification code
-   * @returns {Promise<Object>} Occupation data including salary, growth
-   * 
-   * [HUMAN REVIEW NEEDED]: BLS API integration is INCOMPLETE
-   * - Requires SOC-to-SeriesID mapping before production use
-   * - Current implementation returns placeholder structure
-   * - Real API calls are commented out and need completion
-   */
-  async getOccupationData(socCode) {
-    try {
-      if (!socCode) {
-        throw new Error('SOC code is required');
-      }
+  async _call(endpoint, body = {}) {
+    if (!this.fetch) throw new Error('No fetch available for BLSClient');
+    if (!this.apiKey) throw new Error('BLS API key not provided. Set BLS_API_KEY env var or pass apiKey to constructor.');
 
-      console.log('[BLSClient] Fetching occupation data for SOC:', socCode);
-
-      // Attempt to fetch salary and growth data
-      const [salaryData, growthData] = await Promise.allSettled([
-        this.getSalaryData(socCode),
-        this.getGrowthOutlook(socCode)
-      ]);
-
-      // Combine results
-      const result = {
-        socCode,
-        salary: salaryData.status === 'fulfilled' ? salaryData.value : null,
-        growth: growthData.status === 'fulfilled' ? growthData.value : null,
-        lastUpdated: new Date().toISOString()
-      };
-
-      console.log('[BLSClient] Occupation data fetched successfully');
-
-      return result;
-
-    } catch (error) {
-      console.error('[BLSClient] getOccupationData error:', error);
-      // Return partial data instead of failing completely
-      return {
-        socCode,
-        salary: null,
-        growth: null,
-        error: error.message
-      };
+    const now = Date.now();
+    const elapsed = now - this.lastRequestAt;
+    if (elapsed < this.minIntervalMs) {
+      await new Promise((r) => setTimeout(r, this.minIntervalMs - elapsed));
     }
+    this.lastRequestAt = Date.now();
+
+    const url = `${this.baseURL}${endpoint}`;
+    const payload = { ...body, registrationkey: this.apiKey };
+
+    const res = await this.fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) {
+      throw new Error(`BLS API error: ${res.status} ${res.statusText}`);
+    }
+
+    const json = await res.json();
+    if (!json || json.status === 'REQUEST_NOT_PROCESSED' || (json.Results == null && json.series == null)) {
+      throw new Error(`BLS API returned unexpected payload: ${JSON.stringify(json)}`);
+    }
+
+    return json.Results ?? json;
   }
 
-  /**
-   * Get salary data for occupation
-   * @param {string} socCode - SOC code
-   * @returns {Promise<Object>} Salary statistics
-   */
-  async getSalaryData(socCode) {
+  onetToBLSSeriesId(onetCode, type = 'employment') {
+    const cleanCode = (onetCode || '').replace(/[-\.]/g, '');
+    if (type === 'employment') return `OEUN${cleanCode}`;
+    if (type === 'salary') return `OEUM0000000${cleanCode}`;
+    throw new Error(`Unknown BLS series type: ${type}`);
+  }
+
+  async getOccupationData(onetCode) {
+    if (!onetCode) throw new Error('onetCode required');
+
+    const employmentSeriesId = this.onetToBLSSeriesId(onetCode, 'employment');
+    const salarySeriesId = this.onetToBLSSeriesId(onetCode, 'salary');
+
     try {
-      // [HUMAN REVIEW NEEDED]: BLS API structure requires series ID construction
-      // This is a placeholder implementation
-      // Real implementation would need to:
-      // 1. Map SOC code to appropriate BLS series ID
-      // 2. Fetch data from timeseries/data/ endpoint
-      // 3. Parse and format the response
-
-      console.log('[BLSClient] Fetching salary data for:', socCode);
-
-      // For now, return mock structure that can be replaced with real API call
-      // When ready to integrate, uncomment and modify the following:
-      /*
-      const seriesId = this.mapSOCtoSeriesId(socCode);
-      const response = await this.makeRequest('timeseries/data/', {
-        seriesid: [seriesId],
+      const results = await this._call('timeseries/data/', {
+        seriesid: [employmentSeriesId, salarySeriesId],
         startyear: new Date().getFullYear() - 1,
-        endyear: new Date().getFullYear(),
-        registrationkey: this.apiKey
+        endyear: new Date().getFullYear()
       });
-
-      // Parse response and extract salary data
-      const latestData = response.Results?.series?.[0]?.data?.[0];
-      */
-
-      // Placeholder return structure
-      return {
-        median: null,
-        mean: null,
-        percentile10: null,
-        percentile90: null,
-        source: 'BLS',
-        note: 'BLS API integration pending - requires series ID mapping'
-      };
-
-    } catch (error) {
-      console.error('[BLSClient] getSalaryData error:', error);
-      throw new Error(`Failed to fetch salary data: ${error.message}`);
+      return { raw: results };
+    } catch (err) {
+      return { error: err.message };
     }
   }
 
-  /**
-   * Get employment projections
-   * @param {string} socCode - SOC code
-   * @returns {Promise<Object>} Growth outlook
-   */
-  async getGrowthOutlook(socCode) {
-    try {
-      // [HUMAN REVIEW NEEDED]: BLS employment projections API integration
-      // This is a placeholder implementation
-
-      console.log('[BLSClient] Fetching growth outlook for:', socCode);
-
-      // Placeholder return structure
-      return {
-        growthRate: null,
-        outlook: 'Average',
-        demand: 'Moderate',
-        projection_year: new Date().getFullYear() + 10,
-        source: 'BLS',
-        note: 'BLS API integration pending - requires projections endpoint'
-      };
-
-    } catch (error) {
-      console.error('[BLSClient] getGrowthOutlook error:', error);
-      throw new Error(`Failed to fetch growth outlook: ${error.message}`);
-    }
+  async getSalaryData(onetCode) {
+    const data = await this.getOccupationData(onetCode);
+    if (data.error) return { error: data.error };
+    return { median: null, mean: null, p10: null, p90: null, raw: data.raw };
   }
 
-  /**
-   * Make HTTP request to BLS API with retries
-   * @param {string} endpoint - API endpoint path
-   * @param {Object} data - Request payload
-   * @returns {Promise<Object>} API response
-   * @private
-   */
-  async makeRequest(endpoint, data) {
-    let lastError;
-
-    for (let attempt = 0; attempt <= this.maxRetries; attempt++) {
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), this.requestTimeout);
-
-        const response = await fetch(`${this.baseURL}${endpoint}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data),
-          signal: controller.signal
-        });
-
-        clearTimeout(timeoutId);
-
-        if (!response.ok) {
-          throw new Error(`BLS API returned ${response.status}: ${response.statusText}`);
-        }
-
-        const result = await response.json();
-
-        if (result.status !== 'REQUEST_SUCCEEDED') {
-          throw new Error(`BLS API error: ${result.message || 'Unknown error'}`);
-        }
-
-        return result;
-
-      } catch (error) {
-        lastError = error;
-        console.warn(`[BLSClient] Request attempt ${attempt + 1} failed:`, error.message);
-
-        // Don't retry on abort/timeout for last attempt
-        if (attempt === this.maxRetries) {
-          break;
-        }
-
-        // Wait before retrying (exponential backoff)
-        await this.sleep(Math.pow(2, attempt) * 1000);
-      }
-    }
-
-    throw lastError;
-  }
-
-  /**
-   * Helper to sleep for specified milliseconds
-   * @param {number} ms - Milliseconds to sleep
-   * @returns {Promise<void>}
-   * @private
-   */
-  sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
-  /**
-   * Map SOC code to BLS series ID
-   * [HUMAN REVIEW NEEDED]: This mapping needs to be completed
-   * @param {string} socCode - Standard Occupational Classification code
-   * @returns {string} BLS series ID
-   * @private
-   */
-  mapSOCtoSeriesId(socCode) {
-    // This would contain the actual mapping logic
-    // BLS uses specific series ID formats like OEUN000000000000015-1252
-    // where the suffix corresponds to SOC codes
-    return `OEUM${socCode.replace('-', '')}`;
+  async getGrowthOutlook(onetCode) {
+    const data = await this.getOccupationData(onetCode);
+    if (data.error) return { error: data.error };
+    return { growthRate: null, outlook: null, demand: null, raw: data.raw };
   }
 }
 
