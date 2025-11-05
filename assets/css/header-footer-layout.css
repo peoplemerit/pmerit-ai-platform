@@ -265,7 +265,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: #cccccc;
+    background: var(--border-color);
     border-radius: 34px;
     transition: 0.4s;
     cursor: pointer;

@@ -76,11 +76,12 @@
 
   function restorePreferences() {
     try {
-      const theme = localStorage.getItem('pmerit:theme');
+      // Use same keys as main.js for consistency
+      const theme = localStorage.getItem('theme');
       if (theme) {
         document.documentElement.setAttribute('data-theme', theme);
       }
-      const tts = localStorage.getItem('pmerit:tts-enabled');
+      const tts = localStorage.getItem('tts-enabled');
       if (tts === 'true') {
         document.documentElement.setAttribute('data-tts', 'on');
       } else {
@@ -101,21 +102,24 @@
     // and hamburger menu via getElementById. We just need to restore
     // preferences and let main.js handle the interaction.
     
-    // However, if main.js is not loaded (simple pages), provide basic toggle support
+    // Set flag that main.js can check to avoid duplicate handlers
+    window.layoutLoaderLoaded = true;
+    
+    // Restore toggle state from localStorage
     const toggles = container.querySelectorAll('[data-toggle="dark"], [data-toggle="tts"]');
     toggles.forEach(toggle => {
       const toggleType = toggle.getAttribute('data-toggle');
       
-      // Restore checked state from localStorage
+      // Restore checked state from localStorage (use same keys as main.js)
       if (toggleType === 'dark') {
-        const theme = localStorage.getItem('pmerit:theme') || 'light';
+        const theme = localStorage.getItem('theme') || 'light';
         toggle.checked = (theme === 'dark');
       } else if (toggleType === 'tts') {
-        const ttsEnabled = localStorage.getItem('pmerit:tts-enabled') === 'true';
+        const ttsEnabled = localStorage.getItem('tts-enabled') === 'true';
         toggle.checked = ttsEnabled;
       }
       
-      // Add change handler only if main.js isn't handling it
+      // Add change handler only if main.js isn't loaded yet
       if (!window.mainJsLoaded) {
         toggle.addEventListener('change', (e) => {
           const isChecked = e.target.checked;
@@ -124,7 +128,7 @@
             const theme = isChecked ? 'dark' : 'light';
             document.documentElement.setAttribute('data-theme', theme);
             try {
-              localStorage.setItem('pmerit:theme', theme);
+              localStorage.setItem('theme', theme);
             } catch (err) {
               console.warn('localStorage not available', err);
             }
@@ -135,7 +139,7 @@
               document.documentElement.removeAttribute('data-tts');
             }
             try {
-              localStorage.setItem('pmerit:tts-enabled', isChecked.toString());
+              localStorage.setItem('tts-enabled', isChecked.toString());
             } catch (err) {
               console.warn('localStorage not available', err);
             }
