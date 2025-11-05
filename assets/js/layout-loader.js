@@ -133,6 +133,22 @@
     }
   }
 
+  function loadModalScript() {
+    // Check if modal.js is already loaded
+    if (window.modalManager || document.querySelector('script[src*="modal.js"]')) {
+      return;
+    }
+    
+    // Create and load modal.js script
+    const script = document.createElement('script');
+    script.src = '/assets/js/modal.js';
+    script.async = false;
+    script.onerror = () => {
+      console.warn('layout-loader: Failed to load modal.js');
+    };
+    document.body.appendChild(script);
+  }
+
   async function init() {
     if (document.body.dataset.layoutLoaded === 'true') {
       // Already loaded, check if elements still exist
@@ -161,6 +177,9 @@
         const footerHtml = await fetchWithFallback(config.footerPrimary, config.footerFallback, 'footer');
         insertOnce(FOOTER_ID, footerHtml, false);
         results.footer = true;
+        
+        // Load modal.js after footer is inserted to manage modal behavior
+        loadModalScript();
       } catch (footerError) {
         if (!results.error) {
           results.error = footerError.message;
