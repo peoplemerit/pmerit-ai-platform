@@ -1,143 +1,163 @@
-<!-- PMERIT Mobile-First Header -->
-<header class="pmerit-header" id="main-header">
-  <div class="header-container">
-    <!-- Left: Logo & Platform Name -->
-    <div class="header-left">
-      <a href="index.html" class="logo-link" aria-label="PMERIT Home">
-        <i class="fas fa-graduation-cap logo-icon"></i>
-        <span class="logo-text">Pmerit</span>
-      </a>
+<!-- PMERIT Header - Mobile & Desktop Responsive -->
+<!-- Mobile Layout (< 1024px) -->
+<div class="mobile-layout">
+  <!-- Mobile Header -->
+  <header class="pmerit-header">
+    <div class="pmerit-logo">PMERIT</div>
+    <div class="header-actions">
+      <button class="lang-selector" aria-label="Change language">En</button>
+      <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">☰</button>
+      <button class="sign-in-btn" id="signInBtn">Sign In</button>
+    </div>
+  </header>
+
+  <!-- Hamburger Menu Overlay -->
+  <div class="menu-overlay" id="menuOverlay"></div>
+  
+  <!-- Hamburger Menu -->
+  <nav class="side-menu" id="sideMenu">
+    <!-- Quick Actions Section -->
+    <h3 class="menu-title">Quick Actions</h3>
+    
+    <!-- Dashboard (Primary Item) -->
+    <div class="menu-item menu-item-primary" data-route="/">
+      <span><i class="fas fa-tachometer-alt"></i> Dashboard</span>
+      <i class="fas fa-chevron-right"></i>
     </div>
     
-    <!-- Right: Language Switcher | Hamburger | Sign In -->
-    <div class="header-right">
-      <!-- Language Switcher Button -->
-      <button class="header-btn language-btn" id="language-btn" aria-label="Change language" title="Select Language">
-        <i class="fas fa-globe"></i>
-      </button>
-      
-      <!-- Pricing Link (Desktop only) -->
-      <a href="pricing.html" class="header-btn pricing-link desktop-only">Pricing</a>
-      
-      <!-- Hamburger Menu Toggle -->
-      <button class="header-btn hamburger-toggle" id="hamburger-toggle" aria-label="Toggle menu" aria-expanded="false">
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-      </button>
-      
-      <!-- Sign In Button -->
-      <a href="/signin.html" class="btn-sign-in" id="sign-in-btn">Sign In</a>
-    </div>
-  </div>
-</header>
-
-<!-- Hamburger Menu Overlay -->
-<div class="menu-overlay" id="menu-overlay" aria-hidden="true"></div>
-
-<!-- Hamburger Menu (Slide-in from Left) -->
-<aside class="hamburger-menu" id="hamburger-menu" aria-hidden="true">
-  <!-- Menu Header -->
-  <div class="menu-header">
-    <div class="menu-brand">
-      <i class="fas fa-graduation-cap"></i>
-      <span>Pmerit Menu</span>
-    </div>
-    <button class="menu-close-btn" id="menu-close-btn" aria-label="Close menu">
-      <i class="fas fa-times"></i>
+    <!-- Classroom Link -->
+    <button class="menu-item" data-route="#/classroom">
+      <span><i class="fas fa-graduation-cap"></i> Classroom</span>
+      <i class="fas fa-chevron-right"></i>
     </button>
-  </div>
-
-  <!-- Menu Content -->
-  <nav class="menu-content">
-    <!-- User Section (Show when logged out) -->
-    <div class="menu-section user-section" id="user-section">
-      <p class="user-status">Not signed in</p>
-      <a href="/signin.html" class="menu-btn primary" id="menu-sign-in">Sign In</a>
+    
+    <!-- Career Track -->
+    <div class="menu-item" data-route="/career">
+      <span><i class="fas fa-route"></i> Career Track & Explore Paths</span>
+      <i class="fas fa-chevron-right"></i>
     </div>
-
-    <!-- Quick Actions -->
-    <div class="menu-section">
-      <h3 class="section-title">Quick Actions</h3>
-      
-      <a href="about-us.html" class="menu-item" id="about-us-btn">
-        <span class="menu-icon">ℹ️</span>
-        <span class="menu-text">About PMERIT</span>
-        <i class="fas fa-chevron-right menu-arrow"></i>
-      </a>
-      
-      <a href="pricing.html" class="menu-item" id="pricing-btn">
-        <span class="menu-icon">💰</span>
-        <span class="menu-text">Pricing</span>
-        <i class="fas fa-chevron-right menu-arrow"></i>
-      </a>
-      
-      <button class="menu-item" id="career-track-btn">
-        <span class="menu-icon">🎯</span>
-        <span class="menu-text">Career Track & Explore Paths</span>
-        <i class="fas fa-chevron-right menu-arrow"></i>
-      </button>
-    </div>
-
-    <!-- Settings -->
-    <div class="menu-section">
-      <h3 class="section-title">Settings</h3>
-      
-      <button class="menu-item">
-        <span class="menu-icon">🌙</span>
-        <span class="menu-text">Dark Mode</span>
-        <label class="toggle-switch" aria-label="Toggle Dark Mode">
-          <input type="checkbox" id="dark-mode-toggle" class="modern-toggle" data-toggle="dark">
+    
+    <!-- Settings Section -->
+    <h3 class="menu-title">Settings</h3>
+    
+    <!-- Dark Mode Toggle -->
+    <div class="menu-item">
+      <label class="menu-toggle-label">
+        <span><i class="fas fa-moon"></i> Dark Mode</span>
+        <div class="toggle-switch">
+          <input type="checkbox" id="mobileDarkToggle" data-toggle="dark" aria-label="Toggle Dark Mode">
           <span class="toggle-slider"></span>
-        </label>
-      </button>
-
-      <button class="menu-item">
-        <span class="menu-icon">🔊</span>
-        <span class="menu-text">Text-to-Speech</span>
-        <label class="toggle-switch" aria-label="Toggle Text-to-Speech">
-          <input type="checkbox" id="tts-toggle" class="modern-toggle" data-toggle="tts">
+        </div>
+      </label>
+    </div>
+    
+    <!-- Text-to-Speech Toggle -->
+    <div class="menu-item">
+      <label class="menu-toggle-label">
+        <span><i class="fas fa-volume-up"></i> Text-to-Speech</span>
+        <div class="toggle-switch">
+          <input type="checkbox" id="mobileTtsToggle" data-toggle="tts" aria-label="Toggle Text-to-Speech">
           <span class="toggle-slider"></span>
-        </label>
-      </button>
-
-      <button class="menu-item" id="preview-voices-btn">
-        <span class="menu-icon">🎤</span>
-        <span class="menu-text">Preview Voices</span>
-        <i class="fas fa-chevron-right menu-arrow"></i>
-      </button>
+        </div>
+      </label>
     </div>
-
-    <!-- Dashboard & Assessment -->
-    <div class="menu-section">
-      <button class="menu-item" id="dashboard-btn">
-        <span class="menu-icon">📊</span>
-        <span class="menu-text">Dashboard</span>
-        <i class="fas fa-chevron-right menu-arrow"></i>
-      </button>
-
-      <a href="assessment-entry.html" class="menu-item primary-action" id="begin-assessment-btn">
-        <span class="menu-icon">🚀</span>
-        <span class="menu-text">Begin Assessment</span>
-      </a>
+    
+    <!-- Preview Voices -->
+    <div class="menu-item">
+      <span><i class="fas fa-microphone"></i> Preview Voices</span>
+      <i class="fas fa-chevron-right"></i>
     </div>
+    
+    <!-- Learning Section -->
+    <h3 class="menu-title">Learning</h3>
+    
+    <!-- Begin Assessment -->
+    <a href="assessment-entry.html" class="menu-item">
+      <span><i class="fas fa-clipboard-list"></i> Begin Assessment</span>
+      <i class="fas fa-chevron-right"></i>
+    </a>
   </nav>
-</aside>
+</div>
 
-<!-- Language Switcher Dropdown -->
-<div class="language-dropdown" id="language-dropdown" aria-hidden="true">
-  <div class="language-dropdown-header">
-    <h3>Select Language</h3>
-    <button class="close-dropdown-btn" id="close-language-dropdown" aria-label="Close language menu">
-      <i class="fas fa-times"></i>
+<!-- Desktop Layout (≥ 1024px) -->
+<div class="desktop-layout">
+  <!-- Desktop Header -->
+  <header class="pmerit-header">
+    <div class="pmerit-logo">PMERIT</div>
+    <nav class="header-nav">
+      <select class="lang-selector" aria-label="Change language">
+        <option value="en">English</option>
+        <option value="yo">Yorùbá</option>
+        <option value="ig">Igbo</option>
+        <option value="ha">Hausa</option>
+      </select>
+      <a href="pricing.html" class="nav-btn">Pricing</a>
+      <button class="nav-btn" id="desktopSignInBtn">Sign In</button>
+      <button class="nav-btn primary" id="startLearningBtn">Start Learning</button>
+    </nav>
+  </header>
+
+  <!-- Left Sidebar -->
+  <aside class="left-sidebar">
+    <h3 class="pane-title">Quick Actions</h3>
+    
+    <!-- Dashboard (Primary Button) -->
+    <button class="dashboard-btn dashboard-btn-primary">
+      <i class="fas fa-tachometer-alt"></i> Dashboard
     </button>
-  </div>
-  <ul class="language-list">
-    <li><button class="language-option active" data-lang="en">🇺🇸 English</button></li>
-    <li><button class="language-option" data-lang="yo">🇳🇬 Yorùbá</button></li>
-    <li><button class="language-option" data-lang="ig">🇳🇬 Igbo</button></li>
-    <li><button class="language-option" data-lang="ha">🇳🇬 Hausa</button></li>
-    <li><button class="language-option" data-lang="fr">🇫🇷 Français</button></li>
-    <li><button class="language-option" data-lang="es">🇪🇸 Español</button></li>
-  </ul>
+    
+    <!-- Career Track -->
+    <div class="action">
+      <span><i class="fas fa-route icon"></i>Career Track & Explore Paths</span>
+      <i class="fas fa-chevron-right"></i>
+    </div>
+    
+    <!-- Settings Collapsible -->
+    <div class="collapsible" id="settingsCollapsible">
+      <div class="collapsible-header">
+        <h4><i class="fas fa-cog icon"></i>Settings</h4>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+      <div class="collapsible-body">
+        <!-- Virtual Human Toggle -->
+        <div class="toggle">
+          <label class="toggle-label">
+            <span>Virtual Human Mode</span>
+            <div class="toggle-switch">
+              <input type="checkbox" id="virtual-human-toggle" data-toggle="vh" aria-label="Toggle Virtual Human Mode">
+              <span class="toggle-slider"></span>
+            </div>
+          </label>
+        </div>
+        
+        <!-- Dark Mode Toggle -->
+        <div class="toggle">
+          <label class="toggle-label">
+            <span>Dark Mode</span>
+            <div class="toggle-switch">
+              <input type="checkbox" id="desktopDarkToggle" data-toggle="dark" aria-label="Toggle Dark Mode">
+              <span class="toggle-slider"></span>
+            </div>
+          </label>
+        </div>
+        
+        <!-- Text-to-Speech Toggle -->
+        <div class="toggle">
+          <label class="toggle-label">
+            <span>Text-to-Speech</span>
+            <div class="toggle-switch">
+              <input type="checkbox" id="desktopTtsToggle" data-toggle="tts" aria-label="Toggle Text-to-Speech">
+              <span class="toggle-slider"></span>
+            </div>
+          </label>
+        </div>
+        
+        <!-- Preview Voices -->
+        <div class="action">
+          <span>Preview Voices</span>
+          <i class="fas fa-chevron-right"></i>
+        </div>
+      </div>
+    </div>
+  </aside>
 </div>
