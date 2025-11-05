@@ -209,7 +209,6 @@ if (result.success) {
 | `header` | boolean | `true` if header loaded from primary or fallback path |
 | `footer` | boolean | `true` if footer loaded from primary or fallback path |
 | `error` | string \| null | Error message describing what failed, or `null` if no errors |
-```
 
 ### Error Handling
 
@@ -245,7 +244,6 @@ try {
 2. If primary fails (404, network error), logs a warning and tries fallback path (`/partials/header.html`)
 3. If both fail, sets `error` property and `success: false` (or `success: true` if the other partial loaded)
 4. Continues initialization even if one partial fails, allowing pages to render with partial content
-```
 
 ## MOSA Compliance
 

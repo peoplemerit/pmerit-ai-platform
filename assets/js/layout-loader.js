@@ -135,7 +135,10 @@
 
   async function init() {
     if (document.body.dataset.layoutLoaded === 'true') {
-      return { success: true, header: true, footer: true };
+      // Already loaded, check if elements still exist
+      const headerExists = !!document.getElementById(HEADER_ID);
+      const footerExists = !!document.getElementById(FOOTER_ID);
+      return { success: headerExists || footerExists, header: headerExists, footer: footerExists, error: null };
     }
     removeLegacyStatic();
 
