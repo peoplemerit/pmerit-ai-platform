@@ -34,13 +34,13 @@
     <link rel="stylesheet" href="assets/css/brand.css">
     <link rel="stylesheet" href="assets/css/about-pricing.css">
     <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/mobile-mockup-match.css">
+    <link rel="stylesheet" href="assets/css/header-footer-layout.css">
 </head>
-<body>
+<body data-layout-auto-init>
     <!-- Skip to main content link for accessibility -->
     <a href="#main-content" class="skip-to-content">Skip to main content</a>
-    
-    <!-- Header (loaded via partial or included) -->
-    <div id="header-container"></div>
 
     <main id="main-content">
         <!-- Hero Section (Issue 1) -->
@@ -309,27 +309,9 @@
         </section>
     </main>
 
-    <!-- Footer (loaded via partial or included) -->
-    <div id="footer-container"></div>
-
-    <!-- Load header and footer using layout-loader.js -->
+    <!-- JavaScript -->
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/main.js"></script>
     <script src="assets/js/layout-loader.js"></script>
-    <script>
-        // Initialize layout loader after DOM is ready
-        document.addEventListener('DOMContentLoaded', function() {
-            window.LayoutLoader.init({
-                headerInsertPoint: '#header-container',
-                footerInsertPoint: '#footer-container',
-                headerPosition: 'beforeend',
-                footerPosition: 'beforeend'
-            }).then(function(result) {
-                if (result.success) {
-                    console.log('Header and footer loaded successfully');
-                } else {
-                    console.error('Failed to load header/footer:', result);
-                }
-            });
-        });
-    </script>
 </body>
 </html>

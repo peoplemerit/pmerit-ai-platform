@@ -76,11 +76,12 @@
 
   function restorePreferences() {
     try {
-      const theme = localStorage.getItem('pmerit:theme');
+      // Use same keys as main.js for consistency
+      const theme = localStorage.getItem('theme');
       if (theme) {
         document.documentElement.setAttribute('data-theme', theme);
       }
-      const tts = localStorage.getItem('pmerit:tts-enabled');
+      const tts = localStorage.getItem('tts-enabled');
       if (tts === 'true') {
         document.documentElement.setAttribute('data-tts', 'on');
       } else {
@@ -96,41 +97,56 @@
     if (!container) {
       return;
     }
-    const themeBtn = container.querySelector('[data-toggle-theme]');
-    if (themeBtn) {
-      themeBtn.addEventListener('click', () => {
-        const current = document.documentElement.getAttribute('data-theme') || 'light';
-        const next = current === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', next);
-        try {
-          localStorage.setItem('pmerit:theme', next);
-        } catch (e) {
-          // ignore
-        }
-      });
-    }
-
-    const ttsBtn = container.querySelector('[data-toggle-tts]');
-    if (ttsBtn) {
-      ttsBtn.addEventListener('click', () => {
-        const on = document.documentElement.getAttribute('data-tts') === 'on';
-        if (on) {
-          document.documentElement.removeAttribute('data-tts');
-          try {
-            localStorage.setItem('pmerit:tts-enabled', 'false');
-          } catch (e) {
-            // ignore
+    
+    // Note: main.js handles toggle switches via data-toggle attribute
+    // and hamburger menu via getElementById. We just need to restore
+    // preferences and let main.js handle the interaction.
+    
+    // Set flag that main.js can check to avoid duplicate handlers
+    window.layoutLoaderLoaded = true;
+    
+    // Restore toggle state from localStorage
+    const toggles = container.querySelectorAll('[data-toggle="dark"], [data-toggle="tts"]');
+    toggles.forEach(toggle => {
+      const toggleType = toggle.getAttribute('data-toggle');
+      
+      // Restore checked state from localStorage (use same keys as main.js)
+      if (toggleType === 'dark') {
+        const theme = localStorage.getItem('theme') || 'light';
+        toggle.checked = (theme === 'dark');
+      } else if (toggleType === 'tts') {
+        const ttsEnabled = localStorage.getItem('tts-enabled') === 'true';
+        toggle.checked = ttsEnabled;
+      }
+      
+      // Add change handler only if main.js isn't loaded yet
+      if (!window.mainJsLoaded) {
+        toggle.addEventListener('change', (e) => {
+          const isChecked = e.target.checked;
+          
+          if (toggleType === 'dark') {
+            const theme = isChecked ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', theme);
+            try {
+              localStorage.setItem('theme', theme);
+            } catch (err) {
+              console.warn('localStorage not available', err);
+            }
+          } else if (toggleType === 'tts') {
+            if (isChecked) {
+              document.documentElement.setAttribute('data-tts', 'on');
+            } else {
+              document.documentElement.removeAttribute('data-tts');
+            }
+            try {
+              localStorage.setItem('tts-enabled', isChecked.toString());
+            } catch (err) {
+              console.warn('localStorage not available', err);
+            }
           }
-        } else {
-          document.documentElement.setAttribute('data-tts', 'on');
-          try {
-            localStorage.setItem('pmerit:tts-enabled', 'true');
-          } catch (e) {
-            // ignore
-          }
-        }
-      });
-    }
+        });
+      }
+    });
   }
 
   function loadModalScript() {

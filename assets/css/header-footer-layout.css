@@ -1,0 +1,399 @@
+/**
+ * PMERIT Header & Footer Layout Styles
+ * Extracted from index.html for consistency across all pages
+ * Version: 1.0
+ * Last Updated: November 5, 2025
+ * 
+ * PURPOSE:
+ * - Provides consistent header and footer styling matching homepage
+ * - Mobile-first responsive design
+ * - Desktop grid layout with sidebars
+ * - MOSA compliant - single source of truth for layout partials
+ */
+
+/* ============================================ */
+/* MOBILE-FIRST LAYOUT CONTROL                */
+/* ============================================ */
+.mobile-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.desktop-layout {
+  display: none;
+}
+
+/* Toggle label full width for better clickability */
+.menu-toggle-label,
+.toggle-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  cursor: pointer;
+}
+
+/* ============================================ */
+/* DESKTOP LAYOUT (≥ 1024px)                  */
+/* ============================================ */
+@media (min-width: 1024px) {
+  .mobile-layout {
+    display: none !important;
+  }
+
+  .desktop-layout {
+    display: grid !important;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 280px 1fr 320px;
+    min-height: 100vh;
+    height: 100vh;
+    gap: 0;
+    overflow: hidden;
+  }
+
+  /* Header Styling */
+  .desktop-layout .pmerit-header {
+    grid-row: 1;
+    grid-column: 1 / -1;
+    height: var(--header-height, 70px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    background-color: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+    z-index: 50;
+  }
+
+  .pmerit-logo {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .pmerit-logo::before {
+    content: "🎓";
+    font-size: 1.5rem;
+  }
+
+  .header-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .nav-btn, .desktop-layout .lang-selector {
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: var(--transition);
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+    min-height: 44px;
+    text-decoration: none;
+  }
+
+  .nav-btn:hover, .desktop-layout .lang-selector:hover {
+    border-color: var(--primary);
+    transform: translateY(-1px);
+  }
+
+  .nav-btn.primary {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+
+  .nav-btn.primary:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Sidebars */
+  .desktop-layout .left-sidebar,
+  .desktop-layout .right-sidebar {
+    grid-row: 2;
+    background-color: var(--bg-secondary);
+    padding: 1.5rem 1rem;
+    overflow-y: auto;
+    min-height: 0;
+  }
+
+  .desktop-layout .left-sidebar {
+    grid-column: 1;
+    border-right: 1px solid var(--border-color);
+  }
+
+  .desktop-layout .right-sidebar {
+    grid-column: 3;
+    border-left: 1px solid var(--border-color);
+  }
+
+  /* Main content area for pages */
+  .desktop-layout .main-content {
+    grid-row: 2;
+    grid-column: 2;
+    background-color: var(--bg-primary);
+    overflow-y: auto;
+    padding: 2rem;
+    min-height: 0;
+  }
+
+  /* Footer */
+  .desktop-layout .pmerit-footer {
+    grid-row: 3;
+    grid-column: 1 / -1;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--bg-card);
+    border-top: 1px solid var(--border-color);
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.05);
+    min-height: auto;
+    height: auto;
+    line-height: 1.2;
+  }
+  
+  .footer-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+  
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+  }
+  
+  .footer-left i {
+    font-size: 0.75rem;
+    color: var(--color-success);
+  }
+  
+  .footer-status {
+    color: var(--primary);
+  }
+  
+  .footer-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .footer-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.85rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    transition: var(--transition-fast);
+  }
+  
+  .footer-link:hover {
+    color: var(--primary);
+    background-color: var(--bg-secondary);
+  }
+
+  /* Sidebar Components */
+  .pane-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+  }
+
+  .toggle, .action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: var(--transition);
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    min-height: 44px;
+  }
+
+  .toggle:hover, .action:hover {
+    border-color: var(--primary);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
+  }
+
+  .icon {
+    color: var(--primary);
+    margin-right: 0.5rem;
+  }
+
+  /* Toggle Switch Component */
+  .toggle-switch {
+    position: relative;
+    width: 40px;
+    height: 20px;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .toggle-switch input[type="checkbox"] {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+  }
+
+  .toggle-slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--border-color);
+    border-radius: 34px;
+    transition: 0.4s;
+    cursor: pointer;
+  }
+
+  .toggle-slider::before {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.4s;
+  }
+
+  .toggle-switch input[type="checkbox"]:checked + .toggle-slider {
+    background-color: var(--primary);
+  }
+
+  .toggle-switch input[type="checkbox"]:checked + .toggle-slider::before {
+    transform: translateX(20px);
+  }
+
+  /* Dashboard Button - Primary at TOP */
+  .dashboard-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-card);
+    font-weight: 600;
+    min-height: 44px;
+  }
+
+  .dashboard-btn:hover {
+    border-color: var(--primary);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow);
+  }
+
+  .dashboard-btn-primary {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    box-shadow: var(--shadow-md);
+  }
+
+  .dashboard-btn-primary:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Collapsible Component */
+  .collapsible {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--bg-card);
+    margin-bottom: 0.5rem;
+  }
+
+  .collapsible-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem;
+    cursor: pointer;
+    background-color: var(--bg-secondary);
+    transition: var(--transition);
+  }
+
+  .collapsible-header:hover {
+    background-color: var(--border-color);
+  }
+
+  .collapsible-body {
+    display: none;
+    padding: 0.75rem;
+    background-color: var(--bg-card);
+    border-top: 1px solid var(--border-color);
+  }
+
+  .collapsible.open .collapsible-body {
+    display: block;
+  }
+}
+
+/* ============================================ */
+/* LARGER DESKTOP (≥ 1440px)                  */
+/* ============================================ */
+@media (min-width: 1440px) {
+  .desktop-layout {
+    grid-template-columns: 280px 1fr 360px;
+  }
+}
+
+/* ============================================ */
+/* PAGES WITHOUT SIDEBARS                     */
+/* ============================================ */
+@media (min-width: 1024px) {
+  .desktop-layout.no-sidebars {
+    grid-template-columns: 1fr;
+  }
+
+  .desktop-layout.no-sidebars .pmerit-header {
+    grid-column: 1;
+  }
+
+  .desktop-layout.no-sidebars .main-content {
+    grid-column: 1;
+  }
+
+  .desktop-layout.no-sidebars .pmerit-footer {
+    grid-column: 1;
+  }
+
+  .desktop-layout.no-sidebars .left-sidebar,
+  .desktop-layout.no-sidebars .right-sidebar {
+    display: none;
+  }
+}

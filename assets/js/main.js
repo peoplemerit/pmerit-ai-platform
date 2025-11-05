@@ -34,6 +34,9 @@ const state = {
   threeJSLoaded: false
 };
 
+// Set flag for layout-loader to detect main.js is loaded
+window.mainJsLoaded = true;
+
 // ========== INITIALIZATION ==========
 document.addEventListener('DOMContentLoaded', function() {
   try {
