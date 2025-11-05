@@ -491,3 +491,27 @@ a.btn {
 a, button {
     -webkit-touch-callout: none;
 }
+
+
+/* ========================================
+   MODAL VISIBILITY CONTROL
+   ======================================== */
+
+/* Hide all modals by default unless explicitly opened */
+.modal {
+    display: none;
+}
+
+/* When modal is opened via JS, add this class */
+.modal.modal-open {
+    display: flex;
+}
+
+/* Support aria-hidden for additional robustness */
+.modal[aria-hidden="true"] {
+    display: none;
+}
+
+.modal[aria-hidden="false"] {
+    display: flex;
+}

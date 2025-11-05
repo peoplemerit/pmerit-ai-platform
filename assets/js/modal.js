@@ -243,6 +243,6 @@ if (document.readyState === 'loading') {
     window.modalManager = new ModalManager();
 }
 
-// Export for use in other modules
-export { Modal, ModalManager };
-export default Modal;
+// Export classes to global scope for compatibility
+window.Modal = Modal;
+window.ModalManager = ModalManager;
