@@ -53,3 +53,6 @@ Desktop.ini
 *-old.html
 pricing.html.backup
 pricing-old.html
+
+# Test files
+test-*.html
