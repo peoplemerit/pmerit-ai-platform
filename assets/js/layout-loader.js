@@ -135,14 +135,13 @@
 
   function loadModalScript() {
     // Check if modal.js is already loaded
-    if (window.modalManager || document.querySelector('script[src*="modal.js"]')) {
+    if (window.modalManager || document.querySelector('script[src="/assets/js/modal.js"]')) {
       return;
     }
     
     // Create and load modal.js script
     const script = document.createElement('script');
     script.src = '/assets/js/modal.js';
-    script.async = false;
     script.onerror = () => {
       console.warn('layout-loader: Failed to load modal.js');
     };
