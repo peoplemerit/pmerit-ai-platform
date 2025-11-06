@@ -168,7 +168,7 @@
     }
   </style>
 </head>
-<body class="page-layout">
+<body class="page-layout" data-layout-auto-init>
   <div id="nav-container"></div>
   
   <main class="main-content">
@@ -237,6 +237,9 @@
   <!-- Load config first, then auth module -->
   <script src="assets/js/config.js"></script>
   <script src="assets/js/auth.js"></script>
+  
+  <!-- MOSA-compliant layout loader -->
+  <script src="assets/js/layout-loader.js"></script>
   
   <!-- Sign-in page logic -->
   <script>
