@@ -496,6 +496,7 @@
   </style>
 </head>
 <body data-layout-auto-init>
+  <div id="header-container"></div>
   <!-- Skip to Main Content Link -->
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
@@ -569,11 +570,7 @@
       </div>
     </section>
   </main>
-
-  <script src="assets/js/config.js"></script>
-  <script src="assets/js/main.js"></script>
-  <script src="assets/js/layout-loader.js"></script>
-  <script>
+<script>
     // Fetch and render career tracks
     async function loadCareerTracks() {
       try {
@@ -706,5 +703,9 @@
     // Update active section on scroll
     window.addEventListener('scroll', updateActiveSection);
   </script>
+  <div id="footer-container"></div>
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/layout-loader.js"></script>
+  <script src="/assets/js/main.js"></script>
 </body>
 </html>

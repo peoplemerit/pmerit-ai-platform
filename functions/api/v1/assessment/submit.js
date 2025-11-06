@@ -9,8 +9,8 @@
 
 import DatabaseHelper from '../../../db/DatabaseHelper.js';
 import CareerMatchingService from '../../../services/CareerMatchingService.js';
-import { calculateBigFiveScores } from '../../../algorithms/BigFiveScoring.js';
-import { calculateHollandCode } from '../../../algorithms/HollandCodeCalculator.js';
+import { calculateBigFiveScores } from '../../algorithms/BigFiveScoring.js';
+import { calculateHollandCode } from '../../algorithms/HollandCodeCalculator.js';
 
 export async function onRequestPost(context) {
   const { env, request } = context;

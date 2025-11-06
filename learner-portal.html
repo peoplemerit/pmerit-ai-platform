@@ -116,11 +116,11 @@
   <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
   
   <!-- Load config and auth modules first -->
-  <script src="assets/js/config.js"></script>
-  <script src="assets/js/auth.js"></script>
+<script src="assets/js/auth.js"></script>
   <script src="assets/js/auth-check.js"></script>
 </head>
 <body data-layout-auto-init class="learner-portal-page">
+  <div id="header-container"></div>
   <!-- Skip to main content link for accessibility -->
   <a href="#main-content" class="skip-to-content">Skip to main content</a>
 
@@ -793,8 +793,9 @@
   </div><!-- End .portal-wrapper -->
 
     <!-- Load layout-loader.js for header/footer (MOSA compliance) -->
-  <script src="assets/js/config.js"></script>
-  <script src="assets/js/main.js"></script>
-  <script src="assets/js/layout-loader.js"></script>
+<div id="footer-container"></div>
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/layout-loader.js"></script>
+  <script src="/assets/js/main.js"></script>
 </body>
 </html>
