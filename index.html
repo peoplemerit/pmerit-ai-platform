@@ -43,21 +43,14 @@
   <link rel="stylesheet" href="assets/css/avatar.css?v=2">
   <link rel="stylesheet" href="assets/css/components/tech-help.css">
 </head>
-<body>
+<!-- data-layout-auto-init triggers automatic loading of header/footer from partials via layout-loader.js -->
+<body data-layout-auto-init>
 
   <!-- ============================================ -->
   <!-- MOBILE LAYOUT (< 1024px)                   -->
   <!-- ============================================ -->
   <div class="mobile-layout">
-    <!-- Mobile Header -->
-    <header class="pmerit-header">
-      <div class="pmerit-logo">PMERIT</div>
-      <div class="header-actions">
-        <button class="lang-selector" aria-label="Change language">En</button>
-        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">☰</button>
-        <button class="sign-in-btn" id="signInBtn">Sign In</button>
-      </div>
-    </header>
+    <!-- Mobile Header (pmerit-header), Hamburger Menu (side-menu, menu-overlay) loaded by layout-loader from partials/header.html -->
 
     <!-- Chat Messages Container -->
     <div class="chat-messages" id="chatMessages">
@@ -103,306 +96,138 @@
       </div>
     </div>
 
-    <!-- Mobile Footer -->
-    <footer class="pmerit-footer mobile-footer">
-      <a href="/privacy.html" class="footer-link-mobile">Privacy & Terms</a>
-      <span class="footer-separator"> • </span>
-      <a href="#" class="footer-link-mobile" id="mobile-tech-help-link">Tech Help</a>
-      <span class="footer-separator"> • </span>
-      <span class="footer-status-mobile">Connected to Educational Services</span>
-    </footer>
-
-    <!-- Hamburger Menu Overlay -->
-    <div class="menu-overlay" id="menuOverlay"></div>
-    
-    <!-- Hamburger Menu -->
-    <nav class="side-menu" id="sideMenu">
-      <!-- Quick Actions Section -->
-      <h3 class="menu-title">Quick Actions</h3>
-      
-      <!-- Dashboard (Primary Item) -->
-      <div class="menu-item menu-item-primary" data-route="/">
-        <span><i class="fas fa-tachometer-alt"></i> Dashboard</span>
-        <i class="fas fa-chevron-right"></i>
-      </div>
-      
-      <!-- Classroom Link (Phase 8.3) -->
-      <button class="menu-item" data-route="#/classroom">
-        <span><i class="fas fa-graduation-cap"></i> Classroom</span>
-        <i class="fas fa-chevron-right"></i>
-      </button>
-      
-      <!-- Career Track -->
-      <div class="menu-item" data-route="/career">
-        <span><i class="fas fa-route"></i> Career Track & Explore Paths</span>
-        <i class="fas fa-chevron-right"></i>
-      </div>
-      
-      <!-- Settings Section -->
-      <h3 class="menu-title">Settings</h3>
-      
-      <!-- Dark Mode Toggle -->
-      <div class="menu-item">
-        <label class="menu-toggle-label">
-          <span><i class="fas fa-moon"></i> Dark Mode</span>
-          <div class="toggle-switch">
-            <input type="checkbox" id="mobileDarkToggle" data-toggle="dark" aria-label="Toggle Dark Mode">
-            <span class="toggle-slider"></span>
-          </div>
-        </label>
-      </div>
-      
-      <!-- Text-to-Speech Toggle -->
-      <div class="menu-item">
-        <label class="menu-toggle-label">
-          <span><i class="fas fa-volume-up"></i> Text-to-Speech</span>
-          <div class="toggle-switch">
-            <input type="checkbox" id="mobileTtsToggle" data-toggle="tts" aria-label="Toggle Text-to-Speech">
-            <span class="toggle-slider"></span>
-          </div>
-        </label>
-      </div>
-      
-      <!-- Preview Voices -->
-      <div class="menu-item">
-        <span><i class="fas fa-microphone"></i> Preview Voices</span>
-        <i class="fas fa-chevron-right"></i>
-      </div>
-      
-      <!-- Learning Section -->
-      <h3 class="menu-title">Learning</h3>
-      
-      <!-- Begin Assessment -->
-      <a href="assessment-entry.html" class="menu-item">
-        <span><i class="fas fa-clipboard-list"></i> Begin Assessment</span>
-        <i class="fas fa-chevron-right"></i>
-      </a>
-    </nav>
+    <!-- Mobile Footer (pmerit-footer mobile-footer) loaded by layout-loader from partials/footer.html -->
   </div>
 
   <!-- ============================================ -->
   <!-- DESKTOP LAYOUT (≥ 1024px)                  -->
   <!-- ============================================ -->
   <div class="desktop-layout">
-    <!-- Desktop Header -->
-    <header class="pmerit-header">
-      <div class="pmerit-logo">PMERIT</div>
-      <nav class="header-nav">
-        <select class="lang-selector" aria-label="Change language">
-          <option value="en">English</option>
-          <option value="yo">Yorùbá</option>
-          <option value="ig">Igbo</option>
-          <option value="ha">Hausa</option>
-        </select>
-        <a href="pricing.html" class="nav-btn">Pricing</a>
-        <button class="nav-btn" id="desktopSignInBtn">Sign In</button>
-        <button class="nav-btn primary">Start Learning</button>
-      </nav>
-    </header>
+    <!-- Desktop Header (pmerit-header), Left Sidebar (left-sidebar) loaded by layout-loader from partials/header.html -->
 
-    <!-- Left Sidebar -->
-    <aside class="left-sidebar">
-      <h3 class="pane-title">Quick Actions</h3>
-      
-      <!-- Dashboard (Primary Button) -->
-      <button class="dashboard-btn dashboard-btn-primary">
-        <i class="fas fa-tachometer-alt"></i> Dashboard
-      </button>
-      
-      <!-- Career Track -->
-      <div class="action">
-        <span><i class="fas fa-route icon"></i>Career Track & Explore Paths</span>
-        <i class="fas fa-chevron-right"></i>
+  <!-- Center Panel - Chat Interface with Grid Layout -->
+  <main class="main-content center-panel">
+    <!-- Virtual Human Viewport (Hidden by default) -->
+    <div id="vh-root" class="vh-root is-hidden" hidden aria-hidden="true">
+      <canvas id="vh-canvas"></canvas>
+      <div id="vh-captions" aria-live="polite"></div>
+      <div class="vh-status-badge">
+        <span id="vh-status-text">Virtual Human is loading...</span>
       </div>
-      
-      <!-- Settings Collapsible -->
-      <div class="collapsible" id="settingsCollapsible">
-        <div class="collapsible-header">
-          <h4><i class="fas fa-cog icon"></i>Settings</h4>
-          <i class="fas fa-chevron-down"></i>
-        </div>
-        <div class="collapsible-body">
-          <!-- Virtual Human Toggle -->
-          <div class="toggle">
-            <label class="toggle-label">
-              <span>Virtual Human Mode</span>
-              <div class="toggle-switch">
-                <input type="checkbox" id="virtual-human-toggle" data-toggle="vh" aria-label="Toggle Virtual Human Mode">
-                <span class="toggle-slider"></span>
-              </div>
-            </label>
-          </div>
-          
-          <!-- Dark Mode Toggle -->
-          <div class="toggle">
-            <label class="toggle-label">
-              <span>Dark Mode</span>
-              <div class="toggle-switch">
-                <input type="checkbox" id="desktopDarkToggle" data-toggle="dark" aria-label="Toggle Dark Mode">
-                <span class="toggle-slider"></span>
-              </div>
-            </label>
-          </div>
-          
-          <!-- Text-to-Speech Toggle -->
-          <div class="toggle">
-            <label class="toggle-label">
-              <span>Text-to-Speech</span>
-              <div class="toggle-switch">
-                <input type="checkbox" id="desktopTtsToggle" data-toggle="tts" aria-label="Toggle Text-to-Speech">
-                <span class="toggle-slider"></span>
-              </div>
-            </label>
-          </div>
-          
-          <!-- Preview Voices -->
-          <div class="action">
-            <span>Preview Voices</span>
-            <i class="fas fa-chevron-right"></i>
-          </div>
-        </div>
-      </div>
-    </aside>
+    </div>
 
-    <!-- Center Panel - Chat Interface with Grid Layout -->
-    <main class="main-content center-panel">
-      <!-- Virtual Human Viewport (Hidden by default) -->
-      <div id="vh-root" class="vh-root is-hidden" hidden aria-hidden="true">
-        <canvas id="vh-canvas"></canvas>
-        <div id="vh-captions" aria-live="polite"></div>
-        <div class="vh-status-badge">
-          <span id="vh-status-text">Virtual Human is loading...</span>
-        </div>
-      </div>
-
-      <!-- Chat Stream (scrolls independently) -->
-      <div class="chat-stream" id="chat-stream">
-        <div class="desktop-chat-container" id="desktopChatMessages">
-          <div class="desktop-chat-message ai-message">
-            <div class="message-avatar">
-              <i class="fas fa-robot"></i>
-            </div>
-            <div class="message-content">
-              <div class="message-header">
-                <strong>PMERIT AI:</strong>
-              </div>
-              <p>Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Unified Interaction Bar (text + voice) -->
-      <div class="interaction-bar desktop-chat-input-area">
-        <!-- Input Wrapper with Icons -->
-        <div class="desktop-input-wrapper">
-          <!-- Add Button -->
-          <button class="desktop-add-btn" aria-label="Add attachment">
-            <i class="fas fa-plus"></i>
-          </button>
-          
-          <!-- Text Input -->
-          <textarea 
-            class="desktop-chat-input" 
-            id="desktopChatInput"
-            placeholder="Ask about courses, learning paths, or your goals..."
-            maxlength="1000"
-            rows="1"
-            aria-label="Chat input"
-          ></textarea>
-          
-          <!-- Right Actions -->
-          <div class="desktop-input-actions">
-            <!-- Attachment Button -->
-            <button class="desktop-attach-btn" aria-label="Attach file">
-              <i class="fas fa-paperclip"></i>
-            </button>
-            
-            <!-- Voice Button -->
-            <button class="desktop-voice-btn" aria-label="Voice input">
-              <i class="fas fa-microphone"></i>
-            </button>
-            
-            <!-- Send Button -->
-            <button class="desktop-send-btn" id="sendBtnDesktop" aria-label="Send message">
-              <i class="fas fa-arrow-up"></i>
-            </button>
-          </div>
-          
-          <!-- Character Counter (hidden initially) -->
-          <span class="desktop-char-counter hidden" id="desktopCharCount">0/1000</span>
-        </div>
-        
-        <!-- Control Buttons Row -->
-        <div class="desktop-input-controls">
-          <button class="control-btn" data-mode="vh">
-            <i class="fas fa-robot"></i> VH Mode
-          </button>
-          <button class="control-btn" data-action="read-about">
-            <i class="fas fa-book"></i> Read About
-          </button>
-          <span class="status-indicator">
-            <i class="fas fa-circle"></i> Connected to Educational Services
-          </span>
-        </div>
-      </div>
-    </main>
-
-    <!-- Right Sidebar -->
-    <aside class="right-sidebar">
-      <h3 class="pane-title">Support Assistant</h3>
-      
-      <!-- Support Card -->
-      <div class="support-card">
-        <h3>Ask me about PMERIT</h3>
-        
-        <div class="support-buttons">
-          <button id="support-vh-btn" class="support-btn" data-support-type="virtual-human" aria-pressed="false" aria-label="Activate Virtual Human Mode">
+    <!-- Chat Stream (scrolls independently) -->
+    <div class="chat-stream" id="chat-stream">
+      <div class="desktop-chat-container" id="desktopChatMessages">
+        <div class="desktop-chat-message ai-message">
+          <div class="message-avatar">
             <i class="fas fa-robot"></i>
-            <span>Virtual Human</span>
-          </button>
-          <button id="support-csm-btn" class="support-btn" data-support-type="tech-help" aria-pressed="false" aria-label="Activate Tech Help">
-            <i class="fas fa-life-ring"></i>
-            <span>Tech Help</span>
-          </button>
+          </div>
+          <div class="message-content">
+            <div class="message-header">
+              <strong>PMERIT AI:</strong>
+            </div>
+            <p>Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?</p>
+          </div>
         </div>
       </div>
-      
-      <!-- Assessment Card -->
-      <div class="support-card">
-        <h3>Discover Your Path (AI)</h3>
-        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
-          Personalized learning plan
-        </p>
-        <p style="font-size: 0.75rem; color: var(--text-secondary); font-style: italic; margin-bottom: 1rem;">
-          Start a short flow that blends learning style, interests, and skills into a plan.
-        </p>
-        <button class="cta-large" onclick="window.location.href='assessment-entry.html'">
-          <i class="fas fa-compass"></i> Begin Assessment
-        </button>
-        <p style="font-size: 0.7rem; color: var(--text-secondary); font-style: italic; margin-top: 0.75rem;">
-          Short, frequent study sessions are more effective than long cramming sessions.
-        </p>
-      </div>
-    </aside>
+    </div>
 
-    <!-- Desktop Footer -->
-    <footer class="pmerit-footer desktop-footer">
-      <div class="footer-container">
-        <div class="footer-left">
-          <i class="fas fa-signal"></i>
-          <span class="footer-status">Connected to Educational Services</span>
+    <!-- Unified Interaction Bar (text + voice) -->
+    <div class="interaction-bar desktop-chat-input-area">
+      <!-- Input Wrapper with Icons -->
+      <div class="desktop-input-wrapper">
+        <!-- Add Button -->
+        <button class="desktop-add-btn" aria-label="Add attachment">
+          <i class="fas fa-plus"></i>
+        </button>
+        
+        <!-- Text Input -->
+        <textarea 
+          class="desktop-chat-input" 
+          id="desktopChatInput"
+          placeholder="Ask about courses, learning paths, or your goals..."
+          maxlength="1000"
+          rows="1"
+          aria-label="Chat input"
+        ></textarea>
+        
+        <!-- Right Actions -->
+        <div class="desktop-input-actions">
+          <!-- Attachment Button -->
+          <button class="desktop-attach-btn" aria-label="Attach file">
+            <i class="fas fa-paperclip"></i>
+          </button>
+          
+          <!-- Voice Button -->
+          <button class="desktop-voice-btn" aria-label="Voice input">
+            <i class="fas fa-microphone"></i>
+          </button>
+          
+          <!-- Send Button -->
+          <button class="desktop-send-btn" id="sendBtnDesktop" aria-label="Send message">
+            <i class="fas fa-arrow-up"></i>
+          </button>
         </div>
         
-        <div class="footer-right">
-          <a href="/privacy.html" class="footer-link">Privacy & Terms</a>
-          <a href="/contact.html" class="footer-link">Contact</a>
-          <a href="/partnerships.html" class="footer-link">Partnerships</a>
-          <a href="/support.html" class="footer-link">Support</a>
-          <a href="#" class="footer-link" id="desktop-tech-help-link">Tech Help</a>
-        </div>
+        <!-- Character Counter (hidden initially) -->
+        <span class="desktop-char-counter hidden" id="desktopCharCount">0/1000</span>
       </div>
-    </footer>
+      
+      <!-- Control Buttons Row -->
+      <div class="desktop-input-controls">
+        <button class="control-btn" data-mode="vh">
+          <i class="fas fa-robot"></i> VH Mode
+        </button>
+        <button class="control-btn" data-action="read-about">
+          <i class="fas fa-book"></i> Read About
+        </button>
+        <span class="status-indicator">
+          <i class="fas fa-circle"></i> Connected to Educational Services
+        </span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Right Sidebar -->
+  <aside class="right-sidebar">
+    <h3 class="pane-title">Support Assistant</h3>
+    
+    <!-- Support Card -->
+    <div class="support-card">
+      <h3>Ask me about PMERIT</h3>
+      
+      <div class="support-buttons">
+        <button id="support-vh-btn" class="support-btn" data-support-type="virtual-human" aria-pressed="false" aria-label="Activate Virtual Human Mode">
+          <i class="fas fa-robot"></i>
+          <span>Virtual Human</span>
+        </button>
+        <button id="support-csm-btn" class="support-btn" data-support-type="tech-help" aria-pressed="false" aria-label="Activate Tech Help">
+          <i class="fas fa-life-ring"></i>
+          <span>Tech Help</span>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Assessment Card -->
+    <div class="support-card">
+      <h3>Discover Your Path (AI)</h3>
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+        Personalized learning plan
+      </p>
+      <p style="font-size: 0.75rem; color: var(--text-secondary); font-style: italic; margin-bottom: 1rem;">
+        Start a short flow that blends learning style, interests, and skills into a plan.
+      </p>
+      <button class="cta-large" onclick="window.location.href='assessment-entry.html'">
+        <i class="fas fa-compass"></i> Begin Assessment
+      </button>
+      <p style="font-size: 0.7rem; color: var(--text-secondary); font-style: italic; margin-top: 0.75rem;">
+        Short, frequent study sessions are more effective than long cramming sessions.
+      </p>
+    </div>
+  </aside>
+
+    <!-- Desktop Footer (pmerit-footer desktop-footer) loaded by layout-loader from partials/footer.html -->
   </div>
 
   <!-- Auth Modal Component (Phase 3.1) -->
@@ -1109,6 +934,9 @@
       }
     })();
   </script>
+
+  <!-- MOSA-compliant layout loader -->
+  <script src="assets/js/layout-loader.js"></script>
 
 </body>
 </html>
