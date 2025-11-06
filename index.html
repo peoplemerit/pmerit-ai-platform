@@ -43,13 +43,14 @@
   <link rel="stylesheet" href="assets/css/avatar.css?v=2">
   <link rel="stylesheet" href="assets/css/components/tech-help.css">
 </head>
+<!-- data-layout-auto-init triggers automatic loading of header/footer from partials via layout-loader.js -->
 <body data-layout-auto-init>
 
   <!-- ============================================ -->
   <!-- MOBILE LAYOUT (< 1024px)                   -->
   <!-- ============================================ -->
   <div class="mobile-layout">
-    <!-- Mobile Header, Menu loaded by layout-loader -->
+    <!-- Mobile Header (pmerit-header), Hamburger Menu (side-menu, menu-overlay) loaded by layout-loader from partials/header.html -->
 
     <!-- Chat Messages Container -->
     <div class="chat-messages" id="chatMessages">
@@ -95,14 +96,14 @@
       </div>
     </div>
 
-    <!-- Mobile Footer loaded by layout-loader -->
+    <!-- Mobile Footer (pmerit-footer mobile-footer) loaded by layout-loader from partials/footer.html -->
   </div>
 
   <!-- ============================================ -->
   <!-- DESKTOP LAYOUT (≥ 1024px)                  -->
   <!-- ============================================ -->
   <div class="desktop-layout">
-    <!-- Desktop Header, Left Sidebar loaded by layout-loader -->
+    <!-- Desktop Header (pmerit-header), Left Sidebar (left-sidebar) loaded by layout-loader from partials/header.html -->
 
   <!-- Center Panel - Chat Interface with Grid Layout -->
   <main class="main-content center-panel">
@@ -226,7 +227,7 @@
     </div>
   </aside>
 
-    <!-- Desktop Footer loaded by layout-loader -->
+    <!-- Desktop Footer (pmerit-footer desktop-footer) loaded by layout-loader from partials/footer.html -->
   </div>
 
   <!-- Auth Modal Component (Phase 3.1) -->
