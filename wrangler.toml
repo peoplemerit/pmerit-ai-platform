@@ -16,3 +16,24 @@ binding = "AI"
 # Add any non-sensitive configuration here
 TTS_DEFAULT_MODEL = "@cf/deepgram/aura-2-en"
 TTS_MAX_TEXT_LENGTH = "5000"
+
+# KV Namespace Binding (REQUIRED - must be configured in Cloudflare Pages dashboard)
+# This binding is required for the BLS data integration and career matching functions
+# To configure:
+#   1. Create a KV namespace in Cloudflare dashboard
+#   2. Add the binding in Pages project settings > Functions > KV namespace bindings
+#   3. Name: PMERIT_BLS_DATA_KV
+#   4. Select your KV namespace
+# Example configuration (for reference - actual configuration done via dashboard):
+# [[kv_namespaces]]
+# binding = "PMERIT_BLS_DATA_KV"
+# id = "<your_kv_namespace_id>"
+# preview_id = "<your_preview_kv_namespace_id>"
+
+# Secrets (REQUIRED - must be set in Cloudflare Pages dashboard)
+# These secrets are required for production deployment:
+#   1. BLS_API_KEY - API key for U.S. Bureau of Labor Statistics data access
+# To configure:
+#   1. Go to Pages project settings > Environment variables
+#   2. Add secret: BLS_API_KEY with your API key value
+#   3. Set for Production and Preview environments as needed
