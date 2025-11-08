@@ -1,7 +1,7 @@
 /**
  * Big Five Personality Scoring Algorithm
  * Implements IPIP-NEO-120 scoring methodology
- * 
+ *
  * @module BigFiveScoring
  * @version 1.0.0
  * @created November 4, 2025
@@ -33,7 +33,7 @@ const REVERSE_KEYED_QUESTIONS = [2, 4]; // Question indices that are reverse-key
  * Calculate Big Five personality scores from 120 IPIP answers
  * @param {Object} answers - All 120 answers (key: question_id, value: 1-5)
  * @returns {Object} Big Five scores with raw, percentile, and label
- * 
+ *
  * @example
  * const scores = calculateBigFiveScores({
  *   O1_1: 4, O1_2: 2, ... // 120 answers
@@ -76,13 +76,13 @@ export function calculateBigFiveScores(answers) {
 function calculateTraitScore(answers, traitCode) {
   // Get questions for this trait
   const traitQuestions = getTraitQuestions(traitCode);
-  
+
   let sum = 0;
   let count = 0;
 
   for (const q of traitQuestions) {
     const answer = answers[q.question_id];
-    
+
     if (answer === undefined || answer === null) {
       throw new Error(`Missing answer for question: ${q.question_id}`);
     }
@@ -127,18 +127,18 @@ function getTraitQuestions(traitCode) {
   }
 
   const questions = [];
-  
+
   // IPIP-NEO-120 uses interleaved question numbering
   for (let facetIdx = 0; facetIdx < IPIP_CONFIG.FACETS_PER_TRAIT; facetIdx++) {
     const facetId = trait.facets[facetIdx];
-    
+
     for (let qIdx = 1; qIdx <= IPIP_CONFIG.QUESTIONS_PER_FACET; qIdx++) {
       // Calculate question number using interleaved pattern
       const questionNum = (qIdx - 1) * (IPIP_CONFIG.FACETS_PER_TRAIT * IPIP_CONFIG.TRAITS_COUNT) + facetIdx + trait.start;
-      
+
       // Determine keying based on question index
       const keyed = REVERSE_KEYED_QUESTIONS.includes(qIdx) ? 'minus' : 'plus';
-      
+
       questions.push({
         question_id: `${facetId}_${qIdx}`,
         question_number: questionNum,
@@ -153,16 +153,16 @@ function getTraitQuestions(traitCode) {
 /**
  * Convert raw score (1-5) to percentile (0-100)
  * Uses approximate norm tables based on IPIP research
- * 
+ *
  * @param {number} raw - Raw score (mean of 1-5 scale)
  * @param {string} traitCode - Trait code for trait-specific norms
  * @returns {number} Percentile (0-100)
  */
-function rawToPercentile(raw, traitCode) {
+function rawToPercentile(raw, _traitCode) {
   // Simplified norm conversion
   // In production, use actual norm tables from IPIP research
   // These are approximate values based on normal distribution assumptions
-  
+
   // Standard norm table (can be customized per trait)
   const normTable = [
     { raw: 1.0, percentile: 1 },
@@ -180,16 +180,16 @@ function rawToPercentile(raw, traitCode) {
   for (let i = 0; i < normTable.length - 1; i++) {
     if (raw >= normTable[i].raw && raw <= normTable[i + 1].raw) {
       const ratio = (raw - normTable[i].raw) / (normTable[i + 1].raw - normTable[i].raw);
-      const percentile = normTable[i].percentile + 
+      const percentile = normTable[i].percentile +
         ratio * (normTable[i + 1].percentile - normTable[i].percentile);
       return Math.round(percentile);
     }
   }
 
   // Edge cases
-  if (raw < normTable[0].raw) return normTable[0].percentile;
-  if (raw > normTable[normTable.length - 1].raw) return normTable[normTable.length - 1].percentile;
-  
+  if (raw < normTable[0].raw) {return normTable[0].percentile;}
+  if (raw > normTable[normTable.length - 1].raw) {return normTable[normTable.length - 1].percentile;}
+
   return 50; // Default to median
 }
 
@@ -199,10 +199,10 @@ function rawToPercentile(raw, traitCode) {
  * @returns {string} Label
  */
 function percentileToLabel(percentile) {
-  if (percentile >= 85) return 'Very High';
-  if (percentile >= 65) return 'High';
-  if (percentile >= 35) return 'Moderate';
-  if (percentile >= 15) return 'Low';
+  if (percentile >= 85) {return 'Very High';}
+  if (percentile >= 65) {return 'High';}
+  if (percentile >= 35) {return 'Moderate';}
+  if (percentile >= 15) {return 'Low';}
   return 'Very Low';
 }
 
