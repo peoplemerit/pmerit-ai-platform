@@ -672,12 +672,193 @@ main {
 
 /* ========================================
    PROCESSING PAGE STYLES
-   (Placeholder for future implementation)
    ======================================== */
 
-/* Loading animations */
+.processing-container {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-12) var(--space-6);
+  background: var(--bg-primary);
+}
 
-/* Progress steps */
+/* Brain Animation */
+.brain-animation {
+  margin-bottom: var(--space-12);
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brain-icon {
+  font-size: 5rem;
+  position: relative;
+  z-index: 2;
+  animation: brain-pulse 2s ease-in-out infinite;
+}
+
+@keyframes brain-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* Pulse Rings */
+.pulse-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  border: 3px solid var(--color-secondary);
+  border-radius: 50%;
+  opacity: 0;
+  animation: pulse-ring 2s ease-out infinite;
+}
+
+.pulse-ring.delay-1 {
+  animation-delay: 0.5s;
+}
+
+.pulse-ring.delay-2 {
+  animation-delay: 1s;
+}
+
+@keyframes pulse-ring {
+  0% {
+    width: 100px;
+    height: 100px;
+    opacity: 0.6;
+  }
+  100% {
+    width: 200px;
+    height: 200px;
+    opacity: 0;
+  }
+}
+
+/* Progress Steps */
+.progress-steps {
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: var(--space-8);
+  background: var(--bg-card);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-md);
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  padding: var(--space-3) 0;
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+}
+
+.step.active {
+  color: var(--color-primary);
+  font-weight: var(--weight-semibold);
+}
+
+.step.completed {
+  color: var(--color-success);
+}
+
+.step-icon {
+  font-size: 1.5rem;
+  margin-right: var(--space-3);
+  transition: all 0.3s ease;
+}
+
+.step-text {
+  font-family: var(--font-secondary);
+  font-size: var(--text-base);
+}
+
+/* Fun Facts */
+.fun-facts {
+  width: 100%;
+  max-width: 600px;
+  min-height: 80px;
+  text-align: center;
+  position: relative;
+  margin-top: var(--space-8);
+}
+
+.fact {
+  position: absolute;
+  width: 100%;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  font-family: var(--font-secondary);
+  font-size: var(--text-lg);
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.fact.active {
+  position: relative;
+  opacity: 1;
+}
+
+/* Error Message */
+.error-message {
+  display: none;
+  text-align: center;
+  padding: var(--space-8);
+  background: rgba(255, 107, 107, 0.1);
+  border-radius: var(--border-radius-lg);
+  max-width: 500px;
+}
+
+.error-message.show {
+  display: block;
+}
+
+.error-message h3 {
+  color: var(--color-accent);
+  margin-bottom: var(--space-4);
+  font-family: var(--font-primary);
+}
+
+.error-message p {
+  color: var(--text-primary);
+  margin-bottom: var(--space-6);
+  font-family: var(--font-secondary);
+}
+
+/* ========================================
+   PROCESSING PAGE - MOBILE RESPONSIVE
+   ======================================== */
+@media (max-width: 767px) {
+  .brain-animation {
+    width: 150px;
+    height: 150px;
+    margin-bottom: var(--space-8);
+  }
+  
+  .brain-icon {
+    font-size: 3.5rem;
+  }
+  
+  .progress-steps {
+    padding: var(--space-4);
+  }
+  
+  .step-text {
+    font-size: var(--text-sm);
+  }
+  
+  .fact {
+    font-size: var(--text-base);
+  }
+}
 
 /* ========================================
    RESULTS PAGE STYLES
