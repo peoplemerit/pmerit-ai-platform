@@ -21,7 +21,7 @@ class BLSClient {
    * Get occupation data by SOC code
    * @param {string} socCode - Standard Occupational Classification code
    * @returns {Promise<Object>} Occupation data including salary, growth
-   * 
+   *
    * [HUMAN REVIEW NEEDED]: BLS API integration is INCOMPLETE
    * - Requires SOC-to-SeriesID mapping before production use
    * - Current implementation returns placeholder structure
