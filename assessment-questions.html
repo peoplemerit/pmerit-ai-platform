@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  
+  <!-- SEO Meta Tags -->
+  <title>Assessment Questions - PMERIT</title>
+  <meta name="description" content="Complete your PMERIT personality assessment. Answer 120 questions to discover your ideal learning path and career opportunities.">
+  <meta name="keywords" content="personality assessment, Big Five, career assessment, PMERIT questions">
+  <meta name="author" content="PMERIT">
+  <meta name="theme-color" content="#6B5CE7">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pmerit-ai-platform.pages.dev/assessment-questions.html">
+  <meta property="og:title" content="Assessment Questions - PMERIT">
+  <meta property="og:description" content="Complete your personality assessment to discover your ideal learning path.">
+  <meta property="og:image" content="https://pmerit-ai-platform.pages.dev/assets/images/og-assessment.jpg">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://pmerit-ai-platform.pages.dev/assessment-questions.html">
+  <meta property="twitter:title" content="Assessment Questions - PMERIT">
+  <meta property="twitter:description" content="Complete your personality assessment to discover your ideal learning path.">
+  <meta property="twitter:image" content="https://pmerit-ai-platform.pages.dev/assets/images/og-assessment.jpg">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
+  
+  <!-- Fonts - Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="assets/css/theme-variables.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/typography.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/assessment.css">
+  <link rel="stylesheet" href="assets/css/mobile.css" media="(max-width: 1023px)">
+  <link rel="stylesheet" href="assets/css/desktop.css" media="(min-width: 1024px)">
+</head>
+<body data-layout-auto-init>
+  
+  <!-- Skip Link for Accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  
+  <!-- Header will be loaded by layout-loader.js -->
+  
+  <!-- Progress Bar (Sticky) -->
+  <div class="progress-container" id="progressContainer">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+    </div>
+    <div class="progress-text" id="progressText">0 of 120 (0%)</div>
+    
+    <!-- Section Indicators -->
+    <div class="section-indicators" id="sectionIndicators">
+      <span class="indicator active" data-trait="O" title="Openness to Experience" aria-label="Openness to Experience">●</span>
+      <span class="indicator" data-trait="C" title="Conscientiousness" aria-label="Conscientiousness">○</span>
+      <span class="indicator" data-trait="E" title="Extraversion" aria-label="Extraversion">○</span>
+      <span class="indicator" data-trait="A" title="Agreeableness" aria-label="Agreeableness">○</span>
+      <span class="indicator" data-trait="N" title="Neuroticism" aria-label="Neuroticism">○</span>
+    </div>
+  </div>
+  
+  <!-- Main Content -->
+  <main id="main-content" class="assessment-container">
+    <div class="question-card" id="questionCard">
+      <!-- Question Header -->
+      <div class="question-header">
+        <span class="question-number" id="questionNumber">Question 1 of 120</span>
+        <span class="trait-label" id="traitLabel">Openness to Experience</span>
+        <span class="facet-label" id="facetLabel">Imagination</span>
+      </div>
+      
+      <!-- Question Text -->
+      <h2 class="question-text" id="questionText">
+        Loading question...
+      </h2>
+      
+      <!-- Answer Options (Likert Scale) -->
+      <form class="answer-options" id="answerOptions">
+        <label class="radio-option">
+          <input type="radio" name="answer" value="1" id="answer-1" aria-label="Strongly Disagree">
+          <span class="radio-label">Strongly Disagree</span>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="answer" value="2" id="answer-2" aria-label="Disagree">
+          <span class="radio-label">Disagree</span>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="answer" value="3" id="answer-3" aria-label="Neutral">
+          <span class="radio-label">Neutral</span>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="answer" value="4" id="answer-4" aria-label="Agree">
+          <span class="radio-label">Agree</span>
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="answer" value="5" id="answer-5" aria-label="Strongly Agree">
+          <span class="radio-label">Strongly Agree</span>
+        </label>
+      </form>
+      
+      <!-- Navigation Buttons -->
+      <div class="navigation-buttons">
+        <button type="button" class="btn btn-secondary" id="prevBtn" disabled aria-label="Previous question">
+          <i class="fas fa-arrow-left"></i>
+          Previous
+        </button>
+        <button type="button" class="btn btn-primary" id="nextBtn" disabled aria-label="Next question">
+          Next
+          <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+      
+      <!-- Auto-Save Indicator -->
+      <div class="autosave-indicator" id="autosaveIndicator" role="status" aria-live="polite">
+        <span class="autosave-text"></span>
+      </div>
+    </div>
+  </main>
+  
+  <!-- Footer will be loaded by layout-loader.js -->
+  
+  <!-- Resume Modal -->
+  <div class="modal-overlay" id="resumeModal" role="dialog" aria-labelledby="resumeModalTitle" aria-modal="true" style="display: none;">
+    <div class="modal-content">
+      <h2 id="resumeModalTitle" class="modal-title">
+        <i class="fas fa-history"></i>
+        Continue Where You Left Off?
+      </h2>
+      <p class="modal-text">
+        We found your previous assessment progress. Would you like to continue where you left off?
+      </p>
+      <div class="progress-info" id="resumeProgress">
+        <strong>Progress:</strong> <span id="resumeQuestionCount">0</span> of 120 questions answered
+      </div>
+      <div class="modal-buttons">
+        <button type="button" class="btn btn-secondary" id="startOverBtn">
+          <i class="fas fa-redo"></i>
+          Start Over
+        </button>
+        <button type="button" class="btn btn-primary" id="resumeBtn">
+          <i class="fas fa-play"></i>
+          Resume Assessment
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay" role="alert" aria-live="assertive" aria-busy="true" style="display: none;">
+    <div class="loading-content">
+      <div class="loading-spinner" aria-hidden="true"></div>
+      <p class="loading-text">Loading assessment...</p>
+    </div>
+  </div>
+  
+  <!-- JavaScript -->
+  <script src="assets/js/layout-loader.js"></script>
+  <script src="assets/js/assessment-api.js"></script>
+  <script src="assets/js/assessment-questions.js"></script>
+</body>
+</html>
