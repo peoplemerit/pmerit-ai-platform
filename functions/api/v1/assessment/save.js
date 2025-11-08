@@ -7,7 +7,7 @@
  * @created November 4, 2025
  */
 
-import DatabaseHelper from '../../../db/DatabaseHelper.js';
+import DatabaseHelper from '../../db/DatabaseHelper.js';
 
 export async function onRequestPost(context) {
   const { env, request } = context;
