@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  
+  <!-- SEO Meta Tags -->
+  <title>Processing Your Assessment | PMERIT</title>
+  <meta name="description" content="Processing your PMERIT personality assessment. Please wait while we analyze your results.">
+  <meta name="keywords" content="personality assessment, Big Five, career assessment, PMERIT processing">
+  <meta name="author" content="PMERIT">
+  <meta name="theme-color" content="#6B5CE7">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pmerit-ai-platform.pages.dev/assessment-processing.html">
+  <meta property="og:title" content="Processing Your Assessment | PMERIT">
+  <meta property="og:description" content="Processing your personality assessment to discover your ideal learning path.">
+  <meta property="og:image" content="https://pmerit-ai-platform.pages.dev/assets/images/og-assessment.jpg">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://pmerit-ai-platform.pages.dev/assessment-processing.html">
+  <meta property="twitter:title" content="Processing Your Assessment | PMERIT">
+  <meta property="twitter:description" content="Processing your personality assessment to discover your ideal learning path.">
+  <meta property="twitter:image" content="https://pmerit-ai-platform.pages.dev/assets/images/og-assessment.jpg">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
+  
+  <!-- Fonts - Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="assets/css/theme-variables.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/typography.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/assessment.css">
+  <link rel="stylesheet" href="assets/css/mobile.css" media="(max-width: 1023px)">
+  <link rel="stylesheet" href="assets/css/desktop.css" media="(min-width: 1024px)">
+</head>
+<body data-layout-auto-init>
+  
+  <!-- Skip Link for Accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  
+  <!-- Header will be loaded by layout-loader.js -->
+  
+  <!-- Main Content -->
+  <main id="main-content" class="processing-container">
+    <!-- Brain Animation -->
+    <div class="brain-animation" aria-hidden="true">
+      <div class="brain-icon">
+        🧠
+        <div class="pulse-ring"></div>
+        <div class="pulse-ring delay-1"></div>
+        <div class="pulse-ring delay-2"></div>
+      </div>
+    </div>
+    
+    <!-- Progress Steps -->
+    <div class="progress-steps" id="progress-steps" role="status" aria-live="polite">
+      <div class="step active" data-step="1">
+        <span class="step-icon" aria-hidden="true">●</span>
+        <span class="step-text">Loading Your Responses</span>
+      </div>
+      <div class="step" data-step="2">
+        <span class="step-icon" aria-hidden="true">○</span>
+        <span class="step-text">Analyzing Personality Profile</span>
+      </div>
+      <div class="step" data-step="3">
+        <span class="step-icon" aria-hidden="true">○</span>
+        <span class="step-text">Matching Career Paths</span>
+      </div>
+      <div class="step" data-step="4">
+        <span class="step-icon" aria-hidden="true">○</span>
+        <span class="step-text">Preparing Your Results</span>
+      </div>
+    </div>
+    
+    <!-- Fun Facts Carousel -->
+    <div class="fun-facts" id="fun-facts" aria-live="polite" aria-atomic="true">
+      <p class="fact active">Did you know? The Big Five model is one of the most researched personality frameworks!</p>
+      <p class="fact">Fun fact: Your personality can influence your career satisfaction by up to 30%.</p>
+      <p class="fact">Interesting: Career assessment can increase job placement success by 2x.</p>
+      <p class="fact">Research shows: Self-awareness is the first step to career fulfillment!</p>
+      <p class="fact">Did you know? The RIASEC model has been validated across 50+ countries.</p>
+    </div>
+    
+    <!-- Error Message (hidden by default) -->
+    <div class="error-message" id="error-message" role="alert">
+      <h3>⚠️ Processing Issue</h3>
+      <p>We encountered an issue processing your assessment. Please try again.</p>
+      <button type="button" class="btn btn-primary" id="error-return-btn">
+        Return to Questions
+      </button>
+    </div>
+  </main>
+  
+  <!-- Footer will be loaded by layout-loader.js -->
+  
+  <!-- JavaScript -->
+  <script src="assets/js/layout-loader.js"></script>
+  <script src="assets/js/assessment-api.js"></script>
+  <script src="assets/js/assessment-processing.js"></script>
+</body>
+</html>
