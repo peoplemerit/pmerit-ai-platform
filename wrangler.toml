@@ -16,3 +16,8 @@ binding = "AI"
 # Add any non-sensitive configuration here
 TTS_DEFAULT_MODEL = "@cf/deepgram/aura-2-en"
 TTS_MAX_TEXT_LENGTH = "5000"
+
+# Hyperdrive Database Connection (Neon PostgreSQL)
+[[hyperdrive]]
+binding = "DB"
+id = "8770a9728b8f4851a859f083038f9f42"
