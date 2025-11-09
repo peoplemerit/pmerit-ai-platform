@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virtual Human API Test</title>
+</head>
+<body>
+  <h1>Virtual Human API Test Page</h1>
+
+  <div>
+    <h2>Test Controls</h2>
+    <button onclick="testSpeak()">Test speak()</button>
+    <button onclick="testCache()">Test Cache</button>
+    <button onclick="testQueue()">Test Queue</button>
+    <button onclick="testAvatars()">Test Avatars</button>
+    <button onclick="testVoices()">Test Voices</button>
+    <button onclick="testEvents()">Test Events</button>
+    <button onclick="testStatus()">Get Status</button>
+    <button onclick="testStop()">Stop</button>
+    <button onclick="testClearCache()">Clear Cache</button>
+  </div>
+
+  <div id="output" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc; min-height: 200px; font-family: monospace; white-space: pre-wrap;">
+Output will appear here...
+  </div>
+
+  <!-- Load dependencies -->
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/virtual-human-api.js"></script>
+
+  <script>
+    const output = document.getElementById('output');
+
+    function log(message) {
+      const timestamp = new Date().toLocaleTimeString();
+      output.textContent += `\n[${timestamp}] ${message}`;
+      output.scrollTop = output.scrollHeight;
+    }
+
+    function clearOutput() {
+      output.textContent = 'Output cleared...\n';
+    }
+
+    // Test basic speak
+    async function testSpeak() {
+      log('Testing speak()...');
+      try {
+        const result = await window.virtualHumanAPI.speak('Hello, this is a test message');
+        log('Speak result: ' + JSON.stringify(result, null, 2));
+      } catch (error) {
+        log('Error: ' + error.message);
+      }
+    }
+
+    // Test caching
+    async function testCache() {
+      log('Testing cache...');
+      log('First call (should hit API)...');
+      const start1 = Date.now();
+      try {
+        await window.virtualHumanAPI.speak('Cache test message');
+        const time1 = Date.now() - start1;
+        log(`First call took: ${time1}ms`);
+
+        log('Second call (should use cache)...');
+        const start2 = Date.now();
+        await window.virtualHumanAPI.speak('Cache test message');
+        const time2 = Date.now() - start2;
+        log(`Second call took: ${time2}ms`);
+        log(`Cache speedup: ${(time1 / time2).toFixed(2)}x`);
+      } catch (error) {
+        log('Error: ' + error.message);
+      }
+    }
+
+    // Test queue
+    async function testQueue() {
+      log('Testing queue management...');
+      try {
+        log('Adding 3 messages to queue...');
+        window.virtualHumanAPI.speakAndPlay('First message');
+        window.virtualHumanAPI.speakAndPlay('Second message');
+        window.virtualHumanAPI.speakAndPlay('Third message');
+
+        // Check status periodically
+        const interval = setInterval(() => {
+          const status = window.virtualHumanAPI.getStatus();
+          log(`Queue status: playing=${status.isPlaying}, queue=${status.queueLength}`);
+          if (!status.isPlaying && status.queueLength === 0) {
+            clearInterval(interval);
+            log('Queue test complete');
+          }
+        }, 500);
+      } catch (error) {
+        log('Error: ' + error.message);
+      }
+    }
+
+    // Test avatars
+    async function testAvatars() {
+      log('Testing avatar management...');
+      try {
+        const avatars = await window.virtualHumanAPI.getAvatars();
+        log('Available avatars: ' + JSON.stringify(avatars, null, 2));
+
+        log('Setting preferred avatar to chris_redfield...');
+        await window.virtualHumanAPI.setPreferredAvatar('chris_redfield');
+
+        const preferred = window.virtualHumanAPI.getPreferredAvatar();
+        log('Current preferred avatar: ' + preferred);
+      } catch (error) {
+        log('Error: ' + error.message);
+      }
+    }
+
+    // Test voices
+    async function testVoices() {
+      log('Testing voice selection...');
+      try {
+        const voices = await window.virtualHumanAPI.getVoices();
+        log('Available voices: ' + JSON.stringify(voices, null, 2));
+      } catch (error) {
+        log('Error: ' + error.message);
+      }
+    }
+
+    // Test events
+    function testEvents() {
+      log('Testing event system...');
+
+      // Add event listeners
+      window.virtualHumanAPI.on('start', (data) => {
+        log('EVENT: start - ' + data.text);
+      });
+
+      window.virtualHumanAPI.on('complete', (data) => {
+        log('EVENT: complete - ' + data.text);
+      });
+
+      window.virtualHumanAPI.on('error', (data) => {
+        log('EVENT: error - ' + data.error.message);
+      });
+
+      log('Event listeners added. Try other tests to see events.');
+    }
+
+    // Test status
+    function testStatus() {
+      const status = window.virtualHumanAPI.getStatus();
+      log('Current status: ' + JSON.stringify(status, null, 2));
+    }
+
+    // Test stop
+    function testStop() {
+      log('Stopping playback...');
+      window.virtualHumanAPI.stop();
+      log('Stopped');
+    }
+
+    // Test clear cache
+    function testClearCache() {
+      log('Clearing cache...');
+      window.virtualHumanAPI.clearCache();
+      const status = window.virtualHumanAPI.getStatus();
+      log('Cache cleared. Cache size: ' + status.cacheSize);
+    }
+
+    // Initialize
+    log('Virtual Human API loaded and ready for testing');
+    log('API instance available at: window.virtualHumanAPI');
+  </script>
+</body>
+</html>
