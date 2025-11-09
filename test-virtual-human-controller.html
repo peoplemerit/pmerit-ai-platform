@@ -175,14 +175,20 @@
     function log(message, type = 'info') {
       const timestamp = new Date().toLocaleTimeString();
       const className = type === 'error' ? 'error' : type === 'success' ? 'success' : type === 'warning' ? 'warning' : 'info';
-      const line = `<span class="${className}">[${timestamp}] ${message}</span>\n`;
-      output.innerHTML += line;
+      
+      // Create elements safely to prevent XSS
+      const span = document.createElement('span');
+      span.className = className;
+      span.textContent = `[${timestamp}] ${message}`;
+      
+      output.appendChild(span);
+      output.appendChild(document.createTextNode('\n'));
       output.scrollTop = output.scrollHeight;
       console.log(message);
     }
 
     function clearOutput() {
-      output.innerHTML = 'Output cleared...\n';
+      output.textContent = 'Output cleared...\n';
     }
 
     function refreshState() {
