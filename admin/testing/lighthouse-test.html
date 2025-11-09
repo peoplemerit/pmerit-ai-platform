@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lighthouse Testing Guide - PMERIT QA</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      color: #6B5CE7;
+      margin-bottom: 10px;
+      font-size: 2em;
+    }
+
+    h2 {
+      color: #2c3e50;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #6B5CE7;
+    }
+
+    h3 {
+      color: #34495e;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+
+    .intro {
+      background: #e8f4fd;
+      padding: 20px;
+      border-left: 4px solid #2196F3;
+      margin-bottom: 30px;
+      border-radius: 4px;
+    }
+
+    .url-list {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+
+    .url-list input {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .url-list input:focus {
+      outline: none;
+      border-color: #6B5CE7;
+    }
+
+    .code-block {
+      background: #2c3e50;
+      color: #ecf0f1;
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 15px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+    }
+
+    .code-block code {
+      display: block;
+      white-space: pre;
+    }
+
+    .step {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 15px 0;
+    }
+
+    .step-number {
+      display: inline-block;
+      background: #6B5CE7;
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 32px;
+      margin-right: 10px;
+      font-weight: bold;
+    }
+
+    .step h4 {
+      display: inline-block;
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+
+    .step p {
+      margin-left: 42px;
+      margin-top: 10px;
+    }
+
+    .checklist {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .checklist li {
+      padding: 10px;
+      margin: 5px 0;
+      background: #f8f9fa;
+      border-left: 3px solid #6B5CE7;
+      border-radius: 4px;
+    }
+
+    .checklist li:before {
+      content: '☐ ';
+      font-size: 20px;
+      margin-right: 10px;
+    }
+
+    .warning {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+
+    .success {
+      background: #d4edda;
+      border-left: 4px solid #28a745;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 4px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+
+    th {
+      background: #6B5CE7;
+      color: white;
+      font-weight: 600;
+    }
+
+    tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      background: #6B5CE7;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 5px;
+    }
+
+    .btn:hover {
+      background: #5a4cc9;
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+    }
+
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+      .container {
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🚀 Lighthouse Testing Guide</h1>
+    <p><strong>PMERIT Platform - Issue #14: Comprehensive Cross-Device Testing</strong></p>
+
+    <div class="intro">
+      <strong>Purpose:</strong> This guide provides step-by-step instructions for running Lighthouse audits on the PMERIT platform to ensure performance, accessibility, best practices, and SEO meet production standards.
+    </div>
+
+    <h2>📋 Testing Requirements</h2>
+
+    <div class="success">
+      <strong>Success Criteria:</strong>
+      <ul style="margin-left: 20px; margin-top: 10px;">
+        <li>Performance Score: ≥85</li>
+        <li>Accessibility Score: ≥90</li>
+        <li>Best Practices Score: ≥90</li>
+        <li>SEO Score: ≥90</li>
+      </ul>
+    </div>
+
+    <h2>🎯 Pages to Test</h2>
+
+    <div class="url-list">
+      <h3>Primary Pages:</h3>
+      <input type="text" value="https://pmerit.com/index.html" readonly onclick="this.select()">
+      <input type="text" value="https://pmerit.com/assessment-entry.html" readonly onclick="this.select()">
+      <input type="text" value="https://pmerit.com/assessment-questions.html" readonly onclick="this.select()">
+      <input type="text" value="https://pmerit.com/assessment-processing.html" readonly onclick="this.select()">
+      <input type="text" value="https://pmerit.com/assessment-results.html" readonly onclick="this.select()">
+      <input type="text" value="https://pmerit.com/classroom.html" readonly onclick="this.select()">
+      <input type="text" value="https://pmerit.com/learner-portal.html" readonly onclick="this.select()">
+    </div>
+
+    <h2>🛠️ Method 1: Chrome DevTools (Recommended)</h2>
+
+    <div class="step">
+      <h4><span class="step-number">1</span> Open Chrome DevTools</h4>
+      <p>Press <strong>F12</strong> or <strong>Ctrl+Shift+I</strong> (Cmd+Option+I on Mac)</p>
+    </div>
+
+    <div class="step">
+      <h4><span class="step-number">2</span> Navigate to Lighthouse Tab</h4>
+      <p>Click on the <strong>"Lighthouse"</strong> tab in DevTools</p>
+    </div>
+
+    <div class="step">
+      <h4><span class="step-number">3</span> Configure Audit</h4>
+      <p>Select the following options:</p>
+      <ul style="margin-left: 62px; margin-top: 10px;">
+        <li>✓ Performance</li>
+        <li>✓ Accessibility</li>
+        <li>✓ Best Practices</li>
+        <li>✓ SEO</li>
+        <li>Device: <strong>Desktop</strong> (run twice: once for Desktop, once for Mobile)</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <h4><span class="step-number">4</span> Generate Report</h4>
+      <p>Click <strong>"Analyze page load"</strong> and wait for the audit to complete (30-60 seconds)</p>
+    </div>
+
+    <div class="step">
+      <h4><span class="step-number">5</span> Save Report</h4>
+      <p>Click the download icon (💾) to save the report as HTML or JSON</p>
+      <p>Save to: <code>/admin/qa-reports/lighthouse/[page-name]-[desktop|mobile]-[date].html</code></p>
+    </div>
+
+    <h2>🖥️ Method 2: Lighthouse CLI</h2>
+
+    <div class="warning">
+      <strong>Prerequisites:</strong> Node.js must be installed on your system
+    </div>
+
+    <div class="step">
+      <h4><span class="step-number">1</span> Install Lighthouse</h4>
+      <div class="code-block"><code>npm install -g lighthouse</code></div>
+    </div>
+
+    <div class="step">
+      <h4><span class="step-number">2</span> Run Lighthouse Audit (Desktop)</h4>
+      <div class="code-block"><code>lighthouse https://pmerit.com/assessment-entry.html \
+  --output html \
+  --output-path ./assessment-entry-desktop-report.html \
+  --preset desktop \
+  --view</code></div>
+    </div>
+
+    <div class="step">
+      <h4><span class="step-number">3</span> Run Lighthouse Audit (Mobile)</h4>
+      <div class="code-block"><code>lighthouse https://pmerit.com/assessment-entry.html \
+  --output html \
+  --output-path ./assessment-entry-mobile-report.html \
+  --emulated-form-factor mobile \
+  --throttling.cpuSlowdownMultiplier 4 \
+  --view</code></div>
+    </div>
+
+    <div class="step">
+      <h4><span class="step-number">4</span> Batch Test All Pages</h4>
+      <div class="code-block"><code>#!/bin/bash
+# Save as: test-all-pages.sh
+
+PAGES=(
+  "index.html"
+  "assessment-entry.html"
+  "assessment-questions.html"
+  "assessment-processing.html"
+  "assessment-results.html"
+  "classroom.html"
+)
+
+for page in "${PAGES[@]}"; do
+  echo "Testing $page (Desktop)..."
+  lighthouse "https://pmerit.com/$page" \
+    --output html json \
+    --output-path "./reports/${page%.*}-desktop" \
+    --preset desktop \
+    --quiet
+  
+  echo "Testing $page (Mobile)..."
+  lighthouse "https://pmerit.com/$page" \
+    --output html json \
+    --output-path "./reports/${page%.*}-mobile" \
+    --emulated-form-factor mobile \
+    --quiet
+done
+
+echo "All tests complete! Reports saved to ./reports/"</code></div>
+    </div>
+
+    <h2>📊 Interpreting Results</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Score Range</th>
+          <th>Status</th>
+          <th>Action Required</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>90-100</td>
+          <td style="color: #28a745; font-weight: bold;">✓ Excellent</td>
+          <td>None - meets all requirements</td>
+        </tr>
+        <tr>
+          <td>50-89</td>
+          <td style="color: #ffc107; font-weight: bold;">⚠ Needs Improvement</td>
+          <td>Review recommendations and implement fixes</td>
+        </tr>
+        <tr>
+          <td>0-49</td>
+          <td style="color: #dc3545; font-weight: bold;">✗ Poor</td>
+          <td>Critical fixes required before launch</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>🔍 Key Metrics to Monitor</h2>
+
+    <h3>Performance Metrics</h3>
+    <ul class="checklist">
+      <li><strong>First Contentful Paint (FCP):</strong> Target ≤1.8s</li>
+      <li><strong>Largest Contentful Paint (LCP):</strong> Target ≤2.5s</li>
+      <li><strong>Total Blocking Time (TBT):</strong> Target ≤200ms</li>
+      <li><strong>Cumulative Layout Shift (CLS):</strong> Target ≤0.1</li>
+      <li><strong>Speed Index:</strong> Target ≤3.4s</li>
+    </ul>
+
+    <h3>Accessibility Issues</h3>
+    <ul class="checklist">
+      <li>Missing alt attributes on images</li>
+      <li>Insufficient color contrast</li>
+      <li>Missing form labels</li>
+      <li>Missing ARIA attributes</li>
+      <li>Invalid HTML structure</li>
+      <li>Missing focus indicators</li>
+    </ul>
+
+    <h3>Best Practices Issues</h3>
+    <ul class="checklist">
+      <li>Mixed content (HTTP/HTTPS)</li>
+      <li>Missing security headers</li>
+      <li>Console errors</li>
+      <li>Deprecated APIs</li>
+      <li>Browser compatibility issues</li>
+    </ul>
+
+    <h2>📝 Recording Results</h2>
+
+    <div class="step">
+      <h4><span class="step-number">1</span> Create Results Matrix</h4>
+      <p>Copy the template below and fill in your scores:</p>
+      <div class="code-block"><code>| Page | Device | Performance | Accessibility | Best Practices | SEO |
+|------|--------|-------------|---------------|----------------|-----|
+| assessment-entry.html | Desktop | ___ | ___ | ___ | ___ |
+| assessment-entry.html | Mobile | ___ | ___ | ___ | ___ |
+| assessment-questions.html | Desktop | ___ | ___ | ___ | ___ |
+| assessment-questions.html | Mobile | ___ | ___ | ___ | ___ |</code></div>
+    </div>
+
+    <div class="step">
+      <h4><span class="step-number">2</span> Document Issues</h4>
+      <p>For each score below target:</p>
+      <ul style="margin-left: 62px; margin-top: 10px;">
+        <li>List the specific issues identified</li>
+        <li>Note the severity (Critical/High/Medium/Low)</li>
+        <li>Create GitHub issue if necessary</li>
+        <li>Assign to appropriate developer</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <h4><span class="step-number">3</span> Save Reports</h4>
+      <p>Organize reports in the following structure:</p>
+      <div class="code-block"><code>/admin/qa-reports/lighthouse/
+  ├── 2025-11-09/
+  │   ├── assessment-entry-desktop.html
+  │   ├── assessment-entry-mobile.html
+  │   ├── assessment-questions-desktop.html
+  │   └── ...
+  └── summary.md</code></div>
+    </div>
+
+    <h2>🐛 Common Issues & Fixes</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Issue</th>
+          <th>Category</th>
+          <th>Quick Fix</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Images without alt text</td>
+          <td>Accessibility</td>
+          <td>Add descriptive alt attributes</td>
+        </tr>
+        <tr>
+          <td>Low color contrast</td>
+          <td>Accessibility</td>
+          <td>Increase contrast ratio to 4.5:1</td>
+        </tr>
+        <tr>
+          <td>Large images</td>
+          <td>Performance</td>
+          <td>Optimize and compress images</td>
+        </tr>
+        <tr>
+          <td>Render-blocking resources</td>
+          <td>Performance</td>
+          <td>Defer or async load CSS/JS</td>
+        </tr>
+        <tr>
+          <td>Missing meta description</td>
+          <td>SEO</td>
+          <td>Add meta description tag</td>
+        </tr>
+        <tr>
+          <td>Console errors</td>
+          <td>Best Practices</td>
+          <td>Fix JavaScript errors</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>✅ Quality Gate Checklist</h2>
+
+    <ul class="checklist">
+      <li>All primary pages tested (Desktop & Mobile)</li>
+      <li>All scores meet minimum thresholds</li>
+      <li>Reports saved and organized</li>
+      <li>Issues documented in GitHub</li>
+      <li>Critical issues fixed and retested</li>
+      <li>Results recorded in TEST_REPORT.md</li>
+    </ul>
+
+    <h2>🔗 Additional Resources</h2>
+
+    <ul style="margin-left: 20px;">
+      <li><a href="https://developer.chrome.com/docs/lighthouse/overview/" target="_blank">Lighthouse Documentation</a></li>
+      <li><a href="https://web.dev/vitals/" target="_blank">Core Web Vitals Guide</a></li>
+      <li><a href="https://www.w3.org/WAI/WCAG21/quickref/" target="_blank">WCAG 2.1 Quick Reference</a></li>
+      <li><a href="https://developers.google.com/speed/pagespeed/insights/" target="_blank">PageSpeed Insights</a></li>
+    </ul>
+
+    <div class="success" style="margin-top: 30px;">
+      <strong>Ready to Test?</strong> Follow the steps above and document your findings in TEST_REPORT.md
+    </div>
+
+    <div style="text-align: center; margin-top: 30px;">
+      <button class="btn" onclick="window.print()">Print This Guide</button>
+      <a href="../../TEST_REPORT.md" class="btn btn-secondary">Open Test Report</a>
+    </div>
+  </div>
+
+  <script>
+    // Auto-fill current date
+    document.addEventListener('DOMContentLoaded', () => {
+      const today = new Date().toISOString().split('T')[0];
+      console.log('Lighthouse Testing Guide loaded - Date:', today);
+    });
+  </script>
+</body>
+</html>
