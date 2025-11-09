@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Tracking Test - PMERIT</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .success { background-color: #4CAF50; color: white; }
+        .error { background-color: #f44336; color: white; }
+        #console-output {
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-left: 3px solid #2196F3;
+        }
+        .error-entry {
+            border-left-color: #f44336;
+            background-color: #ffebee;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 PMERIT Error Tracking Test</h1>
+    <p>This page tests the client-side error tracking implementation from main.js.</p>
+
+    <div>
+        <h2>Test Scenarios:</h2>
+        <button class="success" onclick="testNoError()">✅ Normal Operation</button>
+        <button class="error" onclick="testJSError()">❌ Trigger JavaScript Error</button>
+        <button class="error" onclick="testPromiseRejection()">⚠️ Trigger Promise Rejection</button>
+        <button onclick="clearConsole()">🗑️ Clear Console</button>
+    </div>
+
+    <div id="console-output">
+        <div class="log-entry">Console output will appear here...</div>
+    </div>
+
+    <script>
+        // Override console.error to capture errors in our test UI
+        const originalConsoleError = console.error;
+        console.error = function(...args) {
+            originalConsoleError.apply(console, args);
+            logToTestConsole('ERROR: ' + args.map(arg => 
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' '), true);
+        };
+
+        // Override console.log for tracking
+        const originalConsoleLog = console.log;
+        console.log = function(...args) {
+            originalConsoleLog.apply(console, args);
+            if (args[0] && args[0].includes('[track]')) {
+                logToTestConsole('ANALYTICS: ' + args.join(' '), false);
+            }
+        };
+
+        function logToTestConsole(message, isError) {
+            const output = document.getElementById('console-output');
+            const entry = document.createElement('div');
+            entry.className = isError ? 'log-entry error-entry' : 'log-entry';
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            output.appendChild(entry);
+            output.scrollTop = output.scrollHeight;
+        }
+
+        function clearConsole() {
+            document.getElementById('console-output').innerHTML = '';
+            logToTestConsole('Console cleared', false);
+        }
+
+        // Enable debug mode for analytics
+        window.PMERIT_DEBUG = true;
+
+        // Mock analytics if not present
+        window.analytics = window.analytics || {
+            track: function(event, props = {}) {
+                console.log('[track]', event, props);
+            }
+        };
+
+        // Helper to get page identifier
+        function pageId() {
+            return 'error-tracking-test';
+        }
+
+        // ========== ERROR TRACKING (from main.js) ==========
+        (function initErrorTracking() {
+            logToTestConsole('Initializing error tracking...', false);
+
+            // Log JavaScript errors
+            window.addEventListener('error', (event) => {
+                const errorInfo = {
+                    message: event.message,
+                    source: event.filename,
+                    line: event.lineno,
+                    column: event.colno,
+                    error: event.error?.stack || String(event.error),
+                    timestamp: new Date().toISOString(),
+                    page: pageId(),
+                    userAgent: navigator.userAgent
+                };
+                
+                console.error('Client error:', errorInfo);
+                
+                // Track error in analytics
+                if (window.analytics && typeof window.analytics.track === 'function') {
+                    window.analytics.track('client_error', {
+                        message: errorInfo.message,
+                        source: errorInfo.source,
+                        page: errorInfo.page,
+                        timestamp: errorInfo.timestamp
+                    });
+                }
+            });
+
+            // Log unhandled promise rejections
+            window.addEventListener('unhandledrejection', (event) => {
+                const errorInfo = {
+                    reason: String(event.reason),
+                    promise: String(event.promise),
+                    timestamp: new Date().toISOString(),
+                    page: pageId(),
+                    userAgent: navigator.userAgent
+                };
+                
+                console.error('Unhandled rejection:', errorInfo);
+                
+                // Track error in analytics
+                if (window.analytics && typeof window.analytics.track === 'function') {
+                    window.analytics.track('unhandled_rejection', {
+                        reason: errorInfo.reason,
+                        page: errorInfo.page,
+                        timestamp: errorInfo.timestamp
+                    });
+                }
+            });
+
+            logToTestConsole('✅ Error tracking initialized', false);
+        })();
+
+        // ========== TEST FUNCTIONS ==========
+        function testNoError() {
+            logToTestConsole('Testing normal operation...', false);
+            const result = 2 + 2;
+            logToTestConsole(`✅ Normal operation completed: 2 + 2 = ${result}`, false);
+        }
+
+        function testJSError() {
+            logToTestConsole('Testing JavaScript error...', false);
+            // This will trigger the error event listener
+            throw new Error('This is a test error from the error tracking test page');
+        }
+
+        function testPromiseRejection() {
+            logToTestConsole('Testing promise rejection...', false);
+            // This will trigger the unhandledrejection event listener
+            Promise.reject('This is a test promise rejection');
+        }
+
+        // Log initial state
+        logToTestConsole('Page loaded successfully', false);
+        logToTestConsole('Click buttons above to test error tracking', false);
+    </script>
+</body>
+</html>
