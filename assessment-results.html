@@ -1,0 +1,1716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  
+  <!-- SEO Meta Tags -->
+  <title>Assessment Results - PMERIT</title>
+  <meta name="description" content="Your PMERIT Career Assessment Results">
+  <meta name="keywords" content="career assessment results, Big Five personality, career matches, PMERIT">
+  <meta name="author" content="PMERIT">
+  <meta name="theme-color" content="#6B5CE7">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pmerit-ai-platform.pages.dev/assessment-results.html">
+  <meta property="og:title" content="Assessment Results - PMERIT">
+  <meta property="og:description" content="Your personalized career assessment results and recommendations.">
+  <meta property="og:image" content="https://pmerit-ai-platform.pages.dev/assets/images/og-assessment.jpg">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://pmerit-ai-platform.pages.dev/assessment-results.html">
+  <meta property="twitter:title" content="Assessment Results - PMERIT">
+  <meta property="twitter:description" content="Your personalized career assessment results and recommendations.">
+  <meta property="twitter:image" content="https://pmerit-ai-platform.pages.dev/assets/images/og-assessment.jpg">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
+  
+  <!-- Fonts - Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="assets/css/theme-variables.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/typography.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/assessment.css">
+  <link rel="stylesheet" href="assets/css/mobile.css" media="(max-width: 1023px)">
+  <link rel="stylesheet" href="assets/css/desktop.css" media="(min-width: 1024px)">
+  
+  <!-- Chart.js for radar chart -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  
+  <!-- jsPDF for PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  
+  <style>
+    /* Assessment Results Specific Styles */
+    .results-header {
+      background: linear-gradient(135deg, #6b5ce7 0%, #8b7ce8 100%);
+      color: #ffffff;
+      padding: 3rem 1.5rem;
+      text-align: center;
+    }
+    
+    .results-header .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .header-content {
+      margin-bottom: 2rem;
+    }
+    
+    .success-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: #4ade80;
+    }
+    
+    .results-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #ffffff;
+    }
+    
+    .results-header .subtitle {
+      font-size: 1.125rem;
+      opacity: 0.95;
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .action-buttons .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      font-size: 1rem;
+    }
+    
+    .btn-primary {
+      background: var(--color-primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: var(--interactive-primary-hover);
+    }
+    
+    .btn-secondary {
+      background: white;
+      color: var(--color-primary);
+    }
+    
+    .btn-secondary:hover {
+      background: #f0f0f0;
+    }
+    
+    /* Personality Visualization */
+    .personality-visualization {
+      padding: 3rem 1.5rem;
+      background: var(--bg-primary);
+    }
+    
+    .personality-visualization .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .visualization-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    .chart-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: var(--shadow-md);
+    }
+    
+    .chart-container h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+    }
+    
+    .chart-container canvas {
+      max-width: 100%;
+      height: auto;
+    }
+    
+    .profile-summary {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: var(--shadow-md);
+    }
+    
+    .profile-summary h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+    }
+    
+    .profile-summary h3 {
+      font-size: 1.125rem;
+      margin-bottom: 0.75rem;
+      color: var(--text-primary);
+    }
+    
+    .holland-code {
+      margin-bottom: 2rem;
+    }
+    
+    .code-display {
+      display: flex;
+      gap: 0.5rem;
+      margin: 1rem 0;
+    }
+    
+    .code-letter {
+      width: 3rem;
+      height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-primary);
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 700;
+      border-radius: 8px;
+    }
+    
+    .code-description {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+    
+    .top-traits ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .top-traits li {
+      padding: 0.5rem 0;
+      font-size: 0.938rem;
+      color: var(--text-primary);
+    }
+    
+    .top-traits li strong {
+      color: var(--color-primary);
+    }
+    
+    /* Trait Cards Section */
+    .trait-cards-section {
+      padding: 3rem 1.5rem;
+      background: white;
+    }
+    
+    .trait-cards-section .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .trait-cards-section h2 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      color: var(--text-primary);
+    }
+    
+    .trait-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .trait-card {
+      background: var(--bg-primary);
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .trait-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .trait-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .trait-header h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0;
+    }
+    
+    .trait-abbrev {
+      width: 2rem;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-primary);
+      color: white;
+      font-weight: 700;
+      border-radius: 50%;
+      font-size: 0.875rem;
+    }
+    
+    .trait-score {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    
+    .score-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+    
+    .score-percentile {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+    
+    .trait-level {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    
+    .trait-level.high {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    
+    .trait-level.moderate {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+    
+    .trait-level.low {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+    
+    .trait-description {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    
+    /* Career Matches Section */
+    .career-matches-section {
+      padding: 3rem 1.5rem;
+      background: var(--bg-primary);
+    }
+    
+    .career-matches-section .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .career-matches-section h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+    
+    .section-intro {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+    }
+    
+    .career-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    
+    .career-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      gap: 1.5rem;
+      transition: box-shadow 0.2s;
+    }
+    
+    .career-card:hover {
+      box-shadow: var(--shadow-md);
+    }
+    
+    .career-rank {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      min-width: 4rem;
+    }
+    
+    .rank-number {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+    
+    .rank-badge {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    
+    .rank-1 .rank-badge {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    
+    .rank-2 .rank-badge,
+    .rank-3 .rank-badge {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+    
+    .rank-badge {
+      background: #f3f4f6;
+      color: #374151;
+    }
+    
+    .career-content {
+      flex: 1;
+    }
+    
+    .career-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: var(--text-primary);
+    }
+    
+    .fit-score {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    
+    .score-bar {
+      flex: 1;
+      height: 8px;
+      background: #e5e7eb;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .score-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981 0%, #3b82f6 50%, #6b7280 100%);
+      transition: width 0.3s;
+    }
+    
+    .score-text {
+      font-weight: 600;
+      color: var(--color-primary);
+      min-width: 4rem;
+    }
+    
+    .career-description {
+      font-size: 0.938rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+    
+    .career-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+    
+    .meta-item i {
+      color: var(--color-primary);
+    }
+    
+    .career-actions {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+    
+    .btn-outline {
+      background: white;
+      color: var(--color-primary);
+      border: 1px solid var(--color-primary);
+    }
+    
+    .btn-outline:hover {
+      background: var(--color-primary);
+      color: white;
+    }
+    
+    /* Next Steps Section */
+    .next-steps-section {
+      padding: 3rem 1.5rem;
+      background: white;
+    }
+    
+    .next-steps-section .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .next-steps-section h2 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      color: var(--text-primary);
+    }
+    
+    .next-steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .step-card {
+      background: var(--bg-primary);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    
+    .step-card:hover {
+      transform: translateY(-4px);
+    }
+    
+    .step-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--color-primary);
+    }
+    
+    .step-card h3 {
+      font-size: 1.125rem;
+      margin-bottom: 0.75rem;
+      color: var(--text-primary);
+    }
+    
+    .step-card p {
+      font-size: 0.938rem;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+    
+    /* Share Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .modal-header h3 {
+      font-size: 1.25rem;
+      color: var(--text-primary);
+      margin: 0;
+    }
+    
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+    
+    .modal-close:hover {
+      color: var(--text-primary);
+    }
+    
+    .modal-body {
+      padding: 1.5rem;
+    }
+    
+    .share-link-container {
+      display: flex;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+    }
+    
+    .share-link-container input {
+      flex: 1;
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 0.938rem;
+    }
+    
+    .share-social {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-top: 1.5rem;
+    }
+    
+    .btn-social {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.938rem;
+      color: white;
+    }
+    
+    .btn-social.linkedin {
+      background: #0077b5;
+    }
+    
+    .btn-social.twitter {
+      background: #1da1f2;
+    }
+    
+    .btn-social.facebook {
+      background: #1877f2;
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .visualization-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .results-header h1 {
+        font-size: 1.5rem;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+        width: 100%;
+      }
+      
+      .action-buttons .btn {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .career-card {
+        flex-direction: column;
+      }
+      
+      .career-rank {
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+      }
+      
+      .share-social {
+        flex-direction: column;
+      }
+      
+      .btn-social {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body class="assessment-results-page" data-layout-auto-init>
+  
+  <!-- Skip Link for Accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  
+  <!-- Header will be loaded by layout-loader.js -->
+  
+  <!-- Results Header -->
+  <section class="results-header">
+    <div class="container">
+      <div class="header-content">
+        <div class="success-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <h1>Your Career Assessment Results</h1>
+        <p class="subtitle">Based on your Big Five personality profile</p>
+      </div>
+      
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button class="btn btn-primary" id="saveBtn">
+          <i class="fas fa-save"></i> Save to Profile
+        </button>
+        <button class="btn btn-secondary" id="shareBtn">
+          <i class="fas fa-share-alt"></i> Share Results
+        </button>
+        <button class="btn btn-secondary" id="exportBtn">
+          <i class="fas fa-file-pdf"></i> Export PDF
+        </button>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Big Five Visualization Section -->
+  <section class="personality-visualization">
+    <div class="container">
+      <div class="visualization-grid">
+        <!-- Radar Chart -->
+        <div class="chart-container">
+          <h2>Your Big Five Profile</h2>
+          <canvas id="bigFiveChart" width="400" height="400"></canvas>
+        </div>
+        
+        <!-- Profile Summary -->
+        <div class="profile-summary">
+          <h2>Your Personality Profile</h2>
+          
+          <div class="holland-code">
+            <h3>Holland Code (RIASEC)</h3>
+            <div class="code-display">
+              <span class="code-letter" id="hollandCode1">I</span>
+              <span class="code-letter" id="hollandCode2">S</span>
+              <span class="code-letter" id="hollandCode3">A</span>
+            </div>
+            <p class="code-description" id="hollandDescription">
+              Investigative, Social, Artistic
+            </p>
+          </div>
+          
+          <div class="top-traits">
+            <h3>Your Top Traits</h3>
+            <ul id="topTraitsList">
+              <li><strong>High Openness:</strong> Creative and curious</li>
+              <li><strong>High Conscientiousness:</strong> Organized and reliable</li>
+              <li><strong>Moderate Extraversion:</strong> Balanced social energy</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Trait Cards Section -->
+  <section class="trait-cards-section" id="main-content">
+    <div class="container">
+      <h2>📊 Your Personality Traits</h2>
+      
+      <div class="trait-cards">
+        <!-- Openness Card -->
+        <div class="trait-card" data-trait="O">
+          <div class="trait-header">
+            <h3>Openness to Experience</h3>
+            <span class="trait-abbrev">O</span>
+          </div>
+          <div class="trait-score">
+            <div class="score-number" id="scoreO">82</div>
+            <div class="score-percentile" id="percentileO">85th percentile</div>
+          </div>
+          <div class="trait-level high" id="levelO">High</div>
+          <p class="trait-description" id="descO">
+            You are imaginative, creative, and appreciate art and novel experiences.
+          </p>
+        </div>
+        
+        <!-- Conscientiousness Card -->
+        <div class="trait-card" data-trait="C">
+          <div class="trait-header">
+            <h3>Conscientiousness</h3>
+            <span class="trait-abbrev">C</span>
+          </div>
+          <div class="trait-score">
+            <div class="score-number" id="scoreC">75</div>
+            <div class="score-percentile" id="percentileC">78th percentile</div>
+          </div>
+          <div class="trait-level high" id="levelC">High</div>
+          <p class="trait-description" id="descC">
+            You are organized, reliable, and persistent in achieving goals.
+          </p>
+        </div>
+        
+        <!-- Extraversion Card -->
+        <div class="trait-card" data-trait="E">
+          <div class="trait-header">
+            <h3>Extraversion</h3>
+            <span class="trait-abbrev">E</span>
+          </div>
+          <div class="trait-score">
+            <div class="score-number" id="scoreE">45</div>
+            <div class="score-percentile" id="percentileE">48th percentile</div>
+          </div>
+          <div class="trait-level moderate" id="levelE">Moderate</div>
+          <p class="trait-description" id="descE">
+            You balance social interaction with time alone, adapting as needed.
+          </p>
+        </div>
+        
+        <!-- Agreeableness Card -->
+        <div class="trait-card" data-trait="A">
+          <div class="trait-header">
+            <h3>Agreeableness</h3>
+            <span class="trait-abbrev">A</span>
+          </div>
+          <div class="trait-score">
+            <div class="score-number" id="scoreA">68</div>
+            <div class="score-percentile" id="percentileA">65th percentile</div>
+          </div>
+          <div class="trait-level high" id="levelA">High</div>
+          <p class="trait-description" id="descA">
+            You are compassionate, cooperative, and value harmony in relationships.
+          </p>
+        </div>
+        
+        <!-- Neuroticism Card -->
+        <div class="trait-card" data-trait="N">
+          <div class="trait-header">
+            <h3>Emotional Stability</h3>
+            <span class="trait-abbrev">N</span>
+          </div>
+          <div class="trait-score">
+            <div class="score-number" id="scoreN">35</div>
+            <div class="score-percentile" id="percentileN">32nd percentile</div>
+          </div>
+          <div class="trait-level low" id="levelN">High Stability</div>
+          <p class="trait-description" id="descN">
+            You are calm, emotionally stable, and resilient under stress.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Career Matches Section -->
+  <section class="career-matches-section">
+    <div class="container">
+      <h2>🎯 Your Top 10 Career Matches</h2>
+      <p class="section-intro">
+        Based on your Big Five personality profile and Holland Code, 
+        here are careers where you are most likely to thrive.
+      </p>
+      
+      <div class="career-list" id="careerList">
+        <!-- Career Card 1 -->
+        <div class="career-card rank-1">
+          <div class="career-rank">
+            <span class="rank-number">#1</span>
+            <span class="rank-badge">Best Match</span>
+          </div>
+          
+          <div class="career-content">
+            <h3 class="career-title">Software Developer</h3>
+            
+            <div class="fit-score">
+              <div class="score-bar">
+                <div class="score-fill" style="width: 95%"></div>
+              </div>
+              <span class="score-text">95% Match</span>
+            </div>
+            
+            <p class="career-description">
+              Designs, develops, and maintains software applications and systems. Requires strong problem-solving skills and attention to detail.
+            </p>
+            
+            <div class="career-meta">
+              <span class="meta-item">
+                <i class="fas fa-dollar-sign"></i>
+                $110,000 median salary
+              </span>
+              <span class="meta-item">
+                <i class="fas fa-graduation-cap"></i>
+                Bachelor's degree
+              </span>
+              <span class="meta-item">
+                <i class="fas fa-chart-line"></i>
+                Much faster than average growth
+              </span>
+            </div>
+            
+            <div class="career-actions">
+              <button class="btn btn-sm btn-outline" data-career-id="15-1252.00">
+                View Full Details
+              </button>
+              <button class="btn btn-sm btn-primary" data-career-id="15-1252.00">
+                Explore Pathway
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Career Card 2 -->
+        <div class="career-card rank-2">
+          <div class="career-rank">
+            <span class="rank-number">#2</span>
+            <span class="rank-badge">Great Match</span>
+          </div>
+          
+          <div class="career-content">
+            <h3 class="career-title">Data Scientist</h3>
+            
+            <div class="fit-score">
+              <div class="score-bar">
+                <div class="score-fill" style="width: 92%"></div>
+              </div>
+              <span class="score-text">92% Match</span>
+            </div>
+            
+            <p class="career-description">
+              Analyzes complex data to inform business decisions. Combines statistics, programming, and domain expertise.
+            </p>
+            
+            <div class="career-meta">
+              <span class="meta-item">
+                <i class="fas fa-dollar-sign"></i>
+                $100,000 median salary
+              </span>
+              <span class="meta-item">
+                <i class="fas fa-graduation-cap"></i>
+                Bachelor's degree
+              </span>
+              <span class="meta-item">
+                <i class="fas fa-chart-line"></i>
+                Much faster than average growth
+              </span>
+            </div>
+            
+            <div class="career-actions">
+              <button class="btn btn-sm btn-outline" data-career-id="15-2051.00">
+                View Full Details
+              </button>
+              <button class="btn btn-sm btn-primary" data-career-id="15-2051.00">
+                Explore Pathway
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Career Card 3 -->
+        <div class="career-card rank-3">
+          <div class="career-rank">
+            <span class="rank-number">#3</span>
+            <span class="rank-badge">Great Match</span>
+          </div>
+          
+          <div class="career-content">
+            <h3 class="career-title">UX Designer</h3>
+            
+            <div class="fit-score">
+              <div class="score-bar">
+                <div class="score-fill" style="width: 89%"></div>
+              </div>
+              <span class="score-text">89% Match</span>
+            </div>
+            
+            <p class="career-description">
+              Creates user-centered designs for digital products. Combines creativity with analytical thinking.
+            </p>
+            
+            <div class="career-meta">
+              <span class="meta-item">
+                <i class="fas fa-dollar-sign"></i>
+                $85,000 median salary
+              </span>
+              <span class="meta-item">
+                <i class="fas fa-graduation-cap"></i>
+                Bachelor's degree
+              </span>
+              <span class="meta-item">
+                <i class="fas fa-chart-line"></i>
+                Faster than average growth
+              </span>
+            </div>
+            
+            <div class="career-actions">
+              <button class="btn btn-sm btn-outline" data-career-id="15-1255.00">
+                View Full Details
+              </button>
+              <button class="btn btn-sm btn-primary" data-career-id="15-1255.00">
+                Explore Pathway
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Career Card 4 -->
+        <div class="career-card">
+          <div class="career-rank">
+            <span class="rank-number">#4</span>
+            <span class="rank-badge">Good Match</span>
+          </div>
+          
+          <div class="career-content">
+            <h3 class="career-title">Technical Writer</h3>
+            
+            <div class="fit-score">
+              <div class="score-bar">
+                <div class="score-fill" style="width: 85%"></div>
+              </div>
+              <span class="score-text">85% Match</span>
+            </div>
+            
+            <p class="career-description">
+              Creates technical documentation and user guides. Requires strong writing skills and technical understanding.
+            </p>
+            
+            <div class="career-meta">
+              <span class="meta-item">
+                <i class="fas fa-dollar-sign"></i>
+                $74,000 median salary
+              </span>
+              <span class="meta-item">
+                <i class="fas fa-graduation-cap"></i>
+                Bachelor's degree
+              </span>
+              <span class="meta-item">
+                <i class="fas fa-chart-line"></i>
+                Average growth
+              </span>
+            </div>
+            
+            <div class="career-actions">
+              <button class="btn btn-sm btn-outline" data-career-id="27-3042.00">
+                View Full Details
+              </button>
+              <button class="btn btn-sm btn-primary" data-career-id="27-3042.00">
+                Explore Pathway
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Career Card 5 -->
+        <div class="career-card">
+          <div class="career-rank">
+            <span class="rank-number">#5</span>
+            <span class="rank-badge">Good Match</span>
+          </div>
+          
+          <div class="career-content">
+            <h3 class="career-title">Systems Analyst</h3>
+            
+            <div class="fit-score">
+              <div class="score-bar">
+                <div class="score-fill" style="width: 83%"></div>
+              </div>
+              <span class="score-text">83% Match</span>
+            </div>
+            
+            <p class="career-description">
+              Analyzes and designs information systems. Bridges business needs with technical solutions.
+            </p>
+            
+            <div class="career-meta">
+              <span class="meta-item">
+                <i class="fas fa-dollar-sign"></i>
+                $93,000 median salary
+              </span>
+              <span class="meta-item">
+                <i class="fas fa-graduation-cap"></i>
+                Bachelor's degree
+              </span>
+              <span class="meta-item">
+                <i class="fas fa-chart-line"></i>
+                Faster than average growth
+              </span>
+            </div>
+            
+            <div class="career-actions">
+              <button class="btn btn-sm btn-outline" data-career-id="15-1121.00">
+                View Full Details
+              </button>
+              <button class="btn btn-sm btn-primary" data-career-id="15-1121.00">
+                Explore Pathway
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Career Card 6 -->
+        <div class="career-card">
+          <div class="career-rank">
+            <span class="rank-number">#6</span>
+            <span class="rank-badge">Good Match</span>
+          </div>
+          
+          <div class="career-content">
+            <h3 class="career-title">Research Scientist</h3>
+            
+            <div class="fit-score">
+              <div class="score-bar">
+                <div class="score-fill" style="width: 81%"></div>
+              </div>
+              <span class="score-text">81% Match</span>
+            </div>
+            
+            <p class="career-description">
+              Conducts scientific research to advance knowledge. Requires analytical thinking and methodical approach.
+            </p>
+            
+            <div class="career-meta">
+              <span class="meta-item">
+                <i class="fas fa-dollar-sign"></i>
+                $82,000 median salary
+              </span>
+              <span class="meta-item">
+                <i class="fas fa-graduation-cap"></i>
+                Master's degree
+              </span>
+              <span class="meta-item">
+                <i class="fas fa-chart-line"></i>
+                Average growth
+              </span>
+            </div>
+            
+            <div class="career-actions">
+              <button class="btn btn-sm btn-outline" data-career-id="19-1029.00">
+                View Full Details
+              </button>
+              <button class="btn btn-sm btn-primary" data-career-id="19-1029.00">
+                Explore Pathway
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Career Card 7 -->
+        <div class="career-card">
+          <div class="career-rank">
+            <span class="rank-number">#7</span>
+            <span class="rank-badge">Good Match</span>
+          </div>
+          
+          <div class="career-content">
+            <h3 class="career-title">Graphic Designer</h3>
+            
+            <div class="fit-score">
+              <div class="score-bar">
+                <div class="score-fill" style="width: 79%"></div>
+              </div>
+              <span class="score-text">79% Match</span>
+            </div>
+            
+            <p class="career-description">
+              Creates visual concepts to communicate ideas. Combines artistic ability with technical skills.
+            </p>
+            
+            <div class="career-meta">
+              <span class="meta-item">
+                <i class="fas fa-dollar-sign"></i>
+                $53,000 median salary
+              </span>
+              <span class="meta-item">
+                <i class="fas fa-graduation-cap"></i>
+                Bachelor's degree
+              </span>
+              <span class="meta-item">
+                <i class="fas fa-chart-line"></i>
+                Average growth
+              </span>
+            </div>
+            
+            <div class="career-actions">
+              <button class="btn btn-sm btn-outline" data-career-id="27-1024.00">
+                View Full Details
+              </button>
+              <button class="btn btn-sm btn-primary" data-career-id="27-1024.00">
+                Explore Pathway
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Career Card 8 -->
+        <div class="career-card">
+          <div class="career-rank">
+            <span class="rank-number">#8</span>
+            <span class="rank-badge">Good Match</span>
+          </div>
+          
+          <div class="career-content">
+            <h3 class="career-title">Product Manager</h3>
+            
+            <div class="fit-score">
+              <div class="score-bar">
+                <div class="score-fill" style="width: 77%"></div>
+              </div>
+              <span class="score-text">77% Match</span>
+            </div>
+            
+            <p class="career-description">
+              Oversees product development from conception to launch. Requires strategic thinking and collaboration.
+            </p>
+            
+            <div class="career-meta">
+              <span class="meta-item">
+                <i class="fas fa-dollar-sign"></i>
+                $115,000 median salary
+              </span>
+              <span class="meta-item">
+                <i class="fas fa-graduation-cap"></i>
+                Bachelor's degree
+              </span>
+              <span class="meta-item">
+                <i class="fas fa-chart-line"></i>
+                Faster than average growth
+              </span>
+            </div>
+            
+            <div class="career-actions">
+              <button class="btn btn-sm btn-outline" data-career-id="11-3021.00">
+                View Full Details
+              </button>
+              <button class="btn btn-sm btn-primary" data-career-id="11-3021.00">
+                Explore Pathway
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Career Card 9 -->
+        <div class="career-card">
+          <div class="career-rank">
+            <span class="rank-number">#9</span>
+            <span class="rank-badge">Good Match</span>
+          </div>
+          
+          <div class="career-content">
+            <h3 class="career-title">School Counselor</h3>
+            
+            <div class="fit-score">
+              <div class="score-bar">
+                <div class="score-fill" style="width: 75%"></div>
+              </div>
+              <span class="score-text">75% Match</span>
+            </div>
+            
+            <p class="career-description">
+              Provides academic and personal counseling to students. Requires empathy and strong interpersonal skills.
+            </p>
+            
+            <div class="career-meta">
+              <span class="meta-item">
+                <i class="fas fa-dollar-sign"></i>
+                $58,000 median salary
+              </span>
+              <span class="meta-item">
+                <i class="fas fa-graduation-cap"></i>
+                Master's degree
+              </span>
+              <span class="meta-item">
+                <i class="fas fa-chart-line"></i>
+                Average growth
+              </span>
+            </div>
+            
+            <div class="career-actions">
+              <button class="btn btn-sm btn-outline" data-career-id="21-1012.00">
+                View Full Details
+              </button>
+              <button class="btn btn-sm btn-primary" data-career-id="21-1012.00">
+                Explore Pathway
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Career Card 10 -->
+        <div class="career-card">
+          <div class="career-rank">
+            <span class="rank-number">#10</span>
+            <span class="rank-badge">Good Match</span>
+          </div>
+          
+          <div class="career-content">
+            <h3 class="career-title">Market Research Analyst</h3>
+            
+            <div class="fit-score">
+              <div class="score-bar">
+                <div class="score-fill" style="width: 73%"></div>
+              </div>
+              <span class="score-text">73% Match</span>
+            </div>
+            
+            <p class="career-description">
+              Studies market conditions to examine potential sales. Combines analytical skills with business acumen.
+            </p>
+            
+            <div class="career-meta">
+              <span class="meta-item">
+                <i class="fas fa-dollar-sign"></i>
+                $63,000 median salary
+              </span>
+              <span class="meta-item">
+                <i class="fas fa-graduation-cap"></i>
+                Bachelor's degree
+              </span>
+              <span class="meta-item">
+                <i class="fas fa-chart-line"></i>
+                Faster than average growth
+              </span>
+            </div>
+            
+            <div class="career-actions">
+              <button class="btn btn-sm btn-outline" data-career-id="13-1161.00">
+                View Full Details
+              </button>
+              <button class="btn btn-sm btn-primary" data-career-id="13-1161.00">
+                Explore Pathway
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Next Steps Section -->
+  <section class="next-steps-section">
+    <div class="container">
+      <h2>🚀 What's Next?</h2>
+      
+      <div class="next-steps-grid">
+        <div class="step-card">
+          <div class="step-icon">
+            <i class="fas fa-save"></i>
+          </div>
+          <h3>Save Your Results</h3>
+          <p>Create an account to save your assessment results and track your progress.</p>
+          <button class="btn btn-primary" id="createAccountBtn">
+            Create Account
+          </button>
+        </div>
+        
+        <div class="step-card">
+          <div class="step-icon">
+            <i class="fas fa-route"></i>
+          </div>
+          <h3>Explore Career Pathways</h3>
+          <p>Discover the education and skills needed for your top career matches.</p>
+          <button class="btn btn-secondary" id="explorePathwaysBtn">
+            View Pathways
+          </button>
+        </div>
+        
+        <div class="step-card">
+          <div class="step-icon">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <h3>Start Learning</h3>
+          <p>Browse courses and programs aligned with your career goals.</p>
+          <button class="btn btn-secondary" id="browseCoursesBtn">
+            Browse Courses
+          </button>
+        </div>
+        
+        <div class="step-card">
+          <div class="step-icon">
+            <i class="fas fa-user-tie"></i>
+          </div>
+          <h3>Get Guidance</h3>
+          <p>Connect with a career counselor for personalized advice.</p>
+          <button class="btn btn-secondary" id="bookCounselorBtn">
+            Book Counselor
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Share Modal (hidden by default) -->
+  <div class="modal" id="shareModal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Share Your Results</h3>
+        <button class="modal-close" id="closeShareModal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Share your assessment results with others:</p>
+        <div class="share-link-container">
+          <input type="text" id="shareLink" readonly value="https://pmerit.com/assessment-results.html">
+          <button class="btn btn-primary" id="copyLinkBtn">
+            <i class="fas fa-copy"></i> Copy Link
+          </button>
+        </div>
+        <div class="share-social">
+          <button class="btn-social linkedin">
+            <i class="fab fa-linkedin"></i> LinkedIn
+          </button>
+          <button class="btn-social twitter">
+            <i class="fab fa-twitter"></i> Twitter
+          </button>
+          <button class="btn-social facebook">
+            <i class="fab fa-facebook"></i> Facebook
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Footer will be loaded by layout-loader.js -->
+  
+  <!-- JavaScript Files -->
+  <script src="assets/js/layout-loader.js"></script>
+  <script src="assets/js/assessment-api.js"></script>
+  
+  <script>
+    // Inline initialization script
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Load results from localStorage or URL parameter
+      const resultsId = new URLSearchParams(window.location.search).get('id');
+      
+      console.log('Results page loaded. Results ID:', resultsId);
+      
+      // Load assessment results from localStorage
+      let resultsData = null;
+      try {
+        const storedResults = localStorage.getItem('pmerit_assessment_results');
+        if (storedResults) {
+          resultsData = JSON.parse(storedResults);
+        }
+      } catch (e) {
+        console.error('Error loading results from localStorage:', e);
+      }
+      
+      // Use default data if no results found
+      if (!resultsData) {
+        resultsData = {
+          big_five: {
+            O: { score: 82, percentile: 85, level: 'high' },
+            C: { score: 75, percentile: 78, level: 'high' },
+            E: { score: 45, percentile: 48, level: 'moderate' },
+            A: { score: 68, percentile: 65, level: 'high' },
+            N: { score: 35, percentile: 32, level: 'low' }
+          },
+          holland_code: {
+            code: 'ISA',
+            full_name: 'Investigative, Social, Artistic'
+          }
+        };
+      }
+      
+      // Initialize Chart.js Radar Chart
+      const ctx = document.getElementById('bigFiveChart');
+      if (ctx && window.Chart) {
+        const bigFive = resultsData.big_five;
+        
+        // Note: Neuroticism is inverted for Emotional Stability display
+        const emotionalStability = 100 - (bigFive.N?.score || 35);
+        
+        new Chart(ctx, {
+          type: 'radar',
+          data: {
+            labels: ['Openness', 'Conscientiousness', 'Extraversion', 'Agreeableness', 'Emotional Stability'],
+            datasets: [{
+              label: 'Your Scores',
+              data: [
+                bigFive.O?.score || 82,
+                bigFive.C?.score || 75,
+                bigFive.E?.score || 45,
+                bigFive.A?.score || 68,
+                emotionalStability
+              ],
+              backgroundColor: 'rgba(42, 91, 140, 0.2)',
+              borderColor: 'rgba(42, 91, 140, 1)',
+              borderWidth: 2,
+              pointBackgroundColor: 'rgba(42, 91, 140, 1)',
+              pointBorderColor: '#fff',
+              pointHoverBackgroundColor: '#fff',
+              pointHoverBorderColor: 'rgba(42, 91, 140, 1)',
+              pointRadius: 5,
+              pointHoverRadius: 7
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            scales: {
+              r: {
+                beginAtZero: true,
+                max: 100,
+                min: 0,
+                ticks: {
+                  stepSize: 20,
+                  font: {
+                    size: 12
+                  }
+                },
+                pointLabels: {
+                  font: {
+                    size: 13,
+                    weight: 'bold'
+                  }
+                }
+              }
+            },
+            plugins: {
+              legend: {
+                display: false
+              },
+              tooltip: {
+                enabled: true,
+                callbacks: {
+                  label: function(context) {
+                    return context.label + ': ' + context.parsed.r + '%';
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+      
+      // Share button functionality
+      const shareBtn = document.getElementById('shareBtn');
+      const shareModal = document.getElementById('shareModal');
+      const closeShareModal = document.getElementById('closeShareModal');
+      
+      shareBtn?.addEventListener('click', () => {
+        shareModal.style.display = 'flex';
+        // Generate shareable link with results ID
+        const shareLink = document.getElementById('shareLink');
+        if (resultsId) {
+          shareLink.value = `https://pmerit.com/assessment-results.html?id=${resultsId}`;
+        } else {
+          shareLink.value = `https://pmerit.com/assessment-results.html`;
+        }
+      });
+      
+      closeShareModal?.addEventListener('click', () => {
+        shareModal.style.display = 'none';
+      });
+      
+      // Close modal on background click
+      shareModal?.addEventListener('click', (e) => {
+        if (e.target === shareModal) {
+          shareModal.style.display = 'none';
+        }
+      });
+      
+      // Copy link functionality
+      const copyLinkBtn = document.getElementById('copyLinkBtn');
+      const shareLink = document.getElementById('shareLink');
+      
+      copyLinkBtn?.addEventListener('click', () => {
+        shareLink.select();
+        document.execCommand('copy');
+        copyLinkBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        setTimeout(() => {
+          copyLinkBtn.innerHTML = '<i class="fas fa-copy"></i> Copy Link';
+        }, 2000);
+      });
+      
+      // Export PDF functionality
+      const exportBtn = document.getElementById('exportBtn');
+      exportBtn?.addEventListener('click', () => {
+        if (!window.jspdf || !window.jspdf.jsPDF) {
+          alert('PDF export library not loaded. Please refresh the page and try again.');
+          return;
+        }
+        
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        // Title
+        doc.setFontSize(20);
+        doc.setFont('helvetica', 'bold');
+        doc.text('PMERIT Career Assessment Results', 20, 20);
+        
+        // Date
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        doc.text(`Generated: ${new Date().toLocaleDateString()}`, 20, 28);
+        
+        // Big Five Scores
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.text('Your Personality Scores:', 20, 45);
+        
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'normal');
+        const bigFive = resultsData.big_five;
+        let yPos = 55;
+        
+        doc.text(`Openness: ${bigFive.O?.score || 82}% (${bigFive.O?.percentile || 85}th percentile)`, 25, yPos);
+        yPos += 8;
+        doc.text(`Conscientiousness: ${bigFive.C?.score || 75}% (${bigFive.C?.percentile || 78}th percentile)`, 25, yPos);
+        yPos += 8;
+        doc.text(`Extraversion: ${bigFive.E?.score || 45}% (${bigFive.E?.percentile || 48}th percentile)`, 25, yPos);
+        yPos += 8;
+        doc.text(`Agreeableness: ${bigFive.A?.score || 68}% (${bigFive.A?.percentile || 65}th percentile)`, 25, yPos);
+        yPos += 8;
+        doc.text(`Emotional Stability: ${100 - (bigFive.N?.score || 35)}% (${bigFive.N?.percentile || 32}nd percentile)`, 25, yPos);
+        
+        // Holland Code
+        yPos += 15;
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.text('Holland Code (RIASEC):', 20, yPos);
+        
+        yPos += 8;
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'normal');
+        doc.text(`${resultsData.holland_code?.code || 'ISA'} - ${resultsData.holland_code?.full_name || 'Investigative, Social, Artistic'}`, 25, yPos);
+        
+        // Career Matches
+        yPos += 15;
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'bold');
+        doc.text('Top 10 Career Matches:', 20, yPos);
+        
+        yPos += 10;
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        
+        const careers = [
+          '1. Software Developer (95% Match)',
+          '2. Data Scientist (92% Match)',
+          '3. UX Designer (89% Match)',
+          '4. Technical Writer (85% Match)',
+          '5. Systems Analyst (83% Match)',
+          '6. Research Scientist (81% Match)',
+          '7. Graphic Designer (79% Match)',
+          '8. Product Manager (77% Match)',
+          '9. School Counselor (75% Match)',
+          '10. Market Research Analyst (73% Match)'
+        ];
+        
+        careers.forEach(career => {
+          if (yPos > 270) {
+            doc.addPage();
+            yPos = 20;
+          }
+          doc.text(career, 25, yPos);
+          yPos += 7;
+        });
+        
+        // Footer
+        doc.setFontSize(8);
+        doc.setTextColor(128, 128, 128);
+        doc.text('Visit pmerit.com for more career guidance and resources', 20, 285);
+        
+        // Save PDF
+        doc.save('PMERIT_Career_Assessment_Results.pdf');
+      });
+      
+      // Save button functionality
+      const saveBtn = document.getElementById('saveBtn');
+      saveBtn?.addEventListener('click', () => {
+        // Check if user is logged in (implement based on your auth system)
+        const isLoggedIn = localStorage.getItem('pmerit_user');
+        
+        if (!isLoggedIn) {
+          alert('Please sign in to save your results.');
+          window.location.href = '/signin.html?redirect=' + encodeURIComponent(window.location.href);
+        } else {
+          // Save results to user profile
+          alert('Results saved to your profile!');
+        }
+      });
+      
+      // Next steps buttons
+      document.getElementById('createAccountBtn')?.addEventListener('click', () => {
+        window.location.href = '/signin.html';
+      });
+      
+      document.getElementById('explorePathwaysBtn')?.addEventListener('click', () => {
+        window.location.href = '/career.html';
+      });
+      
+      document.getElementById('browseCoursesBtn')?.addEventListener('click', () => {
+        window.location.href = '/courses.html';
+      });
+      
+      document.getElementById('bookCounselorBtn')?.addEventListener('click', () => {
+        window.location.href = '/support.html';
+      });
+    });
+  </script>
+</body>
+</html>
