@@ -22,6 +22,91 @@ function pageId() {
   return location.pathname.includes('/portal/classroom') ? 'classroom' : 'home';
 }
 
+// ========== ERROR TRACKING ==========
+// Client-side error tracking for monitoring and debugging
+(function initErrorTracking() {
+  // Log JavaScript errors
+  window.addEventListener('error', (event) => {
+    const errorInfo = {
+      message: event.message,
+      source: event.filename,
+      line: event.lineno,
+      column: event.colno,
+      error: event.error?.stack || String(event.error),
+      timestamp: new Date().toISOString(),
+      page: pageId(),
+      userAgent: navigator.userAgent
+    };
+    
+    console.error('Client error:', errorInfo);
+    
+    // Track error in analytics
+    if (window.analytics && typeof window.analytics.track === 'function') {
+      window.analytics.track('client_error', {
+        message: errorInfo.message,
+        source: errorInfo.source,
+        page: errorInfo.page,
+        timestamp: errorInfo.timestamp
+      });
+    }
+    
+    // Optional: Send to monitoring service in production
+    // This can be enabled when a monitoring service like Sentry is configured
+    if (window.PMERIT_ERROR_REPORTING_ENDPOINT && !window.PMERIT_DEBUG) {
+      try {
+        fetch(window.PMERIT_ERROR_REPORTING_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(errorInfo),
+          keepalive: true
+        }).catch(() => {
+          // Silently fail if error reporting fails
+        });
+      } catch (e) {
+        // Silently fail
+      }
+    }
+  });
+
+  // Log unhandled promise rejections
+  window.addEventListener('unhandledrejection', (event) => {
+    const errorInfo = {
+      reason: String(event.reason),
+      promise: String(event.promise),
+      timestamp: new Date().toISOString(),
+      page: pageId(),
+      userAgent: navigator.userAgent
+    };
+    
+    console.error('Unhandled rejection:', errorInfo);
+    
+    // Track error in analytics
+    if (window.analytics && typeof window.analytics.track === 'function') {
+      window.analytics.track('unhandled_rejection', {
+        reason: errorInfo.reason,
+        page: errorInfo.page,
+        timestamp: errorInfo.timestamp
+      });
+    }
+    
+    // Optional: Send to monitoring service in production
+    if (window.PMERIT_ERROR_REPORTING_ENDPOINT && !window.PMERIT_DEBUG) {
+      try {
+        fetch(window.PMERIT_ERROR_REPORTING_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(errorInfo),
+          keepalive: true
+        }).catch(() => {
+          // Silently fail if error reporting fails
+        });
+      } catch (e) {
+        // Silently fail
+      }
+    }
+  });
+})();
+
 // ========== STATE MANAGEMENT ==========
 const state = {
   virtualHuman: false,  // Default to false to show chat interface on page load
