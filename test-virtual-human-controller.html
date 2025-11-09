@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virtual Human Controller Test</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    h1 {
+      color: #333;
+    }
+    .test-section {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+    button {
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    #output {
+      margin-top: 20px;
+      padding: 15px;
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      min-height: 200px;
+      max-height: 400px;
+      overflow-y: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    #virtual-human-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 300px;
+      height: 400px;
+      background: #fff;
+      border: 2px solid #007bff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      display: none;
+    }
+    #virtual-human-container.enabled {
+      display: block;
+    }
+    .state-display {
+      background: #e9ecef;
+      padding: 15px;
+      border-radius: 4px;
+      margin: 10px 0;
+    }
+    .state-display pre {
+      margin: 0;
+      font-size: 12px;
+    }
+    .success { color: #28a745; }
+    .error { color: #dc3545; }
+    .warning { color: #ffc107; }
+    .info { color: #17a2b8; }
+  </style>
+</head>
+<body>
+  <h1>🤖 Virtual Human Controller Test Page</h1>
+
+  <div class="test-section">
+    <h2>Controller Status</h2>
+    <div class="state-display" id="stateDisplay">
+      <pre>Loading...</pre>
+    </div>
+    <button onclick="refreshState()">Refresh State</button>
+  </div>
+
+  <div class="test-section">
+    <h2>Test Controls</h2>
+    
+    <h3>Lifecycle</h3>
+    <div class="controls">
+      <button onclick="testInit()">Initialize</button>
+      <button onclick="testEnable()">Enable</button>
+      <button onclick="testDisable()">Disable</button>
+      <button onclick="testToggle()">Toggle</button>
+      <button onclick="testDestroy()">Destroy</button>
+    </div>
+
+    <h3>Avatar Management</h3>
+    <div class="controls">
+      <button onclick="testLoadAvatar()">Load Avatar</button>
+      <button onclick="testChangeAvatar()">Change Avatar</button>
+      <button onclick="testGetAvatars()">List Avatars</button>
+    </div>
+
+    <h3>Speech & Animation</h3>
+    <div class="controls">
+      <button onclick="testSpeak()">Test Speak</button>
+      <button onclick="testIdleAnimation()">Start Idle</button>
+      <button onclick="testStopAnimation()">Stop Animation</button>
+      <button onclick="testToggleMute()">Toggle Mute</button>
+    </div>
+
+    <h3>Event System</h3>
+    <div class="controls">
+      <button onclick="testChatMessage()">Simulate Chat Message</button>
+      <button onclick="testChatResponse()">Simulate Chat Response</button>
+      <button onclick="testLipSyncEvent()">Simulate Lip-Sync</button>
+    </div>
+
+    <h3>State Management</h3>
+    <div class="controls">
+      <button onclick="testSavePreferences()">Save Preferences</button>
+      <button onclick="testLoadPreferences()">Load Preferences</button>
+      <button onclick="testClearPreferences()">Clear Preferences</button>
+      <button onclick="testGetState()">Get State</button>
+    </div>
+  </div>
+
+  <div class="test-section">
+    <h2>Test Output</h2>
+    <button onclick="clearOutput()">Clear Output</button>
+    <div id="output">Waiting for tests...</div>
+  </div>
+
+  <!-- Virtual Human Container -->
+  <div id="virtual-human-container">
+    <div style="padding: 20px; text-align: center;">
+      <p>Avatar will render here</p>
+      <p style="font-size: 12px; color: #666;">
+        (This is a placeholder for the 3D canvas)
+      </p>
+    </div>
+  </div>
+
+  <!-- Load dependencies -->
+  <script src="/assets/js/config.js"></script>
+  <script src="/assets/js/virtual-human-api.js"></script>
+  <script src="/assets/js/avatar/AudioPlayer.js"></script>
+  <script src="/assets/js/avatar/AvatarManager.js"></script>
+  <script src="/assets/js/avatar/LipSyncVisemes.js"></script>
+  <script src="/assets/js/virtual-human-controller.js"></script>
+
+  <script>
+    const output = document.getElementById('output');
+    const stateDisplay = document.getElementById('stateDisplay');
+    let controller = null;
+
+    function log(message, type = 'info') {
+      const timestamp = new Date().toLocaleTimeString();
+      const className = type === 'error' ? 'error' : type === 'success' ? 'success' : type === 'warning' ? 'warning' : 'info';
+      
+      // Create elements safely to prevent XSS
+      const span = document.createElement('span');
+      span.className = className;
+      span.textContent = `[${timestamp}] ${message}`;
+      
+      output.appendChild(span);
+      output.appendChild(document.createTextNode('\n'));
+      output.scrollTop = output.scrollHeight;
+      console.log(message);
+    }
+
+    function clearOutput() {
+      output.textContent = 'Output cleared...\n';
+    }
+
+    function refreshState() {
+      if (!controller) {
+        log('Controller not initialized', 'warning');
+        stateDisplay.innerHTML = '<pre>Controller not initialized</pre>';
+        return;
+      }
+
+      const state = controller.getState();
+      stateDisplay.innerHTML = '<pre>' + JSON.stringify(state, null, 2) + '</pre>';
+      log('State refreshed', 'success');
+    }
+
+    // Lifecycle Tests
+    async function testInit() {
+      log('Testing initialization...');
+      try {
+        controller = new window.VirtualHumanController({
+          autoInit: false,
+          defaultEnabled: false,
+          debugMode: true
+        });
+        await controller.init();
+        log('✅ Initialization successful', 'success');
+        refreshState();
+      } catch (error) {
+        log('❌ Initialization failed: ' + error.message, 'error');
+      }
+    }
+
+    async function testEnable() {
+      if (!controller) {
+        log('Please initialize first', 'warning');
+        return;
+      }
+      log('Testing enable...');
+      try {
+        await controller.enable();
+        log('✅ Enabled successfully', 'success');
+        refreshState();
+      } catch (error) {
+        log('❌ Enable failed: ' + error.message, 'error');
+      }
+    }
+
+    function testDisable() {
+      if (!controller) {
+        log('Please initialize first', 'warning');
+        return;
+      }
+      log('Testing disable...');
+      try {
+        controller.disable();
+        log('✅ Disabled successfully', 'success');
+        refreshState();
+      } catch (error) {
+        log('❌ Disable failed: ' + error.message, 'error');
+      }
+    }
+
+    async function testToggle() {
+      if (!controller) {
+        log('Please initialize first', 'warning');
+        return;
+      }
+      log('Testing toggle...');
+      try {
+        await controller.toggle();
+        log('✅ Toggled successfully', 'success');
+        refreshState();
+      } catch (error) {
+        log('❌ Toggle failed: ' + error.message, 'error');
+      }
+    }
+
+    function testDestroy() {
+      if (!controller) {
+        log('Please initialize first', 'warning');
+        return;
+      }
+      log('Testing destroy...');
+      try {
+        controller.destroy();
+        log('✅ Destroyed successfully', 'success');
+        controller = null;
+        refreshState();
+      } catch (error) {
+        log('❌ Destroy failed: ' + error.message, 'error');
+      }
+    }
+
+    // Avatar Tests
+    async function testLoadAvatar() {
+      if (!controller) {
+        log('Please initialize first', 'warning');
+        return;
+      }
+      log('Testing load avatar...');
+      try {
+        await controller.loadAvatar();
+        log('✅ Avatar loaded', 'success');
+        refreshState();
+      } catch (error) {
+        log('❌ Load avatar failed: ' + error.message, 'error');
+      }
+    }
+
+    async function testChangeAvatar() {
+      if (!controller) {
+        log('Please initialize first', 'warning');
+        return;
+      }
+      log('Testing change avatar...');
+      try {
+        await controller.changeAvatar('chris_redfield');
+        log('✅ Avatar changed', 'success');
+        refreshState();
+      } catch (error) {
+        log('❌ Change avatar failed: ' + error.message, 'error');
+      }
+    }
+
+    async function testGetAvatars() {
+      log('Testing get avatars...');
+      try {
+        const avatars = await window.virtualHumanAPI.getAvatars();
+        log('Available avatars: ' + JSON.stringify(avatars, null, 2));
+        log('✅ Got avatars', 'success');
+      } catch (error) {
+        log('❌ Get avatars failed: ' + error.message, 'error');
+      }
+    }
+
+    // Speech Tests
+    async function testSpeak() {
+      if (!controller) {
+        log('Please initialize first', 'warning');
+        return;
+      }
+      log('Testing speak...');
+      try {
+        await controller.speak('Hello, this is a test of the virtual human controller.');
+        log('✅ Speech completed', 'success');
+        refreshState();
+      } catch (error) {
+        log('❌ Speak failed: ' + error.message, 'error');
+      }
+    }
+
+    function testIdleAnimation() {
+      if (!controller) {
+        log('Please initialize first', 'warning');
+        return;
+      }
+      log('Testing idle animation...');
+      try {
+        controller.startIdleAnimation();
+        log('✅ Idle animation started', 'success');
+      } catch (error) {
+        log('❌ Idle animation failed: ' + error.message, 'error');
+      }
+    }
+
+    function testStopAnimation() {
+      if (!controller) {
+        log('Please initialize first', 'warning');
+        return;
+      }
+      log('Testing stop animation...');
+      try {
+        controller.stopIdleAnimation();
+        log('✅ Animation stopped', 'success');
+      } catch (error) {
+        log('❌ Stop animation failed: ' + error.message, 'error');
+      }
+    }
+
+    function testToggleMute() {
+      if (!controller) {
+        log('Please initialize first', 'warning');
+        return;
+      }
+      log('Testing toggle mute...');
+      try {
+        controller.toggleMute();
+        log('✅ Mute toggled', 'success');
+        refreshState();
+      } catch (error) {
+        log('❌ Toggle mute failed: ' + error.message, 'error');
+      }
+    }
+
+    // Event Tests
+    function testChatMessage() {
+      log('Simulating chat message event...');
+      window.dispatchEvent(new CustomEvent('chat:message', {
+        detail: { message: 'Hello, AI assistant!' }
+      }));
+      log('✅ Chat message event dispatched', 'success');
+    }
+
+    function testChatResponse() {
+      log('Simulating chat response event...');
+      window.dispatchEvent(new CustomEvent('chat:response', {
+        detail: { response: 'Hello! How can I help you today?' }
+      }));
+      log('✅ Chat response event dispatched', 'success');
+    }
+
+    function testLipSyncEvent() {
+      log('Simulating lip-sync event...');
+      window.dispatchEvent(new CustomEvent('vh:lipsync', {
+        detail: {
+          visemes: [
+            { v: 'aa', t: 0 },
+            { v: 'E', t: 200 },
+            { v: 'I', t: 400 }
+          ],
+          duration: 600
+        }
+      }));
+      log('✅ Lip-sync event dispatched', 'success');
+    }
+
+    // State Management Tests
+    function testSavePreferences() {
+      if (!controller) {
+        log('Please initialize first', 'warning');
+        return;
+      }
+      log('Testing save preferences...');
+      try {
+        controller.savePreference('test_key', 'test_value');
+        log('✅ Preferences saved', 'success');
+      } catch (error) {
+        log('❌ Save preferences failed: ' + error.message, 'error');
+      }
+    }
+
+    function testLoadPreferences() {
+      if (!controller) {
+        log('Please initialize first', 'warning');
+        return;
+      }
+      log('Testing load preferences...');
+      try {
+        const prefs = controller.loadAllPreferences();
+        log('Loaded preferences: ' + JSON.stringify(prefs, null, 2));
+        log('✅ Preferences loaded', 'success');
+      } catch (error) {
+        log('❌ Load preferences failed: ' + error.message, 'error');
+      }
+    }
+
+    function testClearPreferences() {
+      log('Testing clear preferences...');
+      try {
+        localStorage.removeItem('pmerit_vh_preferences');
+        log('✅ Preferences cleared', 'success');
+      } catch (error) {
+        log('❌ Clear preferences failed: ' + error.message, 'error');
+      }
+    }
+
+    function testGetState() {
+      if (!controller) {
+        log('Please initialize first', 'warning');
+        return;
+      }
+      const state = controller.getState();
+      log('Current state: ' + JSON.stringify(state, null, 2));
+      log('✅ State retrieved', 'success');
+    }
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', () => {
+      log('🎭 Virtual Human Controller Test Page Loaded', 'success');
+      log('Click "Initialize" to start testing', 'info');
+      
+      // Check if dependencies are loaded
+      if (window.VirtualHumanController) {
+        log('✅ VirtualHumanController class available', 'success');
+      } else {
+        log('❌ VirtualHumanController class not found', 'error');
+      }
+      
+      if (window.virtualHumanAPI) {
+        log('✅ virtualHumanAPI instance available', 'success');
+      } else {
+        log('❌ virtualHumanAPI instance not found', 'error');
+      }
+      
+      if (window.AvatarManager) {
+        log('✅ AvatarManager class available', 'success');
+      } else {
+        log('⚠️ AvatarManager class not found (may cause issues)', 'warning');
+      }
+      
+      if (window.LipSyncVisemes) {
+        log('✅ LipSyncVisemes class available', 'success');
+      } else {
+        log('⚠️ LipSyncVisemes class not found (may cause issues)', 'warning');
+      }
+    });
+  </script>
+</body>
+</html>
