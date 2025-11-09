@@ -123,16 +123,15 @@
       try {
         // Check if AvatarManager is available
         if (!window.AvatarManager) {
-          throw new Error('AvatarManager not loaded');
+          console.warn('AvatarManager not loaded - avatar features disabled');
+          return;
         }
 
         // Create avatar manager instance
         this.avatarManager = new window.AvatarManager({
-          container: this.container,
-          scale: this.config.avatarScale,
-          position: this.config.position,
-          enableControls: false, // No user camera controls
-          enableStats: this.config.debugMode
+          canvasId: 'vh-canvas',
+          enabled: true,
+          avatarScale: this.config.avatarScale
         });
 
         // Wait for avatar manager to be ready
@@ -142,7 +141,8 @@
 
       } catch (error) {
         console.error('Failed to initialize Avatar Manager:', error);
-        throw error;
+        // Non-fatal - controller can work without avatar
+        this.avatarManager = null;
       }
     }
 
@@ -153,16 +153,20 @@
       try {
         // Check if LipSyncVisemes is available
         if (!window.LipSyncVisemes) {
-          throw new Error('LipSyncVisemes not loaded');
+          console.warn('LipSyncVisemes not loaded - lip-sync disabled');
+          return;
         }
 
-        this.lipSyncController = new window.LipSyncVisemes({
-          avatarManager: this.avatarManager,
-          smoothing: 0.7,
-          intensity: 1.2
-        });
-
-        console.log('Lip-Sync Controller initialized');
+        // LipSyncVisemes expects provider, not avatarManager
+        if (this.avatarManager && this.avatarManager.state && this.avatarManager.state.provider) {
+          this.lipSyncController = new window.LipSyncVisemes(
+            this.avatarManager.state.provider,
+            []
+          );
+          console.log('Lip-Sync Controller initialized');
+        } else {
+          console.warn('Avatar provider not available - lip-sync disabled');
+        }
 
       } catch (error) {
         console.warn('Lip-sync initialization failed:', error);
@@ -328,10 +332,7 @@
 
         console.log('Loading avatar:', avatar.name);
 
-        // Load avatar model
-        await this.avatarManager.loadAvatar(avatar.model_url);
-
-        // Update state
+        // Update state - actual model loading handled by AvatarManager internally
         this.state.avatarLoaded = true;
         this.state.currentAvatar = avatar;
 
@@ -374,10 +375,8 @@
       const message = event.detail.message;
       console.log('User message:', message);
 
-      // Avatar listens (subtle animation)
-      if (this.state.enabled && this.avatarManager) {
-        this.avatarManager.playAnimation('listening');
-      }
+      // Currently no specific animation for listening
+      // Could be enhanced in future versions
     }
 
     /**
@@ -406,13 +405,13 @@
         // Stop idle animation
         this.stopIdleAnimation();
 
-        // Start speaking animation
-        if (this.avatarManager) {
-          this.avatarManager.playAnimation('talking');
+        // Use AvatarManager's speak method if available
+        if (this.avatarManager && typeof this.avatarManager.speak === 'function') {
+          await this.avatarManager.speak(text);
+        } else {
+          // Fallback to API-only
+          await this.api.speakAndPlay(text);
         }
-
-        // Speak and play
-        await this.api.speakAndPlay(text);
 
         // Update state
         this.state.speaking = false;
@@ -465,15 +464,16 @@
      * @param {CustomEvent} event - Lip-sync event
      */
     handleLipSync(event) {
-      const { visemes, duration } = event.detail;
+      const { visemes } = event.detail;
 
       if (!this.config.enableLipSync || !this.lipSyncController) {
         return;
       }
 
       try {
-        // Play lip-sync animation
-        this.lipSyncController.playVisemes(visemes, duration);
+        // Update visemes in lip-sync controller
+        this.lipSyncController.visemes = visemes;
+        this.lipSyncController.currentIndex = 0;
       } catch (error) {
         console.warn('Lip-sync playback failed:', error);
       }
@@ -485,12 +485,13 @@
     handleStop() {
       console.log('Playback stopped');
 
-      // Stop lip-sync
+      // Reset lip-sync
       if (this.lipSyncController) {
-        this.lipSyncController.stop();
+        this.lipSyncController.reset();
       }
 
-      // Resume idle animation
+      // Resume idle state
+      this.state.speaking = false;
       if (this.config.enableIdleAnimation) {
         this.startIdleAnimation();
       }
@@ -504,7 +505,8 @@
         return;
       }
 
-      this.avatarManager.playAnimation('idle', { loop: true });
+      // AvatarManager doesn't have direct animation control
+      // Idle animation is handled internally by WebGLProvider
       this.state.currentAnimation = 'idle';
     }
 
@@ -516,7 +518,8 @@
         return;
       }
 
-      this.avatarManager.stopAnimation('idle');
+      // Animation control is internal to AvatarManager/WebGLProvider
+      this.state.currentAnimation = null;
     }
 
     /**
@@ -629,17 +632,20 @@
       console.log('Destroying Virtual Human...');
 
       // Stop any speaking
-      this.api.stop();
+      if (this.api) {
+        this.api.stop();
+      }
 
       // Destroy avatar manager
-      if (this.avatarManager) {
-        this.avatarManager.destroy();
+      if (this.avatarManager && typeof this.avatarManager.dispose === 'function') {
+        this.avatarManager.dispose();
       }
 
       // Remove event listeners
       this.boundListeners.forEach((listener, event) => {
         window.removeEventListener(event, listener);
       });
+      this.boundListeners.clear();
 
       // Clear state
       this.state.initialized = false;
