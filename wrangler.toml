@@ -13,9 +13,9 @@ binding = "AI"
 
 # Environment variables (optional - can also be set in Pages dashboard)
 [vars]
-# Add any non-sensitive configuration here
 TTS_DEFAULT_MODEL = "@cf/deepgram/aura-2-en"
 TTS_MAX_TEXT_LENGTH = "5000"
+NEON_CONNECTION_STRING = "postgresql://neondb_owner:npg_9Byljrza0Qsv@ep-withered-feather-aetm3jmf-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require"
 
 # Hyperdrive Database Connection (Neon PostgreSQL)
 [[hyperdrive]]
