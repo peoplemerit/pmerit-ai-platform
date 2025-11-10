@@ -13,69 +13,8 @@
 /**
  * Expected schema definition for validation
  */
-const EXPECTED_SCHEMA = {
-  assessment_sessions: {
-    columns: {
-      id: { type: 'integer', nullable: false },
-      session_id: { type: 'uuid', nullable: false },
-      user_id: { type: 'integer', nullable: true },
-      consent_data: { type: 'jsonb', nullable: false },
-      current_question: { type: 'integer', nullable: false },
-      answers: { type: 'jsonb', nullable: true },
-      status: { type: 'character varying', nullable: false },
-      started_at: { type: 'timestamp with time zone', nullable: false },
-      updated_at: { type: 'timestamp with time zone', nullable: false },
-      created_at: { type: 'timestamp with time zone', nullable: false }
-    },
-    primaryKey: 'id',
-    foreignKeys: {
-      user_id: { table: 'users', column: 'id' }
-    },
-    indexes: [
-      'idx_assessment_sessions_session_id',
-      'idx_assessment_sessions_user_id',
-      'idx_assessment_sessions_status_created',
-      'idx_assessment_sessions_updated_at'
-    ]
-  },
-  assessment_results: {
-    columns: {
-      id: { type: 'integer', nullable: false },
-      result_id: { type: 'uuid', nullable: false },
-      session_id: { type: 'uuid', nullable: false },
-      user_id: { type: 'integer', nullable: true },
-      big_five: { type: 'jsonb', nullable: false },
-      holland_code: { type: 'character varying', nullable: false },
-      career_matches: { type: 'jsonb', nullable: false },
-      completed_at: { type: 'timestamp with time zone', nullable: false },
-      created_at: { type: 'timestamp with time zone', nullable: false }
-    },
-    primaryKey: 'id',
-    foreignKeys: {
-      session_id: { table: 'assessment_sessions', column: 'session_id' },
-      user_id: { table: 'users', column: 'id' }
-    },
-    indexes: [
-      'idx_assessment_results_result_id',
-      'idx_assessment_results_session_id',
-      'idx_assessment_results_user_id',
-      'idx_assessment_results_holland_code'
-    ]
-  }
-};
 
-/**
- * Verify database schema matches expected structure
- * @param {Object} hyperdrive - Cloudflare Hyperdrive binding to Neon PostgreSQL
- * @returns {Promise<Object>} Verification result with success flag and details
- * 
- * @example
- * const result = await verifySchema(env.DB);
- * if (!result.success) {
- *   console.error('Schema verification failed:', result.details);
- * }
- */
-export async function verifySchema(hyperdrive) {
+export async function verifySchema(env) {
   const results = {
     success: true,
     details: {
@@ -104,11 +43,11 @@ export async function verifySchema(hyperdrive) {
       };
 
       // 1. Check if table exists
-      const tableCheck = await hyperdrive.prepare(`
+      const tableCheck = await queryFirst(env, `
         SELECT table_name 
         FROM information_schema.tables 
         WHERE table_schema = 'public' AND table_name = $1
-      `).bind(tableName).first();
+      `, [tableName]);
 
       if (!tableCheck) {
         tableResult.exists = false;
@@ -120,7 +59,7 @@ export async function verifySchema(hyperdrive) {
       tableResult.exists = true;
 
       // 2. Check columns and data types
-      const columns = await hyperdrive.prepare(`
+      const columns = await queryAll(env, `
         SELECT 
           column_name,
           data_type,
@@ -129,10 +68,10 @@ export async function verifySchema(hyperdrive) {
         FROM information_schema.columns
         WHERE table_schema = 'public' AND table_name = $1
         ORDER BY ordinal_position
-      `).bind(tableName).all();
+      `, [tableName]);
 
       const actualColumns = {};
-      for (const col of columns.results || []) {
+      for (const col of columns || []) {
         actualColumns[col.column_name] = {
           type: col.data_type.toLowerCase(),
           nullable: col.is_nullable === 'YES'
@@ -169,12 +108,12 @@ export async function verifySchema(hyperdrive) {
       }
 
       // 3. Check primary key
-      const primaryKey = await hyperdrive.prepare(`
+      const primaryKey = await queryFirst(env, `
         SELECT a.attname as column_name
         FROM pg_index i
         JOIN pg_attribute a ON a.attrelid = i.indrelid AND a.attnum = ANY(i.indkey)
         WHERE i.indrelid = $1::regclass AND i.indisprimary
-      `).bind(tableName).first();
+      `, [tableName]);
 
       if (primaryKey && primaryKey.column_name === expectedDef.primaryKey) {
         tableResult.primaryKey.valid = true;
@@ -184,13 +123,13 @@ export async function verifySchema(hyperdrive) {
       }
 
       // 4. Check indexes
-      const indexes = await hyperdrive.prepare(`
+      const indexes = await queryAll(env, `
         SELECT indexname
         FROM pg_indexes
         WHERE schemaname = 'public' AND tablename = $1
-      `).bind(tableName).all();
+      `, [tableName]);
 
-      const actualIndexes = (indexes.results || []).map(idx => idx.indexname);
+      const actualIndexes = (indexes || []).map(idx => idx.indexname);
 
       for (const expectedIdx of expectedDef.indexes) {
         if (actualIndexes.includes(expectedIdx)) {
@@ -203,7 +142,7 @@ export async function verifySchema(hyperdrive) {
       }
 
       // 5. Check foreign keys
-      const foreignKeys = await hyperdrive.prepare(`
+      const foreignKeys = await queryAll(env, `
         SELECT
           kcu.column_name,
           ccu.table_name AS foreign_table_name,
@@ -218,10 +157,10 @@ export async function verifySchema(hyperdrive) {
         WHERE tc.constraint_type = 'FOREIGN KEY'
           AND tc.table_schema = 'public'
           AND tc.table_name = $1
-      `).bind(tableName).all();
+      `, [tableName]);
 
       const actualForeignKeys = {};
-      for (const fk of foreignKeys.results || []) {
+      for (const fk of foreignKeys || []) {
         actualForeignKeys[fk.column_name] = {
           table: fk.foreign_table_name,
           column: fk.foreign_column_name
@@ -274,77 +213,3 @@ export async function verifySchema(hyperdrive) {
     };
   }
 }
-
-/**
- * Generate a human-readable verification report
- * @param {Object} verificationResult - Result from verifySchema()
- * @returns {string} Formatted report
- */
-export function generateReport(verificationResult) {
-  const { success, details } = verificationResult;
-  
-  let report = '\n=== Schema Verification Report ===\n\n';
-  
-  if (success) {
-    report += '✅ Schema verification PASSED\n';
-    report += `All ${details.summary.tablesChecked} tables are correctly configured.\n`;
-  } else {
-    report += '❌ Schema verification FAILED\n\n';
-    
-    if (details.error) {
-      report += `Error: ${details.error}\n`;
-      return report;
-    }
-    
-    report += `Tables checked: ${details.summary.tablesChecked}\n`;
-    report += `Tables valid: ${details.summary.tablesValid}\n\n`;
-    
-    if (details.summary.columnsMissing.length > 0) {
-      report += 'Missing columns:\n';
-      details.summary.columnsMissing.forEach(col => {
-        report += `  - ${col}\n`;
-      });
-      report += '\n';
-    }
-    
-    if (details.summary.indexesMissing.length > 0) {
-      report += 'Missing indexes:\n';
-      details.summary.indexesMissing.forEach(idx => {
-        report += `  - ${idx}\n`;
-      });
-      report += '\n';
-    }
-    
-    if (details.summary.foreignKeysMissing.length > 0) {
-      report += 'Missing foreign keys:\n';
-      details.summary.foreignKeysMissing.forEach(fk => {
-        report += `  - ${fk}\n`;
-      });
-      report += '\n';
-    }
-    
-    // Detailed table info
-    report += 'Detailed Results:\n';
-    for (const [tableName, tableResult] of Object.entries(details.tables)) {
-      report += `\n${tableName}:\n`;
-      report += `  Exists: ${tableResult.exists ? '✅' : '❌'}\n`;
-      
-      if (tableResult.exists) {
-        report += `  Valid columns: ${tableResult.columns.valid.length}\n`;
-        report += `  Missing columns: ${tableResult.columns.missing.length}\n`;
-        report += `  Type mismatches: ${tableResult.columns.typeMismatch.length}\n`;
-        report += `  Valid indexes: ${tableResult.indexes.valid.length}\n`;
-        report += `  Missing indexes: ${tableResult.indexes.missing.length}\n`;
-        report += `  Valid foreign keys: ${tableResult.foreignKeys.valid.length}\n`;
-        report += `  Missing foreign keys: ${tableResult.foreignKeys.missing.length}\n`;
-        report += `  Primary key: ${tableResult.primaryKey.valid ? '✅' : '❌'}\n`;
-      }
-    }
-  }
-  
-  report += '\n=== End Report ===\n';
-  return report;
-}
-
-// Export for use in Cloudflare Workers
-export default verifySchema;
