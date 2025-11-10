@@ -4,14 +4,12 @@
  * with correct columns, constraints, and indexes
  * 
  * @module verify-schema
- * @requires Neon Serverless Driver
- * @version 2.0.0
+ * @requires Hyperdrive connection (Neon PostgreSQL)
+ * @version 2.1.0
  * @created November 3, 2025
- * @updated November 10, 2025 - Switched to Neon serverless driver
+ * @updated November 10, 2025 - Reverted to Hyperdrive with direct hostname
  * @issue #18 - Database Integration & Schema Verification
  */
-
-import { queryFirst, queryAll } from './neon-db.js';
 
 /**
  * Expected schema definition for validation
@@ -69,16 +67,16 @@ const EXPECTED_SCHEMA = {
 
 /**
  * Verify database schema matches expected structure
- * @param {Object} env - Environment variables (contains NEON_CONNECTION_STRING)
+ * @param {Object} hyperdrive - Hyperdrive database connection
  * @returns {Promise<Object>} Verification result with success flag and details
  * 
  * @example
- * const result = await verifySchema(env);
+ * const result = await verifySchema(env.DB);
  * if (!result.success) {
  *   console.error('Schema verification failed:', result.details);
  * }
  */
-export async function verifySchema(env) {
+export async function verifySchema(hyperdrive) {
   const results = {
     success: true,
     details: {
@@ -107,11 +105,14 @@ export async function verifySchema(env) {
       };
 
       // 1. Check if table exists
-      const tableCheck = await queryFirst(env, `
-        SELECT table_name 
-        FROM information_schema.tables 
-        WHERE table_schema = 'public' AND table_name = $1
-      `, [tableName]);
+      const tableCheck = await hyperdrive
+        .prepare(`
+          SELECT table_name 
+          FROM information_schema.tables 
+          WHERE table_schema = 'public' AND table_name = ?1
+        `)
+        .bind(tableName)
+        .first();
 
       if (!tableCheck) {
         tableResult.exists = false;
@@ -123,19 +124,24 @@ export async function verifySchema(env) {
       tableResult.exists = true;
 
       // 2. Check columns and data types
-      const columns = await queryAll(env, `
-        SELECT 
-          column_name,
-          data_type,
-          is_nullable,
-          column_default
-        FROM information_schema.columns
-        WHERE table_schema = 'public' AND table_name = $1
-        ORDER BY ordinal_position
-      `, [tableName]);
+      const columnsResult = await hyperdrive
+        .prepare(`
+          SELECT 
+            column_name,
+            data_type,
+            is_nullable,
+            column_default
+          FROM information_schema.columns
+          WHERE table_schema = 'public' AND table_name = ?1
+          ORDER BY ordinal_position
+        `)
+        .bind(tableName)
+        .all();
 
+      const columns = columnsResult.results || [];
       const actualColumns = {};
-      for (const col of columns || []) {
+      
+      for (const col of columns) {
         actualColumns[col.column_name] = {
           type: col.data_type.toLowerCase(),
           nullable: col.is_nullable === 'YES'
@@ -172,12 +178,15 @@ export async function verifySchema(env) {
       }
 
       // 3. Check primary key
-      const primaryKey = await queryFirst(env, `
-        SELECT a.attname as column_name
-        FROM pg_index i
-        JOIN pg_attribute a ON a.attrelid = i.indrelid AND a.attnum = ANY(i.indkey)
-        WHERE i.indrelid = $1::regclass AND i.indisprimary
-      `, [tableName]);
+      const primaryKey = await hyperdrive
+        .prepare(`
+          SELECT a.attname as column_name
+          FROM pg_index i
+          JOIN pg_attribute a ON a.attrelid = i.indrelid AND a.attnum = ANY(i.indkey)
+          WHERE i.indrelid = ?1::regclass AND i.indisprimary
+        `)
+        .bind(tableName)
+        .first();
 
       if (primaryKey && primaryKey.column_name === expectedDef.primaryKey) {
         tableResult.primaryKey.valid = true;
@@ -187,13 +196,17 @@ export async function verifySchema(env) {
       }
 
       // 4. Check indexes
-      const indexes = await queryAll(env, `
-        SELECT indexname
-        FROM pg_indexes
-        WHERE schemaname = 'public' AND tablename = $1
-      `, [tableName]);
+      const indexesResult = await hyperdrive
+        .prepare(`
+          SELECT indexname
+          FROM pg_indexes
+          WHERE schemaname = 'public' AND tablename = ?1
+        `)
+        .bind(tableName)
+        .all();
 
-      const actualIndexes = (indexes || []).map(idx => idx.indexname);
+      const indexes = indexesResult.results || [];
+      const actualIndexes = indexes.map(idx => idx.indexname);
 
       for (const expectedIdx of expectedDef.indexes) {
         if (actualIndexes.includes(expectedIdx)) {
@@ -206,25 +219,30 @@ export async function verifySchema(env) {
       }
 
       // 5. Check foreign keys
-      const foreignKeys = await queryAll(env, `
-        SELECT
-          kcu.column_name,
-          ccu.table_name AS foreign_table_name,
-          ccu.column_name AS foreign_column_name
-        FROM information_schema.table_constraints AS tc
-        JOIN information_schema.key_column_usage AS kcu
-          ON tc.constraint_name = kcu.constraint_name
-          AND tc.table_schema = kcu.table_schema
-        JOIN information_schema.constraint_column_usage AS ccu
-          ON ccu.constraint_name = tc.constraint_name
-          AND ccu.table_schema = tc.table_schema
-        WHERE tc.constraint_type = 'FOREIGN KEY'
-          AND tc.table_schema = 'public'
-          AND tc.table_name = $1
-      `, [tableName]);
+      const foreignKeysResult = await hyperdrive
+        .prepare(`
+          SELECT
+            kcu.column_name,
+            ccu.table_name AS foreign_table_name,
+            ccu.column_name AS foreign_column_name
+          FROM information_schema.table_constraints AS tc
+          JOIN information_schema.key_column_usage AS kcu
+            ON tc.constraint_name = kcu.constraint_name
+            AND tc.table_schema = kcu.table_schema
+          JOIN information_schema.constraint_column_usage AS ccu
+            ON ccu.constraint_name = tc.constraint_name
+            AND ccu.table_schema = tc.table_schema
+          WHERE tc.constraint_type = 'FOREIGN KEY'
+            AND tc.table_schema = 'public'
+            AND tc.table_name = ?1
+        `)
+        .bind(tableName)
+        .all();
 
+      const foreignKeys = foreignKeysResult.results || [];
       const actualForeignKeys = {};
-      for (const fk of foreignKeys || []) {
+      
+      for (const fk of foreignKeys) {
         actualForeignKeys[fk.column_name] = {
           table: fk.foreign_table_name,
           column: fk.foreign_column_name

@@ -15,9 +15,10 @@ binding = "AI"
 [vars]
 TTS_DEFAULT_MODEL = "@cf/deepgram/aura-2-en"
 TTS_MAX_TEXT_LENGTH = "5000"
-NEON_CONNECTION_STRING = "postgresql://neondb_owner:npg_9Byljrza0Qsv@ep-withered-feather-aetm3jmf-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require"
+# NEON_CONNECTION_STRING - Keeping as fallback in case Hyperdrive issues return
+# NEON_CONNECTION_STRING = "postgresql://neondb_owner:npg_9Byljrza0Qsv@ep-withered-feather-aetm3jmf-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require"
 
 # Hyperdrive Database Connection (Neon PostgreSQL)
 [[hyperdrive]]
 binding = "DB"
-id = "2543272d0cb5400f91ead7b12a1b5467"
+id = "7709f42798b44e85a6405ff40b8fb039"  # NEW ID (from Image 2)
