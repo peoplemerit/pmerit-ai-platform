@@ -213,3 +213,77 @@ export async function verifySchema(env) {
     };
   }
 }
+
+/**
+ * Generate a human-readable verification report
+ * @param {Object} verificationResult - Result from verifySchema()
+ * @returns {string} Formatted report
+ */
+export function generateReport(verificationResult) {
+  const { success, details } = verificationResult;
+  
+  let report = '\n=== Schema Verification Report ===\n\n';
+  
+  if (success) {
+    report += '✅ Schema verification PASSED\n';
+    report += `All ${details.summary.tablesChecked} tables are correctly configured.\n`;
+  } else {
+    report += '❌ Schema verification FAILED\n\n';
+    
+    if (details.error) {
+      report += `Error: ${details.error}\n`;
+      return report;
+    }
+    
+    report += `Tables checked: ${details.summary.tablesChecked}\n`;
+    report += `Tables valid: ${details.summary.tablesValid}\n\n`;
+    
+    if (details.summary.columnsMissing.length > 0) {
+      report += 'Missing columns:\n';
+      details.summary.columnsMissing.forEach(col => {
+        report += `  - ${col}\n`;
+      });
+      report += '\n';
+    }
+    
+    if (details.summary.indexesMissing.length > 0) {
+      report += 'Missing indexes:\n';
+      details.summary.indexesMissing.forEach(idx => {
+        report += `  - ${idx}\n`;
+      });
+      report += '\n';
+    }
+    
+    if (details.summary.foreignKeysMissing.length > 0) {
+      report += 'Missing foreign keys:\n';
+      details.summary.foreignKeysMissing.forEach(fk => {
+        report += `  - ${fk}\n`;
+      });
+      report += '\n';
+    }
+    
+    // Detailed table info
+    report += 'Detailed Results:\n';
+    for (const [tableName, tableResult] of Object.entries(details.tables)) {
+      report += `\n${tableName}:\n`;
+      report += `  Exists: ${tableResult.exists ? '✅' : '❌'}\n`;
+      
+      if (tableResult.exists) {
+        report += `  Valid columns: ${tableResult.columns.valid.length}\n`;
+        report += `  Missing columns: ${tableResult.columns.missing.length}\n`;
+        report += `  Type mismatches: ${tableResult.columns.typeMismatch.length}\n`;
+        report += `  Valid indexes: ${tableResult.indexes.valid.length}\n`;
+        report += `  Missing indexes: ${tableResult.indexes.missing.length}\n`;
+        report += `  Valid foreign keys: ${tableResult.foreignKeys.valid.length}\n`;
+        report += `  Missing foreign keys: ${tableResult.foreignKeys.missing.length}\n`;
+        report += `  Primary key: ${tableResult.primaryKey.valid ? '✅' : '❌'}\n`;
+      }
+    }
+  }
+  
+  report += '\n=== End Report ===\n';
+  return report;
+}
+
+// Export for use in Cloudflare Workers
+export default verifySchema;
