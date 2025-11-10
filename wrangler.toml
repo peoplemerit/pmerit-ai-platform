@@ -3,6 +3,15 @@
 name = "pmerit-ai-platform"
 compatibility_date = "2024-01-01"
 
+# Cloudflare Pages + Workers AI Configuration
+# PMERIT AI Educational Platform
+name = "pmerit-ai-platform"
+compatibility_date = "2024-01-01"
+node_compat = true  # ← ADD THIS LINE
+
+# Pages configuration
+pages_build_output_dir = "."
+
 # Pages configuration
 pages_build_output_dir = "."
 

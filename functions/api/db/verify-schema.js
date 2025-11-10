@@ -1,12 +1,14 @@
 /**
  * Schema Verification Module
- * Uses Neon HTTP API directly (no dependencies)
+ * Uses Drizzle ORM with Node.js compatibility enabled
  * 
- * @version 4.0.0
- * @updated November 10, 2025 - Direct HTTP API (no Drizzle)
+ * @version 5.0.0
+ * @updated November 10, 2025 - Drizzle ORM with node_compat=true
  */
 
-import { executeQuery } from './neon-http.js';
+import { drizzle } from 'drizzle-orm/neon-http';
+import { neon } from '@neondatabase/serverless';
+import { sql } from 'drizzle-orm';
 
 const EXPECTED_SCHEMA = {
   assessment_sessions: {
@@ -73,11 +75,15 @@ export async function verifySchema(env) {
   };
 
   try {
-    const connectionString = env.DATABASE_URL || env.NEON_CONNECTION_STRING;
+    const databaseUrl = env.DATABASE_URL || env.NEON_CONNECTION_STRING;
     
-    if (!connectionString) {
+    if (!databaseUrl) {
       throw new Error('DATABASE_URL not configured');
     }
+
+    // Initialize Drizzle with Neon serverless
+    const sqlClient = neon(databaseUrl);
+    const db = drizzle(sqlClient);
 
     for (const [tableName, expectedDef] of Object.entries(EXPECTED_SCHEMA)) {
       results.details.summary.tablesChecked++;
@@ -91,11 +97,10 @@ export async function verifySchema(env) {
       };
 
       // Check if table exists
-      const tableCheck = await executeQuery(
-        connectionString,
-        `SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = $1`,
-        [tableName]
-      );
+      const tableCheck = await db.execute(sql`
+        SELECT table_name FROM information_schema.tables 
+        WHERE table_schema = 'public' AND table_name = ${tableName}
+      `);
 
       if (!tableCheck.rows || tableCheck.rows.length === 0) {
         tableResult.exists = false;
@@ -107,11 +112,12 @@ export async function verifySchema(env) {
       tableResult.exists = true;
 
       // Check columns
-      const columns = await executeQuery(
-        connectionString,
-        `SELECT column_name, data_type, is_nullable FROM information_schema.columns WHERE table_schema = 'public' AND table_name = $1 ORDER BY ordinal_position`,
-        [tableName]
-      );
+      const columns = await db.execute(sql`
+        SELECT column_name, data_type, is_nullable
+        FROM information_schema.columns
+        WHERE table_schema = 'public' AND table_name = ${tableName}
+        ORDER BY ordinal_position
+      `);
 
       const actualColumns = {};
       for (const col of columns.rows || []) {
@@ -148,24 +154,25 @@ export async function verifySchema(env) {
       }
 
       // Check primary key
-      const primaryKey = await executeQuery(
-        connectionString,
-        `SELECT a.attname as column_name FROM pg_index i JOIN pg_attribute a ON a.attrelid = i.indrelid AND a.attnum = ANY(i.indkey) WHERE i.indrelid = $1::regclass AND i.indisprimary`,
-        [tableName]
-      );
+      const primaryKey = await db.execute(sql`
+        SELECT a.attname as column_name
+        FROM pg_index i
+        JOIN pg_attribute a ON a.attrelid = i.indrelid AND a.attnum = ANY(i.indkey)
+        WHERE i.indrelid = ${tableName}::regclass AND i.indisprimary
+      `);
 
-      if (primaryKey.rows && primaryKey.rows.length > 0 && primaryKey.rows[0].column_name === expectedDef.primaryKey) {
+      if (primaryKey.rows && primaryKey.rows.length > 0 && 
+          primaryKey.rows[0].column_name === expectedDef.primaryKey) {
         tableResult.primaryKey.valid = true;
       } else {
         results.success = false;
       }
 
       // Check indexes
-      const indexes = await executeQuery(
-        connectionString,
-        `SELECT indexname FROM pg_indexes WHERE schemaname = 'public' AND tablename = $1`,
-        [tableName]
-      );
+      const indexes = await db.execute(sql`
+        SELECT indexname FROM pg_indexes
+        WHERE schemaname = 'public' AND tablename = ${tableName}
+      `);
 
       const actualIndexes = (indexes.rows || []).map(idx => idx.indexname);
 
@@ -180,11 +187,17 @@ export async function verifySchema(env) {
       }
 
       // Check foreign keys
-      const foreignKeys = await executeQuery(
-        connectionString,
-        `SELECT kcu.column_name, ccu.table_name AS foreign_table_name, ccu.column_name AS foreign_column_name FROM information_schema.table_constraints AS tc JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name WHERE tc.constraint_type = 'FOREIGN KEY' AND tc.table_schema = 'public' AND tc.table_name = $1`,
-        [tableName]
-      );
+      const foreignKeys = await db.execute(sql`
+        SELECT kcu.column_name, ccu.table_name AS foreign_table_name, ccu.column_name AS foreign_column_name
+        FROM information_schema.table_constraints AS tc
+        JOIN information_schema.key_column_usage AS kcu
+          ON tc.constraint_name = kcu.constraint_name
+        JOIN information_schema.constraint_column_usage AS ccu
+          ON ccu.constraint_name = tc.constraint_name
+        WHERE tc.constraint_type = 'FOREIGN KEY'
+          AND tc.table_schema = 'public'
+          AND tc.table_name = ${tableName}
+      `);
 
       const actualForeignKeys = {};
       for (const fk of foreignKeys.rows || []) {
@@ -197,17 +210,22 @@ export async function verifySchema(env) {
       for (const [colName, expectedFK] of Object.entries(expectedDef.foreignKeys || {})) {
         if (!actualForeignKeys[colName]) {
           tableResult.foreignKeys.missing.push(colName);
-          results.details.summary.foreignKeysMissing.push(`${tableName}.${colName} -> ${expectedFK.table}.${expectedFK.column}`);
+          results.details.summary.foreignKeysMissing.push(
+            `${tableName}.${colName} -> ${expectedFK.table}.${expectedFK.column}`
+          );
           results.success = false;
-        } else if (actualForeignKeys[colName].table === expectedFK.table && actualForeignKeys[colName].column === expectedFK.column) {
+        } else if (actualForeignKeys[colName].table === expectedFK.table && 
+                   actualForeignKeys[colName].column === expectedFK.column) {
           tableResult.foreignKeys.valid.push(colName);
         } else {
           results.success = false;
         }
       }
 
-      if (tableResult.columns.missing.length === 0 && tableResult.columns.typeMismatch.length === 0 && 
-          tableResult.indexes.missing.length === 0 && tableResult.foreignKeys.missing.length === 0 && 
+      if (tableResult.columns.missing.length === 0 && 
+          tableResult.columns.typeMismatch.length === 0 && 
+          tableResult.indexes.missing.length === 0 && 
+          tableResult.foreignKeys.missing.length === 0 && 
           tableResult.primaryKey.valid) {
         results.details.summary.tablesValid++;
       }
@@ -241,12 +259,6 @@ export function generateReport(verificationResult) {
     }
     report += `Tables checked: ${details.summary.tablesChecked}\n`;
     report += `Tables valid: ${details.summary.tablesValid}\n\n`;
-    
-    if (details.summary.columnsMissing.length > 0) {
-      report += 'Missing columns:\n';
-      details.summary.columnsMissing.forEach(col => report += `  - ${col}\n`);
-      report += '\n';
-    }
   }
   
   report += '\n=== End Report ===\n';
