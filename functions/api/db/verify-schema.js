@@ -4,16 +4,80 @@
  * with correct columns, constraints, and indexes
  * 
  * @module verify-schema
- * @requires Hyperdrive connection (Neon PostgreSQL)
- * @version 1.0.0
+ * @requires Neon Serverless Driver
+ * @version 2.0.0
  * @created November 3, 2025
+ * @updated November 10, 2025 - Switched to Neon serverless driver
  * @issue #18 - Database Integration & Schema Verification
  */
+
+import { queryFirst, queryAll } from './neon-db.js';
 
 /**
  * Expected schema definition for validation
  */
+const EXPECTED_SCHEMA = {
+  assessment_sessions: {
+    columns: {
+      id: { type: 'integer', nullable: false },
+      session_id: { type: 'uuid', nullable: false },
+      user_id: { type: 'integer', nullable: true },
+      consent_data: { type: 'jsonb', nullable: false },
+      current_question: { type: 'integer', nullable: false },
+      answers: { type: 'jsonb', nullable: true },
+      status: { type: 'character varying', nullable: false },
+      started_at: { type: 'timestamp with time zone', nullable: false },
+      updated_at: { type: 'timestamp with time zone', nullable: false },
+      created_at: { type: 'timestamp with time zone', nullable: false }
+    },
+    primaryKey: 'id',
+    foreignKeys: {
+      user_id: { table: 'users', column: 'id' }
+    },
+    indexes: [
+      'idx_assessment_sessions_session_id',
+      'idx_assessment_sessions_user_id',
+      'idx_assessment_sessions_status_created',
+      'idx_assessment_sessions_updated_at'
+    ]
+  },
+  assessment_results: {
+    columns: {
+      id: { type: 'integer', nullable: false },
+      result_id: { type: 'uuid', nullable: false },
+      session_id: { type: 'uuid', nullable: false },
+      user_id: { type: 'integer', nullable: true },
+      big_five: { type: 'jsonb', nullable: false },
+      holland_code: { type: 'character varying', nullable: false },
+      career_matches: { type: 'jsonb', nullable: false },
+      completed_at: { type: 'timestamp with time zone', nullable: false },
+      created_at: { type: 'timestamp with time zone', nullable: false }
+    },
+    primaryKey: 'id',
+    foreignKeys: {
+      session_id: { table: 'assessment_sessions', column: 'session_id' },
+      user_id: { table: 'users', column: 'id' }
+    },
+    indexes: [
+      'idx_assessment_results_result_id',
+      'idx_assessment_results_session_id',
+      'idx_assessment_results_user_id',
+      'idx_assessment_results_holland_code'
+    ]
+  }
+};
 
+/**
+ * Verify database schema matches expected structure
+ * @param {Object} env - Environment variables (contains NEON_CONNECTION_STRING)
+ * @returns {Promise<Object>} Verification result with success flag and details
+ * 
+ * @example
+ * const result = await verifySchema(env);
+ * if (!result.success) {
+ *   console.error('Schema verification failed:', result.details);
+ * }
+ */
 export async function verifySchema(env) {
   const results = {
     success: true,
