@@ -1,33 +1,28 @@
 /**
- * Database Schema Verification Endpoint
+ * Database Schema Verification Endpoint - PROXY VERSION
  * GET /api/v1/db/verify
  * 
- * @updated November 10, 2025 - Use HTTP API (no Hyperdrive)
+ * @updated November 11, 2025 - Proxy to Worker API
+ * @note Pages Functions cannot use Drizzle ORM, so we proxy to Worker
  */
 
-import { verifySchema, generateReport } from '../../db/verify-schema.js';
+// Worker API URL
+const WORKER_API_URL = 'https://pmerit-db-worker.peoplemerit.workers.dev';
 
 /**
- * Handle GET request to verify database schema
+ * Handle GET request - Proxy to Worker API
  */
 export async function onRequestGet(context) {
   try {
-    const { env } = context;
+    // Forward request to Worker API
+    const response = await fetch(`${WORKER_API_URL}/api/v1/db/verify`);
     
-    // Verify schema using HTTP API
-    const result = await verifySchema(env);
+    // Get the response data
+    const data = await response.json();
     
-    // Generate report
-    const report = generateReport(result);
-    
-    // Return results
-    return new Response(JSON.stringify({
-      success: result.success,
-      details: result.details,
-      report: report,
-      timestamp: new Date().toISOString()
-    }), {
-      status: result.success ? 200 : 500,
+    // Return the same response
+    return new Response(JSON.stringify(data), {
+      status: response.status,
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
@@ -35,12 +30,12 @@ export async function onRequestGet(context) {
     });
 
   } catch (error) {
-    console.error('[/api/v1/db/verify] Error:', error);
+    console.error('[/api/v1/db/verify] Proxy Error:', error);
     
     return new Response(JSON.stringify({
       success: false,
-      error: error.message,
-      stack: error.stack,
+      error: 'Failed to reach database API Worker',
+      details: error.message,
       timestamp: new Date().toISOString()
     }), {
       status: 500,
