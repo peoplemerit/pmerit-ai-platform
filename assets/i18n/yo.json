@@ -1,0 +1,37 @@
+{
+  "nav": {
+    "learning": "Ẹkọ",
+    "classroom": "Yàrá kíláàsì",
+    "pricing": "Iye owo",
+    "about": "Nípa wa",
+    "signin": "Wọle",
+    "home": "Ilé",
+    "courses": "Awọn ikẹkọ",
+    "community": "Awùjọ",
+    "support": "Atilẹyin",
+    "contact": "Olubasọrọ"
+  },
+  "footer": {
+    "privacy": "Asiri",
+    "terms": "Awọn ofin",
+    "contact": "Olubasọrọ",
+    "support": "Atilẹyin"
+  },
+  "buttons": {
+    "start": "Bẹrẹ",
+    "continue": "Tẹsiwaju",
+    "submit": "Firanṣẹ",
+    "cancel": "Fagilee",
+    "save": "Tọju",
+    "close": "Tii",
+    "signin": "Wọle",
+    "signup": "Forukọsilẹ",
+    "getstarted": "Bẹrẹ"
+  },
+  "messages": {
+    "welcome": "Kabo si PMERIT",
+    "loading": "N ṣiṣẹ...",
+    "error": "Aṣiṣe kan waye",
+    "success": "Aṣeyọri"
+  }
+}
