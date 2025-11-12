@@ -168,8 +168,8 @@
     }
   </style>
 </head>
-<body class="page-layout">
-  <div id="nav-container"></div>
+<body class="page-layout" data-layout-auto-init>
+  <!-- Header will be loaded by layout-loader.js -->
   
   <main class="main-content">
     <section class="hero-section">
@@ -235,6 +235,9 @@
   <div id="footer-container"></div>
   
   <!-- Load config first, then auth module -->
+  <!-- Footer will be loaded by layout-loader.js -->
+  
+  <script src="assets/js/layout-loader.js"></script>
   <script src="assets/js/config.js"></script>
   <script src="assets/js/auth.js"></script>
   
