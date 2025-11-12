@@ -27,8 +27,8 @@
     min-height: 0 !important;    /* Remove minimum */
     overflow: visible;           /* Allow content to show */
     
-    /* Purple gradient background */
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /* Hero gradient background (structural element only) */
+    background: var(--gradient-hero);
     padding: 1.5rem 1rem;
     
     /* Flexbox for content */
@@ -186,8 +186,8 @@
     min-height: auto;
     max-height: 40vh; /* Limit height to 40% of viewport */
     
-    /* Purple gradient background */
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /* Hero gradient background (structural element only) */
+    background: var(--gradient-hero);
     
     /* Padding and spacing */
     padding: 2rem 1.5rem;

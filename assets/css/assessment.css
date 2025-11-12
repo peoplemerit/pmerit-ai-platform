@@ -66,10 +66,10 @@ main {
    ENTRY PAGE STYLES
    ======================================== */
 
-/* Hero Section with Purple Gradient */
+/* Hero Section with Purple Gradient (Structural Element Only) */
 .hero-section {
-  background: linear-gradient(135deg, #6b5ce7 0%, #8b7ce8 100%);
-  color: #ffffff;
+  background: var(--gradient-hero);
+  color: var(--text-inverse);
   padding: var(--space-12) var(--space-6);
   text-align: center;
 }
