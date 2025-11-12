@@ -31,7 +31,20 @@
   <!-- Fonts - Preconnect for performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Theme Init - Prevent FOUC -->
+  <script>
+  (function() {
+    var theme = localStorage.getItem('theme');
+    if (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      theme = 'dark';
+    }
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
@@ -1108,6 +1121,65 @@
         initTechHelpButton();
       }
     })();
+  </script>
+
+  <!-- Theme Manager for Dark Mode Persistence -->
+  <script>
+  (function() {
+    'use strict';
+    
+    // Initialize theme from localStorage
+    function initTheme() {
+      const theme = localStorage.getItem('theme') || 'light';
+      const isDark = theme === 'dark';
+      
+      // Update toggles
+      const mobileToggle = document.getElementById('mobileDarkToggle');
+      const desktopToggle = document.getElementById('desktopDarkToggle');
+      
+      if (mobileToggle) mobileToggle.checked = isDark;
+      if (desktopToggle) desktopToggle.checked = isDark;
+    }
+    
+    // Handle toggle changes
+    function handleToggleChange(e) {
+      const theme = e.target.checked ? 'dark' : 'light';
+      localStorage.setItem('theme', theme);
+      document.documentElement.setAttribute('data-theme', theme);
+      
+      // Sync other toggle
+      const mobileToggle = document.getElementById('mobileDarkToggle');
+      const desktopToggle = document.getElementById('desktopDarkToggle');
+      if (mobileToggle) mobileToggle.checked = e.target.checked;
+      if (desktopToggle) desktopToggle.checked = e.target.checked;
+      
+      console.log('[Theme] Changed to:', theme);
+    }
+    
+    // Bind toggles
+    function bindToggles() {
+      const mobileToggle = document.getElementById('mobileDarkToggle');
+      const desktopToggle = document.getElementById('desktopDarkToggle');
+      
+      if (mobileToggle) {
+        mobileToggle.addEventListener('change', handleToggleChange);
+      }
+      if (desktopToggle) {
+        desktopToggle.addEventListener('change', handleToggleChange);
+      }
+    }
+    
+    // Initialize
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        initTheme();
+        bindToggles();
+      });
+    } else {
+      initTheme();
+      bindToggles();
+    }
+  })();
   </script>
 
 </body>
