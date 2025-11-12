@@ -520,9 +520,6 @@
       this.savePreference('minimized', false);
       console.log('[VirtualHuman] Maximized');
     }
-        await this.enable();
-      }
-    }
 
     /**
      * Load avatar model
