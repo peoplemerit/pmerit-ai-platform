@@ -1,0 +1,37 @@
+{
+  "nav": {
+    "learning": "Apprentissage",
+    "classroom": "Classe",
+    "pricing": "Tarification",
+    "about": "À propos",
+    "signin": "Se connecter",
+    "home": "Accueil",
+    "courses": "Cours",
+    "community": "Communauté",
+    "support": "Support",
+    "contact": "Contact"
+  },
+  "footer": {
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "contact": "Contact",
+    "support": "Support"
+  },
+  "buttons": {
+    "start": "Commencer",
+    "continue": "Continuer",
+    "submit": "Soumettre",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "close": "Fermer",
+    "signin": "Se connecter",
+    "signup": "S'inscrire",
+    "getstarted": "Commencer"
+  },
+  "messages": {
+    "welcome": "Bienvenue à PMERIT",
+    "loading": "Chargement...",
+    "error": "Une erreur s'est produite",
+    "success": "Succès"
+  }
+}
