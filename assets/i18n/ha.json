@@ -1,0 +1,37 @@
+{
+  "nav": {
+    "learning": "Koyo",
+    "classroom": "Aji",
+    "pricing": "Farashi",
+    "about": "Game da mu",
+    "signin": "Shiga",
+    "home": "Gida",
+    "courses": "Darussa",
+    "community": "Al'umma",
+    "support": "Taimako",
+    "contact": "Tuntuɓar"
+  },
+  "footer": {
+    "privacy": "Sirri",
+    "terms": "Sharuɗɗa",
+    "contact": "Tuntuɓar",
+    "support": "Taimako"
+  },
+  "buttons": {
+    "start": "Fara",
+    "continue": "Ci gaba",
+    "submit": "Aika",
+    "cancel": "Soke",
+    "save": "Ajiye",
+    "close": "Rufe",
+    "signin": "Shiga",
+    "signup": "Yi rajista",
+    "getstarted": "Fara"
+  },
+  "messages": {
+    "welcome": "Barka da zuwa PMERIT",
+    "loading": "Ana lodawa...",
+    "error": "Kuskure ya faru",
+    "success": "Nasara"
+  }
+}
