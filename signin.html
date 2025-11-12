@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="assets/css/theme-variables.css">
   <link rel="stylesheet" href="assets/css/typography.css">
   <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
   <link rel="stylesheet" href="assets/css/components.css">
   
   <style>
@@ -168,8 +169,8 @@
     }
   </style>
 </head>
-<body class="page-layout">
-  <div id="nav-container"></div>
+<body class="page-layout" data-layout-auto-init>
+  <!-- Header will be loaded by layout-loader.js -->
   
   <main class="main-content">
     <section class="hero-section">
@@ -235,6 +236,9 @@
   <div id="footer-container"></div>
   
   <!-- Load config first, then auth module -->
+  <!-- Footer will be loaded by layout-loader.js -->
+  
+  <script src="assets/js/layout-loader.js"></script>
   <script src="assets/js/config.js"></script>
   <script src="assets/js/auth.js"></script>
   
