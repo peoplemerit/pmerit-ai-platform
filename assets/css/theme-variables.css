@@ -41,8 +41,12 @@
     --bg-card: #FFFFFF;                /* Card surfaces */
     --bg-elevated: #FFFFFF;            /* Elevated elements (modals, dropdowns) */
     --bg-overlay: rgba(0, 0, 0, 0.5);  /* Modal overlay */
+    /* Special Elements */
     --bg-gradient-start: #6B5CE7;      /* Gradient start (purple-blue) */
     --bg-gradient-end: #8B7CE8;        /* Gradient end (lighter purple) */
+    
+    /* Hero gradient - structural element only, NOT primary theme color */
+    --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     
     /* === BORDERS === */
     --border-color: #E9ECEF;           /* Default border */

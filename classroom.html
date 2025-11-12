@@ -19,8 +19,8 @@
   <style>
     body {
       font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #0b0c10;
-      color: #e8eef8;
+      background-color: var(--bg-primary, #F8F9FA);
+      color: var(--text-primary, #2C2C2C);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -32,12 +32,13 @@
       text-align: center;
       max-width: 500px;
       padding: 2rem;
-      background-color: #1f2833;
+      background-color: var(--bg-card, #FFFFFF);
       border-radius: 12px;
-      border: 1px solid #45a29e;
+      border: 1px solid var(--border-color, #E9ECEF);
+      box-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.1));
     }
     .redirect-container h1 {
-      color: #66fcf1;
+      color: var(--color-primary, #2A5B8C);
       margin-bottom: 1rem;
       font-size: 1.5rem;
     }
@@ -47,8 +48,8 @@
     }
     .redirect-link {
       display: inline-block;
-      background-color: #45a29e;
-      color: #0b0c10;
+      background-color: var(--color-primary, #2A5B8C);
+      color: var(--text-inverse, #FFFFFF);
       padding: 0.75rem 1.5rem;
       border-radius: 6px;
       text-decoration: none;
@@ -56,7 +57,7 @@
       transition: background-color 0.2s;
     }
     .redirect-link:hover {
-      background-color: #66fcf1;
+      background-color: #1E4567;
     }
   </style>
 </head>
