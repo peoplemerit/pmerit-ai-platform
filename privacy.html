@@ -5,7 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Privacy Policy & Terms - PMERIT Platform</title>
   <!-- PMERIT Standard CSS Imports -->
-  <link rel="stylesheet" href="assets/css/theme-variables.css">
+    <!-- Theme Init - Prevent FOUC -->
+  <script>
+  (function() {
+    var theme = localStorage.getItem('theme');
+    if (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      theme = 'dark';
+    }
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+
+<link rel="stylesheet" href="assets/css/theme-variables.css">
   <link rel="stylesheet" href="assets/css/typography.css">
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/responsive.css">
