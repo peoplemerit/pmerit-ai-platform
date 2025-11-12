@@ -1,0 +1,278 @@
+/**
+ * Virtual Human Overlay Styles
+ * Picture-in-picture corner overlay for Virtual Human avatar
+ * 
+ * Issue #7-10: Virtual Human Mode Complete Overhaul
+ * Creates a corner overlay that doesn't block chat interface
+ */
+
+/* === Virtual Human Container (Corner Overlay) === */
+.virtual-human-overlay {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 320px;
+  height: 400px;
+  z-index: 1000;
+  background: rgba(31, 38, 48, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: none; /* Hidden by default */
+}
+
+/* Dark mode support */
+[data-theme="dark"] .virtual-human-overlay {
+  background: rgba(45, 45, 45, 0.95);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* Show when active */
+.virtual-human-overlay.active {
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Minimized state */
+.virtual-human-overlay.minimized {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  animation: collapse 0.2s ease;
+  cursor: pointer;
+}
+
+/* === Avatar Stage === */
+.virtual-human-stage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.virtual-human-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Canvas for WebGL avatar */
+.virtual-human-overlay #vh-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: transparent;
+}
+
+/* Placeholder avatar (when not loaded) */
+.avatar-placeholder {
+  font-size: 120px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* === Control Buttons === */
+.virtual-human-controls {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.virtual-human-overlay:hover .virtual-human-controls {
+  opacity: 1;
+}
+
+/* Always show controls on mobile */
+@media (max-width: 768px) {
+  .virtual-human-controls {
+    opacity: 1;
+  }
+}
+
+.vh-control-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  font-size: 16px;
+}
+
+.vh-control-btn:hover {
+  background: rgba(0, 0, 0, 0.7);
+  transform: scale(1.1);
+}
+
+.vh-control-btn:active {
+  transform: scale(0.95);
+}
+
+/* === Captions Bar === */
+.virtual-human-captions {
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  font-size: 14px;
+  text-align: center;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hidden when minimized */
+.virtual-human-overlay.minimized .virtual-human-captions {
+  display: none;
+}
+
+/* === Minimized Badge === */
+.virtual-human-overlay.minimized .virtual-human-stage {
+  border-radius: 50%;
+}
+
+.virtual-human-overlay.minimized .virtual-human-controls {
+  display: none;
+}
+
+.virtual-human-overlay.minimized .avatar-placeholder {
+  font-size: 32px;
+}
+
+/* === Mobile Responsive === */
+@media (max-width: 768px) {
+  .virtual-human-overlay {
+    width: 280px;
+    height: 350px;
+    bottom: 70px;
+    right: 10px;
+  }
+  
+  .virtual-human-overlay.minimized {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .vh-control-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+  
+  .virtual-human-captions {
+    font-size: 12px;
+    padding: 8px;
+    min-height: 40px;
+  }
+  
+  .avatar-placeholder {
+    font-size: 100px;
+  }
+  
+  .virtual-human-overlay.minimized .avatar-placeholder {
+    font-size: 28px;
+  }
+}
+
+/* === Animations === */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes collapse {
+  from {
+    width: 320px;
+    height: 400px;
+    border-radius: 12px;
+  }
+  to {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+  }
+}
+
+/* Mobile collapse animation */
+@media (max-width: 768px) {
+  @keyframes collapse {
+    from {
+      width: 280px;
+      height: 350px;
+      border-radius: 12px;
+    }
+    to {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+    }
+  }
+}
+
+/* === Accessibility === */
+.vh-control-btn:focus-visible {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+/* === Draggable (Optional - Phase 2) === */
+.virtual-human-overlay.draggable {
+  cursor: move;
+}
+
+.virtual-human-overlay.dragging {
+  opacity: 0.8;
+  cursor: move;
+}
+
+/* === Reduced Motion === */
+@media (prefers-reduced-motion: reduce) {
+  .virtual-human-overlay,
+  .virtual-human-controls,
+  .vh-control-btn {
+    animation: none;
+    transition: none;
+  }
+  
+  .virtual-human-overlay.active {
+    animation: none;
+  }
+  
+  .virtual-human-overlay.minimized {
+    animation: none;
+  }
+}
+
+/* === High Contrast Mode === */
+@media (prefers-contrast: high) {
+  .virtual-human-overlay {
+    border: 2px solid currentColor;
+  }
+  
+  .vh-control-btn {
+    border: 1px solid white;
+  }
+  
+  .virtual-human-captions {
+    border-top: 2px solid white;
+  }
+}
