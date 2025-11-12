@@ -34,7 +34,7 @@
 .icon-sidebar {
     grid-area: icon-sidebar;
     width: var(--sidebar-width);
-    background: linear-gradient(180deg, var(--gradient-purple-start), var(--gradient-purple-end));
+    background: linear-gradient(180deg, var(--color-primary), #1E4567);
     border-right: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     flex-direction: column;
@@ -136,7 +136,7 @@
     width: 48px;
     height: 48px;
     border-radius: var(--border-radius-full);
-    background: linear-gradient(135deg, var(--gradient-purple-start), var(--gradient-purple-end));
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -400,7 +400,7 @@
         left: 0;
         flex-direction: row;
         padding: var(--space-2) var(--space-4);
-        background: linear-gradient(90deg, var(--gradient-purple-start), var(--gradient-purple-end));
+        background: linear-gradient(90deg, var(--color-primary), #1E4567);
         z-index: var(--z-sticky);
         overflow-x: auto;
         overflow-y: visible;
