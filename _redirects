@@ -1,0 +1,34 @@
+# Cloudflare Pages Redirects Configuration
+# PMERIT AI Educational Platform
+#
+# This file controls URL redirects and rewrites for Cloudflare Pages
+# Format: source destination [status]
+# Status codes: 301 (permanent), 302 (temporary), 200 (rewrite/proxy)
+#
+# Documentation: https://developers.cloudflare.com/pages/platform/redirects/
+#
+# IMPORTANT: The _redirects file in the repository takes precedence over
+# dashboard-configured redirects. This file ensures assessment pages are
+# served correctly without any 308 redirects.
+
+# ==============================================================================
+# ASSESSMENT PAGES - NO REDIRECTS (Fix for Issue #2)
+# ==============================================================================
+# These rules ensure assessment pages are served directly from their files
+# without any redirects. This overrides any dashboard-configured redirects.
+# The 200! status means "force this rule and stop processing"
+
+/assessment-entry.html /assessment-entry.html 200!
+/assessment-questions.html /assessment-questions.html 200!
+/assessment-processing.html /assessment-processing.html 200!
+/assessment-results.html /assessment-results.html 200!
+
+# ==============================================================================
+# CLEAN URL SUPPORT (Optional - for future enhancement)
+# ==============================================================================
+# If we want to support /assessment-results without .html extension in the future
+# Uncomment these lines:
+# /assessment-entry /assessment-entry.html 200
+# /assessment-questions /assessment-questions.html 200
+# /assessment-processing /assessment-processing.html 200
+# /assessment-results /assessment-results.html 200
