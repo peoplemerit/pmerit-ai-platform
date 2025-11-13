@@ -4,7 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Learner Portal | PMERIT</title>
-  <link rel="stylesheet" href="assets/css/theme-variables.css">
+    <!-- Theme Init - Prevent FOUC -->
+  <script>
+  (function() {
+    var theme = localStorage.getItem('theme');
+    if (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      theme = 'dark';
+    }
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+
+<link rel="stylesheet" href="assets/css/theme-variables.css">
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/brand.css">
   <link rel="stylesheet" href="assets/css/learner-portal-layout.css">

@@ -28,20 +28,33 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png">
     
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+      <!-- Theme Init - Prevent FOUC -->
+  <script>
+  (function() {
+    var theme = localStorage.getItem('theme');
+    if (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      theme = 'dark';
+    }
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
     <!-- PMERIT Design System -->
     <link rel="stylesheet" href="assets/css/theme-variables.css">
     <link rel="stylesheet" href="assets/css/brand.css">
-    <link rel="stylesheet" href="assets/css/about-pricing.css">
     <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="assets/css/about-pricing.css">
 </head>
-<body>
+<body data-layout-auto-init>
     <!-- Skip to main content link for accessibility -->
     <a href="#main-content" class="skip-to-content">Skip to main content</a>
     
-    <!-- Header (loaded via partial or included) -->
-    <div id="header-container"></div>
+    <!-- Header will be loaded by layout-loader.js -->
 
     <main id="main-content">
         <!-- Pricing Hero Section (Issue 5) -->
@@ -378,10 +391,10 @@
         </section>
     </main>
 
-    <!-- Footer (loaded via partial or included) -->
-    <div id="footer-container"></div>
+    <!-- Footer will be loaded by layout-loader.js -->
 
     <!-- FAQ Accordion Functionality -->
+    <script src="assets/js/layout-loader.js"></script>
     <script>
         // FAQ Accordion
         document.querySelectorAll('.faq-question').forEach(button => {
@@ -402,32 +415,6 @@
                 }
             });
         });
-
-        // Load header safely
-        fetch('partials/header.html')
-            .then(response => response.text())
-            .then(data => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(data, 'text/html');
-                const headerContainer = document.getElementById('header-container');
-                while (doc.body.firstChild) {
-                    headerContainer.appendChild(doc.body.firstChild);
-                }
-            })
-            .catch(error => console.error('Error loading header:', error));
-
-        // Load footer safely
-        fetch('partials/footer.html')
-            .then(response => response.text())
-            .then(data => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(data, 'text/html');
-                const footerContainer = document.getElementById('footer-container');
-                while (doc.body.firstChild) {
-                    footerContainer.appendChild(doc.body.firstChild);
-                }
-            })
-            .catch(error => console.error('Error loading footer:', error));
     </script>
 </body>
 </html>

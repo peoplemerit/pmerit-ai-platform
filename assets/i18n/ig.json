@@ -1,0 +1,37 @@
+{
+  "nav": {
+    "learning": "Mmụta",
+    "classroom": "Klaasị",
+    "pricing": "Ọnụ ahịa",
+    "about": "Banyere anyị",
+    "signin": "Banye",
+    "home": "Ụlọ",
+    "courses": "Nkuzi",
+    "community": "Obodo",
+    "support": "Nkwado",
+    "contact": "Kpọtụrụ"
+  },
+  "footer": {
+    "privacy": "Nzuzo",
+    "terms": "Usoro",
+    "contact": "Kpọtụrụ",
+    "support": "Nkwado"
+  },
+  "buttons": {
+    "start": "Malite",
+    "continue": "Gaa n'ihu",
+    "submit": "Zipu",
+    "cancel": "Kagbuo",
+    "save": "Chekwaa",
+    "close": "Mechie",
+    "signin": "Banye",
+    "signup": "Debanye aha",
+    "getstarted": "Malite"
+  },
+  "messages": {
+    "welcome": "Nnọọ na PMERIT",
+    "loading": "Na-ebu...",
+    "error": "Njehie mere",
+    "success": "Ihe ịga nke ọma"
+  }
+}
