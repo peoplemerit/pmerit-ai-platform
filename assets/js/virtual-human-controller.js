@@ -1,14 +1,21 @@
 /**
  * Virtual Human Controller
- * Phase 3.3: Virtual Human Integration
+ * Issue #7-10: Virtual Human Mode Complete Overhaul
+ * 
+ * Implements picture-in-picture corner overlay for Virtual Human avatar
+ * that works alongside chat without blocking it.
  *
- * Orchestrates integration between 3D avatar, TTS API, chat interface,
- * and lip-sync system to create a cohesive Virtual Human experience.
+ * Features:
+ * - Corner overlay (doesn't block chat)
+ * - Minimize/maximize controls
+ * - Mobile support
+ * - State persistence
+ * - Classroom integration
  *
  * @module virtual-human-controller
- * @requires virtual-human-api.js
- * @requires /assets/js/avatar/AvatarManager.js
- * @requires /assets/js/avatar/LipSyncVisemes.js
+ * @requires virtual-human-api.js (optional)
+ * @requires /assets/js/avatar/AvatarManager.js (optional)
+ * @requires /assets/js/avatar/LipSyncVisemes.js (optional)
  */
 
 (function (window) {
@@ -24,6 +31,7 @@
      */
     constructor(config = {}) {
       this.config = {
+        useOverlay: config.useOverlay !== false, // NEW: Enable overlay mode by default
         containerId: config.containerId || 'virtual-human-container',
         autoInit: config.autoInit !== false,
         defaultEnabled: config.defaultEnabled || false,
@@ -37,6 +45,7 @@
       // State
       this.state = {
         enabled: this.config.defaultEnabled,
+        minimized: false, // NEW: Minimized state
         initialized: false,
         avatarLoaded: false,
         speaking: false,
@@ -46,6 +55,10 @@
         error: null
       };
 
+      // Storage keys
+      this.storageKeyEnabled = 'pmerit-vh-enabled';
+      this.storageKeyMinimized = 'pmerit-vh-minimized';
+
       // Components
       this.avatarManager = null;
       this.lipSyncController = null;
@@ -53,6 +66,7 @@
 
       // UI Elements
       this.container = null;
+      this.overlay = null; // NEW: Overlay container
       this.toggleButton = null;
       this.muteButton = null;
       this.avatarSelector = null;
@@ -78,10 +92,17 @@
       try {
         console.log('Initializing Virtual Human...');
 
-        // Get container
-        this.container = document.getElementById(this.config.containerId);
-        if (!this.container) {
-          throw new Error(`Container #${this.config.containerId} not found`);
+        // NEW: Create overlay if enabled
+        if (this.config.useOverlay) {
+          this.createOverlay();
+        } else {
+          // OLD: Get existing container
+          this.container = document.getElementById(this.config.containerId);
+          if (!this.container) {
+            console.warn(`Container #${this.config.containerId} not found, creating overlay instead`);
+            this.config.useOverlay = true;
+            this.createOverlay();
+          }
         }
 
         // Initialize avatar manager
@@ -114,6 +135,72 @@
         this.state.error = error;
         this.showError(error);
       }
+    }
+
+    /**
+     * Create Virtual Human overlay HTML
+     * NEW: Creates picture-in-picture overlay instead of full-screen
+     */
+    createOverlay() {
+      // Check if overlay already exists
+      if (document.getElementById('vh-overlay')) {
+        this.overlay = document.getElementById('vh-overlay');
+        this.container = this.overlay; // Use overlay as container
+        return;
+      }
+      
+      // Create overlay element
+      const overlay = document.createElement('div');
+      overlay.id = 'vh-overlay';
+      overlay.className = 'virtual-human-overlay';
+      overlay.setAttribute('role', 'region');
+      overlay.setAttribute('aria-label', 'Virtual Human Assistant');
+      
+      overlay.innerHTML = `
+        <!-- Avatar Stage -->
+        <div class="virtual-human-stage">
+          <!-- Canvas for WebGL avatar -->
+          <canvas id="vh-canvas"></canvas>
+          
+          <!-- Placeholder avatar (shown when avatar not loaded) -->
+          <div class="avatar-placeholder" style="display: none;">
+            <i class="fas fa-user-astronaut"></i>
+          </div>
+          
+          <!-- Control Buttons -->
+          <div class="virtual-human-controls">
+            <button 
+              id="vh-minimize-btn" 
+              class="vh-control-btn" 
+              aria-label="Minimize Virtual Human"
+              title="Minimize"
+            >
+              <i class="fas fa-minus"></i>
+            </button>
+            
+            <button 
+              id="vh-close-btn" 
+              class="vh-control-btn" 
+              aria-label="Close Virtual Human"
+              title="Close"
+            >
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Captions -->
+        <div class="virtual-human-captions" id="vh-captions">
+          Virtual Human is ready
+        </div>
+      `;
+      
+      // Append to body
+      document.body.appendChild(overlay);
+      this.overlay = overlay;
+      this.container = overlay; // Use overlay as container for avatar
+      
+      console.log('Virtual Human overlay created');
     }
 
     /**
@@ -178,10 +265,59 @@
      * Setup UI controls
      */
     setupUIControls() {
-      // Find or create toggle button
-      this.toggleButton = document.getElementById('vh-toggle');
-      if (this.toggleButton) {
-        this.toggleButton.addEventListener('click', () => this.toggle());
+      // NEW: Setup multiple toggle buttons (desktop, mobile, classroom)
+      const toggleIds = [
+        'virtual-human-toggle',    // Desktop sidebar toggle
+        'vh-toggle',                // Alternative desktop toggle
+        'mobile-vh-toggle',         // Mobile menu toggle
+        'm_vhToggle',              // Alternative mobile toggle
+        'classroom-vh-toggle'       // Classroom page toggle
+      ];
+      
+      toggleIds.forEach(id => {
+        const toggle = document.getElementById(id);
+        if (toggle) {
+          // Check if it's a checkbox or button
+          if (toggle.type === 'checkbox') {
+            toggle.addEventListener('change', () => this.toggle());
+          } else {
+            toggle.addEventListener('click', () => this.toggle());
+          }
+          console.log(`Bound toggle: ${id}`);
+        }
+      });
+
+      // NEW: Setup overlay control buttons
+      if (this.config.useOverlay) {
+        const minimizeBtn = document.getElementById('vh-minimize-btn');
+        const closeBtn = document.getElementById('vh-close-btn');
+        
+        if (minimizeBtn) {
+          minimizeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (this.state.minimized) {
+              this.maximize();
+            } else {
+              this.minimize();
+            }
+          });
+        }
+        
+        if (closeBtn) {
+          closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.disable();
+          });
+        }
+        
+        // Click minimized overlay to maximize
+        if (this.overlay) {
+          this.overlay.addEventListener('click', (e) => {
+            if (this.state.minimized && e.target === this.overlay) {
+              this.maximize();
+            }
+          });
+        }
       }
 
       // Find or create mute button
@@ -203,10 +339,12 @@
      * Setup event listeners
      */
     setupEventListeners() {
-      // Listen for TTS events
-      this.api.on('start', this.handleTTSStart.bind(this));
-      this.api.on('complete', this.handleTTSComplete.bind(this));
-      this.api.on('error', this.handleTTSError.bind(this));
+      // Listen for TTS events (if API available)
+      if (this.api && typeof this.api.on === 'function') {
+        this.api.on('start', this.handleTTSStart.bind(this));
+        this.api.on('complete', this.handleTTSComplete.bind(this));
+        this.api.on('error', this.handleTTSError.bind(this));
+      }
 
       // Listen for lip-sync events
       const lipSyncHandler = this.handleLipSync.bind(this);
@@ -238,8 +376,14 @@
       try {
         console.log('Enabling Virtual Human...');
 
-        // Show container
-        if (this.container) {
+        // NEW: Show overlay or container
+        if (this.config.useOverlay && this.overlay) {
+          this.overlay.classList.add('active');
+          // Apply minimized state if it was saved
+          if (this.state.minimized) {
+            this.overlay.classList.add('minimized');
+          }
+        } else if (this.container) {
           this.container.style.display = 'block';
         }
 
@@ -257,12 +401,18 @@
         this.state.enabled = true;
 
         // Update UI
-        this.updateToggleButton();
+        this.updateToggleButtons();
 
         // Save preference
         this.savePreference('enabled', true);
 
+        // Update captions
+        this.updateCaptions('Virtual Human is ready');
+
         console.log('Virtual Human enabled');
+
+        // Dispatch event
+        window.dispatchEvent(new CustomEvent('virtualHumanEnabled'));
 
       } catch (error) {
         console.error('Failed to enable Virtual Human:', error);
@@ -280,27 +430,36 @@
 
       console.log('Disabling Virtual Human...');
 
-      // Hide container
-      if (this.container) {
+      // NEW: Hide overlay or container
+      if (this.config.useOverlay && this.overlay) {
+        this.overlay.classList.remove('active', 'minimized');
+      } else if (this.container) {
         this.container.style.display = 'none';
       }
 
       // Stop any speaking
-      this.api.stop();
+      if (this.api && typeof this.api.stop === 'function') {
+        this.api.stop();
+      }
 
       // Stop animations
       this.stopIdleAnimation();
 
       // Update state
       this.state.enabled = false;
+      this.state.minimized = false;
 
       // Update UI
-      this.updateToggleButton();
+      this.updateToggleButtons();
 
       // Save preference
       this.savePreference('enabled', false);
+      this.savePreference('minimized', false);
 
       console.log('Virtual Human disabled');
+
+      // Dispatch event
+      window.dispatchEvent(new CustomEvent('virtualHumanDisabled'));
     }
 
     /**
@@ -312,6 +471,54 @@
       } else {
         await this.enable();
       }
+    }
+
+    /**
+     * Minimize Virtual Human to badge
+     * NEW: Collapse overlay to small circle
+     */
+    minimize() {
+      if (!this.config.useOverlay || !this.overlay || !this.state.enabled) {
+        return;
+      }
+
+      this.state.minimized = true;
+      this.overlay.classList.add('minimized');
+      
+      // Update minimize button icon
+      const minimizeBtn = document.getElementById('vh-minimize-btn');
+      if (minimizeBtn) {
+        minimizeBtn.innerHTML = '<i class="fas fa-expand"></i>';
+        minimizeBtn.setAttribute('aria-label', 'Maximize Virtual Human');
+        minimizeBtn.setAttribute('title', 'Maximize');
+      }
+      
+      this.savePreference('minimized', true);
+      console.log('[VirtualHuman] Minimized');
+    }
+    
+    /**
+     * Maximize Virtual Human from badge
+     * NEW: Expand overlay to full size
+     */
+    maximize() {
+      if (!this.config.useOverlay || !this.overlay) {
+        return;
+      }
+
+      this.state.minimized = false;
+      this.overlay.classList.remove('minimized');
+      
+      // Update minimize button icon
+      const minimizeBtn = document.getElementById('vh-minimize-btn');
+      if (minimizeBtn) {
+        minimizeBtn.innerHTML = '<i class="fas fa-minus"></i>';
+        minimizeBtn.setAttribute('aria-label', 'Minimize Virtual Human');
+        minimizeBtn.setAttribute('title', 'Minimize');
+      }
+      
+      this.savePreference('minimized', false);
+      console.log('[VirtualHuman] Maximized');
     }
 
     /**
@@ -402,15 +609,21 @@
         // Update state
         this.state.speaking = true;
 
+        // NEW: Update captions
+        this.updateCaptions(text);
+
         // Stop idle animation
         this.stopIdleAnimation();
 
         // Use AvatarManager's speak method if available
         if (this.avatarManager && typeof this.avatarManager.speak === 'function') {
           await this.avatarManager.speak(text);
-        } else {
+        } else if (this.api && typeof this.api.speakAndPlay === 'function') {
           // Fallback to API-only
           await this.api.speakAndPlay(text);
+        } else {
+          // No TTS available, just show captions
+          console.log('No TTS available, showing captions only');
         }
 
         // Update state
@@ -420,6 +633,13 @@
         if (this.config.enableIdleAnimation) {
           this.startIdleAnimation();
         }
+
+        // NEW: Clear captions after a delay
+        setTimeout(() => {
+          if (!this.state.speaking) {
+            this.updateCaptions('Virtual Human is ready');
+          }
+        }, 2000);
 
       } catch (error) {
         console.error('Speak failed:', error);
@@ -544,16 +764,45 @@
 
     /**
      * Update toggle button UI
+     * NEW: Updates all toggle buttons across the site
      */
-    updateToggleButton() {
-      if (!this.toggleButton) {
-        return;
+    updateToggleButtons() {
+      const toggleIds = [
+        'virtual-human-toggle',
+        'vh-toggle',
+        'mobile-vh-toggle',
+        'm_vhToggle',
+        'classroom-vh-toggle'
+      ];
+      
+      toggleIds.forEach(id => {
+        const toggle = document.getElementById(id);
+        if (toggle) {
+          // Handle checkbox toggles
+          if (toggle.type === 'checkbox') {
+            toggle.checked = this.state.enabled;
+          }
+          // Handle button toggles
+          else {
+            toggle.classList.toggle('active', this.state.enabled);
+          }
+          
+          // Update aria-pressed for accessibility
+          toggle.setAttribute('aria-pressed', this.state.enabled);
+        }
+      });
+    }
+
+    /**
+     * Update captions text
+     * NEW: Updates caption display in overlay
+     * @param {string} text - Caption text
+     */
+    updateCaptions(text) {
+      const captions = document.getElementById('vh-captions');
+      if (captions) {
+        captions.textContent = text;
       }
-
-      const text = this.state.enabled ? 'Hide Assistant' : 'Show Assistant';
-      const icon = this.state.enabled ? 'fa-eye-slash' : 'fa-eye';
-
-      this.toggleButton.innerHTML = `<i class="fas ${icon}"></i> ${text}`;
     }
 
     /**
@@ -614,6 +863,11 @@
         this.state.muted = prefs.muted;
       }
 
+      // NEW: Apply minimized state
+      if (prefs.minimized !== undefined) {
+        this.state.minimized = prefs.minimized;
+      }
+
       console.log('Preferences loaded:', prefs);
     }
 
@@ -658,15 +912,33 @@
   // Export to window
   window.VirtualHumanController = VirtualHumanController;
 
-  // Auto-create default instance if container exists
+  // Auto-create default instance with overlay mode
+  // NEW: Always creates overlay, doesn't require container
   document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('virtual-human-container');
-    if (container) {
+    // Check if already initialized
+    if (!window.virtualHumanController) {
       window.virtualHumanController = new VirtualHumanController({
+        useOverlay: true,           // NEW: Use overlay mode by default
         autoInit: true,
-        defaultEnabled: false // User must opt-in
+        defaultEnabled: false       // User must opt-in
       });
+      console.log('Virtual Human Controller auto-initialized with overlay mode');
     }
   });
+
+  // Also initialize immediately if DOM is already loaded
+  if (document.readyState === 'loading') {
+    // Wait for DOMContentLoaded
+  } else {
+    // DOM is already ready
+    if (!window.virtualHumanController) {
+      window.virtualHumanController = new VirtualHumanController({
+        useOverlay: true,
+        autoInit: true,
+        defaultEnabled: false
+      });
+      console.log('Virtual Human Controller initialized immediately');
+    }
+  }
 
 })(window);
