@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="../assets/css/base.css">
   <link rel="stylesheet" href="../assets/css/components.css">
   <link rel="stylesheet" href="../assets/css/avatar.css">
+  <link rel="stylesheet" href="../assets/css/virtual-human-overlay.css">
   
   <!-- Three.js for WebGL avatar - loaded synchronously before app scripts -->
   <script 
@@ -50,6 +51,9 @@
   <script src="../assets/js/avatar/WebGLProvider.js"></script>
   <script src="../assets/js/avatar/AvatarManager.js"></script>
   
+  <!-- Virtual Human Controller (NEW: Overlay mode) -->
+  <script src="../assets/js/virtual-human-controller.js"></script>
+  
   <!-- TTS module -->
   <script src="../assets/js/tts.js"></script>
   
@@ -57,23 +61,23 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { 
       font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-      background-color: #0b0c10; 
-      color: #e8eef8; 
+      background-color: var(--bg-primary, #F8F9FA); 
+      color: var(--text-primary, #2C2C2C); 
       line-height: 1.6; 
       overflow-x: hidden; 
     }
     
     .portal-header {
-      background: linear-gradient(135deg, #1f2833 0%, #0b0c10 100%);
+      background: linear-gradient(135deg, var(--color-primary, #2A5B8C), #1E4567);
       padding: 1rem 2rem;
-      border-bottom: 2px solid #45a29e;
+      border-bottom: 2px solid var(--color-secondary, #4AA4B9);
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
     
     .portal-header h1 {
-      color: #66fcf1;
+      color: var(--text-inverse, #FFFFFF);
       font-size: 1.5rem;
       font-weight: 600;
     }
@@ -85,7 +89,7 @@
     }
     
     .portal-nav a {
-      color: #e8eef8;
+      color: var(--text-inverse, #FFFFFF);
       text-decoration: none;
       padding: 0.5rem 1rem;
       border-radius: 6px;
@@ -93,7 +97,7 @@
     }
     
     .portal-nav a:hover {
-      background-color: rgba(69, 162, 158, 0.2);
+      background-color: rgba(255, 255, 255, 0.15);
     }
     
     .app-container { 
@@ -101,11 +105,11 @@
       grid-template-columns: 280px 1fr 320px; 
       height: calc(100vh - 80px); 
       gap: 1px; 
-      background-color: #1f2833; 
+      background-color: var(--border-color, #E9ECEF); 
     }
     
     .panel { 
-      background-color: #0b0c10; 
+      background-color: var(--bg-card, #FFFFFF); 
       padding: 15px; 
       overflow-y: auto; 
     }
@@ -114,8 +118,8 @@
       font-weight: bold; 
       margin-bottom: 15px; 
       padding-bottom: 8px; 
-      border-bottom: 1px solid #45a29e; 
-      color: #66fcf1; 
+      border-bottom: 1px solid var(--color-secondary, #4AA4B9); 
+      color: var(--color-primary, #2A5B8C); 
     }
     
     .outline-item { 
@@ -126,22 +130,22 @@
     }
     
     .outline-item:hover { 
-      background-color: #1f2833; 
-      border-left-color: #45a29e; 
+      background-color: var(--bg-primary, #F8F9FA); 
+      border-left-color: var(--color-secondary, #4AA4B9); 
     }
     
     .outline-item.active { 
-      background-color: #1f2833; 
-      border-left-color: #66fcf1; 
+      background-color: var(--bg-primary, #F8F9FA); 
+      border-left-color: var(--color-primary, #2A5B8C); 
       font-weight: bold; 
     }
     
     textarea { 
       width: 100%; 
       min-height: 120px; 
-      background-color: #1f2833; 
-      color: #e8eef8; 
-      border: 1px solid #45a29e; 
+      background-color: var(--bg-card, #FFFFFF); 
+      color: var(--text-primary, #2C2C2C); 
+      border: 1px solid var(--border-color, #E9ECEF); 
       border-radius: 4px; 
       padding: 10px; 
       margin-bottom: 10px; 
@@ -149,8 +153,8 @@
     }
     
     button { 
-      background-color: #45a29e; 
-      color: #0b0c10; 
+      background-color: var(--color-primary, #2A5B8C); 
+      color: var(--text-inverse, #FFFFFF); 
       border: none; 
       padding: 8px 15px; 
       border-radius: 4px; 
@@ -160,7 +164,7 @@
     }
     
     button:hover { 
-      background-color: #66fcf1; 
+      background-color: #1E4567; 
     }
     
     .topbar { 
@@ -169,11 +173,11 @@
       align-items: center; 
       margin-bottom: 15px; 
       padding-bottom: 10px; 
-      border-bottom: 1px solid #45a29e; 
+      border-bottom: 1px solid var(--border-color, #E9ECEF); 
     }
     
     .player-area { 
-      background-color: #1f2833; 
+      background-color: var(--bg-elevated, #FAFBFC); 
       border-radius: 8px; 
       padding: 15px; 
       margin-bottom: 15px; 
@@ -184,7 +188,7 @@
       overflow-y: auto; 
       margin-bottom: 15px; 
       padding: 10px; 
-      background-color: #1f2833; 
+      background-color: var(--bg-elevated, #FAFBFC); 
       border-radius: 8px; 
     }
     
@@ -196,12 +200,14 @@
     }
     
     .message.user { 
-      background-color: #1d3557; 
+      background-color: var(--color-primary, #2A5B8C); 
+      color: var(--text-inverse, #FFFFFF);
       margin-left: auto; 
     }
     
     .message.ai { 
-      background-color: #2d3142; 
+      background-color: var(--bg-secondary, #FFFFFF); 
+      border: 1px solid var(--border-color, #E9ECEF);
     }
     
     .chat-form { 
@@ -212,9 +218,9 @@
     .chat-form input { 
       flex-grow: 1; 
       padding: 10px; 
-      background-color: #1f2833; 
-      color: #e8eef8; 
-      border: 1px solid #45a29e; 
+      background-color: var(--bg-card, #FFFFFF); 
+      color: var(--text-primary, #2C2C2C); 
+      border: 1px solid var(--border-color, #E9ECEF); 
       border-radius: 4px; 
     }
     
@@ -512,7 +518,7 @@
         const btn = dom.saveNotesBtn;
         const originalText = btn.textContent;
         btn.textContent = '✓ Saved!';
-        btn.style.backgroundColor = '#66fcf1';
+        btn.style.backgroundColor = 'var(--color-success, #3A7F5C)';
         setTimeout(() => {
           btn.textContent = originalText;
           btn.style.backgroundColor = '';

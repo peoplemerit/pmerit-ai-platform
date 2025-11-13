@@ -295,7 +295,7 @@
   /* Hero/Welcome Section */
   .hero-section,
   .greeting {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--gradient-hero);
     color: white;
     padding: 3rem 2rem;
     border-radius: 12px;

@@ -486,18 +486,36 @@
       }
 
       // Open dropdown
-      const openDropdown = () => {
+      const openDropdown = (e) => {
+        e?.stopPropagation();
+        languageDropdown.classList.add('active');
         languageDropdown.setAttribute('aria-hidden', 'false');
       };
 
       // Close dropdown
       const closeDropdown = () => {
+        languageDropdown.classList.remove('active');
         languageDropdown.setAttribute('aria-hidden', 'true');
       };
 
       // Event listeners
       languageBtn.addEventListener('click', openDropdown);
       closeLanguageBtn?.addEventListener('click', closeDropdown);
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!languageDropdown.contains(e.target) && e.target !== languageBtn) {
+          closeDropdown();
+        }
+      });
+
+      // Close dropdown on Escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && languageDropdown.classList.contains('active')) {
+          closeDropdown();
+          languageBtn.focus();
+        }
+      });
 
       // Language selection
       languageOptions.forEach(option => {
@@ -511,7 +529,7 @@
           e.currentTarget.classList.add('active');
           
           // Save preference
-          localStorage.setItem('language', lang);
+          localStorage.setItem('pmerit-language', lang);
           
           console.log('[LayoutLoader] Language changed to:', lang);
           
@@ -523,7 +541,7 @@
       });
 
       // Load saved language preference
-      const savedLang = localStorage.getItem('language') || 'en';
+      const savedLang = localStorage.getItem('pmerit-language') || 'en';
       const activeOption = document.querySelector(`[data-lang="${savedLang}"]`);
       if (activeOption) {
         languageOptions.forEach(opt => opt.classList.remove('active'));
