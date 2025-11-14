@@ -1,0 +1,36 @@
+# PMERIT Platform - Environment Configuration
+# Last Updated: 2025-11-13
+
+production:
+  frontend: 
+    url: https://pmerit.com
+    pages_url: https://pmerit-ai-platform.pages.dev
+    type: Cloudflare Pages
+    
+  api:
+    url: https://pmerit-db-worker.peoplemerit.workers.dev
+    worker_name: pmerit-db-worker
+    type: Cloudflare Workers
+    note: "Named pmerit-db-worker for historical reasons"
+    
+  database:
+    provider: Neon PostgreSQL
+    version: 17.5
+    tables: 54
+    connection: Hyperdrive
+    
+  ai:
+    provider: Workers AI
+    model: Llama 3.1 8B Instruct
+    binding: AI (configured in pmerit-db-worker)
+    
+development:
+  local_directory: E:\pmerit\pmerit-api-worker
+  wrangler_config: wrangler.toml
+  github_repo: https://github.com/peoplemerit/pmerit-api-worker
+  
+notes:
+  - Worker is named 'pmerit-db-worker' but serves as main API
+  - All 5 AI endpoints operational
+  - AI binding configured and tested
+  - Monthly cost:  (free tier)
