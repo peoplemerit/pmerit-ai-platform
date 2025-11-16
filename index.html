@@ -57,7 +57,7 @@
   <link rel="stylesheet" href="assets/css/virtual-human-overlay.css">
   <link rel="stylesheet" href="assets/css/components/tech-help.css">
 </head>
-<body>
+<body data-layout-auto-init>
 
   <!-- ============================================ -->
   <!-- MOBILE LAYOUT (< 1024px)                   -->
@@ -117,14 +117,7 @@
       </div>
     </div>
 
-    <!-- Mobile Footer -->
-    <footer class="pmerit-footer mobile-footer">
-      <a href="/privacy.html" class="footer-link-mobile">Privacy & Terms</a>
-      <span class="footer-separator"> • </span>
-      <a href="#" class="footer-link-mobile" id="mobile-tech-help-link">Tech Help</a>
-      <span class="footer-separator"> • </span>
-      <span class="footer-status-mobile">Connected to Educational Services</span>
-    </footer>
+    <!-- Footer will be loaded by layout-loader.js -->
 
     <!-- Hamburger Menu Overlay -->
     <div class="menu-overlay" id="menuOverlay"></div>
@@ -411,23 +404,7 @@
       </div>
     </aside>
 
-    <!-- Desktop Footer -->
-    <footer class="pmerit-footer desktop-footer">
-      <div class="footer-container">
-        <div class="footer-left">
-          <i class="fas fa-signal"></i>
-          <span class="footer-status">Connected to Educational Services</span>
-        </div>
-        
-        <div class="footer-right">
-          <a href="/privacy.html" class="footer-link">Privacy & Terms</a>
-          <a href="/contact.html" class="footer-link">Contact</a>
-          <a href="/partnerships.html" class="footer-link">Partnerships</a>
-          <a href="/support.html" class="footer-link">Support</a>
-          <a href="#" class="footer-link" id="desktop-tech-help-link">Tech Help</a>
-        </div>
-      </div>
-    </footer>
+    <!-- Footer will be loaded by layout-loader.js -->
   </div>
 
   <!-- Auth Modal Component (Phase 3.1) -->
@@ -437,6 +414,7 @@
   <div id="tech-help-modal-container"></div>
   
   <!-- JavaScript - Version 2 (Cache-busting) -->
+  <script src="assets/js/layout-loader.js"></script>
   <script src="assets/js/config.js"></script>
   <script src="assets/js/auth.js"></script>
   

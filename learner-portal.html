@@ -69,11 +69,12 @@
   <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
   
   <!-- Load config and auth modules first -->
+  <script src="assets/js/layout-loader.js"></script>
   <script src="assets/js/config.js"></script>
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/auth-check.js"></script>
 </head>
-<body>
+<body data-layout-auto-init>
   <!-- Overlay for mobile panel toggling -->
   <div class="panel-overlay" id="panel-overlay" tabindex="-1" aria-hidden="true"></div>
 
