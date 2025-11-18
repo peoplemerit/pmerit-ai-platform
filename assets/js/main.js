@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
  * Called when Virtual Human toggle is enabled
  */
 window.vhBoot = async function vhBoot() {
-  const modelUrl = '/assets/avatars/pm_classic.glb';
+  const modelUrl = '/assets/avatars/ty_character.glb';
   
   try {
     if (!window.THREE || typeof THREE.WebGLRenderer !== "function") {
