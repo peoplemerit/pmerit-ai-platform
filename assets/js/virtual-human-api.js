@@ -323,7 +323,7 @@
      * @returns {string} Avatar ID
      */
     getPreferredAvatar() {
-      return localStorage.getItem('pmerit_preferred_avatar') || 'pm_classic';
+      return localStorage.getItem('pmerit_preferred_avatar') || 'ty_character';
     }
 
     /**
