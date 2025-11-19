@@ -402,7 +402,6 @@
   <div id="auth-modal-container"></div>
 
   <!-- Customer Service Modal Component (Lightweight Receptionist) -->
-  <!-- NOTE: Will be implemented in future - modal placeholder for now -->
   <div id="customer-service-modal-container"></div>
   
   <!-- JavaScript - Version 2 (Cache-busting) -->
@@ -417,9 +416,8 @@
   <script src="assets/js/auth-modal.js"></script>
   <script src="assets/js/util/diagnostics.js"></script>
   
-  <!-- NOTE: Customer Service scripts removed temporarily - will be implemented when modal is built -->
-  <!-- <script src="assets/js/api/customer-service.js"></script> -->
-  <!-- <script src="assets/js/ui/customer-service.js"></script> -->
+  <!-- Customer Service Modal Controller -->
+  <script src="assets/js/ui/customer-service-modal.js"></script>
   
   <!-- Layout Styles (Embedded for Performance) -->
   <style>
@@ -1043,6 +1041,21 @@
           }
         })
         .catch(error => console.error('Error loading auth modal:', error));
+		
+		// Load customer service modal partial
+    fetch('/partials/customer-service-modal.html')
+      .then(response => response.text())
+      .then(html => {
+        const container = document.getElementById('customer-service-modal-container');
+        if (container) {
+          container.innerHTML = html;
+          // Re-initialize CustomerServiceModal after DOM injection
+          if (window.CustomerServiceModal) {
+            window.CustomerServiceModal.init();
+          }
+        }
+      })
+      .catch(error => console.error('Error loading customer service modal:', error));
       
       // Wire Sign In buttons - now opens Auth Modal if available
       function initAuthButtons() {
@@ -1107,7 +1120,7 @@
         });
       }
 
-      // Wire Customer Service Mode buttons (Placeholder until modal is built)
+      // Wire Customer Service Mode buttons
       function initCustomerServiceButtons() {
         const customerServiceElements = [
           document.getElementById('mobile-customer-service-btn'),
@@ -1125,16 +1138,16 @@
 
               // Dispatch analytics event
               console.log('📊 Analytics: customer_service_activated');
-              
-              // TODO: Open Customer Service Modal when built
-              // For now, just log to console
-              console.log('🎧 Customer Service Mode - Modal will be built in future phase');
-              
-              // Temporary user feedback
-              alert('Customer Service Mode\n\nThis feature will connect you with our AI Receptionist for personalized support.\n\n(Modal UI coming soon!)');
-            });
-          }
-        });
+        
+        // Open Customer Service Modal
+        if (window.CustomerServiceModal) {
+          window.CustomerServiceModal.open();
+        } else {
+          console.error('CustomerServiceModal not loaded');
+        }
+             });
+           }
+         });
       }
       
       // Initialize when DOM is ready

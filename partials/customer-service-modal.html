@@ -1,0 +1,668 @@
+<!--
+  PMERIT Customer Service Modal Component
+  Version: 1.0
+  Created: Session 5
+  
+  AI Receptionist modal for customer service and support
+  Features: Quick actions, AI chat routing, accessibility
+-->
+
+<div id="customer-service-modal" class="customer-service-modal" role="dialog" aria-modal="true" aria-labelledby="cs-modal-title" aria-hidden="true">
+  <div class="customer-service-modal-backdrop">
+    <div class="customer-service-modal-content">
+      <!-- Close Button -->
+      <button class="customer-service-modal-close" aria-label="Close modal">
+        <i class="fas fa-times"></i>
+      </button>
+
+      <!-- Modal Header -->
+      <div class="customer-service-modal-header">
+        <div class="cs-avatar">
+          <i class="fas fa-headset"></i>
+        </div>
+        <h2 id="cs-modal-title" class="customer-service-modal-title">
+          Customer Service Mode
+        </h2>
+        <p class="customer-service-modal-subtitle">How can our AI Receptionist help you today?</p>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="customer-service-modal-body">
+        <!-- Quick Action Cards -->
+        <div class="cs-quick-actions">
+          <button class="cs-action-card" data-action="account">
+            <i class="fas fa-user-circle"></i>
+            <h3>Account Help</h3>
+            <p>Sign in, password, profile settings</p>
+          </button>
+          
+          <button class="cs-action-card" data-action="courses">
+            <i class="fas fa-book-open"></i>
+            <h3>Course Support</h3>
+            <p>Enrollment, content, certificates</p>
+          </button>
+          
+          <button class="cs-action-card" data-action="technical">
+            <i class="fas fa-wrench"></i>
+            <h3>Technical Issues</h3>
+            <p>Bugs, loading problems, errors</p>
+          </button>
+          
+          <button class="cs-action-card" data-action="general">
+            <i class="fas fa-comments"></i>
+            <h3>General Inquiry</h3>
+            <p>Questions about PMERIT</p>
+          </button>
+        </div>
+
+        <!-- Or Connect to AI Receptionist -->
+        <div class="cs-divider">
+          <span>or</span>
+        </div>
+
+        <button class="cs-ai-connect-btn" id="cs-ai-connect">
+          <i class="fas fa-robot"></i>
+          <span>Talk to AI Receptionist</span>
+          <small>Get instant help from our AI assistant</small>
+        </button>
+
+        <!-- Status Message -->
+        <div class="cs-status">
+          <i class="fas fa-circle"></i>
+          <span>AI Receptionist available 24/7</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Customer Service Modal Styles */
+.customer-service-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+}
+
+.customer-service-modal[aria-hidden="false"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.customer-service-modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.customer-service-modal-content {
+  background: var(--bg-card, #fff);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.customer-service-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-secondary, #6B7280);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.customer-service-modal-close:hover {
+  background: var(--bg-secondary, #F3F4F6);
+  color: var(--text-primary, #1F2937);
+}
+
+.customer-service-modal-header {
+  text-align: center;
+  padding: 2rem 2rem 1.5rem;
+  border-bottom: 1px solid var(--border-color, #E5E7EB);
+}
+
+.cs-avatar {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1rem;
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: white;
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
+}
+
+.customer-service-modal-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary, #1F2937);
+  margin-bottom: 0.5rem;
+}
+
+.customer-service-modal-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary, #6B7280);
+  margin: 0;
+}
+
+.customer-service-modal-body {
+  padding: 2rem;
+}
+
+.cs-quick-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.cs-action-card {
+  background: var(--bg-secondary, #F3F4F6);
+  border: 2px solid var(--border-color, #E5E7EB);
+  border-radius: 12px;
+  padding: 1.25rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cs-action-card:hover {
+  border-color: var(--primary, #2563EB);
+  background: var(--bg-card, #fff);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+}
+
+.cs-action-card i {
+  font-size: 2rem;
+  color: var(--primary, #2563EB);
+  margin-bottom: 0.5rem;
+}
+
+.cs-action-card h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary, #1F2937);
+  margin: 0;
+}
+
+.cs-action-card p {
+  font-size: 0.75rem;
+  color: var(--text-secondary, #6B7280);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.cs-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  color: var(--text-secondary, #6B7280);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cs-divider::before,
+.cs-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-color, #E5E7EB);
+}
+
+.cs-ai-connect-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.cs-ai-connect-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+}
+
+.cs-ai-connect-btn i {
+  font-size: 1.5rem;
+}
+
+.cs-ai-connect-btn small {
+  font-size: 0.8rem;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.cs-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color, #E5E7EB);
+  font-size: 0.85rem;
+  color: var(--text-secondary, #6B7280);
+}
+
+.cs-status i {
+  color: #10B981;
+  font-size: 0.6rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Dark mode support */
+[data-theme="dark"] .customer-service-modal-backdrop {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .cs-quick-actions {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .customer-service-modal-content {
+    margin: 0.5rem;
+  }
+}
+</style>
+EOF
+cat customer-service-modal.html
+Output
+
+<!--
+  PMERIT Customer Service Modal Component
+  Version: 1.0
+  Created: Session 5
+  
+  AI Receptionist modal for customer service and support
+  Features: Quick actions, AI chat routing, accessibility
+-->
+
+<div id="customer-service-modal" class="customer-service-modal" role="dialog" aria-modal="true" aria-labelledby="cs-modal-title" aria-hidden="true">
+  <div class="customer-service-modal-backdrop">
+    <div class="customer-service-modal-content">
+      <!-- Close Button -->
+      <button class="customer-service-modal-close" aria-label="Close modal">
+        <i class="fas fa-times"></i>
+      </button>
+
+      <!-- Modal Header -->
+      <div class="customer-service-modal-header">
+        <div class="cs-avatar">
+          <i class="fas fa-headset"></i>
+        </div>
+        <h2 id="cs-modal-title" class="customer-service-modal-title">
+          Customer Service Mode
+        </h2>
+        <p class="customer-service-modal-subtitle">How can our AI Receptionist help you today?</p>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="customer-service-modal-body">
+        <!-- Quick Action Cards -->
+        <div class="cs-quick-actions">
+          <button class="cs-action-card" data-action="account">
+            <i class="fas fa-user-circle"></i>
+            <h3>Account Help</h3>
+            <p>Sign in, password, profile settings</p>
+          </button>
+          
+          <button class="cs-action-card" data-action="courses">
+            <i class="fas fa-book-open"></i>
+            <h3>Course Support</h3>
+            <p>Enrollment, content, certificates</p>
+          </button>
+          
+          <button class="cs-action-card" data-action="technical">
+            <i class="fas fa-wrench"></i>
+            <h3>Technical Issues</h3>
+            <p>Bugs, loading problems, errors</p>
+          </button>
+          
+          <button class="cs-action-card" data-action="general">
+            <i class="fas fa-comments"></i>
+            <h3>General Inquiry</h3>
+            <p>Questions about PMERIT</p>
+          </button>
+        </div>
+
+        <!-- Or Connect to AI Receptionist -->
+        <div class="cs-divider">
+          <span>or</span>
+        </div>
+
+        <button class="cs-ai-connect-btn" id="cs-ai-connect">
+          <i class="fas fa-robot"></i>
+          <span>Talk to AI Receptionist</span>
+          <small>Get instant help from our AI assistant</small>
+        </button>
+
+        <!-- Status Message -->
+        <div class="cs-status">
+          <i class="fas fa-circle"></i>
+          <span>AI Receptionist available 24/7</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Customer Service Modal Styles */
+.customer-service-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+}
+
+.customer-service-modal[aria-hidden="false"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.customer-service-modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.customer-service-modal-content {
+  background: var(--bg-card, #fff);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.customer-service-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-secondary, #6B7280);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.customer-service-modal-close:hover {
+  background: var(--bg-secondary, #F3F4F6);
+  color: var(--text-primary, #1F2937);
+}
+
+.customer-service-modal-header {
+  text-align: center;
+  padding: 2rem 2rem 1.5rem;
+  border-bottom: 1px solid var(--border-color, #E5E7EB);
+}
+
+.cs-avatar {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1rem;
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: white;
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
+}
+
+.customer-service-modal-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary, #1F2937);
+  margin-bottom: 0.5rem;
+}
+
+.customer-service-modal-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary, #6B7280);
+  margin: 0;
+}
+
+.customer-service-modal-body {
+  padding: 2rem;
+}
+
+.cs-quick-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.cs-action-card {
+  background: var(--bg-secondary, #F3F4F6);
+  border: 2px solid var(--border-color, #E5E7EB);
+  border-radius: 12px;
+  padding: 1.25rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cs-action-card:hover {
+  border-color: var(--primary, #2563EB);
+  background: var(--bg-card, #fff);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+}
+
+.cs-action-card i {
+  font-size: 2rem;
+  color: var(--primary, #2563EB);
+  margin-bottom: 0.5rem;
+}
+
+.cs-action-card h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary, #1F2937);
+  margin: 0;
+}
+
+.cs-action-card p {
+  font-size: 0.75rem;
+  color: var(--text-secondary, #6B7280);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.cs-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  color: var(--text-secondary, #6B7280);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cs-divider::before,
+.cs-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-color, #E5E7EB);
+}
+
+.cs-ai-connect-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.cs-ai-connect-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+}
+
+.cs-ai-connect-btn i {
+  font-size: 1.5rem;
+}
+
+.cs-ai-connect-btn small {
+  font-size: 0.8rem;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.cs-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color, #E5E7EB);
+  font-size: 0.85rem;
+  color: var(--text-secondary, #6B7280);
+}
+
+.cs-status i {
+  color: #10B981;
+  font-size: 0.6rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Dark mode support */
+[data-theme="dark"] .customer-service-modal-backdrop {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .cs-quick-actions {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .customer-service-modal-content {
+    margin: 0.5rem;
+  }
+}
+</style>
