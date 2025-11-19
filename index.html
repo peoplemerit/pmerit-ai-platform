@@ -54,7 +54,6 @@
   <link rel="stylesheet" href="assets/css/mobile-mockup-match.css?v=2">
   <link rel="stylesheet" href="assets/css/components.css?v=2">
   <link rel="stylesheet" href="assets/css/avatar.css?v=2">
-  <link rel="stylesheet" href="assets/css/components/tech-help.css">
 </head>
 <body>
 
@@ -403,6 +402,7 @@
   <div id="auth-modal-container"></div>
 
   <!-- Customer Service Modal Component (Lightweight Receptionist) -->
+  <!-- NOTE: Will be implemented in future - modal placeholder for now -->
   <div id="customer-service-modal-container"></div>
   
   <!-- JavaScript - Version 2 (Cache-busting) -->
@@ -416,8 +416,10 @@
   <script src="assets/js/chat.js?v=2"></script>
   <script src="assets/js/auth-modal.js"></script>
   <script src="assets/js/util/diagnostics.js"></script>
-  <script src="assets/js/api/customer-service.js"></script>
-  <script src="assets/js/ui/customer-service.js"></script>
+  
+  <!-- NOTE: Customer Service scripts removed temporarily - will be implemented when modal is built -->
+  <!-- <script src="assets/js/api/customer-service.js"></script> -->
+  <!-- <script src="assets/js/ui/customer-service.js"></script> -->
   
   <!-- Layout Styles (Embedded for Performance) -->
   <style>
@@ -457,6 +459,20 @@
       justify-content: space-between;
       width: 100%;
       cursor: pointer;
+    }
+
+    /* FIX: Remove rectangular border from input wrapper */
+    .chat-input-wrapper,
+    .desktop-input-wrapper {
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
+    /* FIX: Mobile input positioning - ensure it's not covered */
+    .chat-input-container {
+      padding-bottom: env(safe-area-inset-bottom, 0);
+      margin-bottom: 0;
     }
 
     /* Customer Service Mode Button Styling */
@@ -974,6 +990,40 @@
     }
   </style>
 
+  <!-- Mobile Menu Toggle - Inline JavaScript for immediate functionality -->
+  <script>
+    (function() {
+      'use strict';
+      
+      // Mobile menu toggle
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const sideMenu = document.getElementById('sideMenu');
+      const menuOverlay = document.getElementById('menuOverlay');
+      
+      function openMenu() {
+        sideMenu.classList.add('open');
+        menuOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+      
+      function closeMenu() {
+        sideMenu.classList.remove('open');
+        menuOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+      
+      if (hamburgerBtn) {
+        hamburgerBtn.addEventListener('click', openMenu);
+      }
+      
+      if (menuOverlay) {
+        menuOverlay.addEventListener('click', closeMenu);
+      }
+      
+      console.log('✅ Mobile menu toggle initialized');
+    })();
+  </script>
+
   <!-- Phase 3.1: Load Auth Modal partial and wire Dashboard buttons -->
   <script>
     (function () {
@@ -993,21 +1043,6 @@
           }
         })
         .catch(error => console.error('Error loading auth modal:', error));
-
-      // Load customer service modal partial
-      fetch('/partials/customer-service-modal.html')
-        .then(response => response.text())
-        .then(html => {
-          const container = document.getElementById('customer-service-modal-container');
-          if (container) {
-            container.innerHTML = html;
-            // Re-initialize CustomerServiceModal after DOM injection
-            if (window.CustomerServiceModal) {
-              window.CustomerServiceModal.init();
-            }
-          }
-        })
-        .catch(error => console.error('Error loading customer service modal:', error));
       
       // Wire Sign In buttons - now opens Auth Modal if available
       function initAuthButtons() {
@@ -1072,7 +1107,7 @@
         });
       }
 
-      // Wire Customer Service Mode buttons
+      // Wire Customer Service Mode buttons (Placeholder until modal is built)
       function initCustomerServiceButtons() {
         const customerServiceElements = [
           document.getElementById('mobile-customer-service-btn'),
@@ -1090,20 +1125,13 @@
 
               // Dispatch analytics event
               console.log('📊 Analytics: customer_service_activated');
-              window.dispatchEvent(new CustomEvent('pmerit-analytics', {
-                detail: { event: 'customer_service_activated' }
-              }));
-
-              // Open Customer Service Modal if available
-              if (window.CustomerServiceModal) {
-                window.CustomerServiceModal.open();
-              } else {
-                console.warn('CustomerServiceModal not loaded yet');
-                // Fallback: Activate AI Receptionist mode in chat
-                if (window.PMERIT && window.PMERIT.chat) {
-                  window.PMERIT.chat.activateReceptionistMode();
-                }
-              }
+              
+              // TODO: Open Customer Service Modal when built
+              // For now, just log to console
+              console.log('🎧 Customer Service Mode - Modal will be built in future phase');
+              
+              // Temporary user feedback
+              alert('Customer Service Mode\n\nThis feature will connect you with our AI Receptionist for personalized support.\n\n(Modal UI coming soon!)');
             });
           }
         });
