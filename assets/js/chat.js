@@ -10,7 +10,7 @@
 
 // ========== CONFIGURATION ==========
 const CONFIG = {
-  API_URL: 'https://pmerit-api.peoplemerit.workers.dev/api/v1/ai/chat',
+  API_URL: 'https://pmerit-api-worker.peoplemerit.workers.dev/api/v1/ai/chat',
   MAX_HISTORY: 10,
   SYSTEM_PROMPT: ''  // System prompt now handled by backend
 };
