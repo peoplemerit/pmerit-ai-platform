@@ -1,9 +1,10 @@
 /**
  * PMERIT Chat Interface - Unified for Mobile & Desktop
- * Version: 6.0 (Cloudflare Workers AI - Streaming Enabled)
- * Last Updated: October 21, 2025
+ * Version: 7.0 (Chat Persistence with localStorage)
+ * Last Updated: November 21, 2025
  * 
- * Changes: Enabled streaming for instant AI responses
+ * NEW: Chat history persists across page refreshes
+ * Changes: Added localStorage persistence, auto-expiry, size limits
  * Handles: Mobile + Desktop inputs, Streaming AI, typing indicators, TTS
  * Connects to: Cloudflare Workers API
  */
@@ -12,7 +13,12 @@
 const CONFIG = {
   API_URL: 'https://pmerit-api-worker.peoplemerit.workers.dev/api/v1/ai/chat',
   MAX_HISTORY: 10,
-  SYSTEM_PROMPT: ''  // System prompt now handled by backend
+  SYSTEM_PROMPT: '',  // System prompt now handled by backend
+  
+  // ✅ NEW: Persistence settings
+  STORAGE_KEY: 'pmerit_chat_history',
+  STORAGE_EXPIRY_HOURS: 24,  // Chat history expires after 24 hours
+  MAX_STORED_MESSAGES: 20     // Limit storage to 20 messages max
 };
 
 // Helper to get page identifier for analytics
@@ -23,14 +29,127 @@ function pageId() {
 // ========== SHARED CONVERSATION HISTORY ==========
 let conversationHistory = [];
 
+// ========== LOCALSTORAGE HELPERS ==========
+
+/**
+ * Save chat history to localStorage
+ */
+function saveChatHistory() {
+  try {
+    const data = {
+      version: '7.0',
+      timestamp: Date.now(),
+      page: pageId(),
+      history: conversationHistory.slice(-CONFIG.MAX_STORED_MESSAGES) // Limit size
+    };
+    
+    localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(data));
+    console.log('💾 Chat history saved:', conversationHistory.length, 'messages');
+  } catch (error) {
+    console.warn(⚠️ Could not save chat history:', error.message);
+    // Fail silently - localStorage may be disabled or full
+  }
+}
+
+/**
+ * Load chat history from localStorage
+ */
+function loadChatHistory() {
+  try {
+    const stored = localStorage.getItem(CONFIG.STORAGE_KEY);
+    
+    if (!stored) {
+      console.log('📭 No saved chat history found');
+      return null;
+    }
+    
+    const data = JSON.parse(stored);
+    
+    // Check expiry
+    const ageHours = (Date.now() - data.timestamp) / (1000 * 60 * 60);
+    if (ageHours > CONFIG.STORAGE_EXPIRY_HOURS) {
+      console.log('⏰ Chat history expired (age:', ageHours.toFixed(1), 'hours)');
+      localStorage.removeItem(CONFIG.STORAGE_KEY);
+      return null;
+    }
+    
+    // Only restore if on same page
+    if (data.page !== pageId()) {
+      console.log('📄 Chat history is from different page, not restoring');
+      return null;
+    }
+    
+    console.log('✅ Chat history loaded:', data.history.length, 'messages');
+    return data.history;
+    
+  } catch (error) {
+    console.warn('⚠️ Could not load chat history:', error.message);
+    return null;
+  }
+}
+
+/**
+ * Clear stored chat history
+ */
+function clearStoredHistory() {
+  try {
+    localStorage.removeItem(CONFIG.STORAGE_KEY);
+    console.log('🧹 Stored chat history cleared');
+  } catch (error) {
+    console.warn('⚠️ Could not clear stored history:', error.message);
+  }
+}
+
+/**
+ * Restore UI from saved conversation history
+ */
+function restoreChatUI(history) {
+  if (!history || history.length === 0) {
+    return;
+  }
+  
+  console.log('🔄 Restoring chat UI from history...');
+  
+  // Detect which chat interface is active
+  const mobileMessages = document.getElementById('chatMessages');
+  const desktopMessages = document.getElementById('desktopChatMessages');
+  
+  const source = mobileMessages ? 'mobile' : 'desktop';
+  
+  // Restore each message
+  history.forEach((msg) => {
+    if (msg.role === 'user') {
+      addMessage(source, 'user', msg.content);
+    } else if (msg.role === 'assistant') {
+      addMessage(source, 'ai', msg.content);
+    }
+  });
+  
+  console.log('✅ Chat UI restored with', history.length, 'messages');
+}
+
 // ========== INITIALIZATION ==========
 document.addEventListener('DOMContentLoaded', function() {
   console.log('💬 PMERIT Chat initializing...');
+  
+  // ✅ NEW: Load saved chat history
+  const savedHistory = loadChatHistory();
+  if (savedHistory) {
+    conversationHistory = savedHistory;
+    
+    // Restore UI after a brief delay to ensure DOM is ready
+    setTimeout(() => {
+      restoreChatUI(savedHistory);
+    }, 100);
+  }
+  
   initializeMobileChat();
   initializeDesktopChat();
+  
   console.log('✅ Chat interface ready');
   console.log('🤖 Connected to:', CONFIG.API_URL);
   console.log('🚀 Model: Llama 3 8B Instruct (Streaming Enabled)');
+  console.log('💾 Persistence: ENABLED (24h expiry)');
 });
 
 // ========== MOBILE CHAT INITIALIZATION ==========
@@ -168,6 +287,9 @@ async function sendMessage(source) {
   if (conversationHistory.length > CONFIG.MAX_HISTORY * 2) {
     conversationHistory = conversationHistory.slice(-(CONFIG.MAX_HISTORY * 2));
   }
+  
+  // ✅ NEW: Save to localStorage after user message
+  saveChatHistory();
 
   // Clear input
   chatInput.value = '';
@@ -196,7 +318,7 @@ async function sendMessage(source) {
       },
       body: JSON.stringify({
         messages: conversationHistory,
-        stream: true  // ✅ STREAMING ENABLED
+        stream: true
       })
     });
 
@@ -209,7 +331,7 @@ async function sendMessage(source) {
       throw new Error(`API returned ${response.status}: ${response.statusText}`);
     }
 
-    // ✅ HANDLE STREAMING RESPONSE
+    // Handle streaming response
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
     let aiResponse = '';
@@ -285,6 +407,9 @@ async function sendMessage(source) {
       role: 'assistant',
       content: aiResponse
     });
+    
+    // ✅ NEW: Save to localStorage after AI response
+    saveChatHistory();
     
     // Speak if TTS enabled OR if Virtual Human mode is active
     if (document.body.classList.contains('tts-enabled') || document.body.classList.contains('vh-mode')) {
@@ -537,7 +662,7 @@ function autoResize(textarea) {
   textarea.style.height = Math.min(textarea.scrollHeight, maxHeight) + 'px';
 }
 
-// ========== CLEAR CHAT (OPTIONAL) ==========
+// ========== CLEAR CHAT (ENHANCED) ==========
 function clearChat() {
   const mobileMessages = document.getElementById('chatMessages');
   const desktopMessages = document.getElementById('desktopChatMessages');
@@ -553,12 +678,23 @@ function clearChat() {
   // Reset conversation history
   conversationHistory = [];
   
-  console.log('🧹 Chat cleared');
+  // ✅ NEW: Clear stored history
+  clearStoredHistory();
+  
+  console.log('🧹 Chat cleared (UI + localStorage)');
 }
 
 // ========== EXPORT FOR EXTERNAL ACCESS ==========
 window.sendMessage = sendMessage;
 window.clearChat = clearChat;
+
+// ✅ NEW: Export storage functions for debugging
+window.PMERIT_Chat = {
+  saveChatHistory,
+  loadChatHistory,
+  clearStoredHistory,
+  getHistory: () => conversationHistory
+};
 
 // ========== DEBUG INFO ==========
 console.log('📋 Chat Configuration:', {
@@ -566,5 +702,8 @@ console.log('📋 Chat Configuration:', {
   model: 'Llama 3 8B Instruct (Cloudflare Workers AI)',
   streaming: 'ENABLED',
   maxHistory: CONFIG.MAX_HISTORY,
-  backend: 'Cloudflare Workers (Edge Network)'
+  backend: 'Cloudflare Workers (Edge Network)',
+  persistence: 'ENABLED',
+  storageExpiry: CONFIG.STORAGE_EXPIRY_HOURS + ' hours',
+  maxStoredMessages: CONFIG.MAX_STORED_MESSAGES
 });
