@@ -67,7 +67,7 @@
       <div class="header-actions">
         <button class="lang-selector" aria-label="Change language">En</button>
         <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">☰</button>
-        <button class="sign-in-btn" id="signInBtn">Sign In</button>
+        <button class="sign-in-btn" id="signInBtn"><span data-i18n="header.sign_in">Sign In</span></button>
       </div>
     </header>
 
@@ -135,19 +135,19 @@
       
       <!-- Dashboard (Primary Item) -->
       <div class="menu-item menu-item-primary" data-route="/">
-        <span><i class="fas fa-tachometer-alt"></i> Dashboard</span>
+        <span><i class="fas fa-tachometer-alt"></i> <span data-i18n="sidebar.dashboard">Dashboard</span></span>
         <i class="fas fa-chevron-right"></i>
       </div>
       
       <!-- Customer Service Mode (NEW - Prominent) -->
       <button class="menu-item menu-item-customer-service" id="mobile-customer-service-btn">
-        <span><i class="fas fa-headset"></i> Customer Service Mode</span>
+        <span><i class="fas fa-headset"></i> <span data-i18n="sidebar.customer_service">Customer Service Mode</span></span>
         <i class="fas fa-chevron-right"></i>
       </button>
       
       <!-- Career Track -->
       <div class="menu-item" data-route="/career">
-        <span><i class="fas fa-route"></i> Career Track & Explore Paths</span>
+        <span><i class="fas fa-route"></i> <span data-i18n="sidebar.career_track">Career Track & Explore Paths</span></span>
         <i class="fas fa-chevron-right"></i>
       </div>
       
@@ -157,7 +157,7 @@
       <!-- Dark Mode Toggle -->
       <div class="menu-item">
         <label class="menu-toggle-label">
-          <span><i class="fas fa-moon"></i> Dark Mode</span>
+          <span><i class="fas fa-moon"></i> <span data-i18n="sidebar.dark_mode">Dark Mode</span></span>
           <div class="toggle-switch">
             <input type="checkbox" id="mobileDarkToggle" data-toggle="dark" aria-label="Toggle Dark Mode">
             <span class="toggle-slider"></span>
@@ -168,7 +168,7 @@
       <!-- Text-to-Speech Toggle -->
       <div class="menu-item">
         <label class="menu-toggle-label">
-          <span><i class="fas fa-volume-up"></i> Text-to-Speech</span>
+          <span><i class="fas fa-volume-up"></i> <span data-i18n="sidebar.text_to_speech">Text-to-Speech</span></span>
           <div class="toggle-switch">
             <input type="checkbox" id="mobileTtsToggle" data-toggle="tts" aria-label="Toggle Text-to-Speech">
             <span class="toggle-slider"></span>
@@ -178,7 +178,7 @@
       
       <!-- Preview Voices -->
       <div class="menu-item">
-        <span><i class="fas fa-microphone"></i> Preview Voices</span>
+        <span><i class="fas fa-microphone"></i> <span data-i18n="sidebar.preview_voices">Preview Voices</span></span>
         <i class="fas fa-chevron-right"></i>
       </div>
       
