@@ -7,7 +7,7 @@ set -e
 
 # Configuration
 BASE_URL="${1:-https://pmerit.com}"
-API_URL="${API_URL:-https://pmerit-api.peoplemerit.workers.dev}"
+API_URL="${API_URL:-https://pmerit-api-worker.peoplemerit.workers.dev}"
 
 # Colors for output
 RED='\033[0;31m'

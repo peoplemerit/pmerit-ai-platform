@@ -7,7 +7,7 @@
  */
 
 // Worker API URL
-const WORKER_API_URL = 'https://pmerit-api.peoplemerit.workers.dev';
+const WORKER_API_URL = 'https://pmerit-api-worker.peoplemerit.workers.dev';
 
 /**
  * Handle GET request - Proxy to Worker API
