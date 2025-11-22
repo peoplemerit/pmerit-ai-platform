@@ -33,15 +33,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- Theme Init - Prevent FOUC -->
   <script>
-  (function() {
-    var theme = localStorage.getItem('theme');
-    if (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      theme = 'dark';
-    }
-    if (theme === 'dark') {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    }
-  })();
+    (function() {
+      var theme = localStorage.getItem('theme');
+      if (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        theme = 'dark';
+      }
+      if (theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
   </script>
 
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -67,15 +67,19 @@
       <div class="header-actions">
         <button class="lang-selector" aria-label="Change language">En</button>
         <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">☰</button>
-        <button class="sign-in-btn" id="signInBtn"><span data-i18n="header.sign_in">Sign In</span></button>
+        <button class="sign-in-btn" id="signInBtn">
+          <span data-i18n="header.sign_in">Sign In</span>
+        </button>
       </div>
     </header>
 
     <!-- Chat Messages Container -->
     <div class="chat-messages" id="chatMessages">
       <div class="chat-message ai">
-        <p><strong>👋 Welcome!</strong></p>
-        <p data-i18n="chat.mobile_welcome">I'm here to help you explore courses, career paths, and learning opportunities. What would you like to know?</p>
+        <p><strong><span data-i18n="chat.mobile_welcome_title">👋 Welcome!</span></strong></p>
+        <p data-i18n="chat.mobile_welcome_body">
+          I'm here to help you explore courses, career paths, and learning opportunities. What would you like to know?
+        </p>
       </div>
     </div>
 
@@ -118,11 +122,17 @@
 
     <!-- Mobile Footer -->
     <footer class="pmerit-footer mobile-footer">
-      <a href="/privacy.html" class="footer-link-mobile"><span data-i18n="footer.privacy">Privacy & Terms</span></a>
+      <a href="/privacy.html" class="footer-link-mobile">
+        <span data-i18n="footer.privacy">Privacy & Terms</span>
+      </a>
       <span class="footer-separator"> • </span>
-      <a href="#" class="footer-link-mobile" id="mobile-customer-service-link"><span data-i18n="footer.customer_service">Customer Service</span></a>
+      <a href="#" class="footer-link-mobile" id="mobile-customer-service-link">
+        <span data-i18n="footer.customer_service">Customer Service</span>
+      </a>
       <span class="footer-separator"> • </span>
-      <span class="footer-status-mobile" data-i18n="footer.status_connected">Connected to Educational Services</span>
+      <span class="footer-status-mobile" data-i18n="status.connected_services">
+        Connected to Educational Services
+      </span>
     </footer>
 
     <!-- Hamburger Menu Overlay -->
@@ -131,33 +141,49 @@
     <!-- Hamburger Menu -->
     <nav class="side-menu" id="sideMenu">
       <!-- Quick Actions Section -->
-      <h3 class="menu-title"><span data-i18n="sidebar.quick_actions">Quick Actions</span></h3>
+      <h3 class="menu-title">
+        <span data-i18n="sidebar.quick_actions">Quick Actions</span>
+      </h3>
       
       <!-- Dashboard (Primary Item) -->
       <div class="menu-item menu-item-primary" data-route="/">
-        <span><i class="fas fa-tachometer-alt"></i> <span data-i18n="sidebar.dashboard">Dashboard</span></span>
+        <span>
+          <i class="fas fa-tachometer-alt"></i>
+          <span data-i18n="sidebar.dashboard">Dashboard</span>
+        </span>
         <i class="fas fa-chevron-right"></i>
       </div>
       
       <!-- Customer Service Mode (NEW - Prominent) -->
       <button class="menu-item menu-item-customer-service" id="mobile-customer-service-btn">
-        <span><i class="fas fa-headset"></i> <span data-i18n="sidebar.customer_service">Customer Service Mode</span></span>
+        <span>
+          <i class="fas fa-headset"></i>
+          <span data-i18n="sidebar.customer_service">Customer Service Mode</span>
+        </span>
         <i class="fas fa-chevron-right"></i>
       </button>
       
       <!-- Career Track -->
       <div class="menu-item" data-route="/career">
-        <span><i class="fas fa-route"></i> <span data-i18n="sidebar.career_track">Career Track & Explore Paths</span></span>
+        <span>
+          <i class="fas fa-route"></i>
+          <span data-i18n="sidebar.career_track">Career Track & Explore Paths</span>
+        </span>
         <i class="fas fa-chevron-right"></i>
       </div>
       
       <!-- Settings Section -->
-      <h3 class="menu-title">Settings</h3>
+      <h3 class="menu-title">
+        <span data-i18n="sidebar.settings">Settings</span>
+      </h3>
       
       <!-- Dark Mode Toggle -->
       <div class="menu-item">
         <label class="menu-toggle-label">
-          <span><i class="fas fa-moon"></i> <span data-i18n="sidebar.dark_mode">Dark Mode</span></span>
+          <span>
+            <i class="fas fa-moon"></i>
+            <span data-i18n="sidebar.dark_mode">Dark Mode</span>
+          </span>
           <div class="toggle-switch">
             <input type="checkbox" id="mobileDarkToggle" data-toggle="dark" aria-label="Toggle Dark Mode">
             <span class="toggle-slider"></span>
@@ -168,7 +194,10 @@
       <!-- Text-to-Speech Toggle -->
       <div class="menu-item">
         <label class="menu-toggle-label">
-          <span><i class="fas fa-volume-up"></i> <span data-i18n="sidebar.text_to_speech">Text-to-Speech</span></span>
+          <span>
+            <i class="fas fa-volume-up"></i>
+            <span data-i18n="sidebar.text_to_speech">Text-to-Speech</span>
+          </span>
           <div class="toggle-switch">
             <input type="checkbox" id="mobileTtsToggle" data-toggle="tts" aria-label="Toggle Text-to-Speech">
             <span class="toggle-slider"></span>
@@ -178,16 +207,24 @@
       
       <!-- Preview Voices -->
       <div class="menu-item">
-        <span><i class="fas fa-microphone"></i> <span data-i18n="sidebar.preview_voices">Preview Voices</span></span>
+        <span>
+          <i class="fas fa-microphone"></i>
+          <span data-i18n="sidebar.preview_voices">Preview Voices</span>
+        </span>
         <i class="fas fa-chevron-right"></i>
       </div>
       
       <!-- Learning Section -->
-      <h3 class="menu-title"><span data-i18n="sidebar.learning">Learning</span></h3>
+      <h3 class="menu-title">
+        <span data-i18n="sidebar.learning">Learning</span>
+      </h3>
       
       <!-- Begin Assessment -->
       <a href="assessment-entry.html" class="menu-item">
-        <span><i class="fas fa-clipboard-list"></i> <span data-i18n="sidebar.begin_assessment">Begin Assessment</span></span>
+        <span>
+          <i class="fas fa-clipboard-list"></i>
+          <span data-i18n="sidebar.begin_assessment">Begin Assessment</span>
+        </span>
         <i class="fas fa-chevron-right"></i>
       </a>
     </nav>
@@ -202,12 +239,14 @@
       <div class="pmerit-logo">PMERIT</div>
       <nav class="header-nav">
         <select class="lang-selector" aria-label="Change language">
-          <option value="en">English</option>
-          <option value="yo">Yorùbá</option>
-          <option value="ig">Igbo</option>
-          <option value="ha">Hausa</option>
+          <option value="en" data-i18n="lang.english">English</option>
+          <option value="yo" data-i18n="lang.yoruba">Yorùbá</option>
+          <option value="ig" data-i18n="lang.igbo">Igbo</option>
+          <option value="ha" data-i18n="lang.hausa">Hausa</option>
         </select>
-        <a href="pricing.html" class="nav-btn"><span data-i18n="header.pricing">Pricing</span></a>
+        <a href="pricing.html" class="nav-btn">
+          <span data-i18n="header.pricing">Pricing</span>
+        </a>
         <button class="nav-btn" id="desktopSignInBtn">
           <span data-i18n="header.sign_in">Sign In</span>
         </button>
@@ -219,7 +258,9 @@
 
     <!-- Left Sidebar -->
     <aside class="left-sidebar">
-      <h3 class="pane-title"><span data-i18n="sidebar.quick_actions">Quick Actions</span></h3>
+      <h3 class="pane-title">
+        <span data-i18n="sidebar.quick_actions">Quick Actions</span>
+      </h3>
       
       <!-- Dashboard (Primary Button) -->
       <button class="dashboard-btn dashboard-btn-primary">
@@ -235,14 +276,20 @@
       
       <!-- Career Track -->
       <div class="action">
-        <span><i class="fas fa-route icon"></i><span data-i18n="sidebar.career_track">Career Track & Explore Paths</span></span>
+        <span>
+          <i class="fas fa-route icon"></i>
+          <span data-i18n="sidebar.career_track">Career Track & Explore Paths</span>
+        </span>
         <i class="fas fa-chevron-right"></i>
       </div>
       
       <!-- Settings Collapsible -->
       <div class="collapsible" id="settingsCollapsible">
         <div class="collapsible-header">
-          <h4><i class="fas fa-cog icon"></i><span data-i18n="sidebar.settings">Settings</span></h4>
+          <h4>
+            <i class="fas fa-cog icon"></i>
+            <span data-i18n="sidebar.settings">Settings</span>
+          </h4>
           <i class="fas fa-chevron-down"></i>
         </div>
         <div class="collapsible-body">
@@ -288,9 +335,11 @@
             </div>
             <div class="message-content">
               <div class="message-header">
-                <strong data-i18n="chat.agent_label">PMERIT AI:</strong>
+                <strong><span data-i18n="chat.ai_name">PMERIT AI:</span></strong>
               </div>
-              <p data-i18n="chat.welcome_message">Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?</p>
+              <p data-i18n="chat.desktop_welcome_body">
+                Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?
+              </p>
             </div>
           </div>
         </div>
@@ -341,13 +390,16 @@
         <!-- Control Buttons Row -->
         <div class="desktop-input-controls">
           <button class="control-btn" data-mode="customer-service">
-            <i class="fas fa-headset"></i> <span data-i18n="sidebar.customer_service">Customer Service</span>
+            <i class="fas fa-headset"></i>
+            <span data-i18n="controls.customer_service">Customer Service</span>
           </button>
           <button class="control-btn" data-action="read-about">
-            <i class="fas fa-book"></i> Read About
+            <i class="fas fa-book"></i>
+            <span data-i18n="controls.read_about">Read About</span>
           </button>
           <span class="status-indicator">
-            <i class="fas fa-circle"></i> <span data-i18n="footer.status_connected">Connected to Educational Services</span>
+            <i class="fas fa-circle"></i>
+            <span data-i18n="status.connected_services">Connected to Educational Services</span>
           </span>
         </div>
       </div>
@@ -361,7 +413,7 @@
       
       <!-- Support Card -->
       <div class="support-card">
-        <h3><span data-i18n="support.ask_me_about">Ask me about PMERIT</span></h3>
+        <h3 data-i18n="support.ask_about_pmerit">Ask me about PMERIT</h3>
         
         <div class="support-buttons">
           <button id="support-customer-service-btn" class="support-btn" data-support-type="customer-service" aria-pressed="false" aria-label="Activate Customer Service Mode">
@@ -373,17 +425,21 @@
       
       <!-- Assessment Card -->
       <div class="support-card">
-        <h3><span data-i18n="assessment.card_title">Discover Your Path (AI)</span></h3>
-        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
-          <span data-i18n="assessment.card_subtitle">Personalized learning plan</span>
+        <h3 data-i18n="assessment.card_title">Discover Your Path (AI)</h3>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;"
+           data-i18n="assessment.card_subtitle">
+          Personalized learning plan
         </p>
-        <p style="font-size: 0.75rem; color: var(--text-secondary); font-style: italic; margin-bottom: 1rem;">
+        <p style="font-size: 0.75rem; color: var(--text-secondary); font-style: italic; margin-bottom: 1rem;"
+           data-i18n="assessment.card_description">
           Start a short flow that blends learning style, interests, and skills into a plan.
         </p>
         <button class="cta-large" onclick="window.location.href='assessment-entry.html'">
-          <i class="fas fa-compass"></i> <span data-i18n="assessment.begin">Begin Assessment</span>
+          <i class="fas fa-compass"></i>
+          <span data-i18n="assessment.begin">Begin Assessment</span>
         </button>
-        <p style="font-size: 0.7rem; color: var(--text-secondary); font-style: italic; margin-top: 0.75rem;">
+        <p style="font-size: 0.7rem; color: var(--text-secondary); font-style: italic; margin-top: 0.75rem;"
+           data-i18n="assessment.study_tip">
           Short, frequent study sessions are more effective than long cramming sessions.
         </p>
       </div>
@@ -394,15 +450,27 @@
       <div class="footer-container">
         <div class="footer-left">
           <i class="fas fa-signal"></i>
-          <span class="footer-status" data-i18n="footer.status_connected">Connected to Educational Services</span>
+          <span class="footer-status" data-i18n="status.connected_services">
+            Connected to Educational Services
+          </span>
         </div>
         
         <div class="footer-right">
-          <a href="/privacy.html" class="footer-link"><span data-i18n="footer.privacy">Privacy & Terms</span></a>
-          <a href="/contact.html" class="footer-link"><span data-i18n="footer.contact">Contact</span></a>
-          <a href="/partnerships.html" class="footer-link"><span data-i18n="footer.partnerships">Partnerships</span></a>
-          <a href="/support.html" class="footer-link"><span data-i18n="footer.support">Support</span></a>
-          <a href="#" class="footer-link" id="desktop-customer-service-link"><span data-i18n="footer.customer_service">Customer Service</span></a>
+          <a href="/privacy.html" class="footer-link">
+            <span data-i18n="footer.privacy">Privacy & Terms</span>
+          </a>
+          <a href="/contact.html" class="footer-link">
+            <span data-i18n="footer.contact">Contact</span>
+          </a>
+          <a href="/partnerships.html" class="footer-link">
+            <span data-i18n="footer.partnerships">Partnerships</span>
+          </a>
+          <a href="/support.html" class="footer-link">
+            <span data-i18n="footer.support">Support</span>
+          </a>
+          <a href="#" class="footer-link" id="desktop-customer-service-link">
+            <span data-i18n="footer.customer_service">Customer Service</span>
+          </a>
         </div>
       </div>
     </footer>
@@ -924,54 +992,77 @@
       .support-buttons {
         display: flex;
         gap: 0.5rem;
+        margin-top: 1rem;
       }
 
       .support-btn {
         flex: 1;
-        padding: 0.5rem 0.75rem;
+        padding: 0.6rem;
         border-radius: 6px;
         border: 1px solid var(--border-color);
-        background-color: var(--bg-primary);
+        background: var(--bg-card);
         color: var(--text-primary);
-        font-size: 0.85rem;
         cursor: pointer;
+        transition: var(--transition);
+        font-size: 0.85rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+      }
+
+      .support-btn:hover {
+        border-color: var(--color-info);
+        background: var(--color-info);
+        color: #FFFFFF;
+        transform: translateY(-1px);
+      }
+
+      [data-theme="dark"] .support-btn:hover {
+        background: #1c7ed6;
+        border-color: #1c7ed6;
+      }
+
+      .support-btn i {
+        font-size: 1.2rem;
+        color: var(--color-info);
+      }
+
+      .support-btn:hover i {
+        color: #FFFFFF;
+      }
+
+      /* CTA Button */
+      .cta-large {
+        width: 100%;
+        background: var(--primary);
+        color: white;
+        padding: 0.75rem;
+        border-radius: 8px;
+        border: none;
+        text-align: center;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
-        transition: var(--transition);
-      }
-
-      .support-btn:hover {
-        border-color: var(--primary);
-        box-shadow: var(--shadow);
-        transform: translateY(-1px);
-      }
-
-      .support-btn i {
-        color: var(--primary);
-      }
-
-      .cta-large {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        border-radius: 999px;
-        border: none;
-        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-        color: #fff;
-        font-weight: 600;
-        font-size: 0.9rem;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        transition: var(--transition);
       }
 
       .cta-large:hover {
+        background: var(--primary-dark);
         transform: translateY(-2px);
         box-shadow: var(--shadow-lg);
+      }
+    }
+
+    /* ============================================ */
+    /* LARGER DESKTOP (≥ 1440px)                  */
+    /* ============================================ */
+    @media (min-width: 1440px) {
+      .desktop-layout {
+        grid-template-columns: 280px 1fr 360px;
       }
     }
   </style>
@@ -990,13 +1081,13 @@
         sideMenu.classList.add('open');
         menuOverlay.classList.add('active');
         document.body.style.overflow = 'hidden';
-        
-        // Re-apply translations when mobile menu opens so hidden elements get updated text
+
+        // Re-apply translations when menu opens (LANG-001 fix)
         if (window.LanguageManager && typeof window.LanguageManager.applyTranslations === 'function') {
           try {
             window.LanguageManager.applyTranslations();
           } catch (err) {
-            console.error('[LANG] Failed to apply translations on menu open', err);
+            console.error('[LanguageManager] Error applying translations on menu open:', err);
           }
         }
       }
@@ -1038,7 +1129,7 @@
           }
         })
         .catch(error => console.error('Error loading auth modal:', error));
-                
+		
       // Load customer service modal partial
       fetch('/partials/customer-service-modal.html')
         .then(response => response.text())
@@ -1164,61 +1255,61 @@
 
   <!-- Theme Manager for Dark Mode Persistence -->
   <script>
-  (function() {
-    'use strict';
-    
-    // Initialize theme from localStorage
-    function initTheme() {
-      const theme = localStorage.getItem('theme') || 'light';
-      const isDark = theme === 'dark';
+    (function() {
+      'use strict';
       
-      // Update toggles
-      const mobileToggle = document.getElementById('mobileDarkToggle');
-      const desktopToggle = document.getElementById('desktopDarkToggle');
-      
-      if (mobileToggle) mobileToggle.checked = isDark;
-      if (desktopToggle) desktopToggle.checked = isDark;
-    }
-    
-    // Handle toggle changes
-    function handleToggleChange(e) {
-      const theme = e.target.checked ? 'dark' : 'light';
-      localStorage.setItem('theme', theme);
-      document.documentElement.setAttribute('data-theme', theme);
-      
-      // Sync other toggle
-      const mobileToggle = document.getElementById('mobileDarkToggle');
-      const desktopToggle = document.getElementById('desktopDarkToggle');
-      if (mobileToggle) mobileToggle.checked = e.target.checked;
-      if (desktopToggle) desktopToggle.checked = e.target.checked;
-      
-      console.log('[Theme] Changed to:', theme);
-    }
-    
-    // Bind toggles
-    function bindToggles() {
-      const mobileToggle = document.getElementById('mobileDarkToggle');
-      const desktopToggle = document.getElementById('desktopDarkToggle');
-      
-      if (mobileToggle) {
-        mobileToggle.addEventListener('change', handleToggleChange);
+      // Initialize theme from localStorage
+      function initTheme() {
+        const theme = localStorage.getItem('theme') || 'light';
+        const isDark = theme === 'dark';
+        
+        // Update toggles
+        const mobileToggle = document.getElementById('mobileDarkToggle');
+        const desktopToggle = document.getElementById('desktopDarkToggle');
+        
+        if (mobileToggle) mobileToggle.checked = isDark;
+        if (desktopToggle) desktopToggle.checked = isDark;
       }
-      if (desktopToggle) {
-        desktopToggle.addEventListener('change', handleToggleChange);
+      
+      // Handle toggle changes
+      function handleToggleChange(e) {
+        const theme = e.target.checked ? 'dark' : 'light';
+        localStorage.setItem('theme', theme);
+        document.documentElement.setAttribute('data-theme', theme);
+        
+        // Sync other toggle
+        const mobileToggle = document.getElementById('mobileDarkToggle');
+        const desktopToggle = document.getElementById('desktopDarkToggle');
+        if (mobileToggle) mobileToggle.checked = e.target.checked;
+        if (desktopToggle) desktopToggle.checked = e.target.checked;
+        
+        console.log('[Theme] Changed to:', theme);
       }
-    }
-    
-    // Initialize
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', function() {
+      
+      // Bind toggles
+      function bindToggles() {
+        const mobileToggle = document.getElementById('mobileDarkToggle');
+        const desktopToggle = document.getElementById('desktopDarkToggle');
+        
+        if (mobileToggle) {
+          mobileToggle.addEventListener('change', handleToggleChange);
+        }
+        if (desktopToggle) {
+          desktopToggle.addEventListener('change', handleToggleChange);
+        }
+      }
+      
+      // Initialize
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+          initTheme();
+          bindToggles();
+        });
+      } else {
         initTheme();
         bindToggles();
-      });
-    } else {
-      initTheme();
-      bindToggles();
-    }
-  })();
+      }
+    })();
   </script>
 
 </body>
