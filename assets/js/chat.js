@@ -46,7 +46,7 @@ function saveChatHistory() {
     localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(data));
     console.log('💾 Chat history saved:', conversationHistory.length, 'messages');
   } catch (error) {
-    console.warn(⚠️ Could not save chat history:', error.message);
+    console.warn('⚠️ Could not save chat history:', error.message);
     // Fail silently - localStorage may be disabled or full
   }
 }
