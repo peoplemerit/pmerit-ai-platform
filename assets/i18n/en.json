@@ -1,0 +1,70 @@
+{
+  "common": {
+    "welcome": "Welcome",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "pricing": "Pricing",
+    "contact": "Contact",
+    "support": "Support",
+    "privacy": "Privacy & Terms",
+    "partnerships": "Partnerships"
+  },
+  "header": {
+    "startLearning": "Start Learning",
+    "languages": {
+      "english": "English",
+      "yoruba": "Yorùbá",
+      "igbo": "Igbo",
+      "hausa": "Hausa"
+    }
+  },
+  "sidebar": {
+    "quickActions": "Quick Actions",
+    "customerServiceMode": "Customer Service Mode",
+    "careerTrack": "Career Track & Explore Paths",
+    "darkMode": "Dark Mode",
+    "textToSpeech": "Text-to-Speech",
+    "previewVoices": "Preview Voices",
+    "learning": "Learning",
+    "beginAssessment": "Begin Assessment"
+  },
+  "chat": {
+    "placeholder": "Ask about courses, learning paths, or your goals...",
+    "welcome": "Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?",
+    "customerService": "Customer Service",
+    "readAbout": "Read About",
+    "connectedStatus": "Connected to Educational Services"
+  },
+  "assessment": {
+    "title": "Discover Your Path (AI)",
+    "subtitle": "Personalized learning plan",
+    "description": "Start a short flow that blends learning style, interests, and skills into a plan.",
+    "button": "Begin Assessment",
+    "tip": "Short, frequent study sessions are more effective than long cramming sessions."
+  },
+  "support": {
+    "title": "Support Assistant",
+    "askAbout": "Ask me about PMERIT",
+    "customerService": "Customer Service"
+  },
+  "footer": {
+    "status": "Connected to Educational Services",
+    "privacy": "Privacy & Terms",
+    "contact": "Contact",
+    "partnerships": "Partnerships",
+    "support": "Support",
+    "customerService": "Customer Service"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot Password?",
+    "createAccount": "Create Account",
+    "alreadyHaveAccount": "Already have an account?",
+    "dontHaveAccount": "Don't have an account?"
+  }
+}
