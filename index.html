@@ -75,7 +75,7 @@
     <div class="chat-messages" id="chatMessages">
       <div class="chat-message ai">
         <p><strong>👋 Welcome!</strong></p>
-        <p>I'm here to help you explore courses, career paths, and learning opportunities. What would you like to know?</p>
+        <p data-i18n="chat.mobile_welcome">I'm here to help you explore courses, career paths, and learning opportunities. What would you like to know?</p>
       </div>
     </div>
 
@@ -122,7 +122,7 @@
       <span class="footer-separator"> • </span>
       <a href="#" class="footer-link-mobile" id="mobile-customer-service-link"><span data-i18n="footer.customer_service">Customer Service</span></a>
       <span class="footer-separator"> • </span>
-      <span class="footer-status-mobile">Connected to Educational Services</span>
+      <span class="footer-status-mobile" data-i18n="footer.status_connected">Connected to Educational Services</span>
     </footer>
 
     <!-- Hamburger Menu Overlay -->
@@ -131,7 +131,7 @@
     <!-- Hamburger Menu -->
     <nav class="side-menu" id="sideMenu">
       <!-- Quick Actions Section -->
-      <h3 class="menu-title">Quick Actions</h3>
+      <h3 class="menu-title"><span data-i18n="sidebar.quick_actions">Quick Actions</span></h3>
       
       <!-- Dashboard (Primary Item) -->
       <div class="menu-item menu-item-primary" data-route="/">
@@ -183,7 +183,7 @@
       </div>
       
       <!-- Learning Section -->
-      <h3 class="menu-title">Learning</h3>
+      <h3 class="menu-title"><span data-i18n="sidebar.learning">Learning</span></h3>
       
       <!-- Begin Assessment -->
       <a href="assessment-entry.html" class="menu-item">
@@ -219,7 +219,7 @@
 
     <!-- Left Sidebar -->
     <aside class="left-sidebar">
-      <h3 class="pane-title">Quick Actions</h3>
+      <h3 class="pane-title"><span data-i18n="sidebar.quick_actions">Quick Actions</span></h3>
       
       <!-- Dashboard (Primary Button) -->
       <button class="dashboard-btn dashboard-btn-primary">
@@ -242,7 +242,7 @@
       <!-- Settings Collapsible -->
       <div class="collapsible" id="settingsCollapsible">
         <div class="collapsible-header">
-          <h4><i class="fas fa-cog icon"></i>Settings</h4>
+          <h4><i class="fas fa-cog icon"></i><span data-i18n="sidebar.settings">Settings</span></h4>
           <i class="fas fa-chevron-down"></i>
         </div>
         <div class="collapsible-body">
@@ -288,9 +288,9 @@
             </div>
             <div class="message-content">
               <div class="message-header">
-                <strong>PMERIT AI:</strong>
+                <strong data-i18n="chat.agent_label">PMERIT AI:</strong>
               </div>
-              <p>Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?</p>
+              <p data-i18n="chat.welcome_message">Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?</p>
             </div>
           </div>
         </div>
@@ -341,13 +341,13 @@
         <!-- Control Buttons Row -->
         <div class="desktop-input-controls">
           <button class="control-btn" data-mode="customer-service">
-            <i class="fas fa-headset"></i> Customer Service
+            <i class="fas fa-headset"></i> <span data-i18n="sidebar.customer_service">Customer Service</span>
           </button>
           <button class="control-btn" data-action="read-about">
             <i class="fas fa-book"></i> Read About
           </button>
           <span class="status-indicator">
-            <i class="fas fa-circle"></i> Connected to Educational Services
+            <i class="fas fa-circle"></i> <span data-i18n="footer.status_connected">Connected to Educational Services</span>
           </span>
         </div>
       </div>
@@ -361,7 +361,7 @@
       
       <!-- Support Card -->
       <div class="support-card">
-        <h3>Ask me about PMERIT</h3>
+        <h3><span data-i18n="support.ask_me_about">Ask me about PMERIT</span></h3>
         
         <div class="support-buttons">
           <button id="support-customer-service-btn" class="support-btn" data-support-type="customer-service" aria-pressed="false" aria-label="Activate Customer Service Mode">
@@ -373,9 +373,9 @@
       
       <!-- Assessment Card -->
       <div class="support-card">
-        <h3>Discover Your Path (AI)</h3>
+        <h3><span data-i18n="assessment.card_title">Discover Your Path (AI)</span></h3>
         <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
-          Personalized learning plan
+          <span data-i18n="assessment.card_subtitle">Personalized learning plan</span>
         </p>
         <p style="font-size: 0.75rem; color: var(--text-secondary); font-style: italic; margin-bottom: 1rem;">
           Start a short flow that blends learning style, interests, and skills into a plan.
@@ -394,7 +394,7 @@
       <div class="footer-container">
         <div class="footer-left">
           <i class="fas fa-signal"></i>
-          <span class="footer-status">Connected to Educational Services</span>
+          <span class="footer-status" data-i18n="footer.status_connected">Connected to Educational Services</span>
         </div>
         
         <div class="footer-right">
@@ -976,11 +976,12 @@
     }
   </style>
 
-  <!-- Mobile/Desktop layout switch script & basic interactions -->
+  <!-- Mobile Menu Toggle - Inline JavaScript for immediate functionality -->
   <script>
     (function() {
       'use strict';
-
+      
+      // Mobile menu toggle
       const hamburgerBtn = document.getElementById('hamburgerBtn');
       const sideMenu = document.getElementById('sideMenu');
       const menuOverlay = document.getElementById('menuOverlay');
@@ -990,7 +991,7 @@
         menuOverlay.classList.add('active');
         document.body.style.overflow = 'hidden';
         
-        // Re-apply translations for mobile menu when it becomes visible
+        // Re-apply translations when mobile menu opens so hidden elements get updated text
         if (window.LanguageManager && typeof window.LanguageManager.applyTranslations === 'function') {
           try {
             window.LanguageManager.applyTranslations();
@@ -1005,34 +1006,220 @@
         menuOverlay.classList.remove('active');
         document.body.style.overflow = '';
       }
-
+      
       if (hamburgerBtn) {
         hamburgerBtn.addEventListener('click', openMenu);
       }
-
+      
       if (menuOverlay) {
         menuOverlay.addEventListener('click', closeMenu);
       }
-
-      // Simple responsive layout toggle based on viewport width
-      function handleResize() {
-        const mobileLayout = document.querySelector('.mobile-layout');
-        const desktopLayout = document.querySelector('.desktop-layout');
-        if (!mobileLayout || !desktopLayout) return;
-
-        if (window.innerWidth < 1024) {
-          mobileLayout.style.display = 'flex';
-          desktopLayout.style.display = 'none';
-        } else {
-          mobileLayout.style.display = 'none';
-          desktopLayout.style.display = 'grid';
-        }
-      }
-
-      window.addEventListener('resize', handleResize);
-      window.addEventListener('orientationchange', handleResize);
-      document.addEventListener('DOMContentLoaded', handleResize);
+      
+      console.log('✅ Mobile menu toggle initialized');
     })();
   </script>
+
+  <!-- Phase 3.1: Load Auth Modal partial and wire Dashboard buttons -->
+  <script>
+    (function () {
+      'use strict';
+      
+      // Load auth modal partial
+      fetch('/partials/auth-modal.html')
+        .then(response => response.text())
+        .then(html => {
+          const container = document.getElementById('auth-modal-container');
+          if (container) {
+            container.innerHTML = html;
+            // Re-initialize AuthModal after DOM injection
+            if (window.AuthModal) {
+              window.AuthModal.init();
+            }
+          }
+        })
+        .catch(error => console.error('Error loading auth modal:', error));
+                
+      // Load customer service modal partial
+      fetch('/partials/customer-service-modal.html')
+        .then(response => response.text())
+        .then(html => {
+          const container = document.getElementById('customer-service-modal-container');
+          if (container) {
+            container.innerHTML = html;
+            // Re-initialize CustomerServiceModal after DOM injection
+            if (window.CustomerServiceModal) {
+              window.CustomerServiceModal.init();
+            }
+          }
+        })
+        .catch(error => console.error('Error loading customer service modal:', error));
+      
+      // Wire Sign In buttons - now opens Auth Modal if available
+      function initAuthButtons() {
+        const signInButtons = [
+          document.getElementById('signInBtn'),
+          document.getElementById('desktopSignInBtn')
+        ];
+        
+        signInButtons.forEach(function (btn) {
+          if (btn) {
+            btn.addEventListener('click', function (e) {
+              // If AUTH module is loaded and AuthModal is available, use modal
+              if (window.AUTH && window.AuthModal) {
+                e.preventDefault();
+                window.AuthModal.open('signin');
+              } else {
+                // Fallback to sign-in page
+                window.location.href = '/signin.html';
+              }
+            });
+          }
+        });
+      }
+      
+      // Wire Dashboard buttons (Phase 3.1)
+      function initDashboardButtons() {
+        // Get all dashboard buttons (mobile and desktop)
+        const dashboardButtons = [
+          document.querySelector('.menu-item-primary'), // Mobile
+          document.querySelector('.dashboard-btn-primary') // Desktop
+        ];
+        
+        dashboardButtons.forEach(function (btn) {
+          if (btn) {
+            btn.addEventListener('click', function (e) {
+              e.preventDefault();
+              
+              // Dispatch analytics event
+              const isAuth = window.AUTH && window.AUTH.isAuthenticated();
+              const eventName = isAuth ? 'dashboard_click_auth' : 'dashboard_click_guest';
+              console.log('📊 Analytics:', eventName);
+              window.dispatchEvent(new CustomEvent('pmerit-analytics', {
+                detail: { event: eventName }
+              }));
+              
+              // Branch behavior based on authentication
+              if (isAuth) {
+                // Authenticated: Navigate to learner portal
+                window.location.href = '/learner-portal.html';
+              } else {
+                // Guest: Open Auth Modal with Sign-Up tab
+                if (window.AuthModal) {
+                  window.AuthModal.open('signup');
+                } else {
+                  // Fallback to sign-in page if modal not loaded
+                  console.warn('AuthModal not loaded, redirecting to signin page');
+                  window.location.href = '/signin.html';
+                }
+              }
+            });
+          }
+        });
+      }
+
+      // Wire Customer Service Mode buttons
+      function initCustomerServiceButtons() {
+        const customerServiceElements = [
+          document.getElementById('mobile-customer-service-btn'),
+          document.getElementById('desktop-customer-service-btn'),
+          document.getElementById('support-customer-service-btn'),
+          document.getElementById('mobile-customer-service-link'),
+          document.getElementById('desktop-customer-service-link'),
+          document.querySelector('[data-mode="customer-service"]')
+        ];
+
+        customerServiceElements.forEach(function (element) {
+          if (element) {
+            element.addEventListener('click', function (e) {
+              e.preventDefault();
+
+              // Dispatch analytics event
+              console.log('📊 Analytics: customer_service_activated');
+        
+              // Open Customer Service Modal
+              if (window.CustomerServiceModal) {
+                window.CustomerServiceModal.open();
+              } else {
+                console.error('CustomerServiceModal not loaded');
+              }
+            });
+          }
+        });
+      }
+      
+      // Initialize when DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+          initAuthButtons();
+          initDashboardButtons();
+          initCustomerServiceButtons();
+        });
+      } else {
+        initAuthButtons();
+        initDashboardButtons();
+        initCustomerServiceButtons();
+      }
+    })();
+  </script>
+
+  <!-- Theme Manager for Dark Mode Persistence -->
+  <script>
+  (function() {
+    'use strict';
+    
+    // Initialize theme from localStorage
+    function initTheme() {
+      const theme = localStorage.getItem('theme') || 'light';
+      const isDark = theme === 'dark';
+      
+      // Update toggles
+      const mobileToggle = document.getElementById('mobileDarkToggle');
+      const desktopToggle = document.getElementById('desktopDarkToggle');
+      
+      if (mobileToggle) mobileToggle.checked = isDark;
+      if (desktopToggle) desktopToggle.checked = isDark;
+    }
+    
+    // Handle toggle changes
+    function handleToggleChange(e) {
+      const theme = e.target.checked ? 'dark' : 'light';
+      localStorage.setItem('theme', theme);
+      document.documentElement.setAttribute('data-theme', theme);
+      
+      // Sync other toggle
+      const mobileToggle = document.getElementById('mobileDarkToggle');
+      const desktopToggle = document.getElementById('desktopDarkToggle');
+      if (mobileToggle) mobileToggle.checked = e.target.checked;
+      if (desktopToggle) desktopToggle.checked = e.target.checked;
+      
+      console.log('[Theme] Changed to:', theme);
+    }
+    
+    // Bind toggles
+    function bindToggles() {
+      const mobileToggle = document.getElementById('mobileDarkToggle');
+      const desktopToggle = document.getElementById('desktopDarkToggle');
+      
+      if (mobileToggle) {
+        mobileToggle.addEventListener('change', handleToggleChange);
+      }
+      if (desktopToggle) {
+        desktopToggle.addEventListener('change', handleToggleChange);
+      }
+    }
+    
+    // Initialize
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        initTheme();
+        bindToggles();
+      });
+    } else {
+      initTheme();
+      bindToggles();
+    }
+  })();
+  </script>
+
 </body>
 </html>
