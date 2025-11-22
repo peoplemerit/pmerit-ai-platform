@@ -31,7 +31,7 @@
   <!-- Fonts - Preconnect for performance -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Theme Init - Prevent FOUC -->
+  <!-- Theme Init - Prevent FOUC -->
   <script>
   (function() {
     var theme = localStorage.getItem('theme');
@@ -44,7 +44,7 @@
   })();
   </script>
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
@@ -414,10 +414,10 @@
   <!-- Customer Service Modal Component (Lightweight Receptionist) -->
   <div id="customer-service-modal-container"></div>
   
-    <!-- JavaScript - Version 2 (Cache-busting) -->
-    <script src="assets/js/config.js"></script>
-    <script src="assets/js/language-manager.js"></script>
-    <script src="assets/js/auth.js"></script>
+  <!-- JavaScript - Version 2 (Cache-busting) -->
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/language-manager.js"></script>
+  <script src="assets/js/auth.js"></script>
   
   <!-- TTS module (loaded before main.js for TTS integration) -->
   <script src="assets/js/tts.js"></script>
@@ -924,87 +924,63 @@
       .support-buttons {
         display: flex;
         gap: 0.5rem;
-        margin-top: 1rem;
       }
 
       .support-btn {
         flex: 1;
-        padding: 0.6rem;
+        padding: 0.5rem 0.75rem;
         border-radius: 6px;
         border: 1px solid var(--border-color);
-        background: var(--bg-card);
+        background-color: var(--bg-primary);
         color: var(--text-primary);
-        cursor: pointer;
-        transition: var(--transition);
         font-size: 0.85rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.25rem;
-      }
-
-      .support-btn:hover {
-        border-color: var(--color-info);
-        background: var(--color-info);
-        color: #FFFFFF;
-        transform: translateY(-1px);
-      }
-
-      [data-theme="dark"] .support-btn:hover {
-        background: #1c7ed6;
-        border-color: #1c7ed6;
-      }
-
-      .support-btn i {
-        font-size: 1.2rem;
-        color: var(--color-info);
-      }
-
-      .support-btn:hover i {
-        color: #FFFFFF;
-      }
-
-      /* CTA Button */
-      .cta-large {
-        width: 100%;
-        background: var(--primary);
-        color: white;
-        padding: 0.75rem;
-        border-radius: 8px;
-        border: none;
-        text-align: center;
-        font-weight: 600;
         cursor: pointer;
-        transition: var(--transition);
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
+        transition: var(--transition);
+      }
+
+      .support-btn:hover {
+        border-color: var(--primary);
+        box-shadow: var(--shadow);
+        transform: translateY(-1px);
+      }
+
+      .support-btn i {
+        color: var(--primary);
+      }
+
+      .cta-large {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border-radius: 999px;
+        border: none;
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        transition: var(--transition);
       }
 
       .cta-large:hover {
-        background: var(--primary-dark);
         transform: translateY(-2px);
         box-shadow: var(--shadow-lg);
       }
     }
-
-    /* ============================================ */
-    /* LARGER DESKTOP (≥ 1440px)                  */
-    /* ============================================ */
-    @media (min-width: 1440px) {
-      .desktop-layout {
-        grid-template-columns: 280px 1fr 360px;
-      }
-    }
   </style>
 
-  <!-- Mobile Menu Toggle - Inline JavaScript for immediate functionality -->
+  <!-- Mobile/Desktop layout switch script & basic interactions -->
   <script>
     (function() {
       'use strict';
-      
-      // Mobile menu toggle
+
       const hamburgerBtn = document.getElementById('hamburgerBtn');
       const sideMenu = document.getElementById('sideMenu');
       const menuOverlay = document.getElementById('menuOverlay');
@@ -1013,6 +989,15 @@
         sideMenu.classList.add('open');
         menuOverlay.classList.add('active');
         document.body.style.overflow = 'hidden';
+        
+        // Re-apply translations for mobile menu when it becomes visible
+        if (window.LanguageManager && typeof window.LanguageManager.applyTranslations === 'function') {
+          try {
+            window.LanguageManager.applyTranslations();
+          } catch (err) {
+            console.error('[LANG] Failed to apply translations on menu open', err);
+          }
+        }
       }
       
       function closeMenu() {
@@ -1020,220 +1005,34 @@
         menuOverlay.classList.remove('active');
         document.body.style.overflow = '';
       }
-      
+
       if (hamburgerBtn) {
         hamburgerBtn.addEventListener('click', openMenu);
       }
-      
+
       if (menuOverlay) {
         menuOverlay.addEventListener('click', closeMenu);
       }
-      
-      console.log('✅ Mobile menu toggle initialized');
-    })();
-  </script>
 
-  <!-- Phase 3.1: Load Auth Modal partial and wire Dashboard buttons -->
-  <script>
-    (function () {
-      'use strict';
-      
-      // Load auth modal partial
-      fetch('/partials/auth-modal.html')
-        .then(response => response.text())
-        .then(html => {
-          const container = document.getElementById('auth-modal-container');
-          if (container) {
-            container.innerHTML = html;
-            // Re-initialize AuthModal after DOM injection
-            if (window.AuthModal) {
-              window.AuthModal.init();
-            }
-          }
-        })
-        .catch(error => console.error('Error loading auth modal:', error));
-                
-                // Load customer service modal partial
-    fetch('/partials/customer-service-modal.html')
-      .then(response => response.text())
-      .then(html => {
-        const container = document.getElementById('customer-service-modal-container');
-        if (container) {
-          container.innerHTML = html;
-          // Re-initialize CustomerServiceModal after DOM injection
-          if (window.CustomerServiceModal) {
-            window.CustomerServiceModal.init();
-          }
-        }
-      })
-      .catch(error => console.error('Error loading customer service modal:', error));
-      
-      // Wire Sign In buttons - now opens Auth Modal if available
-      function initAuthButtons() {
-        const signInButtons = [
-          document.getElementById('signInBtn'),
-          document.getElementById('desktopSignInBtn')
-        ];
-        
-        signInButtons.forEach(function (btn) {
-          if (btn) {
-            btn.addEventListener('click', function (e) {
-              // If AUTH module is loaded and AuthModal is available, use modal
-              if (window.AUTH && window.AuthModal) {
-                e.preventDefault();
-                window.AuthModal.open('signin');
-              } else {
-                // Fallback to sign-in page
-                window.location.href = '/signin.html';
-              }
-            });
-          }
-        });
-      }
-      
-      // Wire Dashboard buttons (Phase 3.1)
-      function initDashboardButtons() {
-        // Get all dashboard buttons (mobile and desktop)
-        const dashboardButtons = [
-          document.querySelector('.menu-item-primary'), // Mobile
-          document.querySelector('.dashboard-btn-primary') // Desktop
-        ];
-        
-        dashboardButtons.forEach(function (btn) {
-          if (btn) {
-            btn.addEventListener('click', function (e) {
-              e.preventDefault();
-              
-              // Dispatch analytics event
-              const isAuth = window.AUTH && window.AUTH.isAuthenticated();
-              const eventName = isAuth ? 'dashboard_click_auth' : 'dashboard_click_guest';
-              console.log('📊 Analytics:', eventName);
-              window.dispatchEvent(new CustomEvent('pmerit-analytics', {
-                detail: { event: eventName }
-              }));
-              
-              // Branch behavior based on authentication
-              if (isAuth) {
-                // Authenticated: Navigate to learner portal
-                window.location.href = '/learner-portal.html';
-              } else {
-                // Guest: Open Auth Modal with Sign-Up tab
-                if (window.AuthModal) {
-                  window.AuthModal.open('signup');
-                } else {
-                  // Fallback to sign-in page if modal not loaded
-                  console.warn('AuthModal not loaded, redirecting to signin page');
-                  window.location.href = '/signin.html';
-                }
-              }
-            });
-          }
-        });
-      }
+      // Simple responsive layout toggle based on viewport width
+      function handleResize() {
+        const mobileLayout = document.querySelector('.mobile-layout');
+        const desktopLayout = document.querySelector('.desktop-layout');
+        if (!mobileLayout || !desktopLayout) return;
 
-      // Wire Customer Service Mode buttons
-      function initCustomerServiceButtons() {
-        const customerServiceElements = [
-          document.getElementById('mobile-customer-service-btn'),
-          document.getElementById('desktop-customer-service-btn'),
-          document.getElementById('support-customer-service-btn'),
-          document.getElementById('mobile-customer-service-link'),
-          document.getElementById('desktop-customer-service-link'),
-          document.querySelector('[data-mode="customer-service"]')
-        ];
-
-        customerServiceElements.forEach(function (element) {
-          if (element) {
-            element.addEventListener('click', function (e) {
-              e.preventDefault();
-
-              // Dispatch analytics event
-              console.log('📊 Analytics: customer_service_activated');
-        
-        // Open Customer Service Modal
-        if (window.CustomerServiceModal) {
-          window.CustomerServiceModal.open();
+        if (window.innerWidth < 1024) {
+          mobileLayout.style.display = 'flex';
+          desktopLayout.style.display = 'none';
         } else {
-          console.error('CustomerServiceModal not loaded');
+          mobileLayout.style.display = 'none';
+          desktopLayout.style.display = 'grid';
         }
-             });
-           }
-         });
       }
-      
-      // Initialize when DOM is ready
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function() {
-          initAuthButtons();
-          initDashboardButtons();
-          initCustomerServiceButtons();
-        });
-      } else {
-        initAuthButtons();
-        initDashboardButtons();
-        initCustomerServiceButtons();
-      }
+
+      window.addEventListener('resize', handleResize);
+      window.addEventListener('orientationchange', handleResize);
+      document.addEventListener('DOMContentLoaded', handleResize);
     })();
   </script>
-
-  <!-- Theme Manager for Dark Mode Persistence -->
-  <script>
-  (function() {
-    'use strict';
-    
-    // Initialize theme from localStorage
-    function initTheme() {
-      const theme = localStorage.getItem('theme') || 'light';
-      const isDark = theme === 'dark';
-      
-      // Update toggles
-      const mobileToggle = document.getElementById('mobileDarkToggle');
-      const desktopToggle = document.getElementById('desktopDarkToggle');
-      
-      if (mobileToggle) mobileToggle.checked = isDark;
-      if (desktopToggle) desktopToggle.checked = isDark;
-    }
-    
-    // Handle toggle changes
-    function handleToggleChange(e) {
-      const theme = e.target.checked ? 'dark' : 'light';
-      localStorage.setItem('theme', theme);
-      document.documentElement.setAttribute('data-theme', theme);
-      
-      // Sync other toggle
-      const mobileToggle = document.getElementById('mobileDarkToggle');
-      const desktopToggle = document.getElementById('desktopDarkToggle');
-      if (mobileToggle) mobileToggle.checked = e.target.checked;
-      if (desktopToggle) desktopToggle.checked = e.target.checked;
-      
-      console.log('[Theme] Changed to:', theme);
-    }
-    
-    // Bind toggles
-    function bindToggles() {
-      const mobileToggle = document.getElementById('mobileDarkToggle');
-      const desktopToggle = document.getElementById('desktopDarkToggle');
-      
-      if (mobileToggle) {
-        mobileToggle.addEventListener('change', handleToggleChange);
-      }
-      if (desktopToggle) {
-        desktopToggle.addEventListener('change', handleToggleChange);
-      }
-    }
-    
-    // Initialize
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', function() {
-        initTheme();
-        bindToggles();
-      });
-    } else {
-      initTheme();
-      bindToggles();
-    }
-  })();
-  </script>
-
 </body>
 </html>
