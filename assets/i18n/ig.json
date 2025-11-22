@@ -1,37 +1,70 @@
 {
-  "nav": {
-    "learning": "Mmụta",
-    "classroom": "Klaasị",
+  "common": {
+    "welcome": "Nnọọ",
+    "signIn": "Banye",
+    "signUp": "Debanye aha",
+    "dashboard": "Dashibọọdụ",
+    "settings": "Ntọala",
     "pricing": "Ọnụ ahịa",
-    "about": "Banyere anyị",
-    "signin": "Banye",
-    "home": "Ụlọ",
-    "courses": "Nkuzi",
-    "community": "Obodo",
+    "contact": "Kpọtụrụ anyị",
     "support": "Nkwado",
-    "contact": "Kpọtụrụ"
+    "privacy": "Nzuzo & Iwu",
+    "partnerships": "Mmekọrịta"
+  },
+  "header": {
+    "startLearning": "Malite Ịmụ",
+    "languages": {
+      "english": "Bekee",
+      "yoruba": "Yorùbá",
+      "igbo": "Igbo",
+      "hausa": "Hausa"
+    }
+  },
+  "sidebar": {
+    "quickActions": "Omume Ngwa Ngwa",
+    "customerServiceMode": "Ụdị Ọrụ Ndị Ahịa",
+    "careerTrack": "Ụzọ Ọrụ & Nyocha",
+    "darkMode": "Ọnọdụ Ọchịchịrị",
+    "textToSpeech": "Ederede gaa na Olu",
+    "previewVoices": "Lelee Olu",
+    "learning": "Mmụta",
+    "beginAssessment": "Malite Nyocha"
+  },
+  "chat": {
+    "placeholder": "Jụọ maka kọọsụ, ụzọ mmụta, ma ọ bụ ebumnuche gị...",
+    "welcome": "Nnọọ na PMERIT! Anọ m ebe a iji duzie njem mmụta gị. Ebumnuche anyị bụ ịnye agụmakwụkwọ dị mfe, dị elu nke na-emeghe ụzọ maka ohere na-enweghị njedebe. Kedu ka m ga-esi nyere gị aka ịchọpụta ikike gị taa?",
+    "customerService": "Ọrụ Ndị Ahịa",
+    "readAbout": "Gụọ Banyere",
+    "connectedStatus": "Ejikọtara na Ọrụ Agụmakwụkwọ"
+  },
+  "assessment": {
+    "title": "Chọpụta Ụzọ Gị (AI)",
+    "subtitle": "Atụmatụ mmụta ahaziri",
+    "description": "Malite usoro dị mkpụmkpụ nke na-ejikọta ụdị mmụta, mmasị, na nkà n'ime atụmatụ.",
+    "button": "Malite Nyocha",
+    "tip": "Oge ọmụmụ dị mkpụmkpụ ugboro ugboro ka mma karịa oge ogologo otu."
+  },
+  "support": {
+    "title": "Onye Inyeaka Nkwado",
+    "askAbout": "Jụọ m maka PMERIT",
+    "customerService": "Ọrụ Ndị Ahịa"
   },
   "footer": {
-    "privacy": "Nzuzo",
-    "terms": "Usoro",
-    "contact": "Kpọtụrụ",
-    "support": "Nkwado"
+    "status": "Ejikọtara na Ọrụ Agụmakwụkwọ",
+    "privacy": "Nzuzo & Iwu",
+    "contact": "Kpọtụrụ anyị",
+    "partnerships": "Mmekọrịta",
+    "support": "Nkwado",
+    "customerService": "Ọrụ Ndị Ahịa"
   },
-  "buttons": {
-    "start": "Malite",
-    "continue": "Gaa n'ihu",
-    "submit": "Zipu",
-    "cancel": "Kagbuo",
-    "save": "Chekwaa",
-    "close": "Mechie",
-    "signin": "Banye",
-    "signup": "Debanye aha",
-    "getstarted": "Malite"
-  },
-  "messages": {
-    "welcome": "Nnọọ na PMERIT",
-    "loading": "Na-ebu...",
-    "error": "Njehie mere",
-    "success": "Ihe ịga nke ọma"
+  "auth": {
+    "signIn": "Banye",
+    "signUp": "Debanye aha",
+    "email": "Ozi-e",
+    "password": "Okwuntughe",
+    "forgotPassword": "Ị chefuru okwuntughe?",
+    "createAccount": "Mepụta Akaụntụ",
+    "alreadyHaveAccount": "Ị nwere akaụntụ?",
+    "dontHaveAccount": "Ị nweghị akaụntụ?"
   }
 }

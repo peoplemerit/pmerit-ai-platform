@@ -1,37 +1,70 @@
 {
-  "nav": {
-    "learning": "Koyo",
-    "classroom": "Aji",
-    "pricing": "Farashi",
-    "about": "Game da mu",
-    "signin": "Shiga",
-    "home": "Gida",
-    "courses": "Darussa",
-    "community": "Al'umma",
+  "common": {
+    "welcome": "Barka da zuwa",
+    "signIn": "Shiga",
+    "signUp": "Yi rajista",
+    "dashboard": "Dāshbōd",
+    "settings": "Saitunan",
+    "pricing": "Farashin",
+    "contact": "Tuntube mu",
     "support": "Taimako",
-    "contact": "Tuntuɓar"
+    "privacy": "Sirri & Sharuɗɗa",
+    "partnerships": "Haɗin gwiwa"
+  },
+  "header": {
+    "startLearning": "Fara Koyo",
+    "languages": {
+      "english": "Turanci",
+      "yoruba": "Yarbanci",
+      "igbo": "Igbo",
+      "hausa": "Hausa"
+    }
+  },
+  "sidebar": {
+    "quickActions": "Ayyuka masu sauri",
+    "customerServiceMode": "Yanayin Sabis na Abokin Ciniki",
+    "careerTrack": "Hanyar Aiki & Bincike",
+    "darkMode": "Yanayin Duhu",
+    "textToSpeech": "Rubutu zuwa Murya",
+    "previewVoices": "Duba Muryoyi",
+    "learning": "Koyo",
+    "beginAssessment": "Fara Gwaji"
+  },
+  "chat": {
+    "placeholder": "Tambaya game da kwasa-kwasan, hanyoyin koyo, ko burinku...",
+    "welcome": "Barka da zuwa PMERIT! Ina nan don jagorantar tafiyar koyon ku. Manufarmu ita ce samar da ilimi mai sauƙi, mai inganci wanda ke buɗe ƙofofi zuwa dama marasa iyaka. Ta yaya zan iya taimaka muku gano ƙarfin ku a yau?",
+    "customerService": "Sabis na Abokin Ciniki",
+    "readAbout": "Karanta Game da",
+    "connectedStatus": "An haɗa zuwa Ayyukan Ilimi"
+  },
+  "assessment": {
+    "title": "Gano Hanyarku (AI)",
+    "subtitle": "Tsarin koyo na musamman",
+    "description": "Fara gajeriyar tsari wanda ke haɗa salon koyo, sha'awa, da ƙwarewa cikin tsari.",
+    "button": "Fara Gwaji",
+    "tip": "Lokutan karatu masu gajarta akai-akai sun fi dacewa fiye da lokacin karatu mai tsawo guda ɗaya."
+  },
+  "support": {
+    "title": "Mataimakin Taimako",
+    "askAbout": "Tambaye ni game da PMERIT",
+    "customerService": "Sabis na Abokin Ciniki"
   },
   "footer": {
-    "privacy": "Sirri",
-    "terms": "Sharuɗɗa",
-    "contact": "Tuntuɓar",
-    "support": "Taimako"
+    "status": "An haɗa zuwa Ayyukan Ilimi",
+    "privacy": "Sirri & Sharuɗɗa",
+    "contact": "Tuntube mu",
+    "partnerships": "Haɗin gwiwa",
+    "support": "Taimako",
+    "customerService": "Sabis na Abokin Ciniki"
   },
-  "buttons": {
-    "start": "Fara",
-    "continue": "Ci gaba",
-    "submit": "Aika",
-    "cancel": "Soke",
-    "save": "Ajiye",
-    "close": "Rufe",
-    "signin": "Shiga",
-    "signup": "Yi rajista",
-    "getstarted": "Fara"
-  },
-  "messages": {
-    "welcome": "Barka da zuwa PMERIT",
-    "loading": "Ana lodawa...",
-    "error": "Kuskure ya faru",
-    "success": "Nasara"
+  "auth": {
+    "signIn": "Shiga",
+    "signUp": "Yi rajista",
+    "email": "Imel",
+    "password": "Kalmar sirri",
+    "forgotPassword": "Kun manta da kalmar sirri?",
+    "createAccount": "Ƙirƙiri Asusun",
+    "alreadyHaveAccount": "Kuna da asusun?",
+    "dontHaveAccount": "Ba ku da asusun?"
   }
 }

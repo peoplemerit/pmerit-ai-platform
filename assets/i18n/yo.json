@@ -1,37 +1,70 @@
 {
-  "nav": {
-    "learning": "Ẹkọ",
-    "classroom": "Yàrá kíláàsì",
-    "pricing": "Iye owo",
-    "about": "Nípa wa",
-    "signin": "Wọle",
-    "home": "Ilé",
-    "courses": "Awọn ikẹkọ",
-    "community": "Awùjọ",
-    "support": "Atilẹyin",
-    "contact": "Olubasọrọ"
+  "common": {
+    "welcome": "Káàbọ̀",
+    "signIn": "Wọlé",
+    "signUp": "Forúkọ sílẹ̀",
+    "dashboard": "Ojú-ìwé",
+    "settings": "Ètò",
+    "pricing": "Iye owó",
+    "contact": "Kànsí wa",
+    "support": "Ìrànwọ́",
+    "privacy": "Ìpamọ́ & Òfin",
+    "partnerships": "Ìfọwọ́sowọ́pọ̀"
+  },
+  "header": {
+    "startLearning": "Bẹ̀rẹ̀ Ẹ̀kọ́",
+    "languages": {
+      "english": "Gẹ̀ẹ́sì",
+      "yoruba": "Yorùbá",
+      "igbo": "Ìgbò",
+      "hausa": "Hausa"
+    }
+  },
+  "sidebar": {
+    "quickActions": "Ìṣe Kíákíá",
+    "customerServiceMode": "Ipò Ìràánlọ́wọ́ Oníbàárà",
+    "careerTrack": "Ọ̀nà Iṣẹ́ & Ṣàwárí",
+    "darkMode": "Ipò Òkùnkùn",
+    "textToSpeech": "Ọ̀rọ̀ sí Ohùn",
+    "previewVoices": "Wo Ohùn",
+    "learning": "Ẹ̀kọ́",
+    "beginAssessment": "Bẹ̀rẹ̀ Ìdánwò"
+  },
+  "chat": {
+    "placeholder": "Béèrè nípa àwọn ẹ̀kọ́, ọ̀nà ẹ̀kọ́, tàbí àwọn àfojúsùn rẹ...",
+    "welcome": "Káàbọ̀ sí PMERIT! Mo wà níbí láti ṣe ìtọ́sọ́nà ìrìn-àjò ẹ̀kọ́ rẹ. Àfojúsùn wa ni láti pèsè ẹ̀kọ́ tó ṣe é dé bá àti tó tó jù tí ó ń ṣí ìlẹ̀kùn sí àwọn àǹfààní láìlópin. Báwo ni mo ṣe lè ràn ọ́ lọ́wọ́ láti ṣàwárí agbára rẹ lónìí?",
+    "customerService": "Ìràánlọ́wọ́ Oníbàárà",
+    "readAbout": "Kà Nípa",
+    "connectedStatus": "Ti sopọ̀ mọ́ Àwọn Iṣẹ́ Ẹ̀kọ́"
+  },
+  "assessment": {
+    "title": "Ṣàwárí Ọ̀nà Rẹ (AI)",
+    "subtitle": "Ètò ẹ̀kọ́ tí a ṣètò fún ọ",
+    "description": "Bẹ̀rẹ̀ ìlànà kúkúrú tí ó papọ̀ ìrírí ẹ̀kọ́, ìfẹ́, àti ọgbọ́n sínú ètò kan.",
+    "button": "Bẹ̀rẹ̀ Ìdánwò",
+    "tip": "Àkókò ìkẹ́kọ̀ọ́ kúkúrú lọ́pọ̀ ìgbà dára jù àkókò gígùn kan."
+  },
+  "support": {
+    "title": "Olùrànlọ́wọ́ Ìrànwọ́",
+    "askAbout": "Béèrè lọ́wọ́ mi nípa PMERIT",
+    "customerService": "Ìràánlọ́wọ́ Oníbàárà"
   },
   "footer": {
-    "privacy": "Asiri",
-    "terms": "Awọn ofin",
-    "contact": "Olubasọrọ",
-    "support": "Atilẹyin"
+    "status": "Ti sopọ̀ mọ́ Àwọn Iṣẹ́ Ẹ̀kọ́",
+    "privacy": "Ìpamọ́ & Òfin",
+    "contact": "Kànsí wa",
+    "partnerships": "Ìfọwọ́sowọ́pọ̀",
+    "support": "Ìrànwọ́",
+    "customerService": "Ìràánlọ́wọ́ Oníbàárà"
   },
-  "buttons": {
-    "start": "Bẹrẹ",
-    "continue": "Tẹsiwaju",
-    "submit": "Firanṣẹ",
-    "cancel": "Fagilee",
-    "save": "Tọju",
-    "close": "Tii",
-    "signin": "Wọle",
-    "signup": "Forukọsilẹ",
-    "getstarted": "Bẹrẹ"
-  },
-  "messages": {
-    "welcome": "Kabo si PMERIT",
-    "loading": "N ṣiṣẹ...",
-    "error": "Aṣiṣe kan waye",
-    "success": "Aṣeyọri"
+  "auth": {
+    "signIn": "Wọlé",
+    "signUp": "Forúkọ sílẹ̀",
+    "email": "Ímeèlì",
+    "password": "Ọ̀rọ̀ ìpamọ́",
+    "forgotPassword": "Ṣe o gbàgbé ọ̀rọ̀ ìpamọ́?",
+    "createAccount": "Ṣẹ̀dá Àkáǹtì",
+    "alreadyHaveAccount": "Ṣé o ní àkáǹtì tẹ́lẹ̀?",
+    "dontHaveAccount": "Ṣé o ò ní àkáǹtì?"
   }
 }
