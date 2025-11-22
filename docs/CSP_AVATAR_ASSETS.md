@@ -68,7 +68,7 @@ A `_headers` file has been created in the project root with the following config
 
 ```
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://pmerit-api.peoplemerit.workers.dev https://pmerit-ai-chat.openai.azure.com; media-src 'self'; worker-src 'self' blob:; frame-src 'self'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://pmerit-api-worker.peoplemerit.workers.dev https://pmerit-ai-chat.openai.azure.com; media-src 'self'; worker-src 'self' blob:; frame-src 'self'
 ```
 
 This configuration allows:

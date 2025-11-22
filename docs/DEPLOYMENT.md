@@ -34,7 +34,7 @@ This guide covers the complete deployment process for the PMERIT AI Educational 
 
 - **Production:** https://pmerit.com
 - **Preview:** https://pmerit-ai-platform.pages.dev
-- **API:** https://pmerit-api.peoplemerit.workers.dev
+- **API:** https://pmerit-api-worker.peoplemerit.workers.dev
 
 ---
 
@@ -255,9 +255,9 @@ echo | openssl s_client -servername pmerit.com -connect pmerit.com:443 2>/dev/nu
 #### API Health
 ```bash
 # Test API endpoints
-curl https://pmerit-api.peoplemerit.workers.dev/health
-curl https://pmerit-api.peoplemerit.workers.dev/api/v1/db/health
-curl https://pmerit-api.peoplemerit.workers.dev/api/v1/db/status
+curl https://pmerit-api-worker.peoplemerit.workers.dev/health
+curl https://pmerit-api-worker.peoplemerit.workers.dev/api/v1/db/health
+curl https://pmerit-api-worker.peoplemerit.workers.dev/api/v1/db/status
 ```
 
 ### Step 4: Performance Testing
@@ -440,7 +440,7 @@ git push origin hotfix/rollback
 4. Review Workers logs for errors
 5. Test endpoints directly:
    ```bash
-   curl -v https://pmerit-api.peoplemerit.workers.dev/health
+   curl -v https://pmerit-api-worker.peoplemerit.workers.dev/health
    ```
 
 ### Database Connection Issues
@@ -454,7 +454,7 @@ git push origin hotfix/rollback
 4. Verify IP allowlist (if configured)
 5. Test connection:
    ```bash
-   curl https://pmerit-api.peoplemerit.workers.dev/api/v1/db/health
+   curl https://pmerit-api-worker.peoplemerit.workers.dev/api/v1/db/health
    ```
 
 ### Performance Issues

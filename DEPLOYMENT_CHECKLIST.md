@@ -92,9 +92,9 @@
 
 ### API Health (5 minutes)
 ```bash
-curl https://pmerit-api.peoplemerit.workers.dev/health
-curl https://pmerit-api.peoplemerit.workers.dev/api/v1/db/health
-curl https://pmerit-api.peoplemerit.workers.dev/api/v1/db/status
+curl https://pmerit-api-worker.peoplemerit.workers.dev/health
+curl https://pmerit-api-worker.peoplemerit.workers.dev/api/v1/db/health
+curl https://pmerit-api-worker.peoplemerit.workers.dev/api/v1/db/status
 ```
 - [ ] `/health` returns OK
 - [ ] `/api/v1/db/health` returns connected

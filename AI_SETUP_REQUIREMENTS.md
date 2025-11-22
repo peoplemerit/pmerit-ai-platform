@@ -8,7 +8,7 @@
 
 \*\*Worker:\*\* pmerit-api  
 
-\*\*Production URL:\*\* https://pmerit-api.peoplemerit.workers.dev
+\*\*Production URL:\*\* https://pmerit-api-worker.peoplemerit.workers.dev
 
 
 
@@ -391,7 +391,7 @@ All AI responses include:
 
 ```javascript
 
-const API\_URL = 'https://pmerit-api.peoplemerit.workers.dev/api/v1/ai/chat';
+const API\_URL = 'https://pmerit-api-worker.peoplemerit.workers.dev/api/v1/ai/chat';
 
 ```
 
@@ -405,7 +405,7 @@ const API\_URL = 'https://pmerit-api.peoplemerit.workers.dev/api/v1/ai/chat';
 
 ```javascript
 
-const response = await fetch('https://pmerit-api.peoplemerit.workers.dev/api/v1/ai/chat', {
+const response = await fetch('https://pmerit-api-worker.peoplemerit.workers.dev/api/v1/ai/chat', {
 
 &nbsp; method: 'POST',
 
@@ -491,7 +491,7 @@ npx wrangler deploy
 
 \# 3. Test endpoint directly
 
-curl https://pmerit-api.peoplemerit.workers.dev/
+curl https://pmerit-api-worker.peoplemerit.workers.dev/
 
 ```
 
@@ -539,7 +539,7 @@ curl https://pmerit-api.peoplemerit.workers.dev/
 
 // ✅ CORRECT URL
 
-const API\_URL = 'https://pmerit-api.peoplemerit.workers.dev/api/v1/ai/chat';
+const API\_URL = 'https://pmerit-api-worker.peoplemerit.workers.dev/api/v1/ai/chat';
 
 
 
@@ -635,7 +635,7 @@ Before deploying AI changes, verify:
 
 \*\*Worker Name:\*\* pmerit-api  
 
-\*\*Production URL:\*\* https://pmerit-api.peoplemerit.workers.dev  
+\*\*Production URL:\*\* https://pmerit-api-worker.peoplemerit.workers.dev  
 
 \*\*Health Check:\*\* `GET /`  
 

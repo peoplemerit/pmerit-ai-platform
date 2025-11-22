@@ -6,7 +6,7 @@
 set -e
 
 # Configuration
-API_BASE_URL="${API_BASE_URL:-https://pmerit-api.peoplemerit.workers.dev}"
+API_BASE_URL="${API_BASE_URL:-https://pmerit-api-worker.peoplemerit.workers.dev}"
 INTERVAL="${1:-900}"  # Default: 15 minutes (900 seconds)
 LOG_FILE="${LOG_FILE:-./logs/api-monitoring.log}"
 

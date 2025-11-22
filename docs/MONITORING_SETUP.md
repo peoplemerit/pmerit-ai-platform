@@ -345,7 +345,7 @@ The monitoring script checks database health every 15 minutes:
 
 ```bash
 # Check database health
-curl https://pmerit-api.peoplemerit.workers.dev/api/v1/db/health
+curl https://pmerit-api-worker.peoplemerit.workers.dev/api/v1/db/health
 
 # Expected response:
 # {"status":"connected","database":"neondb"}
@@ -355,7 +355,7 @@ curl https://pmerit-api.peoplemerit.workers.dev/api/v1/db/health
 
 ```bash
 # Check database status
-curl https://pmerit-api.peoplemerit.workers.dev/api/v1/db/status
+curl https://pmerit-api-worker.peoplemerit.workers.dev/api/v1/db/status
 
 # Expected response includes:
 # - Table count
@@ -609,7 +609,7 @@ Steps to prevent similar issues in future
 ./scripts/production-smoke-test.sh
 
 # Check API response time
-curl -w "@curl-format.txt" -o /dev/null -s https://pmerit-api.peoplemerit.workers.dev/health
+curl -w "@curl-format.txt" -o /dev/null -s https://pmerit-api-worker.peoplemerit.workers.dev/health
 
 # View logs
 tail -f logs/api-monitoring.log

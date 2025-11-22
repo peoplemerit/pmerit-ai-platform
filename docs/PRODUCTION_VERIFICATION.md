@@ -36,7 +36,7 @@ This guide provides comprehensive verification procedures to ensure the PMERIT p
 ### Test Environment
 
 - **Production URL:** https://pmerit.com
-- **API URL:** https://pmerit-api.peoplemerit.workers.dev
+- **API URL:** https://pmerit-api-worker.peoplemerit.workers.dev
 - **Testing Tools:** Chrome DevTools, Lighthouse, Browser DevTools
 
 ---
@@ -65,7 +65,7 @@ Run automated smoke tests:
 
 3. **Check API Health**
    ```bash
-   curl https://pmerit-api.peoplemerit.workers.dev/health
+   curl https://pmerit-api-worker.peoplemerit.workers.dev/health
    ```
    - Expected: `{"status":"ok","timestamp":"..."}`
 
@@ -493,9 +493,9 @@ Test on actual devices if possible:
 
 ```bash
 # Test all health endpoints
-curl https://pmerit-api.peoplemerit.workers.dev/health
-curl https://pmerit-api.peoplemerit.workers.dev/api/v1/db/health
-curl https://pmerit-api.peoplemerit.workers.dev/api/v1/db/status
+curl https://pmerit-api-worker.peoplemerit.workers.dev/health
+curl https://pmerit-api-worker.peoplemerit.workers.dev/api/v1/db/health
+curl https://pmerit-api-worker.peoplemerit.workers.dev/api/v1/db/status
 ```
 
 #### Expected Results:
@@ -509,7 +509,7 @@ curl https://pmerit-api.peoplemerit.workers.dev/api/v1/db/status
 
 ```bash
 # Test AI chat
-curl -X POST https://pmerit-api.peoplemerit.workers.dev/api/v1/ai/chat \
+curl -X POST https://pmerit-api-worker.peoplemerit.workers.dev/api/v1/ai/chat \
   -H "Content-Type: application/json" \
   -d '{"messages":[{"role":"user","content":"Hello"}]}'
 ```

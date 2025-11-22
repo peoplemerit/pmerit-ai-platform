@@ -38,7 +38,7 @@ const api = new VirtualHumanAPI(config);
 ```
 
 **Config options:**
-- `apiBase` (string) - Base URL for API calls (default: 'https://pmerit-api.peoplemerit.workers.dev')
+- `apiBase` (string) - Base URL for API calls (default: 'https://pmerit-api-worker.peoplemerit.workers.dev')
 - `ttsEndpoint` (string) - TTS endpoint path (default: '/api/v1/tts/speak')
 - `defaultVoice` (string) - Default voice to use (default: 'alloy')
 - `cacheEnabled` (boolean) - Enable response caching (default: true)

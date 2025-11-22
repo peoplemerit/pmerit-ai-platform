@@ -33,7 +33,7 @@ The PMERIT platform is now officially in production!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 🌐 Production URL: https://pmerit.com
-🔌 API Endpoint: https://pmerit-api.peoplemerit.workers.dev
+🔌 API Endpoint: https://pmerit-api-worker.peoplemerit.workers.dev
 📊 Cloudflare Analytics: https://dash.cloudflare.com
 📁 GitHub Repository: https://github.com/peoplemerit/pmerit-ai-platform
 📖 Documentation: https://github.com/peoplemerit/pmerit-ai-platform/blob/main/README.md

@@ -167,7 +167,7 @@ tail -f logs/api-monitoring.log
 Scripts support these environment variables:
 
 ### `monitor-api.sh`
-- `API_BASE_URL` - Override default API URL (default: `https://pmerit-api.peoplemerit.workers.dev`)
+- `API_BASE_URL` - Override default API URL (default: `https://pmerit-api-worker.peoplemerit.workers.dev`)
 - `LOG_FILE` - Override log file location (default: `./logs/api-monitoring.log`)
 
 **Example:**
@@ -176,7 +176,7 @@ API_BASE_URL=https://staging-api.example.com ./scripts/monitor-api.sh
 ```
 
 ### `production-smoke-test.sh`
-- `API_URL` - Override API URL (default: `https://pmerit-api.peoplemerit.workers.dev`)
+- `API_URL` - Override API URL (default: `https://pmerit-api-worker.peoplemerit.workers.dev`)
 
 **Example:**
 ```bash
