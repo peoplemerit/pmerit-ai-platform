@@ -1,0 +1,431 @@
+/**
+ * PMERIT Voice Preview Modal Styles
+ * Professional, accessible, mobile-responsive design
+ */
+
+/* ========================================
+   MODAL OVERLAY & CONTAINER
+   ======================================== */
+
+.voice-preview-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ========================================
+   MODAL CONTENT
+   ======================================== */
+
+.modal-content {
+  position: relative;
+  width: 90%;
+  max-width: 700px;
+  max-height: 85vh;
+  margin: 5vh auto;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ========================================
+   MODAL HEADER
+   ======================================== */
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 28px;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  border-bottom: none;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.close-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  font-size: 32px;
+  color: white;
+  cursor: pointer;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: all 0.2s;
+  line-height: 1;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+.close-btn:active {
+  transform: scale(0.95);
+}
+
+/* ========================================
+   MODAL BODY
+   ======================================== */
+
+.modal-body {
+  padding: 28px;
+  max-height: calc(85vh - 200px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar */
+.modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+.modal-intro {
+  margin: 0 0 24px 0;
+  font-size: 15px;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+/* ========================================
+   VOICE LIST
+   ======================================== */
+
+.voice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ========================================
+   VOICE ITEM
+   ======================================== */
+
+.voice-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  background: white;
+  transition: all 0.2s;
+  cursor: pointer;
+  position: relative;
+}
+
+.voice-item:hover {
+  border-color: #3b82f6;
+  background: #f9fafb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+.voice-item.selected {
+  border-color: #3b82f6;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+.voice-item.selected::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: #3b82f6;
+  border-radius: 12px 0 0 12px;
+}
+
+/* ========================================
+   VOICE ICON
+   ======================================== */
+
+.voice-icon {
+  font-size: 32px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.voice-item.selected .voice-icon {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+}
+
+/* ========================================
+   VOICE INFO
+   ======================================== */
+
+.voice-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.voice-name {
+  margin: 0 0 4px 0;
+  font-size: 17px;
+  font-weight: 600;
+  color: #1f2937;
+  line-height: 1.2;
+}
+
+.voice-description {
+  margin: 0;
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+.voice-item.selected .voice-name {
+  color: #1e40af;
+}
+
+/* ========================================
+   VOICE ACTIONS
+   ======================================== */
+
+.voice-actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.preview-btn,
+.select-btn {
+  padding: 10px 18px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: white;
+  color: #374151;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.preview-btn:hover,
+.select-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.preview-btn:active,
+.select-btn:active {
+  transform: translateY(0);
+}
+
+.preview-btn {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+.preview-btn:hover {
+  background: #e5e7eb;
+  border-color: #9ca3af;
+}
+
+.preview-btn.playing {
+  background: #fef3c7;
+  border-color: #fbbf24;
+  color: #92400e;
+}
+
+.select-btn {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.select-btn:hover {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+.select-btn.selected {
+  background: #10b981;
+  border-color: #10b981;
+  pointer-events: none;
+}
+
+/* ========================================
+   MODAL FOOTER
+   ======================================== */
+
+.modal-footer {
+  padding: 20px 28px;
+  border-top: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.quota-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px 0;
+  font-size: 15px;
+  color: #374151;
+  font-weight: 500;
+}
+
+.quota-icon {
+  font-size: 18px;
+}
+
+.quota-value {
+  font-weight: 600;
+  color: #3b82f6;
+}
+
+.quota-note {
+  margin: 0;
+  font-size: 13px;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+/* ========================================
+   TOAST NOTIFICATIONS
+   ======================================== */
+
+.voice-toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  padding: 14px 24px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  font-size: 15px;
+  font-weight: 500;
+  z-index: 10001;
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.voice-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.voice-toast-success {
+  color: #065f46;
+  border-left: 4px solid #10b981;
+}
+
+.voice-toast-error {
+  color: #991b1b;
+  border-left: 4px solid #ef4444;
+}
+
+/* ========================================
+   MOBILE RESPONSIVE
+   ======================================== */
+
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95%;
+    max-height: 90vh;
+    margin: 5vh auto;
+    border-radius: 12px;
+  }
+
+  .modal-header {
+    padding: 20px 20px;
+  }
+
+  .modal-header h3 {
+    font-size: 20px;
+  }
+
+  .close-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 28px;
+  }
+
+  .modal-body {
+    padding: 20px;
+    max-height: calc(90vh - 180px);
+  }
+
+  .modal-intro {
+    font-size: 14px;
+  }
+
+  .voice-list {
+    gap: 12px;
+  }
+
+  .voice-item {
