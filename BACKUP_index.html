@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<!-- Cache-Bust: Pill-shaped input v2 - Nov 23, 2025 17:45 -->
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <meta name="description" content="PMERIT - Accessible Global Education powered by AI. Discover personalized learning paths, career guidance, and quality courses designed to unlock your potential."/>
   <meta name="keywords" content="education, online learning, AI tutoring, career guidance, courses, PMERIT, accessible education"/>
   <meta name="author" content="PMERIT"/>
@@ -55,9 +54,6 @@
   <link rel="stylesheet" href="assets/css/mobile-mockup-match.css?v=2">
   <link rel="stylesheet" href="assets/css/components.css?v=2">
   <link rel="stylesheet" href="assets/css/avatar.css?v=2">
-  
-  <!-- Responsive & Visual Fixes (Nov 23, 2025) -->
-  <link rel="stylesheet" href="assets/css/responsive-fixes.css?v=2">
 </head>
 <body>
 
@@ -71,7 +67,7 @@
       <div class="header-actions">
         <button class="lang-selector" aria-label="Change language">En</button>
         <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">☰</button>
-        <button class="sign-in-btn" id="signInBtn"><span data-i18n="header.sign_in">Sign In</span></button>
+        <button class="sign-in-btn" id="signInBtn">Sign In</button>
       </div>
     </header>
 
@@ -122,9 +118,9 @@
 
     <!-- Mobile Footer -->
     <footer class="pmerit-footer mobile-footer">
-      <a href="/privacy.html" class="footer-link-mobile"><span data-i18n="footer.privacy">Privacy & Terms</span></a>
+      <a href="/privacy.html" class="footer-link-mobile">Privacy & Terms</a>
       <span class="footer-separator"> • </span>
-      <a href="#" class="footer-link-mobile" id="mobile-customer-service-link"><span data-i18n="footer.customer_service">Customer Service</span></a>
+      <a href="#" class="footer-link-mobile" id="mobile-customer-service-link">Customer Service</a>
       <span class="footer-separator"> • </span>
       <span class="footer-status-mobile">Connected to Educational Services</span>
     </footer>
@@ -139,19 +135,19 @@
       
       <!-- Dashboard (Primary Item) -->
       <div class="menu-item menu-item-primary" data-route="/">
-        <span><i class="fas fa-tachometer-alt"></i> <span data-i18n="sidebar.dashboard">Dashboard</span></span>
+        <span><i class="fas fa-tachometer-alt"></i> Dashboard</span>
         <i class="fas fa-chevron-right"></i>
       </div>
       
       <!-- Customer Service Mode (NEW - Prominent) -->
       <button class="menu-item menu-item-customer-service" id="mobile-customer-service-btn">
-        <span><i class="fas fa-headset"></i> <span data-i18n="sidebar.customer_service">Customer Service Mode</span></span>
+        <span><i class="fas fa-headset"></i> Customer Service Mode</span>
         <i class="fas fa-chevron-right"></i>
       </button>
       
       <!-- Career Track -->
       <div class="menu-item" data-route="/career">
-        <span><i class="fas fa-route"></i> <span data-i18n="sidebar.career_track">Career Track & Explore Paths</span></span>
+        <span><i class="fas fa-route"></i> Career Track & Explore Paths</span>
         <i class="fas fa-chevron-right"></i>
       </div>
       
@@ -161,7 +157,7 @@
       <!-- Dark Mode Toggle -->
       <div class="menu-item">
         <label class="menu-toggle-label">
-          <span><i class="fas fa-moon"></i> <span data-i18n="sidebar.dark_mode">Dark Mode</span></span>
+          <span><i class="fas fa-moon"></i> Dark Mode</span>
           <div class="toggle-switch">
             <input type="checkbox" id="mobileDarkToggle" data-toggle="dark" aria-label="Toggle Dark Mode">
             <span class="toggle-slider"></span>
@@ -172,7 +168,7 @@
       <!-- Text-to-Speech Toggle -->
       <div class="menu-item">
         <label class="menu-toggle-label">
-          <span><i class="fas fa-volume-up"></i> <span data-i18n="sidebar.text_to_speech">Text-to-Speech</span></span>
+          <span><i class="fas fa-volume-up"></i> Text-to-Speech</span>
           <div class="toggle-switch">
             <input type="checkbox" id="mobileTtsToggle" data-toggle="tts" aria-label="Toggle Text-to-Speech">
             <span class="toggle-slider"></span>
@@ -181,8 +177,8 @@
       </div>
       
       <!-- Preview Voices -->
-      <div class="menu-item" onclick="window.VoicePreview.show()" style="cursor: pointer;">
-        <span><i class="fas fa-microphone"></i> <span data-i18n="sidebar.preview_voices">Preview Voices</span></span>
+      <div class="menu-item">
+        <span><i class="fas fa-microphone"></i> Preview Voices</span>
         <i class="fas fa-chevron-right"></i>
       </div>
       
@@ -213,10 +209,10 @@
         </select>
         <a href="pricing.html" class="nav-btn"><span data-i18n="header.pricing">Pricing</span></a>
         <button class="nav-btn" id="desktopSignInBtn">
-          <span data-i18n="header.sign_in">Sign In</span>
+                    <span data-i18n="header.sign_in">Sign In</span>
         </button>
         <button class="nav-btn primary">
-          <span data-i18n="header.start_learning">Start Learning</span>
+                  <span data-i18n="header.start_learning">Start Learning</span>
         </button>
       </nav>
     </header>
@@ -228,13 +224,13 @@
       <!-- Dashboard (Primary Button) -->
       <button class="dashboard-btn dashboard-btn-primary">
         <i class="fas fa-tachometer-alt"></i> 
-        <span data-i18n="sidebar.dashboard">Dashboard</span>
+                  <span data-i18n="sidebar.dashboard">Dashboard</span>
       </button>
       
       <!-- Customer Service Mode (NEW - Prominent) -->
       <button class="dashboard-btn dashboard-btn-customer-service" id="desktop-customer-service-btn">
         <i class="fas fa-headset"></i> 
-        <span data-i18n="sidebar.customer_service">Customer Service Mode</span>
+                 <span data-i18n="sidebar.customer_service">Customer Service Mode</span>
       </button>
       
       <!-- Career Track -->
@@ -273,7 +269,7 @@
           </div>
           
           <!-- Preview Voices -->
-          <div class="action" onclick="window.VoicePreview.show()" style="cursor: pointer;">
+          <div class="action">
             <span data-i18n="sidebar.preview_voices">Preview Voices</span>
             <i class="fas fa-chevron-right"></i>
           </div>
@@ -360,8 +356,8 @@
     <!-- Right Sidebar -->
     <aside class="right-sidebar">
       <h3 class="pane-title">
-        <span data-i18n="support.title">Support Assistant</span>
-      </h3>
+<span data-i18n="support.title">Support Assistant</span>
+</h3>
       
       <!-- Support Card -->
       <div class="support-card">
@@ -370,7 +366,7 @@
         <div class="support-buttons">
           <button id="support-customer-service-btn" class="support-btn" data-support-type="customer-service" aria-pressed="false" aria-label="Activate Customer Service Mode">
             <i class="fas fa-headset"></i>
-            <span data-i18n="support.customer_service">Customer Service</span>
+            <span>Customer Service</span>
           </button>
         </div>
       </div>
@@ -385,7 +381,7 @@
           Start a short flow that blends learning style, interests, and skills into a plan.
         </p>
         <button class="cta-large" onclick="window.location.href='assessment-entry.html'">
-          <i class="fas fa-compass"></i> <span data-i18n="assessment.begin">Begin Assessment</span>
+          <i class="fas fa-compass"></i> Begin Assessment
         </button>
         <p style="font-size: 0.7rem; color: var(--text-secondary); font-style: italic; margin-top: 0.75rem;">
           Short, frequent study sessions are more effective than long cramming sessions.
@@ -402,11 +398,11 @@
         </div>
         
         <div class="footer-right">
-          <a href="/privacy.html" class="footer-link"><span data-i18n="footer.privacy">Privacy & Terms</span></a>
-          <a href="/contact.html" class="footer-link"><span data-i18n="footer.contact">Contact</span></a>
-          <a href="/partnerships.html" class="footer-link"><span data-i18n="footer.partnerships">Partnerships</span></a>
-          <a href="/support.html" class="footer-link"><span data-i18n="footer.support">Support</span></a>
-          <a href="#" class="footer-link" id="desktop-customer-service-link"><span data-i18n="footer.customer_service">Customer Service</span></a>
+          <a href="/privacy.html" class="footer-link">Privacy & Terms</a>
+          <a href="/contact.html" class="footer-link">Contact</a>
+          <a href="/partnerships.html" class="footer-link">Partnerships</a>
+          <a href="/support.html" class="footer-link">Support</a>
+          <a href="#" class="footer-link" id="desktop-customer-service-link">Customer Service</a>
         </div>
       </div>
     </footer>
@@ -1238,10 +1234,6 @@
     }
   })();
   </script>
-<!-- TTS System -->
-<script src="/assets/js/tts-client.js"></script>
-<script src="/assets/js/voice-preview.js"></script>
-<link rel="stylesheet" href="/assets/css/voice-preview.css">  
-<!-- Cache-bust: TTS deployment verification 2025-11-23 -->
+
 </body>
 </html>
