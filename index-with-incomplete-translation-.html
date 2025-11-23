@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<!-- Cache-Bust: Pill-shaped input v2 - Nov 23, 2025 17:45 -->
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, user-scalable=yes, viewport-fit=cover"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <meta name="description" content="PMERIT - Accessible Global Education powered by AI. Discover personalized learning paths, career guidance, and quality courses designed to unlock your potential."/>
   <meta name="keywords" content="education, online learning, AI tutoring, career guidance, courses, PMERIT, accessible education"/>
   <meta name="author" content="PMERIT"/>
@@ -55,9 +54,6 @@
   <link rel="stylesheet" href="assets/css/mobile-mockup-match.css?v=2">
   <link rel="stylesheet" href="assets/css/components.css?v=2">
   <link rel="stylesheet" href="assets/css/avatar.css?v=2">
-  
-  <!-- Responsive & Visual Fixes (Nov 23, 2025) -->
-  <link rel="stylesheet" href="assets/css/responsive-fixes.css?v=2">
 </head>
 <body>
 
@@ -71,7 +67,7 @@
       <div class="header-actions">
         <button class="lang-selector" aria-label="Change language">En</button>
         <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">☰</button>
-        <button class="sign-in-btn" id="signInBtn"><span data-i18n="header.sign_in">Sign In</span></button>
+        <button class="sign-in-btn" id="signInBtn">Sign In</button>
       </div>
     </header>
 
@@ -139,19 +135,19 @@
       
       <!-- Dashboard (Primary Item) -->
       <div class="menu-item menu-item-primary" data-route="/">
-        <span><i class="fas fa-tachometer-alt"></i> <span data-i18n="sidebar.dashboard">Dashboard</span></span>
+        <span><i class="fas fa-tachometer-alt"></i> Dashboard</span>
         <i class="fas fa-chevron-right"></i>
       </div>
       
       <!-- Customer Service Mode (NEW - Prominent) -->
       <button class="menu-item menu-item-customer-service" id="mobile-customer-service-btn">
-        <span><i class="fas fa-headset"></i> <span data-i18n="sidebar.customer_service">Customer Service Mode</span></span>
+        <span><i class="fas fa-headset"></i> Customer Service Mode</span>
         <i class="fas fa-chevron-right"></i>
       </button>
       
       <!-- Career Track -->
       <div class="menu-item" data-route="/career">
-        <span><i class="fas fa-route"></i> <span data-i18n="sidebar.career_track">Career Track & Explore Paths</span></span>
+        <span><i class="fas fa-route"></i> Career Track & Explore Paths</span>
         <i class="fas fa-chevron-right"></i>
       </div>
       
@@ -161,7 +157,7 @@
       <!-- Dark Mode Toggle -->
       <div class="menu-item">
         <label class="menu-toggle-label">
-          <span><i class="fas fa-moon"></i> <span data-i18n="sidebar.dark_mode">Dark Mode</span></span>
+          <span><i class="fas fa-moon"></i> Dark Mode</span>
           <div class="toggle-switch">
             <input type="checkbox" id="mobileDarkToggle" data-toggle="dark" aria-label="Toggle Dark Mode">
             <span class="toggle-slider"></span>
@@ -172,7 +168,7 @@
       <!-- Text-to-Speech Toggle -->
       <div class="menu-item">
         <label class="menu-toggle-label">
-          <span><i class="fas fa-volume-up"></i> <span data-i18n="sidebar.text_to_speech">Text-to-Speech</span></span>
+          <span><i class="fas fa-volume-up"></i> Text-to-Speech</span>
           <div class="toggle-switch">
             <input type="checkbox" id="mobileTtsToggle" data-toggle="tts" aria-label="Toggle Text-to-Speech">
             <span class="toggle-slider"></span>
@@ -181,8 +177,8 @@
       </div>
       
       <!-- Preview Voices -->
-      <div class="menu-item" onclick="window.VoicePreview.show()" style="cursor: pointer;">
-        <span><i class="fas fa-microphone"></i> <span data-i18n="sidebar.preview_voices">Preview Voices</span></span>
+      <div class="menu-item">
+        <span><i class="fas fa-microphone"></i> Preview Voices</span>
         <i class="fas fa-chevron-right"></i>
       </div>
       
@@ -273,7 +269,7 @@
           </div>
           
           <!-- Preview Voices -->
-          <div class="action" onclick="window.VoicePreview.show()" style="cursor: pointer;">
+          <div class="action">
             <span data-i18n="sidebar.preview_voices">Preview Voices</span>
             <i class="fas fa-chevron-right"></i>
           </div>
@@ -1238,10 +1234,6 @@
     }
   })();
   </script>
-<!-- TTS System -->
-<script src="/assets/js/tts-client.js"></script>
-<script src="/assets/js/voice-preview.js"></script>
-<link rel="stylesheet" href="/assets/css/voice-preview.css">  
-<!-- Cache-bust: TTS deployment verification 2025-11-23 -->
+
 </body>
 </html>
