@@ -57,13 +57,69 @@ class TTSClient {
   }
 
   /**
+   * Preprocess text for natural TTS pronunciation
+   * @param {string} text - Raw text to preprocess
+   * @returns {string} - Cleaned text ready for TTS
+   */
+  preprocessText(text) {
+    let processed = text;
+
+    // Replace brand names with phonetic pronunciations
+    processed = processed.replace(/\bPmerit\b/gi, 'Merit');
+    processed = processed.replace(/\bPMERIT\b/g, 'Merit');
+    
+    // Strip markdown formatting
+    // Remove bold/italic markers
+    processed = processed.replace(/\*\*\*(.+?)\*\*\*/g, '$1'); // Bold+italic
+    processed = processed.replace(/\*\*(.+?)\*\*/g, '$1');     // Bold
+    processed = processed.replace(/\*(.+?)\*/g, '$1');         // Italic
+    processed = processed.replace(/__(.+?)__/g, '$1');         // Underline
+    
+    // Convert markdown bullets to natural pauses
+    processed = processed.replace(/^\s*[\*\-\+]\s+/gm, '');    // Remove bullet markers
+    processed = processed.replace(/^\s*\d+\.\s+/gm, '');       // Remove numbered lists
+    
+    // Remove markdown headers
+    processed = processed.replace(/^#+\s+/gm, '');
+    
+    // Convert links to just the text
+    processed = processed.replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1');
+    
+    // Remove code blocks and inline code
+    processed = processed.replace(/```[\s\S]*?```/g, '');
+    processed = processed.replace(/`([^`]+)`/g, '$1');
+    
+    // Clean up special characters
+    processed = processed.replace(/[#\*_~`]/g, '');
+    
+    // Convert multiple spaces/newlines to single space
+    processed = processed.replace(/\s+/g, ' ');
+    
+    // Add natural pauses at sentence endings
+    processed = processed.replace(/\.\s+/g, '. ');
+    processed = processed.replace(/\?\s+/g, '? ');
+    processed = processed.replace(/!\s+/g, '! ');
+    
+    // Trim whitespace
+    processed = processed.trim();
+    
+    return processed;
+  }
+
+  /**
    * Cloudflare Workers AI TTS implementation
    * @param {string} text - Text to convert to speech
    * @returns {Promise<void>}
    */
   async speakCloudflare(text) {
-    // Check cache first
-    const cacheKey = `${text}_${this.currentVoice}`;
+    // Preprocess text for natural pronunciation
+    const processedText = this.preprocessText(text);
+    
+    console.log('[TTS Client] Original:', text);
+    console.log('[TTS Client] Processed:', processedText);
+    
+    // Check cache first (using processed text)
+    const cacheKey = `${processedText}_${this.currentVoice}`;
     
     if (this.cache.has(cacheKey)) {
       console.log('[TTS Client] Using cached audio');
@@ -74,14 +130,14 @@ class TTSClient {
 
     console.log('[TTS Client] Requesting TTS from API...');
 
-    // Make API request
+    // Make API request with processed text
     const response = await fetch(this.apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        text: text,
+        text: processedText,
         voice: this.currentVoice
       })
     });
@@ -145,13 +201,17 @@ class TTSClient {
         return;
       }
 
+      // Preprocess text for natural pronunciation
+      const processedText = this.preprocessText(text);
+
       console.log('[TTS Client] Using browser speech synthesis');
+      console.log('[TTS Client] Browser TTS text:', processedText);
 
       // Stop any ongoing speech
       window.speechSynthesis.cancel();
 
-      // Create utterance
-      const utterance = new SpeechSynthesisUtterance(text);
+      // Create utterance with processed text
+      const utterance = new SpeechSynthesisUtterance(processedText);
       
       // Set voice
       utterance.voice = this.getBrowserVoice();
