@@ -632,17 +632,33 @@ function addTypingIndicator(source) {
 
 // ========== TEXT-TO-SPEECH ==========
 function speakMessage(text) {
-  // Prefer PMERIT_TTS module if available (better for VH integration)
-  if (window.PMERIT_TTS && typeof window.PMERIT_TTS.speak === 'function') {
-    window.PMERIT_TTS.speak(text, { via: 'auto' })
+  // Use new TTSClient if available
+  if (window.TTSClient && typeof window.TTSClient.speak === 'function') {
+    window.TTSClient.speak(text)
       .catch(error => {
-        console.error('TTS error:', error);
-        // Fallback to browser TTS
-        fallbackToSpeechSynthesis(text);
+        console.error('❌ TTS error:', error);
+        // TTS client handles fallback internally, no need for additional fallback
       });
-  } else if ('speechSynthesis' in window) {
+  } else {
+    // Legacy browser TTS fallback (if TTSClient not loaded)
+    console.warn('⚠️ TTSClient not loaded, using legacy browser TTS');
     fallbackToSpeechSynthesis(text);
   }
+}
+
+function fallbackToSpeechSynthesis(text) {
+  if (!('speechSynthesis' in window)) {
+    console.warn('⚠️ Browser does not support speech synthesis');
+    return;
+  }
+  
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.rate = 1.0;
+  utterance.pitch = 1.0;
+  utterance.volume = 1.0;
+  utterance.lang = 'en-US';
+  window.speechSynthesis.speak(utterance);
 }
 
 function fallbackToSpeechSynthesis(text) {
