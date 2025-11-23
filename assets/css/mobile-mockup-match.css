@@ -477,6 +477,29 @@
     box-shadow: var(--shadow-lg);
   }
   
+  /* ✅ FIX: Customer Service Mode Button - ALWAYS VISIBLE */
+  .menu-item-customer-service {
+    background: #3b82f6 !important; /* Bright blue - always visible */
+    color: white !important;
+    border-color: #3b82f6 !important;
+    font-weight: 600;
+    box-shadow: var(--shadow-md);
+    opacity: 1 !important; /* Force visible */
+    visibility: visible !important; /* Force visible */
+    display: flex !important; /* Force display */
+  }
+  
+  .menu-item-customer-service:hover {
+    background: #2563eb !important; /* Darker blue on hover */
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .menu-item-customer-service:active,
+  .menu-item-customer-service.active {
+    background: #1d4ed8 !important; /* Even darker when active */
+  }
+  
   .menu-item {
     padding: var(--space-md);
     margin-bottom: var(--space-sm);

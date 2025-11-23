@@ -329,3 +329,67 @@
     }
   }
 }
+
+/* ==========================================
+   FIX #11: CUSTOMER SERVICE MODE VISIBILITY
+   Ensure button is ALWAYS visible in light mode
+   ========================================== */
+
+@media (max-width: 1023px) {
+  /* Customer Service Mode Button - Mobile */
+  .menu-item-customer-service {
+    background: #3b82f6 !important; /* Bright blue */
+    color: white !important;
+    border-color: #3b82f6 !important;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: flex !important;
+  }
+  
+  .menu-item-customer-service:hover {
+    background: #2563eb !important; /* Darker blue */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4);
+  }
+  
+  .menu-item-customer-service:active,
+  .menu-item-customer-service.active {
+    background: #1d4ed8 !important;
+  }
+}
+
+/* Desktop Customer Service Button */
+@media (min-width: 1024px) {
+  .dashboard-btn-customer-service {
+    background: #3b82f6 !important;
+    color: white !important;
+    border-color: #3b82f6 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: flex !important;
+  }
+  
+  .dashboard-btn-customer-service:hover {
+    background: #2563eb !important;
+    transform: translateY(-2px);
+  }
+}
+
+/* Light Mode - Explicit Override */
+:root:not([data-theme="dark"]) .menu-item-customer-service,
+[data-theme="light"] .menu-item-customer-service {
+  background: #3b82f6 !important;
+  color: white !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Dark Mode - Adjust for visibility */
+[data-theme="dark"] .menu-item-customer-service {
+  background: #3b82f6 !important;
+  color: white !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
