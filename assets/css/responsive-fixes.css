@@ -1,0 +1,331 @@
+/**
+ * PMERIT Responsive & Visual Fixes
+ * Version: 1.0
+ * Date: November 23, 2025
+ * 
+ * FIXES:
+ * 1. More rounded chat input (pill-shaped)
+ * 2. Better responsive design for all Android devices
+ * 3. Device-specific optimizations
+ */
+
+/* ==========================================
+   FIX #1: MORE ROUNDED CHAT INPUT
+   Pill-shaped design for professional look
+   ========================================== */
+
+@media (max-width: 1023px) {
+  .chat-input-wrapper {
+    border-radius: 28px !important; /* Increased from 24px */
+    padding: 10px 14px !important; /* Slightly more padding */
+    
+    /* Enhanced shadow for depth */
+    box-shadow: 
+      0 0 0 1px rgba(0, 0, 0, 0.08),
+      0 3px 6px rgba(0, 0, 0, 0.1),
+      0 1px 3px rgba(0, 0, 0, 0.06) !important;
+  }
+  
+  .chat-input-wrapper:focus-within {
+    border-radius: 28px !important;
+    box-shadow: 
+      0 0 0 2px rgba(42, 91, 140, 0.4),
+      0 0 0 6px rgba(42, 91, 140, 0.1),
+      0 6px 12px rgba(0, 0, 0, 0.12) !important;
+    transform: translateY(-2px) !important;
+  }
+  
+  /* Ensure buttons maintain circular shape */
+  .input-add-btn,
+  .input-voice-btn,
+  .send-btn {
+    border-radius: 50% !important;
+  }
+}
+
+/* ==========================================
+   FIX #2: RESPONSIVE DESIGN IMPROVEMENTS
+   Better support for all Android devices
+   ========================================== */
+
+/* Small phones (320px - 375px) - Budget Android phones */
+@media (max-width: 375px) {
+  .chat-input-wrapper {
+    padding: 8px 12px !important;
+    gap: 6px !important;
+  }
+  
+  .chat-input {
+    font-size: 15px !important; /* Slightly smaller on tiny screens */
+  }
+  
+  .input-add-btn,
+  .input-voice-btn {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+  }
+  
+  .send-btn {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+  }
+  
+  .pmerit-header {
+    padding: 0 12px !important;
+  }
+  
+  .pmerit-logo {
+    font-size: 1.1rem !important;
+  }
+}
+
+/* Standard phones (376px - 414px) - Most common Android phones */
+@media (min-width: 376px) and (max-width: 414px) {
+  .chat-input-wrapper {
+    padding: 10px 14px !important;
+  }
+  
+  .chat-input {
+    font-size: 16px !important;
+  }
+}
+
+/* Large phones (415px - 767px) - Phablets & larger Android phones */
+@media (min-width: 415px) and (max-width: 767px) {
+  .chat-input-wrapper {
+    padding: 12px 16px !important;
+  }
+  
+  .chat-input {
+    font-size: 16px !important;
+  }
+  
+  /* Larger tap targets for better UX */
+  .input-add-btn,
+  .input-voice-btn {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+  }
+  
+  .send-btn {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+  }
+}
+
+/* ==========================================
+   FIX #3: DEVICE-SPECIFIC OPTIMIZATIONS
+   ========================================== */
+
+/* iPhone X/11/12/13/14 - Safe area handling */
+@supports (padding: max(0px)) {
+  @media (max-width: 1023px) {
+    .chat-input-container {
+      padding-bottom: max(16px, env(safe-area-inset-bottom)) !important;
+    }
+    
+    .pmerit-footer {
+      padding-bottom: max(16px, env(safe-area-inset-bottom)) !important;
+    }
+  }
+}
+
+/* High DPI Android displays - Improve text rendering */
+@media (max-width: 1023px) and (-webkit-min-device-pixel-ratio: 2),
+       (max-width: 1023px) and (min-resolution: 192dpi) {
+  .chat-input {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  
+  .chat-message {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* ==========================================
+   FIX #4: TOUCH TARGET IMPROVEMENTS
+   44x44px minimum for accessibility (WCAG)
+   ========================================== */
+
+@media (max-width: 1023px) {
+  /* Ensure all interactive elements meet 44x44px minimum */
+  .lang-selector,
+  .hamburger-btn,
+  .sign-in-btn {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+  
+  /* Voice and send buttons touch area */
+  .input-voice-btn::before,
+  .send-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+  }
+  
+  .input-voice-btn,
+  .send-btn {
+    position: relative;
+  }
+}
+
+/* ==========================================
+   FIX #5: LANDSCAPE MODE OPTIMIZATIONS
+   ========================================== */
+
+@media (max-width: 1023px) and (orientation: landscape) {
+  .chat-messages {
+    /* Reduce header impact in landscape */
+    height: calc(100vh - var(--header-height) - 80px) !important;
+  }
+  
+  .chat-input-container {
+    padding: 8px 16px !important;
+  }
+  
+  .chat-input {
+    max-height: 60px !important; /* Limit input height in landscape */
+  }
+}
+
+/* ==========================================
+   FIX #6: PERFORMANCE OPTIMIZATIONS
+   ========================================== */
+
+@media (max-width: 1023px) {
+  /* Hardware acceleration for smooth animations */
+  .chat-input-wrapper,
+  .send-btn,
+  .input-add-btn,
+  .input-voice-btn {
+    will-change: transform;
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  
+  /* Prevent text selection during interactions */
+  .input-add-btn,
+  .input-voice-btn,
+  .send-btn {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Smooth scrolling for chat messages */
+  .chat-messages {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+}
+
+/* ==========================================
+   FIX #7: DARK MODE ADJUSTMENTS
+   Ensure rounded input looks good in both themes
+   ========================================== */
+
+[data-theme="dark"] .chat-input-wrapper {
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 3px 6px rgba(0, 0, 0, 0.3),
+    0 1px 3px rgba(0, 0, 0, 0.2) !important;
+}
+
+[data-theme="dark"] .chat-input-wrapper:focus-within {
+  box-shadow: 
+    0 0 0 2px rgba(66, 153, 225, 0.5),
+    0 0 0 6px rgba(66, 153, 225, 0.12),
+    0 6px 12px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* ==========================================
+   FIX #8: ANDROID-SPECIFIC FIXES
+   ========================================== */
+
+@media (max-width: 1023px) {
+  /* Fix for Android Chrome address bar disappearing */
+  .mobile-layout {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+  
+  html {
+    height: -webkit-fill-available;
+  }
+  
+  /* Android keyboard handling */
+  @supports (-webkit-touch-callout: none) {
+    .chat-input-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+    }
+  }
+}
+
+/* ==========================================
+   FIX #9: SAMSUNG DEVICES OPTIMIZATION
+   Popular in Nigeria
+   ========================================== */
+
+@media (max-width: 1023px) {
+  /* Samsung Internet browser fixes */
+  .chat-input-wrapper {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  
+  /* Samsung edge screen handling */
+  @media (min-width: 360px) and (max-width: 412px) {
+    .pmerit-header,
+    .chat-input-container {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+}
+
+/* ==========================================
+   FIX #10: LOW-END DEVICE PERFORMANCE
+   Common in developing markets
+   ========================================== */
+
+@media (max-width: 1023px) and (max-device-width: 768px) {
+  /* Reduce animations on low-end devices */
+  @media (prefers-reduced-motion: reduce) {
+    .chat-input-wrapper,
+    .send-btn,
+    .input-add-btn,
+    .input-voice-btn {
+      transition: none !important;
+      transform: none !important;
+    }
+  }
+  
+  /* Simplify shadows on low-end devices */
+  @media (max-device-pixel-ratio: 1) {
+    .chat-input-wrapper {
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    }
+    
+    .chat-input-wrapper:focus-within {
+      box-shadow: 0 0 0 2px rgba(42, 91, 140, 0.4) !important;
+    }
+  }
+}
