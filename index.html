@@ -177,7 +177,7 @@
       </div>
       
       <!-- Preview Voices -->
-      <div class="menu-item">
+      <div class="menu-item" onclick="window.VoicePreview.show()" style="cursor: pointer;">
         <span><i class="fas fa-microphone"></i> <span data-i18n="sidebar.preview_voices">Preview Voices</span></span>
         <i class="fas fa-chevron-right"></i>
       </div>
@@ -269,7 +269,7 @@
           </div>
           
           <!-- Preview Voices -->
-          <div class="action">
+          <div class="action" onclick="window.VoicePreview.show()" style="cursor: pointer;">
             <span data-i18n="sidebar.preview_voices">Preview Voices</span>
             <i class="fas fa-chevron-right"></i>
           </div>
@@ -1238,6 +1238,6 @@
 <script src="/assets/js/tts-client.js"></script>
 <script src="/assets/js/voice-preview.js"></script>
 <link rel="stylesheet" href="/assets/css/voice-preview.css">  
-
+<!-- Cache-bust: TTS deployment verification 2025-11-23 -->
 </body>
 </html>
