@@ -69,8 +69,8 @@
     <header class="pmerit-header">
       <div class="pmerit-logo">PMERIT</div>
       <div class="header-actions">
-        <button class="lang-selector" aria-label="Change language">En</button>
-        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">☰</button>
+        <button class="lang-selector" data-i18n-aria-label="aria.change_language" aria-label="Change language">En</button>
+        <button class="hamburger-btn" id="hamburgerBtn" data-i18n-aria-label="aria.open_menu" aria-label="Open menu">☰</button>
         <button class="sign-in-btn" id="signInBtn"><span data-i18n="header.sign_in">Sign In</span></button>
       </div>
     </header>
@@ -78,8 +78,8 @@
     <!-- Chat Messages Container -->
     <div class="chat-messages" id="chatMessages">
       <div class="chat-message ai">
-        <p><strong>👋 Welcome!</strong></p>
-        <p>I'm here to help you explore courses, career paths, and learning opportunities. What would you like to know?</p>
+        <p><strong><span data-i18n="chat.mobile_welcome_title">👋 Welcome!</span></strong></p>
+        <p><span data-i18n="chat.mobile_welcome_body">I'm here to help you explore courses, career paths, and learning opportunities. What would you like to know?</span></p>
       </div>
     </div>
 
@@ -87,7 +87,7 @@
     <div class="chat-input-container">
       <div class="chat-input-wrapper">
         <!-- Add/Attachment Button -->
-        <button class="input-add-btn" aria-label="Add attachment">
+        <button class="input-add-btn" data-i18n-aria-label="aria.add_attachment" aria-label="Add attachment">
           <i class="fas fa-plus"></i>
         </button>
         
@@ -99,18 +99,19 @@
           data-i18n-placeholder="chat.input_placeholder"
           maxlength="1000"
           rows="1"
+          data-i18n-aria-label="aria.chat_input"
           aria-label="Chat input"
         ></textarea>
         
         <!-- Right Side Actions -->
         <div class="input-actions">
           <!-- Voice Button -->
-          <button class="input-voice-btn" aria-label="Voice input">
+          <button class="input-voice-btn" data-i18n-aria-label="aria.voice_input" aria-label="Voice input">
             <i class="fas fa-microphone"></i>
           </button>
           
           <!-- Send Button -->
-          <button class="send-btn" id="sendBtn" aria-label="Send message">
+          <button class="send-btn" id="sendBtn" data-i18n-aria-label="aria.send_message" aria-label="Send message">
             <i class="fas fa-arrow-up"></i>
           </button>
         </div>
@@ -126,7 +127,7 @@
       <span class="footer-separator"> • </span>
       <a href="#" class="footer-link-mobile" id="mobile-customer-service-link"><span data-i18n="footer.customer_service">Customer Service</span></a>
       <span class="footer-separator"> • </span>
-      <span class="footer-status-mobile">Connected to Educational Services</span>
+      <span class="footer-status-mobile"><span data-i18n="footer.connected_status">Connected to Educational Services</span></span>
     </footer>
 
     <!-- Hamburger Menu Overlay -->
@@ -135,7 +136,7 @@
     <!-- Hamburger Menu -->
     <nav class="side-menu" id="sideMenu">
       <!-- Quick Actions Section -->
-      <h3 class="menu-title">Quick Actions</h3>
+      <h3 class="menu-title"><span data-i18n="sidebar.quick_actions">Quick Actions</span></h3>
       
       <!-- Dashboard (Primary Item) -->
       <div class="menu-item menu-item-primary" data-route="/">
@@ -156,14 +157,14 @@
       </div>
       
       <!-- Settings Section -->
-      <h3 class="menu-title">Settings</h3>
+      <h3 class="menu-title"><span data-i18n="sidebar.settings">Settings</span></h3>
       
       <!-- Dark Mode Toggle -->
       <div class="menu-item">
         <label class="menu-toggle-label">
           <span><i class="fas fa-moon"></i> <span data-i18n="sidebar.dark_mode">Dark Mode</span></span>
           <div class="toggle-switch">
-            <input type="checkbox" id="mobileDarkToggle" data-toggle="dark" aria-label="Toggle Dark Mode">
+            <input type="checkbox" id="mobileDarkToggle" data-toggle="dark" data-i18n-aria-label="aria.toggle_dark_mode" aria-label="Toggle Dark Mode">
             <span class="toggle-slider"></span>
           </div>
         </label>
@@ -174,7 +175,7 @@
         <label class="menu-toggle-label">
           <span><i class="fas fa-volume-up"></i> <span data-i18n="sidebar.text_to_speech">Text-to-Speech</span></span>
           <div class="toggle-switch">
-            <input type="checkbox" id="mobileTtsToggle" data-toggle="tts" aria-label="Toggle Text-to-Speech">
+            <input type="checkbox" id="mobileTtsToggle" data-toggle="tts" data-i18n-aria-label="aria.toggle_tts" aria-label="Toggle Text-to-Speech">
             <span class="toggle-slider"></span>
           </div>
         </label>
@@ -187,7 +188,7 @@
       </div>
       
       <!-- Learning Section -->
-      <h3 class="menu-title">Learning</h3>
+      <h3 class="menu-title"><span data-i18n="sidebar.learning">Learning</span></h3>
       
       <!-- Begin Assessment -->
       <a href="assessment-entry.html" class="menu-item">
@@ -345,13 +346,13 @@
         <!-- Control Buttons Row -->
         <div class="desktop-input-controls">
           <button class="control-btn" data-mode="customer-service">
-            <i class="fas fa-headset"></i> Customer Service
+            <i class="fas fa-headset"></i> <span data-i18n="chat.customer_service">Customer Service</span>
           </button>
           <button class="control-btn" data-action="read-about">
-            <i class="fas fa-book"></i> Read About
+            <i class="fas fa-book"></i> <span data-i18n="chat.read_about">Read About</span>
           </button>
           <span class="status-indicator">
-            <i class="fas fa-circle"></i> Connected to Educational Services
+            <i class="fas fa-circle"></i> <span data-i18n="footer.connected_status">Connected to Educational Services</span>
           </span>
         </div>
       </div>
@@ -365,10 +366,10 @@
       
       <!-- Support Card -->
       <div class="support-card">
-        <h3>Ask me about PMERIT</h3>
+        <h3><span data-i18n="support.ask_about">Ask me about PMERIT</span></h3>
         
         <div class="support-buttons">
-          <button id="support-customer-service-btn" class="support-btn" data-support-type="customer-service" aria-pressed="false" aria-label="Activate Customer Service Mode">
+          <button id="support-customer-service-btn" class="support-btn" data-support-type="customer-service" aria-pressed="false" data-i18n-aria-label="aria.customer_service_mode" aria-label="Activate Customer Service Mode">
             <i class="fas fa-headset"></i>
             <span data-i18n="support.customer_service">Customer Service</span>
           </button>
@@ -377,18 +378,18 @@
       
       <!-- Assessment Card -->
       <div class="support-card">
-        <h3>Discover Your Path (AI)</h3>
+        <h3><span data-i18n="assessment.title">Discover Your Path (AI)</span></h3>
         <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
-          Personalized learning plan
+          <span data-i18n="assessment.subtitle">Personalized learning plan</span>
         </p>
         <p style="font-size: 0.75rem; color: var(--text-secondary); font-style: italic; margin-bottom: 1rem;">
-          Start a short flow that blends learning style, interests, and skills into a plan.
+          <span data-i18n="assessment.description">Start a short flow that blends learning style, interests, and skills into a plan.</span>
         </p>
         <button class="cta-large" onclick="window.location.href='assessment-entry.html'">
           <i class="fas fa-compass"></i> <span data-i18n="assessment.begin">Begin Assessment</span>
         </button>
         <p style="font-size: 0.7rem; color: var(--text-secondary); font-style: italic; margin-top: 0.75rem;">
-          Short, frequent study sessions are more effective than long cramming sessions.
+          <span data-i18n="assessment.tip">Short, frequent study sessions are more effective than long cramming sessions.</span>
         </p>
       </div>
     </aside>
@@ -398,7 +399,7 @@
       <div class="footer-container">
         <div class="footer-left">
           <i class="fas fa-signal"></i>
-          <span class="footer-status">Connected to Educational Services</span>
+          <span class="footer-status"><span data-i18n="footer.connected_status">Connected to Educational Services</span></span>
         </div>
         
         <div class="footer-right">
