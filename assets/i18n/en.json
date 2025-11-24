@@ -12,7 +12,9 @@
     "partnerships": "Partnerships"
   },
   "header": {
-    "startLearning": "Start Learning",
+    "sign_in": "Sign In",
+    "start_learning": "Start Learning",
+    "pricing": "Pricing",
     "languages": {
       "english": "English",
       "yoruba": "Yorùbá",
@@ -21,41 +23,56 @@
     }
   },
   "sidebar": {
-    "quickActions": "Quick Actions",
-    "customerServiceMode": "Customer Service Mode",
-    "careerTrack": "Career Track & Explore Paths",
-    "darkMode": "Dark Mode",
-    "textToSpeech": "Text-to-Speech",
-    "previewVoices": "Preview Voices",
+    "dashboard": "Dashboard",
+    "quick_actions": "Quick Actions",
+    "customer_service": "Customer Service Mode",
+    "career_track": "Career Track & Explore Paths",
+    "settings": "Settings",
+    "dark_mode": "Dark Mode",
+    "text_to_speech": "Text-to-Speech",
+    "preview_voices": "Preview Voices",
     "learning": "Learning",
-    "beginAssessment": "Begin Assessment"
+    "begin_assessment": "Begin Assessment"
   },
   "chat": {
-    "placeholder": "Ask about courses, learning paths, or your goals...",
-    "welcome": "Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?",
-    "customerService": "Customer Service",
-    "readAbout": "Read About",
-    "connectedStatus": "Connected to Educational Services"
+    "input_placeholder": "Ask about courses, learning paths, or your goals...",
+    "desktop_welcome": "Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?",
+    "mobile_welcome_title": "👋 Welcome!",
+    "mobile_welcome_body": "I'm here to help you explore courses, career paths, and learning opportunities. What would you like to know?",
+    "customer_service": "Customer Service",
+    "read_about": "Read About"
   },
   "assessment": {
     "title": "Discover Your Path (AI)",
     "subtitle": "Personalized learning plan",
     "description": "Start a short flow that blends learning style, interests, and skills into a plan.",
-    "button": "Begin Assessment",
+    "begin": "Begin Assessment",
     "tip": "Short, frequent study sessions are more effective than long cramming sessions."
   },
   "support": {
     "title": "Support Assistant",
-    "askAbout": "Ask me about PMERIT",
-    "customerService": "Customer Service"
+    "ask_about": "Ask me about PMERIT",
+    "customer_service": "Customer Service"
   },
   "footer": {
-    "status": "Connected to Educational Services",
+    "connected_status": "Connected to Educational Services",
     "privacy": "Privacy & Terms",
     "contact": "Contact",
     "partnerships": "Partnerships",
     "support": "Support",
-    "customerService": "Customer Service"
+    "customer_service": "Customer Service"
+  },
+  "aria": {
+    "change_language": "Change language",
+    "open_menu": "Open menu",
+    "add_attachment": "Add attachment",
+    "chat_input": "Chat input",
+    "voice_input": "Voice input",
+    "send_message": "Send message",
+    "attach_file": "Attach file",
+    "toggle_dark_mode": "Toggle Dark Mode",
+    "toggle_tts": "Toggle Text-to-Speech",
+    "customer_service_mode": "Activate Customer Service Mode"
   },
   "auth": {
     "signIn": "Sign In",

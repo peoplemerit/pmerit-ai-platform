@@ -1,8 +1,38 @@
 /**
- * PMERIT Language Manager
+ * PMERIT Language Manager - ENHANCED VERSION
  * Handles multi-language support: English, Yoruba, Igbo, Hausa
  * Follows MOSA modular architecture
- * Version: 1.0.0
+ * 
+ * VERSION: 2.0.0 (Enhanced)
+ * 
+ * NEW FEATURES:
+ * - Extended attribute support (aria-label, value, etc.)
+ * - Global t() function for dynamic content
+ * - Scoped translation application for dynamic elements
+ * - data-i18n-auto for automatic key generation
+ * - Missing translation warnings in dev mode
+ * 
+ * USAGE EXAMPLES:
+ * 
+ * 1. Static HTML:
+ *    <button data-i18n="common.save">Save</button>
+ * 
+ * 2. Placeholders:
+ *    <input data-i18n-placeholder="form.email">
+ * 
+ * 3. Accessibility:
+ *    <button data-i18n-aria-label="buttons.close_aria">
+ * 
+ * 4. Auto-translation (prototyping):
+ *    <p data-i18n-auto>Welcome to PMERIT!</p>
+ * 
+ * 5. Dynamic JS content:
+ *    const message = LanguageManager.t('messages.success');
+ *    element.textContent = message;
+ * 
+ * 6. Dynamic HTML insertion:
+ *    container.innerHTML = partialHTML;
+ *    LanguageManager.applyTranslations(container);
  */
 
 (function() {
@@ -30,12 +60,15 @@
     // Translation data cache
     translations: {},
     
+    // Dev mode (shows warnings for missing translations)
+    devMode: true,
+    
     // ============================================
     // INITIALIZATION
     // ============================================
     
     init: function() {
-      console.log('[LanguageManager] Initializing...');
+      console.log('[LanguageManager] Initializing Enhanced v2.0.0...');
       
       // Load saved language or use default
       this.currentLang = localStorage.getItem('pmerit_language') || this.defaultLang;
@@ -73,6 +106,9 @@
       
       // Load translations for this language
       this.loadTranslations(langCode).then(() => {
+        // Process auto-translations first
+        this.processAutoTranslations();
+        
         // Apply translations to current page
         this.applyTranslations();
         
@@ -126,48 +162,130 @@
     },
     
     // ============================================
-    // APPLY TRANSLATIONS TO DOM
+    // AUTO-TRANSLATION PROCESSING (Priority 3)
     // ============================================
     
-    applyTranslations: function() {
+    processAutoTranslations: function(root = document) {
+      const autoNodes = root.querySelectorAll('[data-i18n-auto]');
+      
+      autoNodes.forEach(element => {
+        // Get or store original text
+        let original = element.getAttribute('data-i18n-original');
+        
+        if (!original) {
+          original = element.textContent.trim();
+          element.setAttribute('data-i18n-original', original);
+        }
+        
+        // Generate key from original text
+        const key = 'auto.' + this.slugify(original);
+        
+        // Attach data-i18n attribute so normal pipeline handles it
+        element.setAttribute('data-i18n', key);
+        
+        // Ensure key exists in translations (fallback to original)
+        const currentTranslations = this.translations[this.currentLang] || {};
+        if (!this.getNestedTranslation(currentTranslations, key)) {
+          // Store original as fallback
+          if (!currentTranslations.auto) {
+            currentTranslations.auto = {};
+          }
+          currentTranslations.auto[this.slugify(original)] = original;
+        }
+      });
+      
+      console.log('[LanguageManager] ✅ Processed auto-translation nodes');
+    },
+    
+    // Convert text to slug (for auto-key generation)
+    slugify: function(text) {
+      return text
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '_')
+        .replace(/^_+|_+$/g, '')
+        .substring(0, 50); // Max 50 chars
+    },
+    
+    // ============================================
+    // APPLY TRANSLATIONS TO DOM (Enhanced)
+    // ============================================
+    
+    applyTranslations: function(root = document) {
       const currentTranslations = this.translations[this.currentLang] || {};
       
-      // Find all elements with data-i18n attribute
-      document.querySelectorAll('[data-i18n]').forEach(element => {
+      // 1. TEXT CONTENT (data-i18n)
+      root.querySelectorAll('[data-i18n]').forEach(element => {
         const key = element.getAttribute('data-i18n');
         const translation = this.getNestedTranslation(currentTranslations, key);
         
         if (translation) {
-          // Handle different element types
-          if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-            element.placeholder = translation;
-          } else {
-            element.textContent = translation;
-          }
+          element.textContent = translation;
+        } else if (this.devMode) {
+          console.warn(`[LanguageManager] Missing translation: ${key}`);
         }
       });
       
-      // Find all elements with data-i18n-placeholder
-      document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+      // 2. PLACEHOLDERS (data-i18n-placeholder)
+      root.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
         const key = element.getAttribute('data-i18n-placeholder');
         const translation = this.getNestedTranslation(currentTranslations, key);
         
         if (translation) {
           element.placeholder = translation;
+        } else if (this.devMode) {
+          console.warn(`[LanguageManager] Missing translation: ${key}`);
         }
       });
       
-      // Find all elements with data-i18n-title
-      document.querySelectorAll('[data-i18n-title]').forEach(element => {
+      // 3. TOOLTIPS/TITLES (data-i18n-title)
+      root.querySelectorAll('[data-i18n-title]').forEach(element => {
         const key = element.getAttribute('data-i18n-title');
         const translation = this.getNestedTranslation(currentTranslations, key);
         
         if (translation) {
           element.title = translation;
+        } else if (this.devMode) {
+          console.warn(`[LanguageManager] Missing translation: ${key}`);
         }
       });
       
-      console.log('[LanguageManager] ✅ Translations applied');
+      // 4. ARIA LABELS (data-i18n-aria-label) - NEW!
+      root.querySelectorAll('[data-i18n-aria-label]').forEach(element => {
+        const key = element.getAttribute('data-i18n-aria-label');
+        const translation = this.getNestedTranslation(currentTranslations, key);
+        
+        if (translation) {
+          element.setAttribute('aria-label', translation);
+        } else if (this.devMode) {
+          console.warn(`[LanguageManager] Missing translation: ${key}`);
+        }
+      });
+      
+      // 5. VALUES (data-i18n-value) - NEW!
+      root.querySelectorAll('[data-i18n-value]').forEach(element => {
+        const key = element.getAttribute('data-i18n-value');
+        const translation = this.getNestedTranslation(currentTranslations, key);
+        
+        if (translation) {
+          element.value = translation;
+        } else if (this.devMode) {
+          console.warn(`[LanguageManager] Missing translation: ${key}`);
+        }
+      });
+      
+      // 6. ALT TEXT (data-i18n-alt) - NEW!
+      root.querySelectorAll('[data-i18n-alt]').forEach(element => {
+        const key = element.getAttribute('data-i18n-alt');
+        const translation = this.getNestedTranslation(currentTranslations, key);
+        
+        if (translation) {
+          element.alt = translation;
+        } else if (this.devMode) {
+          console.warn(`[LanguageManager] Missing translation: ${key}`);
+        }
+      });
+      
+      console.log('[LanguageManager] ✅ Translations applied to', root === document ? 'full document' : 'scoped element');
     },
     
     // ============================================
@@ -179,10 +297,21 @@
       return path.split('.').reduce((current, key) => current?.[key], obj);
     },
     
-    // Get translation for a specific key
-    translate: function(key) {
+    // Get translation for a specific key (Priority 2: Exposed globally)
+    translate: function(key, fallback = null) {
       const currentTranslations = this.translations[this.currentLang] || {};
-      return this.getNestedTranslation(currentTranslations, key) || key;
+      const translation = this.getNestedTranslation(currentTranslations, key);
+      
+      if (!translation && this.devMode) {
+        console.warn(`[LanguageManager] Missing translation: ${key}`);
+      }
+      
+      return translation || fallback || key;
+    },
+    
+    // Shorthand for translate (Priority 2: Global t() function)
+    t: function(key, fallback = null) {
+      return this.translate(key, fallback);
     },
     
     // ============================================
@@ -246,7 +375,7 @@
     },
     
     // ============================================
-    // PUBLIC API
+    // PUBLIC API (Enhanced)
     // ============================================
     
     getCurrentLanguage: function() {
@@ -255,14 +384,22 @@
     
     getAvailableLanguages: function() {
       return this.languages;
+    },
+    
+    // Enable/disable dev mode
+    setDevMode: function(enabled) {
+      this.devMode = enabled;
     }
   };
   
   // ============================================
-  // EXPOSE TO WINDOW
+  // EXPOSE TO WINDOW (Enhanced)
   // ============================================
   
   window.LanguageManager = LanguageManager;
+  
+  // GLOBAL SHORTHAND FOR t() FUNCTION (Priority 2)
+  window.t = LanguageManager.t.bind(LanguageManager);
   
   // Auto-initialize when DOM is ready
   if (document.readyState === 'loading') {
@@ -273,6 +410,7 @@
     LanguageManager.init();
   }
   
-  console.log('[LanguageManager] Module loaded');
+  console.log('[LanguageManager] Enhanced Module v2.0.0 loaded');
+  console.log('[LanguageManager] Global t() function available');
   
 })();
