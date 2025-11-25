@@ -1,12 +1,25 @@
-// Cloudflare Pages Middleware - Add CSP Headers for Google Translate
 export async function onRequest(context) {
+  // Get the response from the next middleware or page
   const response = await context.next();
   
-  // Clone the response to modify headers
-  const newResponse = new Response(response.body, response);
+  // Create new headers, copying everything except CSP
+  const newHeaders = new Headers();
   
-  // Set CSP headers to allow Google Translate
-  newResponse.headers.set(
+  for (const [key, value] of response.headers.entries()) {
+    // Skip ALL CSP-related headers
+    const lowerKey = key.toLowerCase();
+    if (
+      lowerKey === 'content-security-policy' ||
+      lowerKey === 'content-security-policy-report-only' ||
+      lowerKey === 'x-content-security-policy'
+    ) {
+      continue; // Skip this header
+    }
+    newHeaders.set(key, value);
+  }
+  
+  // Add our custom CSP for Google Translate
+  newHeaders.set(
     'Content-Security-Policy',
     "default-src 'self'; " +
     "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://translate.google.com https://translate.googleapis.com https://cdnjs.cloudflare.com https://fonts.googleapis.com; " +
@@ -17,9 +30,10 @@ export async function onRequest(context) {
     "frame-src 'self' https://translate.google.com;"
   );
   
-  newResponse.headers.set('X-Frame-Options', 'SAMEORIGIN');
-  newResponse.headers.set('X-Content-Type-Options', 'nosniff');
-  newResponse.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-  
-  return newResponse;
+  // Return new response with modified headers
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers: newHeaders
+  });
 }
