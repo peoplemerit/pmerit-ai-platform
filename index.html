@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Google Translate Integration - Nov 23, 2025 -->
+<!-- Google Translate Integration - Nov 24, 2025 (CORRECTED) -->
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -1269,7 +1269,7 @@
   <script src="/assets/js/voice-preview.js"></script>
   <link rel="stylesheet" href="/assets/css/voice-preview.css">
 
-  <!-- Google Translate Widget - Deferred Loading -->
+  <!-- Google Translate Widget (CORRECTED) -->
   <script type="text/javascript">
     function googleTranslateElementInit() {
       console.log('🌐 Google Translate initializing...');
@@ -1278,7 +1278,6 @@
       if (document.getElementById('google_translate_element')) {
         new google.translate.TranslateElement({
           pageLanguage: 'en',
-          includedLanguages: '', // All languages
           layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
           autoDisplay: false
         }, 'google_translate_element');
@@ -1289,7 +1288,6 @@
       if (document.getElementById('google_translate_element_desktop')) {
         new google.translate.TranslateElement({
           pageLanguage: 'en',
-          includedLanguages: '', // All languages
           layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
           autoDisplay: false
         }, 'google_translate_element_desktop');
@@ -1300,13 +1298,12 @@
     // Load Google Translate script after page loads
     window.addEventListener('load', function() {
       console.log('📄 Page loaded, loading Google Translate script...');
-      var script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-      script.onerror = function() {
+      var gtScript = document.createElement('script');
+      gtScript.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      gtScript.onerror = function() {
         console.error('❌ Failed to load Google Translate script');
       };
-      document.body.appendChild(script);
+      document.body.appendChild(gtScript);
     });
   </script>
 </body>
