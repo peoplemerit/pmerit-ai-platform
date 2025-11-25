@@ -9,12 +9,10 @@
       </a>
     </div>
     
-    <!-- Right: Language Switcher | Hamburger | Sign In -->
+    <!-- Right: Google Translate | Hamburger | Sign In -->
     <div class="header-right">
-      <!-- Language Switcher Button -->
-      <button class="header-btn language-btn" id="language-btn" aria-label="Change language" title="Select Language">
-        <i class="fas fa-globe"></i>
-      </button>
+      <!-- Google Translate Widget -->
+      <div id="google_translate_element" style="display: inline-block; vertical-align: middle;"></div>
       
       <!-- Pricing Link (Desktop only) -->
       <a href="pricing.html" class="header-btn pricing-link desktop-only">Pricing</a>
@@ -134,20 +132,16 @@
   </nav>
 </aside>
 
-<!-- Language Switcher Dropdown -->
-<div class="language-dropdown" id="language-dropdown" aria-hidden="true">
-  <div class="language-dropdown-header">
-    <h3>Select Language</h3>
-    <button class="close-dropdown-btn" id="close-language-dropdown" aria-label="Close language menu">
-      <i class="fas fa-times"></i>
-    </button>
-  </div>
-  <ul class="language-list">
-    <li><button class="language-option active" data-lang="en">🇺🇸 English</button></li>
-    <li><button class="language-option" data-lang="yo">🇳🇬 Yorùbá</button></li>
-    <li><button class="language-option" data-lang="ig">🇳🇬 Igbo</button></li>
-    <li><button class="language-option" data-lang="ha">🇳🇬 Hausa</button></li>
-    <li><button class="language-option" data-lang="fr">🇫🇷 Français</button></li>
-    <li><button class="language-option" data-lang="es">🇪🇸 Español</button></li>
-  </ul>
-</div>
+<!-- Google Translate Widget Initialization -->
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  if (document.getElementById('google_translate_element')) {
+    new google.translate.TranslateElement({
+      pageLanguage: 'en',
+      includedLanguages: '',
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+      autoDisplay: false
+    }, 'google_translate_element');
+  }
+}
+</script>

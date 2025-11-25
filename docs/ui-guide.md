@@ -44,7 +44,7 @@ The PMERIT platform uses standardized, reusable header and footer components to 
 The header component includes:
 
 - **Logo & Branding**: PMERIT logo with link to homepage
-- **Language Switcher**: Dropdown with 6 supported languages (EN, YO, IG, HA, FR, ES)
+- **Google Translate Widget**: Language switching via Google Translate (centralized, MOSA-compliant)
 - **Hamburger Menu**: Slide-in menu for mobile/tablet with:
   - Quick Actions (Career Track, Dashboard, Begin Assessment)
   - Settings (Dark Mode, Text-to-Speech toggles)
@@ -66,10 +66,8 @@ The header component includes:
     
     <!-- Actions -->
     <div class="header-right">
-      <button class="header-btn language-btn" id="language-btn" 
-              aria-label="Change language" title="Select Language">
-        <i class="fas fa-globe"></i>
-      </button>
+      <!-- Google Translate Widget -->
+      <div id="google_translate_element" style="display: inline-block; vertical-align: middle;"></div>
       <button class="header-btn hamburger-toggle" id="hamburger-toggle" 
               aria-label="Toggle menu" aria-expanded="false">
         <span class="hamburger-line"></span>
@@ -88,9 +86,20 @@ The header component includes:
 - `hamburger-toggle`: Menu toggle button
 - `hamburger-menu`: Slide-in menu panel
 - `menu-overlay`: Background overlay when menu is open
-- `language-btn`: Language selector button
-- `language-dropdown`: Language dropdown panel
+- `google_translate_element`: Google Translate widget container
 - `sign-in-btn`: Primary sign-in button
+
+### Google Translate Integration
+
+The Google Translate widget provides language switching functionality. It is centralized in the shared header partial and loaded automatically by the layout-loader.js.
+
+**Required CSS**: Include `assets/css/google-translate.css` for proper styling.
+
+**How it works**:
+1. The header partial includes the widget container `#google_translate_element`
+2. A `googleTranslateElementInit()` callback initializes the widget
+3. The layout-loader.js calls `_loadGoogleTranslate()` to load the Google script
+4. Language selection persists automatically via Google's cookie mechanism
 
 ---
 
@@ -606,18 +615,21 @@ console.log('Current theme:', document.documentElement.getAttribute('data-theme'
 console.log('Saved theme:', localStorage.getItem('theme'));
 ```
 
-### Language Selector Not Working
+### Google Translate Not Working
 
-**Problem:** Language dropdown doesn't open or select languages.
+**Problem:** Google Translate widget doesn't appear or doesn't function.
 
 **Solutions:**
-1. Verify language dropdown HTML is present
-2. Check that click handlers are attached
-3. Ensure no z-index conflicts
+1. Verify `#google_translate_element` div exists in the header
+2. Check that `layout-loader.js` is loaded and initialized
+3. Ensure CSP headers allow Google Translate scripts
+4. Check console for Google Translate loading errors
+5. Verify `google-translate.css` is included for styling
 
 ```javascript
-// Test manually
-document.getElementById('language-btn').click();
+// Debug Google Translate
+console.log('Widget element:', document.getElementById('google_translate_element'));
+console.log('Google Translate loaded:', !!(window.google && window.google.translate));
 ```
 
 ---

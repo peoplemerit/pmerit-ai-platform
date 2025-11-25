@@ -5,17 +5,17 @@
  * @architecture MOSA-compliant modular design
  * @author PMERIT Development Team
  * @license MIT
- * 
+ *
  * Purpose: Dynamically loads and initializes common header and footer components
  * Usage: Include this script and call LayoutLoader.init() after DOM is ready
- * 
+ *
  * MOSA Compliance:
  * ✅ Single source of truth for header/footer partials
  * ✅ Modular component design with clear separation of concerns
  * ✅ Standard interfaces through public API methods
  * ✅ Independent functionality - no tight coupling with other modules
  * ✅ Reusable across different pages and contexts
- * 
+ *
  * Features:
  * - Loads header.html and footer.html partials
  * - Initializes interactive elements (hamburger menu, language selector)
@@ -24,13 +24,13 @@
  * - Manages settings (Dark Mode, TTS) with localStorage persistence
  * - Accessible keyboard navigation and ARIA attributes
  * - No global namespace pollution
- * 
+ *
  * @example
  * // Basic initialization
  * document.addEventListener('DOMContentLoaded', () => {
  *   window.LayoutLoader.init();
  * });
- * 
+ *
  * @example
  * // With custom configuration
  * window.LayoutLoader.init({
@@ -44,12 +44,12 @@
 
   /**
    * LayoutLoader - Main class for loading header/footer components
-   * 
+   *
    * @class
    * @description MOSA-compliant component loader that manages dynamic loading
    * and initialization of site-wide header and footer elements. Provides a single
    * source of truth for layout components across all pages.
-   * 
+   *
    * @property {boolean} headerLoaded - Indicates if header has been loaded
    * @property {boolean} footerLoaded - Indicates if footer has been loaded
    * @property {Object} config - Configuration object for paths and insertion points
@@ -57,7 +57,7 @@
   class LayoutLoader {
     /**
      * Creates a new LayoutLoader instance with default configuration
-     * 
+     *
      * @constructor
      * @description Initializes the loader with default paths and settings.
      * Configuration can be overridden when calling init().
@@ -71,13 +71,13 @@
         headerInsertPoint: 'body',
         footerInsertPoint: 'body',
         headerPosition: 'afterbegin', // prepend to body
-        footerPosition: 'beforeend'    // append to body
+        footerPosition: 'beforeend' // append to body
       };
     }
 
     /**
      * Initialize the layout loader with custom config
-     * 
+     *
      * @async
      * @param {Object} [customConfig={}] - Optional configuration overrides
      * @param {string} [customConfig.headerPartialPath='/partials/header.html'] - Path to header HTML
@@ -87,14 +87,14 @@
      * @param {string} [customConfig.headerPosition='afterbegin'] - Position for header (afterbegin/beforeend)
      * @param {string} [customConfig.footerPosition='beforeend'] - Position for footer (afterbegin/beforeend)
      * @returns {Promise<Object>} Resolves with status object {header: boolean, footer: boolean, success: boolean, error?: string}
-     * 
+     *
      * @description Loads header and footer partials in parallel, then initializes
      * all interactive components. This is the main entry point for the LayoutLoader.
-     * 
+     *
      * @example
      * // Basic usage
      * await window.LayoutLoader.init();
-     * 
+     *
      * @example
      * // With custom paths
      * await window.LayoutLoader.init({
@@ -145,14 +145,14 @@
 
     /**
      * Load header partial from configured path
-     * 
+     *
      * @async
      * @returns {Promise<void>}
      * @throws {Error} If header fails to load or insert point is not found
-     * 
+     *
      * @description Fetches the header HTML partial and injects it into the DOM
      * at the configured insertion point. Uses fetch API for loading.
-     * 
+     *
      * @private
      */
     async loadHeader() {
@@ -164,7 +164,7 @@
 
         const html = await response.text();
         const insertPoint = document.querySelector(this.config.headerInsertPoint);
-        
+
         if (!insertPoint) {
           throw new Error('Header insert point not found');
         }
@@ -179,14 +179,14 @@
 
     /**
      * Load footer partial from configured path
-     * 
+     *
      * @async
      * @returns {Promise<void>}
      * @throws {Error} If footer fails to load or insert point is not found
-     * 
+     *
      * @description Fetches the footer HTML partial and injects it into the DOM
      * at the configured insertion point. Uses fetch API for loading.
-     * 
+     *
      * @private
      */
     async loadFooter() {
@@ -198,7 +198,7 @@
 
         const html = await response.text();
         const insertPoint = document.querySelector(this.config.footerInsertPoint);
-        
+
         if (!insertPoint) {
           throw new Error('Footer insert point not found');
         }
@@ -213,16 +213,16 @@
 
     /**
      * Apply saved theme from localStorage or system preference
-     * 
+     *
      * @description Applies the theme (dark/light) from localStorage if available,
      * otherwise falls back to system preference (prefers-color-scheme).
      * Sets the data-theme attribute on the HTML element.
-     * 
+     *
      * @private
      */
     applyTheme() {
       let theme = localStorage.getItem('theme');
-      
+
       // If no saved preference, check system preference
       if (!theme) {
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -231,7 +231,7 @@
           theme = 'light';
         }
       }
-      
+
       // Apply theme to document
       document.documentElement.setAttribute('data-theme', theme);
       console.log('[LayoutLoader] Theme applied:', theme);
@@ -239,13 +239,13 @@
 
     /**
      * Initialize interactive components after loading
-     * 
+     *
      * @async
      * @returns {Promise<void>}
-     * 
+     *
      * @description Waits for DOM to be ready, then initializes header and footer
      * components including hamburger menu, language selector, auth buttons, and settings.
-     * 
+     *
      * @private
      */
     async initializeComponents() {
@@ -267,32 +267,33 @@
 
     /**
      * Initialize header interactive elements
-     * 
-     * @description Sets up hamburger menu, language selector, and authentication
+     *
+     * @description Sets up hamburger menu, Google Translate, and authentication
      * buttons for the header component. Called automatically after header is loaded.
-     * 
+     *
      * @private
      */
     initHeader() {
       // Initialize hamburger menu
       this.initHamburgerMenu();
 
-      // Initialize language selector
-      this.initLanguageSelector();
+      // Load Google Translate for language switching
+      this._loadGoogleTranslate();
 
       // Initialize sign-in buttons
       this.initAuthButtons();
 
+      // eslint-disable-next-line no-console
       console.log('[LayoutLoader] Header components initialized');
     }
 
     /**
      * Initialize footer interactive elements
-     * 
+     *
      * @description Sets up footer components including copyright year update.
      * Footer is mostly static but can be extended for additional functionality.
      * Called automatically after footer is loaded.
-     * 
+     *
      * @private
      */
     initFooter() {
@@ -305,11 +306,11 @@
 
     /**
      * Initialize hamburger menu functionality
-     * 
+     *
      * @description Sets up the mobile hamburger menu with open/close functionality,
      * overlay click handling, keyboard navigation (Escape key), and focus management
      * for accessibility. Manages menu state with ARIA attributes.
-     * 
+     *
      * @private
      */
     initHamburgerMenu() {
@@ -363,11 +364,11 @@
 
     /**
      * Initialize menu item interactions
-     * 
+     *
      * @description Sets up click handlers for menu items including Career Track,
      * Dashboard (with auth check), Begin Assessment, and Preview Voices buttons.
      * Also initializes settings toggles (Dark Mode, TTS).
-     * 
+     *
      * @private
      */
     initMenuItems() {
@@ -415,12 +416,12 @@
 
     /**
      * Initialize settings toggles in menu
-     * 
+     *
      * @description Sets up Dark Mode and Text-to-Speech (TTS) toggles with
      * localStorage persistence. Loads saved preferences on initialization and
      * updates theme/TTS state when toggled. Integrates with window.TTS module
      * if available.
-     * 
+     *
      * @private
      */
     initSettingsToggles() {
@@ -445,7 +446,7 @@
         // Load saved preference
         const ttsEnabled = localStorage.getItem('tts-enabled') === 'true';
         ttsToggle.checked = ttsEnabled;
-        
+
         // Apply TTS state on initialization if TTS module is available
         if (ttsEnabled && window.TTS) {
           window.TTS.setEnabled(true);
@@ -454,108 +455,62 @@
         ttsToggle.addEventListener('change', (e) => {
           const enabled = e.target.checked;
           localStorage.setItem('tts-enabled', enabled);
-          
+
           // Trigger TTS module if available
           if (window.TTS) {
             window.TTS.setEnabled(enabled);
           }
-          
+
           console.log('[LayoutLoader] TTS', enabled ? 'enabled' : 'disabled');
         });
       }
     }
 
     /**
-     * Initialize language selector dropdown
-     * 
-     * @description Sets up language selection dropdown with open/close functionality.
-     * Loads saved language preference from localStorage and marks active option.
-     * Language options are identified by data-lang attribute.
-     * 
+     * Load Google Translate script for language switching
+     *
+     * @description Dynamically loads the Google Translate script if not already loaded.
+     * Calls the googleTranslateElementInit callback function defined in header.html
+     * after the script loads to initialize the widget.
+     *
      * @private
      */
-    initLanguageSelector() {
-      const languageBtn = document.getElementById('language-btn');
-      const languageDropdown = document.getElementById('language-dropdown');
-      const closeLanguageBtn = document.getElementById('close-language-dropdown');
-      const languageOptions = document.querySelectorAll('.language-option');
-
-      if (!languageBtn || !languageDropdown) {
-        console.warn('[LayoutLoader] Language selector elements not found');
+    _loadGoogleTranslate() {
+      // Check if already loaded
+      if (window.google && window.google.translate) {
+        // eslint-disable-next-line no-console
+        console.log('[LayoutLoader] Google Translate already loaded');
+        if (typeof window.googleTranslateElementInit === 'function') {
+          window.googleTranslateElementInit();
+        }
         return;
       }
 
-      // Open dropdown
-      const openDropdown = (e) => {
-        e?.stopPropagation();
-        languageDropdown.classList.add('active');
-        languageDropdown.setAttribute('aria-hidden', 'false');
-      };
-
-      // Close dropdown
-      const closeDropdown = () => {
-        languageDropdown.classList.remove('active');
-        languageDropdown.setAttribute('aria-hidden', 'true');
-      };
-
-      // Event listeners
-      languageBtn.addEventListener('click', openDropdown);
-      closeLanguageBtn?.addEventListener('click', closeDropdown);
-
-      // Close dropdown when clicking outside
-      document.addEventListener('click', (e) => {
-        if (!languageDropdown.contains(e.target) && e.target !== languageBtn) {
-          closeDropdown();
-        }
-      });
-
-      // Close dropdown on Escape key
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && languageDropdown.classList.contains('active')) {
-          closeDropdown();
-          languageBtn.focus();
-        }
-      });
-
-      // Language selection
-      languageOptions.forEach(option => {
-        option.addEventListener('click', (e) => {
-          const lang = e.currentTarget.getAttribute('data-lang');
-          
-          // Remove active class from all options
-          languageOptions.forEach(opt => opt.classList.remove('active'));
-          
-          // Add active class to selected
-          e.currentTarget.classList.add('active');
-          
-          // Save preference
-          localStorage.setItem('pmerit-language', lang);
-          
-          console.log('[LayoutLoader] Language changed to:', lang);
-          
-          // TODO: Implement actual language change
-          // This would typically reload content in the selected language
-          
-          closeDropdown();
-        });
-      });
-
-      // Load saved language preference
-      const savedLang = localStorage.getItem('pmerit-language') || 'en';
-      const activeOption = document.querySelector(`[data-lang="${savedLang}"]`);
-      if (activeOption) {
-        languageOptions.forEach(opt => opt.classList.remove('active'));
-        activeOption.classList.add('active');
+      // Check if widget element exists
+      if (!document.getElementById('google_translate_element')) {
+        // eslint-disable-next-line no-console
+        console.warn('[LayoutLoader] Google Translate element not found');
+        return;
       }
+
+      // eslint-disable-next-line no-console
+      console.log('[LayoutLoader] Loading Google Translate script...');
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      script.onerror = function () {
+        console.error('[LayoutLoader] Failed to load Google Translate script');
+      };
+      document.body.appendChild(script);
     }
 
     /**
      * Initialize authentication buttons and handlers
-     * 
+     *
      * @description Sets up click handlers for sign-in buttons in header and menu.
      * Opens AuthModal if available, otherwise redirects to signin page.
      * Also calls updateAuthUI to reflect current authentication state.
-     * 
+     *
      * @private
      */
     initAuthButtons() {
@@ -564,7 +519,7 @@
 
       const handleSignIn = (e) => {
         e.preventDefault();
-        
+
         // Check if AuthModal is available
         if (window.AuthModal) {
           window.AuthModal.open('signin');
@@ -582,12 +537,12 @@
 
     /**
      * Update UI based on authentication state
-     * 
+     *
      * @description Checks window.AUTH module for authentication state and updates
      * UI accordingly. For authenticated users, displays welcome message with username
      * and dashboard link. Updates header sign-in button to show "Dashboard" link.
      * Uses safe DOM manipulation to prevent XSS vulnerabilities.
-     * 
+     *
      * @private
      */
     updateAuthUI() {
@@ -599,21 +554,21 @@
         // User is authenticated - update UI with safe text content
         const user = window.AUTH.getCurrentUser();
         const userName = user.name || 'User';
-        
+
         // Clear existing content
         userSection.innerHTML = '';
-        
+
         // Create paragraph with safe text content
         const statusP = document.createElement('p');
         statusP.className = 'user-status';
         statusP.textContent = `Welcome, ${userName}`;
-        
+
         // Create dashboard link
         const dashboardLink = document.createElement('a');
         dashboardLink.href = '/learner-portal.html';
         dashboardLink.className = 'menu-btn primary';
         dashboardLink.textContent = 'Go to Dashboard';
-        
+
         // Append elements
         userSection.appendChild(statusP);
         userSection.appendChild(dashboardLink);
@@ -628,11 +583,11 @@
 
     /**
      * Update copyright year in footer
-     * 
+     *
      * @description Automatically updates the copyright year to the current year.
      * Looks for element with class 'footer-copyright' and sets the text to
      * include the current year.
-     * 
+     *
      * @private
      */
     updateCopyrightYear() {
@@ -645,14 +600,14 @@
 
     /**
      * Wait for DOM elements to be available
-     * 
+     *
      * @async
      * @returns {Promise<void>}
-     * 
+     *
      * @description Utility method that waits for DOM to be ready before proceeding.
      * If document is still loading, waits for DOMContentLoaded event. Includes
      * a small delay (50ms) to ensure all elements are fully rendered.
-     * 
+     *
      * @private
      */
     waitForDOM() {

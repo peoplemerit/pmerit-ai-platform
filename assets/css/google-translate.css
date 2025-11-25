@@ -1,0 +1,75 @@
+/**
+ * Google Translate Widget Styling
+ * MOSA-compliant centralized styling for Google Translate integration
+ */
+
+/* Hide Google branding and banner */
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+
+.goog-te-gadget-icon {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
+}
+
+/* Style the dropdown to match PMERIT design */
+.goog-te-gadget-simple {
+  background-color: transparent !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 50px !important;
+  padding: 0.5rem 1rem !important;
+  font-size: 0.9rem !important;
+  font-family: Inter, sans-serif !important;
+  color: var(--text-primary) !important;
+  min-height: 44px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+.goog-te-gadget-simple:hover {
+  border-color: var(--primary) !important;
+}
+
+/* Remove Google logo from dropdown */
+.goog-te-gadget-simple img {
+  display: none !important;
+}
+
+.goog-te-gadget-simple .goog-te-menu-value span:first-child {
+  display: none;
+}
+
+/* Container styling */
+/* stylelint-disable selector-id-pattern */
+#google_translate_element {
+  margin-right: 0.5rem;
+}
+
+/* Mobile specific styling */
+@media (max-width: 1023px) {
+  #google_translate_element {
+    margin-right: 0.5rem;
+  }
+  /* stylelint-enable selector-id-pattern */
+
+  .goog-te-gadget-simple {
+    padding: 0.4rem 0.8rem !important;
+    font-size: 0.85rem !important;
+    min-height: 40px !important;
+  }
+}
+
+/* Dark mode support */
+[data-theme='dark'] .goog-te-gadget-simple {
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+  background-color: var(--bg-card) !important;
+}
+
+[data-theme='dark'] .goog-te-gadget-simple:hover {
+  border-color: var(--primary) !important;
+}

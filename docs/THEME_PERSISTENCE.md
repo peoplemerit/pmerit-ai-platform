@@ -171,6 +171,35 @@ Use `test-theme-persistence.html` to verify:
 2. Verify `layout-loader.js` is loaded
 3. Check console for initialization errors
 
+## Google Translate Integration
+
+### Overview
+
+Google Translate provides language switching functionality across all pages. The widget is loaded centrally through the shared header partial, ensuring MOSA compliance with a single source of truth.
+
+### How It Works
+
+1. **Widget Container**: The `#google_translate_element` div is placed in `partials/header.html`
+2. **Initialization Script**: A `googleTranslateElementInit()` callback function is defined in the header
+3. **Script Loading**: The layout-loader.js dynamically loads the Google Translate script via `_loadGoogleTranslate()`
+4. **Styling**: Custom styles in `assets/css/google-translate.css` match the widget to PMERIT design
+
+### Files Involved
+
+| File | Purpose |
+|------|---------|
+| `partials/header.html` | Widget container and initialization callback |
+| `assets/js/layout-loader.js` | Dynamic script loading via `_loadGoogleTranslate()` |
+| `assets/css/google-translate.css` | Widget styling and dark mode support |
+
+### Language Persistence
+
+Google Translate automatically handles language persistence through its own cookie mechanism. The selected language persists across page navigation and browser sessions.
+
+### Dark Mode Support
+
+The Google Translate widget styling automatically adapts to dark mode via CSS variables and the `[data-theme="dark"]` selector.
+
 ## Future Improvements
 
 - [ ] Add theme transition animations
