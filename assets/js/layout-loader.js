@@ -486,8 +486,9 @@
         return;
       }
 
+      const translateElement = document.getElementById('google_translate_element');
       // Check if widget element exists
-      if (!document.getElementById('google_translate_element')) {
+      if (!translateElement) {
         // eslint-disable-next-line no-console
         console.warn('[LayoutLoader] Google Translate element not found');
         return;
@@ -500,6 +501,8 @@
       script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
       script.onerror = function () {
         console.error('[LayoutLoader] Failed to load Google Translate script');
+        // Provide fallback notification to users
+        translateElement.innerHTML = '<span style="color: var(--text-secondary); font-size: 0.85rem;" title="Language switching unavailable">🌐</span>';
       };
       document.body.appendChild(script);
     }
