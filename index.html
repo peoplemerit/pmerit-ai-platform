@@ -1274,27 +1274,23 @@
     function googleTranslateElementInit() {
       console.log('🌐 Google Translate initializing...');
       
-      // Mobile widget
-      if (document.getElementById('google_translate_element')) {
-        new google.translate.TranslateElement({
-          pageLanguage: 'en',
-          layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-          autoDisplay: false
-        }, 'google_translate_element');
-        console.log('✅ Mobile widget initialized');
-      }
-      
-      // Desktop widget
-      if (document.getElementById('google_translate_element_desktop')) {
-        new google.translate.TranslateElement({
-          pageLanguage: 'en',
-          layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-          autoDisplay: false
-        }, 'google_translate_element_desktop');
-        console.log('✅ Desktop widget initialized');
-      }
+	// Mobile widget
+    if (document.getElementById('google_translate_element')) {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        autoDisplay: false
+      }, 'google_translate_element');
+      console.log('✅ Mobile widget initialized');
     }
-    
+
+    // Desktop widget
+    if (document.getElementById('google_translate_element_desktop')) {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        autoDisplay: false
+      }, 'google_translate_element_desktop');
+      console.log('✅ Desktop widget initialized');
+    }    
     // Load Google Translate script after page loads
     window.addEventListener('load', function() {
       console.log('📄 Page loaded, loading Google Translate script...');
