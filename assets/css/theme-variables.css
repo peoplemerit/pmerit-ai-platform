@@ -15,7 +15,7 @@
 
 :root {
     /* === PRIMARY BRAND COLORS === */
-    --color-primary: #2A5B8C;          /* Dark Blue - Main brand color */
+    --color-primary: #375b8d;          /* Dark Blue - Main brand color (extracted from production) */
     --color-secondary: #4AA4B9;        /* Teal - Secondary brand color */
     --color-accent: #FF6B6B;           /* Coral - Call-to-action color */
     
@@ -42,11 +42,11 @@
     --bg-elevated: #FFFFFF;            /* Elevated elements (modals, dropdowns) */
     --bg-overlay: rgba(0, 0, 0, 0.5);  /* Modal overlay */
     /* Special Elements */
-    --bg-gradient-start: #2A5B8C;      /* Brand blue gradient start */
+    --bg-gradient-start: #375b8d;      /* Brand blue gradient start (extracted from production) */
     --bg-gradient-end: #4AA4B9;        /* Brand teal gradient end */
 
     /* Hero gradient - uses brand colors */
-    --gradient-hero: linear-gradient(135deg, #2A5B8C 0%, #4AA4B9 100%);
+    --gradient-hero: linear-gradient(135deg, #375b8d 0%, #4AA4B9 100%);
     
     /* === BORDERS === */
     --border-color: #E9ECEF;           /* Default border */
@@ -67,8 +67,8 @@
     --text-link-hover: #E05A5A;        /* Link hover */
     
     /* === INTERACTIVE COLORS === */
-    --interactive-primary: #2A5B8C;           /* Primary buttons */
-    --interactive-primary-hover: #1f4567;     /* Primary button hover */
+    --interactive-primary: #375b8d;           /* Primary buttons */
+    --interactive-primary-hover: #2a4a73;     /* Primary button hover */
     --interactive-secondary: #4AA4B9;         /* Secondary buttons */
     --interactive-secondary-hover: #3a8a99;   /* Secondary button hover */
     --interactive-accent: #FF6B6B;            /* Accent buttons */
@@ -176,7 +176,7 @@
 
 [data-theme="dark"] {
     /* === ADJUSTED BRAND COLORS FOR DARK === */
-    --color-primary: #4A8BC8;          /* Lighter blue for dark backgrounds */
+    --color-primary: #598bca;          /* Lighter blue for dark backgrounds (extracted from production) */
     --color-secondary: #5FC8E5;        /* Lighter teal for dark backgrounds */
     --color-accent: #FF7B7B;           /* Lighter coral for dark backgrounds */
     
@@ -191,7 +191,7 @@
     --color-info: #5FC8E5;
     
     /* === BACKGROUNDS & SURFACES === */
-    --bg-primary: #121212;             /* Dark background */
+    --bg-primary: #1e1e1e;             /* Dark background (extracted from production) */
     --bg-secondary: #1E1E1E;           /* Card backgrounds */
     --bg-card: #1E1E1E;
     --bg-elevated: #252525;            /* Elevated elements */
@@ -200,7 +200,7 @@
     --bg-gradient-end: #2A4A6A;        /* Dark mode brand teal gradient end */
 
     /* Hero gradient - brand colors adjusted for dark mode */
-    --gradient-hero: linear-gradient(135deg, #4A8BC8 0%, #5FC8E5 100%);
+    --gradient-hero: linear-gradient(135deg, #598bca 0%, #5FC8E5 100%);
     
     /* === BORDERS === */
     --border-color: #333333;
@@ -216,8 +216,8 @@
     --text-link-hover: #FF6B6B;
     
     /* === INTERACTIVE COLORS === */
-    --interactive-primary: #4A8BC8;
-    --interactive-primary-hover: #5A9BD8;
+    --interactive-primary: #598bca;
+    --interactive-primary-hover: #6a9bd8;
     --interactive-secondary: #5FC8E5;
     --interactive-secondary-hover: #6FD8F5;
     --interactive-accent: #FF7B7B;
