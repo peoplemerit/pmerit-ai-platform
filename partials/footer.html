@@ -4,9 +4,12 @@
   Desktop: Full footer with all links
 -->
 
-<!-- Mobile Footer (Default: <1024px) -->
+	<!-- Mobile Footer (Default: <1024px) -->
 <footer class="mobile-footer" id="mobile-footer">
   <div class="mobile-footer-content">
+    <!-- Google Translate Widget -->
+    <div id="google_translate_element" class="footer-translate"></div>
+    <span class="footer-separator">•</span>
     <a href="privacy.html" class="footer-link">Privacy & Terms</a>
     <span class="footer-separator">•</span>
     <span class="footer-status">
@@ -15,7 +18,7 @@
     </span>
   </div>
 </footer>
-
+      
 <!-- Desktop Footer (≥1024px) -->
 <footer class="desktop-footer" id="desktop-footer">
   <div class="desktop-footer-container">
@@ -156,9 +159,12 @@
         </div>
       </div>
 
-      <!-- Right: Status & Social -->
+      <!-- Right: Language & Status & Social -->
       <div class="footer-bottom-right">
-        <div class="footer-status">
+      <!-- Google Translate Widget -->
+      <div id="google_translate_element_desktop" class="footer-translate-desktop"></div>
+      <div class="footer-status">
+  
           <i class="fas fa-circle status-indicator" aria-hidden="true"></i>
           <span>Connected to Educational Services</span>
         </div>
@@ -280,6 +286,111 @@
         <i class="fas fa-times"></i>
       </button>
     </div>
+	
+	<!-- Google Translate Widget Styles & Script -->
+<style>
+  /* Footer Google Translate Styling */
+  .footer-translate,
+  .footer-translate-desktop {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  
+  .goog-te-gadget {
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0 !important; /* Hide "Powered by" text */
+  }
+  
+  .goog-te-gadget select {
+    background-color: var(--bg-card, #1a1a2e) !important;
+    border: 1px solid var(--border-color, #3a3a5c) !important;
+    border-radius: 20px !important;
+    padding: 0.4rem 0.8rem !important;
+    font-size: 0.8rem !important;
+    font-family: 'Inter', sans-serif !important;
+    color: var(--text-primary, #ffffff) !important;
+    min-height: 36px !important;
+    cursor: pointer !important;
+    outline: none !important;
+  }
+  
+  .goog-te-gadget select:hover {
+    border-color: var(--primary, #2A5B8C) !important;
+  }
+  
+  /* Hide "Powered by Google" text */
+  .goog-te-gadget > span {
+    display: none !important;
+  }
+  
+  /* Hide Google branding bar */
+  .goog-te-banner-frame.skiptranslate {
+    display: none !important;
+  }
+  
+  body {
+    top: 0 !important;
+  }
+  
+  /* Mobile footer specific */
+  @media (max-width: 1023px) {
+    .footer-translate {
+      margin-right: 0.5rem;
+    }
+    
+    .footer-translate-desktop {
+      display: none !important;
+    }
+  }
+  
+  /* Desktop footer specific */
+  @media (min-width: 1024px) {
+    .footer-translate {
+      display: none !important;
+    }
+    
+    .footer-translate-desktop {
+      margin-right: 1rem;
+    }
+  }
+</style>
+
+<script>
+  // Google Translate Initialization
+  function googleTranslateElementInit() {
+    console.log('🌐 Google Translate initializing...');
+    
+    // Mobile widget
+    if (document.getElementById('google_translate_element')) {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        autoDisplay: false
+      }, 'google_translate_element');
+      console.log('✅ Mobile widget initialized');
+    }
+    
+    // Desktop widget
+    if (document.getElementById('google_translate_element_desktop')) {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        autoDisplay: false
+      }, 'google_translate_element_desktop');
+      console.log('✅ Desktop widget initialized');
+    }
+  }
+  
+  // Load Google Translate script after page loads
+  window.addEventListener('load', function() {
+    console.log('📄 Page loaded, loading Google Translate script...');
+    var gtScript = document.createElement('script');
+    gtScript.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    gtScript.onerror = function() {
+      console.error('❌ Failed to load Google Translate script');
+    };
+    document.body.appendChild(gtScript);
+  });
+</script>
+	
     <div class="modal-body">
       <form class="auth-form" id="sign-in-form">
         
