@@ -15,9 +15,9 @@
 :root {
     /* Purple gradient ONLY for structural/hero sections (NOT primary theme) */
     /* Use sparingly - main theme is blue (#2A5B8C) */
-    --gradient-purple-start: #667eea;
-    --gradient-purple-end: #764ba2;
-    --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-purple-start: #375b8d;
+    --gradient-purple-end: #4AA4B9;
+    --gradient-hero: linear-gradient(135deg, #375b8d 0%, #4AA4B9 100%);
     
     /* Additional brand gradients */
     --gradient-teal-start: #4AA4B9;

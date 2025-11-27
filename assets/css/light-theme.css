@@ -36,11 +36,11 @@
   --accent: #FF6B6B;             /* Coral */
   --success: #3A7F5C;            /* Success green */
   
-  /* === PURPLE GRADIENT (Hero Sections ONLY - Structural, NOT Primary Theme) === */
-  --gradient-start: #667eea;
-  --gradient-end: #764ba2;
-  --gradient-purple: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  /* === BRAND GRADIENT (Hero Sections - Updated Nov 27, 2025) === */
+  --gradient-start: #375b8d;
+  --gradient-end: #4AA4B9;
+  --gradient-purple: linear-gradient(135deg, #375b8d 0%, #4AA4B9 100%);
+  --gradient-hero: linear-gradient(135deg, #375b8d 0%, #4AA4B9 100%);
   
   /* === BACKGROUND & SURFACES (Pmerit Spec) === */
   --bg-primary: #F8F9FA;         /* Light gray background (NOT white) */
