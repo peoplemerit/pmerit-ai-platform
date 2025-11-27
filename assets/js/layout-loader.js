@@ -21,7 +21,8 @@
  * - Initializes interactive elements (hamburger menu, language selector)
  * - Handles authentication state dynamically
  * - Supports custom insertion points and configuration
- * - Manages settings (Dark Mode, TTS) with localStorage persistence
+ * - Integrates with SettingsManager for settings (Dark Mode, TTS) if available
+ * - Falls back to internal settings management if SettingsManager not loaded
  * - Accessible keyboard navigation and ARIA attributes
  * - No global namespace pollution
  * 
@@ -476,19 +477,34 @@
 
     /**
      * Initialize settings toggles in menu
-     * 
-     * @description Sets up Dark Mode and Text-to-Speech (TTS) toggles with
-     * localStorage persistence. Loads saved preferences on initialization and
-     * updates theme/TTS state when toggled. Integrates with window.TTS module
-     * if available.
-     * 
+     *
+     * @description Integrates with SettingsManager if available for unified
+     * settings handling. Falls back to internal implementation if SettingsManager
+     * is not loaded.
+     *
+     * INTEGRATION NOTE: For best results, include settings-manager.js before
+     * layout-loader.js runs. SettingsManager handles all toggle IDs from both
+     * index.html and partials, ensuring consistent state across pages.
+     *
      * @private
      */
     initSettingsToggles() {
+      // Prefer SettingsManager if available (centralized settings handling)
+      if (window.SettingsManager) {
+        // Rebind toggles to catch dynamically loaded elements
+        window.SettingsManager.rebind();
+        // Apply current settings to sync toggle states
+        window.SettingsManager.applyCurrentSettings();
+        console.log('[LayoutLoader] Settings delegated to SettingsManager');
+        return;
+      }
+
+      // Fallback: Internal settings handling if SettingsManager not available
+      console.log('[LayoutLoader] SettingsManager not found, using internal fallback');
+
       // Dark Mode toggle
       const darkModeToggle = document.getElementById('dark-mode-toggle');
       if (darkModeToggle) {
-        // Load saved preference
         const isDark = localStorage.getItem('theme') === 'dark';
         darkModeToggle.checked = isDark;
 
@@ -503,11 +519,9 @@
       // TTS toggle
       const ttsToggle = document.getElementById('tts-toggle');
       if (ttsToggle) {
-        // Load saved preference
         const ttsEnabled = localStorage.getItem('tts-enabled') === 'true';
         ttsToggle.checked = ttsEnabled;
-        
-        // Apply TTS state on initialization if TTS module is available
+
         if (ttsEnabled && window.TTS) {
           window.TTS.setEnabled(true);
         }
@@ -515,12 +529,11 @@
         ttsToggle.addEventListener('change', (e) => {
           const enabled = e.target.checked;
           localStorage.setItem('tts-enabled', enabled);
-          
-          // Trigger TTS module if available
+
           if (window.TTS) {
             window.TTS.setEnabled(enabled);
           }
-          
+
           console.log('[LayoutLoader] TTS', enabled ? 'enabled' : 'disabled');
         });
       }
