@@ -199,8 +199,8 @@
     --bg-gradient-start: #1E3A5F;      /* Dark mode brand blue gradient start */
     --bg-gradient-end: #2A4A6A;        /* Dark mode brand teal gradient end */
 
-    /* Hero gradient - brand colors adjusted for dark mode */
-    --gradient-hero: linear-gradient(135deg, #598bca 0%, #5FC8E5 100%);
+    /* Hero gradient - consistent with light mode, slightly brighter for dark backgrounds */
+    --gradient-hero: linear-gradient(135deg, #2A5B8C 0%, #4AA4B9 100%);
     
     /* === BORDERS === */
     --border-color: #333333;
