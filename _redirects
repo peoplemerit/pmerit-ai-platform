@@ -18,6 +18,10 @@
 # without any redirects. This overrides any dashboard-configured redirects.
 # The 200! status means "force this rule and stop processing"
 
+# Legacy URLs - Redirect to correct pages (301 = permanent redirect)
+/assessment.html /assessment-entry.html 301
+/assessments.html /assessment-entry.html 301
+
 /assessment-entry.html /assessment-entry.html 200!
 /assessment-questions.html /assessment-questions.html 200!
 /assessment-processing.html /assessment-processing.html 200!
