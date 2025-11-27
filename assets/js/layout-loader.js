@@ -300,7 +300,68 @@
       // For example, dynamic year in copyright notice
       this.updateCopyrightYear();
 
+      // Initialize Google Translate widget after footer is loaded
+      this.initGoogleTranslate();
+
       console.log('[LayoutLoader] Footer components initialized');
+    }
+
+    /**
+     * Initialize Google Translate widget for dynamically loaded footer
+     *
+     * @description Handles Google Translate initialization when footer is loaded
+     * dynamically via layout-loader. Script tags in dynamically inserted HTML
+     * are not executed, so we must manually define the callback and load the script.
+     * Skips initialization if already set up (e.g., on index.html with embedded footer).
+     *
+     * @private
+     */
+    initGoogleTranslate() {
+      const mobileEl = document.getElementById('google_translate_element');
+      const desktopEl = document.getElementById('google_translate_element_desktop');
+
+      // Skip if no Google Translate elements exist
+      if (!mobileEl && !desktopEl) {
+        return;
+      }
+
+      // Skip if already initialized (for pages with embedded footer like index.html)
+      if (window.googleTranslateElementInit) {
+        console.log('[LayoutLoader] Google Translate already initialized, skipping');
+        return;
+      }
+
+      // Define the callback function globally
+      window.googleTranslateElementInit = function() {
+        console.log('🌐 Google Translate initializing...');
+
+        // Mobile widget
+        if (document.getElementById('google_translate_element')) {
+          new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            autoDisplay: false
+          }, 'google_translate_element');
+          console.log('✅ Mobile Google Translate widget initialized');
+        }
+
+        // Desktop widget
+        if (document.getElementById('google_translate_element_desktop')) {
+          new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            autoDisplay: false
+          }, 'google_translate_element_desktop');
+          console.log('✅ Desktop Google Translate widget initialized');
+        }
+      };
+
+      // Dynamically load the Google Translate script
+      console.log('[LayoutLoader] Google Translate script loading...');
+      const gtScript = document.createElement('script');
+      gtScript.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      gtScript.onerror = function() {
+        console.error('[LayoutLoader] ❌ Failed to load Google Translate script');
+      };
+      document.body.appendChild(gtScript);
     }
 
     /**
