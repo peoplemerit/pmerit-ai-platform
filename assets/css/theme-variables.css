@@ -42,11 +42,11 @@
     --bg-elevated: #FFFFFF;            /* Elevated elements (modals, dropdowns) */
     --bg-overlay: rgba(0, 0, 0, 0.5);  /* Modal overlay */
     /* Special Elements */
-    --bg-gradient-start: #6B5CE7;      /* Gradient start (purple-blue) */
-    --bg-gradient-end: #8B7CE8;        /* Gradient end (lighter purple) */
-    
-    /* Hero gradient - structural element only, NOT primary theme color */
-    --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --bg-gradient-start: #2A5B8C;      /* Brand blue gradient start */
+    --bg-gradient-end: #4AA4B9;        /* Brand teal gradient end */
+
+    /* Hero gradient - uses brand colors */
+    --gradient-hero: linear-gradient(135deg, #2A5B8C 0%, #4AA4B9 100%);
     
     /* === BORDERS === */
     --border-color: #E9ECEF;           /* Default border */
@@ -196,8 +196,11 @@
     --bg-card: #1E1E1E;
     --bg-elevated: #252525;            /* Elevated elements */
     --bg-overlay: rgba(0, 0, 0, 0.7);
-    --bg-gradient-start: #2D3748;      /* Dark gradient start */
-    --bg-gradient-end: #4A5568;        /* Dark gradient end */
+    --bg-gradient-start: #1E3A5F;      /* Dark mode brand blue gradient start */
+    --bg-gradient-end: #2A4A6A;        /* Dark mode brand teal gradient end */
+
+    /* Hero gradient - brand colors adjusted for dark mode */
+    --gradient-hero: linear-gradient(135deg, #4A8BC8 0%, #5FC8E5 100%);
     
     /* === BORDERS === */
     --border-color: #333333;
