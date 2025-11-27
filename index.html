@@ -408,6 +408,7 @@
   
   <!-- JavaScript -->
   <script src="assets/js/config.js"></script>
+  <script src="assets/js/settings-manager.js"></script>
   <script src="assets/js/auth.js"></script>
   
   <!-- TTS module -->
@@ -1255,58 +1256,7 @@
     })();
   </script>
 
-  <!-- Theme Manager -->
-  <script>
-  (function() {
-    'use strict';
-    
-    function initTheme() {
-      const theme = localStorage.getItem('theme') || 'light';
-      const isDark = theme === 'dark';
-      
-      const mobileToggle = document.getElementById('mobileDarkToggle');
-      const desktopToggle = document.getElementById('desktopDarkToggle');
-      
-      if (mobileToggle) mobileToggle.checked = isDark;
-      if (desktopToggle) desktopToggle.checked = isDark;
-    }
-    
-    function handleToggleChange(e) {
-      const theme = e.target.checked ? 'dark' : 'light';
-      localStorage.setItem('theme', theme);
-      document.documentElement.setAttribute('data-theme', theme);
-      
-      const mobileToggle = document.getElementById('mobileDarkToggle');
-      const desktopToggle = document.getElementById('desktopDarkToggle');
-      if (mobileToggle) mobileToggle.checked = e.target.checked;
-      if (desktopToggle) desktopToggle.checked = e.target.checked;
-      
-      console.log('[Theme] Changed to:', theme);
-    }
-    
-    function bindToggles() {
-      const mobileToggle = document.getElementById('mobileDarkToggle');
-      const desktopToggle = document.getElementById('desktopDarkToggle');
-      
-      if (mobileToggle) {
-        mobileToggle.addEventListener('change', handleToggleChange);
-      }
-      if (desktopToggle) {
-        desktopToggle.addEventListener('change', handleToggleChange);
-      }
-    }
-    
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', function() {
-        initTheme();
-        bindToggles();
-      });
-    } else {
-      initTheme();
-      bindToggles();
-    }
-  })();
-  </script>
+  <!-- Theme Manager: Now handled by settings-manager.js -->
 
   <!-- TTS System -->
   <script src="/assets/js/tts-client.js"></script>
