@@ -13,90 +13,143 @@
            PMERIT PRODUCTION COLOR SYSTEM
            Updated: November 27, 2025
            Source: pmerit.com live deployment (color picker extracted)
+           
+           STANDARDIZATION NOTES:
+           - All hero gradients use --gradient-hero or --bg-gradient-start/end
+           - All buttons use --interactive-primary for consistency
+           - Dark mode uses darker blues for gradients, lighter blues for buttons
            ========================================== */
 
-        /* Light Mode (Default) */
+        /* ===========================================
+           LIGHT MODE (Default)
+           =========================================== */
         :root {
-            /* Primary Brand Colors - Extracted from Production Nov 27, 2025 */
-            --primary: #375b8d;           /* Main brand blue - buttons, headers */
-            --primary-dark: #2a4a73;      /* Hover states, active elements */
-            --primary-light: #598bca;     /* Lighter accent */
+            /* ===== PRIMARY BRAND COLORS ===== */
+            /* Extracted from pmerit.com production via color picker - Nov 27, 2025 */
+            --color-primary: #375b8d;           /* Main brand blue */
+            --color-secondary: #4AA4B9;         /* Brand teal */
             
-            /* Secondary Colors */
-            --teal: #4AA4B9;              /* Secondary highlights */
-            --light-teal: #7ED0D9;        /* Subtle accents */
-            --coral: #FF6B6B;             /* CTAs, important links */
-            --coral-dark: #E05A5A;        /* Hover state for coral */
+            /* Primary Variants */
+            --primary: #375b8d;                 /* Alias for --color-primary */
+            --primary-dark: #2a4a73;            /* Hover states, active elements */
+            --primary-light: #598bca;           /* Lighter accent */
             
-            /* Semantic Colors */
-            --success: #3A7F5C;           /* Success messages, checkmarks */
-            --warning: #E67E22;           /* Warnings, alerts */
-            --error: #E74C3C;             /* Error states */
-            --info: #3498DB;              /* Information */
+            /* Secondary Variants */
+            --teal: #4AA4B9;                    /* Secondary highlights */
+            --light-teal: #7ED0D9;              /* Subtle accents */
             
-            /* Background Hierarchy */
-            --bg-primary: #F8F9FA;        /* Main page background */
-            --bg-secondary: #FFFFFF;      /* Secondary surfaces */
-            --bg-card: #FFFFFF;           /* Card backgrounds */
-            --bg-elevated: #FFFFFF;       /* Elevated elements (modals, dropdowns) */
-            --bg-overlay: rgba(0,0,0,0.5); /* Modal overlays */
+            /* Accent Colors */
+            --coral: #FF6B6B;                   /* CTAs, important links */
+            --coral-dark: #E05A5A;              /* Hover state for coral */
             
-            /* Text Hierarchy */
-            --text-primary: #2C2C2C;      /* Main content text */
-            --text-secondary: #6C757D;    /* Secondary info */
-            --text-tertiary: #8E9499;     /* Muted text, placeholders */
-            --text-inverse: #FFFFFF;      /* Text on dark backgrounds */
+            /* ===== INTERACTIVE COLORS (Buttons, Links) ===== */
+            --interactive-primary: #375b8d;           /* Primary buttons */
+            --interactive-primary-hover: #2a4a73;     /* Primary button hover */
+            --interactive-secondary: #4AA4B9;         /* Secondary buttons */
+            --interactive-secondary-hover: #3a8a99;   /* Secondary button hover */
+            --interactive-accent: #FF6B6B;            /* Accent buttons */
+            --interactive-accent-hover: #E05A5A;      /* Accent button hover */
             
-            /* Border & Dividers */
-            --border-color: #E9ECEF;      /* Default borders */
-            --border-light: #F1F3F5;      /* Subtle dividers */
-            --border-dark: #DEE2E6;       /* Emphasized borders */
+            /* ===== GRADIENT COLORS (Hero Sections) ===== */
+            --bg-gradient-start: #375b8d;       /* Hero gradient start */
+            --bg-gradient-end: #4AA4B9;         /* Hero gradient end */
+            --gradient-hero: linear-gradient(135deg, #375b8d 0%, #4AA4B9 100%);
             
-            /* Shadows */
+            /* ===== SEMANTIC COLORS ===== */
+            --success: #3A7F5C;                 /* Success messages, checkmarks */
+            --warning: #E67E22;                 /* Warnings, alerts */
+            --error: #E74C3C;                   /* Error states */
+            --info: #3498DB;                    /* Information */
+            
+            /* ===== BACKGROUND HIERARCHY ===== */
+            --bg-primary: #F8F9FA;              /* Main page background */
+            --bg-secondary: #FFFFFF;            /* Secondary surfaces */
+            --bg-card: #FFFFFF;                 /* Card backgrounds */
+            --bg-elevated: #FFFFFF;             /* Elevated elements (modals, dropdowns) */
+            --bg-overlay: rgba(0,0,0,0.5);      /* Modal overlays */
+            
+            /* ===== TEXT HIERARCHY ===== */
+            --text-primary: #2C2C2C;            /* Main content text */
+            --text-secondary: #6C757D;          /* Secondary info */
+            --text-tertiary: #8E9499;           /* Muted text, placeholders */
+            --text-inverse: #FFFFFF;            /* Text on dark backgrounds */
+            --text-link: #2A5B8C;               /* Link color */
+            
+            /* ===== BORDER & DIVIDERS ===== */
+            --border-color: #E9ECEF;            /* Default borders */
+            --border-light: #F1F3F5;            /* Subtle dividers */
+            --border-dark: #DEE2E6;             /* Emphasized borders */
+            
+            /* ===== SHADOWS ===== */
             --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
             --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
             --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
             --shadow-xl: 0 20px 25px rgba(0,0,0,0.15);
         }
 
-        /* Dark Mode */
+        /* ===========================================
+           DARK MODE
+           =========================================== */
         [data-theme="dark"] {
-            /* Primary Colors - Extracted from Production Nov 27, 2025 */
-            --primary: #598bca;           /* Lightened for readability */
-            --primary-dark: #4a7bb8;      /* Hover state */
-            --primary-light: #6a9bd8;     /* Lighter accent */
+            /* ===== PRIMARY BRAND COLORS ===== */
+            /* Lightened for readability on dark backgrounds */
+            --color-primary: #598bca;           /* Lighter blue for buttons/text */
+            --color-secondary: #5FC8E5;         /* Lighter teal */
             
-            /* Secondary Colors */
+            /* Primary Variants */
+            --primary: #598bca;
+            --primary-dark: #4a7bb8;
+            --primary-light: #6a9bd8;
+            
+            /* Secondary Variants */
             --teal: #5FC8E5;
             --light-teal: #7ED0D9;
-            --coral: #FF7B7B;             /* Slightly lighter for contrast */
+            
+            /* Accent Colors */
+            --coral: #FF7B7B;                   /* Slightly lighter for contrast */
             --coral-dark: #FF6B6B;
             
-            /* Semantic Colors */
+            /* ===== INTERACTIVE COLORS (Buttons, Links) ===== */
+            /* These are LIGHTER than gradients for visibility */
+            --interactive-primary: #598bca;
+            --interactive-primary-hover: #6a9bd8;
+            --interactive-secondary: #5FC8E5;
+            --interactive-secondary-hover: #6FD8F5;
+            --interactive-accent: #FF7B7B;
+            --interactive-accent-hover: #FF8B8B;
+            
+            /* ===== GRADIENT COLORS (Hero Sections) ===== */
+            /* These are DARKER for visual depth on dark backgrounds */
+            --bg-gradient-start: #1E3A5F;       /* Dark blue gradient start */
+            --bg-gradient-end: #2A4A6A;         /* Dark blue gradient end */
+            --gradient-hero: linear-gradient(135deg, #1E3A5F 0%, #2A4A6A 100%);
+            
+            /* ===== SEMANTIC COLORS ===== */
             --success: #4CAF7A;
             --warning: #FF9800;
             --error: #FF5252;
             --info: #42A5F5;
             
-            /* Background Hierarchy */
-            --bg-primary: #1e1e1e;        /* Main dark background (extracted from production) */
-            --bg-secondary: #1E1E1E;      /* Secondary surfaces */
-            --bg-card: #1E1E1E;           /* Card backgrounds */
-            --bg-elevated: #252525;       /* Elevated elements */
-            --bg-overlay: rgba(0,0,0,0.7); /* Darker overlay */
+            /* ===== BACKGROUND HIERARCHY ===== */
+            --bg-primary: #121212;              /* Main dark background */
+            --bg-secondary: #1E1E1E;            /* Secondary surfaces */
+            --bg-card: #1E1E1E;                 /* Card backgrounds */
+            --bg-elevated: #252525;             /* Elevated elements */
+            --bg-overlay: rgba(0,0,0,0.7);      /* Darker overlay */
             
-            /* Text Hierarchy */
+            /* ===== TEXT HIERARCHY ===== */
             --text-primary: #E9E9E9;
             --text-secondary: #B0B0B0;
             --text-tertiary: #8A8A8A;
             --text-inverse: #1E1E1E;
+            --text-link: #FF7B7B;               /* Coral links in dark mode */
             
-            /* Border & Dividers */
+            /* ===== BORDER & DIVIDERS ===== */
             --border-color: #333333;
             --border-light: #2A2A2A;
             --border-dark: #404040;
             
-            /* Shadows (more prominent in dark) */
+            /* ===== SHADOWS ===== */
             --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
             --shadow-md: 0 4px 6px rgba(0,0,0,0.3);
             --shadow-lg: 0 10px 15px rgba(0,0,0,0.4);
@@ -160,7 +213,7 @@
             --radius-md: 8px;
             --radius-lg: 12px;
             --radius-xl: 16px;
-            --radius-full: 9999px;        /* Perfect circles/pills */
+            --radius-full: 9999px;
         }
 
         /* ==========================================
@@ -191,8 +244,8 @@
            ========================================== */
         :root {
             /* Buttons */
-            --btn-primary-bg: var(--primary);
-            --btn-primary-hover: var(--primary-dark);
+            --btn-primary-bg: var(--interactive-primary);
+            --btn-primary-hover: var(--interactive-primary-hover);
             --btn-primary-text: var(--text-inverse);
             
             --btn-secondary-bg: transparent;
@@ -202,14 +255,9 @@
             /* Chat Input (Production Tested) */
             --chat-input-bg: var(--bg-card);
             --chat-input-border: transparent;
-            --chat-input-radius: 9999px;  /* Perfect capsule shape */
+            --chat-input-radius: 9999px;
             --chat-input-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 3px 6px rgba(0, 0, 0, 0.1);
             --chat-input-focus-shadow: 0 0 0 2px rgba(42, 91, 140, 0.4), 0 0 0 6px rgba(42, 91, 140, 0.1);
-            
-            /* Customer Service Mode Button */
-            --csm-btn-bg: var(--primary);
-            --csm-btn-hover: var(--primary-dark);
-            --csm-btn-text: var(--text-inverse);
             
             /* Header */
             --header-height: 64px;
@@ -315,6 +363,14 @@
             height: 60px;
             border-radius: var(--radius-md);
             border: 2px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .gradient-box {
+            width: 100%;
+            height: 80px;
+            border-radius: var(--radius-md);
+            border: 2px solid var(--border-color);
         }
 
         .button-demo {
@@ -412,6 +468,14 @@
             border-radius: var(--radius-md);
         }
 
+        .warning-box {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--warning);
+            padding: var(--space-md);
+            margin: var(--space-md) 0;
+            border-radius: var(--radius-md);
+        }
+
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -419,8 +483,32 @@
             margin: var(--space-md) 0;
         }
 
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: var(--space-md);
+            margin: var(--space-md) 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: var(--space-md) 0;
+        }
+
+        th, td {
+            padding: var(--space-sm) var(--space-md);
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: var(--bg-secondary);
+            font-weight: var(--weight-semibold);
+        }
+
         @media (max-width: 768px) {
-            .grid-2 {
+            .grid-2, .grid-3 {
                 grid-template-columns: 1fr;
             }
         }
@@ -434,64 +522,320 @@
 
     <h1>🎨 PMERIT Design System</h1>
     <p style="font-size: var(--text-lg); color: var(--text-secondary); margin-bottom: var(--space-2xl);">
-        Complete color, typography, and component reference for pmerit.com (Updated November 23, 2025)
+        Complete color, typography, and component reference for pmerit.com<br>
+        <strong>Updated: November 27, 2025</strong> — Color Standardization Complete
     </p>
+
+
+    <!-- ==========================================
+         COLOR STANDARDIZATION REFERENCE
+         ========================================== -->
+    <div class="card">
+        <h2>📐 Color Standardization Reference</h2>
+        <p style="margin-bottom: var(--space-lg);">
+            This section documents the standardized color system across the PMERIT platform.
+            All pages should use these CSS variables for consistency.
+        </p>
+
+        <h3>Light Mode Color Mapping</h3>
+        <table>
+            <tr>
+                <th>Variable</th>
+                <th>Hex Value</th>
+                <th>Usage</th>
+            </tr>
+            <tr>
+                <td><code>--color-primary</code></td>
+                <td>#375b8d</td>
+                <td>Main brand blue - headers, primary text on light</td>
+            </tr>
+            <tr>
+                <td><code>--color-secondary</code></td>
+                <td>#4AA4B9</td>
+                <td>Brand teal - secondary accents</td>
+            </tr>
+            <tr>
+                <td><code>--interactive-primary</code></td>
+                <td>#375b8d</td>
+                <td>Primary buttons background</td>
+            </tr>
+            <tr>
+                <td><code>--interactive-primary-hover</code></td>
+                <td>#2a4a73</td>
+                <td>Primary buttons hover state</td>
+            </tr>
+            <tr>
+                <td><code>--bg-gradient-start</code></td>
+                <td>#375b8d</td>
+                <td>Hero gradient start (left/top)</td>
+            </tr>
+            <tr>
+                <td><code>--bg-gradient-end</code></td>
+                <td>#4AA4B9</td>
+                <td>Hero gradient end (right/bottom)</td>
+            </tr>
+        </table>
+
+        <h3>Dark Mode Color Mapping</h3>
+        <table>
+            <tr>
+                <th>Variable</th>
+                <th>Hex Value</th>
+                <th>Usage</th>
+            </tr>
+            <tr>
+                <td><code>--color-primary</code></td>
+                <td>#598bca</td>
+                <td>Lightened brand blue for readability</td>
+            </tr>
+            <tr>
+                <td><code>--color-secondary</code></td>
+                <td>#5FC8E5</td>
+                <td>Lightened teal for dark backgrounds</td>
+            </tr>
+            <tr>
+                <td><code>--interactive-primary</code></td>
+                <td>#598bca</td>
+                <td>Primary buttons - LIGHTER for visibility</td>
+            </tr>
+            <tr>
+                <td><code>--interactive-primary-hover</code></td>
+                <td>#6a9bd8</td>
+                <td>Primary buttons hover - gets lighter</td>
+            </tr>
+            <tr>
+                <td><code>--bg-gradient-start</code></td>
+                <td>#1E3A5F</td>
+                <td>Hero gradient start - DARKER for depth</td>
+            </tr>
+            <tr>
+                <td><code>--bg-gradient-end</code></td>
+                <td>#2A4A6A</td>
+                <td>Hero gradient end - DARKER for depth</td>
+            </tr>
+        </table>
+
+        <div class="warning-box">
+            <strong>⚠️ Important Design Decision:</strong><br>
+            In dark mode, hero gradients use DARKER colors (#1E3A5F → #2A4A6A) while 
+            buttons use LIGHTER colors (#598bca). This is intentional:
+            <ul style="margin-top: 8px; margin-left: 20px;">
+                <li>Dark hero gradients provide visual depth and contrast</li>
+                <li>Light buttons ensure visibility and clickability</li>
+                <li>This matches the design of career.html (reference page)</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- GRADIENT DEMONSTRATIONS -->
+    <div class="card">
+        <h2>🌈 Hero Gradients</h2>
+        <p style="margin-bottom: var(--space-lg);">
+            All hero sections should use <code>var(--gradient-hero)</code> or 
+            <code>linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end))</code>
+        </p>
+
+        <h3>Current Theme Gradient</h3>
+        <div class="gradient-box" style="background: var(--gradient-hero);"></div>
+        <p style="margin-top: 8px; color: var(--text-secondary);">
+            Toggle dark mode to see how the gradient adapts
+        </p>
+
+        <h3 style="margin-top: var(--space-xl);">Light Mode Gradient</h3>
+        <div class="gradient-box" style="background: linear-gradient(135deg, #375b8d 0%, #4AA4B9 100%);"></div>
+        <code>linear-gradient(135deg, #375b8d 0%, #4AA4B9 100%)</code>
+
+        <h3 style="margin-top: var(--space-xl);">Dark Mode Gradient</h3>
+        <div class="gradient-box" style="background: linear-gradient(135deg, #1E3A5F 0%, #2A4A6A 100%);"></div>
+        <code>linear-gradient(135deg, #1E3A5F 0%, #2A4A6A 100%)</code>
+
+        <div class="info-box">
+            <strong>📍 Files Using Hero Gradient:</strong><br>
+            <code>career.html</code> - uses <code>--bg-gradient-start/end</code><br>
+            <code>assessment.css</code> - uses <code>--gradient-hero</code><br>
+            Both resolve to the same colors per theme.
+        </div>
+    </div>
 
     <!-- PRIMARY COLORS -->
     <div class="card">
-        <h2>Primary Colors</h2>
+        <h2>🎨 Primary Brand Colors</h2>
         <p style="margin-bottom: var(--space-lg);">Main brand colors used throughout the platform</p>
         
         <div class="color-swatch">
-            <div class="color-box" style="background: #2A5B8C;"></div>
+            <div class="color-box" style="background: var(--color-primary);"></div>
             <div>
                 <strong>Primary Blue</strong><br>
-                <code>#2A5B8C</code> / <code>var(--primary)</code><br>
-                <small>Buttons, headers, brand elements</small>
+                <code>var(--color-primary)</code><br>
+                <small>Light: #375b8d | Dark: #598bca</small><br>
+                <small>Headers, links, brand elements</small>
             </div>
         </div>
 
         <div class="color-swatch">
-            <div class="color-box" style="background: #1e4363;"></div>
+            <div class="color-box" style="background: var(--primary-dark);"></div>
             <div>
                 <strong>Primary Dark</strong><br>
-                <code>#1e4363</code> / <code>var(--primary-dark)</code><br>
+                <code>var(--primary-dark)</code><br>
+                <small>Light: #2a4a73 | Dark: #4a7bb8</small><br>
                 <small>Hover states, active elements</small>
             </div>
         </div>
 
         <div class="color-swatch">
-            <div class="color-box" style="background: #4AA4B9;"></div>
+            <div class="color-box" style="background: var(--teal);"></div>
             <div>
-                <strong>Teal</strong><br>
-                <code>#4AA4B9</code> / <code>var(--teal)</code><br>
+                <strong>Teal / Secondary</strong><br>
+                <code>var(--teal)</code> or <code>var(--color-secondary)</code><br>
+                <small>Light: #4AA4B9 | Dark: #5FC8E5</small><br>
                 <small>Secondary highlights, accents</small>
+            </div>
+        </div>
+
+        <div class="color-swatch">
+            <div class="color-box" style="background: var(--coral);"></div>
+            <div>
+                <strong>Coral / Accent</strong><br>
+                <code>var(--coral)</code><br>
+                <small>Light: #FF6B6B | Dark: #FF7B7B</small><br>
+                <small>CTAs, important links, footer links</small>
             </div>
         </div>
     </div>
 
-    <!-- BUTTON COMPONENTS -->
+    <!-- INTERACTIVE COLORS -->
     <div class="card">
-        <h2>Button Components</h2>
-        <p style="margin-bottom: var(--space-lg);">Production-tested button styles matching live deployment</p>
-        
-        <h3>Primary Buttons</h3>
-        <button class="button-demo button-primary">Dashboard</button>
-        <button class="button-demo button-primary">Customer Service Mode</button>
+        <h2>🖱️ Interactive Colors (Buttons & Links)</h2>
+        <p style="margin-bottom: var(--space-lg);">
+            All interactive elements should use these variables for consistency
+        </p>
+
+        <div class="grid-3">
+            <div class="color-swatch" style="flex-direction: column; align-items: flex-start;">
+                <div class="color-box" style="background: var(--interactive-primary); width: 100%; height: 40px;"></div>
+                <div style="margin-top: 8px;">
+                    <strong>Interactive Primary</strong><br>
+                    <code>--interactive-primary</code><br>
+                    <small>L: #375b8d | D: #598bca</small>
+                </div>
+            </div>
+            <div class="color-swatch" style="flex-direction: column; align-items: flex-start;">
+                <div class="color-box" style="background: var(--interactive-primary-hover); width: 100%; height: 40px;"></div>
+                <div style="margin-top: 8px;">
+                    <strong>Primary Hover</strong><br>
+                    <code>--interactive-primary-hover</code><br>
+                    <small>L: #2a4a73 | D: #6a9bd8</small>
+                </div>
+            </div>
+            <div class="color-swatch" style="flex-direction: column; align-items: flex-start;">
+                <div class="color-box" style="background: var(--interactive-secondary); width: 100%; height: 40px;"></div>
+                <div style="margin-top: 8px;">
+                    <strong>Interactive Secondary</strong><br>
+                    <code>--interactive-secondary</code><br>
+                    <small>L: #4AA4B9 | D: #5FC8E5</small>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="margin-top: var(--space-xl);">Button Demonstrations</h3>
+        <button class="button-demo button-primary">Primary Button</button>
+        <button class="button-demo button-primary">Learn More →</button>
         <button class="button-demo button-primary">Begin Assessment</button>
-        
-        <h3 style="margin-top: var(--space-xl);">Secondary Buttons</h3>
-        <button class="button-demo button-secondary">Career Track & Explore</button>
-        <button class="button-demo button-secondary">Preview Voices</button>
+        <button class="button-demo button-secondary">Secondary Button</button>
         
         <div class="info-box" style="margin-top: var(--space-lg);">
-            <strong>🎯 Production Note:</strong> All primary buttons (Dashboard, Customer Service Mode) use <code>var(--primary)</code> for consistent branding. Customer Service Mode button has explicit visibility styling to ensure it appears in both light and dark modes.
+            <strong>🎯 Button CSS Pattern:</strong><br>
+            <code>background: var(--interactive-primary);</code><br>
+            <code>:hover { background: var(--interactive-primary-hover); }</code>
         </div>
     </div>
 
+    <!-- SEMANTIC COLORS -->
+    <div class="card">
+        <h2>✅ Semantic Colors</h2>
+        <div class="grid-2">
+            <div class="color-swatch">
+                <div class="color-box" style="background: var(--success);"></div>
+                <div>
+                    <strong>Success</strong><br>
+                    <code>var(--success)</code><br>
+                    <small>L: #3A7F5C | D: #4CAF7A</small>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background: var(--warning);"></div>
+                <div>
+                    <strong>Warning</strong><br>
+                    <code>var(--warning)</code><br>
+                    <small>L: #E67E22 | D: #FF9800</small>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background: var(--error);"></div>
+                <div>
+                    <strong>Error</strong><br>
+                    <code>var(--error)</code><br>
+                    <small>L: #E74C3C | D: #FF5252</small>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background: var(--info);"></div>
+                <div>
+                    <strong>Info</strong><br>
+                    <code>var(--info)</code><br>
+                    <small>L: #3498DB | D: #42A5F5</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BACKGROUND COLORS -->
+    <div class="card">
+        <h2>📦 Background Hierarchy</h2>
+        <div class="grid-2">
+            <div class="color-swatch">
+                <div class="color-box" style="background: var(--bg-primary);"></div>
+                <div>
+                    <strong>BG Primary</strong><br>
+                    <code>var(--bg-primary)</code><br>
+                    <small>L: #F8F9FA | D: #121212</small><br>
+                    <small>Main page background</small>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background: var(--bg-card);"></div>
+                <div>
+                    <strong>BG Card</strong><br>
+                    <code>var(--bg-card)</code><br>
+                    <small>L: #FFFFFF | D: #1E1E1E</small><br>
+                    <small>Card backgrounds</small>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background: var(--bg-elevated);"></div>
+                <div>
+                    <strong>BG Elevated</strong><br>
+                    <code>var(--bg-elevated)</code><br>
+                    <small>L: #FFFFFF | D: #252525</small><br>
+                    <small>Modals, dropdowns</small>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="color-box" style="background: var(--bg-secondary);"></div>
+                <div>
+                    <strong>BG Secondary</strong><br>
+                    <code>var(--bg-secondary)</code><br>
+                    <small>L: #FFFFFF | D: #1E1E1E</small><br>
+                    <small>Secondary surfaces</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- CHAT INPUT -->
     <div class="card">
-        <h2>Chat Input Component</h2>
+        <h2>💬 Chat Input Component</h2>
         <p style="margin-bottom: var(--space-lg);">ChatGPT-style input with perfect capsule shape</p>
         
         <div class="chat-input-demo">
@@ -510,44 +854,9 @@
         </div>
     </div>
 
-    <!-- SEMANTIC COLORS -->
-    <div class="card">
-        <h2>Semantic Colors</h2>
-        <div class="grid-2">
-            <div class="color-swatch">
-                <div class="color-box" style="background: #3A7F5C;"></div>
-                <div>
-                    <strong>Success</strong><br>
-                    <code>#3A7F5C</code>
-                </div>
-            </div>
-            <div class="color-swatch">
-                <div class="color-box" style="background: #E67E22;"></div>
-                <div>
-                    <strong>Warning</strong><br>
-                    <code>#E67E22</code>
-                </div>
-            </div>
-            <div class="color-swatch">
-                <div class="color-box" style="background: #E74C3C;"></div>
-                <div>
-                    <strong>Error</strong><br>
-                    <code>#E74C3C</code>
-                </div>
-            </div>
-            <div class="color-swatch">
-                <div class="color-box" style="background: #3498DB;"></div>
-                <div>
-                    <strong>Info</strong><br>
-                    <code>#3498DB</code>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- TYPOGRAPHY -->
     <div class="card">
-        <h2>Typography Scale</h2>
+        <h2>📝 Typography Scale</h2>
         
         <div style="font-family: var(--font-primary); font-size: var(--text-4xl); font-weight: var(--weight-bold); margin-bottom: var(--space-md);">
             Heading 1 - Montserrat Bold (40px)
@@ -570,9 +879,92 @@
         </div>
     </div>
 
+    <!-- CSS VARIABLE QUICK REFERENCE -->
+    <div class="card">
+        <h2>📋 CSS Variable Quick Reference</h2>
+        <p style="margin-bottom: var(--space-lg);">Copy-paste ready variable names for common use cases</p>
+
+        <h3>For Buttons</h3>
+        <pre style="background: var(--bg-secondary); padding: var(--space-md); border-radius: var(--radius-md); overflow-x: auto;"><code>.btn-primary {
+    background: var(--interactive-primary);
+    color: var(--text-inverse);
+}
+.btn-primary:hover {
+    background: var(--interactive-primary-hover);
+}</code></pre>
+
+        <h3>For Hero Sections</h3>
+        <pre style="background: var(--bg-secondary); padding: var(--space-md); border-radius: var(--radius-md); overflow-x: auto;"><code>.hero {
+    background: var(--gradient-hero);
+    /* OR */
+    background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+}</code></pre>
+
+        <h3>For Cards</h3>
+        <pre style="background: var(--bg-secondary); padding: var(--space-md); border-radius: var(--radius-md); overflow-x: auto;"><code>.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}</code></pre>
+
+        <h3>For Links</h3>
+        <pre style="background: var(--bg-secondary); padding: var(--space-md); border-radius: var(--radius-md); overflow-x: auto;"><code>a {
+    color: var(--text-link);
+}
+/* Note: In dark mode, --text-link is coral (#FF7B7B) */</code></pre>
+    </div>
+
+    <!-- FILES REFERENCE -->
+    <div class="card">
+        <h2>📁 Source Files Reference</h2>
+        <p style="margin-bottom: var(--space-lg);">Where these variables are defined and used</p>
+
+        <table>
+            <tr>
+                <th>File</th>
+                <th>Purpose</th>
+            </tr>
+            <tr>
+                <td><code>assets/css/theme-variables.css</code></td>
+                <td>Primary source of all CSS variables (light + dark mode)</td>
+            </tr>
+            <tr>
+                <td><code>assets/css/brand.css</code></td>
+                <td>Brand-specific overrides (should match theme-variables)</td>
+            </tr>
+            <tr>
+                <td><code>assets/css/light-theme.css</code></td>
+                <td>Light theme specific styles</td>
+            </tr>
+            <tr>
+                <td><code>assets/css/components.css</code></td>
+                <td>Component styles using the variables</td>
+            </tr>
+            <tr>
+                <td><code>assets/css/assessment.css</code></td>
+                <td>Assessment page specific styles</td>
+            </tr>
+            <tr>
+                <td><code>career.html</code></td>
+                <td>Reference page for hero gradient implementation</td>
+            </tr>
+        </table>
+
+        <div class="warning-box">
+            <strong>⚠️ Maintenance Note:</strong><br>
+            When updating colors, ensure ALL of these files are synchronized:
+            <ul style="margin-top: 8px; margin-left: 20px;">
+                <li><code>theme-variables.css</code> (primary source)</li>
+                <li><code>brand.css</code> (should match)</li>
+                <li><code>light-theme.css</code> (should match)</li>
+                <li>This reference file</li>
+            </ul>
+        </div>
+    </div>
+
     <!-- DARK MODE -->
     <div class="card">
-        <h2>Dark Mode Support</h2>
+        <h2>🌙 Dark Mode Support</h2>
         <p>Toggle between light and dark modes using the button in the top-right corner.</p>
         
         <div class="info-box" style="margin-top: var(--space-lg);">
@@ -583,6 +975,39 @@
             • Smooth transitions between modes<br>
             • Saves preference to localStorage
         </div>
+
+        <div class="info-box" style="margin-top: var(--space-md);">
+            <strong>🎨 Dark Mode Color Philosophy:</strong><br>
+            • <strong>Gradients:</strong> Use DARKER blues for visual depth<br>
+            • <strong>Buttons:</strong> Use LIGHTER blues for visibility/clickability<br>
+            • <strong>Text:</strong> Light text on dark backgrounds<br>
+            • <strong>Links:</strong> Coral color for visibility
+        </div>
+    </div>
+
+    <!-- VERSION HISTORY -->
+    <div class="card">
+        <h2>📅 Version History</h2>
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Changes</th>
+            </tr>
+            <tr>
+                <td>Nov 27, 2025</td>
+                <td>
+                    <strong>Color Standardization Complete</strong><br>
+                    • Extracted colors from production via color picker<br>
+                    • Unified --gradient-hero across light/dark modes<br>
+                    • Aligned dark mode gradient with career.html<br>
+                    • Added comprehensive color mapping documentation
+                </td>
+            </tr>
+            <tr>
+                <td>Nov 23, 2025</td>
+                <td>Initial theme typography guide created</td>
+            </tr>
+        </table>
     </div>
 
     <script>
