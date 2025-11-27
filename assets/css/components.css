@@ -1,7 +1,10 @@
+/* Import unified modal system */
+@import url('modal.css');
+
 /**
  * PMERIT Components CSS
- * Version: 3.3 - Added Typing Indicator
- * Last Updated: October 15, 2025
+ * Version: 3.4 - Unified Modal System
+ * Last Updated: November 27, 2025
  * 
  * FIXES:
  * - Control buttons now horizontal (VH Mode + Read About on same line)

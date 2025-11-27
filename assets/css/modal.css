@@ -1,0 +1,624 @@
+/* ========================================
+   UNIFIED MODAL COMPONENT SYSTEM
+   Version: 2.0 - BEM Architecture
+   
+   Base:      .modal
+   Elements:  .modal__backdrop, .modal__dialog, .modal__header, etc.
+   Modifiers: .modal--auth, .modal--confirm, .modal--success
+   States:    .modal.active, .modal[aria-hidden="false"]
+   
+   Usage:
+   <div class="modal modal--auth" id="sign-in-modal" aria-hidden="true">
+     <div class="modal__backdrop"></div>
+     <div class="modal__dialog">
+       <div class="modal__header">...</div>
+       <div class="modal__body">...</div>
+     </div>
+   </div>
+   ======================================== */
+
+/* ----------------------------------------
+   BASE MODAL (works for ALL modals)
+   ---------------------------------------- */
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  
+  display: none;
+  align-items: center;
+  justify-content: center;
+  
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Active state - shown modal */
+.modal.active,
+.modal.modal-open,
+.modal[aria-hidden="false"] {
+  display: flex;
+  opacity: 1;
+}
+
+/* ----------------------------------------
+   MODAL BACKDROP (overlay behind dialog)
+   ---------------------------------------- */
+
+.modal__backdrop,
+.modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--bg-overlay, rgba(0, 0, 0, 0.6));
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  
+  /* Flex container for centering dialog */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  
+  overflow-y: auto;
+}
+
+/* ----------------------------------------
+   MODAL DIALOG (content container)
+   ---------------------------------------- */
+
+.modal__dialog,
+.modal-dialog {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  background: var(--bg-card, #ffffff);
+  border-radius: var(--border-radius-lg, 12px);
+  box-shadow: var(--shadow-xl, 0 20px 40px rgba(0, 0, 0, 0.15));
+  
+  animation: modalSlideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ----------------------------------------
+   MODAL HEADER
+   ---------------------------------------- */
+
+.modal__header,
+.modal-header {
+  padding: 2rem 2rem 1.5rem;
+  border-bottom: 1px solid var(--border-color, #E9ECEF);
+  position: relative;
+}
+
+/* ----------------------------------------
+   MODAL TITLE
+   ---------------------------------------- */
+
+.modal__title,
+.modal-title {
+  margin: 0;
+  padding-right: 2.5rem; /* Space for close button */
+  font-family: var(--font-primary, 'Montserrat', sans-serif);
+  font-size: 1.5rem;
+  font-weight: var(--weight-bold, 700);
+  color: var(--text-primary, #2C2C2C);
+}
+
+/* ----------------------------------------
+   MODAL CLOSE BUTTON
+   ---------------------------------------- */
+
+.modal__close,
+.modal-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 32px;
+  height: 32px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  
+  color: var(--text-secondary, #6C757D);
+  font-size: 1.25rem;
+  cursor: pointer;
+  
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.modal__close:hover,
+.modal-close:hover {
+  background: var(--bg-secondary, #F8F9FA);
+  color: var(--text-primary, #2C2C2C);
+  transform: rotate(90deg);
+}
+
+.modal__close:focus,
+.modal-close:focus {
+  outline: 2px solid var(--interactive-primary, #2A5B8C);
+  outline-offset: 2px;
+}
+
+/* ----------------------------------------
+   MODAL BODY
+   ---------------------------------------- */
+
+.modal__body,
+.modal-body {
+  padding: 2rem;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+
+/* ----------------------------------------
+   MODAL FOOTER (optional)
+   ---------------------------------------- */
+
+.modal__footer,
+.modal-footer {
+  padding: 1.5rem 2rem;
+  border-top: 1px solid var(--border-color, #E9ECEF);
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+
+/* ========================================
+   AUTH MODAL VARIANT (.modal--auth)
+   For sign-in, sign-up, forgot-password modals
+   ======================================== */
+
+/* Auth-specific dialog width */
+.modal--auth .modal__dialog,
+.modal--auth .modal-dialog {
+  max-width: 420px;
+}
+
+/* ----------------------------------------
+   AUTH FORM STYLES
+   ---------------------------------------- */
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Form Group */
+.modal .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Form Labels */
+.modal .form-label,
+.modal .form-group label {
+  font-size: 0.9rem;
+  font-weight: var(--weight-medium, 500);
+  color: var(--text-primary, #2C2C2C);
+}
+
+/* Form Inputs */
+.modal .form-input,
+.modal .form-group input[type="text"],
+.modal .form-group input[type="email"],
+.modal .form-group input[type="password"] {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  
+  font-family: var(--font-secondary, 'Inter', sans-serif);
+  font-size: 1rem;
+  color: var(--text-primary, #2C2C2C);
+  
+  background: var(--bg-secondary, #F8F9FA);
+  border: 1px solid var(--border-color, #E9ECEF);
+  border-radius: var(--border-radius-md, 8px);
+  
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.modal .form-input:focus,
+.modal .form-group input:focus {
+  outline: none;
+  border-color: var(--interactive-primary, #2A5B8C);
+  background: var(--bg-card, #ffffff);
+  box-shadow: 0 0 0 3px rgba(42, 91, 140, 0.1);
+}
+
+.modal .form-input.error,
+.modal .form-group input.error {
+  border-color: var(--color-error, #DC3545);
+}
+
+.modal .form-input.error:focus,
+.modal .form-group input.error:focus {
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+}
+
+/* Form Help Text */
+.modal .form-help {
+  font-size: 0.8rem;
+  color: var(--text-muted, #8E9499);
+  margin-top: 0.25rem;
+}
+
+/* Form Row (side-by-side layout) */
+.modal .form-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* ----------------------------------------
+   AUTH BUTTONS
+   ---------------------------------------- */
+
+/* Primary Button */
+.modal .btn-primary,
+.modal .btn.btn-primary {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  
+  font-family: var(--font-primary, 'Montserrat', sans-serif);
+  font-size: 1rem;
+  font-weight: var(--weight-semibold, 600);
+  
+  background: var(--interactive-primary, #2A5B8C);
+  color: var(--text-inverse, #ffffff);
+  border: none;
+  border-radius: var(--border-radius-md, 8px);
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.08));
+  
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.modal .btn-primary:hover:not(:disabled),
+.modal .btn.btn-primary:hover:not(:disabled) {
+  background: var(--interactive-primary-hover, #1f4567);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.1));
+}
+
+.modal .btn-primary:active:not(:disabled),
+.modal .btn.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.modal .btn-primary:disabled,
+.modal .btn.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.modal .btn-primary:focus,
+.modal .btn.btn-primary:focus {
+  outline: 2px solid var(--interactive-primary, #2A5B8C);
+  outline-offset: 2px;
+}
+
+/* Block button (full width) */
+.modal .btn-block {
+  width: 100%;
+}
+
+/* ----------------------------------------
+   SOCIAL AUTH BUTTONS
+   ---------------------------------------- */
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0.5rem 0;
+  color: var(--text-secondary, #6C757D);
+  font-size: 0.875rem;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-color, #E9ECEF);
+}
+
+.social-auth {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn-social {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  
+  padding: 0.75rem 1rem;
+  
+  background: var(--bg-secondary, #F8F9FA);
+  border: 1px solid var(--border-color, #E9ECEF);
+  border-radius: var(--border-radius-md, 8px);
+  
+  font-family: var(--font-secondary, 'Inter', sans-serif);
+  font-size: 0.9rem;
+  font-weight: var(--weight-medium, 500);
+  color: var(--text-primary, #2C2C2C);
+  
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-social:hover {
+  background: var(--bg-card, #ffffff);
+  border-color: var(--interactive-primary, #2A5B8C);
+  color: var(--interactive-primary, #2A5B8C);
+}
+
+.btn-social:focus {
+  outline: 2px solid var(--interactive-primary, #2A5B8C);
+  outline-offset: 2px;
+}
+
+.btn-social i {
+  font-size: 1.1rem;
+}
+
+/* ----------------------------------------
+   AUTH SWITCH LINKS
+   ---------------------------------------- */
+
+.auth-switch {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary, #6C757D);
+}
+
+.auth-link {
+  color: var(--interactive-primary, #2A5B8C);
+  font-weight: var(--weight-medium, 500);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.auth-link:hover {
+  color: var(--interactive-primary-hover, #1f4567);
+  text-decoration: underline;
+}
+
+.auth-link:focus {
+  outline: 2px solid var(--interactive-primary, #2A5B8C);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ----------------------------------------
+   CHECKBOX STYLING
+   ---------------------------------------- */
+
+.modal .checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary, #6C757D);
+  cursor: pointer;
+}
+
+.modal .checkbox-label input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--interactive-primary, #2A5B8C);
+}
+
+
+/* ========================================
+   RESPONSIVE ADJUSTMENTS
+   ======================================== */
+
+@media (max-width: 640px) {
+  .modal__dialog,
+  .modal-dialog {
+    max-width: 100%;
+    margin: 0;
+    border-radius: var(--border-radius-lg, 12px) var(--border-radius-lg, 12px) 0 0;
+    max-height: 90vh;
+  }
+  
+  .modal__backdrop,
+  .modal-backdrop {
+    align-items: flex-end;
+    padding: 0;
+  }
+  
+  .modal__header,
+  .modal-header,
+  .modal__body,
+  .modal-body {
+    padding: 1.5rem;
+  }
+  
+  .modal__title,
+  .modal-title {
+    font-size: 1.25rem;
+  }
+  
+  .modal .form-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .social-auth {
+    flex-direction: column;
+  }
+}
+
+/* ========================================
+   DARK MODE SUPPORT
+   ======================================== */
+
+[data-theme="dark"] .modal__dialog,
+[data-theme="dark"] .modal-dialog {
+  background: var(--bg-card, #1E1E1E);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .modal__header,
+[data-theme="dark"] .modal-header {
+  border-bottom-color: var(--border-color, #3a3a5c);
+}
+
+[data-theme="dark"] .modal__title,
+[data-theme="dark"] .modal-title {
+  color: var(--text-primary, #E4E4E7);
+}
+
+[data-theme="dark"] .modal__close,
+[data-theme="dark"] .modal-close {
+  color: var(--text-secondary, #A1A1AA);
+}
+
+[data-theme="dark"] .modal__close:hover,
+[data-theme="dark"] .modal-close:hover {
+  background: var(--bg-secondary, #2a2a2a);
+  color: var(--text-primary, #E4E4E7);
+}
+
+[data-theme="dark"] .modal .form-label,
+[data-theme="dark"] .modal .form-group label {
+  color: var(--text-primary, #E4E4E7);
+}
+
+[data-theme="dark"] .modal .form-input,
+[data-theme="dark"] .modal .form-group input {
+  background: var(--bg-secondary, #2a2a2a);
+  border-color: var(--border-color, #3a3a5c);
+  color: var(--text-primary, #E4E4E7);
+}
+
+[data-theme="dark"] .modal .form-input:focus,
+[data-theme="dark"] .modal .form-group input:focus {
+  background: var(--bg-card, #1E1E1E);
+  border-color: var(--interactive-primary, #4A8BC8);
+}
+
+[data-theme="dark"] .modal .form-help {
+  color: var(--text-muted, #71717A);
+}
+
+[data-theme="dark"] .auth-divider {
+  color: var(--text-secondary, #A1A1AA);
+}
+
+[data-theme="dark"] .auth-divider::before,
+[data-theme="dark"] .auth-divider::after {
+  background: var(--border-color, #3a3a5c);
+}
+
+[data-theme="dark"] .btn-social {
+  background: var(--bg-secondary, #2a2a2a);
+  border-color: var(--border-color, #3a3a5c);
+  color: var(--text-primary, #E4E4E7);
+}
+
+[data-theme="dark"] .btn-social:hover {
+  background: var(--bg-card, #1E1E1E);
+  border-color: var(--interactive-primary, #4A8BC8);
+  color: var(--interactive-primary, #4A8BC8);
+}
+
+[data-theme="dark"] .auth-switch {
+  color: var(--text-secondary, #A1A1AA);
+}
+
+[data-theme="dark"] .auth-link {
+  color: var(--interactive-primary, #4A8BC8);
+}
+
+[data-theme="dark"] .auth-link:hover {
+  color: var(--interactive-primary-hover, #6BA3D6);
+}
+
+[data-theme="dark"] .modal .checkbox-label {
+  color: var(--text-secondary, #A1A1AA);
+}
+
+/* ========================================
+   REDUCED MOTION SUPPORT
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .modal,
+  .modal__dialog,
+  .modal-dialog,
+  .modal__close,
+  .modal-close,
+  .modal .btn-primary,
+  .btn-social {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* ========================================
+   FUTURE VARIANT PLACEHOLDERS
+   
+   Add these as needed:
+   - .modal--confirm (confirmation dialogs)
+   - .modal--success (success messages)
+   - .modal--alert (warning/error alerts)
+   - .modal--large (wider modals)
+   - .modal--fullscreen (mobile fullscreen)
+   ======================================== */
+
+/* Example: Confirmation Modal Variant */
+/*
+.modal--confirm .modal__dialog {
+  max-width: 360px;
+}
+
+.modal--confirm .modal__body {
+  text-align: center;
+  padding: 2rem;
+}
+
+.modal--confirm .modal__footer {
+  justify-content: center;
+}
+*/
+
