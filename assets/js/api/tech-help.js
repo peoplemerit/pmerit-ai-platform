@@ -43,7 +43,7 @@
 
         // TODO: Replace with actual API call when backend is deployed
         // For now, simulate API call
-        console.log('📤 Tech Help submission payload:', payload);
+        logger.debug('📤 Tech Help submission payload:', payload);
 
         // Simulate network delay
         await new Promise(resolve => setTimeout(resolve, 1000));
@@ -87,7 +87,7 @@
     getSuggestions: async function (query) {
       try {
         // TODO: Implement when AI endpoint is ready
-        console.log('🤖 Requesting suggestions for:', query);
+        logger.debug('🤖 Requesting suggestions for:', query);
 
         // Simulate network delay
         await new Promise(resolve => setTimeout(resolve, 500));
@@ -136,7 +136,7 @@
         });
 
         // TODO: Implement when backend is ready
-        console.log('📋 Listing tickets with options:', options);
+        logger.debug('📋 Listing tickets with options:', options);
 
         return {
           success: true,
@@ -176,5 +176,5 @@
   window.TechHelpAPI = TechHelpAPI;
 
   // eslint-disable-next-line no-console
-  console.log('✅ TechHelpAPI client loaded');
+  logger.debug('✅ TechHelpAPI client loaded');
 })();
