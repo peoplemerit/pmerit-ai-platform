@@ -12,7 +12,7 @@
 window.analytics = window.analytics || {
   track: function(event, props = {}) {
     if (window.PMERIT_DEBUG) {
-      console.log('[track]', event, props);
+      logger.debug('[track]', event, props);
     }
   }
 };
@@ -162,12 +162,12 @@ window.vhBoot = async function vhBoot() {
     }
     // Initialize only once
     if (window.__VH_INITED__) {
-      console.log('[VH] Already initialized, skipping vhBoot');
+      logger.debug('[VH] Already initialized, skipping vhBoot');
       return;
     }
     window.__VH_INITED__ = true;
 
-    console.log('[VH] Initializing AvatarManager with pm_classic.glb...');
+    logger.debug('[VH] Initializing AvatarManager with pm_classic.glb...');
 
     // AvatarManager should handle renderer/scene and accept modelUrl + canvas
     if (!state.avatarManager && window.AvatarManager) {
@@ -208,7 +208,7 @@ window.vhBoot = async function vhBoot() {
 };
 
 function init() {
-  console.log('🚀 PMERIT Platform initializing...');
+  logger.debug('🚀 PMERIT Platform initializing...');
   
   // Load saved state
   loadState();
@@ -231,7 +231,7 @@ function init() {
     });
   }
   
-  console.log('✅ PMERIT Platform initialized');
+  logger.debug('✅ PMERIT Platform initialized');
 }
 
 /**
@@ -250,7 +250,7 @@ function isWebGLSupported() {
 
 // ========== VIRTUAL HUMAN MODE ==========
 async function enableVirtualHuman(isEnabled) {
-  console.log(`🤖 Virtual Human Mode: ${isEnabled ? 'ON' : 'OFF'}`);
+  logger.debug(`🤖 Virtual Human Mode: ${isEnabled ? 'ON' : 'OFF'}`);
   
   // Track toggle event
   window.analytics.track(isEnabled ? 'vh_toggle_on' : 'vh_toggle_off', {
@@ -421,7 +421,7 @@ function initializeSupportButtons() {
     if (vhBtn) {
       vhBtn.addEventListener('click', async () => {
         try {
-          console.log('🤖 Support VH button clicked');
+          logger.debug('🤖 Support VH button clicked');
           
           // Toggle VH mode
           const newState = !state.virtualHuman;
@@ -470,7 +470,7 @@ function initializeSupportButtons() {
     if (csmBtn) {
       csmBtn.addEventListener('click', async () => {
         try {
-          console.log('📞 Support CSM button clicked');
+          logger.debug('📞 Support CSM button clicked');
           
           // Toggle CSM mode
           const newState = !state.customerService;
@@ -611,7 +611,7 @@ function initializeToggles() {
     }
   });
   
-  console.log('✅ Toggle switches initialized');
+  logger.debug('✅ Toggle switches initialized');
 } catch (error) {
   console.error('❌ Error initializing toggles:', error);
   showToast('Some toggles may not be working. Please refresh the page.', 'warning');
@@ -716,7 +716,7 @@ function initializeCareerTrack() {
         
         element.addEventListener('click', (e) => {
           e.preventDefault();
-          console.log('🎯 Career Track clicked - Navigating to career.html');
+          logger.debug('🎯 Career Track clicked - Navigating to career.html');
           
           // Navigate to career page
           window.location.href = '/career.html';
@@ -732,13 +732,13 @@ function initializeCareerTrack() {
     if (careerTrackBtn) {
       careerTrackBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        console.log('🎯 Career Track button clicked - Navigating to career.html');
+        logger.debug('🎯 Career Track button clicked - Navigating to career.html');
         window.location.href = '/career.html';
         showToast('Opening Career Paths...', 'info');
       });
     }
     
-    console.log('✅ Career Track navigation initialized');
+    logger.debug('✅ Career Track navigation initialized');
   } catch (error) {
     console.error('❌ Error initializing Career Track:', error);
     // Don't show toast for this - fail silently as it's not critical
@@ -754,12 +754,12 @@ function initializeReadAbout() {
     readAboutButtons.forEach(button => {
       button.addEventListener('click', (e) => {
         e.preventDefault();
-        console.log('📖 Read About button clicked - Navigating to about-us.html');
+        logger.debug('📖 Read About button clicked - Navigating to about-us.html');
         window.location.href = '/about-us.html';
       });
     });
     
-    console.log('✅ Read About navigation initialized');
+    logger.debug('✅ Read About navigation initialized');
   } catch (error) {
     console.error('❌ Error initializing Read About:', error);
     // Don't show toast for this - fail silently as it's not critical

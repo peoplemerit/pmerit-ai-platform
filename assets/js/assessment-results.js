@@ -832,7 +832,7 @@
    */
   function showLoadingState() {
     // Show loading spinner or skeleton
-    console.log('Loading results...');
+    logger.debug('Loading results...');
   }
 
   /**
@@ -840,7 +840,7 @@
    */
   function hideLoadingState() {
     // Hide loading UI
-    console.log('Results loaded');
+    logger.debug('Results loaded');
   }
 
   /**
@@ -859,7 +859,7 @@
    */
   function showSuccessMessage(message) {
     // Show toast or notification
-    console.log('Success:', message);
+    logger.debug('Success:', message);
     // In the future, implement a proper toast notification
   }
 
@@ -879,7 +879,7 @@
    */
   function trackResultsView(assessmentId) {
     // Send to analytics
-    console.log('Results viewed:', assessmentId);
+    logger.debug('Results viewed:', assessmentId);
   }
 
   /**
@@ -888,17 +888,17 @@
    */
   function trackPDFExport(assessmentId) {
     // Send to analytics
-    console.log('PDF exported:', assessmentId);
+    logger.debug('PDF exported:', assessmentId);
   }
 
   // Export career action functions to window for onclick handlers
   window.viewCareerDetails = function (onetCode) {
-    console.log('View career details:', onetCode);
+    logger.debug('View career details:', onetCode);
     window.location.href = `/career.html?id=${onetCode}`;
   };
 
   window.explorePathway = function (onetCode) {
-    console.log('Explore pathway:', onetCode);
+    logger.debug('Explore pathway:', onetCode);
     window.location.href = `/career.html?id=${onetCode}#pathway`;
   };
 

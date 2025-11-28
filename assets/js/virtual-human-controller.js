@@ -90,7 +90,7 @@
       }
 
       try {
-        console.log('Initializing Virtual Human...');
+        logger.debug('Initializing Virtual Human...');
 
         // NEW: Create overlay if enabled
         if (this.config.useOverlay) {
@@ -123,7 +123,7 @@
         // Mark as initialized
         this.state.initialized = true;
 
-        console.log('Virtual Human initialized successfully');
+        logger.debug('Virtual Human initialized successfully');
 
         // Auto-enable if configured
         if (this.config.defaultEnabled) {
@@ -200,7 +200,7 @@
       this.overlay = overlay;
       this.container = overlay; // Use overlay as container for avatar
       
-      console.log('Virtual Human overlay created');
+      logger.debug('Virtual Human overlay created');
     }
 
     /**
@@ -224,7 +224,7 @@
         // Wait for avatar manager to be ready
         await this.avatarManager.init();
 
-        console.log('Avatar Manager initialized');
+        logger.debug('Avatar Manager initialized');
 
       } catch (error) {
         console.error('Failed to initialize Avatar Manager:', error);
@@ -250,7 +250,7 @@
             this.avatarManager.state.provider,
             []
           );
-          console.log('Lip-Sync Controller initialized');
+          logger.debug('Lip-Sync Controller initialized');
         } else {
           console.warn('Avatar provider not available - lip-sync disabled');
         }
@@ -283,7 +283,7 @@
           } else {
             toggle.addEventListener('click', () => this.toggle());
           }
-          console.log(`Bound toggle: ${id}`);
+          logger.debug(`Bound toggle: ${id}`);
         }
       });
 
@@ -374,7 +374,7 @@
       }
 
       try {
-        console.log('Enabling Virtual Human...');
+        logger.debug('Enabling Virtual Human...');
 
         // NEW: Show overlay or container
         if (this.config.useOverlay && this.overlay) {
@@ -409,7 +409,7 @@
         // Update captions
         this.updateCaptions('Virtual Human is ready');
 
-        console.log('Virtual Human enabled');
+        logger.debug('Virtual Human enabled');
 
         // Dispatch event
         window.dispatchEvent(new CustomEvent('virtualHumanEnabled'));
@@ -428,7 +428,7 @@
         return;
       }
 
-      console.log('Disabling Virtual Human...');
+      logger.debug('Disabling Virtual Human...');
 
       // NEW: Hide overlay or container
       if (this.config.useOverlay && this.overlay) {
@@ -456,7 +456,7 @@
       this.savePreference('enabled', false);
       this.savePreference('minimized', false);
 
-      console.log('Virtual Human disabled');
+      logger.debug('Virtual Human disabled');
 
       // Dispatch event
       window.dispatchEvent(new CustomEvent('virtualHumanDisabled'));
@@ -494,7 +494,7 @@
       }
       
       this.savePreference('minimized', true);
-      console.log('[VirtualHuman] Minimized');
+      logger.debug('[VirtualHuman] Minimized');
     }
     
     /**
@@ -518,7 +518,7 @@
       }
       
       this.savePreference('minimized', false);
-      console.log('[VirtualHuman] Maximized');
+      logger.debug('[VirtualHuman] Maximized');
     }
 
     /**
@@ -537,13 +537,13 @@
           throw new Error(`Avatar ${id} not found`);
         }
 
-        console.log('Loading avatar:', avatar.name);
+        logger.debug('Loading avatar:', avatar.name);
 
         // Update state - actual model loading handled by AvatarManager internally
         this.state.avatarLoaded = true;
         this.state.currentAvatar = avatar;
 
-        console.log('Avatar loaded successfully');
+        logger.debug('Avatar loaded successfully');
 
       } catch (error) {
         console.error('Failed to load avatar:', error);
@@ -580,7 +580,7 @@
      */
     handleChatMessage(event) {
       const message = event.detail.message;
-      console.log('User message:', message);
+      logger.debug('User message:', message);
 
       // Currently no specific animation for listening
       // Could be enhanced in future versions
@@ -592,7 +592,7 @@
      */
     async handleChatResponse(event) {
       const response = event.detail.response;
-      console.log('AI response:', response);
+      logger.debug('AI response:', response);
 
       // Speak response if Virtual Human is enabled
       if (this.state.enabled && !this.state.muted) {
@@ -623,7 +623,7 @@
           await this.api.speakAndPlay(text);
         } else {
           // No TTS available, just show captions
-          console.log('No TTS available, showing captions only');
+          logger.debug('No TTS available, showing captions only');
         }
 
         // Update state
@@ -657,7 +657,7 @@
      * @param {Object} data - TTS start data
      */
     handleTTSStart(data) {
-      console.log('TTS started:', data.text);
+      logger.debug('TTS started:', data.text);
       // Show speaking indicator in UI
     }
 
@@ -666,7 +666,7 @@
      * @param {Object} data - TTS complete data
      */
     handleTTSComplete(data) {
-      console.log('TTS completed:', data.text);
+      logger.debug('TTS completed:', data.text);
       // Hide speaking indicator
     }
 
@@ -703,7 +703,7 @@
      * Handle stop event
      */
     handleStop() {
-      console.log('Playback stopped');
+      logger.debug('Playback stopped');
 
       // Reset lip-sync
       if (this.lipSyncController) {
@@ -759,7 +759,7 @@
       // Save preference
       this.savePreference('muted', this.state.muted);
 
-      console.log('Virtual Human', this.state.muted ? 'muted' : 'unmuted');
+      logger.debug('Virtual Human', this.state.muted ? 'muted' : 'unmuted');
     }
 
     /**
@@ -868,7 +868,7 @@
         this.state.minimized = prefs.minimized;
       }
 
-      console.log('Preferences loaded:', prefs);
+      logger.debug('Preferences loaded:', prefs);
     }
 
     /**
@@ -883,7 +883,7 @@
      * Destroy Virtual Human (cleanup)
      */
     destroy() {
-      console.log('Destroying Virtual Human...');
+      logger.debug('Destroying Virtual Human...');
 
       // Stop any speaking
       if (this.api) {
@@ -905,7 +905,7 @@
       this.state.initialized = false;
       this.state.enabled = false;
 
-      console.log('Virtual Human destroyed');
+      logger.debug('Virtual Human destroyed');
     }
   }
 
@@ -922,7 +922,7 @@
         autoInit: true,
         defaultEnabled: false       // User must opt-in
       });
-      console.log('Virtual Human Controller auto-initialized with overlay mode');
+      logger.debug('Virtual Human Controller auto-initialized with overlay mode');
     }
   });
 
@@ -937,7 +937,7 @@
         autoInit: true,
         defaultEnabled: false
       });
-      console.log('Virtual Human Controller initialized immediately');
+      logger.debug('Virtual Human Controller initialized immediately');
     }
   }
 

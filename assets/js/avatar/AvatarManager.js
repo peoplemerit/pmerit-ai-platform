@@ -55,7 +55,7 @@
       }
 
       try {
-        console.log('🎭 Initializing AvatarManager...');
+        logger.debug('🎭 Initializing AvatarManager...');
 
         // Initialize WebGL provider if enabled
         if (this.config.enabled) {
@@ -76,7 +76,7 @@
         // Set up TTS event listeners if TTS module is available
         this._setupTTSListeners();
         
-        console.log('✅ AvatarManager initialized');
+        logger.debug('✅ AvatarManager initialized');
       } catch (error) {
         console.error('❌ AvatarManager initialization failed:', error);
         if (this.callbacks.onError) {

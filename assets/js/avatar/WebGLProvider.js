@@ -72,7 +72,7 @@
       }
 
       try {
-        console.log('🎨 Initializing WebGLProvider...');
+        logger.debug('🎨 Initializing WebGLProvider...');
 
         // Check if Three.js is available
         if (typeof THREE === 'undefined') {
@@ -108,10 +108,10 @@
         }
 
         this.state.initialized = true;
-        console.log('✅ WebGLProvider initialized');
+        logger.debug('✅ WebGLProvider initialized');
         
         if (this.state.reducedMotion) {
-          console.log('ℹ️ Reduced motion mode detected');
+          logger.debug('ℹ️ Reduced motion mode detected');
         }
       } catch (error) {
         console.error('❌ WebGLProvider initialization failed:', error);
@@ -231,13 +231,13 @@
           : window.location.origin + this.config.avatarBaseUrl;
         const modelUrl = new URL(this.config.modelFile, baseUrl).toString();
 
-        console.log(`📦 Attempting to load avatar from: ${modelUrl}`);
-        console.log(`📦 Config: avatarBaseUrl="${this.config.avatarBaseUrl}", modelFile="${this.config.modelFile}"`);
+        logger.debug(`📦 Attempting to load avatar from: ${modelUrl}`);
+        logger.debug(`📦 Config: avatarBaseUrl="${this.config.avatarBaseUrl}", modelFile="${this.config.modelFile}"`);
 
         // Attempt to load GLB model with try-catch for GLTFLoader availability
         try {
           await this._loadGLBModel(modelUrl);
-          console.log(`✅ Successfully loaded GLB model from ${modelUrl}`);
+          logger.debug(`✅ Successfully loaded GLB model from ${modelUrl}`);
         } catch (loadError) {
           // GLTFLoader not available or model load failed
           console.warn('⚠️ GLTFLoader not available or load failed, using placeholder orb fallback');
@@ -263,7 +263,7 @@
         }
         const loader = new THREE.GLTFLoader();
         
-        console.log(`🔄 Starting GLB load from: ${url}`);
+        logger.debug(`🔄 Starting GLB load from: ${url}`);
         
         // Set configurable timeout for loading
         const timeout = setTimeout(() => {
@@ -300,30 +300,30 @@
             
             // Look for idle and speaking animations
             if (gltf.animations && gltf.animations.length > 0) {
-              console.log(`🎬 Found ${gltf.animations.length} animation(s) in model`);
+              logger.debug(`🎬 Found ${gltf.animations.length} animation(s) in model`);
               gltf.animations.forEach((clip) => {
                 if (clip.name.toLowerCase().includes('idle')) {
                   this.state.idleAction = this.state.mixer.clipAction(clip);
                   this.state.idleAction.play();
-                  console.log(`▶️ Playing idle animation: ${clip.name}`);
+                  logger.debug(`▶️ Playing idle animation: ${clip.name}`);
                 } else if (clip.name.toLowerCase().includes('speak')) {
                   this.state.speakAction = this.state.mixer.clipAction(clip);
-                  console.log(`🔊 Found speaking animation: ${clip.name}`);
+                  logger.debug(`🔊 Found speaking animation: ${clip.name}`);
                 }
               });
             } else {
-              console.log('ℹ️ No animations found in model');
+              logger.debug('ℹ️ No animations found in model');
             }
 
-            console.log('✅ Avatar model loaded and initialized successfully');
+            logger.debug('✅ Avatar model loaded and initialized successfully');
             resolve();
           },
           (progress) => {
             if (progress.total > 0) {
               const percent = (progress.loaded / progress.total * 100).toFixed(0);
-              console.log(`📦 Loading avatar: ${percent}% (${progress.loaded}/${progress.total} bytes)`);
+              logger.debug(`📦 Loading avatar: ${percent}% (${progress.loaded}/${progress.total} bytes)`);
             } else {
-              console.log(`📦 Loading avatar: ${progress.loaded} bytes received...`);
+              logger.debug(`📦 Loading avatar: ${progress.loaded} bytes received...`);
             }
           },
           (error) => {
@@ -345,7 +345,7 @@
      * @private
      */
     _createPlaceholderAvatar() {
-      console.log('📦 Creating placeholder avatar (orb)...');
+      logger.debug('📦 Creating placeholder avatar (orb)...');
 
       // Create a simple sphere as avatar placeholder
       const geometry = new THREE.SphereGeometry(0.3, 32, 32);
@@ -366,7 +366,7 @@
       // Simple idle animation (gentle bobbing)
       this._createIdleAnimation();
 
-      console.log('✅ Placeholder avatar created');
+      logger.debug('✅ Placeholder avatar created');
     }
 
     /**
@@ -393,7 +393,7 @@
      */
     startSpeaking() {
       this.state.speaking = true;
-      console.log('🗣️ Avatar started speaking');
+      logger.debug('🗣️ Avatar started speaking');
     }
 
     /**
@@ -401,7 +401,7 @@
      */
     stopSpeaking() {
       this.state.speaking = false;
-      console.log('🤐 Avatar stopped speaking');
+      logger.debug('🤐 Avatar stopped speaking');
     }
 
     /**
@@ -499,7 +499,7 @@
      */
     _onReducedMotionChange(event) {
       this.state.reducedMotion = event.matches;
-      console.log(`ℹ️ Reduced motion: ${this.state.reducedMotion ? 'enabled' : 'disabled'}`);
+      logger.debug(`ℹ️ Reduced motion: ${this.state.reducedMotion ? 'enabled' : 'disabled'}`);
       
       // Pause animations if reduced motion is enabled
       if (this.state.reducedMotion) {
@@ -558,7 +558,7 @@
       }
 
       this.state.initialized = false;
-      console.log('🧹 WebGLProvider disposed');
+      logger.debug('🧹 WebGLProvider disposed');
     }
   }
 

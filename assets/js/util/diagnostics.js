@@ -26,7 +26,7 @@
       this.setupConsoleCapture();
       
       // eslint-disable-next-line no-console
-      console.log('✅ Diagnostics utility initialized');
+      logger.debug('✅ Diagnostics utility initialized');
     },
 
     /**

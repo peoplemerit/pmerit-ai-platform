@@ -31,7 +31,7 @@ class ThemeManager {
     // Bind keyboard shortcut
     this.bindKeyboardShortcut();
     
-    console.log('[ThemeManager] Initialized');
+    logger.debug('[ThemeManager] Initialized');
   }
   
   /**
@@ -66,7 +66,7 @@ class ThemeManager {
     // Update toggle button state if it exists
     this.updateToggleButton(isDark);
     
-    console.log(`[ThemeManager] Applied theme: ${theme}`);
+    logger.debug(`[ThemeManager] Applied theme: ${theme}`);
   }
   
   /**
@@ -85,7 +85,7 @@ class ThemeManager {
     // Update toggle button
     this.updateToggleButton(newTheme === 'dark');
     
-    console.log(`[ThemeManager] Theme toggled: ${currentTheme} → ${newTheme}`);
+    logger.debug(`[ThemeManager] Theme toggled: ${currentTheme} → ${newTheme}`);
     
     // Dispatch custom event for other components
     window.dispatchEvent(new CustomEvent('themeChanged', { 
@@ -119,7 +119,7 @@ class ThemeManager {
             const theme = e.target.checked ? 'dark' : 'light';
             localStorage.setItem(this.storageKey, theme);
             document.documentElement.setAttribute('data-theme', theme);
-            console.log(`[ThemeManager] Theme changed to: ${theme}`);
+            logger.debug(`[ThemeManager] Theme changed to: ${theme}`);
             
             // Dispatch event
             window.dispatchEvent(new CustomEvent('themeChanged', { 
@@ -131,7 +131,7 @@ class ThemeManager {
           toggleButton.addEventListener('click', () => this.toggleTheme());
         }
         
-        console.log(`[ThemeManager] Bound toggle button: #${id}`);
+        logger.debug(`[ThemeManager] Bound toggle button: #${id}`);
       }
     }
   }

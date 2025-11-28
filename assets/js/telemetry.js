@@ -96,7 +96,7 @@
 
         // Log in debug mode
         if (config.debug) {
-            console.log('[Telemetry]', eventName, event);
+            logger.debug('[Telemetry]', eventName, event);
         }
 
         // Add to queue
@@ -124,7 +124,7 @@
 
         // Send to analytics endpoint or display in admin panel
         if (config.debug) {
-            console.log('[Telemetry] Flushing events:', events);
+            logger.debug('[Telemetry] Flushing events:', events);
         }
 
         // Could send to /api/telemetry or store in localStorage for admin panel
@@ -250,7 +250,7 @@
             }
         }, { passive: true });
 
-        console.log('[Telemetry] Auto-tracking enabled');
+        logger.debug('[Telemetry] Auto-tracking enabled');
     }
 
     // ========================================
@@ -320,7 +320,7 @@
             });
         });
 
-        console.log('[Telemetry] Custom event listeners registered');
+        logger.debug('[Telemetry] Custom event listeners registered');
     }
 
     // ========================================
@@ -329,7 +329,7 @@
 
     function init() {
         if (!config.enabled) {
-            console.log('[Telemetry] Disabled');
+            logger.debug('[Telemetry] Disabled');
             return;
         }
 
@@ -357,7 +357,7 @@
             flush();
         });
 
-        console.log('[Telemetry] Initialized with session:', config.sessionId);
+        logger.debug('[Telemetry] Initialized with session:', config.sessionId);
     }
 
     // ========================================

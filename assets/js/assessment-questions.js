@@ -63,7 +63,7 @@
      * Initialize the assessment
      */
     async init() {
-      console.log('[AssessmentQuestions] Initializing...');
+      logger.debug('[AssessmentQuestions] Initializing...');
       
       // Get DOM elements
       this.getDOMElements();
@@ -122,7 +122,7 @@
      * Load questions from JSON file
      */
     async loadQuestions() {
-      console.log('[AssessmentQuestions] Loading questions from JSON...');
+      logger.debug('[AssessmentQuestions] Loading questions from JSON...');
       
       try {
         const response = await fetch('assets/data/ipip-neo-120.json');
@@ -151,7 +151,7 @@
         // Sort by question_number to ensure correct order
         this.questions.sort((a, b) => a.question_number - b.question_number);
         
-        console.log(`[AssessmentQuestions] Loaded ${this.questions.length} questions`);
+        logger.debug(`[AssessmentQuestions] Loaded ${this.questions.length} questions`);
         
       } catch (error) {
         console.error('[AssessmentQuestions] Error loading questions:', error);
@@ -336,7 +336,7 @@
         // Update progress
         this.updateProgress();
         
-        console.log(`[AssessmentQuestions] Answer saved: ${question.question_id} = ${answer}`);
+        logger.debug(`[AssessmentQuestions] Answer saved: ${question.question_id} = ${answer}`);
       }
     }
     
@@ -403,7 +403,7 @@
       
       try {
         localStorage.setItem(this.storageKey, JSON.stringify(progress));
-        console.log('[AssessmentQuestions] Progress saved');
+        logger.debug('[AssessmentQuestions] Progress saved');
       } catch (error) {
         console.error('[AssessmentQuestions] Error saving progress:', error);
       }
@@ -430,7 +430,7 @@
     clearProgress() {
       try {
         localStorage.removeItem(this.storageKey);
-        console.log('[AssessmentQuestions] Progress cleared');
+        logger.debug('[AssessmentQuestions] Progress cleared');
       } catch (error) {
         console.error('[AssessmentQuestions] Error clearing progress:', error);
       }
@@ -487,7 +487,7 @@
      * Complete assessment
      */
     completeAssessment() {
-      console.log('[AssessmentQuestions] Assessment completed!');
+      logger.debug('[AssessmentQuestions] Assessment completed!');
       
       // Save final progress
       this.saveProgress();
@@ -531,6 +531,6 @@
     assessmentQuestions.init();
   }
   
-  console.log('[AssessmentQuestions] Module loaded successfully');
+  logger.debug('[AssessmentQuestions] Module loaded successfully');
   
 })(window);

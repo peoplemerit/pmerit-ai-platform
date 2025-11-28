@@ -24,7 +24,7 @@
       }
 
       this.bindEvents();
-      console.log('✅ Customer Service Modal initialized');
+      logger.debug('✅ Customer Service Modal initialized');
     },
 
     bindEvents: function() {
@@ -78,7 +78,7 @@
       document.body.style.overflow = 'hidden'; // Prevent background scroll
 
       // Analytics
-      console.log('📊 Analytics: customer_service_modal_opened');
+      logger.debug('📊 Analytics: customer_service_modal_opened');
       window.dispatchEvent(new CustomEvent('pmerit-analytics', {
         detail: { event: 'customer_service_modal_opened' }
       }));
@@ -92,11 +92,11 @@
       document.body.style.overflow = ''; // Restore scroll
 
       // Analytics
-      console.log('📊 Analytics: customer_service_modal_closed');
+      logger.debug('📊 Analytics: customer_service_modal_closed');
     },
 
     handleQuickAction: function(action) {
-      console.log('🎧 Customer Service: ' + action + ' selected');
+      logger.debug('🎧 Customer Service: ' + action + ' selected');
       
       // Analytics
       window.dispatchEvent(new CustomEvent('pmerit-analytics', {
@@ -130,7 +130,7 @@
     },
 
     connectToAI: function() {
-      console.log('🤖 Connecting to AI Receptionist');
+      logger.debug('🤖 Connecting to AI Receptionist');
       
       // Analytics
       window.dispatchEvent(new CustomEvent('pmerit-analytics', {

@@ -68,7 +68,7 @@
     // ============================================
     
     init: function() {
-      console.log('[LanguageManager] Initializing Enhanced v2.0.0...');
+      logger.debug('[LanguageManager] Initializing Enhanced v2.0.0...');
       
       // Load saved language or use default
       this.currentLang = localStorage.getItem('pmerit_language') || this.defaultLang;
@@ -79,7 +79,7 @@
       // Bind language selector dropdowns
       this.bindSelectors();
       
-      console.log('[LanguageManager] ✅ Initialized with language:', this.currentLang);
+      logger.debug('[LanguageManager] ✅ Initialized with language:', this.currentLang);
     },
     
     // ============================================
@@ -92,7 +92,7 @@
         return;
       }
       
-      console.log('[LanguageManager] Switching to:', langCode);
+      logger.debug('[LanguageManager] Switching to:', langCode);
       
       // Save to localStorage
       localStorage.setItem('pmerit_language', langCode);
@@ -119,7 +119,7 @@
         
         // Reload page if requested (for full translation)
         if (reload) {
-          console.log('[LanguageManager] Reloading page for full translation...');
+          logger.debug('[LanguageManager] Reloading page for full translation...');
           window.location.reload();
         }
       });
@@ -147,14 +147,14 @@
         })
         .then(data => {
           this.translations[langCode] = data;
-          console.log(`[LanguageManager] ✅ Loaded translations for ${langCode}`);
+          logger.debug(`[LanguageManager] ✅ Loaded translations for ${langCode}`);
           return data;
         })
         .catch(error => {
           console.error('[LanguageManager] Error loading translations:', error);
           // Fallback to English if translation file not found
           if (langCode !== 'en') {
-            console.log('[LanguageManager] Falling back to English');
+            logger.debug('[LanguageManager] Falling back to English');
             return this.loadTranslations('en');
           }
           return {};
@@ -194,7 +194,7 @@
         }
       });
       
-      console.log('[LanguageManager] ✅ Processed auto-translation nodes');
+      logger.debug('[LanguageManager] ✅ Processed auto-translation nodes');
     },
     
     // Convert text to slug (for auto-key generation)
@@ -285,7 +285,7 @@
         }
       });
       
-      console.log('[LanguageManager] ✅ Translations applied to', root === document ? 'full document' : 'scoped element');
+      logger.debug('[LanguageManager] ✅ Translations applied to', root === document ? 'full document' : 'scoped element');
     },
     
     // ============================================
@@ -326,7 +326,7 @@
         desktopSelector.addEventListener('change', (e) => {
           this.setLanguage(e.target.value, true);
         });
-        console.log('[LanguageManager] ✅ Desktop selector bound');
+        logger.debug('[LanguageManager] ✅ Desktop selector bound');
       }
       
       // Mobile language selector (button - will need modal/menu)
@@ -346,7 +346,7 @@
           
           this.setLanguage(nextLang, true);
         });
-        console.log('[LanguageManager] ✅ Mobile selector bound');
+        logger.debug('[LanguageManager] ✅ Mobile selector bound');
       }
     },
     
@@ -410,7 +410,7 @@
     LanguageManager.init();
   }
   
-  console.log('[LanguageManager] Enhanced Module v2.0.0 loaded');
-  console.log('[LanguageManager] Global t() function available');
+  logger.debug('[LanguageManager] Enhanced Module v2.0.0 loaded');
+  logger.debug('[LanguageManager] Global t() function available');
   
 })();

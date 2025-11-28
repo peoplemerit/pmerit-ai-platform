@@ -52,7 +52,7 @@ class MobileMenu {
         // Check route state
         this.checkRouteState();
         
-        console.log('[Menu] Mobile menu initialized with nested navigation support');
+        logger.debug('[Menu] Mobile menu initialized with nested navigation support');
     }
     
     initializeARIA() {
@@ -313,7 +313,7 @@ class MobileMenu {
     }
     
     navigateToClassroom() {
-        console.log('[Menu] Navigating to Classroom');
+        logger.debug('[Menu] Navigating to Classroom');
         
         // Update URL
         window.location.hash = '#/classroom';
