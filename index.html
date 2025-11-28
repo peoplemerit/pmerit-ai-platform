@@ -68,6 +68,29 @@
 
   <!-- Debug Logger Utility (auto-silent in production) -->
   <script src="assets/js/utils/logger.js"></script>
+
+  <!-- Google Translate - Synchronous Load -->
+  <script>
+    function googleTranslateElementInit() {
+      console.log('[GT] googleTranslateElementInit called (sync)');
+      var isMobile = window.innerWidth < 1024;
+      var targetId = isMobile ? 'google_translate_mobile' : 'google_translate_header';
+      console.log('[GT] Screen width:', window.innerWidth, '| Target:', targetId);
+
+      var targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        new google.translate.TranslateElement({
+          pageLanguage: 'en',
+          autoDisplay: false,
+          layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        }, targetId);
+        console.log('[GT] Widget initialized in', isMobile ? 'mobile' : 'desktop', 'header');
+      } else {
+        console.warn('[GT] Target element not found:', targetId);
+      }
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </head>
 <body>
 
@@ -79,6 +102,9 @@
     <header class="pmerit-header">
       <div class="pmerit-logo">PMERIT</div>
       <div class="header-actions">
+        <!-- Google Translate Widget Container (hidden, used by GT script) -->
+        <div id="google_translate_mobile" class="gt-header-widget"></div>
+        <!-- Language Button - Opens Modal -->
         <button class="language-btn-mobile" data-action="open-language-modal" aria-label="Change language" title="Select Language">
           <i class="fas fa-globe"></i>
         </button>
@@ -216,6 +242,9 @@
     <header class="pmerit-header">
       <div class="pmerit-logo">PMERIT</div>
       <nav class="header-nav">
+        <!-- Google Translate Widget Container (hidden, used by GT script) -->
+        <div id="google_translate_header" class="gt-header-widget"></div>
+        <!-- Language Button - Opens Modal -->
         <button class="nav-btn language-btn-desktop" data-action="open-language-modal" aria-label="Change language" title="Select Language">
           <i class="fas fa-globe"></i> Language
         </button>
