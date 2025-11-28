@@ -72,7 +72,7 @@
           const stepNumber = parseInt(savedProgress.currentStep, 10);
           if (!isNaN(stepNumber) && stepNumber > 0) {
             // Navigate to assessment page with resume parameter
-            window.location.href = `assessment.html?resume=true&step=${stepNumber}`;
+            window.location.href = `assessment-questions.html?resume=true&step=${stepNumber}`;
           }
         }
       } catch (e) {
@@ -134,7 +134,7 @@
 
         if (result.success) {
           // Navigate to assessment page
-          window.location.href = 'assessment.html';
+          window.location.href = 'assessment-questions.html';
         } else {
           throw new Error(result.error || 'Failed to start assessment');
         }
@@ -146,7 +146,7 @@
         await new Promise(resolve => setTimeout(resolve, 1000));
 
         // Navigate to assessment page
-        window.location.href = 'assessment.html';
+        window.location.href = 'assessment-questions.html';
       }
     } catch (error) {
       console.error('Error starting assessment:', error);
