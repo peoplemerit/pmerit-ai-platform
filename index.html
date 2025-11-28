@@ -601,30 +601,58 @@
 
   <!-- Google Translate Widget - Screen-size aware initialization -->
   <script type="text/javascript">
+    var gtRetryCount = 0;
+    var gtMaxRetries = 3;
+
+    function initGTWidget(targetId, targetElement, isMobile) {
+      try {
+        new google.translate.TranslateElement({
+          pageLanguage: 'en',
+          autoDisplay: false,
+          layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        }, targetId);
+        console.log('✅ [GT] Widget initialized in', isMobile ? 'mobile' : 'desktop', 'header');
+
+        // Verify widget was populated after a short delay
+        setTimeout(function() {
+          var widgetContent = targetElement.querySelector('.goog-te-gadget, .goog-te-combo, select');
+          if (widgetContent) {
+            console.log('✅ [GT] Widget content verified:', widgetContent.tagName);
+          } else if (gtRetryCount < gtMaxRetries) {
+            gtRetryCount++;
+            console.log('⚠️ [GT] Widget empty, retrying... (attempt', gtRetryCount, 'of', gtMaxRetries + ')');
+            // Clear and retry
+            targetElement.innerHTML = '';
+            setTimeout(function() {
+              initGTWidget(targetId, targetElement, isMobile);
+            }, 500 * gtRetryCount);
+          } else {
+            console.error('❌ [GT] Widget failed to populate after', gtMaxRetries, 'retries');
+          }
+        }, 300);
+      } catch (e) {
+        console.error('❌ [GT] Error initializing widget:', e);
+      }
+    }
+
     function googleTranslateElementInit() {
       console.log('🌐 [GT] googleTranslateElementInit called');
 
-      // Detect which layout is visible (mobile < 1024px, desktop >= 1024px)
-      var isMobile = window.innerWidth < 1024;
-      var targetId = isMobile ? 'google_translate_mobile' : 'google_translate_header';
-      var targetElement = document.getElementById(targetId);
+      // Small delay to ensure DOM is fully ready
+      setTimeout(function() {
+        // Detect which layout is visible (mobile < 1024px, desktop >= 1024px)
+        var isMobile = window.innerWidth < 1024;
+        var targetId = isMobile ? 'google_translate_mobile' : 'google_translate_header';
+        var targetElement = document.getElementById(targetId);
 
-      console.log('🌐 [GT] Screen width:', window.innerWidth, '| Target:', targetId, '| Element found:', !!targetElement);
+        console.log('🌐 [GT] Screen width:', window.innerWidth, '| Target:', targetId, '| Element found:', !!targetElement);
 
-      if (targetElement) {
-        try {
-          new google.translate.TranslateElement({
-            pageLanguage: 'en',
-            autoDisplay: false,
-            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-          }, targetId);
-          console.log('✅ [GT] Widget initialized successfully in', isMobile ? 'mobile' : 'desktop', 'header');
-        } catch (e) {
-          console.error('❌ [GT] Error initializing widget:', e);
+        if (targetElement) {
+          initGTWidget(targetId, targetElement, isMobile);
+        } else {
+          console.error('❌ [GT] Target element not found:', targetId);
         }
-      } else {
-        console.error('❌ [GT] Target element not found:', targetId);
-      }
+      }, 100);
     }
 
     // Load Google Translate script after page loads
