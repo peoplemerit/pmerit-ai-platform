@@ -1,3 +1,15 @@
+// Fallback logger if not yet loaded
+if (typeof window.logger === 'undefined') {
+    const isProduction = window.location.hostname === 'pmerit.com' ||
+                         window.location.hostname === 'www.pmerit.com';
+    window.logger = {
+        debug: (...args) => { if (!isProduction) console.log('[DEBUG]', ...args); },
+        info: (...args) => { if (!isProduction) console.info('[INFO]', ...args); },
+        warn: (...args) => { console.warn('[WARN]', ...args); },
+        error: (...args) => { console.error('[ERROR]', ...args); }
+    };
+}
+
 /**
  * PMERIT TTS Module
  * Phase 10: Cloudflare Workers AI TTS Integration
