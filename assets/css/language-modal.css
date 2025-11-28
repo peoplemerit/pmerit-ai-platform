@@ -400,9 +400,28 @@
   background: var(--bg-elevated, #252525);
 }
 
+[data-theme="dark"] .language-modal-header h2 {
+  color: var(--text-primary, #E9E9E9);
+}
+
+[data-theme="dark"] .language-modal-close {
+  background: var(--bg-secondary, #1E1E1E);
+  color: var(--text-secondary, #B0B0B0);
+}
+
+[data-theme="dark"] .language-modal-close:hover {
+  background: var(--border-color, #333333);
+  color: var(--text-primary, #E9E9E9);
+}
+
 [data-theme="dark"] .language-search-input {
   background: var(--bg-secondary, #1E1E1E);
   border-color: var(--border-color, #333333);
+  color: var(--text-primary, #E9E9E9);
+}
+
+[data-theme="dark"] .language-search-input::placeholder {
+  color: var(--text-tertiary, #8A8A8A);
 }
 
 [data-theme="dark"] .language-search-input:focus {
@@ -410,23 +429,65 @@
   box-shadow: 0 0 0 3px rgba(89, 139, 202, 0.2);
 }
 
+[data-theme="dark"] .language-search-icon {
+  color: var(--text-tertiary, #8A8A8A);
+}
+
 [data-theme="dark"] .language-current {
   background: var(--bg-secondary, #1E1E1E);
+  border-color: var(--border-color, #333333);
+}
+
+[data-theme="dark"] .language-current-label {
+  color: var(--text-secondary, #B0B0B0);
+}
+
+[data-theme="dark"] .language-current-value {
+  color: var(--interactive-primary, #598bca);
+}
+
+[data-theme="dark"] .language-section-title {
+  color: var(--text-tertiary, #8A8A8A);
 }
 
 [data-theme="dark"] .language-option-btn {
   background: var(--bg-card, #1E1E1E);
   border-color: var(--border-color, #333333);
+  color: var(--text-primary, #E9E9E9);
 }
 
 [data-theme="dark"] .language-option-btn:hover {
   background: var(--bg-elevated, #252525);
   border-color: var(--interactive-primary, #598bca);
+  color: var(--text-primary, #E9E9E9);
 }
 
 [data-theme="dark"] .language-option-btn.active {
   background: rgba(89, 139, 202, 0.15);
   border-color: var(--interactive-primary, #598bca);
+  color: var(--text-primary, #E9E9E9);
+}
+
+[data-theme="dark"] .language-no-results {
+  color: var(--text-tertiary, #8A8A8A);
+}
+
+[data-theme="dark"] .language-no-results span {
+  color: var(--text-secondary, #B0B0B0);
+}
+
+[data-theme="dark"] .language-modal-footer {
+  border-color: var(--border-color, #333333);
+}
+
+[data-theme="dark"] .language-reset-btn {
+  border-color: var(--border-color, #333333);
+  color: var(--text-secondary, #B0B0B0);
+}
+
+[data-theme="dark"] .language-reset-btn:hover {
+  border-color: var(--text-secondary, #B0B0B0);
+  color: var(--text-primary, #E9E9E9);
 }
 
 /* -----------------------------------------
