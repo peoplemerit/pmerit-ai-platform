@@ -63,6 +63,9 @@
   <!-- Index Page Layout (MOSA extracted) -->
   <link rel="stylesheet" href="assets/css/index-layout.css?v=4">
 
+  <!-- Language Modal (Custom branded language selector) -->
+  <link rel="stylesheet" href="assets/css/language-modal.css?v=1">
+
   <!-- Debug Logger Utility (auto-silent in production) -->
   <script src="assets/js/utils/logger.js"></script>
 </head>
@@ -76,7 +79,9 @@
     <header class="pmerit-header">
       <div class="pmerit-logo">PMERIT</div>
       <div class="header-actions">
-        <div id="google_translate_mobile" class="gt-header-widget"></div>
+        <button class="language-btn-mobile" data-action="open-language-modal" aria-label="Change language" title="Select Language">
+          <i class="fas fa-globe"></i>
+        </button>
         <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">☰</button>
         <button class="sign-in-btn" id="signInBtn">Sign In</button>
       </div>
@@ -211,7 +216,9 @@
     <header class="pmerit-header">
       <div class="pmerit-logo">PMERIT</div>
       <nav class="header-nav">
-        <div id="google_translate_header" class="gt-header-widget"></div>
+        <button class="nav-btn language-btn-desktop" data-action="open-language-modal" aria-label="Change language" title="Select Language">
+          <i class="fas fa-globe"></i> Language
+        </button>
         <a href="pricing.html" class="nav-btn">Pricing</a>
         <button class="nav-btn" id="desktopSignInBtn">Sign In</button>
         <button class="nav-btn primary">Start Learning</button>
@@ -599,84 +606,85 @@
   <script src="/assets/js/voice-preview.js"></script>
   <link rel="stylesheet" href="/assets/css/voice-preview.css">
 
-  <!-- Google Translate Widget - Screen-size aware initialization -->
-  <script type="text/javascript">
-    var gtRetryCount = 0;
-    var gtMaxRetries = 3;
+  <!-- Language Modal - Custom branded language selector with search -->
+  <script src="assets/js/language-modal.js"></script>
 
-    function initGTWidget(targetId, targetElement, isMobile) {
-      try {
-        new google.translate.TranslateElement({
-          pageLanguage: 'en',
-          autoDisplay: false,
-          layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-        }, targetId);
-        console.log('✅ [GT] Widget initialized in', isMobile ? 'mobile' : 'desktop', 'header');
+  <!-- Language Modal HTML -->
+  <!-- ============================================
+       PMERIT Language Selector Modal
+       A branded, accessible language picker with search
+       Works on mobile, tablet, and desktop
+       ============================================ -->
+  <div class="language-modal-overlay" id="language-modal-overlay" aria-hidden="true">
+    <div class="language-modal" role="dialog" aria-modal="true" aria-labelledby="language-modal-title">
+      <!-- Modal Header -->
+      <div class="language-modal-header">
+        <h2 id="language-modal-title">
+          <i class="fas fa-globe"></i>
+          Select Language
+        </h2>
+        <button class="language-modal-close" id="language-modal-close" aria-label="Close language selector">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
 
-        // Verify widget was populated after a short delay
-        setTimeout(function() {
-          var widgetContent = targetElement.querySelector('.goog-te-gadget, .goog-te-combo, select');
-          if (widgetContent) {
-            console.log('✅ [GT] Widget content verified:', widgetContent.tagName);
-          } else if (gtRetryCount < gtMaxRetries) {
-            gtRetryCount++;
-            console.log('⚠️ [GT] Widget empty, retrying... (attempt', gtRetryCount, 'of', gtMaxRetries + ')');
-            // Clear and retry
-            targetElement.innerHTML = '';
-            setTimeout(function() {
-              initGTWidget(targetId, targetElement, isMobile);
-            }, 500 * gtRetryCount);
-          } else {
-            console.error('❌ [GT] Widget failed to populate after', gtMaxRetries, 'retries');
-          }
-        }, 300);
-      } catch (e) {
-        console.error('❌ [GT] Error initializing widget:', e);
-      }
-    }
+      <!-- Search Bar -->
+      <div class="language-search-wrapper">
+        <i class="fas fa-search language-search-icon"></i>
+        <input
+          type="text"
+          class="language-search-input"
+          id="language-search-input"
+          placeholder="Search languages..."
+          autocomplete="off"
+          aria-label="Search for a language"
+        >
+        <button class="language-search-clear" id="language-search-clear" aria-label="Clear search" style="display: none;">
+          <i class="fas fa-times-circle"></i>
+        </button>
+      </div>
 
-    function googleTranslateElementInit() {
-      console.log('🌐 [GT] googleTranslateElementInit called');
+      <!-- Current Language Indicator -->
+      <div class="language-current" id="language-current">
+        <span class="language-current-label">Current:</span>
+        <span class="language-current-value" id="language-current-value">English</span>
+      </div>
 
-      // Small delay to ensure DOM is fully ready
-      setTimeout(function() {
-        // Detect which layout is visible (mobile < 1024px, desktop >= 1024px)
-        var isMobile = window.innerWidth < 1024;
-        var targetId = isMobile ? 'google_translate_mobile' : 'google_translate_header';
-        var targetElement = document.getElementById(targetId);
+      <!-- Language List -->
+      <div class="language-list-container" id="language-list-container">
+        <!-- Popular Languages Section -->
+        <div class="language-section" data-section="popular">
+          <h3 class="language-section-title">Popular</h3>
+          <div class="language-grid" id="language-grid-popular"></div>
+        </div>
 
-        console.log('🌐 [GT] Screen width:', window.innerWidth, '| Target:', targetId, '| Element found:', !!targetElement);
+        <!-- African Languages Section -->
+        <div class="language-section" data-section="african">
+          <h3 class="language-section-title">African Languages</h3>
+          <div class="language-grid" id="language-grid-african"></div>
+        </div>
 
-        if (targetElement) {
-          initGTWidget(targetId, targetElement, isMobile);
-        } else {
-          console.error('❌ [GT] Target element not found:', targetId);
-        }
-      }, 100);
-    }
+        <!-- All Languages Section -->
+        <div class="language-section" data-section="all">
+          <h3 class="language-section-title">All Languages</h3>
+          <div class="language-grid" id="language-grid-all"></div>
+        </div>
 
-    // Load Google Translate script after page loads
-    window.addEventListener('load', function() {
-      console.log('📄 [GT] Page loaded, attempting to load Google Translate script...');
+        <!-- No Results Message -->
+        <div class="language-no-results" id="language-no-results" style="display: none;">
+          <i class="fas fa-search"></i>
+          <p>No languages found matching "<span id="language-no-results-query"></span>"</p>
+        </div>
+      </div>
 
-      // Check if google.translate already exists (script may have loaded from elsewhere)
-      if (typeof google !== 'undefined' && google.translate) {
-        console.log('⚠️ [GT] Google Translate already loaded, calling init directly');
-        googleTranslateElementInit();
-        return;
-      }
-
-      var gtScript = document.createElement('script');
-      gtScript.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-      gtScript.onload = function() {
-        console.log('✅ [GT] Script loaded successfully');
-      };
-      gtScript.onerror = function(e) {
-        console.error('❌ [GT] Failed to load Google Translate script:', e);
-      };
-      document.body.appendChild(gtScript);
-      console.log('📄 [GT] Script element added to DOM');
-    });
-  </script>
+      <!-- Footer with Reset Option -->
+      <div class="language-modal-footer">
+        <button class="language-reset-btn" id="language-reset-btn">
+          <i class="fas fa-undo"></i>
+          Reset to English
+        </button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
