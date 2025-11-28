@@ -52,7 +52,7 @@
       this.checkAutoOpen();
 
       // eslint-disable-next-line no-console
-      console.log('✅ AuthModal initialized');
+      logger.debug('✅ AuthModal initialized');
     },
 
     /**
@@ -471,7 +471,7 @@
     dispatchAnalytics: function (eventName, data = {}) {
       // Log to console for Phase 3.1
       // eslint-disable-next-line no-console
-      console.log(`📊 Analytics: ${eventName}`, data);
+      logger.debug(`📊 Analytics: ${eventName}`, data);
 
       // Dispatch custom event for future analytics integration
       window.dispatchEvent(new CustomEvent('pmerit-analytics', {
@@ -491,5 +491,5 @@
   window.AuthModal = AuthModal;
 
   // eslint-disable-next-line no-console
-  console.log('🔐 AuthModal controller loaded');
+  logger.debug('🔐 AuthModal controller loaded');
 })();
