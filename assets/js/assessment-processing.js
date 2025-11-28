@@ -47,7 +47,7 @@
      * Initialize the processing page
      */
     async init() {
-      console.log('[AssessmentProcessing] Initializing...');
+      logger.debug('[AssessmentProcessing] Initializing...');
 
       // Setup error button handler
       this.setupErrorButton();
@@ -168,7 +168,7 @@
      */
     async submitAssessment(assessmentData) {
       try {
-        console.log('[AssessmentProcessing] Submitting assessment...', {
+        logger.debug('[AssessmentProcessing] Submitting assessment...', {
           sessionId: assessmentData.sessionId,
           answerCount: Object.keys(assessmentData.answers).length
         });
@@ -190,7 +190,7 @@
         }
 
         const result = await response.json();
-        console.log('[AssessmentProcessing] Assessment submitted successfully', result);
+        logger.debug('[AssessmentProcessing] Assessment submitted successfully', result);
 
         // Wait for all animations to complete, then redirect
         const totalAnimationTime = this.config.STEP_DURATION * this.config.TOTAL_STEPS;
@@ -220,7 +220,7 @@
      * Redirect to results page
      */
     redirectToResults(resultId) {
-      console.log('[AssessmentProcessing] Redirecting to results page...', resultId);
+      logger.debug('[AssessmentProcessing] Redirecting to results page...', resultId);
 
       // Clear timers
       if (this.processingTimer) {clearInterval(this.processingTimer);}
@@ -270,6 +270,6 @@
     processing.init();
   }
 
-  console.log('[AssessmentProcessing] Module loaded successfully');
+  logger.debug('[AssessmentProcessing] Module loaded successfully');
 
 })(window);
