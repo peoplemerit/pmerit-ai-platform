@@ -398,10 +398,11 @@
     appearance: none;
   }
   
-  /* Focus state - Subtle glow (no border) */
+  /* Focus state - Let wrapper handle focus styling (no double border) */
   .chat-input:focus {
-    background: rgba(255, 255, 255, 0.5);
-    box-shadow: 0 0 0 2px rgba(42, 91, 140, 0.15);
+    background: transparent;
+    box-shadow: none;
+    outline: none;
   }
   
   .chat-input::placeholder {
@@ -678,8 +679,9 @@
   }
   
   .dark .chat-input:focus {
-    background: rgba(255, 255, 255, 0.05);
-    box-shadow: 0 0 0 2px rgba(74, 164, 185, 0.2);
+    background: transparent;
+    box-shadow: none;
+    outline: none;
   }
   
   .dark .message.ai .message-bubble {

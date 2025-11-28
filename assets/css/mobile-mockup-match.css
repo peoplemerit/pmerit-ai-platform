@@ -703,8 +703,8 @@
   /* ==========================================
      ACCESSIBILITY
      ========================================== */
-  
-  .chat-input:focus,
+
+  /* Note: .chat-input:focus removed - wrapper handles focus styling */
   .send-btn:focus,
   .hamburger-btn:focus,
   .sign-in-btn:focus,
@@ -713,6 +713,11 @@
   .input-voice-btn:focus {
     outline: 2px solid var(--primary);
     outline-offset: 2px;
+  }
+
+  /* Chat input focus - let wrapper show focus state, not the input itself */
+  .chat-input:focus {
+    outline: none;
   }
   
   /* Reduced motion for accessibility */
