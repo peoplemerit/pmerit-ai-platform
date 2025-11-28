@@ -56,7 +56,7 @@ class VoicePreviewModal {
     this.isPlaying = false;
     this.currentPreviewVoice = null;
     
-    console.log('[Voice Preview] Modal initialized with voice:', this.selectedVoice);
+    logger.debug('[Voice Preview] Modal initialized with voice:', this.selectedVoice);
   }
 
   /**
@@ -70,7 +70,7 @@ class VoicePreviewModal {
     // Update quota display
     this.updateQuota();
     
-    console.log('[Voice Preview] Modal opened');
+    logger.debug('[Voice Preview] Modal opened');
   }
 
   /**
@@ -88,7 +88,7 @@ class VoicePreviewModal {
         this.currentPreviewVoice = null;
       }
       
-      console.log('[Voice Preview] Modal closed');
+      logger.debug('[Voice Preview] Modal closed');
     }
   }
 
@@ -249,7 +249,7 @@ class VoicePreviewModal {
         window.TTSClient.stop();
       }
 
-      console.log('[Voice Preview] Previewing voice:', voiceId);
+      logger.debug('[Voice Preview] Previewing voice:', voiceId);
 
       // Set playing state
       this.isPlaying = true;
@@ -289,7 +289,7 @@ class VoicePreviewModal {
    * @param {string} voiceId - Voice ID to select
    */
   select(voiceId) {
-    console.log('[Voice Preview] Voice selected:', voiceId);
+    logger.debug('[Voice Preview] Voice selected:', voiceId);
     
     // Update selected voice
     this.selectedVoice = voiceId;
@@ -391,7 +391,7 @@ class VoicePreviewModal {
 }
 
 // Initialize global voice preview modal
-console.log('[Voice Preview] Creating global instance...');
+logger.debug('[Voice Preview] Creating global instance...');
 window.VoicePreview = new VoicePreviewModal();
 
-console.log('[Voice Preview] Ready! Usage: window.VoicePreview.show()');
+logger.debug('[Voice Preview] Ready! Usage: window.VoicePreview.show()');

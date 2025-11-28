@@ -26,7 +26,7 @@ class TTSClient {
     this.quotaRemaining = null;
     this.quotaLimit = 10000; // Daily limit
     
-    console.log('[TTS Client] Initialized with voice:', this.currentVoice);
+    logger.debug('[TTS Client] Initialized with voice:', this.currentVoice);
   }
 
   /**
@@ -115,20 +115,20 @@ class TTSClient {
     // Preprocess text for natural pronunciation
     const processedText = this.preprocessText(text);
     
-    console.log('[TTS Client] Original:', text);
-    console.log('[TTS Client] Processed:', processedText);
+    logger.debug('[TTS Client] Original:', text);
+    logger.debug('[TTS Client] Processed:', processedText);
     
     // Check cache first (using processed text)
     const cacheKey = `${processedText}_${this.currentVoice}`;
     
     if (this.cache.has(cacheKey)) {
-      console.log('[TTS Client] Using cached audio');
+      logger.debug('[TTS Client] Using cached audio');
       const audioUrl = this.cache.get(cacheKey);
       await this.playAudio(audioUrl);
       return;
     }
 
-    console.log('[TTS Client] Requesting TTS from API...');
+    logger.debug('[TTS Client] Requesting TTS from API...');
 
     // Make API request with processed text
     const response = await fetch(this.apiUrl, {
@@ -171,7 +171,7 @@ class TTSClient {
     }
 
     // Success - audio response
-    console.log('[TTS Client] Audio received from API');
+    logger.debug('[TTS Client] Audio received from API');
     const audioBlob = await response.blob();
     const audioUrl = URL.createObjectURL(audioBlob);
     
@@ -184,7 +184,7 @@ class TTSClient {
     // Update quota info if provided
     if (response.headers.get('x-quota-remaining')) {
       this.quotaRemaining = parseInt(response.headers.get('x-quota-remaining'));
-      console.log('[TTS Client] Quota remaining:', this.quotaRemaining);
+      logger.debug('[TTS Client] Quota remaining:', this.quotaRemaining);
     }
   }
 
@@ -204,8 +204,8 @@ class TTSClient {
       // Preprocess text for natural pronunciation
       const processedText = this.preprocessText(text);
 
-      console.log('[TTS Client] Using browser speech synthesis');
-      console.log('[TTS Client] Browser TTS text:', processedText);
+      logger.debug('[TTS Client] Using browser speech synthesis');
+      logger.debug('[TTS Client] Browser TTS text:', processedText);
 
       // Stop any ongoing speech
       window.speechSynthesis.cancel();
@@ -223,7 +223,7 @@ class TTSClient {
       
       // Event handlers
       utterance.onend = () => {
-        console.log('[TTS Client] Browser speech completed');
+        logger.debug('[TTS Client] Browser speech completed');
         resolve();
       };
       
@@ -266,7 +266,7 @@ class TTSClient {
     for (const preference of preferences) {
       const voice = voices.find(v => v.name.includes(preference));
       if (voice) {
-        console.log('[TTS Client] Selected browser voice:', voice.name);
+        logger.debug('[TTS Client] Selected browser voice:', voice.name);
         return voice;
       }
     }
@@ -274,12 +274,12 @@ class TTSClient {
     // Default to first English voice
     const englishVoice = voices.find(v => v.lang.startsWith('en'));
     if (englishVoice) {
-      console.log('[TTS Client] Using default English voice:', englishVoice.name);
+      logger.debug('[TTS Client] Using default English voice:', englishVoice.name);
       return englishVoice;
     }
 
     // Fallback to first available voice
-    console.log('[TTS Client] Using first available voice:', voices[0].name);
+    logger.debug('[TTS Client] Using first available voice:', voices[0].name);
     return voices[0];
   }
 
@@ -302,7 +302,7 @@ class TTSClient {
 
       // Event handlers
       audio.onended = () => {
-        console.log('[TTS Client] Audio playback completed');
+        logger.debug('[TTS Client] Audio playback completed');
         this.currentAudio = null;
         resolve();
       };
@@ -336,7 +336,7 @@ class TTSClient {
       window.speechSynthesis.cancel();
     }
 
-    console.log('[TTS Client] Speech stopped');
+    logger.debug('[TTS Client] Speech stopped');
   }
 
   /**
@@ -353,7 +353,7 @@ class TTSClient {
 
     this.currentVoice = voice;
     localStorage.setItem('tts_voice', voice);
-    console.log('[TTS Client] Voice changed to:', voice);
+    logger.debug('[TTS Client] Voice changed to:', voice);
 
     // Clear cache when voice changes (force regeneration)
     this.cache.clear();
@@ -385,7 +385,7 @@ class TTSClient {
         this.quotaRemaining = data.quota.remaining;
         this.quotaLimit = data.quota.limit;
         
-        console.log('[TTS Client] Quota:', this.quotaRemaining, '/', this.quotaLimit);
+        logger.debug('[TTS Client] Quota:', this.quotaRemaining, '/', this.quotaLimit);
         
         return {
           remaining: this.quotaRemaining,
@@ -423,7 +423,7 @@ class TTSClient {
     }
     
     this.cache.clear();
-    console.log('[TTS Client] Cache cleared');
+    logger.debug('[TTS Client] Cache cleared');
   }
 
   /**
@@ -461,14 +461,14 @@ class TTSClient {
 }
 
 // Initialize global TTS client
-console.log('[TTS Client] Creating global instance...');
+logger.debug('[TTS Client] Creating global instance...');
 window.TTSClient = new TTSClient();
 
 // Load browser voices when available
 if ('speechSynthesis' in window) {
   window.speechSynthesis.onvoiceschanged = () => {
-    console.log('[TTS Client] Browser voices loaded:', window.speechSynthesis.getVoices().length);
+    logger.debug('[TTS Client] Browser voices loaded:', window.speechSynthesis.getVoices().length);
   };
 }
 
-console.log('[TTS Client] Ready! Usage: window.TTSClient.speak("Hello world")');
+logger.debug('[TTS Client] Ready! Usage: window.TTSClient.speak("Hello world")');

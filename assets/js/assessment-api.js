@@ -33,7 +33,7 @@
      */
     async startAssessment(consentData) {
       try {
-        console.log('[AssessmentAPI] Starting new assessment');
+        logger.debug('[AssessmentAPI] Starting new assessment');
         
         // Validate consent data
         if (!consentData || !consentData.privacyPolicy || !consentData.dataProcessing) {
@@ -85,7 +85,7 @@
     saveProgress(progressData) {
       try {
         localStorage.setItem(this.storageKey, JSON.stringify(progressData));
-        console.log('[AssessmentAPI] Progress saved:', progressData.currentStep);
+        logger.debug('[AssessmentAPI] Progress saved:', progressData.currentStep);
       } catch (error) {
         console.error('[AssessmentAPI] Error saving progress:', error);
       }
@@ -114,7 +114,7 @@
     clearProgress() {
       try {
         localStorage.removeItem(this.storageKey);
-        console.log('[AssessmentAPI] Progress cleared');
+        logger.debug('[AssessmentAPI] Progress cleared');
       } catch (error) {
         console.error('[AssessmentAPI] Error clearing progress:', error);
       }
@@ -128,7 +128,7 @@
      */
     async submitResponse(stepNumber, response) {
       try {
-        console.log(`[AssessmentAPI] Submitting response for step ${stepNumber}`);
+        logger.debug(`[AssessmentAPI] Submitting response for step ${stepNumber}`);
         
         // Load current progress
         const progress = this.loadProgress();
@@ -177,7 +177,7 @@
      */
     async completeAssessment() {
       try {
-        console.log('[AssessmentAPI] Completing assessment');
+        logger.debug('[AssessmentAPI] Completing assessment');
         
         // Load progress
         const progress = this.loadProgress();
@@ -241,7 +241,7 @@
     resumeAssessment() {
       const progress = this.loadProgress();
       if (progress && progress.status === 'in_progress') {
-        console.log('[AssessmentAPI] Resuming assessment at step', progress.currentStep);
+        logger.debug('[AssessmentAPI] Resuming assessment at step', progress.currentStep);
         return progress;
       }
       return null;
@@ -297,6 +297,6 @@
   // Export to global namespace
   window.AssessmentAPI = new AssessmentAPI();
   
-  console.log('[AssessmentAPI] Module loaded successfully');
+  logger.debug('[AssessmentAPI] Module loaded successfully');
   
 })(window);

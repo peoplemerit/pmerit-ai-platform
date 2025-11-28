@@ -186,6 +186,6 @@
 
   // Log in development
   if (window.CONFIG && window.CONFIG.ENV === 'development') {
-    console.log('🔐 PMERIT Auth module loaded (Phase 1: Mock)');
+    logger.debug('🔐 PMERIT Auth module loaded (Phase 1: Mock)');
   }
 })();

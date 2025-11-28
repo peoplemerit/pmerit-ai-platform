@@ -44,7 +44,7 @@ function saveChatHistory() {
     };
     
     localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(data));
-    console.log('💾 Chat history saved:', conversationHistory.length, 'messages');
+    logger.debug('💾 Chat history saved:', conversationHistory.length, 'messages');
   } catch (error) {
     console.warn('⚠️ Could not save chat history:', error.message);
     // Fail silently - localStorage may be disabled or full
@@ -59,7 +59,7 @@ function loadChatHistory() {
     const stored = localStorage.getItem(CONFIG.STORAGE_KEY);
     
     if (!stored) {
-      console.log('📭 No saved chat history found');
+      logger.debug('📭 No saved chat history found');
       return null;
     }
     
@@ -68,18 +68,18 @@ function loadChatHistory() {
     // Check expiry
     const ageHours = (Date.now() - data.timestamp) / (1000 * 60 * 60);
     if (ageHours > CONFIG.STORAGE_EXPIRY_HOURS) {
-      console.log('⏰ Chat history expired (age:', ageHours.toFixed(1), 'hours)');
+      logger.debug('⏰ Chat history expired (age:', ageHours.toFixed(1), 'hours)');
       localStorage.removeItem(CONFIG.STORAGE_KEY);
       return null;
     }
     
     // Only restore if on same page
     if (data.page !== pageId()) {
-      console.log('📄 Chat history is from different page, not restoring');
+      logger.debug('📄 Chat history is from different page, not restoring');
       return null;
     }
     
-    console.log('✅ Chat history loaded:', data.history.length, 'messages');
+    logger.debug('✅ Chat history loaded:', data.history.length, 'messages');
     return data.history;
     
   } catch (error) {
@@ -94,7 +94,7 @@ function loadChatHistory() {
 function clearStoredHistory() {
   try {
     localStorage.removeItem(CONFIG.STORAGE_KEY);
-    console.log('🧹 Stored chat history cleared');
+    logger.debug('🧹 Stored chat history cleared');
   } catch (error) {
     console.warn('⚠️ Could not clear stored history:', error.message);
   }
@@ -108,7 +108,7 @@ function restoreChatUI(history) {
     return;
   }
   
-  console.log('🔄 Restoring chat UI from history...');
+  logger.debug('🔄 Restoring chat UI from history...');
   
   // Detect which chat interface is active
   const mobileMessages = document.getElementById('chatMessages');
@@ -125,12 +125,12 @@ function restoreChatUI(history) {
     }
   });
   
-  console.log('✅ Chat UI restored with', history.length, 'messages');
+  logger.debug('✅ Chat UI restored with', history.length, 'messages');
 }
 
 // ========== INITIALIZATION ==========
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('💬 PMERIT Chat initializing...');
+  logger.debug('💬 PMERIT Chat initializing...');
   
   // ✅ NEW: Load saved chat history
   const savedHistory = loadChatHistory();
@@ -146,10 +146,10 @@ document.addEventListener('DOMContentLoaded', function() {
   initializeMobileChat();
   initializeDesktopChat();
   
-  console.log('✅ Chat interface ready');
-  console.log('🤖 Connected to:', CONFIG.API_URL);
-  console.log('🚀 Model: Llama 3 8B Instruct (Streaming Enabled)');
-  console.log('💾 Persistence: ENABLED (24h expiry)');
+  logger.debug('✅ Chat interface ready');
+  logger.debug('🤖 Connected to:', CONFIG.API_URL);
+  logger.debug('🚀 Model: Llama 3 8B Instruct (Streaming Enabled)');
+  logger.debug('💾 Persistence: ENABLED (24h expiry)');
 });
 
 // ========== MOBILE CHAT INITIALIZATION ==========
@@ -159,11 +159,11 @@ function initializeMobileChat() {
   const charCount = document.getElementById('charCount');
 
   if (!chatInput || !sendBtn) {
-    console.log('📱 Mobile chat elements not found (may be desktop view)');
+    logger.debug('📱 Mobile chat elements not found (may be desktop view)');
     return;
   }
 
-  console.log('📱 Initializing mobile chat...');
+  logger.debug('📱 Initializing mobile chat...');
 
   // Character counter
   chatInput.addEventListener('input', function() {
@@ -190,7 +190,7 @@ function initializeMobileChat() {
   // Send button click
   sendBtn.addEventListener('click', () => sendMessage('mobile'));
 
-  console.log('✅ Mobile chat initialized');
+  logger.debug('✅ Mobile chat initialized');
 }
 
 // ========== DESKTOP CHAT INITIALIZATION ==========
@@ -200,11 +200,11 @@ function initializeDesktopChat() {
   const desktopCharCount = document.getElementById('desktopCharCount');
 
   if (!desktopInput || !desktopSendBtn) {
-    console.log('🖥️ Desktop chat elements not found (may be mobile view)');
+    logger.debug('🖥️ Desktop chat elements not found (may be mobile view)');
     return;
   }
 
-  console.log('🖥️ Initializing desktop chat...');
+  logger.debug('🖥️ Initializing desktop chat...');
 
   // Character counter
   desktopInput.addEventListener('input', function() {
@@ -231,7 +231,7 @@ function initializeDesktopChat() {
   // Send button click
   desktopSendBtn.addEventListener('click', () => sendMessage('desktop'));
 
-  console.log('✅ Desktop chat initialized');
+  logger.debug('✅ Desktop chat initialized');
 }
 
 // ========== UNIFIED SEND MESSAGE WITH STREAMING ==========
@@ -261,7 +261,7 @@ async function sendMessage(source) {
   const message = chatInput.value.trim();
   if (message === '') return;
 
-  console.log(`📤 Sending message from ${source}:`, message);
+  logger.debug(`📤 Sending message from ${source}:`, message);
   
   // Track user message
   window.analytics?.track('chat_message_user', {
@@ -307,7 +307,7 @@ async function sendMessage(source) {
   const typingIndicator = addTypingIndicator(source);
 
   try {
-    console.log('🚀 Calling Cloudflare Workers AI (Streaming)...');
+    logger.debug('🚀 Calling Cloudflare Workers AI (Streaming)...');
     const startTime = performance.now();
     
     // Call Workers API with streaming enabled
@@ -348,14 +348,14 @@ async function sendMessage(source) {
       ? messageDiv.querySelector('p')
       : messageDiv.querySelector('.message-content p');
     
-    console.log('📡 Streaming response...');
+    logger.debug('📡 Streaming response...');
     
     // Read stream chunks
     while (true) {
       const { done, value } = await reader.read();
       
       if (done) {
-        console.log('✅ Stream complete');
+        logger.debug('✅ Stream complete');
         break;
       }
       
@@ -393,7 +393,7 @@ async function sendMessage(source) {
     }
     
     const responseTime = ((performance.now() - startTime) / 1000).toFixed(2);
-    console.log(`✅ Complete response received in ${responseTime}s`);
+    logger.debug(`✅ Complete response received in ${responseTime}s`);
     
     // Track assistant message
     window.analytics?.track('chat_message_assistant', {
@@ -697,7 +697,7 @@ function clearChat() {
   // ✅ NEW: Clear stored history
   clearStoredHistory();
   
-  console.log('🧹 Chat cleared (UI + localStorage)');
+  logger.debug('🧹 Chat cleared (UI + localStorage)');
 }
 
 // ========== EXPORT FOR EXTERNAL ACCESS ==========
@@ -713,7 +713,7 @@ window.PMERIT_Chat = {
 };
 
 // ========== DEBUG INFO ==========
-console.log('📋 Chat Configuration:', {
+logger.debug('📋 Chat Configuration:', {
   apiUrl: CONFIG.API_URL,
   model: 'Llama 3 8B Instruct (Cloudflare Workers AI)',
   streaming: 'ENABLED',

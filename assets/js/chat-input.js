@@ -62,7 +62,7 @@
         // Use visualViewport API if available (Phase 8.4)
         setupVisualViewport();
 
-        console.log('[ChatInput] Chat input handler initialized');
+        logger.debug('[ChatInput] Chat input handler initialized');
     }
 
     // ========================================
@@ -95,7 +95,7 @@
     // ========================================
     function setupVisualViewport() {
         if (!window.visualViewport) {
-            console.log('[ChatInput] visualViewport API not available, using fallback');
+            logger.debug('[ChatInput] visualViewport API not available, using fallback');
             return;
         }
 
@@ -187,7 +187,7 @@
             return;
         }
 
-        console.log('[ChatInput] Sending message:', text);
+        logger.debug('[ChatInput] Sending message:', text);
 
         // Dispatch custom event
         const event = new CustomEvent('chat:send', {
@@ -234,7 +234,7 @@
     }
 
     function startRecording() {
-        console.log('[ChatInput] Starting voice recording');
+        logger.debug('[ChatInput] Starting voice recording');
         
         inputState.isRecording = true;
         voiceBtn.classList.add('recording');
@@ -251,7 +251,7 @@
     }
 
     function stopRecording() {
-        console.log('[ChatInput] Stopping voice recording');
+        logger.debug('[ChatInput] Stopping voice recording');
         
         inputState.isRecording = false;
         voiceBtn.classList.remove('recording');
@@ -271,7 +271,7 @@
     // KEYBOARD DETECTION
     // ========================================
     function handleFocus() {
-        console.log('[ChatInput] Input focused');
+        logger.debug('[ChatInput] Input focused');
         
         // Track analytics
         trackEvent('chat_input_focus', {
@@ -283,11 +283,11 @@
     }
 
     function handleBlur() {
-        console.log('[ChatInput] Input blurred');
+        logger.debug('[ChatInput] Input blurred');
     }
 
     function handleKeyboardOpen() {
-        console.log('[ChatInput] Mobile keyboard opened');
+        logger.debug('[ChatInput] Mobile keyboard opened');
         
         // Ensure input stays visible
         if (inputContainer) {
@@ -309,7 +309,7 @@
     }
 
     function handleKeyboardClose() {
-        console.log('[ChatInput] Mobile keyboard closed');
+        logger.debug('[ChatInput] Mobile keyboard closed');
         
         if (inputContainer) {
             inputContainer.classList.remove('keyboard-open');
@@ -342,7 +342,7 @@
     // ========================================
     function showToast(message, type = 'info') {
         // Simple toast notification
-        console.log(`[Toast ${type}]:`, message);
+        logger.debug(`[Toast ${type}]:`, message);
         
         // Could integrate with a toast library or custom implementation
         if (window.PMERIT?.toast) {

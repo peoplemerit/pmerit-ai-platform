@@ -329,7 +329,7 @@
           const audio = new Audio(url);
 
           const latency = Date.now() - startTime;
-          console.log('TTS audio received:', { latency, engine: voiceEngine });
+          logger.debug('TTS audio received:', { latency, engine: voiceEngine });
 
           // Wait for audio to finish
           const handlePlay = () => {
@@ -576,6 +576,6 @@
     });
   });
 
-  console.log('✅ TTS module loaded');
+  logger.debug('✅ TTS module loaded');
 
 })(window);

@@ -448,7 +448,7 @@
 
   // Log successful loading in development
   if (window.CONFIG && window.CONFIG.ENV === 'development') {
-    console.log('✅ VirtualHumanAPI module loaded');
+    logger.debug('✅ VirtualHumanAPI module loaded');
   }
 
 })(window);

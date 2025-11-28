@@ -86,7 +86,7 @@ if (typeof THREE === 'undefined') {
             return response.arrayBuffer();
           })
           .then(buffer => {
-            console.log(`✅ Loaded GLB file: ${url} (${buffer.byteLength} bytes)`);
+            logger.debug(`✅ Loaded GLB file: ${url} (${buffer.byteLength} bytes)`);
             
             // Create a simple mock GLTF structure
             const gltf = {
@@ -162,5 +162,5 @@ if (typeof THREE === 'undefined') {
       }
     }
   };
-  console.log('✅ Mock Three.js loaded for testing');
+  logger.debug('✅ Mock Three.js loaded for testing');
 }

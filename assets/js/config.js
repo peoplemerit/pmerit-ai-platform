@@ -62,6 +62,6 @@
 
   // Log environment in development
   if (config.ENV === 'development') {
-    console.log('🔧 PMERIT Config loaded:', config);
+    logger.debug('🔧 PMERIT Config loaded:', config);
   }
 })();

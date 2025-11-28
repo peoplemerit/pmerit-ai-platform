@@ -39,7 +39,7 @@
         statusRegion.className = 'sr-only';
         document.body.appendChild(statusRegion);
 
-        console.log('[A11y] ARIA live regions created');
+        logger.debug('[A11y] ARIA live regions created');
     }
 
     // ========================================
@@ -63,7 +63,7 @@
         region.textContent = '';
         setTimeout(() => {
             region.textContent = message;
-            console.log(`[A11y] Announced (${priority}):`, message);
+            logger.debug(`[A11y] Announced (${priority}):`, message);
         }, 100);
     }
 
@@ -213,7 +213,7 @@
             }
         });
 
-        console.log('[A11y] ARIA labels enhanced');
+        logger.debug('[A11y] ARIA labels enhanced');
     }
 
     /**
@@ -337,7 +337,7 @@
         ];
         
         announce('Keyboard shortcuts: ' + shortcuts.join(', '), 'polite');
-        console.log('[A11y] Keyboard shortcuts:', shortcuts);
+        logger.debug('[A11y] Keyboard shortcuts:', shortcuts);
     }
 
     // ========================================
@@ -366,7 +366,7 @@
         // Set up keyboard shortcuts
         setupKeyboardShortcuts();
         
-        console.log('[A11y] Accessibility enhancements initialized');
+        logger.debug('[A11y] Accessibility enhancements initialized');
         announce('PMERIT platform loaded', 'polite');
     }
 
