@@ -145,7 +145,7 @@
       detail: { theme, isDark }
     }));
 
-    console.log('[SettingsManager] Theme set to:', theme);
+    logger.debug('[SettingsManager] Theme set to:', theme);
   }
 
   /**
@@ -230,7 +230,7 @@
       detail: { enabled: boolEnabled }
     }));
 
-    console.log('[SettingsManager] TTS set to:', boolEnabled);
+    logger.debug('[SettingsManager] TTS set to:', boolEnabled);
   }
 
   /**
@@ -308,7 +308,7 @@
     element.addEventListener('change', handler);
     boundElements.add(element);
 
-    console.log(`[SettingsManager] Bound ${type} toggle:`, element.id);
+    logger.debug(`[SettingsManager] Bound ${type} toggle:`, element.id);
   }
 
   /**
@@ -380,7 +380,7 @@
       }
 
       if (shouldRebind) {
-        console.log('[SettingsManager] DOM changed, rebinding toggles...');
+        logger.debug('[SettingsManager] DOM changed, rebinding toggles...');
         bindAllToggles();
         applyCurrentSettings();
       }
@@ -391,7 +391,7 @@
       subtree: true
     });
 
-    console.log('[SettingsManager] MutationObserver started');
+    logger.debug('[SettingsManager] MutationObserver started');
   }
 
   /**
@@ -401,7 +401,7 @@
     if (mutationObserver) {
       mutationObserver.disconnect();
       mutationObserver = null;
-      console.log('[SettingsManager] MutationObserver stopped');
+      logger.debug('[SettingsManager] MutationObserver stopped');
     }
   }
 
@@ -430,7 +430,7 @@
       }
     }
 
-    console.log('[SettingsManager] Applied settings - theme:', theme, 'tts:', ttsEnabled);
+    logger.debug('[SettingsManager] Applied settings - theme:', theme, 'tts:', ttsEnabled);
   }
 
   /**
@@ -440,11 +440,11 @@
    */
   function init() {
     if (initialized) {
-      console.log('[SettingsManager] Already initialized, skipping');
+      logger.debug('[SettingsManager] Already initialized, skipping');
       return false;
     }
 
-    console.log('[SettingsManager] Initializing...');
+    logger.debug('[SettingsManager] Initializing...');
 
     // 1. Apply current settings from localStorage
     applyCurrentSettings();
@@ -459,7 +459,7 @@
     window.addEventListener('storage', handleStorageChange);
 
     initialized = true;
-    console.log('[SettingsManager] Initialization complete');
+    logger.debug('[SettingsManager] Initialization complete');
 
     return true;
   }
@@ -473,11 +473,11 @@
       const theme = e.newValue || THEMES.LIGHT;
       document.documentElement.setAttribute('data-theme', theme);
       syncDarkModeToggles(theme === THEMES.DARK);
-      console.log('[SettingsManager] Cross-tab theme sync:', theme);
+      logger.debug('[SettingsManager] Cross-tab theme sync:', theme);
     } else if (e.key === STORAGE_KEYS.TTS) {
       const enabled = e.newValue === 'true';
       syncTTSToggles(enabled);
-      console.log('[SettingsManager] Cross-tab TTS sync:', enabled);
+      logger.debug('[SettingsManager] Cross-tab TTS sync:', enabled);
     }
   }
 
@@ -489,7 +489,7 @@
     stopObserver();
     window.removeEventListener('storage', handleStorageChange);
     initialized = false;
-    console.log('[SettingsManager] Destroyed');
+    logger.debug('[SettingsManager] Destroyed');
   }
 
   // ============================================================================
@@ -538,6 +538,6 @@
     setTimeout(init, 0);
   }
 
-  console.log('[SettingsManager] Module loaded');
+  logger.debug('[SettingsManager] Module loaded');
 
 })(window);
