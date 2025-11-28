@@ -76,6 +76,7 @@
     <header class="pmerit-header">
       <div class="pmerit-logo">PMERIT</div>
       <div class="header-actions">
+        <div id="google_translate_mobile" class="gt-header-widget"></div>
         <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">☰</button>
         <button class="sign-in-btn" id="signInBtn">Sign In</button>
       </div>
@@ -598,19 +599,22 @@
   <script src="/assets/js/voice-preview.js"></script>
   <link rel="stylesheet" href="/assets/css/voice-preview.css">
 
-  <!-- Google Translate Widget - Single Instance -->
+  <!-- Google Translate Widget - Screen-size aware initialization -->
   <script type="text/javascript">
     function googleTranslateElementInit() {
       logger.debug('🌐 Google Translate initializing...');
 
-      // Single header widget - used across all screen sizes
-      if (document.getElementById('google_translate_header')) {
+      // Detect which layout is visible (mobile < 1024px, desktop >= 1024px)
+      var isMobile = window.innerWidth < 1024;
+      var targetId = isMobile ? 'google_translate_mobile' : 'google_translate_header';
+
+      if (document.getElementById(targetId)) {
         new google.translate.TranslateElement({
           pageLanguage: 'en',
           autoDisplay: false,
           layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-        }, 'google_translate_header');
-        logger.debug('✅ Google Translate header widget initialized');
+        }, targetId);
+        logger.debug('✅ Google Translate initialized in ' + (isMobile ? 'mobile' : 'desktop') + ' header');
       }
     }
 
