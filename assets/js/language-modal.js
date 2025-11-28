@@ -217,6 +217,7 @@
     cacheElements: function() {
       this.elements.overlay = document.getElementById('language-modal-overlay');
       this.elements.closeBtn = document.getElementById('language-modal-close');
+      this.elements.modalTitle = document.getElementById('language-modal-title');
       this.elements.searchInput = document.getElementById('language-search-input');
       this.elements.searchClear = document.getElementById('language-search-clear');
       this.elements.currentValue = document.getElementById('language-current-value');
@@ -233,6 +234,18 @@
       ['popular', 'african', 'all'].forEach(section => {
         this.elements.sections[section] = document.querySelector(`.language-section[data-section="${section}"]`);
         this.elements.grids[section] = document.getElementById(`language-grid-${section}`);
+      });
+
+      // Debug logging
+      console.log('[LanguageModal] Elements cached:', {
+        overlay: !!this.elements.overlay,
+        searchInput: !!this.elements.searchInput,
+        listContainer: !!this.elements.listContainer,
+        grids: {
+          popular: !!this.elements.grids.popular,
+          african: !!this.elements.grids.african,
+          all: !!this.elements.grids.all
+        }
       });
     },
 
@@ -316,11 +329,16 @@
         }
       });
 
-      // Search input
+      // Search input - bind multiple events for reliability
       if (this.elements.searchInput) {
-        this.elements.searchInput.addEventListener('input', (e) => {
+        const searchHandler = (e) => {
+          console.log('[LanguageModal] Search triggered:', e.target.value);
           this.handleSearch(e.target.value);
-        });
+        };
+        this.elements.searchInput.addEventListener('input', searchHandler);
+        this.elements.searchInput.addEventListener('keyup', searchHandler);
+      } else {
+        console.warn('[LanguageModal] Search input not found!');
       }
 
       // Search clear
@@ -400,6 +418,7 @@
 
     handleSearch: function(query) {
       this.searchQuery = query.toLowerCase().trim();
+      console.log('[LanguageModal] Searching for:', this.searchQuery);
 
       // Show/hide clear button
       if (this.elements.searchClear) {
@@ -414,19 +433,25 @@
 
       // Filter languages
       let hasResults = false;
+      let totalMatches = 0;
 
       Object.keys(LANGUAGES).forEach(section => {
         const grid = this.elements.grids[section];
         const sectionEl = this.elements.sections[section];
-        if (!grid || !sectionEl) return;
+        if (!grid || !sectionEl) {
+          console.warn('[LanguageModal] Missing grid or section for:', section);
+          return;
+        }
 
         let sectionHasResults = false;
+        const buttons = grid.querySelectorAll('.language-option-btn');
+        console.log('[LanguageModal] Section', section, 'has', buttons.length, 'buttons');
 
         // Filter buttons in this section
-        grid.querySelectorAll('.language-option-btn').forEach(btn => {
-          const name = btn.dataset.langName.toLowerCase();
-          const native = btn.dataset.langNative.toLowerCase();
-          const code = btn.dataset.langCode.toLowerCase();
+        buttons.forEach(btn => {
+          const name = (btn.dataset.langName || '').toLowerCase();
+          const native = (btn.dataset.langNative || '').toLowerCase();
+          const code = (btn.dataset.langCode || '').toLowerCase();
 
           const matches = name.includes(this.searchQuery) ||
                          native.includes(this.searchQuery) ||
@@ -436,12 +461,15 @@
           if (matches) {
             sectionHasResults = true;
             hasResults = true;
+            totalMatches++;
           }
         });
 
         // Show/hide section based on results
         sectionEl.classList.toggle('hidden', !sectionHasResults);
       });
+
+      console.log('[LanguageModal] Search results:', totalMatches, 'matches');
 
       // Show/hide no results message
       if (this.elements.noResults) {
@@ -498,12 +526,18 @@
     },
 
     updateCurrentLanguageDisplay: function() {
-      if (!this.elements.currentValue) return;
-
-      // Find language name
+      // Find language info
       const lang = LANGUAGES.all.find(l => l.code === this.currentLanguage);
-      if (lang) {
+      if (!lang) return;
+
+      // Update current value display
+      if (this.elements.currentValue) {
         this.elements.currentValue.textContent = `${lang.flag} ${lang.native}`;
+      }
+
+      // Update modal title to show current language (saves space on mobile)
+      if (this.elements.modalTitle) {
+        this.elements.modalTitle.innerHTML = `<i class="fas fa-globe"></i> ${lang.native}`;
       }
     },
 
