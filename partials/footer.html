@@ -10,9 +10,6 @@
 	<!-- Mobile Footer (Default: <1024px) -->
 <footer class="mobile-footer" id="mobile-footer">
   <div class="mobile-footer-content">
-    <!-- Google Translate Widget -->
-    <div id="google_translate_element" class="footer-translate"></div>
-    <span class="footer-separator">•</span>
     <a href="privacy.html" class="footer-link">Privacy & Terms</a>
     <span class="footer-separator">•</span>
     <span class="footer-status">
@@ -162,11 +159,9 @@
         </div>
       </div>
 
-      <!-- Right: Language & Status & Social -->
+      <!-- Right: Status & Social -->
       <div class="footer-bottom-right">
-      <!-- Google Translate Widget -->
-      <div id="google_translate_element_desktop" class="footer-translate-desktop"></div>
-      <div class="footer-status">
+        <div class="footer-status">
   
           <i class="fas fa-circle status-indicator" aria-hidden="true"></i>
           <span>Connected to Educational Services</span>
@@ -360,107 +355,37 @@
   </div>
 </div>
 
-	<!-- Google Translate Widget Styles & Script -->
+	<!-- Google Translate Global Styles -->
 <style>
-  /* Footer Google Translate Styling */
-  .footer-translate,
-  .footer-translate-desktop {
-    display: inline-block;
-    vertical-align: middle;
-  }
-  
-  .goog-te-gadget {
-    font-family: 'Inter', sans-serif !important;
-    font-size: 0 !important; /* Hide "Powered by" text */
-  }
-  
-  .goog-te-gadget select {
-    background-color: var(--bg-card, #1a1a2e) !important;
-    border: 1px solid var(--border-color, #3a3a5c) !important;
-    border-radius: 20px !important;
-    padding: 0.4rem 0.8rem !important;
-    font-size: 0.8rem !important;
-    font-family: 'Inter', sans-serif !important;
-    color: var(--text-primary, #ffffff) !important;
-    min-height: 36px !important;
-    cursor: pointer !important;
-    outline: none !important;
-  }
-  
-  .goog-te-gadget select:hover {
-    border-color: var(--primary, #2A5B8C) !important;
-  }
-  
-  /* Hide "Powered by Google" text */
-  .goog-te-gadget > span {
-    display: none !important;
-  }
-  
-  /* Hide Google branding bar */
+  /* Hide Google Translate branding bar that appears at top of page */
   .goog-te-banner-frame.skiptranslate {
     display: none !important;
   }
-  
+
+  /* Prevent body from being pushed down by GT banner */
   body {
     top: 0 !important;
   }
-  
-  /* Mobile footer specific */
-  @media (max-width: 1023px) {
-    .footer-translate {
-      margin-right: 0.5rem;
-    }
-    
-    .footer-translate-desktop {
-      display: none !important;
-    }
-  }
-  
-  /* Desktop footer specific */
-  @media (min-width: 1024px) {
-    .footer-translate {
-      display: none !important;
-    }
-    
-    .footer-translate-desktop {
-      margin-right: 1rem;
-    }
+
+  /* Hide "Powered by Google" text in all GT widgets */
+  .goog-te-gadget > span {
+    display: none !important;
   }
 </style>
 
 <script>
-  // Google Translate Initialization
+  // Google Translate Initialization - Single Widget
   function googleTranslateElementInit() {
     logger.debug('🌐 Google Translate initializing...');
 
-    // Header widget (primary - appears in header for all screen sizes)
+    // Single header widget - works for all screen sizes
     if (document.getElementById('google_translate_header')) {
       new google.translate.TranslateElement({
         pageLanguage: 'en',
         autoDisplay: false,
         layout: google.translate.TranslateElement.InlineLayout.SIMPLE
       }, 'google_translate_header');
-      logger.debug('✅ Header widget initialized');
-    }
-
-    // Mobile footer widget (fallback)
-    if (document.getElementById('google_translate_element')) {
-      new google.translate.TranslateElement({
-        pageLanguage: 'en',
-        autoDisplay: false,
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-      }, 'google_translate_element');
-      logger.debug('✅ Mobile footer widget initialized');
-    }
-
-    // Desktop footer widget (fallback)
-    if (document.getElementById('google_translate_element_desktop')) {
-      new google.translate.TranslateElement({
-        pageLanguage: 'en',
-        autoDisplay: false,
-        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-      }, 'google_translate_element_desktop');
-      logger.debug('✅ Desktop footer widget initialized');
+      logger.debug('✅ Google Translate header widget initialized');
     }
   }
 
