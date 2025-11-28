@@ -480,14 +480,7 @@
     }
   };
 
-  // Initialize when DOM is ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => AuthModal.init());
-  } else {
-    AuthModal.init();
-  }
-
-  // Export globally
+  // Export globally (init is called after partial is loaded via fetch in index.html)
   window.AuthModal = AuthModal;
 
   // eslint-disable-next-line no-console
