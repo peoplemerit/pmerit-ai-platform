@@ -79,10 +79,17 @@
     }
 
     /* Google Translate Widget Styling */
-    #google_translate_element,
-    #google_translate_element_desktop {
-      display: inline-block;
+    .gt-header-widget,
+    #google_translate_mobile,
+    #google_translate_header {
+      display: inline-flex;
+      align-items: center;
       vertical-align: middle;
+    }
+
+    /* Mobile header widget positioning */
+    .header-actions .gt-header-widget {
+      margin-right: 0.5rem;
     }
 
     /* Hide Google branding */
@@ -179,10 +186,18 @@
 
     /* Mobile specific styling */
     @media (max-width: 1023px) {
-      #google_translate_element {
+      #google_translate_mobile {
         margin-right: 0.5rem;
       }
-      
+
+      #google_translate_mobile .goog-te-combo {
+        max-width: 90px !important;
+        font-size: 0.75rem !important;
+        padding: 0.35rem 0.5rem !important;
+        min-height: 32px !important;
+        border-radius: 6px !important;
+      }
+
       .goog-te-gadget-simple {
         padding: 0.4rem 0.8rem !important;
         font-size: 0.85rem !important;
