@@ -15,7 +15,10 @@
       <button class="header-btn language-btn" id="language-btn" aria-label="Change language" title="Select Language">
         <i class="fas fa-globe"></i>
       </button>
-      
+
+      <!-- Google Translate Header Widget -->
+      <div id="google_translate_header" class="gt-header-widget"></div>
+
       <!-- Pricing Link (Desktop only) -->
       <a href="pricing.html" class="header-btn pricing-link desktop-only">Pricing</a>
       
@@ -151,3 +154,97 @@
     <li><button class="language-option" data-lang="es">🇪🇸 Español</button></li>
   </ul>
 </div>
+
+<!-- Google Translate Header Widget Styles -->
+<style>
+  /* Google Translate Header Widget */
+  .gt-header-widget {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+  }
+
+  /* Style the Google Translate dropdown in header */
+  .gt-header-widget .goog-te-gadget {
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0 !important;
+    margin: 0 !important;
+  }
+
+  .gt-header-widget .goog-te-gadget-simple {
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    line-height: normal !important;
+  }
+
+  .gt-header-widget .goog-te-gadget select,
+  .gt-header-widget .goog-te-combo {
+    background-color: var(--bg-card, #1a1a2e) !important;
+    border: 1px solid var(--border-color, #3a3a5c) !important;
+    border-radius: 8px !important;
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.875rem !important;
+    font-family: 'Inter', sans-serif !important;
+    color: var(--text-primary, #ffffff) !important;
+    min-height: 36px !important;
+    cursor: pointer !important;
+    outline: none !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.5rem center !important;
+    padding-right: 1.5rem !important;
+  }
+
+  .gt-header-widget .goog-te-gadget select:hover,
+  .gt-header-widget .goog-te-combo:hover {
+    border-color: var(--primary, #2A5B8C) !important;
+    background-color: var(--bg-hover, #252540) !important;
+  }
+
+  .gt-header-widget .goog-te-gadget select:focus,
+  .gt-header-widget .goog-te-combo:focus {
+    border-color: var(--primary, #2A5B8C) !important;
+    box-shadow: 0 0 0 2px rgba(42, 91, 140, 0.2) !important;
+  }
+
+  /* Hide Google branding elements */
+  .gt-header-widget .goog-te-gadget > span,
+  .gt-header-widget .goog-te-gadget img,
+  .gt-header-widget .goog-logo-link {
+    display: none !important;
+  }
+
+  /* Mobile: Show widget inline */
+  @media (max-width: 767px) {
+    .gt-header-widget {
+      margin-left: 0.25rem;
+    }
+
+    .gt-header-widget .goog-te-combo {
+      max-width: 100px !important;
+      font-size: 0.75rem !important;
+      padding: 0.4rem 0.5rem !important;
+      min-height: 32px !important;
+    }
+  }
+
+  /* Tablet and Desktop */
+  @media (min-width: 768px) {
+    .gt-header-widget {
+      margin-left: 0.5rem;
+    }
+
+    .gt-header-widget .goog-te-combo {
+      min-width: 120px !important;
+    }
+  }
+
+  /* Hide the original globe button when GT widget is active */
+  .gt-header-widget:not(:empty) + .language-btn,
+  .language-btn.gt-hidden {
+    display: none !important;
+  }
+</style>
