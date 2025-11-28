@@ -211,7 +211,7 @@
     <header class="pmerit-header">
       <div class="pmerit-logo">PMERIT</div>
       <nav class="header-nav">
-        <div id="google_translate_element_desktop" style="display: inline-block;"></div>
+        <div id="google_translate_header" class="gt-header-widget"></div>
         <a href="pricing.html" class="nav-btn">Pricing</a>
         <button class="nav-btn" id="desktopSignInBtn">Sign In</button>
         <button class="nav-btn primary">Start Learning</button>
@@ -599,36 +599,39 @@
   <script src="/assets/js/voice-preview.js"></script>
   <link rel="stylesheet" href="/assets/css/voice-preview.css">
 
-  <!-- Google Translate Widget (CORRECTED) -->
+  <!-- Google Translate Widget -->
   <script type="text/javascript">
     function googleTranslateElementInit() {
-      console.log('🌐 Google Translate initializing...');
-      
-	// Mobile widget
-    if (document.getElementById('google_translate_element')) {
-      new google.translate.TranslateElement({
-        pageLanguage: 'en',
-        autoDisplay: false
-      }, 'google_translate_element');
-      console.log('✅ Mobile widget initialized');
+      logger.debug('🌐 Google Translate initializing...');
+
+      // Header widget (desktop - primary)
+      if (document.getElementById('google_translate_header')) {
+        new google.translate.TranslateElement({
+          pageLanguage: 'en',
+          autoDisplay: false,
+          layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        }, 'google_translate_header');
+        logger.debug('✅ Header widget initialized');
+      }
+
+      // Mobile widget
+      if (document.getElementById('google_translate_element')) {
+        new google.translate.TranslateElement({
+          pageLanguage: 'en',
+          autoDisplay: false,
+          layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        }, 'google_translate_element');
+        logger.debug('✅ Mobile widget initialized');
+      }
     }
 
-    // Desktop widget
-    if (document.getElementById('google_translate_element_desktop')) {
-      new google.translate.TranslateElement({
-        pageLanguage: 'en',
-        autoDisplay: false
-      }, 'google_translate_element_desktop');
-      console.log('✅ Desktop widget initialized');
-    }
-}    
     // Load Google Translate script after page loads
     window.addEventListener('load', function() {
-      console.log('📄 Page loaded, loading Google Translate script...');
+      logger.debug('📄 Page loaded, loading Google Translate script...');
       var gtScript = document.createElement('script');
       gtScript.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
       gtScript.onerror = function() {
-        console.error('❌ Failed to load Google Translate script');
+        logger.error('❌ Failed to load Google Translate script');
       };
       document.body.appendChild(gtScript);
     });
