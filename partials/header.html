@@ -231,14 +231,28 @@
     }
   }
 
-  /* Tablet and Desktop */
-  @media (min-width: 768px) {
+  /* Tablet (768px - 1023px) */
+  @media (min-width: 768px) and (max-width: 1023px) {
     .gt-header-widget {
       margin-left: 0.5rem;
     }
 
     .gt-header-widget .goog-te-combo {
       min-width: 120px !important;
+    }
+  }
+
+  /* Desktop (1024px+) - ensure visibility */
+  @media (min-width: 1024px) {
+    .gt-header-widget {
+      display: inline-flex !important;
+      align-items: center;
+      margin-left: 0.75rem;
+    }
+
+    .gt-header-widget .goog-te-combo {
+      min-width: 140px !important;
+      font-size: 0.875rem !important;
     }
   }
 
