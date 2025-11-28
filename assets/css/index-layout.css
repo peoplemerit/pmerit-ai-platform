@@ -155,17 +155,25 @@
     
     /* Desktop header nav - ensure widget is visible */
     @media (min-width: 1024px) {
-      .header-nav #google_translate_element_desktop {
-        display: inline-block !important;
+      .header-nav .gt-header-widget,
+      .header-nav #google_translate_header {
+        display: inline-flex !important;
+        align-items: center;
         margin-right: 0.5rem;
       }
-      
+
       .header-nav .goog-te-gadget {
         display: inline-block !important;
       }
-      
-      .header-nav .goog-te-gadget select {
+
+      .header-nav .goog-te-gadget select,
+      .header-nav .goog-te-combo {
         min-width: 140px;
+        background-color: var(--bg-card) !important;
+        border: 1px solid var(--border-color) !important;
+        border-radius: 8px !important;
+        padding: 0.5rem 0.75rem !important;
+        color: var(--text-primary) !important;
       }
     }
 
