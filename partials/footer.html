@@ -431,34 +431,46 @@
 <script>
   // Google Translate Initialization
   function googleTranslateElementInit() {
-    console.log('🌐 Google Translate initializing...');
-    
-    // Mobile widget
+    logger.debug('🌐 Google Translate initializing...');
+
+    // Header widget (primary - appears in header for all screen sizes)
+    if (document.getElementById('google_translate_header')) {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        autoDisplay: false,
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+      }, 'google_translate_header');
+      logger.debug('✅ Header widget initialized');
+    }
+
+    // Mobile footer widget (fallback)
     if (document.getElementById('google_translate_element')) {
       new google.translate.TranslateElement({
         pageLanguage: 'en',
-        autoDisplay: false
+        autoDisplay: false,
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
       }, 'google_translate_element');
-      console.log('✅ Mobile widget initialized');
+      logger.debug('✅ Mobile footer widget initialized');
     }
-    
-    // Desktop widget
+
+    // Desktop footer widget (fallback)
     if (document.getElementById('google_translate_element_desktop')) {
       new google.translate.TranslateElement({
         pageLanguage: 'en',
-        autoDisplay: false
+        autoDisplay: false,
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
       }, 'google_translate_element_desktop');
-      console.log('✅ Desktop widget initialized');
+      logger.debug('✅ Desktop footer widget initialized');
     }
   }
-  
+
   // Load Google Translate script after page loads
   window.addEventListener('load', function() {
-    console.log('📄 Page loaded, loading Google Translate script...');
+    logger.debug('📄 Page loaded, loading Google Translate script...');
     var gtScript = document.createElement('script');
     gtScript.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
     gtScript.onerror = function() {
-      console.error('❌ Failed to load Google Translate script');
+      logger.error('❌ Failed to load Google Translate script');
     };
     document.body.appendChild(gtScript);
   });
