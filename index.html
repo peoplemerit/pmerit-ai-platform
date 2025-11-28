@@ -602,31 +602,52 @@
   <!-- Google Translate Widget - Screen-size aware initialization -->
   <script type="text/javascript">
     function googleTranslateElementInit() {
-      logger.debug('🌐 Google Translate initializing...');
+      console.log('🌐 [GT] googleTranslateElementInit called');
 
       // Detect which layout is visible (mobile < 1024px, desktop >= 1024px)
       var isMobile = window.innerWidth < 1024;
       var targetId = isMobile ? 'google_translate_mobile' : 'google_translate_header';
+      var targetElement = document.getElementById(targetId);
 
-      if (document.getElementById(targetId)) {
-        new google.translate.TranslateElement({
-          pageLanguage: 'en',
-          autoDisplay: false,
-          layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-        }, targetId);
-        logger.debug('✅ Google Translate initialized in ' + (isMobile ? 'mobile' : 'desktop') + ' header');
+      console.log('🌐 [GT] Screen width:', window.innerWidth, '| Target:', targetId, '| Element found:', !!targetElement);
+
+      if (targetElement) {
+        try {
+          new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            autoDisplay: false,
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+          }, targetId);
+          console.log('✅ [GT] Widget initialized successfully in', isMobile ? 'mobile' : 'desktop', 'header');
+        } catch (e) {
+          console.error('❌ [GT] Error initializing widget:', e);
+        }
+      } else {
+        console.error('❌ [GT] Target element not found:', targetId);
       }
     }
 
     // Load Google Translate script after page loads
     window.addEventListener('load', function() {
-      logger.debug('📄 Page loaded, loading Google Translate script...');
+      console.log('📄 [GT] Page loaded, attempting to load Google Translate script...');
+
+      // Check if google.translate already exists (script may have loaded from elsewhere)
+      if (typeof google !== 'undefined' && google.translate) {
+        console.log('⚠️ [GT] Google Translate already loaded, calling init directly');
+        googleTranslateElementInit();
+        return;
+      }
+
       var gtScript = document.createElement('script');
-      gtScript.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-      gtScript.onerror = function() {
-        logger.error('❌ Failed to load Google Translate script');
+      gtScript.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      gtScript.onload = function() {
+        console.log('✅ [GT] Script loaded successfully');
+      };
+      gtScript.onerror = function(e) {
+        console.error('❌ [GT] Failed to load Google Translate script:', e);
       };
       document.body.appendChild(gtScript);
+      console.log('📄 [GT] Script element added to DOM');
     });
   </script>
 </body>
