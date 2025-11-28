@@ -171,7 +171,7 @@
         }
 
         insertPoint.insertAdjacentHTML(this.config.headerPosition, html);
-        console.log('[LayoutLoader] Header loaded successfully');
+        logger.debug('[LayoutLoader] Header loaded successfully');
       } catch (error) {
         console.error('[LayoutLoader] Error loading header:', error);
         throw error;
@@ -205,7 +205,7 @@
         }
 
         insertPoint.insertAdjacentHTML(this.config.footerPosition, html);
-        console.log('[LayoutLoader] Footer loaded successfully');
+        logger.debug('[LayoutLoader] Footer loaded successfully');
       } catch (error) {
         console.error('[LayoutLoader] Error loading footer:', error);
         throw error;
@@ -235,7 +235,7 @@
       
       // Apply theme to document
       document.documentElement.setAttribute('data-theme', theme);
-      console.log('[LayoutLoader] Theme applied:', theme);
+      logger.debug('[LayoutLoader] Theme applied:', theme);
     }
 
     /**
@@ -263,7 +263,7 @@
         this.initFooter();
       }
 
-      console.log('[LayoutLoader] Components initialized');
+      logger.debug('[LayoutLoader] Components initialized');
     }
 
     /**
@@ -284,7 +284,7 @@
       // Initialize sign-in buttons
       this.initAuthButtons();
 
-      console.log('[LayoutLoader] Header components initialized');
+      logger.debug('[LayoutLoader] Header components initialized');
     }
 
     /**
@@ -304,7 +304,7 @@
       // Initialize Google Translate widget after footer is loaded
       this.initGoogleTranslate();
 
-      console.log('[LayoutLoader] Footer components initialized');
+      logger.debug('[LayoutLoader] Footer components initialized');
     }
 
     /**
@@ -328,13 +328,13 @@
 
       // Skip if already initialized (for pages with embedded footer like index.html)
       if (window.googleTranslateElementInit) {
-        console.log('[LayoutLoader] Google Translate already initialized, skipping');
+        logger.debug('[LayoutLoader] Google Translate already initialized, skipping');
         return;
       }
 
       // Define the callback function globally
       window.googleTranslateElementInit = function() {
-        console.log('🌐 Google Translate initializing...');
+        logger.debug('🌐 Google Translate initializing...');
 
         // Mobile widget
         if (document.getElementById('google_translate_element')) {
@@ -342,7 +342,7 @@
             pageLanguage: 'en',
             autoDisplay: false
           }, 'google_translate_element');
-          console.log('✅ Mobile Google Translate widget initialized');
+          logger.debug('✅ Mobile Google Translate widget initialized');
         }
 
         // Desktop widget
@@ -351,12 +351,12 @@
             pageLanguage: 'en',
             autoDisplay: false
           }, 'google_translate_element_desktop');
-          console.log('✅ Desktop Google Translate widget initialized');
+          logger.debug('✅ Desktop Google Translate widget initialized');
         }
       };
 
       // Dynamically load the Google Translate script
-      console.log('[LayoutLoader] Google Translate script loading...');
+      logger.debug('[LayoutLoader] Google Translate script loading...');
       const gtScript = document.createElement('script');
       gtScript.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
       gtScript.onerror = function() {
@@ -466,7 +466,7 @@
       const previewVoicesBtn = document.getElementById('preview-voices-btn');
       if (previewVoicesBtn) {
         previewVoicesBtn.addEventListener('click', () => {
-          console.log('[LayoutLoader] Preview Voices clicked');
+          logger.debug('[LayoutLoader] Preview Voices clicked');
           // TODO: Implement preview voices modal
         });
       }
@@ -495,12 +495,12 @@
         window.SettingsManager.rebind();
         // Apply current settings to sync toggle states
         window.SettingsManager.applyCurrentSettings();
-        console.log('[LayoutLoader] Settings delegated to SettingsManager');
+        logger.debug('[LayoutLoader] Settings delegated to SettingsManager');
         return;
       }
 
       // Fallback: Internal settings handling if SettingsManager not available
-      console.log('[LayoutLoader] SettingsManager not found, using internal fallback');
+      logger.debug('[LayoutLoader] SettingsManager not found, using internal fallback');
 
       // Dark Mode toggle
       const darkModeToggle = document.getElementById('dark-mode-toggle');
@@ -512,7 +512,7 @@
           const theme = e.target.checked ? 'dark' : 'light';
           document.documentElement.setAttribute('data-theme', theme);
           localStorage.setItem('theme', theme);
-          console.log('[LayoutLoader] Theme changed to:', theme);
+          logger.debug('[LayoutLoader] Theme changed to:', theme);
         });
       }
 
@@ -534,7 +534,7 @@
             window.TTS.setEnabled(enabled);
           }
 
-          console.log('[LayoutLoader] TTS', enabled ? 'enabled' : 'disabled');
+          logger.debug('[LayoutLoader] TTS', enabled ? 'enabled' : 'disabled');
         });
       }
     }
@@ -605,7 +605,7 @@
           // Save preference
           localStorage.setItem('pmerit-language', lang);
           
-          console.log('[LayoutLoader] Language changed to:', lang);
+          logger.debug('[LayoutLoader] Language changed to:', lang);
           
           // TODO: Implement actual language change
           // This would typically reload content in the selected language
