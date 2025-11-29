@@ -112,13 +112,18 @@
     }
 
     /* -----------------------------------------
-       3. HIDE GOOGLE BRANDING
-       Remove Google logo, icons, and banner
-       while preserving the functional dropdown
+       3. HIDE GOOGLE BRANDING & BANNERS
+       Remove Google logo, icons, banner, tooltips
+       We have our own Language Modal UI
        ----------------------------------------- */
 
-    /* Hide the top banner that Google injects */
-    .goog-te-banner-frame.skiptranslate {
+    /* Hide GT banner, tooltip, and balloon frames */
+    .goog-te-banner-frame,
+    .goog-te-banner-frame.skiptranslate,
+    #goog-gt-tt,
+    .goog-te-balloon-frame,
+    .skiptranslate > iframe.skiptranslate,
+    body > .skiptranslate:not(#google_translate_mobile):not(#google_translate_header) {
       display: none !important;
     }
 
