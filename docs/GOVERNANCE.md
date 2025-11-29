@@ -1,0 +1,593 @@
+# 📑 PMERIT Platform — Canonical Audit & Handoff Governance V5 (FINAL)
+
+---
+
+## 🔑 AUTO-CONTINUITY SYSTEM
+
+### Magic Keywords
+
+| Keyword | Effect |
+|---------|--------|
+| **PMERIT CONTINUE** | Full auto-continuity — resume from current phase/requirement |
+| **PMERIT STATUS** | Show current state without starting work |
+| **PMERIT QUICK FIX: [description]** | Light mode — skip full protocol for minor fixes |
+| **PMERIT PHASES** | Show phase progression map |
+| **PMERIT ESCALATED** | Show all escalated issues needing alternatives |
+
+### Auto-Continuity Behavior
+
+When Claude (Web or Code Desktop) receives **"PMERIT CONTINUE"**:
+
+1. **Immediately recognize** this is the PMERIT AI Educational Platform project
+2. **Read** TASK_TRACKER.md for current phase and status
+3. **Identify** the last incomplete requirement or task
+4. **Resume work** from exactly where the previous session left off
+5. **State** the current phase, status, and next action
+6. **Begin work** without asking for additional context
+
+### Auto-Continuity Response Template
+
+```
+🔄 PMERIT AUTO-CONTINUITY ACTIVATED
+
+📍 Current Phase: [Phase Name]
+📊 Phase Status: [In Progress / Blocked / etc.]
+🎯 Next Requirement: [ID and description]
+🔢 Attempt: [X/3 or X/5 if extended]
+⚡ Workflow Mode: [Standard / Fallback / Direct]
+
+Resuming from: [Last known state]
+
+[Immediately provide the next actionable step]
+```
+
+### What Claude Should NOT Do
+
+❌ Ask "What would you like to work on?"  
+❌ Ask "Can you provide context?"  
+❌ Ask "Where did we leave off?"  
+❌ Summarize the entire project history  
+❌ Wait for additional instructions before starting  
+
+---
+
+## 🏃 LIGHT MODE (Quick Fixes)
+
+### Purpose
+For minor issues that don't require full phase protocol — typos, small CSS fixes, quick config changes.
+
+### Trigger
+```
+PMERIT QUICK FIX: [description of minor issue]
+```
+
+### Light Mode Behavior
+
+1. **Skip** phase gate verification
+2. **Skip** full requirement checklist
+3. **Implement** the fix directly
+4. **Log** to task tracker under "Quick Fixes"
+5. **Does NOT** affect phase progression or status
+
+### Light Mode Constraints
+
+- Fix must be completable in **1-3 steps**
+- Must NOT break existing functionality
+- Must NOT be a core phase requirement
+- If fix becomes complex → **Escalate to full protocol**
+
+### Light Mode Response Template
+
+```
+🏃 PMERIT LIGHT MODE — QUICK FIX
+
+Issue: [description]
+Approach: [brief solution]
+
+[Single step or small code block]
+
+→ Reply "DONE" when applied.
+```
+
+### When NOT to Use Light Mode
+
+❌ Core phase requirements (H1-H10, P0.1-P10.6)  
+❌ Issues requiring multiple file changes  
+❌ Anything affecting user authentication  
+❌ Database schema changes  
+❌ API endpoint modifications  
+
+---
+
+## 🔁 THREE-ATTEMPT ESCALATION RULE (with EXTEND Option)
+
+### Standard Flow (3 Attempts)
+
+```
+ATTEMPT 1: Initial Solution
+    │
+    ▼ Failed?
+ATTEMPT 2: Alternative Approach
+    │
+    ▼ Failed?
+ATTEMPT 3: Research + New Method
+    │
+    ▼ Failed?
+    │
+    ├──► ESCALATE (default) — Document and move on
+    │
+    └──► EXTEND (optional) — User grants 2 more attempts
+              │
+              ▼
+         ATTEMPT 4: Fresh Perspective
+              │
+              ▼ Failed?
+         ATTEMPT 5: Final Attempt
+              │
+              ▼ Failed?
+         ⛔ MANDATORY ESCALATION — No further extensions
+```
+
+### EXTEND Option
+
+**When to use:** User believes solution is close or issue is critical to phase completion.
+
+**Trigger:**
+```
+EXTEND: [requirement ID]
+Reason: [why more attempts are justified]
+```
+
+**Rules:**
+- Grants **2 additional attempts** (total 5)
+- Can only be used **once per requirement**
+- After attempt 5, **mandatory escalation** — no further extensions
+- Must document why extension was granted
+
+### Escalation Documentation Template
+
+```markdown
+### ⚠️ ESCALATED: [Requirement ID] — [Brief Name]
+
+**Phase:** [Current phase]
+**Date:** [Date]
+**Session:** [Session number]
+**Extended:** [Yes/No]
+
+#### Attempt 1: [Approach]
+- Tried: [What]
+- Result: [Outcome]
+- Failed because: [Reason]
+
+#### Attempt 2: [Approach]
+- Tried: [What]
+- Result: [Outcome]
+- Failed because: [Reason]
+
+#### Attempt 3: [Approach]
+- Tried: [What]
+- Result: [Outcome]
+- Failed because: [Reason]
+
+[If extended:]
+#### Attempt 4: [Approach]
+- Tried: [What]
+- Result: [Outcome]
+- Failed because: [Reason]
+
+#### Attempt 5: [Approach]
+- Tried: [What]
+- Result: [Outcome]
+- Failed because: [Reason]
+
+#### Escalation Decision
+- **Status:** ESCALATED
+- **Suggested alternatives:**
+  1. [External help option]
+  2. [Different AI option]
+  3. [Manual research option]
+- **Revisit when:** [Condition]
+- **Phase impact:** [Can continue? What's blocked?]
+```
+
+### Escalation Notification
+
+```
+⚠️ THREE-ATTEMPT ESCALATION TRIGGERED
+
+Issue: [Brief description]
+Attempts: [3/3 or 5/5] exhausted
+Extended: [Yes/No]
+
+Summary of attempts:
+1. [Attempt 1 — why failed]
+2. [Attempt 2 — why failed]
+3. [Attempt 3 — why failed]
+[4. Attempt 4 — if extended]
+[5. Attempt 5 — if extended]
+
+📋 Documented in TASK_TRACKER.md
+
+Recommended alternatives:
+- [ ] External developer help
+- [ ] Try with ChatGPT / GitHub Copilot
+- [ ] Stack Overflow research
+- [ ] Revisit next session with fresh perspective
+
+Moving to next requirement: [Next ID]
+
+💡 To revisit later: "PMERIT REVISIT: [requirement ID]"
+```
+
+---
+
+## 🚦 PHASE-GATED EXECUTION (with SKIP Option)
+
+### Standard Phase Progression
+
+Phases are **strictly sequential** by default:
+
+```
+🏠 HOMEPAGE GATE → Phase 0 → Phase 1 → ... → Phase 10
+```
+
+Each phase **MUST** be confirmed complete before the next unlocks.
+
+### PHASE SKIP Option (Emergency Use Only)
+
+**Purpose:** When a phase is blocked but a later phase has critical/easy work.
+
+**Trigger:**
+```
+PHASE SKIP: [phase number to skip TO]
+Current Phase: [current phase]
+Reason: [why skip is necessary]
+Risk: [what might break or be affected]
+```
+
+**Requirements:**
+- User must provide explicit justification
+- Claude must document risks
+- Skipped phase remains "IN PROGRESS" (not complete)
+- Return to skipped phase required before final delivery
+
+### PHASE SKIP Rules
+
+| Rule | Description |
+|------|-------------|
+| **Justification required** | Cannot skip without documented reason |
+| **Risk acknowledgment** | Must state what could break |
+| **Temporary only** | Must return to complete skipped phase |
+| **Logged** | Recorded in task tracker with timestamp |
+| **Max skip** | Cannot skip more than 2 phases ahead |
+| **No Homepage skip** | Homepage Gate can NEVER be skipped |
+
+### PHASE SKIP Response Template
+
+```
+⚠️ PHASE SKIP REQUESTED
+
+From: Phase [X] — [Name]
+To: Phase [Y] — [Name]
+Reason: [User's justification]
+
+Risk Assessment:
+- [Risk 1]
+- [Risk 2]
+- [Dependency that may be missing]
+
+⚠️ WARNING: Phase [X] remains incomplete. 
+You MUST return to complete it before final delivery.
+
+Proceeding to Phase [Y]...
+
+[Begin Phase Y work]
+```
+
+---
+
+## 🔄 THREE-WAY COLLABORATION WORKFLOW
+
+### Participant Roles
+
+| Participant | Role | Responsibilities |
+|-------------|------|------------------|
+| **Solo Developer** | Task Initiator & Executor | Present tasks; execute commands; confirm completion |
+| **Claude Web** | Strategic Analyst & Coordinator | Analyze; plan; generate prompts; enforce gates |
+| **Claude Code Desktop** | Implementation Engine | Execute code; update files; produce outputs |
+
+### Workflow Modes
+
+#### Mode 1: Standard Three-Way (Claude Code Desktop Available)
+
+```
+Solo Developer → Claude Web → [Prompt] → Claude Code Desktop → [Output] → Claude Web → Solo Developer
+```
+
+#### Mode 2: Fallback Two-Way (Claude Code Desktop Unavailable)
+
+```
+Solo Developer → Claude Web (Coordinator + Executor) → Solo Developer (Manual Execution)
+```
+
+#### Mode 3: Direct Execution (Claude Code Desktop Only)
+
+```
+Solo Developer → Claude Code Desktop (reads governance + tracker directly)
+```
+
+### Workflow Selection
+
+| Condition | Mode |
+|-----------|------|
+| Claude Code Desktop available, complex task | Standard Three-Way |
+| Claude Code Desktop unavailable | Fallback Two-Way |
+| Simple task, Claude Code Desktop available | Direct Execution |
+| Quick fix (any condition) | Light Mode |
+
+---
+
+## 🔗 UNIFIED INSTRUCTIONS (Claude Web & Claude Code Desktop)
+
+### This Document Works For Both
+
+| Capability | Claude Web | Claude Code Desktop |
+|------------|------------|---------------------|
+| Read governance | ✅ Project Knowledge | ✅ Repository file |
+| Read task tracker | ✅ Project Knowledge | ✅ Repository file |
+| Update task tracker | ❌ Provide updates for user | ✅ Direct edit |
+| Execute code | ❌ Provide commands | ✅ Direct execution |
+| Web search | ✅ If enabled | ❌ No web access |
+
+### File Locations
+
+| File | Claude Web | Claude Code Desktop |
+|------|------------|---------------------|
+| Governance | Project Knowledge | `/GOVERNANCE.md` |
+| Task Tracker | Project Knowledge | `/TASK_TRACKER.md` |
+| Handoffs | Project Knowledge | `/handoffs/SESSION_X.md` |
+
+---
+
+## 🔄 SYNCHRONIZATION CHECKLIST
+
+### End of Session (Claude Code Desktop)
+
+```
+□ TASK_TRACKER.md updated with:
+  □ Current phase status
+  □ Completed requirements checked ✅
+  □ Attempt counts updated
+  □ Any escalations documented
+  □ Session history entry added
+
+□ Changes committed to repository
+
+□ Note any files user needs to upload to Claude Web Project Knowledge
+```
+
+### Start of Session (Either Claude)
+
+```
+□ Say "PMERIT CONTINUE" to auto-load context
+□ Verify task tracker matches expected state
+□ Confirm workflow mode (Standard / Fallback / Direct)
+□ Check for any escalated issues to revisit
+```
+
+### Sync Between Claude Web and Claude Code Desktop
+
+```
+After Claude Code Desktop session:
+1. □ Download updated TASK_TRACKER.md from repository
+2. □ Upload to Claude Web Project Knowledge (replace old version)
+3. □ Download any new HANDOFF documents
+4. □ Upload handoffs to Project Knowledge
+
+Before Claude Web session:
+1. □ Ensure Project Knowledge has latest TASK_TRACKER.md
+2. □ Ensure Project Knowledge has latest GOVERNANCE.md (this file)
+3. □ Say "PMERIT CONTINUE" to verify sync
+```
+
+---
+
+## 🚨 HOMEPAGE PREREQUISITE GATE
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                      🏠 HOMEPAGE PREREQUISITE GATE                          │
+│                                                                             │
+│   ALL phases (0-10) are LOCKED until Homepage Gate is COMPLETE.             │
+│   This gate can NEVER be skipped.                                           │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Homepage Gate Requirements
+
+| # | Requirement | Verification |
+|---|-------------|--------------|
+| H1 | Homepage loads without console errors | No errors in DevTools Console |
+| H2 | Clean, non-scrollable design | Visual matches Google-style layout |
+| H3 | AI chatbox centered and functional | Can send/receive messages |
+| H4 | Left panel quick actions visible | Dashboard, Career Track, Virtual Human, Customer Service |
+| H5 | Sign-Up modal triggers correctly | Click protected action → Modal appears |
+| H6 | Customer Service Mode badge | AI responds with Receptionist badge |
+| H7 | Google Translate functional | Widget works on ALL pages |
+| H8 | Header/Footer display correctly | All navigation links work |
+| H9 | Mobile responsive | Test at 375px width |
+| H10 | No broken images/assets | Visual inspection passes |
+
+### Completion Command
+```
+HOMEPAGE GATE COMPLETE
+[Provide evidence: screenshots, console output, test confirmations]
+```
+
+---
+
+## 🗺️ PHASE PROGRESSION MAP
+
+```
+🏠 HOMEPAGE GATE ◄─── YOU ARE HERE (if not complete)
+   │
+   │ "HOMEPAGE GATE COMPLETE"
+   ▼
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                        USER JOURNEY ARC                                      │
+└──────────────────────────────────────────────────────────────────────────────┘
+   │
+   ├─► PHASE 0: AI Receptionist
+   │      Verify: Customer Service badge activates
+   │
+   ├─► PHASE 1: Assessment Entry
+   │      Verify: Assessment page loads and starts
+   │
+   ├─► PHASE 2: Assessment Flow
+   │      Verify: All stages complete, results generated
+   │
+   ├─► PHASE 3: Sign-Up & Onboarding
+   │      Verify: Account created, dashboard accessible
+   │
+   ├─► PHASE 4: Dashboard & Courses
+   │      Verify: Enrollment works, courses appear
+   │
+   ├─► PHASE 5: Virtual Classroom
+   │      Verify: AI Tutor works, progress tracked
+   │
+   └─► PHASE 6: Job Matching
+          Verify: Badge earned, recommendations appear
+   
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                        ADMIN JOURNEY ARC                                     │
+└──────────────────────────────────────────────────────────────────────────────┘
+   │
+   ├─► PHASE 7: Tier 1 Admin Portal
+   │      Verify: Admin login, full access
+   │
+   ├─► PHASE 8: Tier 2 Accounts
+   │      Verify: Limited permissions enforced
+   │
+   ├─► PHASE 9: Curriculum Management
+   │      Verify: Courses created, visible to students
+   │
+   └─► PHASE 10: Audit & Reports
+          Verify: Logs visible, reports generate
+          
+🎉 PLATFORM COMPLETE
+```
+
+---
+
+## 📋 QUICK COMMAND REFERENCE
+
+| Command | Effect |
+|---------|--------|
+| **PMERIT CONTINUE** | Auto-resume from current state |
+| **PMERIT STATUS** | Show status without starting work |
+| **PMERIT QUICK FIX: [desc]** | Light mode for minor fixes |
+| **PMERIT PHASES** | Show phase progression map |
+| **PMERIT ESCALATED** | Show all escalated issues |
+| **PMERIT REVISIT: [ID]** | Retry an escalated issue |
+| **EXTEND: [ID]** | Grant 2 more attempts (max once per requirement) |
+| **PHASE SKIP: [#]** | Skip to later phase (emergency only) |
+| **HOMEPAGE GATE COMPLETE** | Unlock Phase 0 |
+| **PHASE [X] COMPLETE** | Unlock Phase X+1 |
+| **ESCALATE** | Force escalation of current issue |
+| **DONE** | Confirm step completion |
+
+---
+
+## 🔑 CORE PRINCIPLES
+
+1. **Auto-Continuity:** "PMERIT CONTINUE" instantly restores project context
+2. **Phase-Gated:** No phase unlocks until previous is verified complete
+3. **Homepage First:** Homepage Gate must complete before any journey phase
+4. **Three-Attempt Rule:** Escalate after 3 failed attempts (extendable to 5 once)
+5. **Light Mode:** Quick fixes bypass full protocol
+6. **Skip Option:** Emergency phase skip with documented risks
+7. **Unified Instructions:** Same governance for Claude Web and Code Desktop
+8. **Single-Step Execution:** One command at a time, wait for "DONE"
+9. **Sync Protocol:** Keep task tracker synchronized between tools
+10. **Handoff Decisions Supersede:** Latest handoff overrides original documents
+
+---
+
+## 👤 DEVELOPER CONTEXT
+
+| Factor | Reality |
+|--------|---------|
+| Team Size | Solo developer |
+| Experience | Learning web development (AI-assisted) |
+| AI Tools | Claude (primary), GitHub Copilot, ChatGPT |
+| Scale Target | 3+ billion users globally |
+| Timeline | 15-year roadmap |
+
+---
+
+## 📚 DOCUMENT HIERARCHY
+
+1. **TASK_TRACKER.md** — Living status (always current)
+2. **GOVERNANCE.md** (this file) — Rules and workflows
+3. **Handoff Documents** — Session snapshots (override originals)
+4. **Narrative Journey** — User/Admin journey map
+5. **Original Project Docs** — Baseline (where handoffs are silent)
+
+---
+
+## ⚙️ MOSA COMPLIANCE
+
+**Required for all components:**
+- Modular, interoperable, auditable
+- Strict separation: HTML, CSS, JS
+- Shared components in `/partials/`
+- Dynamic loading via `layout-loader.js`
+
+---
+
+## 🧩 SINGLE-STEP EXECUTION
+
+```
+STEP [#]: [Action] (Attempt [X/3 or X/5])
+
+[Single command or code block]
+
+Purpose: [Brief explanation]
+
+→ Reply "DONE" to proceed.
+```
+
+---
+
+## 📊 TOKEN & HANDOFF PROTOCOL
+
+### Create Handoff When:
+✅ Phase completed  
+✅ 30-50 messages exchanged  
+✅ Before new phase begins  
+✅ After escalation (3 or 5 attempts failed)  
+✅ 2-3 hours of work  
+
+### Don't Create Handoff When:
+❌ Mid-requirement  
+❌ Active debugging (unless escalating)  
+
+---
+
+## ⚠️ CRITICAL REMINDERS
+
+1. **"PMERIT CONTINUE"** = instant project recognition and resumption
+2. **Homepage Gate** can NEVER be skipped
+3. **3 attempts** default, extendable to **5 once** per requirement
+4. **Escalate, don't spin** — document and move forward
+5. **Sync task tracker** between Claude Web and Code Desktop
+6. **Light Mode** for quick fixes only
+7. **Phase Skip** requires justification and risk acknowledgment
+8. **One step at a time** — wait for "DONE"
+
+---
+
+*Production: https://pmerit.com*  
+*Repository: github.com/peoplemerit/pmerit-ai-platform*
+*Version: V5 FINAL — 2024-11-29*
