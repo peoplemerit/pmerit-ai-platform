@@ -86,32 +86,29 @@
        ============================================ */
 
     /* -----------------------------------------
-       1. DEFENSIVE VISIBILITY RULES
-       Ensure dropdown is ALWAYS visible regardless
-       of other hiding rules. These must come first.
-       ----------------------------------------- */
-    .goog-te-combo {
-      display: inline-block !important;
-      visibility: visible !important;
-      opacity: 1 !important;
-      width: auto !important;
-      height: auto !important;
-    }
-
-    /* -----------------------------------------
-       2. WIDGET CONTAINERS
-       Position and layout for GT widget wrappers
+       1. HIDE GT NATIVE DROPDOWN
+       Users interact via our custom searchable modal.
+       GT widget is hidden but remains functional for
+       programmatic translation via .goog-te-combo.
        ----------------------------------------- */
     .gt-header-widget,
+    .gt-header-widget .goog-te-gadget,
+    .gt-header-widget .goog-te-combo,
     #google_translate_mobile,
     #google_translate_header {
-      display: inline-flex;
-      align-items: center;
-      vertical-align: middle;
+      position: absolute !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      height: 1px !important;
+      width: 1px !important;
+      overflow: hidden !important;
     }
 
-    .header-actions .gt-header-widget {
-      margin-right: 0.5rem;
+    /* Keep .goog-te-combo accessible for JS but visually hidden */
+    .goog-te-combo {
+      position: absolute !important;
+      left: -9999px !important;
+      opacity: 0 !important;
     }
 
     /* -----------------------------------------
@@ -166,139 +163,14 @@
     }
 
     /* -----------------------------------------
-       4. DROPDOWN STYLING - DARK THEME
-       Custom styling for the language select
+       4. GT DROPDOWN IS NOW HIDDEN
+       Users interact via custom Language Modal.
+       Dropdown styling removed - no longer needed.
        ----------------------------------------- */
-    .goog-te-gadget select,
-    .goog-te-combo {
-      /* Dark gradient background */
-      background: linear-gradient(180deg, #252545 0%, #1a1a2e 100%) !important;
-      border: 1px solid rgba(74, 164, 185, 0.3) !important;
-      border-radius: 8px !important;
 
-      /* Typography */
-      font-family: 'Inter', sans-serif !important;
-      font-size: 0.875rem !important;
-      font-weight: 500 !important;
-      color: #ffffff !important;
-
-      /* Sizing */
-      padding: 0.5rem 2rem 0.5rem 0.75rem !important;
-      min-height: 36px !important;
-
-      /* Custom teal dropdown arrow */
-      appearance: none !important;
-      -webkit-appearance: none !important;
-      -moz-appearance: none !important;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234AA4B9' d='M6 8L1 3h10z'/%3E%3C/svg%3E") !important;
-      background-repeat: no-repeat !important;
-      background-position: right 0.6rem center !important;
-      background-size: 10px !important;
-
-      /* Interaction */
-      cursor: pointer !important;
-      outline: none !important;
-      transition: all 0.2s ease !important;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
-    }
-
-    /* Hover state */
-    .goog-te-gadget select:hover,
-    .goog-te-combo:hover {
-      border-color: #4AA4B9 !important;
-      background: linear-gradient(180deg, #2a2a4a 0%, #1f1f3a 100%) !important;
-      box-shadow: 0 2px 8px rgba(74, 164, 185, 0.2) !important;
-    }
-
-    /* Focus state */
-    .goog-te-gadget select:focus,
-    .goog-te-combo:focus {
-      border-color: #2A5B8C !important;
-      box-shadow: 0 0 0 3px rgba(42, 91, 140, 0.25), 0 2px 4px rgba(0, 0, 0, 0.2) !important;
-    }
-
-    /* Dropdown options (limited browser support) */
-    .goog-te-combo option {
-      background-color: #1a1a2e !important;
-      color: #ffffff !important;
-      padding: 8px 12px !important;
-    }
-
-    /* Google's iframe dropdown menu */
+    /* Google's iframe dropdown menu - hide if it appears */
     .goog-te-menu-frame {
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
-    }
-
-    /* Hide globe button when GT widget is active */
-    .gt-header-widget:not(:empty) ~ .language-btn,
-    .language-btn.gt-hidden {
       display: none !important;
-    }
-
-    /* -----------------------------------------
-       5. RESPONSIVE BREAKPOINTS
-       ----------------------------------------- */
-
-    /* Mobile (< 768px) - Compact */
-    @media (max-width: 767px) {
-      .gt-header-widget {
-        margin-left: 0.25rem;
-      }
-
-      .gt-header-widget .goog-te-combo,
-      #google_translate_mobile .goog-te-combo {
-        max-width: 85px !important;
-        min-width: 70px !important;
-        font-size: 0.7rem !important;
-        padding: 0.35rem 1.5rem 0.35rem 0.5rem !important;
-        min-height: 30px !important;
-        border-radius: 6px !important;
-        background-size: 8px !important;
-        background-position: right 0.4rem center !important;
-      }
-    }
-
-    /* Tablet (768px - 1023px) */
-    @media (min-width: 768px) and (max-width: 1023px) {
-      .gt-header-widget {
-        margin-left: 0.5rem;
-      }
-
-      .gt-header-widget .goog-te-combo {
-        min-width: 110px !important;
-        font-size: 0.8rem !important;
-      }
-
-      #google_translate_mobile {
-        margin-right: 0.5rem;
-      }
-    }
-
-    /* Desktop (1024px+) */
-    @media (min-width: 1024px) {
-      .gt-header-widget {
-        display: inline-flex !important;
-        align-items: center;
-        margin-left: 0.75rem;
-      }
-
-      .header-nav .gt-header-widget,
-      .header-nav #google_translate_header {
-        display: inline-flex !important;
-        align-items: center;
-        margin-right: 0.75rem;
-      }
-
-      .header-nav .goog-te-gadget {
-        display: inline-block !important;
-      }
-
-      .gt-header-widget .goog-te-combo,
-      .header-nav .goog-te-combo {
-        min-width: 130px !important;
-        font-size: 0.875rem !important;
-        padding: 0.5rem 2rem 0.5rem 0.875rem !important;
-      }
     }
 
     /* ============================================ */

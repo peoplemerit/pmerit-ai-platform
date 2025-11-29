@@ -11,13 +11,10 @@
     
     <!-- Right: Language Switcher | Hamburger | Sign In -->
     <div class="header-right">
-      <!-- Language Switcher Button -->
-      <button class="header-btn language-btn" id="language-btn" aria-label="Change language" title="Select Language">
+      <!-- Language Switcher Button - Opens Language Modal -->
+      <button class="header-btn language-btn" id="language-btn" data-action="open-language-modal" aria-label="Change language" title="Select Language">
         <i class="fas fa-globe"></i>
       </button>
-
-      <!-- Google Translate Header Widget -->
-      <div id="google_translate_header" class="gt-header-widget"></div>
 
       <!-- Pricing Link (Desktop only) -->
       <a href="pricing.html" class="header-btn pricing-link desktop-only">Pricing</a>
@@ -137,22 +134,7 @@
   </nav>
 </aside>
 
-<!-- Language Switcher Dropdown -->
-<div class="language-dropdown" id="language-dropdown" aria-hidden="true">
-  <div class="language-dropdown-header">
-    <h3>Select Language</h3>
-    <button class="close-dropdown-btn" id="close-language-dropdown" aria-label="Close language menu">
-      <i class="fas fa-times"></i>
-    </button>
-  </div>
-  <ul class="language-list">
-    <li><button class="language-option active" data-lang="en">🇺🇸 English</button></li>
-    <li><button class="language-option" data-lang="yo">🇳🇬 Yorùbá</button></li>
-    <li><button class="language-option" data-lang="ig">🇳🇬 Igbo</button></li>
-    <li><button class="language-option" data-lang="ha">🇳🇬 Hausa</button></li>
-    <li><button class="language-option" data-lang="fr">🇫🇷 Français</button></li>
-    <li><button class="language-option" data-lang="es">🇪🇸 Español</button></li>
-  </ul>
-</div>
-
-<!-- Google Translate styles consolidated in assets/css/index-layout.css -->
+<!-- Language Modal - Include via layout-loader or directly in page -->
+<!-- See: partials/language-modal.html for the full modal markup -->
+<!-- Styles: assets/css/language-modal.css -->
+<!-- Scripts: assets/js/language-modal.js -->
