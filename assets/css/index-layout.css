@@ -79,151 +79,103 @@
     }
 
     /* ============================================
-       GOOGLE TRANSLATE WIDGET - PMERIT DARK THEME
+       GOOGLE TRANSLATE WIDGET - CONSOLIDATED STYLES
+       Single source of truth for all GT styling
        Colors: Primary #2A5B8C, Teal #4AA4B9, BG #1a1a2e
+       Last updated: Nov 28, 2025
        ============================================ */
 
-    /* Base widget containers */
+    /* -----------------------------------------
+       1. HIDE GT NATIVE DROPDOWN
+       Users interact via our custom searchable modal.
+       GT widget is hidden but remains functional for
+       programmatic translation via .goog-te-combo.
+       ----------------------------------------- */
     .gt-header-widget,
+    .gt-header-widget .goog-te-gadget,
+    .gt-header-widget .goog-te-combo,
     #google_translate_mobile,
     #google_translate_header {
-      display: inline-flex;
-      align-items: center;
-      vertical-align: middle;
+      position: absolute !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+      height: 1px !important;
+      width: 1px !important;
+      overflow: hidden !important;
     }
 
-    /* Mobile header widget positioning */
-    .header-actions .gt-header-widget {
-      margin-right: 0.5rem;
+    /* Keep .goog-te-combo accessible for JS but visually hidden */
+    .goog-te-combo {
+      position: absolute !important;
+      left: -9999px !important;
+      opacity: 0 !important;
     }
 
-    /* Hide Google branding globally */
-    .goog-te-banner-frame.skiptranslate {
+    /* -----------------------------------------
+       3. HIDE GOOGLE BRANDING & BANNERS
+       Remove Google logo, icons, banner, tooltips
+       We have our own Language Modal UI
+       ----------------------------------------- */
+
+    /* Hide GT banner, tooltip, and balloon frames */
+    .goog-te-banner-frame,
+    .goog-te-banner-frame.skiptranslate,
+    #goog-gt-tt,
+    .goog-te-balloon-frame,
+    .skiptranslate > iframe.skiptranslate,
+    body > .skiptranslate:not(#google_translate_mobile):not(#google_translate_header) {
       display: none !important;
     }
 
-    .goog-te-gadget-icon,
-    .goog-te-gadget img,
-    .goog-te-gadget > span,
-    .goog-te-gadget a.goog-logo-link {
-      display: none !important;
-      visibility: hidden !important;
-    }
-
+    /* Prevent body from being pushed down by banner */
     body {
       top: 0 !important;
     }
 
-    /* Base gadget styling */
-    .goog-te-gadget {
-      font-family: 'Inter', sans-serif !important;
-      font-size: 0 !important;
-      margin: 0 !important;
+    /* Hide branding elements - be specific to avoid hiding dropdown */
+    .goog-te-gadget-icon,
+    .goog-te-gadget > img,
+    .goog-te-gadget a.goog-logo-link {
+      display: none !important;
     }
 
+    /* Hide "Powered by" text spans, but NOT the dropdown container */
+    .goog-te-gadget > span:not(:has(select)):not(:has(.goog-te-combo)) {
+      display: none !important;
+    }
+
+    /* Base gadget wrapper - clean up spacing */
+    .goog-te-gadget {
+      font-family: 'Inter', sans-serif !important;
+      margin: 0 !important;
+      line-height: 1 !important;
+    }
+
+    /* Simple layout variant cleanup */
     .goog-te-gadget-simple {
       background-color: transparent !important;
       border: none !important;
       padding: 0 !important;
-      font-size: 0 !important;
     }
 
     .goog-te-gadget-simple img {
       display: none !important;
     }
 
+    /* Hide first span in menu value (usually "Select Language" text) */
     .goog-te-gadget-simple .goog-te-menu-value span:first-child {
       display: none !important;
     }
 
-    /* Main select dropdown - Dark theme styling */
-    .goog-te-gadget select,
-    .goog-te-combo {
-      /* Dark gradient background */
-      background: linear-gradient(180deg, #252545 0%, #1a1a2e 100%) !important;
-      border: 1px solid rgba(74, 164, 185, 0.3) !important;
-      border-radius: 8px !important;
+    /* -----------------------------------------
+       4. GT DROPDOWN IS NOW HIDDEN
+       Users interact via custom Language Modal.
+       Dropdown styling removed - no longer needed.
+       ----------------------------------------- */
 
-      /* Typography */
-      font-family: 'Inter', sans-serif !important;
-      font-size: 0.875rem !important;
-      font-weight: 500 !important;
-      color: #ffffff !important;
-
-      /* Sizing */
-      padding: 0.5rem 2rem 0.5rem 0.75rem !important;
-      min-height: 36px !important;
-
-      /* Custom teal dropdown arrow */
-      appearance: none !important;
-      -webkit-appearance: none !important;
-      -moz-appearance: none !important;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234AA4B9' d='M6 8L1 3h10z'/%3E%3C/svg%3E") !important;
-      background-repeat: no-repeat !important;
-      background-position: right 0.6rem center !important;
-      background-size: 10px !important;
-
-      /* Interaction */
-      cursor: pointer !important;
-      outline: none !important;
-      transition: all 0.2s ease !important;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
-    }
-
-    .goog-te-gadget select:hover,
-    .goog-te-combo:hover {
-      border-color: #4AA4B9 !important;
-      background: linear-gradient(180deg, #2a2a4a 0%, #1f1f3a 100%) !important;
-      box-shadow: 0 2px 8px rgba(74, 164, 185, 0.2) !important;
-    }
-
-    .goog-te-gadget select:focus,
-    .goog-te-combo:focus {
-      border-color: #2A5B8C !important;
-      box-shadow: 0 0 0 3px rgba(42, 91, 140, 0.25), 0 2px 4px rgba(0, 0, 0, 0.2) !important;
-    }
-
-    /* Dropdown options */
-    .goog-te-combo option {
-      background-color: #1a1a2e !important;
-      color: #ffffff !important;
-    }
-
-    /* Desktop header nav */
-    @media (min-width: 1024px) {
-      .header-nav .gt-header-widget,
-      .header-nav #google_translate_header {
-        display: inline-flex !important;
-        align-items: center;
-        margin-right: 0.75rem;
-      }
-
-      .header-nav .goog-te-gadget {
-        display: inline-block !important;
-      }
-
-      .header-nav .goog-te-combo {
-        min-width: 130px !important;
-        padding: 0.5rem 2rem 0.5rem 0.875rem !important;
-      }
-    }
-
-    /* Mobile specific styling (< 1024px) */
-    @media (max-width: 1023px) {
-      #google_translate_mobile {
-        margin-right: 0.5rem;
-      }
-
-      #google_translate_mobile .goog-te-combo {
-        max-width: 85px !important;
-        min-width: 70px !important;
-        font-size: 0.7rem !important;
-        padding: 0.35rem 1.5rem 0.35rem 0.5rem !important;
-        min-height: 30px !important;
-        border-radius: 6px !important;
-        background-size: 8px !important;
-        background-position: right 0.4rem center !important;
-      }
+    /* Google's iframe dropdown menu - hide if it appears */
+    .goog-te-menu-frame {
+      display: none !important;
     }
 
     /* ============================================ */

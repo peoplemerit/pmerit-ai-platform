@@ -63,8 +63,33 @@
   <!-- Index Page Layout (MOSA extracted) -->
   <link rel="stylesheet" href="assets/css/index-layout.css?v=4">
 
+  <!-- Language Modal styles are auto-injected by language-modal.js -->
+
   <!-- Debug Logger Utility (auto-silent in production) -->
   <script src="assets/js/utils/logger.js"></script>
+
+  <!-- Google Translate - Synchronous Load -->
+  <script>
+    function googleTranslateElementInit() {
+      console.log('[GT] googleTranslateElementInit called (sync)');
+      var isMobile = window.innerWidth < 1024;
+      var targetId = isMobile ? 'google_translate_mobile' : 'google_translate_header';
+      console.log('[GT] Screen width:', window.innerWidth, '| Target:', targetId);
+
+      var targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        new google.translate.TranslateElement({
+          pageLanguage: 'en',
+          autoDisplay: false,
+          layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        }, targetId);
+        console.log('[GT] Widget initialized in', isMobile ? 'mobile' : 'desktop', 'header');
+      } else {
+        console.warn('[GT] Target element not found:', targetId);
+      }
+    }
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </head>
 <body>
 
@@ -76,9 +101,14 @@
     <header class="pmerit-header">
       <div class="pmerit-logo">PMERIT</div>
       <div class="header-actions">
+        <!-- Google Translate Widget Container (hidden, used by GT script) -->
         <div id="google_translate_mobile" class="gt-header-widget"></div>
+        <!-- Language Button - Opens Modal -->
+        <button class="language-btn-mobile" data-action="open-language-modal" aria-label="Change language" title="Select Language">
+          <i class="fas fa-globe"></i>
+        </button>
         <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">☰</button>
-        <button class="sign-in-btn" id="signInBtn">Sign In</button>
+        <button class="sign-in-btn" id="signInBtn" data-i18n="common.signIn">Sign In</button>
       </div>
     </header>
 
@@ -141,7 +171,7 @@
     <!-- Hamburger Menu -->
     <nav class="side-menu" id="sideMenu">
       <!-- Quick Actions Section -->
-      <h3 class="menu-title">Quick Actions</h3>
+      <h3 class="menu-title" data-i18n="sidebar.quickActions">Quick Actions</h3>
       
       <!-- Dashboard (Primary Item) -->
       <div class="menu-item menu-item-primary" data-route="/">
@@ -151,23 +181,23 @@
       
       <!-- Customer Service Mode -->
       <button class="menu-item menu-item-customer-service" id="mobile-customer-service-btn">
-        <span><i class="fas fa-headset"></i> Customer Service Mode</span>
+        <span><i class="fas fa-headset"></i> <span data-i18n="sidebar.customerServiceMode">Customer Service Mode</span></span>
         <i class="fas fa-chevron-right"></i>
       </button>
       
       <!-- Career Track -->
       <div class="menu-item" data-route="/career">
-        <span><i class="fas fa-route"></i> Career Track & Explore Paths</span>
+        <span><i class="fas fa-route"></i> <span data-i18n="sidebar.careerTrack">Career Track & Explore Paths</span></span>
         <i class="fas fa-chevron-right"></i>
       </div>
       
       <!-- Settings Section -->
-      <h3 class="menu-title">Settings</h3>
+      <h3 class="menu-title" data-i18n="common.settings">Settings</h3>
       
       <!-- Dark Mode Toggle -->
       <div class="menu-item">
         <label class="menu-toggle-label">
-          <span><i class="fas fa-moon"></i> Dark Mode</span>
+          <span><i class="fas fa-moon"></i> <span data-i18n="sidebar.darkMode">Dark Mode</span></span>
           <div class="toggle-switch">
             <input type="checkbox" id="mobileDarkToggle" data-toggle="dark" aria-label="Toggle Dark Mode">
             <span class="toggle-slider"></span>
@@ -178,7 +208,7 @@
       <!-- Text-to-Speech Toggle -->
       <div class="menu-item">
         <label class="menu-toggle-label">
-          <span><i class="fas fa-volume-up"></i> Text-to-Speech</span>
+          <span><i class="fas fa-volume-up"></i> <span data-i18n="sidebar.textToSpeech">Text-to-Speech</span></span>
           <div class="toggle-switch">
             <input type="checkbox" id="mobileTtsToggle" data-toggle="tts" aria-label="Toggle Text-to-Speech">
             <span class="toggle-slider"></span>
@@ -188,16 +218,16 @@
       
       <!-- Preview Voices -->
       <div class="menu-item" onclick="window.VoicePreview.show()" style="cursor: pointer;">
-        <span><i class="fas fa-microphone"></i> Preview Voices</span>
+        <span><i class="fas fa-microphone"></i> <span data-i18n="sidebar.previewVoices">Preview Voices</span></span>
         <i class="fas fa-chevron-right"></i>
       </div>
       
       <!-- Learning Section -->
-      <h3 class="menu-title">Learning</h3>
+      <h3 class="menu-title" data-i18n="sidebar.learning">Learning</h3>
       
       <!-- Begin Assessment -->
       <a href="assessment-entry.html" class="menu-item">
-        <span><i class="fas fa-clipboard-list"></i> Begin Assessment</span>
+        <span><i class="fas fa-clipboard-list"></i> <span data-i18n="sidebar.beginAssessment">Begin Assessment</span></span>
         <i class="fas fa-chevron-right"></i>
       </a>
     </nav>
@@ -211,16 +241,21 @@
     <header class="pmerit-header">
       <div class="pmerit-logo">PMERIT</div>
       <nav class="header-nav">
+        <!-- Google Translate Widget Container (hidden, used by GT script) -->
         <div id="google_translate_header" class="gt-header-widget"></div>
+        <!-- Language Button - Opens Modal -->
+        <button class="nav-btn language-btn-desktop" data-action="open-language-modal" aria-label="Change language" title="Select Language">
+          <i class="fas fa-globe"></i> Language
+        </button>
         <a href="pricing.html" class="nav-btn">Pricing</a>
-        <button class="nav-btn" id="desktopSignInBtn">Sign In</button>
-        <button class="nav-btn primary">Start Learning</button>
+        <button class="nav-btn" id="desktopSignInBtn" data-i18n="common.signIn">Sign In</button>
+        <button class="nav-btn primary" data-i18n="header.startLearning">Start Learning</button>
       </nav>
     </header>
 
     <!-- Left Sidebar -->
     <aside class="left-sidebar">
-      <h3 class="pane-title">Quick Actions</h3>
+      <h3 class="pane-title" data-i18n="sidebar.quickActions">Quick Actions</h3>
       
       <!-- Dashboard (Primary Button) -->
       <button class="dashboard-btn dashboard-btn-primary">
@@ -230,27 +265,27 @@
       
       <!-- Customer Service Mode -->
       <button class="dashboard-btn dashboard-btn-customer-service" id="desktop-customer-service-btn">
-        <i class="fas fa-headset"></i> 
-        <span>Customer Service Mode</span>
+        <i class="fas fa-headset"></i>
+        <span data-i18n="sidebar.customerServiceMode">Customer Service Mode</span>
       </button>
       
       <!-- Career Track -->
       <div class="action">
-        <span><i class="fas fa-route icon"></i>Career Track & Explore Paths</span>
+        <span><i class="fas fa-route icon"></i><span data-i18n="sidebar.careerTrack">Career Track & Explore Paths</span></span>
         <i class="fas fa-chevron-right"></i>
       </div>
       
       <!-- Settings Collapsible -->
       <div class="collapsible" id="settingsCollapsible">
         <div class="collapsible-header">
-          <h4><i class="fas fa-cog icon"></i>Settings</h4>
+          <h4><i class="fas fa-cog icon"></i><span data-i18n="common.settings">Settings</span></h4>
           <i class="fas fa-chevron-down"></i>
         </div>
         <div class="collapsible-body">
           <!-- Dark Mode Toggle -->
           <div class="toggle">
             <label class="toggle-label">
-              <span>Dark Mode</span>
+              <span data-i18n="sidebar.darkMode">Dark Mode</span>
               <div class="toggle-switch">
                 <input type="checkbox" id="desktopDarkToggle" data-toggle="dark" aria-label="Toggle Dark Mode">
                 <span class="toggle-slider"></span>
@@ -261,7 +296,7 @@
           <!-- Text-to-Speech Toggle -->
           <div class="toggle">
             <label class="toggle-label">
-              <span>Text-to-Speech</span>
+              <span data-i18n="sidebar.textToSpeech">Text-to-Speech</span>
               <div class="toggle-switch">
                 <input type="checkbox" id="desktopTtsToggle" data-toggle="tts" aria-label="Toggle Text-to-Speech">
                 <span class="toggle-slider"></span>
@@ -271,7 +306,7 @@
           
           <!-- Preview Voices -->
           <div class="action" onclick="window.VoicePreview.show()" style="cursor: pointer;">
-            <span>Preview Voices</span>
+            <span data-i18n="sidebar.previewVoices">Preview Voices</span>
             <i class="fas fa-chevron-right"></i>
           </div>
         </div>
@@ -599,84 +634,12 @@
   <script src="/assets/js/voice-preview.js"></script>
   <link rel="stylesheet" href="/assets/css/voice-preview.css">
 
-  <!-- Google Translate Widget - Screen-size aware initialization -->
-  <script type="text/javascript">
-    var gtRetryCount = 0;
-    var gtMaxRetries = 3;
+  <!-- Language Modal - Custom branded language selector with search -->
+  <script src="assets/js/language-manager.js"></script>
+  <script src="assets/js/language-data.js"></script>
+  <script src="assets/js/language-modal.js"></script>
 
-    function initGTWidget(targetId, targetElement, isMobile) {
-      try {
-        new google.translate.TranslateElement({
-          pageLanguage: 'en',
-          autoDisplay: false,
-          layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-        }, targetId);
-        console.log('✅ [GT] Widget initialized in', isMobile ? 'mobile' : 'desktop', 'header');
+  <!-- Language Modal is auto-injected by language-modal.js -->
 
-        // Verify widget was populated after a short delay
-        setTimeout(function() {
-          var widgetContent = targetElement.querySelector('.goog-te-gadget, .goog-te-combo, select');
-          if (widgetContent) {
-            console.log('✅ [GT] Widget content verified:', widgetContent.tagName);
-          } else if (gtRetryCount < gtMaxRetries) {
-            gtRetryCount++;
-            console.log('⚠️ [GT] Widget empty, retrying... (attempt', gtRetryCount, 'of', gtMaxRetries + ')');
-            // Clear and retry
-            targetElement.innerHTML = '';
-            setTimeout(function() {
-              initGTWidget(targetId, targetElement, isMobile);
-            }, 500 * gtRetryCount);
-          } else {
-            console.error('❌ [GT] Widget failed to populate after', gtMaxRetries, 'retries');
-          }
-        }, 300);
-      } catch (e) {
-        console.error('❌ [GT] Error initializing widget:', e);
-      }
-    }
-
-    function googleTranslateElementInit() {
-      console.log('🌐 [GT] googleTranslateElementInit called');
-
-      // Small delay to ensure DOM is fully ready
-      setTimeout(function() {
-        // Detect which layout is visible (mobile < 1024px, desktop >= 1024px)
-        var isMobile = window.innerWidth < 1024;
-        var targetId = isMobile ? 'google_translate_mobile' : 'google_translate_header';
-        var targetElement = document.getElementById(targetId);
-
-        console.log('🌐 [GT] Screen width:', window.innerWidth, '| Target:', targetId, '| Element found:', !!targetElement);
-
-        if (targetElement) {
-          initGTWidget(targetId, targetElement, isMobile);
-        } else {
-          console.error('❌ [GT] Target element not found:', targetId);
-        }
-      }, 100);
-    }
-
-    // Load Google Translate script after page loads
-    window.addEventListener('load', function() {
-      console.log('📄 [GT] Page loaded, attempting to load Google Translate script...');
-
-      // Check if google.translate already exists (script may have loaded from elsewhere)
-      if (typeof google !== 'undefined' && google.translate) {
-        console.log('⚠️ [GT] Google Translate already loaded, calling init directly');
-        googleTranslateElementInit();
-        return;
-      }
-
-      var gtScript = document.createElement('script');
-      gtScript.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-      gtScript.onload = function() {
-        console.log('✅ [GT] Script loaded successfully');
-      };
-      gtScript.onerror = function(e) {
-        console.error('❌ [GT] Failed to load Google Translate script:', e);
-      };
-      document.body.appendChild(gtScript);
-      console.log('📄 [GT] Script element added to DOM');
-    });
-  </script>
 </body>
 </html>
