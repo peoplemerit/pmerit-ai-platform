@@ -274,21 +274,46 @@
 
   // Trigger Google Translate programmatically
   function triggerGoogleTranslate(code) {
-    // Find GT's hidden select element
+    console.log('[LanguageModal] Attempting to translate to:', code);
+
+    // Method 1: Find GT's hidden select element
     const gtSelect = document.querySelector('.goog-te-combo');
+    console.log('[LanguageModal] GT select element:', gtSelect);
+
     if (gtSelect) {
-      gtSelect.value = code;
-      gtSelect.dispatchEvent(new Event('change', { bubbles: true }));
-      console.log('[LanguageModal] Triggered Google Translate for:', code);
-    } else {
-      console.warn('[LanguageModal] Google Translate select not found');
-      // Fallback: try to find and click GT option
-      const gtFrame = document.querySelector('.goog-te-menu-frame');
-      if (gtFrame) {
-        // GT uses an iframe, more complex to interact with
-        console.log('[LanguageModal] GT iframe found, manual selection may be needed');
+      // Check available options
+      const options = Array.from(gtSelect.options).map(o => o.value);
+      console.log('[LanguageModal] Available GT options:', options.slice(0, 10), '...');
+
+      if (options.includes(code)) {
+        gtSelect.value = code;
+        gtSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        console.log('[LanguageModal] Triggered GT via select for:', code);
+        return;
+      } else {
+        console.warn('[LanguageModal] Language code not in GT options:', code);
       }
     }
+
+    // Method 2: Cookie-based fallback (most reliable)
+    console.log('[LanguageModal] Using cookie fallback for:', code);
+    setTranslateCookie(code);
+  }
+
+  // Set Google Translate cookie and reload
+  function setTranslateCookie(code) {
+    const value = '/en/' + code;
+
+    // Set cookie for current domain
+    document.cookie = 'googtrans=' + value + '; path=/';
+    document.cookie = 'googtrans=' + value + '; path=/; domain=' + window.location.hostname;
+
+    console.log('[LanguageModal] Set googtrans cookie:', value);
+
+    // Reload to apply translation
+    setTimeout(function() {
+      window.location.reload();
+    }, 100);
   }
 
   // Open modal
