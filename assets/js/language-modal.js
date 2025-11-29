@@ -9,7 +9,7 @@
   // Modal HTML template
   const modalHTML = `
     <div id="languageModal" class="language-modal-overlay" style="display:none;">
-      <div class="language-modal">
+      <div class="language-modal notranslate">
         <div class="language-modal-header">
           <h3>🌐 Select Language</h3>
           <button class="language-modal-close" aria-label="Close">&times;</button>
