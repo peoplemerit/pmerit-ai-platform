@@ -259,10 +259,28 @@
     console.log('[LanguageModal] Selected:', lang.name, '| Offline:', lang.offline);
 
     if (lang.offline) {
-      // Use Language Manager for offline languages
+      // For offline languages: Reset GT first, then use Language Manager
+      console.log('[LanguageModal] Resetting GT and applying Language Manager for:', code);
+
+      // Step 1: Clear Google Translate cookie
+      document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+      document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + window.location.hostname;
+
+      // Step 2: Reset GT select to empty/English if it exists
+      const gtSelect = document.querySelector('.goog-te-combo');
+      if (gtSelect) {
+        gtSelect.value = '';
+        gtSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        console.log('[LanguageModal] Reset GT select to English');
+      }
+
+      // Step 3: Apply Language Manager
       if (window.LanguageManager && typeof window.LanguageManager.setLanguage === 'function') {
         window.LanguageManager.setLanguage(code);
-        console.log('[LanguageModal] Using Language Manager for:', code);
+        console.log('[LanguageModal] ✅ Language Manager applied for:', code);
+      } else {
+        console.warn('[LanguageModal] LanguageManager not found or setLanguage not available');
+        console.log('[LanguageModal] window.LanguageManager:', window.LanguageManager);
       }
     } else {
       // Use Google Translate for online languages
