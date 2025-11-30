@@ -278,7 +278,77 @@ if (typeof window.logger === 'undefined') {
         this.initFooter();
       }
 
+      // Load dynamic scripts for modals (language selector, etc.)
+      await this.loadDynamicScripts();
+
       logger.debug('[LayoutLoader] Components initialized');
+    }
+
+    /**
+     * Dynamically load scripts required for modals after partials are loaded
+     *
+     * @async
+     * @returns {Promise<void>}
+     *
+     * @description Loads language-modal.js which self-injects its CSS and HTML.
+     * This enables the language selector modal on all sub-pages that use layout-loader.
+     *
+     * @private
+     */
+    async loadDynamicScripts() {
+      // Load language system if not already loaded
+      if (!window.PMERIT_LANGUAGE_MODAL_LOADED) {
+        try {
+          // 1. Load language-manager.js (handles translation application)
+          if (!window.LanguageManager) {
+            await this.loadScript('/assets/js/language-manager.js');
+            logger.debug('[LayoutLoader] language-manager.js loaded');
+          }
+
+          // 2. Load language-data.js (defines PMERIT_LANGUAGES array)
+          if (!window.PMERIT_LANGUAGES) {
+            await this.loadScript('/assets/js/language-data.js');
+            logger.debug('[LayoutLoader] language-data.js loaded');
+          }
+
+          // 3. Load language-modal.js (self-injects CSS and HTML)
+          await this.loadScript('/assets/js/language-modal.js');
+          window.PMERIT_LANGUAGE_MODAL_LOADED = true;
+          logger.debug('[LayoutLoader] Language system fully loaded');
+
+          // Initialize LanguageManager if available
+          if (window.LanguageManager && typeof window.LanguageManager.init === 'function') {
+            window.LanguageManager.init();
+          }
+        } catch (error) {
+          console.warn('[LayoutLoader] Failed to load language scripts:', error);
+        }
+      }
+    }
+
+    /**
+     * Helper to dynamically load a script
+     *
+     * @async
+     * @param {string} src - Script source URL
+     * @returns {Promise<void>}
+     * @private
+     */
+    loadScript(src) {
+      return new Promise((resolve, reject) => {
+        // Check if script is already loaded
+        if (document.querySelector(`script[src="${src}"]`)) {
+          resolve();
+          return;
+        }
+
+        const script = document.createElement('script');
+        script.src = src;
+        script.async = true;
+        script.onload = resolve;
+        script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+        document.body.appendChild(script);
+      });
     }
 
     /**
