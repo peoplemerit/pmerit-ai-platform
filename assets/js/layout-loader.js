@@ -296,6 +296,9 @@ if (typeof window.logger === 'undefined') {
      * @private
      */
     async loadDynamicScripts() {
+      // Load modal CSS for auth modals in footer
+      this.loadCSS('/assets/css/modal.css');
+
       // Load language system if not already loaded
       if (!window.PMERIT_LANGUAGE_MODAL_LOADED) {
         try {
@@ -324,6 +327,25 @@ if (typeof window.logger === 'undefined') {
           console.warn('[LayoutLoader] Failed to load language scripts:', error);
         }
       }
+    }
+
+    /**
+     * Helper to dynamically load a CSS file
+     *
+     * @param {string} href - CSS file URL
+     * @private
+     */
+    loadCSS(href) {
+      // Check if CSS is already loaded
+      if (document.querySelector(`link[href="${href}"]`)) {
+        return;
+      }
+
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = href;
+      document.head.appendChild(link);
+      logger.debug('[LayoutLoader] CSS loaded:', href);
     }
 
     /**
@@ -649,22 +671,27 @@ if (typeof window.logger === 'undefined') {
 
     /**
      * Initialize authentication buttons and handlers
-     * 
+     *
      * @description Sets up click handlers for sign-in buttons in header and menu.
-     * Opens AuthModal if available, otherwise redirects to signin page.
+     * Opens footer modals if they exist, otherwise opens AuthModal or redirects.
      * Also calls updateAuthUI to reflect current authentication state.
-     * 
+     *
      * @private
      */
     initAuthButtons() {
       const signInBtn = document.getElementById('sign-in-btn');
       const menuSignInBtn = document.getElementById('menu-sign-in');
 
+      // Initialize footer modals first (adds open/close methods to window)
+      this.initFooterModals();
+
       const handleSignIn = (e) => {
         e.preventDefault();
-        
-        // Check if AuthModal is available
-        if (window.AuthModal) {
+
+        // Try footer modals first (from footer.html partial)
+        if (window.openSignInModal) {
+          window.openSignInModal();
+        } else if (window.AuthModal) {
           window.AuthModal.open('signin');
         } else {
           window.location.href = '/signin.html';
@@ -676,6 +703,90 @@ if (typeof window.logger === 'undefined') {
 
       // Update UI based on auth state
       this.updateAuthUI();
+    }
+
+    /**
+     * Initialize footer auth modals (sign-up and sign-in)
+     *
+     * @description Sets up event handlers for the auth modals included in footer.html.
+     * Creates global openSignInModal/openSignUpModal functions for use by buttons.
+     *
+     * @private
+     */
+    initFooterModals() {
+      const signUpModal = document.getElementById('sign-up-modal');
+      const signInModal = document.getElementById('sign-in-modal');
+
+      // Exit if footer modals don't exist
+      if (!signUpModal && !signInModal) {
+        return;
+      }
+
+      // Helper: Open a modal
+      const openModal = (modal) => {
+        if (!modal) return;
+        modal.classList.add('active');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      };
+
+      // Helper: Close a modal
+      const closeModal = (modal) => {
+        if (!modal) return;
+        modal.classList.remove('active');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      };
+
+      // Close all modals
+      const closeAllModals = () => {
+        closeModal(signUpModal);
+        closeModal(signInModal);
+      };
+
+      // Expose global functions for buttons to use
+      window.openSignUpModal = () => {
+        closeAllModals();
+        openModal(signUpModal);
+      };
+
+      window.openSignInModal = () => {
+        closeAllModals();
+        openModal(signInModal);
+      };
+
+      // Close button handlers
+      document.getElementById('sign-up-close')?.addEventListener('click', () => closeModal(signUpModal));
+      document.getElementById('sign-in-close')?.addEventListener('click', () => closeModal(signInModal));
+
+      // Backdrop click handlers
+      document.getElementById('sign-up-backdrop')?.addEventListener('click', (e) => {
+        if (e.target.id === 'sign-up-backdrop') closeModal(signUpModal);
+      });
+      document.getElementById('sign-in-backdrop')?.addEventListener('click', (e) => {
+        if (e.target.id === 'sign-in-backdrop') closeModal(signInModal);
+      });
+
+      // Switch between modals
+      document.getElementById('switch-to-sign-in')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeModal(signUpModal);
+        openModal(signInModal);
+      });
+      document.getElementById('switch-to-sign-up')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeModal(signInModal);
+        openModal(signUpModal);
+      });
+
+      // Escape key to close
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeAllModals();
+        }
+      });
+
+      logger.debug('[LayoutLoader] Footer auth modals initialized');
     }
 
     /**

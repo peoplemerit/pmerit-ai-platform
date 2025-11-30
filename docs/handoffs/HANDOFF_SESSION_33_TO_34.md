@@ -295,6 +295,46 @@ loadScript(src) {
 
 ---
 
+## Session 34 Update #2: Auth Modal Fix (P0 Bug)
+
+### Problem
+Auth modals (Sign Up / Sign In) were rendering **inline at page bottom** on sub-pages instead of being hidden overlays.
+
+### Root Cause
+1. **Missing CSS:** `modal.css` was never loaded on sub-pages
+2. **Missing JS handlers:** Footer's auth modals (`#sign-up-modal`, `#sign-in-modal`) had no JavaScript event handlers
+
+### Fix Applied
+Updated `layout-loader.js` to:
+1. Dynamically load `modal.css` via new `loadCSS()` method
+2. Add `initFooterModals()` to handle open/close/switch for footer auth modals
+3. Expose `window.openSignInModal()` and `window.openSignUpModal()` functions
+
+**New Methods in layout-loader.js:**
+```javascript
+loadCSS(href) {
+  // Dynamically injects a CSS file into <head>
+}
+
+initFooterModals() {
+  // Sets up event handlers for #sign-up-modal and #sign-in-modal
+  // - Close button handlers
+  // - Backdrop click handlers
+  // - Switch between modals links
+  // - Escape key to close
+  // - Exposes window.openSignInModal() and window.openSignUpModal()
+}
+```
+
+**Acceptance Criteria Met:**
+- [x] Auth modals hidden by default (not visible at page bottom)
+- [x] Sign-In button opens modal as centered overlay
+- [x] Modal has dark backdrop overlay
+- [x] Modal closes when clicking X or outside
+- [x] Can switch between Sign Up and Sign In modals
+
+---
+
 ## Remaining Work
 
 ### Phase 3 Completion (Translation API)
