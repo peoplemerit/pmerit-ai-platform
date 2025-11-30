@@ -12,7 +12,9 @@
     "partnerships": "Haɗin gwiwa"
   },
   "header": {
+    "signIn": "Shiga",
     "startLearning": "Fara Koyo",
+    "pricing": "Farashin",
     "languages": {
       "english": "Turanci",
       "yoruba": "Yarbanci",
@@ -21,9 +23,11 @@
     }
   },
   "sidebar": {
+    "dashboard": "Dāshbōd",
     "quickActions": "Ayyuka masu sauri",
     "customerServiceMode": "Yanayin Sabis na Abokin Ciniki",
     "careerTrack": "Hanyar Aiki & Bincike",
+    "settings": "Saitunan",
     "darkMode": "Yanayin Duhu",
     "textToSpeech": "Rubutu zuwa Murya",
     "previewVoices": "Duba Muryoyi",
@@ -32,10 +36,11 @@
   },
   "chat": {
     "placeholder": "Tambaya game da kwasa-kwasan, hanyoyin koyo, ko burinku...",
-    "welcome": "Barka da zuwa PMERIT! Ina nan don jagorantar tafiyar koyon ku. Manufarmu ita ce samar da ilimi mai sauƙi, mai inganci wanda ke buɗe ƙofofi zuwa dama marasa iyaka. Ta yaya zan iya taimaka muku gano ƙarfin ku a yau?",
+    "desktopWelcome": "Barka da zuwa PMERIT! Ina nan don jagorantar tafiyar koyon ku. Manufarmu ita ce samar da ilimi mai sauƙi, mai inganci wanda ke buɗe ƙofofi zuwa dama marasa iyaka. Ta yaya zan iya taimaka muku gano ƙarfin ku a yau?",
+    "mobileWelcomeTitle": "👋 Barka!",
+    "mobileWelcomeBody": "Ina nan don taimaka muku bincika kwasa-kwasan, hanyoyin aiki, da damar koyo. Me kuke son sani?",
     "customerService": "Sabis na Abokin Ciniki",
-    "readAbout": "Karanta Game da",
-    "connectedStatus": "An haɗa zuwa Ayyukan Ilimi"
+    "readAbout": "Karanta Game da"
   },
   "assessment": {
     "title": "Gano Hanyarku (AI)",
@@ -56,6 +61,18 @@
     "partnerships": "Haɗin gwiwa",
     "support": "Taimako",
     "customerService": "Sabis na Abokin Ciniki"
+  },
+  "aria": {
+    "changeLanguage": "Canja harshe",
+    "openMenu": "Buɗe menu",
+    "addAttachment": "Ƙara haɗe",
+    "chatInput": "Shigar tattaunawa",
+    "voiceInput": "Shigar murya",
+    "sendMessage": "Aika saƙo",
+    "attachFile": "Haɗa fayil",
+    "toggleDarkMode": "Canja Yanayin Duhu",
+    "toggleTts": "Canja Rubutu-zuwa-Murya",
+    "customerServiceMode": "Kunna Yanayin Sabis na Abokin Ciniki"
   },
   "auth": {
     "signIn": "Shiga",
