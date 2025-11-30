@@ -198,25 +198,6 @@
       return offlineLang;
     }
 
-    // Priority 3: Check Google Translate cookie
-    const gtCookie = document.cookie.split(';').find(c => c.trim().startsWith('googtrans='));
-    if (gtCookie) {
-      const value = gtCookie.split('=')[1];
-      // Format is usually /en/xx or /auto/xx
-      const match = value.match(/\/[a-z-]+\/([a-z-]+)/i);
-      if (match && match[1] && match[1] !== 'en') {
-        console.log('[LanguageModal] Current language from GT cookie:', match[1]);
-        return match[1];
-      }
-    }
-
-    // Priority 3: Check if Google Translate has an active selection
-    const gtSelect = document.querySelector('.goog-te-combo');
-    if (gtSelect && gtSelect.value && gtSelect.value !== '') {
-      console.log('[LanguageModal] Current language from GT select:', gtSelect.value);
-      return gtSelect.value;
-    }
-
     // Default to English
     console.log('[LanguageModal] Defaulting to English');
     return 'en';
@@ -352,12 +333,12 @@
     currentLanguage = code;
   }
 
-  // Select a language
+  // Select a language (uses Language Manager for offline translations)
   function selectLanguage(code) {
     const lang = window.PMERIT_LANGUAGES.getByCode(code);
     if (!lang) return;
 
-    console.log('[LanguageModal] Selected:', lang.name, '| Offline:', lang.offline);
+    console.log('[LanguageModal] Selected:', lang.name);
 
     // Update visual active state immediately
     updateActiveState(code);
@@ -365,80 +346,15 @@
     // Update header button to show selected language
     updateLanguageButton(code);
 
-    if (lang.offline) {
-      // For offline languages: Reset GT first, then use Language Manager
-      console.log('[LanguageModal] Resetting GT and applying Language Manager for:', code);
-
-      // Step 1: Clear Google Translate cookie
-      document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-      document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + window.location.hostname;
-
-      // Step 2: Reset GT select to empty/English if it exists
-      const gtSelect = document.querySelector('.goog-te-combo');
-      if (gtSelect) {
-        gtSelect.value = '';
-        gtSelect.dispatchEvent(new Event('change', { bubbles: true }));
-        console.log('[LanguageModal] Reset GT select to English');
-      }
-
-      // Step 3: Apply Language Manager
-      if (window.LanguageManager && typeof window.LanguageManager.setLanguage === 'function') {
-        window.LanguageManager.setLanguage(code);
-        console.log('[LanguageModal] ✅ Language Manager applied for:', code);
-      } else {
-        console.warn('[LanguageModal] LanguageManager not found or setLanguage not available');
-        console.log('[LanguageModal] window.LanguageManager:', window.LanguageManager);
-      }
+    // Apply Language Manager for translation
+    if (window.LanguageManager && typeof window.LanguageManager.setLanguage === 'function') {
+      window.LanguageManager.setLanguage(code);
+      console.log('[LanguageModal] ✅ Language Manager applied for:', code);
     } else {
-      // Use Google Translate for online languages
-      triggerGoogleTranslate(code);
+      console.warn('[LanguageModal] LanguageManager not found or setLanguage not available');
     }
 
     close();
-  }
-
-  // Trigger Google Translate programmatically
-  function triggerGoogleTranslate(code) {
-    console.log('[LanguageModal] Attempting to translate to:', code);
-
-    // Method 1: Find GT's hidden select element
-    const gtSelect = document.querySelector('.goog-te-combo');
-    console.log('[LanguageModal] GT select element:', gtSelect);
-
-    if (gtSelect) {
-      // Check available options
-      const options = Array.from(gtSelect.options).map(o => o.value);
-      console.log('[LanguageModal] Available GT options:', options.slice(0, 10), '...');
-
-      if (options.includes(code)) {
-        gtSelect.value = code;
-        gtSelect.dispatchEvent(new Event('change', { bubbles: true }));
-        console.log('[LanguageModal] Triggered GT via select for:', code);
-        return;
-      } else {
-        console.warn('[LanguageModal] Language code not in GT options:', code);
-      }
-    }
-
-    // Method 2: Cookie-based fallback (most reliable)
-    console.log('[LanguageModal] Using cookie fallback for:', code);
-    setTranslateCookie(code);
-  }
-
-  // Set Google Translate cookie and reload
-  function setTranslateCookie(code) {
-    const value = '/en/' + code;
-
-    // Set cookie for current domain
-    document.cookie = 'googtrans=' + value + '; path=/';
-    document.cookie = 'googtrans=' + value + '; path=/; domain=' + window.location.hostname;
-
-    console.log('[LanguageModal] Set googtrans cookie:', value);
-
-    // Reload to apply translation
-    setTimeout(function() {
-      window.location.reload();
-    }, 100);
   }
 
   // Open modal

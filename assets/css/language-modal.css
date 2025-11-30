@@ -512,30 +512,7 @@
 }
 
 /* -----------------------------------------
-   14. HIDE GOOGLE TRANSLATE ELEMENTS
-   Keep GT functional but hidden
-   ----------------------------------------- */
-#google_translate_element,
-#google_translate_mobile,
-#google_translate_header,
-.goog-te-gadget {
-  position: absolute !important;
-  left: -9999px !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-}
-
-/* Still hide GT banner */
-.goog-te-banner-frame.skiptranslate {
-  display: none !important;
-}
-
-body {
-  top: 0 !important;
-}
-
-/* -----------------------------------------
-   15. HEADER LANGUAGE BUTTONS
+   14. HEADER LANGUAGE BUTTONS
    Styled triggers for opening the modal
    ----------------------------------------- */
 
