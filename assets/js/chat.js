@@ -1,12 +1,16 @@
 /**
  * PMERIT Chat Interface - Unified for Mobile & Desktop
- * Version: 7.0 (Chat Persistence with localStorage)
- * Last Updated: November 21, 2025
- * 
- * NEW: Chat history persists across page refreshes
- * Changes: Added localStorage persistence, auto-expiry, size limits
+ * Version: 8.0 (Multilingual AI Chat Support)
+ * Last Updated: November 30, 2025
+ *
+ * NEW in v8.0: Multilingual AI chat support
+ * - AI responds in user's selected language (Yoruba, Igbo, Hausa, French, etc.)
+ * - Automatic translation of user messages and AI responses
+ * - Cultural context awareness for better responses
+ *
+ * Previous: Chat history persists across page refreshes
  * Handles: Mobile + Desktop inputs, Streaming AI, typing indicators, TTS
- * Connects to: Cloudflare Workers API
+ * Connects to: Cloudflare Workers API with Microsoft Translator
  */
 
 // ========== CONFIGURATION ==========
@@ -14,12 +18,29 @@ const CONFIG = {
   API_URL: 'https://pmerit-api-worker.peoplemerit.workers.dev/api/v1/ai/chat',
   MAX_HISTORY: 10,
   SYSTEM_PROMPT: '',  // System prompt now handled by backend
-  
+
   // ✅ NEW: Persistence settings
   STORAGE_KEY: 'pmerit_chat_history',
   STORAGE_EXPIRY_HOURS: 24,  // Chat history expires after 24 hours
-  MAX_STORED_MESSAGES: 20     // Limit storage to 20 messages max
+  MAX_STORED_MESSAGES: 20,    // Limit storage to 20 messages max
+
+  // ✅ NEW: Language settings
+  LANGUAGE_STORAGE_KEY: 'pmerit_language',
+  DEFAULT_LANGUAGE: 'en'
 };
+
+/**
+ * Get current user language for AI chat
+ * @returns {string} Current language code (e.g., 'en', 'yo', 'ig', 'ha')
+ */
+function getCurrentLanguage() {
+  // Check LanguageManager first (if available)
+  if (window.LanguageManager && typeof window.LanguageManager.getCurrentLanguage === 'function') {
+    return window.LanguageManager.getCurrentLanguage();
+  }
+  // Fallback to localStorage
+  return localStorage.getItem(CONFIG.LANGUAGE_STORAGE_KEY) || CONFIG.DEFAULT_LANGUAGE;
+}
 
 // Helper to get page identifier for analytics
 function pageId() {
@@ -312,10 +333,13 @@ async function sendMessage(source) {
   const typingIndicator = addTypingIndicator(source);
 
   try {
+    // Get current language for multilingual support
+    const currentLanguage = getCurrentLanguage();
     logger.debug('🚀 Calling Cloudflare Workers AI (Streaming)...');
+    logger.debug('🌐 Language:', currentLanguage);
     const startTime = performance.now();
-    
-    // Call Workers API with streaming enabled
+
+    // Call Workers API with streaming enabled and language
     const response = await fetch(CONFIG.API_URL, {
       method: 'POST',
       headers: {
@@ -323,7 +347,8 @@ async function sendMessage(source) {
       },
       body: JSON.stringify({
         messages: conversationHistory,
-        stream: true
+        stream: true,
+        language: currentLanguage  // Send user's language for translation
       })
     });
 
@@ -672,7 +697,10 @@ function fallbackToSpeechSynthesis(text) {
   utterance.rate = 1.0;
   utterance.pitch = 1.0;
   utterance.volume = 1.0;
-  utterance.lang = 'en-US';
+  // Use current language for TTS
+  const langCode = getCurrentLanguage();
+  const langMap = { 'en': 'en-US', 'yo': 'yo-NG', 'ig': 'ig-NG', 'ha': 'ha-NG', 'fr': 'fr-FR', 'es': 'es-ES' };
+  utterance.lang = langMap[langCode] || 'en-US';
   window.speechSynthesis.speak(utterance);
 }
 
@@ -726,5 +754,7 @@ logger.debug('📋 Chat Configuration:', {
   backend: 'Cloudflare Workers (Edge Network)',
   persistence: 'ENABLED',
   storageExpiry: CONFIG.STORAGE_EXPIRY_HOURS + ' hours',
-  maxStoredMessages: CONFIG.MAX_STORED_MESSAGES
+  maxStoredMessages: CONFIG.MAX_STORED_MESSAGES,
+  multilingual: 'ENABLED',
+  currentLanguage: getCurrentLanguage()
 });
