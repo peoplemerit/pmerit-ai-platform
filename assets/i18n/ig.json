@@ -12,7 +12,9 @@
     "partnerships": "Mmekọrịta"
   },
   "header": {
+    "signIn": "Banye",
     "startLearning": "Malite Ịmụ",
+    "pricing": "Ọnụ ahịa",
     "languages": {
       "english": "Bekee",
       "yoruba": "Yorùbá",
@@ -21,9 +23,11 @@
     }
   },
   "sidebar": {
+    "dashboard": "Dashibọọdụ",
     "quickActions": "Omume Ngwa Ngwa",
     "customerServiceMode": "Ụdị Ọrụ Ndị Ahịa",
     "careerTrack": "Ụzọ Ọrụ & Nyocha",
+    "settings": "Ntọala",
     "darkMode": "Ọnọdụ Ọchịchịrị",
     "textToSpeech": "Ederede gaa na Olu",
     "previewVoices": "Lelee Olu",
@@ -32,10 +36,11 @@
   },
   "chat": {
     "placeholder": "Jụọ maka kọọsụ, ụzọ mmụta, ma ọ bụ ebumnuche gị...",
-    "welcome": "Nnọọ na PMERIT! Anọ m ebe a iji duzie njem mmụta gị. Ebumnuche anyị bụ ịnye agụmakwụkwọ dị mfe, dị elu nke na-emeghe ụzọ maka ohere na-enweghị njedebe. Kedu ka m ga-esi nyere gị aka ịchọpụta ikike gị taa?",
+    "desktopWelcome": "Nnọọ na PMERIT! Anọ m ebe a iji duzie njem mmụta gị. Ebumnuche anyị bụ ịnye agụmakwụkwọ dị mfe, dị elu nke na-emeghe ụzọ maka ohere na-enweghị njedebe. Kedu ka m ga-esi nyere gị aka ịchọpụta ikike gị taa?",
+    "mobileWelcomeTitle": "👋 Nnọọ!",
+    "mobileWelcomeBody": "Anọ m ebe a iji nyere gị aka ịchọpụta kọọsụ, ụzọ ọrụ, na ohere mmụta. Gịnị ka ị chọrọ ịmata?",
     "customerService": "Ọrụ Ndị Ahịa",
-    "readAbout": "Gụọ Banyere",
-    "connectedStatus": "Ejikọtara na Ọrụ Agụmakwụkwọ"
+    "readAbout": "Gụọ Banyere"
   },
   "assessment": {
     "title": "Chọpụta Ụzọ Gị (AI)",
@@ -56,6 +61,18 @@
     "partnerships": "Mmekọrịta",
     "support": "Nkwado",
     "customerService": "Ọrụ Ndị Ahịa"
+  },
+  "aria": {
+    "changeLanguage": "Gbanwee asụsụ",
+    "openMenu": "Mepee menu",
+    "addAttachment": "Tinye ihe ndokọta",
+    "chatInput": "Ntinye nkata",
+    "voiceInput": "Ntinye olu",
+    "sendMessage": "Zipu ozi",
+    "attachFile": "Tinye faịlụ",
+    "toggleDarkMode": "Gbanwee Ọnọdụ Ọchịchịrị",
+    "toggleTts": "Gbanwee Ederede-gaa-Olu",
+    "customerServiceMode": "Malite Ụdị Ọrụ Ndị Ahịa"
   },
   "auth": {
     "signIn": "Banye",
