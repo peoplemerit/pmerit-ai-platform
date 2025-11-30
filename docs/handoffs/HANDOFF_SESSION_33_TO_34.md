@@ -1,8 +1,8 @@
 # PMERIT Platform — Handoff Session 33 → 34
 
 **Date**: November 30, 2025
-**Session Duration**: ~30 minutes
-**Commits**: 1 (5f6d7a4)
+**Session Duration**: ~1 hour
+**Commits**: 3 (5f6d7a4, b2b633d, dca3cf8)
 **Primary Focus**: Language System Bug Fixes & Chat Persistence
 
 ---
@@ -183,7 +183,21 @@ function restoreChatUI(history) {
 ## Git Information
 
 **Branch**: `claude/continue-pmerit-01MhKGvfMjnNDCMPEbJEnqXR`
-**Commit**: `5f6d7a4` - Fix language system and chat persistence issues (Session 33)
+**Commits**:
+- `5f6d7a4` - Fix language system and chat persistence issues
+- `b2b633d` - Add Session 33 to 34 Handoff Document
+- `dca3cf8` - Fix language button to display selected language name/code
+
+### Additional Fix (dca3cf8)
+Root cause identified: **index.html uses completely different button structure** than header partial.
+
+**Changes made:**
+- `index.html`: Added spans to mobile/desktop buttons for dynamic text
+- `language-modal.js`: Updated `updateLanguageButton()` to handle:
+  - Sub-pages: `#language-btn` with `.language-btn-text`/`.language-btn-code`
+  - index.html desktop: `#language-btn-desktop` with `.language-name`
+  - index.html mobile: `#language-btn-mobile` with `.language-code`
+- `language-modal.css`: Updated mobile button CSS to show language code
 
 ---
 
