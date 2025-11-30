@@ -256,6 +256,45 @@ Created Phase 3 Translation API at `/functions/api/v1/locales/[lang].js`:
 
 ---
 
+## Session 34 Update: Language Modal on Sub-Pages
+
+### Root Cause Analysis
+
+**Problem:** Language modal and translations didn't work on sub-pages (19 pages using `layout-loader.js`).
+
+**Root Cause:** Sub-pages only loaded `layout-loader.js`, which loads header/footer partials. But the language system scripts were missing:
+- `language-manager.js` - handles `data-i18n` translation application
+- `language-data.js` - defines `PMERIT_LANGUAGES` array
+- `language-modal.js` - self-injects modal CSS and HTML
+
+**Fix Applied:** Updated `layout-loader.js` to dynamically load language scripts after partials are loaded.
+
+**Files Modified:**
+- `assets/js/layout-loader.js` - Added `loadDynamicScripts()` and `loadScript()` methods
+
+**New Methods in layout-loader.js:**
+```javascript
+async loadDynamicScripts() {
+  // 1. Load language-manager.js (handles translation application)
+  // 2. Load language-data.js (defines PMERIT_LANGUAGES array)
+  // 3. Load language-modal.js (self-injects CSS and HTML)
+  // 4. Initialize LanguageManager
+}
+
+loadScript(src) {
+  // Helper to dynamically load a script and return a promise
+}
+```
+
+**Pages Now Supported (19 pages):**
+- about-us.html, assessment-entry.html, assessment-processing.html
+- assessment-questions.html, assessment-results.html, career.html
+- community.html, contact.html, courses.html, impact.html
+- partnerships.html, pricing.html, privacy.html, profile.html
+- progress.html, reports.html, settings.html, signin.html, support.html
+
+---
+
 ## Remaining Work
 
 ### Phase 3 Completion (Translation API)
@@ -273,4 +312,4 @@ Created Phase 3 Translation API at `/functions/api/v1/locales/[lang].js`:
 ---
 
 *End of Handoff Document - Session 33 → 34*
-*Created: November 30, 2025*
+*Updated: November 30, 2025*
