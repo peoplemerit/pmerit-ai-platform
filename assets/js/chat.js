@@ -107,25 +107,30 @@ function restoreChatUI(history) {
   if (!history || history.length === 0) {
     return;
   }
-  
+
   logger.debug('🔄 Restoring chat UI from history...');
-  
-  // Detect which chat interface is active
+
+  // Get both chat containers - they both exist in DOM, visibility controlled by CSS
   const mobileMessages = document.getElementById('chatMessages');
   const desktopMessages = document.getElementById('desktopChatMessages');
-  
-  const source = mobileMessages ? 'mobile' : 'desktop';
-  
-  // Restore each message
+
+  // Restore to BOTH containers if they exist (CSS controls visibility)
   history.forEach((msg) => {
-    if (msg.role === 'user') {
-      addMessage(source, 'user', msg.content);
-    } else if (msg.role === 'assistant') {
-      addMessage(source, 'ai', msg.content);
+    const sender = msg.role === 'user' ? 'user' : 'ai';
+    const content = msg.content;
+
+    // Restore to mobile container if it exists
+    if (mobileMessages) {
+      addMessageMobile(sender, content);
+    }
+
+    // Restore to desktop container if it exists
+    if (desktopMessages) {
+      addMessageDesktop(sender, content);
     }
   });
-  
-  logger.debug('✅ Chat UI restored with', history.length, 'messages');
+
+  logger.debug('✅ Chat UI restored with', history.length, 'messages to both containers');
 }
 
 // ========== INITIALIZATION ==========

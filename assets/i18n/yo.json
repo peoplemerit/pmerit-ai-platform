@@ -12,7 +12,9 @@
     "partnerships": "Ìfọwọ́sowọ́pọ̀"
   },
   "header": {
+    "signIn": "Wọlé",
     "startLearning": "Bẹ̀rẹ̀ Ẹ̀kọ́",
+    "pricing": "Iye owó",
     "languages": {
       "english": "Gẹ̀ẹ́sì",
       "yoruba": "Yorùbá",
@@ -21,9 +23,11 @@
     }
   },
   "sidebar": {
+    "dashboard": "Ojú-ìwé",
     "quickActions": "Ìṣe Kíákíá",
     "customerServiceMode": "Ipò Ìràánlọ́wọ́ Oníbàárà",
     "careerTrack": "Ọ̀nà Iṣẹ́ & Ṣàwárí",
+    "settings": "Ètò",
     "darkMode": "Ipò Òkùnkùn",
     "textToSpeech": "Ọ̀rọ̀ sí Ohùn",
     "previewVoices": "Wo Ohùn",
@@ -32,10 +36,11 @@
   },
   "chat": {
     "placeholder": "Béèrè nípa àwọn ẹ̀kọ́, ọ̀nà ẹ̀kọ́, tàbí àwọn àfojúsùn rẹ...",
-    "welcome": "Káàbọ̀ sí PMERIT! Mo wà níbí láti ṣe ìtọ́sọ́nà ìrìn-àjò ẹ̀kọ́ rẹ. Àfojúsùn wa ni láti pèsè ẹ̀kọ́ tó ṣe é dé bá àti tó tó jù tí ó ń ṣí ìlẹ̀kùn sí àwọn àǹfààní láìlópin. Báwo ni mo ṣe lè ràn ọ́ lọ́wọ́ láti ṣàwárí agbára rẹ lónìí?",
+    "desktopWelcome": "Káàbọ̀ sí PMERIT! Mo wà níbí láti ṣe ìtọ́sọ́nà ìrìn-àjò ẹ̀kọ́ rẹ. Àfojúsùn wa ni láti pèsè ẹ̀kọ́ tó ṣe é dé bá àti tó tó jù tí ó ń ṣí ìlẹ̀kùn sí àwọn àǹfààní láìlópin. Báwo ni mo ṣe lè ràn ọ́ lọ́wọ́ láti ṣàwárí agbára rẹ lónìí?",
+    "mobileWelcomeTitle": "👋 Káàbọ̀!",
+    "mobileWelcomeBody": "Mo wà níbí láti ràn ọ́ lọ́wọ́ láti ṣàwárí àwọn ẹ̀kọ́, ọ̀nà iṣẹ́, àti àwọn àǹfààní ẹ̀kọ́. Kí ni o fẹ́ mọ̀?",
     "customerService": "Ìràánlọ́wọ́ Oníbàárà",
-    "readAbout": "Kà Nípa",
-    "connectedStatus": "Ti sopọ̀ mọ́ Àwọn Iṣẹ́ Ẹ̀kọ́"
+    "readAbout": "Kà Nípa"
   },
   "assessment": {
     "title": "Ṣàwárí Ọ̀nà Rẹ (AI)",
@@ -56,6 +61,18 @@
     "partnerships": "Ìfọwọ́sowọ́pọ̀",
     "support": "Ìrànwọ́",
     "customerService": "Ìràánlọ́wọ́ Oníbàárà"
+  },
+  "aria": {
+    "changeLanguage": "Yí èdè padà",
+    "openMenu": "Ṣí àkójọ",
+    "addAttachment": "Fi ìsopọ̀ kún",
+    "chatInput": "Ìfàwọlé ọ̀rọ̀",
+    "voiceInput": "Ìfàwọlé ohùn",
+    "sendMessage": "Fi ìfiránṣẹ́ ránṣẹ́",
+    "attachFile": "So fáìlì pọ̀",
+    "toggleDarkMode": "Yí ipò Òkùnkùn padà",
+    "toggleTts": "Yí Ọ̀rọ̀-sí-Ohùn padà",
+    "customerServiceMode": "Mú ipò Ìràánlọ́wọ́ Oníbàárà ṣiṣẹ́"
   },
   "auth": {
     "signIn": "Wọlé",
