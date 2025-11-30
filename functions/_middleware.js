@@ -18,16 +18,16 @@ export async function onRequest(context) {
     newHeaders.set(key, value);
   }
   
-  // Add our custom CSP for Google Translate
+  // Add our custom CSP
   newHeaders.set(
     'Content-Security-Policy',
     "default-src 'self'; " +
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://translate.google.com https://translate.googleapis.com https://cdnjs.cloudflare.com https://fonts.googleapis.com; " +
-    "connect-src 'self' https://translate.google.com https://translate.googleapis.com https://pmerit-api.idowuolalekan1.workers.dev; " +
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://translate.googleapis.com; " +
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://fonts.googleapis.com; " +
+    "connect-src 'self' https://pmerit-api.idowuolalekan1.workers.dev; " +
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; " +
     "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; " +
     "img-src 'self' data: https:; " +
-    "frame-src 'self' https://translate.google.com;"
+    "frame-src 'self';"
   );
   
   // Return new response with modified headers
