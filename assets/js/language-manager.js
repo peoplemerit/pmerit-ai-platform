@@ -1,35 +1,40 @@
 /**
  * PMERIT Language Manager - ENHANCED VERSION
- * Handles multi-language support: English, Yoruba, Igbo, Hausa
+ * Handles multi-language support with offline and online translations
  * Follows MOSA modular architecture
- * 
- * VERSION: 2.0.0 (Enhanced)
- * 
+ *
+ * VERSION: 3.0.0 (API Integration)
+ *
  * NEW FEATURES:
  * - Extended attribute support (aria-label, value, etc.)
  * - Global t() function for dynamic content
  * - Scoped translation application for dynamic elements
  * - data-i18n-auto for automatic key generation
  * - Missing translation warnings in dev mode
- * 
+ * - API integration for online languages (v3.0)
+ * - localStorage caching for API translations (v3.0)
+ *
+ * OFFLINE LANGUAGES: en, yo, ig, ha (bundled with app)
+ * ONLINE LANGUAGES: All others (fetched from Translation API)
+ *
  * USAGE EXAMPLES:
- * 
+ *
  * 1. Static HTML:
  *    <button data-i18n="common.save">Save</button>
- * 
+ *
  * 2. Placeholders:
  *    <input data-i18n-placeholder="form.email">
- * 
+ *
  * 3. Accessibility:
  *    <button data-i18n-aria-label="buttons.close_aria">
- * 
+ *
  * 4. Auto-translation (prototyping):
  *    <p data-i18n-auto>Welcome to PMERIT!</p>
- * 
+ *
  * 5. Dynamic JS content:
  *    const message = LanguageManager.t('messages.success');
  *    element.textContent = message;
- * 
+ *
  * 6. Dynamic HTML insertion:
  *    container.innerHTML = partialHTML;
  *    LanguageManager.applyTranslations(container);
@@ -37,7 +42,23 @@
 
 (function() {
   'use strict';
-  
+
+  // ============================================
+  // CONSTANTS
+  // ============================================
+
+  // Languages with bundled translation files (no API needed)
+  const OFFLINE_LANGUAGES = ['en', 'yo', 'ig', 'ha'];
+
+  // localStorage key prefix for cached translations
+  const CACHE_PREFIX = 'pmerit_i18n_';
+
+  // Cache expiry time (7 days in milliseconds)
+  const CACHE_EXPIRY = 7 * 24 * 60 * 60 * 1000;
+
+  // Translation API endpoint
+  const API_ENDPOINT = '/api/v1/locales';
+
   // ============================================
   // LANGUAGE MANAGER MODULE
   // ============================================
@@ -83,40 +104,41 @@
     },
     
     // ============================================
-    // LANGUAGE SWITCHING
+    // LANGUAGE SWITCHING (v3.0 - Supports all languages)
     // ============================================
-    
-    setLanguage: function(langCode, reload = true) {
-      if (!this.languages[langCode]) {
+
+    setLanguage: function(langCode, reload = false) {
+      // Validate language code using PMERIT_LANGUAGES if available
+      if (!this.isValidLanguage(langCode)) {
         console.warn('[LanguageManager] Invalid language code:', langCode);
         return;
       }
-      
+
       logger.debug('[LanguageManager] Switching to:', langCode);
-      
+
       // Save to localStorage
       localStorage.setItem('pmerit_language', langCode);
       this.currentLang = langCode;
-      
+
       // Update HTML lang attribute
       document.documentElement.setAttribute('lang', langCode);
-      
+
       // Update all dropdowns to show current selection
       this.updateSelectors(langCode);
-      
+
       // Load translations for this language
       this.loadTranslations(langCode).then(() => {
         // Process auto-translations first
         this.processAutoTranslations();
-        
+
         // Apply translations to current page
         this.applyTranslations();
-        
+
         // Dispatch language change event for other modules
         window.dispatchEvent(new CustomEvent('pmerit-language-change', {
           detail: { language: langCode, translations: this.translations }
         }));
-        
+
         // Reload page if requested (for full translation)
         if (reload) {
           logger.debug('[LanguageManager] Reloading page for full translation...');
@@ -124,20 +146,52 @@
         }
       });
     },
+
+    /**
+     * Check if a language code is valid
+     */
+    isValidLanguage: function(langCode) {
+      // Check PMERIT_LANGUAGES global array if available
+      if (window.PMERIT_LANGUAGES && Array.isArray(window.PMERIT_LANGUAGES)) {
+        return window.PMERIT_LANGUAGES.some(lang => lang.code === langCode);
+      }
+      // Fallback to hardcoded list
+      return OFFLINE_LANGUAGES.includes(langCode);
+    },
     
     // ============================================
-    // TRANSLATION LOADING
+    // TRANSLATION LOADING (v3.0 - API Integration)
     // ============================================
-    
+
+    /**
+     * Load translations for a language
+     * - Offline languages (en, yo, ig, ha): Load from bundled JSON files
+     * - Online languages: Check cache first, then fetch from API
+     */
     loadTranslations: function(langCode) {
-      // If already loaded, return immediately
+      // If already loaded in memory, return immediately
       if (this.translations[langCode]) {
         return Promise.resolve(this.translations[langCode]);
       }
-      
-      // Load translation file
+
+      // Dispatch loading start event
+      this.dispatchLoadingEvent(langCode, 'start');
+
+      // Check if this is an offline language
+      if (OFFLINE_LANGUAGES.includes(langCode)) {
+        return this.loadOfflineTranslations(langCode);
+      }
+
+      // Online language - check cache first, then API
+      return this.loadOnlineTranslations(langCode);
+    },
+
+    /**
+     * Load translations from bundled JSON file (offline languages)
+     */
+    loadOfflineTranslations: function(langCode) {
       const translationPath = `/assets/i18n/${langCode}.json`;
-      
+
       return fetch(translationPath)
         .then(response => {
           if (!response.ok) {
@@ -147,11 +201,13 @@
         })
         .then(data => {
           this.translations[langCode] = data;
-          logger.debug(`[LanguageManager] ✅ Loaded translations for ${langCode}`);
+          this.dispatchLoadingEvent(langCode, 'complete');
+          logger.debug(`[LanguageManager] ✅ Loaded offline translations for ${langCode}`);
           return data;
         })
         .catch(error => {
-          console.error('[LanguageManager] Error loading translations:', error);
+          console.error('[LanguageManager] Error loading offline translations:', error);
+          this.dispatchLoadingEvent(langCode, 'error', error.message);
           // Fallback to English if translation file not found
           if (langCode !== 'en') {
             logger.debug('[LanguageManager] Falling back to English');
@@ -159,6 +215,126 @@
           }
           return {};
         });
+    },
+
+    /**
+     * Load translations from API with localStorage caching (online languages)
+     */
+    loadOnlineTranslations: function(langCode) {
+      // Check localStorage cache first
+      const cached = this.getCachedTranslations(langCode);
+      if (cached) {
+        this.translations[langCode] = cached;
+        this.dispatchLoadingEvent(langCode, 'complete');
+        logger.debug(`[LanguageManager] ✅ Loaded ${langCode} from cache`);
+        return Promise.resolve(cached);
+      }
+
+      // Fetch from API
+      logger.debug(`[LanguageManager] Fetching ${langCode} from API...`);
+
+      return fetch(`${API_ENDPOINT}/${langCode}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`API returned ${response.status} for ${langCode}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          // Cache in localStorage
+          this.setCachedTranslations(langCode, data);
+          // Store in memory
+          this.translations[langCode] = data;
+          this.dispatchLoadingEvent(langCode, 'complete');
+          logger.debug(`[LanguageManager] ✅ Loaded ${langCode} from API and cached`);
+          return data;
+        })
+        .catch(error => {
+          console.error(`[LanguageManager] Error fetching ${langCode} from API:`, error);
+          this.dispatchLoadingEvent(langCode, 'error', error.message);
+          // Fallback to English
+          logger.debug('[LanguageManager] Falling back to English');
+          return this.loadTranslations('en');
+        });
+    },
+
+    /**
+     * Get cached translations from localStorage
+     */
+    getCachedTranslations: function(langCode) {
+      try {
+        const cacheKey = CACHE_PREFIX + langCode;
+        const cached = localStorage.getItem(cacheKey);
+        if (!cached) return null;
+
+        const { data, timestamp } = JSON.parse(cached);
+
+        // Check if cache has expired
+        if (Date.now() - timestamp > CACHE_EXPIRY) {
+          localStorage.removeItem(cacheKey);
+          logger.debug(`[LanguageManager] Cache expired for ${langCode}`);
+          return null;
+        }
+
+        return data;
+      } catch (error) {
+        console.warn('[LanguageManager] Error reading cache:', error);
+        return null;
+      }
+    },
+
+    /**
+     * Cache translations in localStorage
+     */
+    setCachedTranslations: function(langCode, data) {
+      try {
+        const cacheKey = CACHE_PREFIX + langCode;
+        const cacheData = {
+          data: data,
+          timestamp: Date.now()
+        };
+        localStorage.setItem(cacheKey, JSON.stringify(cacheData));
+        logger.debug(`[LanguageManager] Cached translations for ${langCode}`);
+      } catch (error) {
+        console.warn('[LanguageManager] Error caching translations:', error);
+        // localStorage might be full - try to clear old caches
+        this.clearOldCaches();
+      }
+    },
+
+    /**
+     * Clear old translation caches to free up space
+     */
+    clearOldCaches: function() {
+      try {
+        const keysToRemove = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key && key.startsWith(CACHE_PREFIX)) {
+            keysToRemove.push(key);
+          }
+        }
+        keysToRemove.forEach(key => localStorage.removeItem(key));
+        logger.debug('[LanguageManager] Cleared old translation caches');
+      } catch (error) {
+        console.warn('[LanguageManager] Error clearing caches:', error);
+      }
+    },
+
+    /**
+     * Dispatch loading event for UI feedback
+     */
+    dispatchLoadingEvent: function(langCode, status, error = null) {
+      window.dispatchEvent(new CustomEvent('pmerit-language-loading', {
+        detail: { language: langCode, status: status, error: error }
+      }));
+    },
+
+    /**
+     * Check if a language is available offline
+     */
+    isOfflineLanguage: function(langCode) {
+      return OFFLINE_LANGUAGES.includes(langCode);
     },
     
     // ============================================
@@ -375,32 +551,60 @@
     },
     
     // ============================================
-    // PUBLIC API (Enhanced)
+    // PUBLIC API (v3.0 - Enhanced)
     // ============================================
-    
+
     getCurrentLanguage: function() {
       return this.currentLang;
     },
-    
+
+    /**
+     * Get all available languages
+     * Returns PMERIT_LANGUAGES if available, otherwise hardcoded list
+     */
     getAvailableLanguages: function() {
-      return this.languages;
+      if (window.PMERIT_LANGUAGES && Array.isArray(window.PMERIT_LANGUAGES)) {
+        return window.PMERIT_LANGUAGES;
+      }
+      // Fallback to hardcoded list
+      return Object.keys(this.languages).map(code => ({
+        code: code,
+        name: this.languages[code],
+        offline: true
+      }));
     },
-    
+
+    /**
+     * Get offline languages only
+     */
+    getOfflineLanguages: function() {
+      return OFFLINE_LANGUAGES;
+    },
+
+    /**
+     * Clear all cached translations (useful for debugging)
+     */
+    clearCache: function() {
+      this.clearOldCaches();
+      this.translations = {};
+      logger.debug('[LanguageManager] All caches cleared');
+    },
+
     // Enable/disable dev mode
     setDevMode: function(enabled) {
       this.devMode = enabled;
     }
   };
-  
+
   // ============================================
-  // EXPOSE TO WINDOW (Enhanced)
+  // EXPOSE TO WINDOW (v3.0)
   // ============================================
-  
+
   window.LanguageManager = LanguageManager;
-  
-  // GLOBAL SHORTHAND FOR t() FUNCTION (Priority 2)
+
+  // GLOBAL SHORTHAND FOR t() FUNCTION
   window.t = LanguageManager.t.bind(LanguageManager);
-  
+
   // Auto-initialize when DOM is ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
@@ -409,8 +613,9 @@
   } else {
     LanguageManager.init();
   }
-  
-  logger.debug('[LanguageManager] Enhanced Module v2.0.0 loaded');
+
+  logger.debug('[LanguageManager] v3.0.0 loaded (API Integration)');
+  logger.debug('[LanguageManager] Offline languages:', OFFLINE_LANGUAGES.join(', '));
   logger.debug('[LanguageManager] Global t() function available');
-  
+
 })();
