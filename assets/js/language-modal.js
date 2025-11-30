@@ -135,8 +135,23 @@
       border-color: #4a9eff;
     }
     .language-item.active {
-      background: #4a9eff;
+      background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
+      border-color: #14b8a6;
       color: #ffffff;
+      position: relative;
+    }
+    .language-item.active::before {
+      content: '✓';
+      position: absolute;
+      top: 4px;
+      right: 6px;
+      font-size: 12px;
+      font-weight: bold;
+      color: #ffffff;
+    }
+    .language-item.active:hover {
+      background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+      border-color: #0d9488;
     }
     .language-item .region {
       font-size: 18px;
@@ -161,6 +176,40 @@
 
   let modal = null;
   let searchInput = null;
+  let currentLanguage = 'en';
+
+  // Detect current active language from localStorage or Google Translate cookie
+  function getCurrentLanguage() {
+    // Priority 1: Check localStorage for offline language
+    const offlineLang = localStorage.getItem('pmerit_language');
+    if (offlineLang && offlineLang !== 'en') {
+      console.log('[LanguageModal] Current language from localStorage:', offlineLang);
+      return offlineLang;
+    }
+
+    // Priority 2: Check Google Translate cookie
+    const gtCookie = document.cookie.split(';').find(c => c.trim().startsWith('googtrans='));
+    if (gtCookie) {
+      const value = gtCookie.split('=')[1];
+      // Format is usually /en/xx or /auto/xx
+      const match = value.match(/\/[a-z-]+\/([a-z-]+)/i);
+      if (match && match[1] && match[1] !== 'en') {
+        console.log('[LanguageModal] Current language from GT cookie:', match[1]);
+        return match[1];
+      }
+    }
+
+    // Priority 3: Check if Google Translate has an active selection
+    const gtSelect = document.querySelector('.goog-te-combo');
+    if (gtSelect && gtSelect.value && gtSelect.value !== '') {
+      console.log('[LanguageModal] Current language from GT select:', gtSelect.value);
+      return gtSelect.value;
+    }
+
+    // Default to English
+    console.log('[LanguageModal] Defaulting to English');
+    return 'en';
+  }
 
   // Initialize modal
   function init() {
@@ -238,8 +287,9 @@
   // Create language item HTML
   function createLanguageItem(lang) {
     const offlineClass = lang.offline ? 'offline' : '';
+    const activeClass = lang.code === currentLanguage ? 'active' : '';
     return `
-      <div class="language-item ${offlineClass}" data-code="${lang.code}" title="${lang.nativeName}">
+      <div class="language-item ${offlineClass} ${activeClass}" data-code="${lang.code}" title="${lang.nativeName}">
         <span class="region">${lang.region}</span>
         <span class="name">${lang.name}</span>
       </div>
@@ -251,12 +301,30 @@
     renderLanguages(e.target.value);
   }
 
+  // Update the visual active state in the modal
+  function updateActiveState(code) {
+    // Remove active class from all items
+    modal.querySelectorAll('.language-item.active').forEach(item => {
+      item.classList.remove('active');
+    });
+    // Add active class to the selected item
+    const selectedItem = modal.querySelector(`.language-item[data-code="${code}"]`);
+    if (selectedItem) {
+      selectedItem.classList.add('active');
+    }
+    // Update currentLanguage variable
+    currentLanguage = code;
+  }
+
   // Select a language
   function selectLanguage(code) {
     const lang = window.PMERIT_LANGUAGES.getByCode(code);
     if (!lang) return;
 
     console.log('[LanguageModal] Selected:', lang.name, '| Offline:', lang.offline);
+
+    // Update visual active state immediately
+    updateActiveState(code);
 
     if (lang.offline) {
       // For offline languages: Reset GT first, then use Language Manager
@@ -337,6 +405,10 @@
   // Open modal
   function open() {
     if (!modal) return;
+    // Detect current language each time modal opens
+    currentLanguage = getCurrentLanguage();
+    console.log('[LanguageModal] Modal opened, current language:', currentLanguage);
+
     modal.style.display = 'flex';
     searchInput.value = '';
     searchInput.focus();
