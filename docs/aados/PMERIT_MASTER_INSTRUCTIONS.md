@@ -18,34 +18,42 @@ Both Claude environments MUST read and follow these instructions.
 
 ---
 
-## 📍 FILE LOCATIONS (Source of Truth)
+## 📁 FILE LOCATIONS (Source of Truth)
 
-### GitHub Repository (Authoritative)
-```
-Repository: https://github.com/peoplemerit/pmerit-ai-platform
-Branch: main
-```
+### GitHub Repositories
+| Repo | URL | Purpose |
+|------|-----|---------|
+| Frontend | `https://github.com/peoplemerit/pmerit-ai-platform` | UI, Pages, Docs |
+| Backend | `https://github.com/peoplemerit/pmerit-api-worker` | API, Workers |
 
-### Governance Files
+### Local Paths
+| Environment | Path |
+|-------------|------|
+| Frontend | `E:\pmerit\pmerit-ai-platform` |
+| Backend | `E:\pmerit\pmerit-api-worker` |
+
+### Production URLs
+| Environment | URL |
+|-------------|-----|
+| Site | https://pmerit.com |
+| API | https://pmerit-api-worker.peoplemerit.workers.dev |
+
+### Governance Files (in Frontend Repo)
 | File | Path | Purpose |
 |------|------|---------|
-| Master Instructions | `docs/PMERIT_MASTER_INSTRUCTIONS.md` | This file — coordination rules |
-| Governance | `docs/GOVERNANCE.md` | Detailed rules, phases, workflows |
-| Task Tracker | `docs/TASK_TRACKER.md` | Living status, current phase, attempts |
+| Environments | `docs/aados/ENVIRONMENTS.md` | All environment definitions |
+| State | `docs/aados/STATE.json` | Current state pointer |
+| Governance | `docs/aados/GOVERNANCE.md` | Rules, phases, workflows |
+| Task Tracker | `docs/aados/TASK_TRACKER.md` | Living status, attempts |
+| Master Instructions | `docs/aados/PMERIT_MASTER_INSTRUCTIONS.md` | This file |
+| Cheat Sheet | `docs/aados/PMERIT_OPERATIONAL_CHEAT_SHEET.md` | Quick reference |
 | Handoffs | `docs/handoffs/SESSION_X.md` | Session snapshots |
 
-### Local Repository
-```
-Path: E:\pmerit\pmerit-ai-platform
-```
-
-### Production Site
-```
-URL: https://pmerit.com
-```
-
----
-
+### Full Environment Details
+See `docs/aados/ENVIRONMENTS.md` for complete environment specifications including:
+- Azure Translation Service
+- Neon PostgreSQL Database
+- DigitalOcean (reserved)
 ## ⚡ QUICK COMMANDS
 
 | Command | Effect |

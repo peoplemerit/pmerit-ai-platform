@@ -49,6 +49,73 @@ Resuming from: [Last known state]
 ❌ Summarize the entire project history  
 ❌ Wait for additional instructions before starting  
 
+
+---
+
+## 🌐 MULTI-ENVIRONMENT SUPPORT
+
+### Environment Reference
+See `docs/aados/ENVIRONMENTS.md` for full environment details.
+
+### Quick Environment Map
+
+| ID | Name | Local Path | When to Use |
+|----|------|------------|-------------|
+| `FE` | Frontend | `E:\pmerit\pmerit-ai-platform` | UI, styling, client JS, docs |
+| `BE` | Backend | `E:\pmerit\pmerit-api-worker` | API endpoints, AI personas, TTS |
+| `DB` | Database | Neon Dashboard | Schema changes, data migrations |
+| `TR` | Translation | Azure Portal | Translation API config |
+
+### Environment Detection
+
+When a task is identified, Claude must determine which environment(s) are needed:
+
+| Task Type | Environment | Action |
+|-----------|-------------|--------|
+| UI/styling changes | `FE` | Work in pmerit-ai-platform |
+| API endpoint changes | `BE` | Work in pmerit-api-worker |
+| Full-stack feature | `FE` + `BE` | Coordinate both repos |
+| Database schema | `DB` | Provide SQL, user executes in Neon |
+
+### Environment Switching Commands
+
+| Command | Effect |
+|---------|--------|
+| `ENV: FE` | Switch focus to Frontend repository |
+| `ENV: BE` | Switch focus to Backend repository |
+| `ENV: BOTH` | Coordinate changes across both repositories |
+
+### Multi-Repo Sync Gate
+
+When working with multiple repositories, sync gate applies to ALL active repos:
+```
+🔒 MULTI-REPO SYNC GATE CHECK
+
+Environment: FE + BE (Full-stack task)
+
+Please verify sync for BOTH repositories:
+
+FRONTEND:
+  cd E:\pmerit\pmerit-ai-platform
+  git fetch origin && git status
+
+BACKEND:
+  cd E:\pmerit\pmerit-api-worker
+  git fetch origin && git status
+
+⛔ Cannot proceed until both repos are verified in sync.
+```
+
+### Backend-First Rule
+
+When a task requires both frontend and backend changes:
+1. **Always implement backend (API) first**
+2. **Test API endpoint independently**
+3. **Then implement frontend to consume the API**
+4. **Test end-to-end**
+
+This prevents frontend code from calling non-existent endpoints.
+
 ---
 
 ## 🏃 LIGHT MODE (Quick Fixes)

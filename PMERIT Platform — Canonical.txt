@@ -1,0 +1,341 @@
+# 📑 PMERIT Platform — Canonical Audit & Handoff Governance
+
+## 🔑 Core Principle
+- **Incomplete functionality tasks in the current Handoff are automatically carried forward into the next Handoff document.**  
+- This makes the current Handoff **obsolete and reference-only**, ensuring continuity without regressions or duplication.  
+- **Decisions documented in the current Handoff supersede all original project documents.**  
+- Where the Handoff is silent, the original project documents remain applicable.  
+
+---
+
+## 📚 Project Document Hierarchy
+1. **Primary MAP (Uploaded Narrative):**  
+   - *Pmerit comprehensively narrative users and Admin Journey.txt*  
+   - Serves as the **visual and functional map** of user and admin journeys.  
+   - Applied only after the **front page is production functional**, since it assumes a working homepage.  
+
+2. **Original Project Documents (Baseline):**  
+   - *Original_Ongoing Plan_vs2.txt*  
+   - *PMERIT_UNIFIED_ASSESSMENT.md*  
+   - *Claude-chat-history-for-production.txt*  
+   - These provide the **ongoing plan, unified assessment specifications, and production dialogue context**.  
+
+3. **Research and Brainstorm (Design Values):**  
+   - *Research and Brainstorm.txt*  
+   - Used to **deliver realistic design values** for the platform.  
+   - Guides cost-optimization, serverless-first architecture, and sustainable infrastructure decisions.  
+   - Acts as a **design validation layer** ensuring technical implementation aligns with:
+     - Zero-cost/low-cost operational targets
+     - Global accessibility for low-bandwidth areas
+     - Serverless-first and edge computing patterns
+     - API caching and PWA strategies
+     - Tiered feature access (Free → Premium)
+
+4. **Handoff Documents (Override Layer):**  
+   - Supersede original documents where conflicts exist.  
+   - Correct faulty plans and document updated decisions.  
+   - Carry forward unresolved tasks into the next Handoff.  
+   - Must explicitly include **tasks currently in progress, with their respective software, environments, APIs, and integrations**.  
+
+---
+
+## ⚙️ MOSA & Modular Systems Approach
+**MOSA (Modular Open Systems Approach) Compliance is REQUIRED:**
+- All platform components must be modular, interoperable, and auditable.
+- Strict separation of **HTML, CSS, JS, and shared components**.
+- Use `/partials/` for shared headers, footers, and reusable components.
+- Pages should load shared partials via `layout-loader.js` rather than embedding HTML directly.
+- Governance artifacts (e.g., `canonical.md`) define reuse rules and override protocols.
+
+**Modular Systems:**
+- Each file is treated as a **self-contained unit**.
+- Dependencies are explicitly documented.
+- Fixes are atomic, traceable, and auditable.
+- **Index.html should be refactored to use shared partials** (currently non-MOSA-compliant with embedded header/footer).
+
+---
+
+## 🌐 Infrastructure & Environments
+
+### Primary Environments
+| Environment | Purpose | Notes |
+|-------------|---------|-------|
+| **Cloudflare Pro** | Production hosting, Workers, Pages, CDN, Transform Rules | Platform upgraded to Pro — leverage advanced features |
+| **Neon PostgreSQL** | Serverless database with Drizzle ORM | Free tier with auto-pause; 65 tables operational |
+| **GitHub** | Version control, CI/CD, PR reviews | Repository: `peoplemerit/pmerit-ai-platform` |
+| **DigitalOcean** | Additional environment for GPU/premium features | Account created — leverage for Virtual Human, advanced AI |
+
+### Local Development
+- **Claude Desktop** is available for local file access
+- Request switch from web to desktop when local file access is required
+- Local environments: HP Laptop (Ubuntu), Dell Laptop (Windows), Portable HDD (PMERIT_DRIVE)
+- Syncthing configured for HP↔Dell synchronization
+
+### Cloudflare Configuration
+- **Plan:** Cloudflare Pro (upgraded)
+- **Transform Rule:** "Google Translate CSP Allow" (Active)
+- **Cache:** Purge after each deployment
+- **Workers AI:** Meta Llama 3.1 8B Instruct operational
+- **Vectorize:** Index created (blocked on RAG — `env.AI` binding issue)
+
+---
+
+## 🔧 Debugging Protocol
+
+### Impact Analysis First
+**Before making any changes, Claude must:**
+1. **Access all related files** to understand the full context
+2. **Assess the impact of changes** across the codebase
+3. **Identify potential chain/ripple effects**
+4. **Document dependencies** that may be affected
+5. **Consider the whole picture** before implementing fixes
+
+### File Review Checklist
+- [ ] Identify all files that import/reference the target file
+- [ ] Check shared components (`/partials/`, `/assets/js/`, `/assets/css/`)
+- [ ] Review `layout-loader.js` for dynamic loading dependencies
+- [ ] Verify CSS cascade effects
+- [ ] Test API endpoint connections
+- [ ] Check browser console for errors across affected pages
+
+---
+
+## 🧩 Single-Step Execution Protocol
+
+**CRITICAL: One command/action at a time**
+- Execute only **one command or code block** per response
+- **Wait for explicit "DONE" confirmation** before proceeding to the next step
+- Each step must be **self-contained** and executable independently
+- Include a **brief explanation** with each command
+
+**Example Format:**
+```
+STEP 1: [Action description]
+[Single command or code block]
+Purpose: [Brief explanation of what this accomplishes]
+
+→ Reply "DONE" when complete to proceed to Step 2.
+```
+
+---
+
+## 🎯 Current Session Priorities (From Session 24)
+
+### Priority 1: Debug Google Translate in Shared Footer
+- **Issue:** Widget NOT populating on pages using shared footer
+- **Element exists:** `<div id="google_translate_element" class="footer-translate"></div>`
+- **Symptoms:** Shows "0 × 0" (empty), CSS applied correctly
+- **Investigation:**
+  - Check Console for Google Translate initialization logs
+  - Script may not execute after footer loads via `layout-loader.js`
+  - Timing issue — script loads before elements exist
+  - CSP might be blocking on sub-pages
+
+### Priority 2: Index.html MOSA Refactoring
+- **Current:** index.html has embedded header/footer (non-MOSA-compliant)
+- **Target:** Use shared partials like other pages
+- **Key File:** `assets/js/layout-loader.js`
+
+### Priority 3: Auth Modals Issue
+- Sign Up / Sign In modals appearing at bottom of `assessment-entry.html`
+- Should be hidden by default (`aria-hidden="true"`)
+
+### Priority 4: Chat Persistence Bug
+- Mentioned but not yet addressed
+
+### Known Blocker: RAG System
+- **Issue:** Workers AI binding (`env.AI`) undefined at runtime
+- **Impact:** Cannot generate vector embeddings, 96 careers ready but not embedded
+- **Status:** 90% complete, blocked on Cloudflare AI access
+
+---
+
+## 🏗️ Architecture Notes
+
+### Current File Structure
+```
+/partials/
+├── header.html — Custom language dropdown (6 languages)
+├── footer.html — Google Translate widget (100+ languages) + CSS + Script
+└── ... other partials
+
+Pages:
+├── index.html — EMBEDDED header/footer (NOT MOSA-compliant) ⚠️
+├── assessment-entry.html — Uses shared partials via layout-loader.js ✅
+├── assessment-questions.html — Uses shared partials ✅
+├── assessment-processing.html — Uses shared partials ✅
+├── assessment-results.html — Uses shared partials ✅
+└── ... other pages — Use shared partials
+```
+
+### Key Files
+- `assets/js/layout-loader.js` — Dynamically loads header/footer partials
+- `assets/js/config.js` — API endpoints and configuration
+- `assets/js/auth.js` — Authentication logic
+- `assets/js/chat.js` — AI chat functionality
+- `partials/footer.html` — Contains Google Translate widget
+
+---
+
+## 📊 Token Usage & Handoff Protocol
+
+### Token Tracking
+- Monitor tokens consumed during each audit session
+- **Proactively estimate remaining tokens** to determine when handoff is needed
+- Create handoff **BEFORE** tokens are exhausted
+
+### Good Times to Create Handoffs
+✅ After completing 2-3 major tasks  
+✅ After 30-50 message exchanges  
+✅ Before starting a completely new phase  
+✅ When multiple large files have been created  
+✅ After 2-3 hours of intensive work  
+
+### Bad Times to Create Handoffs
+❌ Mid-task  
+❌ During active troubleshooting  
+❌ When debugging active issues  
+
+### Handoff Template
+```markdown
+# PMERIT Platform — Handoff Session [X]
+
+## 📊 Token Usage
+- Tokens consumed: [estimate]
+- Remaining: [estimate]
+- Prompted for handoff: [yes/no]
+
+## 📂 Files Modified This Session
+| File | Changes |
+|------|---------|
+| [filename] | [description] |
+
+## 🛠️ Commits This Session
+| Commit | Description |
+|--------|-------------|
+| [hash] | [message] |
+
+## ✅ Completed Work
+- [List of completed tasks]
+
+## ❌ Current Issues (Needs Debugging)
+- [Issue description with symptoms and possible causes]
+
+## 🔄 Next Steps for New Session
+Priority 1: [Task]
+Priority 2: [Task]
+...
+
+## 🏗️ Architecture Notes
+[Current state and key files]
+
+## 🌐 Cloudflare Configuration
+[Relevant settings]
+
+## 🛠️ Tasks in Progress
+- File/Feature: [name]
+- Software: [e.g., Cloudflare Workers, GitHub, Neon DB]
+- Environment: [local, cloud, removable device]
+- APIs: [list endpoints or integrations]
+- Status: [working/fixed/deferred]
+
+## 📝 Notes for Next Session
+[Critical context for continuation]
+
+## 🔗 Related Documents
+[Links to transcripts, governance docs, etc.]
+```
+
+---
+
+## 💰 Design Values (From Research & Brainstorm)
+
+### Cost Optimization Principles
+1. **Serverless-First:** Use Cloudflare Workers/Pages for near-zero fixed costs
+2. **API Caching:** Cache AI responses to reduce API costs
+3. **Edge Computing:** Leverage Cloudflare Workers AI for edge inference
+4. **Just-In-Time GPU:** Spin up GPU instances only during active user sessions
+5. **PWA/Offline:** Implement Progressive Web App for low-bandwidth areas
+
+### Pricing Tier Strategy
+| Tier | Services | Infrastructure |
+|------|----------|---------------|
+| **Free** | Basic courses, AI tutoring (GPT-3.5 level) | Cloudflare, Neon (free tiers) |
+| **Premium** | Advanced AI (GPT-4), personalized paths | OpenAI API, Azure AI |
+| **Pro/Expert** | Virtual Human, custom AI, advanced TTS | DigitalOcean GPU, ElevenLabs |
+
+### Target Metrics
+- Near-zero fixed infrastructure costs
+- Usage-based scaling
+- 100+ language support via Google Translate
+- Mobile-first, low-bandwidth optimized
+
+---
+
+## 🚫 Anti-Patterns to Avoid
+
+❌ **DON'T:**
+- Make multiple changes without testing between each
+- Skip documentation "to save time"
+- Ignore MOSA compliance for partials
+- Fix things that aren't broken
+- Chain commands without waiting for confirmation
+- Make changes without assessing impact on related files
+
+✅ **DO:**
+- Follow single-step execution protocol
+- Assess full impact before making changes
+- Use shared partials for headers/footers
+- Test incrementally after each change
+- Document everything clearly
+- Create handoffs proactively before token exhaustion
+
+---
+
+## 🔗 AI Collaborator Roles
+
+| AI | Responsibility |
+|----|----------------|
+| **Claude** | Backend architecture, Workers API, system design, debugging |
+| **Claude** | Frontend development, HTML/CSS/JS components |
+| **GitHub Copilot** | Code suggestions, automated reviews |
+| **ChatGPT** | Collaboration and brainstorm |
+| **Other Models** | Code suggestions, automated reviews |
+
+---
+
+## ⚡ Quick Start for New Sessions
+
+**First Action:** Review the most recent Handoff document in Project Knowledge.
+
+**Standard Opening:**
+```
+"Continuing from Session [X] Handoff. 
+Current priority: [Priority 1 task from handoff].
+First step: [Specific action]."
+```
+
+**If Local File Access Needed:**
+- Request switch from web to Claude Desktop
+- Or request user to paste file contents
+
+---
+
+## ⚠️ Critical Reminders
+
+1. **Handoff decisions supersede original project documents**
+2. **MOSA compliance is required** — use shared partials
+3. **Cloudflare Pro is active** — leverage advanced features
+4. **Single-step execution** — wait for "DONE" before proceeding
+5. **Impact analysis first** — assess all related files before changes
+6. **Research & Brainstorm** provides design values for realistic implementation
+7. **DigitalOcean** available as additional environment for premium features
+8. **Claude Desktop** available for local file access — request switch when needed
+9. **Create handoffs proactively** — don't wait until tokens are exhausted
+10. **RAG is blocked** — `env.AI` binding issue needs resolution
+
+---
+
+*Last Updated: Session 24 Continuation*  
+*Production Site: https://pmerit.com*  
+*Repository: github.com/peoplemerit/pmerit-ai-platform*
