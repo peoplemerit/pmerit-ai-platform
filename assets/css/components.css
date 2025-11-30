@@ -1376,3 +1376,255 @@
   to { transform: rotate(360deg); }
 }
 
+/* ========================================
+   STANDARDIZED BUTTON SYSTEM
+   ========================================
+
+   Hierarchy:
+   - .btn           → Base button styles
+   - .btn-primary   → Main CTA (solid primary color)
+   - .btn-secondary → Secondary action (outline)
+   - .btn-tertiary  → Minimal/text-like
+   - .btn-danger    → Destructive actions
+   - .btn-ghost     → Transparent background
+
+   Sizes:
+   - .btn-sm        → Small (32px height)
+   - Default        → Medium (44px height)
+   - .btn-lg        → Large (52px height)
+
+   Modifiers:
+   - .btn-full      → Full width
+   - .btn-icon      → Icon-only (square)
+
+   Usage:
+   <button class="btn btn-primary">Primary Action</button>
+   <button class="btn btn-secondary btn-sm">Small Secondary</button>
+   <a href="#" class="btn btn-tertiary btn-full">Full Width Link</a>
+   ======================================== */
+
+/* Base Button Styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  /* Size - Default (Medium) */
+  min-height: 44px;
+  padding: 10px 20px;
+
+  /* Typography */
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+
+  /* Shape */
+  border-radius: 8px;
+  border: 1px solid transparent;
+
+  /* Behavior */
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  /* Reset defaults */
+  background: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.btn:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Primary Button - Main CTA */
+.btn-primary,
+.btn.primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: #FFFFFF;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover,
+.btn.primary:hover {
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary:active,
+.btn.primary:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Secondary Button - Outline Style */
+.btn-secondary,
+.btn.secondary {
+  background-color: transparent;
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover,
+.btn.secondary:hover {
+  background-color: var(--bg-secondary);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Tertiary Button - Minimal/Text Style */
+.btn-tertiary,
+.btn.tertiary {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--primary);
+  padding: 10px 12px;
+}
+
+.btn-tertiary:hover,
+.btn.tertiary:hover {
+  background-color: var(--bg-secondary);
+  text-decoration: underline;
+}
+
+/* Ghost Button - Transparent */
+.btn-ghost,
+.btn.ghost {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--text-secondary);
+}
+
+.btn-ghost:hover,
+.btn.ghost:hover {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+/* Danger Button - Destructive Actions */
+.btn-danger,
+.btn.danger {
+  background-color: var(--danger, #DC3545);
+  border-color: var(--danger, #DC3545);
+  color: #FFFFFF;
+}
+
+.btn-danger:hover,
+.btn.danger:hover {
+  background-color: #c82333;
+  border-color: #c82333;
+}
+
+/* Outline Variant */
+.btn-outline {
+  background-color: transparent;
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.btn-outline:hover {
+  background-color: var(--primary);
+  color: #FFFFFF;
+}
+
+/* ========== BUTTON SIZES ========== */
+
+/* Small Button */
+.btn-sm,
+.btn.btn-sm {
+  min-height: 32px;
+  padding: 6px 12px;
+  font-size: 12px;
+  border-radius: 6px;
+}
+
+/* Large Button */
+.btn-lg,
+.btn.btn-lg {
+  min-height: 52px;
+  padding: 14px 28px;
+  font-size: 16px;
+  border-radius: 10px;
+}
+
+/* ========== BUTTON MODIFIERS ========== */
+
+/* Full Width */
+.btn-full,
+.btn.btn-full,
+.btn-block {
+  width: 100%;
+}
+
+/* Icon Only Button */
+.btn-icon,
+.btn.btn-icon {
+  padding: 10px;
+  min-width: 44px;
+  width: 44px;
+}
+
+.btn-icon.btn-sm {
+  padding: 6px;
+  min-width: 32px;
+  width: 32px;
+}
+
+.btn-icon.btn-lg {
+  padding: 14px;
+  min-width: 52px;
+  width: 52px;
+}
+
+/* Button with Icon + Text */
+.btn i,
+.btn .icon,
+.btn svg {
+  font-size: 1em;
+  flex-shrink: 0;
+}
+
+/* ========== BUTTON GROUP ========== */
+
+.btn-group {
+  display: inline-flex;
+  gap: 8px;
+}
+
+.btn-group.vertical {
+  flex-direction: column;
+}
+
+/* ========== DARK THEME ADJUSTMENTS ========== */
+
+[data-theme="dark"] .btn-secondary {
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  background-color: var(--bg-elevated);
+  border-color: var(--primary);
+}
+
+[data-theme="dark"] .btn-ghost:hover {
+  background-color: var(--bg-elevated);
+}
+
+[data-theme="dark"] .btn-tertiary:hover {
+  background-color: var(--bg-elevated);
+}
+
