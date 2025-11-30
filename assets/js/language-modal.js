@@ -1,6 +1,7 @@
 /**
  * PMERIT Searchable Language Modal
- * Hybrid solution: Custom searchable UI + Google Translate backend
+ * Hybrid solution: Custom searchable UI + Translation API backend
+ * Version: 2.0.0 - API Integration with loading states
  */
 
 (function() {
@@ -26,6 +27,15 @@
             <h4>All Languages</h4>
             <div id="allLanguages" class="language-grid"></div>
           </div>
+        </div>
+        <!-- Loading overlay for API translations -->
+        <div id="languageLoadingOverlay" class="language-loading-overlay" style="display:none;">
+          <div class="language-loading-spinner"></div>
+          <p class="language-loading-text">Loading translations...</p>
+        </div>
+        <!-- Error message -->
+        <div id="languageErrorMessage" class="language-error-message" style="display:none;">
+          <p>⚠️ Failed to load translations. Using English instead.</p>
         </div>
       </div>
     </div>
@@ -172,6 +182,54 @@
       text-align: center;
       padding: 20px;
     }
+    /* Loading overlay styles */
+    .language-loading-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(13, 13, 26, 0.95);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      z-index: 10;
+    }
+    .language-loading-spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid #3a3a5a;
+      border-top-color: #4a9eff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .language-loading-text {
+      color: #ffffff;
+      margin-top: 16px;
+      font-size: 14px;
+    }
+    /* Error message styles */
+    .language-error-message {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      right: 16px;
+      background: #7f1d1d;
+      color: #fca5a5;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      text-align: center;
+      z-index: 11;
+    }
+    .language-error-message p {
+      margin: 0;
+    }
   `;
 
   let modal = null;
@@ -237,6 +295,70 @@
     console.log('[LanguageModal] Updated header button:', languageName, '(' + languageCode + ')');
   }
 
+  // Show loading overlay
+  function showLoading(langCode) {
+    const overlay = document.getElementById('languageLoadingOverlay');
+    const errorMsg = document.getElementById('languageErrorMessage');
+    const loadingText = overlay?.querySelector('.language-loading-text');
+
+    if (overlay) {
+      overlay.style.display = 'flex';
+      if (loadingText) {
+        const lang = window.PMERIT_LANGUAGES?.getByCode?.(langCode);
+        const langName = lang?.name || langCode;
+        loadingText.textContent = `Loading ${langName} translations...`;
+      }
+    }
+    if (errorMsg) {
+      errorMsg.style.display = 'none';
+    }
+  }
+
+  // Hide loading overlay
+  function hideLoading() {
+    const overlay = document.getElementById('languageLoadingOverlay');
+    if (overlay) {
+      overlay.style.display = 'none';
+    }
+  }
+
+  // Show error message
+  function showError(message) {
+    const errorMsg = document.getElementById('languageErrorMessage');
+    if (errorMsg) {
+      const p = errorMsg.querySelector('p');
+      if (p) {
+        p.textContent = message || '⚠️ Failed to load translations. Using English instead.';
+      }
+      errorMsg.style.display = 'block';
+      // Auto-hide after 5 seconds
+      setTimeout(() => {
+        errorMsg.style.display = 'none';
+      }, 5000);
+    }
+  }
+
+  // Handle loading events from LanguageManager
+  function handleLoadingEvent(e) {
+    const { language, status, error } = e.detail;
+    console.log('[LanguageModal] Loading event:', status, language);
+
+    switch (status) {
+      case 'start':
+        showLoading(language);
+        break;
+      case 'complete':
+        hideLoading();
+        // Update button with new language
+        updateLanguageButton(language);
+        break;
+      case 'error':
+        hideLoading();
+        showError(error ? `⚠️ ${error}` : undefined);
+        break;
+    }
+  }
+
   // Initialize modal
   function init() {
     // Inject CSS
@@ -270,11 +392,14 @@
       }
     });
 
+    // Listen for loading events from LanguageManager
+    window.addEventListener('pmerit-language-loading', handleLoadingEvent);
+
     // Update header button with current language on page load
     const initialLang = getCurrentLanguage();
     updateLanguageButton(initialLang);
 
-    console.log('[LanguageModal] Initialized');
+    console.log('[LanguageModal] v2.0.0 Initialized (API Integration)');
   }
 
   // Render languages
