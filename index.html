@@ -79,8 +79,9 @@
       <div class="pmerit-logo">PMERIT</div>
       <div class="header-actions">
         <!-- Language Button - Opens Modal -->
-        <button class="language-btn-mobile" data-action="open-language-modal" aria-label="Change language" title="Select Language">
+        <button class="language-btn-mobile" id="language-btn-mobile" data-action="open-language-modal" aria-label="Change language" title="Select Language">
           <i class="fas fa-globe"></i>
+          <span class="language-code"></span>
         </button>
         <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">☰</button>
         <button class="sign-in-btn" id="signInBtn" data-i18n="common.signIn">Sign In</button>
@@ -218,8 +219,8 @@
       <div class="pmerit-logo">PMERIT</div>
       <nav class="header-nav">
         <!-- Language Button - Opens Modal -->
-        <button class="nav-btn language-btn-desktop" data-action="open-language-modal" aria-label="Change language" title="Select Language">
-          <i class="fas fa-globe"></i> Language
+        <button class="nav-btn language-btn-desktop" id="language-btn-desktop" data-action="open-language-modal" aria-label="Change language" title="Select Language">
+          <i class="fas fa-globe"></i> <span class="language-name">Language</span>
         </button>
         <a href="pricing.html" class="nav-btn">Pricing</a>
         <button class="nav-btn" id="desktopSignInBtn" data-i18n="common.signIn">Sign In</button>

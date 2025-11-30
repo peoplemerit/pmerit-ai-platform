@@ -209,19 +209,32 @@
       ? window.PMERIT_LANGUAGES.getByCode(code)
       : null;
 
-    // Desktop: Show full name (e.g., "Yoruba")
+    const languageName = lang ? lang.name : 'Language';
+    const languageCode = code ? code.toUpperCase() : '';
+
+    // === SUB-PAGES: header partial uses #language-btn ===
     const textSpan = document.querySelector('#language-btn .language-btn-text');
     if (textSpan) {
-      textSpan.textContent = lang ? lang.name : 'Language';
+      textSpan.textContent = languageName;
     }
-
-    // Mobile: Show language code (e.g., "YO")
     const codeSpan = document.querySelector('#language-btn .language-btn-code');
     if (codeSpan) {
-      codeSpan.textContent = code ? code.toUpperCase() : '';
+      codeSpan.textContent = languageCode;
     }
 
-    console.log('[LanguageModal] Updated header button:', lang ? lang.name : code);
+    // === INDEX.HTML: Desktop button uses .language-btn-desktop ===
+    const desktopNameSpan = document.querySelector('#language-btn-desktop .language-name');
+    if (desktopNameSpan) {
+      desktopNameSpan.textContent = languageName;
+    }
+
+    // === INDEX.HTML: Mobile button uses .language-btn-mobile ===
+    const mobileCodeSpan = document.querySelector('#language-btn-mobile .language-code');
+    if (mobileCodeSpan) {
+      mobileCodeSpan.textContent = languageCode;
+    }
+
+    console.log('[LanguageModal] Updated header button:', languageName, '(' + languageCode + ')');
   }
 
   // Initialize modal
