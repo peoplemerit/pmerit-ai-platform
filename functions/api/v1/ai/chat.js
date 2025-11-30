@@ -18,7 +18,7 @@ import {
   needsTranslation,
   getCulturalContext,
   getLanguageName
-} from '../../utils/translator.js';
+} from '../../../utils/translator.js';
 
 // CORS headers for cross-origin requests
 const corsHeaders = {
