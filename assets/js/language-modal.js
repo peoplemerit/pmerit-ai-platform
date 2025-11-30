@@ -178,16 +178,27 @@
   let searchInput = null;
   let currentLanguage = 'en';
 
-  // Detect current active language from localStorage or Google Translate cookie
+  // Detect current active language from LanguageManager or Google Translate cookie
   function getCurrentLanguage() {
-    // Priority 1: Check localStorage for offline language
+    // Priority 1: Check LanguageManager for offline language (most reliable)
+    if (window.LanguageManager && typeof window.LanguageManager.getCurrentLanguage === 'function') {
+      const lmLang = window.LanguageManager.getCurrentLanguage();
+      // LanguageManager handles offline languages: en, yo, ig, ha
+      // Return non-English offline languages immediately
+      if (lmLang && lmLang !== 'en') {
+        console.log('[LanguageModal] Current language from LanguageManager:', lmLang);
+        return lmLang;
+      }
+    }
+
+    // Priority 2: Check localStorage directly (fallback for offline languages)
     const offlineLang = localStorage.getItem('pmerit_language');
     if (offlineLang && offlineLang !== 'en') {
       console.log('[LanguageModal] Current language from localStorage:', offlineLang);
       return offlineLang;
     }
 
-    // Priority 2: Check Google Translate cookie
+    // Priority 3: Check Google Translate cookie
     const gtCookie = document.cookie.split(';').find(c => c.trim().startsWith('googtrans='));
     if (gtCookie) {
       const value = gtCookie.split('=')[1];
