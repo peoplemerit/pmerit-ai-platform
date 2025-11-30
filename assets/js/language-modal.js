@@ -222,6 +222,27 @@
     return 'en';
   }
 
+  // Update the language button in the header to show current language
+  function updateLanguageButton(code) {
+    const lang = window.PMERIT_LANGUAGES && window.PMERIT_LANGUAGES.getByCode
+      ? window.PMERIT_LANGUAGES.getByCode(code)
+      : null;
+
+    // Desktop: Show full name (e.g., "Yoruba")
+    const textSpan = document.querySelector('#language-btn .language-btn-text');
+    if (textSpan) {
+      textSpan.textContent = lang ? lang.name : 'Language';
+    }
+
+    // Mobile: Show language code (e.g., "YO")
+    const codeSpan = document.querySelector('#language-btn .language-btn-code');
+    if (codeSpan) {
+      codeSpan.textContent = code ? code.toUpperCase() : '';
+    }
+
+    console.log('[LanguageModal] Updated header button:', lang ? lang.name : code);
+  }
+
   // Initialize modal
   function init() {
     // Inject CSS
@@ -254,6 +275,10 @@
         open();
       }
     });
+
+    // Update header button with current language on page load
+    const initialLang = getCurrentLanguage();
+    updateLanguageButton(initialLang);
 
     console.log('[LanguageModal] Initialized');
   }
@@ -336,6 +361,9 @@
 
     // Update visual active state immediately
     updateActiveState(code);
+
+    // Update header button to show selected language
+    updateLanguageButton(code);
 
     if (lang.offline) {
       // For offline languages: Reset GT first, then use Language Manager
