@@ -335,17 +335,63 @@ initFooterModals() {
 
 ---
 
+## Session 34 Update #3: Translation API Integration
+
+### Summary
+Integrated Translation API with Language Manager for online translations.
+
+### Changes Made
+
+**language-manager.js (v3.0.0):**
+- Added `OFFLINE_LANGUAGES`, `CACHE_PREFIX`, `CACHE_EXPIRY`, `API_ENDPOINT` constants
+- Refactored `loadTranslations()` to route offline/online languages appropriately
+- Added `loadOfflineTranslations()` - loads from `/assets/i18n/{lang}.json`
+- Added `loadOnlineTranslations()` - fetches from API with localStorage caching
+- Added `getCachedTranslations()` / `setCachedTranslations()` - 7-day cache with expiry
+- Added `dispatchLoadingEvent()` - dispatches 'pmerit-language-loading' events
+- Added `isValidLanguage()` - validates against PMERIT_LANGUAGES
+- Added `isOfflineLanguage()` - checks if language is bundled
+- Added `clearCache()` - debugging utility
+
+**language-modal.js (v2.0.0):**
+- Added loading overlay with spinner in modal HTML
+- Added error message display
+- Added CSS for loading states and error messages
+- Added `showLoading()` / `hideLoading()` / `showError()` functions
+- Added `handleLoadingEvent()` - listens to LanguageManager events
+- Integrated loading states with language selection
+
+### How It Works
+1. User selects a language (e.g., French)
+2. Loading overlay appears with spinner
+3. LanguageManager checks if offline or online language
+4. If online: Check localStorage cache → if expired/missing, fetch from API
+5. Cache response in localStorage (7-day expiry)
+6. Apply translations to page
+7. Hide loading overlay
+
+### Acceptance Criteria
+- [x] Offline languages (en, yo, ig, ha) load from bundled files
+- [x] Online languages fetch from Translation API
+- [x] Loading spinner shown during API fetch
+- [x] Translations cached in localStorage (7 days)
+- [x] Subsequent visits load from cache (faster)
+- [x] Error handling with fallback to English
+
+---
+
 ## Remaining Work
 
-### Phase 3 Completion (Translation API)
+### Translation API Configuration (Required for online languages)
 - [ ] Sign up for Azure Translator API
-- [ ] Configure environment variables in Cloudflare dashboard
+- [ ] Configure environment variables in Cloudflare dashboard:
+  - `TRANSLATOR_KEY` - Azure subscription key
+  - `TRANSLATOR_REGION` - Azure region (e.g., 'eastus')
+  - `LOCALES_KV` - KV namespace binding
 - [ ] Create LOCALES_KV namespace in Cloudflare
 - [ ] Test endpoint: `/api/v1/locales/fr`
-- [ ] Update `language-modal.js` to call API for non-offline languages
 
 ### Phase 4 (Future)
-- [ ] Add loading indicator for first-time language generation
 - [ ] Performance optimization
 - [ ] Add more offline languages if needed
 
