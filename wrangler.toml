@@ -14,3 +14,9 @@ binding = "AI"
 [vars]
 TTS_DEFAULT_MODEL = "@cf/deepgram/aura-2-en"
 TTS_MAX_TEXT_LENGTH = "5000"
+TRANSLATOR_REGION = "eastus2"
+
+# KV Namespace for caching translated locales
+[[kv_namespaces]]
+binding = "LOCALES_KV"
+id = "f05b8e6eab3f4c4e8855a97359175f1d"
