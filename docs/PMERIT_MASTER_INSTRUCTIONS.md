@@ -366,12 +366,41 @@ Path: docs/handoffs/SESSION_[XX].md
 
 ## 🔗 REFERENCE DOCUMENTS
 
+### 📚 PROJECT DOCUMENTS (What to Build)
+
+These documents define WHAT the platform should do.
+**Claude MUST reference these before making implementation decisions.**
+
+| Document | Location | Purpose |
+|----------|----------|---------|
+| Narrative User & Admin Journey | Project Knowledge | **PRIMARY** — User/Admin flow specifications |
+| Original Ongoing Plan | Project Knowledge | Project roadmap and phases |
+| Unified Assessment | Project Knowledge | Assessment feature specifications |
+| Research & Brainstorm | Project Knowledge | Ideas and research notes |
+
+⚠️ **CRITICAL RULE:** Before modifying ANY functionality, Claude must:
+1. Check if the change aligns with Narrative Journey
+2. Verify against Original Ongoing Plan
+3. If uncertain → ASK Solo Developer before proceeding
+4. Never assume — always verify against project documents
+
+### 🔧 GOVERNANCE DOCUMENTS (How to Work)
+
 | Document | Location | Purpose |
 |----------|----------|---------|
 | GOVERNANCE.md | `docs/GOVERNANCE.md` | Full rules, phases, all details |
 | TASK_TRACKER.md | `docs/TASK_TRACKER.md` | Living status, attempt tracking |
-| Narrative Journey | Project Knowledge | User/Admin journey specifications |
 | Session Handoffs | `docs/handoffs/` | Point-in-time snapshots |
+
+### 📋 DOCUMENT HIERARCHY (Priority Order)
+
+1. **Narrative User & Admin Journey** — Defines user flows (WHAT)
+2. **Latest Handoff Document** — Current session state
+3. **TASK_TRACKER.md** — Living status
+4. **GOVERNANCE.md** — Rules and workflows (HOW)
+5. **Original Project Docs** — Baseline (where handoffs are silent)
+
+**If documents conflict:** Solo Developer (@peoplemerit) has final say.
 
 ---
 

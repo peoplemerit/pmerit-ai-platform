@@ -528,11 +528,29 @@ HOMEPAGE GATE COMPLETE
 
 ## 📚 DOCUMENT HIERARCHY
 
-1. **TASK_TRACKER.md** — Living status (always current)
-2. **GOVERNANCE.md** (this file) — Rules and workflows
-3. **Handoff Documents** — Session snapshots (override originals)
-4. **Narrative Journey** — User/Admin journey map
-5. **Original Project Docs** — Baseline (where handoffs are silent)
+### Priority Order (Highest to Lowest)
+
+1. **Narrative User & Admin Journey** — Defines WHAT to build (user flows)
+2. **Latest Handoff Document** — Current session decisions
+3. **TASK_TRACKER.md** — Living status (always current)
+4. **GOVERNANCE.md** (this file) — Rules and workflows (HOW to work)
+5. **Original Ongoing Plan** — Project roadmap
+6. **Unified Assessment Specs** — Assessment feature details
+7. **Research & Brainstorm** — Ideas and notes
+
+### 📚 PROJECT DOCUMENTS (Source of Truth for Features)
+
+These documents in **Project Knowledge** define what the platform should do:
+
+| Document | Purpose | When to Reference |
+|----------|---------|-------------------|
+| Narrative User & Admin Journey | User/Admin flow specifications | Before ANY feature work |
+| Original Ongoing Plan | Project roadmap | For phase planning |
+| Unified Assessment | Assessment specifications | For assessment features |
+| Research & Brainstorm | Ideas and research | For new feature ideas |
+
+⚠️ **CRITICAL:** Claude must verify changes align with these documents.
+If implementation contradicts documentation → Flag for Solo Developer decision.
 
 ---
 
