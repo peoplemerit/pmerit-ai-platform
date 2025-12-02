@@ -503,6 +503,212 @@
       margin-bottom: var(--space-4);
       display: block;
     }
+
+    /* ========================================
+       ACCORDION STYLES
+       ======================================== */
+
+    /* Card wrapper to contain card + accordion */
+    .pathway-card-wrapper {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Accordion toggle button styling */
+    .card-cta.accordion-toggle {
+      position: relative;
+    }
+
+    .card-cta.accordion-toggle .toggle-icon {
+      transition: transform 0.3s ease;
+    }
+
+    .card-cta.accordion-toggle.active .toggle-icon {
+      transform: rotate(180deg);
+    }
+
+    /* Accordion container */
+    .pathway-accordion {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+      opacity: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-top: none;
+      border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
+      margin-top: -1px;
+    }
+
+    .pathway-accordion.open {
+      opacity: 1;
+      border-top: 1px solid var(--color-primary);
+    }
+
+    /* Accordion content */
+    .accordion-content {
+      padding: var(--space-6);
+    }
+
+    .accordion-title {
+      font-size: var(--text-lg);
+      font-weight: var(--weight-semibold);
+      color: var(--text-primary);
+      margin-bottom: var(--space-4);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .accordion-title i {
+      color: var(--color-primary);
+    }
+
+    /* Sample courses grid */
+    .sample-courses-grid {
+      display: grid;
+      gap: var(--space-4);
+      grid-template-columns: repeat(3, 1fr);
+      margin-bottom: var(--space-6);
+    }
+
+    @media (max-width: 1023px) {
+      .sample-courses-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 639px) {
+      .sample-courses-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Sample course card */
+    .sample-course-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-md);
+      padding: var(--space-4);
+      transition: all var(--transition-fast);
+    }
+
+    .sample-course-card:hover {
+      border-color: var(--color-primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .course-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: var(--space-2);
+      margin-bottom: var(--space-2);
+      flex-wrap: wrap;
+    }
+
+    .course-title {
+      font-size: var(--text-base);
+      font-weight: var(--weight-semibold);
+      color: var(--text-primary);
+      line-height: var(--leading-tight);
+    }
+
+    .course-badge {
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+      padding: var(--space-1) var(--space-2);
+      border-radius: var(--border-radius-full);
+      white-space: nowrap;
+    }
+
+    .course-badge.beginner,
+    .course-badge.entry-level,
+    .course-badge.ages {
+      background: rgba(74, 164, 185, 0.15);
+      color: #4AA4B9;
+    }
+
+    .course-badge.intermediate {
+      background: rgba(255, 193, 7, 0.15);
+      color: #FFC107;
+    }
+
+    .course-badge.advanced {
+      background: rgba(255, 87, 87, 0.15);
+      color: #FF5757;
+    }
+
+    .course-description {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+      margin-bottom: var(--space-3);
+    }
+
+    .course-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .course-duration {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+    }
+
+    .course-duration i {
+      color: var(--color-primary);
+      font-size: var(--text-xs);
+    }
+
+    /* Accordion CTA */
+    .accordion-cta {
+      display: flex;
+      justify-content: center;
+      padding-top: var(--space-2);
+      border-top: 1px solid var(--border-color);
+    }
+
+    .btn-enroll {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      color: white;
+      padding: var(--space-3) var(--space-8);
+      border-radius: var(--border-radius-md);
+      font-weight: var(--weight-semibold);
+      font-size: var(--text-base);
+      border: none;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      min-height: var(--mobile-touch-target);
+    }
+
+    .btn-enroll:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-enroll:focus {
+      outline: 3px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    /* Adjust card when accordion is open */
+    .pathway-card-wrapper .career-card {
+      transition: border-radius 0.3s ease;
+    }
+
+    .pathway-card-wrapper.accordion-open .career-card {
+      border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+      border-bottom-color: var(--color-primary);
+    }
   </style>
 </head>
 <body>
@@ -666,27 +872,143 @@
       if (!container) return;
 
       tracks.forEach(track => {
+        // Create wrapper for card + accordion
+        const wrapper = document.createElement('div');
+        wrapper.className = 'pathway-card-wrapper';
+        wrapper.setAttribute('data-pathway', track.id);
+
+        // Create the card
         const card = document.createElement('article');
         card.className = 'career-card';
         card.setAttribute('role', 'listitem');
-        
+
+        // Escape HTML to prevent XSS
+        const escapeHtml = (str) => {
+          const div = document.createElement('div');
+          div.textContent = str;
+          return div.innerHTML;
+        };
+
         card.innerHTML = `
           <div class="card-icon" aria-hidden="true">
-            <i class="fas ${track.icon}"></i>
+            <i class="fas ${escapeHtml(track.icon)}"></i>
           </div>
-          <h3 class="card-title">${track.title}</h3>
-          <p class="card-summary">${track.summary}</p>
+          <h3 class="card-title">${escapeHtml(track.title)}</h3>
+          <p class="card-summary">${escapeHtml(track.summary)}</p>
           <div class="card-tags" role="list" aria-label="Skills and topics">
-            ${track.tags.map(tag => `<span class="tag" role="listitem">${tag}</span>`).join('')}
+            ${track.tags.map(tag => `<span class="tag" role="listitem">${escapeHtml(tag)}</span>`).join('')}
           </div>
-          <a href="courses.html#${track.id}" class="card-cta" aria-label="Learn more about ${track.title}">
+          <button class="card-cta accordion-toggle" aria-expanded="false" aria-controls="accordion-${escapeHtml(track.id)}" aria-label="Learn more about ${escapeHtml(track.title)}">
             Learn More
-            <i class="fas fa-arrow-right" aria-hidden="true"></i>
-          </a>
+            <i class="fas fa-chevron-down toggle-icon" aria-hidden="true"></i>
+          </button>
         `;
-        
-        container.appendChild(card);
+
+        // Create accordion section
+        const accordion = document.createElement('div');
+        accordion.className = 'pathway-accordion';
+        accordion.id = `accordion-${track.id}`;
+        accordion.setAttribute('aria-hidden', 'true');
+
+        // Build sample courses HTML
+        const sampleCoursesHtml = track.sampleCourses ? track.sampleCourses.map(course => {
+          const levelClass = course.level.toLowerCase().includes('beginner') ? 'beginner' :
+                            course.level.toLowerCase().includes('intermediate') ? 'intermediate' :
+                            course.level.toLowerCase().includes('advanced') ? 'advanced' :
+                            course.level.toLowerCase().includes('entry') ? 'entry-level' : 'ages';
+          return `
+            <div class="sample-course-card">
+              <div class="course-header">
+                <span class="course-title">${escapeHtml(course.title)}</span>
+                <span class="course-badge ${levelClass}">${escapeHtml(course.level)}</span>
+              </div>
+              <p class="course-description">${escapeHtml(course.description)}</p>
+              <div class="course-meta">
+                <span class="course-duration">
+                  <i class="fas fa-clock" aria-hidden="true"></i>
+                  ${escapeHtml(course.duration)}
+                </span>
+              </div>
+            </div>
+          `;
+        }).join('') : '';
+
+        accordion.innerHTML = `
+          <div class="accordion-content">
+            <h4 class="accordion-title">
+              <i class="fas fa-book-reader" aria-hidden="true"></i>
+              Sample Courses in This Pathway
+            </h4>
+            <div class="sample-courses-grid">
+              ${sampleCoursesHtml}
+            </div>
+            <div class="accordion-cta">
+              <a href="courses.html#${escapeHtml(track.id)}" class="btn-enroll">
+                Start Learning
+                <i class="fas fa-arrow-right" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        `;
+
+        wrapper.appendChild(card);
+        wrapper.appendChild(accordion);
+        container.appendChild(wrapper);
       });
+
+      // Initialize accordion toggle functionality
+      initAccordions();
+    }
+
+    // Accordion toggle functionality
+    function initAccordions() {
+      const toggleButtons = document.querySelectorAll('.accordion-toggle');
+
+      toggleButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          e.preventDefault();
+
+          const wrapper = this.closest('.pathway-card-wrapper');
+          const accordion = wrapper.querySelector('.pathway-accordion');
+          const isOpen = accordion.classList.contains('open');
+
+          // Close all other accordions first
+          closeAllAccordions();
+
+          // Toggle current accordion
+          if (!isOpen) {
+            openAccordion(wrapper, accordion, this);
+          }
+        });
+      });
+    }
+
+    function closeAllAccordions() {
+      document.querySelectorAll('.pathway-card-wrapper').forEach(wrapper => {
+        const accordion = wrapper.querySelector('.pathway-accordion');
+        const button = wrapper.querySelector('.accordion-toggle');
+
+        wrapper.classList.remove('accordion-open');
+        accordion.classList.remove('open');
+        accordion.style.maxHeight = '0';
+        accordion.setAttribute('aria-hidden', 'true');
+        button.classList.remove('active');
+        button.setAttribute('aria-expanded', 'false');
+      });
+    }
+
+    function openAccordion(wrapper, accordion, button) {
+      wrapper.classList.add('accordion-open');
+      accordion.classList.add('open');
+      accordion.style.maxHeight = accordion.scrollHeight + 'px';
+      accordion.setAttribute('aria-hidden', 'false');
+      button.classList.add('active');
+      button.setAttribute('aria-expanded', 'true');
+
+      // Scroll accordion into view smoothly
+      setTimeout(() => {
+        accordion.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 100);
     }
 
     // Highlight active section in navigation

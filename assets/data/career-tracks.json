@@ -6,7 +6,27 @@
       "icon": "fa-chart-line",
       "summary": "Learn to analyze data, create visualizations, and drive business insights with modern analytics tools.",
       "tags": ["Python", "SQL", "Tableau", "Statistics"],
-      "section": "global"
+      "section": "global",
+      "sampleCourses": [
+        {
+          "title": "Python for Data Analysis",
+          "duration": "4 weeks",
+          "level": "Beginner",
+          "description": "Learn Python basics, pandas, and data manipulation"
+        },
+        {
+          "title": "SQL Fundamentals",
+          "duration": "3 weeks",
+          "level": "Beginner",
+          "description": "Master database queries and data extraction"
+        },
+        {
+          "title": "Data Visualization with Tableau",
+          "duration": "3 weeks",
+          "level": "Intermediate",
+          "description": "Create compelling dashboards and reports"
+        }
+      ]
     },
     {
       "id": "digital-marketing",
@@ -14,7 +34,27 @@
       "icon": "fa-bullhorn",
       "summary": "Master SEO, social media marketing, content strategy, and analytics to grow businesses online.",
       "tags": ["SEO", "Social Media", "Analytics", "Content"],
-      "section": "global"
+      "section": "global",
+      "sampleCourses": [
+        {
+          "title": "SEO Fundamentals",
+          "duration": "2 weeks",
+          "level": "Beginner",
+          "description": "Optimize websites for search engines"
+        },
+        {
+          "title": "Social Media Strategy",
+          "duration": "3 weeks",
+          "level": "Beginner",
+          "description": "Build effective social media campaigns"
+        },
+        {
+          "title": "Google Analytics Mastery",
+          "duration": "2 weeks",
+          "level": "Intermediate",
+          "description": "Track and analyze website performance"
+        }
+      ]
     },
     {
       "id": "ux-design",
@@ -22,7 +62,27 @@
       "icon": "fa-palette",
       "summary": "Create user-centered designs, conduct research, and build intuitive interfaces for web and mobile.",
       "tags": ["Figma", "User Research", "Prototyping", "UI Design"],
-      "section": "global"
+      "section": "global",
+      "sampleCourses": [
+        {
+          "title": "UX Research Methods",
+          "duration": "3 weeks",
+          "level": "Beginner",
+          "description": "Learn user interviews, surveys, and usability testing"
+        },
+        {
+          "title": "Figma Essentials",
+          "duration": "4 weeks",
+          "level": "Beginner",
+          "description": "Master the industry-standard design tool"
+        },
+        {
+          "title": "Prototyping & Testing",
+          "duration": "3 weeks",
+          "level": "Intermediate",
+          "description": "Create interactive prototypes and validate designs"
+        }
+      ]
     },
     {
       "id": "web-development",
@@ -30,7 +90,27 @@
       "icon": "fa-code",
       "summary": "Build modern, responsive websites and web applications using the latest technologies and frameworks.",
       "tags": ["HTML/CSS", "JavaScript", "React", "Node.js"],
-      "section": "global"
+      "section": "global",
+      "sampleCourses": [
+        {
+          "title": "HTML & CSS Fundamentals",
+          "duration": "2 weeks",
+          "level": "Beginner",
+          "description": "Build your first responsive websites"
+        },
+        {
+          "title": "JavaScript Essentials",
+          "duration": "4 weeks",
+          "level": "Beginner",
+          "description": "Add interactivity to web pages"
+        },
+        {
+          "title": "React Fundamentals",
+          "duration": "4 weeks",
+          "level": "Intermediate",
+          "description": "Build modern component-based applications"
+        }
+      ]
     },
     {
       "id": "project-management",
@@ -38,7 +118,27 @@
       "icon": "fa-tasks",
       "summary": "Lead teams, manage projects, and deliver results using agile methodologies and PM best practices.",
       "tags": ["Agile", "Scrum", "Leadership", "Planning"],
-      "section": "global"
+      "section": "global",
+      "sampleCourses": [
+        {
+          "title": "Agile & Scrum Basics",
+          "duration": "2 weeks",
+          "level": "Beginner",
+          "description": "Understand agile methodologies"
+        },
+        {
+          "title": "Project Planning Tools",
+          "duration": "3 weeks",
+          "level": "Beginner",
+          "description": "Master Jira, Trello, and Asana"
+        },
+        {
+          "title": "Stakeholder Communication",
+          "duration": "2 weeks",
+          "level": "Intermediate",
+          "description": "Effective project communication"
+        }
+      ]
     },
     {
       "id": "business-analysis",
@@ -46,7 +146,27 @@
       "icon": "fa-briefcase",
       "summary": "Bridge the gap between business needs and technical solutions through strategic analysis.",
       "tags": ["Requirements", "Process Modeling", "Strategy", "Communication"],
-      "section": "global"
+      "section": "global",
+      "sampleCourses": [
+        {
+          "title": "Requirements Gathering",
+          "duration": "3 weeks",
+          "level": "Beginner",
+          "description": "Elicit and document business requirements"
+        },
+        {
+          "title": "Process Mapping",
+          "duration": "2 weeks",
+          "level": "Beginner",
+          "description": "Visualize and optimize business processes"
+        },
+        {
+          "title": "Data-Driven Decisions",
+          "duration": "3 weeks",
+          "level": "Intermediate",
+          "description": "Use analytics for business insights"
+        }
+      ]
     }
   ],
   "localEducationTracks": [
@@ -56,7 +176,27 @@
       "icon": "fa-child",
       "summary": "Foundational programs for nursery and kindergarten focusing on holistic child development.",
       "tags": ["Ages 3-5", "Play-Based", "Social Skills", "Early Literacy"],
-      "section": "local-edu"
+      "section": "local-edu",
+      "sampleCourses": [
+        {
+          "title": "Foundational Literacy",
+          "duration": "8 weeks",
+          "level": "Ages 3-5",
+          "description": "Letter recognition, phonics, early reading"
+        },
+        {
+          "title": "Number Concepts",
+          "duration": "6 weeks",
+          "level": "Ages 3-5",
+          "description": "Counting, shapes, basic math readiness"
+        },
+        {
+          "title": "Social-Emotional Learning",
+          "duration": "6 weeks",
+          "level": "Ages 3-5",
+          "description": "Self-regulation, cooperation, empathy"
+        }
+      ]
     },
     {
       "id": "primary-education",
@@ -64,7 +204,27 @@
       "icon": "fa-book-open",
       "summary": "Core academic subjects and essential skills for grades 1-6 with personalized learning support.",
       "tags": ["Math", "Reading", "Science", "Art"],
-      "section": "local-edu"
+      "section": "local-edu",
+      "sampleCourses": [
+        {
+          "title": "Reading Comprehension",
+          "duration": "10 weeks",
+          "level": "Grades 1-5",
+          "description": "Fluency, vocabulary, comprehension strategies"
+        },
+        {
+          "title": "Math Foundations",
+          "duration": "10 weeks",
+          "level": "Grades 1-5",
+          "description": "Arithmetic, problem-solving, math fluency"
+        },
+        {
+          "title": "Science Exploration",
+          "duration": "8 weeks",
+          "level": "Grades 1-5",
+          "description": "Hands-on experiments and discovery"
+        }
+      ]
     },
     {
       "id": "secondary-education",
@@ -72,7 +232,27 @@
       "icon": "fa-graduation-cap",
       "summary": "Advanced curricula preparing students for college and career pathways through grades 7-12.",
       "tags": ["STEM", "Humanities", "College Prep", "Career Ready"],
-      "section": "local-edu"
+      "section": "local-edu",
+      "sampleCourses": [
+        {
+          "title": "Algebra & Geometry",
+          "duration": "12 weeks",
+          "level": "Grades 6-12",
+          "description": "Core math concepts for college readiness"
+        },
+        {
+          "title": "English Language Arts",
+          "duration": "12 weeks",
+          "level": "Grades 6-12",
+          "description": "Writing, analysis, communication skills"
+        },
+        {
+          "title": "College & Career Prep",
+          "duration": "8 weeks",
+          "level": "Grades 9-12",
+          "description": "SAT/ACT prep, applications, planning"
+        }
+      ]
     },
     {
       "id": "college-programs",
@@ -80,7 +260,27 @@
       "icon": "fa-university",
       "summary": "Higher education programs with degree and certification pathways in partnership with institutions.",
       "tags": ["Bachelor's", "Associate", "Certificates", "Online"],
-      "section": "local-edu"
+      "section": "local-edu",
+      "sampleCourses": [
+        {
+          "title": "Academic Writing",
+          "duration": "8 weeks",
+          "level": "College",
+          "description": "Research papers, citations, academic style"
+        },
+        {
+          "title": "Critical Thinking",
+          "duration": "6 weeks",
+          "level": "College",
+          "description": "Analysis, argumentation, logical reasoning"
+        },
+        {
+          "title": "Career Readiness",
+          "duration": "6 weeks",
+          "level": "College",
+          "description": "Resume, interviews, professional skills"
+        }
+      ]
     }
   ],
   "localCareerPathways": [
@@ -90,7 +290,27 @@
       "icon": "fa-heartbeat",
       "summary": "Training for medical assistants, nursing, and healthcare administration roles in local facilities.",
       "tags": ["Nursing", "Medical Tech", "Admin", "Certified"],
-      "section": "local-career"
+      "section": "local-career",
+      "sampleCourses": [
+        {
+          "title": "CNA Certification Prep",
+          "duration": "8 weeks",
+          "level": "Entry Level",
+          "description": "Prepare for Certified Nursing Assistant exam"
+        },
+        {
+          "title": "Medical Terminology",
+          "duration": "4 weeks",
+          "level": "Entry Level",
+          "description": "Essential healthcare vocabulary"
+        },
+        {
+          "title": "Patient Care Fundamentals",
+          "duration": "6 weeks",
+          "level": "Entry Level",
+          "description": "Hands-on care techniques"
+        }
+      ]
     },
     {
       "id": "skilled-trades",
@@ -98,7 +318,27 @@
       "icon": "fa-tools",
       "summary": "Hands-on training in electrical, plumbing, HVAC, and construction trades with apprenticeships.",
       "tags": ["Electrical", "Plumbing", "HVAC", "Apprenticeship"],
-      "section": "local-career"
+      "section": "local-career",
+      "sampleCourses": [
+        {
+          "title": "Electrical Basics",
+          "duration": "6 weeks",
+          "level": "Entry Level",
+          "description": "Circuits, wiring, safety fundamentals"
+        },
+        {
+          "title": "Plumbing Fundamentals",
+          "duration": "6 weeks",
+          "level": "Entry Level",
+          "description": "Pipe systems, fixtures, repairs"
+        },
+        {
+          "title": "OSHA Safety Certification",
+          "duration": "2 weeks",
+          "level": "Entry Level",
+          "description": "Workplace safety requirements"
+        }
+      ]
     },
     {
       "id": "hospitality",
@@ -106,7 +346,27 @@
       "icon": "fa-concierge-bell",
       "summary": "Customer service, culinary arts, and hotel management programs for the tourism industry.",
       "tags": ["Culinary", "Hotel Mgmt", "Customer Service", "Tourism"],
-      "section": "local-career"
+      "section": "local-career",
+      "sampleCourses": [
+        {
+          "title": "Culinary Arts Basics",
+          "duration": "8 weeks",
+          "level": "Entry Level",
+          "description": "Cooking techniques, food safety"
+        },
+        {
+          "title": "Customer Service Excellence",
+          "duration": "4 weeks",
+          "level": "Entry Level",
+          "description": "Communication, problem resolution"
+        },
+        {
+          "title": "Hotel Operations",
+          "duration": "6 weeks",
+          "level": "Entry Level",
+          "description": "Front desk, housekeeping, management"
+        }
+      ]
     },
     {
       "id": "public-service",
@@ -114,7 +374,27 @@
       "icon": "fa-hands-helping",
       "summary": "Career preparation for public safety, social work, and government administration positions.",
       "tags": ["Fire/EMS", "Social Work", "Admin", "Community"],
-      "section": "local-career"
+      "section": "local-career",
+      "sampleCourses": [
+        {
+          "title": "Emergency Response Training",
+          "duration": "6 weeks",
+          "level": "Entry Level",
+          "description": "First aid, CPR, emergency protocols"
+        },
+        {
+          "title": "Community Services",
+          "duration": "4 weeks",
+          "level": "Entry Level",
+          "description": "Social work basics, case management"
+        },
+        {
+          "title": "Public Administration",
+          "duration": "6 weeks",
+          "level": "Entry Level",
+          "description": "Government operations, civic engagement"
+        }
+      ]
     }
   ]
 }
