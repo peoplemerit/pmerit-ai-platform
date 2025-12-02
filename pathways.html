@@ -829,12 +829,15 @@
 
         // Render Global Remote Tracks
         renderCards(data.globalRemoteTracks, 'global-cards');
-        
+
         // Render Local Education Tracks
         renderCards(data.localEducationTracks, 'education-cards');
-        
+
         // Render Local Career Pathways
         renderCards(data.localCareerPathways, 'career-cards');
+
+        // Initialize accordions ONCE after all cards are rendered
+        initAccordions();
       } catch (error) {
         console.error('Error loading career tracks:', error);
         
@@ -955,9 +958,6 @@
         wrapper.appendChild(accordion);
         container.appendChild(wrapper);
       });
-
-      // Initialize accordion toggle functionality
-      initAccordions();
     }
 
     // Accordion toggle functionality
