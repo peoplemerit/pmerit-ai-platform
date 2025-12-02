@@ -701,46 +701,46 @@ function initializeCollapsible() {
   }
 }
 
-// ========== CAREER TRACK & EXPLORE PATHS ==========
+// ========== LEARNING PATHWAYS ==========
 function initializeCareerTrack() {
   try {
-    // Get all Career Track elements (both mobile and desktop)
+    // Get all Learning Pathways elements (both mobile and desktop)
     const careerTrackElements = document.querySelectorAll('.menu-item, .action');
-    
+
     careerTrackElements.forEach(element => {
       const text = element.textContent?.trim();
-      
-      // Check if this is a Career Track element
-      if (text && text.includes('Career Track')) {
+
+      // Check if this is a Learning Pathways element
+      if (text && (text.includes('Learning Pathways') || text.includes('Career Track'))) {
         element.style.cursor = 'pointer';
-        
+
         element.addEventListener('click', (e) => {
           e.preventDefault();
-          logger.debug('🎯 Career Track clicked - Navigating to career.html');
-          
-          // Navigate to career page
-          window.location.href = '/career.html';
-          
+          logger.debug('🎯 Learning Pathways clicked - Navigating to pathways.html');
+
+          // Navigate to pathways page
+          window.location.href = '/pathways.html';
+
           // Show confirmation toast
-          showToast('Opening Career Paths...', 'info');
+          showToast('Opening Learning Pathways...', 'info');
         });
       }
     });
-    
+
     // Also handle the specific button ID from partials/header.html
     const careerTrackBtn = document.getElementById('career-track-btn');
     if (careerTrackBtn) {
       careerTrackBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        logger.debug('🎯 Career Track button clicked - Navigating to career.html');
-        window.location.href = '/career.html';
-        showToast('Opening Career Paths...', 'info');
+        logger.debug('🎯 Learning Pathways button clicked - Navigating to pathways.html');
+        window.location.href = '/pathways.html';
+        showToast('Opening Learning Pathways...', 'info');
       });
     }
-    
-    logger.debug('✅ Career Track navigation initialized');
+
+    logger.debug('✅ Learning Pathways navigation initialized');
   } catch (error) {
-    console.error('❌ Error initializing Career Track:', error);
+    console.error('❌ Error initializing Learning Pathways:', error);
     // Don't show toast for this - fail silently as it's not critical
   }
 }
