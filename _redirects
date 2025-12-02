@@ -28,6 +28,15 @@
 /assessment-results.html /assessment-results.html 200!
 
 # ==============================================================================
+# CAREER TO PATHWAYS REDIRECT (SEO)
+# ==============================================================================
+# The /career page has been renamed to /pathways for accuracy
+# These 301 permanent redirects preserve SEO and handle old bookmarks
+
+/career /pathways 301
+/career.html /pathways.html 301
+
+# ==============================================================================
 # CLEAN URL SUPPORT (Optional - for future enhancement)
 # ==============================================================================
 # If we want to support /assessment-results without .html extension in the future
