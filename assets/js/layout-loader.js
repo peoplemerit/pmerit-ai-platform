@@ -479,11 +479,11 @@ if (typeof window.logger === 'undefined') {
      * @private
      */
     initMenuItems() {
-      // Career Track button
+      // Learning Pathways button
       const careerTrackBtn = document.getElementById('career-track-btn');
       if (careerTrackBtn) {
         careerTrackBtn.addEventListener('click', () => {
-          window.location.href = '/career.html';
+          window.location.href = '/pathways.html';
         });
       }
 
