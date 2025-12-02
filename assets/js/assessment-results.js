@@ -894,12 +894,12 @@
   // Export career action functions to window for onclick handlers
   window.viewCareerDetails = function (onetCode) {
     logger.debug('View career details:', onetCode);
-    window.location.href = `/career.html?id=${onetCode}`;
+    window.location.href = `/pathways.html?id=${onetCode}`;
   };
 
   window.explorePathway = function (onetCode) {
     logger.debug('Explore pathway:', onetCode);
-    window.location.href = `/career.html?id=${onetCode}#pathway`;
+    window.location.href = `/pathways.html?id=${onetCode}#pathway`;
   };
 
 })();
