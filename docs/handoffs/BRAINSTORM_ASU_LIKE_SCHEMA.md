@@ -1412,6 +1412,1167 @@ pathways table (14 seeded)
 
 ---
 
-**Session Status:** Comprehensive brainstorming complete for all three track types.
+---
+
+# PART 6: PLATFORM FEASIBILITY STRATEGIES
+
+Based on research and brainstorming (see `docs/project/Research-and-Brainstorm.md`), the following strategies ensure PMERIT achieves its mission at the lowest possible cost while maintaining quality.
+
+## 6.1 Technical Architecture: Serverless-First, Edge Computing
+
+### Core Infrastructure (Near-Zero Fixed Costs)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    PMERIT TECHNICAL STACK                            │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  HOSTING & DELIVERY                                                 │
+│  ├── Cloudflare Pages (static content, frontend)                    │
+│  ├── Cloudflare Workers (backend logic, API routing)                │
+│  ├── Cloudflare R2 (asset storage, RAG data)                        │
+│  └── Cloudflare CDN (global content delivery)                       │
+│                                                                     │
+│  DATABASE                                                           │
+│  └── Neon DB (serverless Postgres + pgvector)                       │
+│      ├── Auto-pause when idle (zero cost during inactivity)         │
+│      └── pgvector for RAG embeddings                                │
+│                                                                     │
+│  AI EXECUTION (Edge)                                                │
+│  └── Cloudflare Workers AI                                          │
+│      ├── Embedding models (free/low-cost)                           │
+│      ├── Small LLMs for basic queries                               │
+│      └── Falls back to external APIs for complex tasks              │
+│                                                                     │
+│  EXTERNAL AI APIs (Premium)                                         │
+│  ├── OpenAI GPT-4 / Claude (complex tutoring)                       │
+│  ├── ElevenLabs / Azure TTS (realistic voice)                       │
+│  └── Anthropic Claude Opus (advanced reasoning)                     │
+│                                                                     │
+│  GPU INFRASTRUCTURE (On-Demand)                                     │
+│  ├── RunPod, DigitalOcean, Lambda Labs                              │
+│  └── Just-In-Time (JIT) instantiation                               │
+│      └── Spin up ONLY when user activates Virtual Human             │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Cost Model: Variable, Not Fixed
+
+| Service Category | Cost Model | Pilot (100 Users) | Growth (1,000+ Users) |
+|-----------------|------------|-------------------|----------------------|
+| Hosting & Delivery | Cloudflare Free Tier | $0 | $5 - $50/mo |
+| Database | Neon Free Tier | $0 | $20 - $50/mo |
+| Core AI (Tutor/Grading) | OpenAI/Azure API | $15 - $75/mo | $500 - $3,000+/mo |
+| Premium AI (Virtual Human) | JIT GPU | $0 - $50/mo | $200 - $1,500+/mo |
+| **Total** | Variable | **$15 - $175/mo** | **$725 - $4,600+/mo** |
+
+---
+
+## 6.2 Cost Optimization Strategies
+
+### API Response Caching (CRITICAL)
+
+The single most important cost reduction strategy:
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    CACHING STRATEGY                                   │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  LAYER 1: RAG Retrieval Caching                                     │
+│  ├── Cache vector search results in Cloudflare KV                   │
+│  ├── Common questions bypass database entirely                      │
+│  └── TTL: 24-48 hours for educational content                       │
+│                                                                     │
+│  LAYER 2: LLM Response Caching                                      │
+│  ├── Hash [question + context] as cache key                         │
+│  ├── Store AI-generated answers                                     │
+│  ├── "What is photosynthesis?" → cached globally                    │
+│  └── Reduces API costs by 60-80% for common queries                 │
+│                                                                     │
+│  LAYER 3: TTS Audio Caching                                         │
+│  ├── Cache generated audio files in R2                              │
+│  ├── Same explanation = same audio (no regeneration)                │
+│  └── Dramatic cost savings for repetitive content                   │
+│                                                                     │
+│  LAYER 4: Static Content CDN                                        │
+│  └── All course materials served from Cloudflare edge               │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Schema Addition: Cache Tracking
+
+```sql
+-- Track cache usage for analytics and optimization
+CREATE TABLE cache_analytics (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    cache_type VARCHAR(50) NOT NULL,    -- "rag_retrieval", "llm_response", "tts_audio"
+    cache_key_hash VARCHAR(64) NOT NULL,
+    hit_count INT DEFAULT 0,
+    miss_count INT DEFAULT 0,
+    estimated_savings_usd DECIMAL(10,4) DEFAULT 0.00,
+    last_hit_at TIMESTAMPTZ,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+---
+
+## 6.3 PWA & Offline Access (Critical for Low-Bandwidth Areas)
+
+### Progressive Web App Strategy
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    OFFLINE-FIRST ARCHITECTURE                        │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  SERVICE WORKER CACHING                                             │
+│  ├── Cache entire application shell (HTML, CSS, JS)                 │
+│  ├── Cache current course content locally                           │
+│  ├── Cache AI tutor responses for offline review                    │
+│  └── Background sync when connection restored                       │
+│                                                                     │
+│  LOCAL DATA STORAGE (IndexedDB)                                     │
+│  ├── User progress and quiz results                                 │
+│  ├── Notes and bookmarks                                            │
+│  ├── Downloaded lesson content                                      │
+│  └── Sync to Neon DB when online                                    │
+│                                                                     │
+│  AVAILABILITY BENEFIT                                               │
+│  └── Users in intermittent connectivity areas can:                  │
+│      ├── Access previously viewed lessons                           │
+│      ├── Complete quizzes offline                                   │
+│      ├── Review AI explanations                                     │
+│      └── Progress syncs automatically when online                   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 6.4 Virtual Human Tiered Approach
+
+### From Cartoonish to Unreal — Cost vs. Experience
+
+| Tier | Visual Style | Rendering Location | Data Usage | Cost to Operate |
+|------|-------------|-------------------|------------|-----------------|
+| **Tier 1** | Cartoonish 2D / Static | Client-side (browser) | Very Low | Near $0 |
+| **Tier 2** | Semi-Realistic 3D (WebGL) | Client-side (browser) | Low-Medium | Near $0 |
+| **Tier 3** | Unreal MetaHuman | Server-side GPU streaming | High | $3+/hour/user |
+
+### Automatic Tier Selection Logic
+
+```javascript
+// Pseudocode for avatar tier selection
+function selectAvatarTier(user, connectionSpeed, userTier) {
+    // Check user's subscription tier first
+    if (userTier === 'free') {
+        return 'tier_1_cartoon';  // Always cartoon for free users
+    }
+
+    // For premium users, check connection quality
+    if (connectionSpeed < 1) {  // Mbps
+        return 'tier_1_cartoon';  // Fallback to cartoon
+    } else if (connectionSpeed < 5) {
+        return 'tier_2_webgl';    // Semi-realistic
+    } else if (connectionSpeed >= 5 && userTier === 'premium') {
+        return 'tier_3_unreal';   // Full Unreal experience
+    }
+
+    return 'tier_1_cartoon';  // Default fallback
+}
+```
+
+### Schema Addition: Avatar Preferences
+
+```sql
+-- User avatar preferences and capability detection
+CREATE TABLE user_avatar_preferences (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(user_id) UNIQUE,
+    preferred_avatar_tier VARCHAR(50) DEFAULT 'auto',  -- "auto", "tier_1", "tier_2", "tier_3"
+    last_detected_bandwidth_mbps DECIMAL(10,2),
+    device_webgl_capable BOOLEAN DEFAULT TRUE,
+    device_webgpu_capable BOOLEAN DEFAULT FALSE,
+    auto_fallback_enabled BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+---
+
+## 6.5 Fallback Mechanisms (Resilience)
+
+### System-Wide Fallback Strategy
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    FALLBACK HIERARCHY                                │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  VIRTUAL HUMAN FALLBACK                                             │
+│  ├── Primary: Unreal MetaHuman (GPU streaming)                      │
+│  ├── Fallback 1: WebGL 3D Avatar (client-side)                      │
+│  ├── Fallback 2: Cartoon 2D Avatar (client-side)                    │
+│  └── Fallback 3: Static image + Text chat                           │
+│                                                                     │
+│  AI SERVICE FALLBACK                                                │
+│  ├── Primary: Live API call (OpenAI/Claude)                         │
+│  ├── Fallback 1: Cached response (Cloudflare KV)                    │
+│  ├── Fallback 2: Edge AI model (Workers AI)                         │
+│  └── Fallback 3: Pre-computed FAQ responses                         │
+│                                                                     │
+│  TTS FALLBACK                                                       │
+│  ├── Primary: ElevenLabs (realistic)                                │
+│  ├── Fallback 1: Azure TTS (good quality)                           │
+│  ├── Fallback 2: Browser Web Speech API (basic)                     │
+│  └── Fallback 3: Text-only (no audio)                               │
+│                                                                     │
+│  DATABASE FALLBACK                                                  │
+│  ├── Primary: Neon DB (serverless Postgres)                         │
+│  ├── Fallback 1: Read replica (if configured)                       │
+│  └── Fallback 2: Local IndexedDB (offline mode)                     │
+│                                                                     │
+│  CONNECTIVITY FALLBACK                                              │
+│  ├── Primary: Online real-time experience                           │
+│  └── Fallback: PWA offline mode (Service Worker)                    │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 6.6 Freemium Pricing Model
+
+### Tier Structure
+
+| Tier | Price | Target Audience | Features |
+|------|-------|-----------------|----------|
+| **Free & Accessible** | $0/mo | Low-income, low-bandwidth areas | Full courses, GPT-3.5 tutor, cartoon avatar, offline PWA |
+| **Premium Experience** | ~$9.99/mo | Users with better connectivity | GPT-4 tutor, realistic TTS, Unreal Virtual Human, priority support |
+
+### Revenue Model Philosophy
+
+```
+Mission Alignment:
+├── FREE tier is fully functional for education
+│   └── Covers core mission: free alternative education globally
+│
+├── PREMIUM tier provides enhanced experience
+│   └── Funds the infrastructure and API costs
+│
+└── Alternative Funding Sources:
+    ├── Educational grants (Google, Microsoft, AWS for Nonprofits)
+    ├── Government contracts (USAID, Dept. of Education)
+    ├── Corporate sponsorships (CSR initiatives)
+    └── Voluntary donations from users who can afford
+```
+
+---
+
+## 6.7 Legal Structure Recommendations
+
+### Option A: L3C (Low-Profit Limited Liability Company)
+
+| Aspect | Details |
+|--------|---------|
+| **Structure** | For-profit LLC with social mission priority |
+| **Ownership** | Sole owner control maintained |
+| **Funding** | Can accept PRIs (Program-Related Investments) from foundations |
+| **Premium Revenue** | Allowed (covers costs, reinvested in mission) |
+
+### Option B: For-Profit LLC + Fiscal Sponsor
+
+| Aspect | Details |
+|--------|---------|
+| **Structure** | Standard LLC + partnership with 501(c)(3) |
+| **Ownership** | Sole owner of LLC |
+| **Funding** | Grants flow through fiscal sponsor |
+| **Premium Revenue** | Goes to LLC as business income |
+| **Benefit** | Access nonprofit grants without nonprofit paperwork |
+
+**Recommendation:** Option B (Fiscal Sponsor) is simplest for maintaining sole ownership while accessing educational grants.
+
+---
+
+## 6.8 Open-Source AI Models (Cost Reduction)
+
+### Strategy: Fine-Tune Small Models for Educational Content
+
+```
+Instead of paying $0.01/token for GPT-4:
+├── Fine-tune Llama 3 8B on PMERIT course content
+├── Host on Cloudflare Workers AI (low cost)
+├── Use for 80% of basic tutoring queries
+└── Reserve GPT-4 for complex reasoning (20%)
+
+Result: 70-80% reduction in AI API costs
+```
+
+### Schema Addition: AI Model Usage Tracking
+
+```sql
+-- Track which AI models are used for cost analysis
+CREATE TABLE ai_model_usage (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    session_id UUID REFERENCES classroom_sessions(session_id),
+    model_name VARCHAR(100) NOT NULL,  -- "gpt-4", "llama-3-8b", "workers-ai"
+    tokens_input INT,
+    tokens_output INT,
+    cost_usd DECIMAL(10,6),
+    response_time_ms INT,
+    was_cache_hit BOOLEAN DEFAULT FALSE,
+    fallback_used BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+---
+
+# PART 7: AUTHENTICATION & SECURITY
+
+## 7.1 User Registration Flow
+
+### Sign Up → Verification → Sign In
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    USER REGISTRATION FLOW                            │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1. GUEST CLICKS "SIGN UP"                                          │
+│     └── Modal/Page opens with registration form                     │
+│                                                                     │
+│  2. USER ENTERS INFORMATION                                         │
+│     ├── Email address (UNIQUE - one email per user only)            │
+│     ├── Full name                                                   │
+│     ├── Password (with strength requirements)                       │
+│     └── Optional: Phone number (for 2FA)                            │
+│                                                                     │
+│  3. SYSTEM VALIDATES                                                │
+│     ├── Check if email already exists → ERROR if duplicate          │
+│     ├── Validate email format                                       │
+│     ├── Check password strength                                     │
+│     └── Rate limit: Max 5 sign-up attempts per IP per hour          │
+│                                                                     │
+│  4. SYSTEM SENDS VERIFICATION EMAIL                                 │
+│     ├── Generate unique verification token (UUID + timestamp)       │
+│     ├── Token expires in 24 hours                                   │
+│     ├── Email contains verification link:                           │
+│     │   "https://pmerit.com/verify?token=abc123..."                  │
+│     └── User sees: "Check your email to verify your account"        │
+│                                                                     │
+│  5. USER CLICKS EMAIL LINK                                          │
+│     ├── System validates token (not expired, not used)              │
+│     ├── Marks user as verified (email_verified = true)              │
+│     └── REDIRECTS to Sign In page (NOT auto-login)                  │
+│                                                                     │
+│  6. USER SIGNS IN                                                   │
+│     ├── Enter email + password                                      │
+│     ├── System validates credentials                                │
+│     ├── Creates session (JWT or session cookie)                     │
+│     └── REDIRECTS to Dashboard                                      │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Why Redirect to Sign In (Not Auto-Login)?
+
+- **Security:** Prevents session hijacking if verification email is intercepted
+- **User Awareness:** User consciously logs in, understands the process
+- **Consistency:** Same flow for all users, same for password reset
+
+---
+
+## 7.2 Session Management & Timeout
+
+### Inactivity Timeout Flow
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    SESSION TIMEOUT FLOW                              │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1. USER SIGNS IN SUCCESSFULLY                                      │
+│     └── Session timer starts: 10 minutes of inactivity allowed      │
+│                                                                     │
+│  2. ACTIVITY TRACKING (Resets Timer)                                │
+│     ├── Mouse movement                                              │
+│     ├── Keyboard input                                              │
+│     ├── Page navigation                                             │
+│     ├── Button clicks                                               │
+│     └── API requests (except heartbeat)                             │
+│                                                                     │
+│  3. AT 10 MINUTES OF INACTIVITY                                     │
+│     └── WARNING MODAL APPEARS:                                      │
+│         ┌─────────────────────────────────────────────┐              │
+│         │  ⚠️ Session Timeout Warning                 │              │
+│         │                                             │              │
+│         │  You will be logged out in 5 minutes due    │              │
+│         │  to inactivity.                             │              │
+│         │                                             │              │
+│         │  Time remaining: 4:59                       │              │
+│         │                                             │              │
+│         │  [Stay Logged In]  [Log Out Now]            │              │
+│         └─────────────────────────────────────────────┘              │
+│                                                                     │
+│  4. USER CLICKS "Stay Logged In"                                    │
+│     └── Timer resets, session continues                             │
+│                                                                     │
+│  5. USER DOES NOTHING FOR 5 MORE MINUTES                            │
+│     └── AUTO-LOGOUT:                                                │
+│         ├── Session invalidated on server                           │
+│         ├── Local storage cleared                                   │
+│         ├── User redirected to Sign In page                         │
+│         └── Message: "You have been logged out due to inactivity"   │
+│                                                                     │
+│  TOTAL ALLOWED INACTIVITY: 15 minutes (10 min + 5 min warning)      │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 7.3 Re-Authentication (Sensitive Actions)
+
+### Code Verification via Email/Phone
+
+For sensitive actions (password change, payment, admin escalation), require re-authentication:
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    RE-AUTHENTICATION FLOW                            │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  TRIGGERS FOR RE-AUTHENTICATION:                                    │
+│  ├── Changing email address                                         │
+│  ├── Changing password                                              │
+│  ├── Adding payment method                                          │
+│  ├── Deleting account                                               │
+│  ├── Downloading personal data                                      │
+│  └── Admin escalation actions                                       │
+│                                                                     │
+│  1. USER INITIATES SENSITIVE ACTION                                 │
+│     └── System prompts: "Verify your identity to continue"          │
+│                                                                     │
+│  2. VERIFICATION OPTIONS                                            │
+│     ├── Option A: Enter current password                            │
+│     └── Option B: Receive verification code                         │
+│         ├── Send code to email (6-digit, expires in 10 min)         │
+│         └── Send code to phone via SMS (if phone verified)          │
+│                                                                     │
+│  3. USER ENTERS CODE                                                │
+│     ├── System validates code                                       │
+│     ├── Code can only be used ONCE                                  │
+│     ├── Max 3 attempts, then lockout for 15 minutes                 │
+│     └── On success: action proceeds                                 │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 7.4 One Email Per User Policy
+
+### Enforcement Strategy
+
+```sql
+-- Email uniqueness is enforced at database level
+-- users.email has UNIQUE constraint
+
+-- Additional validation layer
+CREATE TABLE email_verification_tokens (
+    token_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    email VARCHAR(255) NOT NULL,
+    token VARCHAR(255) NOT NULL UNIQUE,
+    purpose VARCHAR(50) NOT NULL,  -- "signup", "password_reset", "email_change"
+    expires_at TIMESTAMPTZ NOT NULL,
+    used_at TIMESTAMPTZ,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Prevent email reuse across accounts
+CREATE TABLE email_history (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    email VARCHAR(255) NOT NULL,
+    user_id UUID REFERENCES users(user_id),
+    action VARCHAR(50) NOT NULL,  -- "registered", "changed_from", "changed_to"
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Check email before allowing registration
+-- Query: SELECT * FROM email_history WHERE email = ? AND action = 'registered'
+```
+
+### Business Rules
+
+| Rule | Implementation |
+|------|----------------|
+| One email per user | `UNIQUE` constraint on `users.email` |
+| No email reuse | Track in `email_history` table |
+| Case-insensitive | Store and compare as lowercase |
+| Disposable email blocking | Check against known disposable domains |
+| Email format validation | RFC 5322 compliant validation |
+
+---
+
+## 7.5 New Hire Verification (Same System)
+
+### Employee/Admin Onboarding Flow
+
+The same verification system applies to new hires (Tier 2 admins):
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    NEW HIRE ONBOARDING FLOW                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1. TIER 1 ADMIN CREATES NEW HIRE                                   │
+│     ├── Enter hire's email address                                  │
+│     ├── Select role: "Tier 2 Admin" (Content Manager, Support, etc.)│
+│     ├── Set initial permissions                                     │
+│     └── System validates email uniqueness                           │
+│                                                                     │
+│  2. SYSTEM GENERATES INVITE                                         │
+│     ├── Create user record with status = "invited"                  │
+│     ├── Generate secure invite token (expires in 72 hours)          │
+│     └── Send invitation email with setup link                       │
+│                                                                     │
+│  3. NEW HIRE RECEIVES EMAIL                                         │
+│     └── Email contains:                                             │
+│         "You've been invited to join PMERIT as [Role].              │
+│          Click here to set up your account: [Setup Link]"           │
+│                                                                     │
+│  4. NEW HIRE CLICKS LINK                                            │
+│     ├── Validates invite token                                      │
+│     ├── Shows "Complete Your Account" form:                         │
+│     │   ├── Full name (pre-filled if Tier 1 provided)               │
+│     │   ├── Set password                                            │
+│     │   └── Optional: Add phone for 2FA                             │
+│     └── Marks user as verified                                      │
+│                                                                     │
+│  5. NEW HIRE REDIRECTED TO SIGN IN                                  │
+│     └── Same as regular users: redirect to Sign In page             │
+│                                                                     │
+│  6. NEW HIRE SIGNS IN                                               │
+│     └── Lands on Admin Dashboard (based on role permissions)        │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 7.6 Authentication Schema
+
+```sql
+-- Core user authentication fields (extend existing users table)
+ALTER TABLE users ADD COLUMN email_verified BOOLEAN DEFAULT FALSE;
+ALTER TABLE users ADD COLUMN email_verified_at TIMESTAMPTZ;
+ALTER TABLE users ADD COLUMN phone_number VARCHAR(20);
+ALTER TABLE users ADD COLUMN phone_verified BOOLEAN DEFAULT FALSE;
+ALTER TABLE users ADD COLUMN phone_verified_at TIMESTAMPTZ;
+ALTER TABLE users ADD COLUMN last_login_at TIMESTAMPTZ;
+ALTER TABLE users ADD COLUMN login_count INT DEFAULT 0;
+ALTER TABLE users ADD COLUMN failed_login_attempts INT DEFAULT 0;
+ALTER TABLE users ADD COLUMN locked_until TIMESTAMPTZ;
+ALTER TABLE users ADD COLUMN invited_by UUID REFERENCES users(user_id);
+ALTER TABLE users ADD COLUMN invitation_status VARCHAR(50); -- "invited", "accepted", "expired"
+
+-- Sessions table for tracking active sessions
+CREATE TABLE user_sessions (
+    session_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(user_id) NOT NULL,
+    session_token VARCHAR(255) NOT NULL UNIQUE,
+    ip_address INET,
+    user_agent TEXT,
+    device_fingerprint VARCHAR(255),
+    last_activity_at TIMESTAMPTZ DEFAULT NOW(),
+    expires_at TIMESTAMPTZ NOT NULL,
+    is_active BOOLEAN DEFAULT TRUE,
+    logged_out_at TIMESTAMPTZ,
+    logout_reason VARCHAR(50),  -- "user_initiated", "timeout", "forced", "password_change"
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Verification codes for re-authentication
+CREATE TABLE verification_codes (
+    code_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(user_id) NOT NULL,
+    code VARCHAR(10) NOT NULL,  -- 6-digit code
+    delivery_method VARCHAR(20) NOT NULL,  -- "email", "sms"
+    purpose VARCHAR(50) NOT NULL,  -- "reauth", "2fa", "password_reset"
+    expires_at TIMESTAMPTZ NOT NULL,
+    attempts INT DEFAULT 0,
+    max_attempts INT DEFAULT 3,
+    used_at TIMESTAMPTZ,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Audit log for security events
+CREATE TABLE auth_audit_log (
+    log_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(user_id),
+    event_type VARCHAR(50) NOT NULL,  -- "login", "logout", "password_change", "failed_login"
+    ip_address INET,
+    user_agent TEXT,
+    details JSONB,
+    success BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Index for session lookup
+CREATE INDEX idx_user_sessions_token ON user_sessions(session_token);
+CREATE INDEX idx_user_sessions_user_active ON user_sessions(user_id, is_active);
+CREATE INDEX idx_verification_codes_user ON verification_codes(user_id, purpose, expires_at);
+```
+
+---
+
+## 7.7 Security Best Practices
+
+### Password Requirements
+
+```
+Minimum Requirements:
+├── At least 8 characters
+├── At least one uppercase letter
+├── At least one lowercase letter
+├── At least one number
+├── At least one special character
+└── Not in common password list (top 10,000)
+```
+
+### Rate Limiting
+
+| Action | Limit | Window | Lockout |
+|--------|-------|--------|---------|
+| Login attempts | 5 failures | 15 minutes | 15 min lockout |
+| Signup attempts | 5 per IP | 1 hour | Block IP |
+| Password reset | 3 requests | 1 hour | Wait 1 hour |
+| Verification code | 3 attempts | 10 minutes | 15 min lockout |
+| API requests | 100 req | 1 minute | Throttle |
+
+### Session Security
+
+```javascript
+// Session configuration
+const sessionConfig = {
+    // Inactivity timeout
+    inactivityTimeout: 10 * 60 * 1000,  // 10 minutes
+    warningPeriod: 5 * 60 * 1000,        // 5 minutes warning
+
+    // Absolute timeout (even with activity)
+    absoluteTimeout: 24 * 60 * 60 * 1000, // 24 hours max
+
+    // Cookie settings
+    cookie: {
+        httpOnly: true,      // Prevent XSS access
+        secure: true,        // HTTPS only
+        sameSite: 'strict',  // Prevent CSRF
+        maxAge: 24 * 60 * 60 * 1000
+    }
+};
+```
+
+---
+
+# PART 8: ADMIN INTERFACE ARCHITECTURE
+
+## 8.1 Design Philosophy: Mirrored Architecture with "Support" Prefix
+
+### The Concept
+
+Replicate the learner-facing platform design for the admin interface, but with a consistent naming convention using `support` as the prefix. This creates:
+
+- **Visual consistency** — Admins see familiar UI patterns
+- **Code reuse** — Share components, styles, and logic
+- **Clear separation** — URL paths and element IDs distinguish admin context
+- **Single repo** — One codebase for both platform and admin
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    MIRRORED ARCHITECTURE CONCEPT                     │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  LEARNER PLATFORM                    ADMIN INTERFACE                │
+│  ────────────────                    ────────────────               │
+│                                                                     │
+│  pmerit.com/                    →    pmerit.com/support/            │
+│  pmerit.com/dashboard           →    pmerit.com/support/dashboard   │
+│  pmerit.com/classroom           →    pmerit.com/support/classroom   │
+│  pmerit.com/catalog             →    pmerit.com/support/catalog     │
+│  pmerit.com/profile             →    pmerit.com/support/profile     │
+│                                                                     │
+│  ELEMENT NAMING                                                     │
+│  ──────────────                                                     │
+│                                                                     │
+│  <div id="dashboard">           →    <div id="support-dashboard">   │
+│  <div id="course-list">         →    <div id="support-course-list"> │
+│  <button id="enroll-btn">       →    <button id="support-enroll-btn">│
+│  class="nav-menu"               →    class="support-nav-menu"       │
+│                                                                     │
+│  CSS NAMESPACING                                                    │
+│  ──────────────                                                     │
+│                                                                     │
+│  .dashboard { }                 →    .support-dashboard { }         │
+│  .course-card { }               →    .support-course-card { }       │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 8.2 Same Repo Strategy (Recommended)
+
+### Why Same Repo?
+
+| Benefit | Explanation |
+|---------|-------------|
+| **Shared components** | Buttons, forms, modals, cards used on both sides |
+| **Shared API client** | Same authentication, same database access patterns |
+| **Shared types/models** | TypeScript interfaces, validation schemas |
+| **Single deployment** | One build, one deploy, one version |
+| **Easier maintenance** | Bug fixes apply to both interfaces automatically |
+| **Consistent styling** | Design system applied uniformly |
+
+### Folder Structure
+
+```
+pmerit-ai-platform/
+├── src/
+│   ├── components/           # Shared UI components
+│   │   ├── Button.tsx
+│   │   ├── Modal.tsx
+│   │   ├── Card.tsx
+│   │   └── ...
+│   │
+│   ├── platform/             # Learner-facing pages
+│   │   ├── dashboard/
+│   │   ├── classroom/
+│   │   ├── catalog/
+│   │   ├── profile/
+│   │   └── layout.tsx
+│   │
+│   ├── support/              # Admin-facing pages
+│   │   ├── dashboard/        # support-dashboard
+│   │   ├── classroom/        # support-classroom (oversight)
+│   │   ├── catalog/          # support-catalog (management)
+│   │   ├── users/            # support-users (user management)
+│   │   ├── content/          # support-content (curriculum builder)
+│   │   ├── reports/          # support-reports (analytics)
+│   │   └── layout.tsx        # support-specific layout
+│   │
+│   ├── shared/               # Shared utilities
+│   │   ├── api/
+│   │   ├── hooks/
+│   │   ├── utils/
+│   │   └── types/
+│   │
+│   └── styles/
+│       ├── base.css          # Shared base styles
+│       ├── platform.css      # Platform-specific styles
+│       └── support.css       # Admin-specific styles
+│
+├── api/                      # Cloudflare Workers / API
+│   ├── platform/             # Learner API routes
+│   └── support/              # Admin API routes (with permission checks)
+│
+└── public/
+    ├── platform/             # Public assets for learners
+    └── support/              # Admin-specific assets
+```
+
+---
+
+## 8.3 Admin Tier Structure
+
+### Tier 1: High-Level Management (Platform Owner)
+
+**Access Level:** Full system access, strategic decisions
+
+**Responsibilities:**
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    TIER 1 ADMIN CAPABILITIES                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  STAFF MANAGEMENT                                                   │
+│  ├── Hire new Tier 2 admins (send invitations)                      │
+│  ├── Vet applications and approve access                            │
+│  ├── Assign roles and permissions                                   │
+│  ├── Revoke access / terminate accounts                             │
+│  └── View all admin activity logs                                   │
+│                                                                     │
+│  INFRASTRUCTURE & SECURITY                                          │
+│  ├── Configure authentication settings                              │
+│  ├── Manage API keys and integrations                               │
+│  ├── Review security audit logs                                     │
+│  ├── Configure rate limits and access controls                      │
+│  └── Manage environment variables / secrets                         │
+│                                                                     │
+│  FINANCIAL OVERSIGHT                                                │
+│  ├── View platform revenue and costs                                │
+│  ├── Configure pricing tiers                                        │
+│  ├── Manage payment integrations                                    │
+│  └── Approve large expenses or changes                              │
+│                                                                     │
+│  STRATEGIC DECISIONS                                                │
+│  ├── Approve new pathways / track types                             │
+│  ├── Set platform-wide policies                                     │
+│  ├── Review and approve content before publishing                   │
+│  └── Configure AI tutor settings globally                           │
+│                                                                     │
+│  ESCALATION HANDLING                                                │
+│  └── Final authority on escalated issues                            │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### Tier 2: Operations Support (Content & User Management)
+
+**Access Level:** Operational access within assigned scope
+
+**Sub-Roles within Tier 2:**
+
+| Sub-Role | Responsibilities | Permissions |
+|----------|------------------|-------------|
+| **Content Manager** | Create courses, modules, lessons; manage curriculum | Create/Edit content, Cannot delete |
+| **Support Agent** | Handle user inquiries, resolve issues | View user data, Respond to tickets |
+| **Quality Reviewer** | Review content for accuracy and quality | Review, Approve/Reject, Comment |
+| **Data Analyst** | Generate reports, analyze platform metrics | Read-only access to analytics |
+| **Community Manager** | Moderate discussions, manage cohorts | Moderate content, Manage cohorts |
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    TIER 2 ADMIN CAPABILITIES                         │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  CONTENT MANAGEMENT (Content Manager role)                          │
+│  ├── Create and edit courses, modules, lessons                      │
+│  ├── Upload materials and attachments                               │
+│  ├── Manage assessments and quizzes                                 │
+│  ├── Configure AI tutor prompts per course                          │
+│  └── Submit content for Tier 1 review                               │
+│                                                                     │
+│  USER SUPPORT (Support Agent role)                                  │
+│  ├── View student profiles and progress                             │
+│  ├── Respond to support tickets                                     │
+│  ├── Reset passwords (trigger email)                                │
+│  ├── Unlock accounts (after lockouts)                               │
+│  └── Escalate issues to Tier 1                                      │
+│                                                                     │
+│  CLASSROOM OVERSIGHT (All Tier 2)                                   │
+│  ├── View classroom sessions (read-only)                            │
+│  ├── Monitor AI tutor interactions                                  │
+│  └── Flag issues for review                                         │
+│                                                                     │
+│  REPORTING (Data Analyst role)                                      │
+│  ├── Generate enrollment reports                                    │
+│  ├── View completion rates                                          │
+│  ├── Analyze AI tutor performance                                   │
+│  └── Export data (anonymized)                                       │
+│                                                                     │
+│  CANNOT DO:                                                         │
+│  ├── ❌ Delete any data                                             │
+│  ├── ❌ Change system configuration                                 │
+│  ├── ❌ Access financial information                                │
+│  ├── ❌ Invite new admins                                           │
+│  └── ❌ Change user permissions                                     │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 8.4 URL and Navigation Mapping
+
+### Platform to Admin Mapping
+
+| Platform Page | Admin Equivalent | Admin Purpose |
+|--------------|------------------|---------------|
+| `/dashboard` | `/support/dashboard` | Overview of platform metrics |
+| `/catalog` | `/support/catalog` | Manage courses, pathways |
+| `/classroom` | `/support/classroom` | Monitor sessions, review AI |
+| `/profile` | `/support/profile` | Admin's own profile |
+| `/courses/:id` | `/support/courses/:id` | Edit course content |
+| — | `/support/users` | User management |
+| — | `/support/staff` | Tier 2 management (Tier 1 only) |
+| — | `/support/reports` | Analytics dashboard |
+| — | `/support/audit` | Security audit logs |
+| — | `/support/settings` | Platform configuration |
+
+### Navigation Structure
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    ADMIN NAVIGATION (Support)                        │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────┐    │
+│  │  PMERIT Support Portal          [Search]    [👤 Admin Name] │    │
+│  ├─────────────────────────────────────────────────────────────┤    │
+│  │                                                             │    │
+│  │  📊 Dashboard         ← Overview metrics, quick actions     │    │
+│  │                                                             │    │
+│  │  📚 Content                                                 │    │
+│  │  ├── Pathways         ← Manage track types                  │    │
+│  │  ├── Courses          ← Create/edit courses                 │    │
+│  │  ├── Assessments      ← Manage quizzes/exams                │    │
+│  │  └── Materials        ← Upload resources                    │    │
+│  │                                                             │    │
+│  │  👥 Users                                                   │    │
+│  │  ├── Students         ← View/support learners               │    │
+│  │  ├── Parents          ← K-12 guardian accounts              │    │
+│  │  └── Enrollments      ← Manage registrations                │    │
+│  │                                                             │    │
+│  │  🎓 Classrooms                                              │    │
+│  │  ├── Active Sessions  ← Monitor ongoing classes             │    │
+│  │  ├── Session History  ← Review past sessions                │    │
+│  │  └── AI Performance   ← Tutor quality metrics               │    │
+│  │                                                             │    │
+│  │  📈 Reports                                                 │    │
+│  │  ├── Enrollments      ← Sign-up trends                      │    │
+│  │  ├── Completions      ← Graduation rates                    │    │
+│  │  ├── AI Analytics     ← Tutor usage, costs                  │    │
+│  │  └── Financial        ← (Tier 1 only)                       │    │
+│  │                                                             │    │
+│  │  ⚙️ Settings          ← (Tier 1 only)                       │    │
+│  │  ├── Staff Management ← Hire, permissions                   │    │
+│  │  ├── Platform Config  ← System settings                     │    │
+│  │  ├── Security         ← Auth, audit logs                    │    │
+│  │  └── Integrations     ← API keys, webhooks                  │    │
+│  │                                                             │    │
+│  └─────────────────────────────────────────────────────────────┘    │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 8.5 Admin Schema Additions
+
+```sql
+-- Admin roles and permissions
+CREATE TABLE admin_roles (
+    role_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    role_name VARCHAR(100) NOT NULL UNIQUE,  -- "tier_1", "content_manager", "support_agent"
+    role_tier INT NOT NULL,  -- 1 or 2
+    description TEXT,
+    permissions JSONB NOT NULL,  -- {"can_create_content": true, "can_delete": false, ...}
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- User-to-role assignments
+CREATE TABLE user_admin_roles (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(user_id) NOT NULL,
+    role_id UUID REFERENCES admin_roles(role_id) NOT NULL,
+    assigned_by UUID REFERENCES users(user_id),
+    assigned_at TIMESTAMPTZ DEFAULT NOW(),
+    revoked_at TIMESTAMPTZ,
+    revoked_by UUID REFERENCES users(user_id),
+    is_active BOOLEAN DEFAULT TRUE,
+    UNIQUE(user_id, role_id)
+);
+
+-- Admin activity audit log
+CREATE TABLE admin_activity_log (
+    log_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    admin_user_id UUID REFERENCES users(user_id) NOT NULL,
+    action_type VARCHAR(100) NOT NULL,  -- "created_course", "updated_user", "viewed_report"
+    target_type VARCHAR(100),  -- "course", "user", "pathway"
+    target_id UUID,
+    details JSONB,
+    ip_address INET,
+    user_agent TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Staff invitations
+CREATE TABLE staff_invitations (
+    invitation_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    email VARCHAR(255) NOT NULL,
+    intended_role_id UUID REFERENCES admin_roles(role_id),
+    invited_by UUID REFERENCES users(user_id) NOT NULL,
+    token VARCHAR(255) NOT NULL UNIQUE,
+    message TEXT,
+    expires_at TIMESTAMPTZ NOT NULL,
+    accepted_at TIMESTAMPTZ,
+    accepted_user_id UUID REFERENCES users(user_id),
+    status VARCHAR(50) DEFAULT 'pending',  -- "pending", "accepted", "expired", "revoked"
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Seed default roles
+INSERT INTO admin_roles (role_name, role_tier, description, permissions) VALUES
+('tier_1_admin', 1, 'Platform owner with full access', '{"full_access": true}'),
+('content_manager', 2, 'Creates and manages educational content', '{"can_create_content": true, "can_edit_content": true, "can_delete_content": false, "can_publish_content": false}'),
+('support_agent', 2, 'Handles user support and inquiries', '{"can_view_users": true, "can_reset_password": true, "can_unlock_account": true, "can_respond_tickets": true}'),
+('quality_reviewer', 2, 'Reviews content quality before publishing', '{"can_view_content": true, "can_approve_content": true, "can_reject_content": true, "can_comment": true}'),
+('data_analyst', 2, 'Views and generates reports', '{"can_view_reports": true, "can_export_data": true, "read_only": true}');
+
+-- Indexes
+CREATE INDEX idx_admin_activity_admin ON admin_activity_log(admin_user_id, created_at);
+CREATE INDEX idx_admin_activity_target ON admin_activity_log(target_type, target_id);
+CREATE INDEX idx_user_admin_roles_user ON user_admin_roles(user_id, is_active);
+```
+
+---
+
+## 8.6 Recommendations: Same Repo Approach
+
+### Why I Recommend Same Repo
+
+**1. Code Reuse Maximization**
+
+```
+Shared components across platform and admin:
+├── UI Components: 70%+ overlap (buttons, forms, cards, modals)
+├── API Client: 90%+ shared (auth, data fetching, error handling)
+├── Types/Models: 100% shared (TypeScript interfaces)
+├── Validation: 100% shared (form validation, data validation)
+└── Styling: 60%+ shared (design system, colors, typography)
+```
+
+**2. Deployment Simplicity**
+
+```
+Single Deployment:
+├── One Cloudflare Pages deployment
+├── One build process
+├── One CI/CD pipeline
+├── One version number
+└── Atomic updates (platform + admin always in sync)
+```
+
+**3. Security Through Simplicity**
+
+```
+Single Auth System:
+├── Same user table
+├── Same session management
+├── Role-based access control (RBAC)
+├── Admin routes check permissions before rendering
+└── API routes validate admin role before executing
+```
+
+### Implementation Pattern
+
+```javascript
+// Middleware example: Check admin access
+export function requireAdmin(handler) {
+    return async (request, context) => {
+        const user = await getAuthenticatedUser(request);
+
+        if (!user) {
+            return redirect('/sign-in');
+        }
+
+        const adminRole = await getUserAdminRole(user.id);
+
+        if (!adminRole) {
+            return redirect('/dashboard');  // Send to learner dashboard
+        }
+
+        // Attach role to context for permission checks
+        context.adminRole = adminRole;
+        return handler(request, context);
+    };
+}
+
+// Route example: Support dashboard
+// /support/dashboard
+export async function SupportDashboard({ context }) {
+    const { adminRole } = context;
+
+    return (
+        <SupportLayout>
+            <h1>Support Dashboard</h1>
+
+            {/* All Tier 2 can see metrics */}
+            <MetricsCards />
+
+            {/* Only Tier 1 sees financial */}
+            {adminRole.tier === 1 && <FinancialSummary />}
+
+            {/* Only Content Managers see content queue */}
+            {adminRole.permissions.can_create_content && <ContentQueue />}
+
+            {/* Only Support Agents see tickets */}
+            {adminRole.permissions.can_respond_tickets && <SupportTickets />}
+        </SupportLayout>
+    );
+}
+```
+
+---
+
+## 8.7 Alternative: Separate Repo (Not Recommended)
+
+### If Separate Repos Were Used
+
+| Aspect | Drawback |
+|--------|----------|
+| **Code duplication** | Same components must be copied, maintained twice |
+| **Version drift** | Admin and platform can become out of sync |
+| **Deployment complexity** | Two deployments, potential for mismatch |
+| **Auth complexity** | Must share auth tokens across domains |
+| **Development overhead** | Two codebases to learn, maintain, test |
+
+### When Separate Might Make Sense (Not Your Case)
+
+- Different technology stacks (e.g., platform is React, admin is Angular)
+- Completely different teams maintaining each
+- Radically different security requirements (air-gapped admin)
+- Enterprise clients wanting white-labeled admin only
+
+**For PMERIT: Same repo is clearly the right choice.**
+
+---
+
+## 8.8 Summary of Admin Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    ADMIN ARCHITECTURE SUMMARY                        │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  APPROACH: Same Repo, "Support" Prefix Convention                   │
+│                                                                     │
+│  URL Pattern:                                                       │
+│  ├── Platform: pmerit.com/*                                         │
+│  └── Admin: pmerit.com/support/*                                    │
+│                                                                     │
+│  Element Naming:                                                    │
+│  ├── Platform: id="dashboard", class="nav-menu"                     │
+│  └── Admin: id="support-dashboard", class="support-nav-menu"        │
+│                                                                     │
+│  Admin Tiers:                                                       │
+│  ├── Tier 1: Full access (hiring, security, finance, strategy)      │
+│  └── Tier 2: Operations (content, support, reports, moderation)     │
+│                                                                     │
+│  Benefits:                                                          │
+│  ├── Maximum code reuse (70%+ shared components)                    │
+│  ├── Single deployment and version                                  │
+│  ├── Unified authentication system                                  │
+│  ├── Consistent user experience                                     │
+│  └── Easier maintenance and testing                                 │
+│                                                                     │
+│  RECOMMENDATION: ✅ Proceed with same repo approach                 │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+**Session Status:** Comprehensive brainstorming complete for all three track types, platform feasibility, authentication, and admin architecture.
 
 *This document enables seamless continuation of the multi-track schema discussion in future sessions.*
