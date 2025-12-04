@@ -2,7 +2,7 @@
 
 **Session Date:** December 4, 2025
 **Status:** Brainstorming / Design Phase
-**Purpose:** Handoff document for schema evolution discussions
+**Purpose:** Handoff document for schema evolution and implementation flow
 
 ---
 
@@ -12,7 +12,530 @@ This document explores how to evolve PMERIT's current schema (76 tables, pathway
 
 ---
 
-## Current State vs. ASU-Like Model
+# PART 1: PUBLIC CATALOG EXPERIENCE (ASU.edu Style)
+
+## The Pre-Registration Experience
+
+Just like visiting ASU.edu, potential students should be able to **browse the full course catalog** before committing to registration.
+
+### User Flow: Guest → Catalog → Registration → Student
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    GUEST VISITOR JOURNEY                             │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1. VISIT PMERIT.COM (Homepage)                                     │
+│     └── AI Chatbox + Quick Actions visible                          │
+│                                                                     │
+│  2. CLICK "Career Track & Explore Paths"                            │
+│     └── Opens PUBLIC CATALOG (no login required)                    │
+│                                                                     │
+│  3. BROWSE CATALOG BY TRACK TYPE                                    │
+│     ┌─────────────────────────────────────────────────────────────┐ │
+│     │  [Tab 1: Global Remote]  [Tab 2: Local Education]  [Tab 3: Local Career] │
+│     ├─────────────────────────────────────────────────────────────┤ │
+│     │                                                             │ │
+│     │  PATHWAY CARDS (Preview Mode)                               │ │
+│     │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐           │ │
+│     │  │ Web Dev     │ │ Data        │ │ UX Design   │           │ │
+│     │  │ 12 courses  │ │ Analytics   │ │ 12 courses  │           │ │
+│     │  │ 32 weeks    │ │ 12 courses  │ │ 28 weeks    │           │ │
+│     │  │ [View →]    │ │ [View →]    │ │ [View →]    │           │ │
+│     │  └─────────────┘ └─────────────┘ └─────────────┘           │ │
+│     │                                                             │ │
+│     └─────────────────────────────────────────────────────────────┘ │
+│                                                                     │
+│  4. CLICK PATHWAY → VIEW FULL CURRICULUM                            │
+│     ┌─────────────────────────────────────────────────────────────┐ │
+│     │  WEB DEVELOPMENT PATHWAY                                    │ │
+│     │  ──────────────────────────────────────                     │ │
+│     │  Duration: 32 weeks | 12 Courses | Certificate              │ │
+│     │                                                             │ │
+│     │  COURSE LIST (Expandable):                                  │ │
+│     │  ├── WD-101: HTML & CSS Fundamentals (2 weeks)              │ │
+│     │  │   └── 4 modules, 16 lessons, 2 quizzes                   │ │
+│     │  ├── WD-102: JavaScript Essentials (4 weeks)                │ │
+│     │  │   └── 6 modules, 24 lessons, 3 quizzes, 1 project        │ │
+│     │  ├── WD-103: Responsive Design (2 weeks)                    │ │
+│     │  │   └── [Expand to see details]                            │ │
+│     │  └── ... (9 more courses)                                   │ │
+│     │                                                             │ │
+│     │  [🔒 Register to Enroll]                                    │ │
+│     └─────────────────────────────────────────────────────────────┘ │
+│                                                                     │
+│  5. CLICK COURSE → VIEW COURSE SYLLABUS                             │
+│     ┌─────────────────────────────────────────────────────────────┐ │
+│     │  WD-102: JavaScript Essentials                              │ │
+│     │  ──────────────────────────────────────                     │ │
+│     │  Prerequisites: WD-101                                      │ │
+│     │  Duration: 4 weeks | Credits: 3                             │ │
+│     │  AI Tutor: Professor Ada (Professional Mentor)              │ │
+│     │                                                             │ │
+│     │  LEARNING OBJECTIVES:                                       │ │
+│     │  • Understand JavaScript fundamentals                       │ │
+│     │  • Build interactive UI elements                            │ │
+│     │  • Work with DOM manipulation                               │ │
+│     │                                                             │ │
+│     │  MODULE OUTLINE:                                            │ │
+│     │  1. Variables & Data Types (Week 1)                         │ │
+│     │  2. Functions & Scope (Week 1-2)                            │ │
+│     │  3. DOM Manipulation (Week 2-3)                             │ │
+│     │  4. Events & Interactivity (Week 3)                         │ │
+│     │  5. Project: Interactive Calculator (Week 4)                │ │
+│     │  6. Final Assessment                                        │ │
+│     │                                                             │ │
+│     │  [🔒 Register to Enroll] [📥 Download Syllabus PDF]         │ │
+│     └─────────────────────────────────────────────────────────────┘ │
+│                                                                     │
+│  6. CLICK "Register" → SIGNUP/LOGIN FLOW                            │
+│     └── After registration, redirected to Learner Dashboard         │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Public Catalog Pages Required
+
+| Page | URL Pattern | Content | Login Required |
+|------|-------------|---------|----------------|
+| Catalog Home | `/catalog` | Track type tabs, pathway cards | No |
+| Pathway Detail | `/catalog/pathway/{slug}` | Full course list, duration, outcomes | No |
+| Course Syllabus | `/catalog/course/{slug}` | Modules, objectives, AI tutor info | No |
+| Course Preview | `/catalog/course/{slug}/preview` | Sample lesson (limited) | No |
+| Register/Enroll | `/enroll/{pathway-slug}` | Registration + pathway enrollment | Yes |
+
+### Schema for Public Catalog
+
+```sql
+-- Course visibility settings for public catalog
+ALTER TABLE courses ADD COLUMN is_catalog_visible BOOLEAN DEFAULT TRUE;
+ALTER TABLE courses ADD COLUMN syllabus_pdf_url TEXT;
+ALTER TABLE courses ADD COLUMN preview_lesson_id UUID REFERENCES lessons(lesson_id);
+
+-- Pathway catalog metadata
+ALTER TABLE pathways ADD COLUMN catalog_description TEXT;
+ALTER TABLE pathways ADD COLUMN career_outcomes TEXT[];
+ALTER TABLE pathways ADD COLUMN sample_employers TEXT[];
+ALTER TABLE pathways ADD COLUMN salary_range_usd VARCHAR(50); -- "$50,000 - $80,000"
+
+-- Track catalog page views (analytics)
+CREATE TABLE catalog_views (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    pathway_id UUID REFERENCES pathways(pathway_id),
+    course_id UUID REFERENCES courses(course_id),
+    visitor_id VARCHAR(100), -- Anonymous tracking ID
+    user_id UUID REFERENCES users(user_id), -- If logged in
+    view_type VARCHAR(50), -- "pathway_view", "course_view", "syllabus_download"
+    referrer_url TEXT,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+---
+
+# PART 2: STUDENT REGISTRATION & CLASS MANAGEMENT
+
+## The ASU-Style Add/Drop Experience
+
+Once registered, students access their **Learner Dashboard** where they can:
+- Browse the full catalog (now with "Enroll" buttons instead of "Register")
+- Add courses to their schedule
+- Drop courses (with deadline restrictions)
+- View their enrolled courses and progress
+
+### Student Dashboard: Class Registration Flow
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    LEARNER DASHBOARD                                 │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  Welcome, Amaka! | Academic Year: 2025-2026                         │
+│                                                                     │
+│  ┌───────────────────────────────────────────────────────────────┐  │
+│  │  MY ENROLLED COURSES (3 active)                               │  │
+│  ├───────────────────────────────────────────────────────────────┤  │
+│  │  ┌─────────────────────────────────────────────────────────┐  │  │
+│  │  │ WD-101: HTML & CSS Fundamentals                         │  │  │
+│  │  │ Progress: ████████░░ 78%  | Due: Dec 15                 │  │  │
+│  │  │ [Enter Classroom] [View Details] [Drop Course ⚠️]       │  │  │
+│  │  └─────────────────────────────────────────────────────────┘  │  │
+│  │  ┌─────────────────────────────────────────────────────────┐  │  │
+│  │  │ WD-102: JavaScript Essentials (LOCKED - Prerequisite)   │  │  │
+│  │  │ Status: Enrolled, waiting for WD-101 completion         │  │  │
+│  │  │ [View Details] [Drop Course]                            │  │  │
+│  │  └─────────────────────────────────────────────────────────┘  │  │
+│  └───────────────────────────────────────────────────────────────┘  │
+│                                                                     │
+│  ┌───────────────────────────────────────────────────────────────┐  │
+│  │  [+ ADD NEW COURSE]                                           │  │
+│  │  ────────────────────                                         │  │
+│  │  Opens catalog browser with "Enroll" buttons                  │  │
+│  │  Shows prerequisite warnings if not met                       │  │
+│  │  Confirms enrollment with "Add to My Courses"                 │  │
+│  └───────────────────────────────────────────────────────────────┘  │
+│                                                                     │
+│  ┌───────────────────────────────────────────────────────────────┐  │
+│  │  MY PATHWAY PROGRESS                                          │  │
+│  ├───────────────────────────────────────────────────────────────┤  │
+│  │  Web Development (Global Remote)                              │  │
+│  │  ████░░░░░░░░ 2/12 courses completed                          │  │
+│  │  Estimated completion: August 2026                            │  │
+│  └───────────────────────────────────────────────────────────────┘  │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Add/Drop Course Schema
+
+```sql
+-- Course enrollment with add/drop tracking
+ALTER TABLE course_enrollments ADD COLUMN enrollment_type VARCHAR(50) DEFAULT 'self_enrolled';
+-- "self_enrolled", "auto_enrolled" (from pathway), "admin_enrolled"
+
+ALTER TABLE course_enrollments ADD COLUMN dropped_at TIMESTAMPTZ;
+ALTER TABLE course_enrollments ADD COLUMN drop_reason TEXT;
+ALTER TABLE course_enrollments ADD COLUMN can_drop_until DATE; -- Drop deadline
+
+-- Enrollment history (for transcript/audit)
+CREATE TABLE enrollment_history (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(user_id),
+    course_id UUID REFERENCES courses(course_id),
+    action VARCHAR(50) NOT NULL, -- "enrolled", "dropped", "completed", "failed"
+    action_date TIMESTAMPTZ DEFAULT NOW(),
+    performed_by UUID REFERENCES users(user_id), -- Self or admin
+    notes TEXT
+);
+
+-- Waitlist for full courses (optional)
+CREATE TABLE course_waitlist (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(user_id),
+    course_id UUID REFERENCES courses(course_id),
+    waitlist_position INT,
+    added_at TIMESTAMPTZ DEFAULT NOW(),
+    notified_at TIMESTAMPTZ,
+    expires_at TIMESTAMPTZ,
+    UNIQUE(user_id, course_id)
+);
+```
+
+---
+
+# PART 3: THE VIRTUAL CLASSROOM EXPERIENCE
+
+## Traditional Classroom Model with AI Tutor
+
+The PMERIT classroom mirrors a **traditional classroom experience** where:
+- The AI tutor is **already waiting** when the student enters
+- The student **initiates the session** (like starting a call)
+- Learning is **one-on-one** (not group-based)
+- Students **raise their hand** for clarification (not "customer service mode")
+
+### Classroom Session Flow
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    VIRTUAL CLASSROOM SESSION FLOW                    │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  1. STUDENT ENTERS CLASSROOM (from Dashboard)                       │
+│     └── Click "Enter Classroom" on enrolled course                  │
+│                                                                     │
+│  2. CLASSROOM LOADS - AI TUTOR WAITING                              │
+│     ┌─────────────────────────────────────────────────────────────┐ │
+│     │  ┌───────────────┐                                          │ │
+│     │  │               │  "Welcome back, Amaka! I'm Professor     │ │
+│     │  │  [AI Avatar]  │   Ada. Ready for today's lesson on       │ │
+│     │  │  (Idle State) │   JavaScript functions?"                 │ │
+│     │  │               │                                          │ │
+│     │  └───────────────┘  [🟢 Start Session]  [📋 View Syllabus]  │ │
+│     │                                                             │ │
+│     │  Today's Lesson: Module 2, Lesson 3 - Function Parameters   │ │
+│     │  Estimated Duration: 25 minutes                             │ │
+│     └─────────────────────────────────────────────────────────────┘ │
+│                                                                     │
+│  3. STUDENT CLICKS "START SESSION" (Like starting a call)          │
+│     └── AI Tutor activates, begins lecture via RAG system          │
+│     └── Virtual Human (Unreal/Cartoon/Text) starts speaking        │
+│     └── TTS reads content, avatar lip-syncs                        │
+│                                                                     │
+│  4. DURING LECTURE - STUDENT OPTIONS                                │
+│     ┌─────────────────────────────────────────────────────────────┐ │
+│     │  ┌───────────────┐                                          │ │
+│     │  │               │  "A function parameter is a variable     │ │
+│     │  │  [AI Avatar]  │   that acts as a placeholder for values  │ │
+│     │  │  (Speaking)   │   you pass into the function..."         │ │
+│     │  │               │                                          │ │
+│     │  └───────────────┘                                          │ │
+│     │                                                             │ │
+│     │  ┌─────────────────────────────────────────────────────┐    │ │
+│     │  │ STUDENT CONTROLS                                    │    │ │
+│     │  │ [✋ Raise Hand]  [⏸️ Pause]  [⏩ Skip]  [🔊 Volume] │    │ │
+│     │  │ [📝 Take Notes]  [📤 Upload Assignment]             │    │ │
+│     │  └─────────────────────────────────────────────────────┘    │ │
+│     │                                                             │ │
+│     │  Progress: ████████░░░░░░░░░░░░ 42% through lesson          │ │
+│     └─────────────────────────────────────────────────────────────┘ │
+│                                                                     │
+│  5. STUDENT RAISES HAND (Clarification Mode)                        │
+│     └── AI pauses lecture                                           │
+│     └── Student types or speaks question                            │
+│     └── AI answers using RAG (contextual to current lesson)         │
+│     └── AI resumes lecture or asks "Any more questions?"            │
+│                                                                     │
+│     ┌─────────────────────────────────────────────────────────────┐ │
+│     │  [HAND RAISED - CLARIFICATION MODE]                         │ │
+│     │                                                             │ │
+│     │  Professor Ada: "Yes, Amaka? What would you like me to      │ │
+│     │                  clarify?"                                  │ │
+│     │                                                             │ │
+│     │  Student Input: [________________________________] [Ask]    │ │
+│     │                 🎤 Or click to speak                        │ │
+│     │                                                             │ │
+│     │  [Lower Hand & Resume Lecture]                              │ │
+│     └─────────────────────────────────────────────────────────────┘ │
+│                                                                     │
+│  6. LESSON COMPLETE - QUIZ/ASSIGNMENT                               │
+│     └── AI announces quiz or assignment                             │
+│     └── Student can take quiz immediately or later                  │
+│     └── Assignments can be uploaded for AI grading                  │
+│                                                                     │
+│  7. SESSION END (Like ending a call)                                │
+│     └── AI summarizes what was covered                              │
+│     └── AI previews next lesson                                     │
+│     └── Student clicks "End Session"                                │
+│     └── Progress saved, returned to Dashboard                       │
+│                                                                     │
+│     ┌─────────────────────────────────────────────────────────────┐ │
+│     │  Professor Ada: "Great work today, Amaka! We covered        │ │
+│     │                  function parameters and return values.     │ │
+│     │                  Next time, we'll explore arrow functions.  │ │
+│     │                  Don't forget to complete Quiz 2.3!"        │ │
+│     │                                                             │ │
+│     │  [🔴 End Session]  [📝 Complete Quiz Now]  [⏭️ Next Lesson] │ │
+│     └─────────────────────────────────────────────────────────────┘ │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Classroom Features by Mode
+
+| Feature | During Lecture | Raise Hand Mode | Between Sessions |
+|---------|---------------|-----------------|------------------|
+| AI Speaking | ✅ Active (TTS + Avatar) | ⏸️ Paused | ❌ Idle |
+| Student Input | Limited (reactions) | ✅ Full Q&A | ✅ Full access |
+| RAG Context | Lesson content | Lesson + question | Full course |
+| Avatar State | Animated/Speaking | Listening/Thinking | Idle/Waiting |
+
+### Classroom Session Schema
+
+```sql
+-- Classroom sessions (tracks each "call" to the classroom)
+CREATE TABLE classroom_sessions (
+    session_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(user_id),
+    course_id UUID REFERENCES courses(course_id),
+    lesson_id UUID REFERENCES lessons(lesson_id),
+    ai_tutor_persona_id UUID REFERENCES ai_tutor_personas(persona_id),
+
+    -- Session lifecycle
+    started_at TIMESTAMPTZ DEFAULT NOW(),
+    ended_at TIMESTAMPTZ,
+    duration_seconds INT,
+
+    -- Progress tracking
+    lesson_progress_percentage DECIMAL(5,2) DEFAULT 0.00,
+    last_position JSONB, -- { "video_time": 120, "section": "2.3" }
+
+    -- Interaction tracking
+    hand_raises INT DEFAULT 0,
+    questions_asked INT DEFAULT 0,
+    notes_taken TEXT,
+
+    -- Quality metrics
+    avatar_type VARCHAR(50), -- "unreal", "cartoon", "text_only"
+    connection_quality VARCHAR(50), -- "excellent", "good", "poor"
+
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Hand raise / Q&A interactions within sessions
+CREATE TABLE classroom_interactions (
+    interaction_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    session_id UUID REFERENCES classroom_sessions(session_id),
+
+    interaction_type VARCHAR(50) NOT NULL, -- "hand_raise", "pause", "skip", "note"
+
+    -- For hand raises / questions
+    student_question TEXT,
+    ai_response TEXT,
+    response_time_ms INT,
+
+    -- Context at time of interaction
+    lesson_position JSONB,
+
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Assignment submissions from classroom
+CREATE TABLE assignment_submissions (
+    submission_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(user_id),
+    assessment_id UUID REFERENCES assessments(assessment_id),
+    session_id UUID REFERENCES classroom_sessions(session_id),
+
+    -- Submission details
+    submission_type VARCHAR(50), -- "file_upload", "text", "code", "scan"
+    file_url TEXT,
+    text_content TEXT,
+
+    -- Grading
+    ai_grade DECIMAL(5,2),
+    ai_feedback TEXT,
+    human_grade DECIMAL(5,2), -- If escalated
+    human_feedback TEXT,
+    final_grade DECIMAL(5,2),
+
+    -- Status
+    status VARCHAR(50) DEFAULT 'submitted', -- submitted, grading, graded, resubmit
+    submitted_at TIMESTAMPTZ DEFAULT NOW(),
+    graded_at TIMESTAMPTZ
+);
+```
+
+---
+
+# PART 4: ASSESSMENT & PROCTORING
+
+## Types of Assessments
+
+| Type | Proctoring Level | AI Involvement | Location |
+|------|------------------|----------------|----------|
+| **In-Lesson Quiz** | None | AI grades instantly | Within classroom session |
+| **Module Quiz** | Basic (time-limited) | AI grades | Classroom or dashboard |
+| **Course Exam** | Proctored (webcam) | AI grades + flags | Dedicated exam mode |
+| **Project** | Portfolio review | AI + peer review | Upload from anywhere |
+| **Certification Exam** | External proctored | External body | Partner testing center |
+
+### Proctoring Schema
+
+```sql
+-- Proctored exam sessions
+CREATE TABLE proctored_sessions (
+    proctoring_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(user_id),
+    assessment_id UUID REFERENCES assessments(assessment_id),
+
+    -- Proctoring type
+    proctoring_level VARCHAR(50), -- "none", "basic", "webcam", "external"
+
+    -- Session data
+    started_at TIMESTAMPTZ,
+    ended_at TIMESTAMPTZ,
+
+    -- Integrity checks
+    webcam_enabled BOOLEAN,
+    screen_recording_enabled BOOLEAN,
+    browser_lockdown BOOLEAN,
+
+    -- Flags (potential issues)
+    flags JSONB, -- [{"type": "face_not_visible", "timestamp": "...", "severity": "warning"}]
+    flag_count INT DEFAULT 0,
+
+    -- Review status
+    requires_human_review BOOLEAN DEFAULT FALSE,
+    reviewed_by UUID REFERENCES users(user_id),
+    review_notes TEXT,
+
+    -- Final status
+    status VARCHAR(50) DEFAULT 'in_progress', -- in_progress, completed, flagged, invalidated
+
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Portfolio projects
+CREATE TABLE portfolio_projects (
+    project_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(user_id),
+    course_id UUID REFERENCES courses(course_id),
+
+    -- Project details
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    project_url TEXT, -- GitHub, deployed site, etc.
+    thumbnail_url TEXT,
+
+    -- Visibility
+    is_public BOOLEAN DEFAULT FALSE, -- Visible to employers
+    is_featured BOOLEAN DEFAULT FALSE, -- Highlighted on profile
+
+    -- Skills demonstrated
+    skills_demonstrated TEXT[],
+
+    -- Review
+    ai_review TEXT,
+    ai_score DECIMAL(5,2),
+    peer_reviews JSONB, -- [{reviewer_id, score, feedback}]
+
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+---
+
+# PART 5: IMPLEMENTATION FLOW
+
+## Phase 1: Public Catalog (Weeks 1-2)
+```
+1. Create /catalog route with track type tabs
+2. Build pathway cards with preview data
+3. Build course syllabus pages
+4. Add "Register to Enroll" CTAs
+5. Connect to existing pathways API
+```
+
+## Phase 2: Student Registration & Add/Drop (Weeks 3-4)
+```
+1. Enhance learner-portal.html with "My Courses" section
+2. Add "+ Add Course" catalog browser
+3. Implement course enrollment API
+4. Add drop course functionality with deadline checks
+5. Build enrollment history tracking
+```
+
+## Phase 3: Virtual Classroom Core (Weeks 5-8)
+```
+1. Refactor classroom.html for session-based model
+2. Add "Start Session" / "End Session" controls
+3. Implement "Raise Hand" feature (pause + Q&A)
+4. Integrate RAG for contextual AI responses
+5. Track classroom sessions in database
+```
+
+## Phase 4: Assessment & Proctoring (Weeks 9-12)
+```
+1. Build in-lesson quiz component
+2. Implement module/course exam flow
+3. Add basic proctoring (time limits, browser focus)
+4. Build assignment upload + AI grading
+5. Portfolio project submission system
+```
+
+## Phase 5: AI Tutor Personas (Weeks 13-14)
+```
+1. Create ai_tutor_personas table
+2. Seed personas for each track type:
+   - Professor Ada (Global Remote - Professional)
+   - Ms. Sunshine (K-12 - Nurturing)
+   - Coach Mike (CTE - Practical)
+3. Integrate persona into classroom AI context
+4. Avatar selection based on persona
+```
+
+---
 
 ### What PMERIT Has Now (76 Tables)
 
