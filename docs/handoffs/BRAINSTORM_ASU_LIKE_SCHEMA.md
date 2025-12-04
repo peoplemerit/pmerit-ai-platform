@@ -3055,6 +3055,312 @@ These files in `docs/aados/` are **legacy** and can be archived or updated:
 
 ---
 
-**Session Status:** Comprehensive brainstorming complete for all three track types, platform feasibility, authentication, admin architecture, and AADOS integration.
+# PART 10: UI DESIGN SYSTEM STANDARDIZATION
+
+## 10.1 Problem Statement
+
+Analysis of the front pages revealed **button and hover behavior inconsistencies** despite having a centralized theme system in `.copilot/Pmerit-theme_typography.html`. The issues:
+
+1. **Button underlines on images**: Buttons rendered as `<a>` tags inherit link underlines
+2. **Inconsistent hover effects**: Some buttons have hover states, others don't
+3. **Border color variations**: Secondary buttons use different border colors across pages
+4. **Gradient hero inconsistencies**: Hero sections don't use the standardized `--gradient-hero` variable
+
+---
+
+## 10.2 Theme File Analysis
+
+The centralized theme file (`.copilot/Pmerit-theme_typography.html`) **correctly defines** these CSS variables:
+
+### Color Variables (Already Defined)
+```css
+:root {
+    /* Interactive Colors */
+    --interactive-primary: var(--primary);           /* Default blue for buttons */
+    --interactive-primary-hover: var(--primary-dark);
+
+    /* Button Variables */
+    --btn-primary-bg: var(--primary);
+    --btn-primary-text: white;
+    --btn-primary-hover: var(--primary-dark);
+
+    --btn-secondary-bg: transparent;
+    --btn-secondary-text: var(--primary);
+    --btn-secondary-border: var(--primary);
+
+    /* Shadows and Transitions */
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --transition: 0.2s ease;
+    --radius-md: 0.375rem;
+}
+```
+
+### Button Styles (Already Defined)
+```css
+.button-primary {
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    border: none;
+}
+
+.button-primary:hover {
+    background: var(--btn-primary-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.button-secondary {
+    background: var(--btn-secondary-bg);
+    color: var(--btn-secondary-text);
+    border: 1px solid var(--btn-secondary-border);
+}
+
+.button-secondary:hover {
+    background: var(--bg-secondary);
+    border-color: var(--primary);
+}
+```
+
+**Root Cause:** Pages are NOT consistently inheriting from this centralized design system. Some pages use inline styles or legacy classes instead.
+
+---
+
+## 10.3 Recommended CSS Fixes
+
+### Fix 1: Remove Underlines on Button Links
+
+Add to `components.css` (or centralized stylesheet):
+
+```css
+/* === BUTTON RESET: Remove underlines on all <a> styled as buttons === */
+a.btn,
+a.button,
+a.button-primary,
+a.button-secondary,
+a.btn-primary,
+a.btn-secondary,
+button.btn,
+.button {
+    text-decoration: none !important;
+}
+
+a.btn:hover,
+a.button:hover,
+a.button-primary:hover,
+a.button-secondary:hover {
+    text-decoration: none !important;
+}
+```
+
+### Fix 2: Standardize Primary Button Styles
+
+```css
+/* === PRIMARY BUTTON (filled, branded) === */
+.btn-primary,
+.button-primary {
+    display: inline-block;
+    background: var(--interactive-primary);
+    color: var(--btn-primary-text);
+    border: none;
+    padding: 12px 20px;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none !important;
+}
+
+.btn-primary:hover,
+.button-primary:hover {
+    background: var(--interactive-primary-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    text-decoration: none !important;
+}
+```
+
+### Fix 3: Standardize Secondary/Outline Button Styles
+
+```css
+/* === SECONDARY BUTTON (outline, ghost) === */
+.btn-secondary,
+.button-secondary,
+.btn-outline {
+    display: inline-block;
+    background: transparent;
+    color: var(--btn-secondary-text);
+    border: 1px solid var(--btn-secondary-border);
+    padding: 12px 20px;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none !important;
+}
+
+.btn-secondary:hover,
+.button-secondary:hover,
+.btn-outline:hover {
+    background: var(--bg-secondary);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    text-decoration: none !important;
+}
+```
+
+### Fix 4: Hero Gradient Standardization
+
+```css
+/* === HERO SECTION GRADIENTS === */
+.hero,
+.hero-section,
+[class*="hero"] {
+    background: var(--gradient-hero);
+}
+
+/* Light mode override if needed */
+[data-theme="light"] .hero,
+[data-theme="light"] .hero-section {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+}
+```
+
+---
+
+## 10.4 Page-Specific Audit Checklist
+
+Review each front page and verify:
+
+| Page | Check | Status |
+|------|-------|--------|
+| `index.html` | All buttons use `.button-primary` or `.button-secondary` | ⬜ |
+| `index.html` | No inline `style="text-decoration: underline"` on buttons | ⬜ |
+| `index.html` | Hero section uses `--gradient-hero` variable | ⬜ |
+| `/pricing` | CTA buttons have consistent hover states | ⬜ |
+| `/donate` | Donate button matches primary button spec | ⬜ |
+| `/auth` | Sign In / Start Learning buttons consistent | ⬜ |
+| `/partials/header.html` | Header CTAs use standardized classes | ⬜ |
+| `/partials/footer.html` | Footer links don't have button underlines | ⬜ |
+
+### Image Overlay Buttons (Special Case)
+
+Buttons placed on hero images need explicit override:
+
+```css
+/* === BUTTONS ON IMAGES/OVERLAYS === */
+.hero a.button-primary,
+.overlay a.button-primary,
+.hero a.btn-primary,
+.card-overlay a.button {
+    text-decoration: none !important;
+    color: white !important;
+    background: var(--interactive-primary) !important;
+}
+
+.hero a.button-primary:hover,
+.overlay a.button-primary:hover {
+    text-decoration: none !important;
+    background: var(--interactive-primary-hover) !important;
+}
+```
+
+---
+
+## 10.5 Implementation Steps for Claude Code
+
+When implementing these fixes:
+
+### Step 1: Create or Update `components.css`
+
+```
+Location: /assets/css/components.css (or /css/components.css)
+Action: Add all fixes from Section 10.3
+```
+
+### Step 2: Import in Main Stylesheet
+
+```css
+/* In main.css or styles.css */
+@import 'components.css';
+```
+
+Or in HTML:
+```html
+<link rel="stylesheet" href="/assets/css/components.css">
+```
+
+### Step 3: Update HTML Classes
+
+Replace legacy button classes:
+- `btn` → `button-primary` or `button-secondary`
+- `button` → `button-primary` or `button-secondary`
+- Inline `style="..."` → Remove and use class
+
+### Step 4: Verify No Inline Overrides
+
+Search for and remove:
+```html
+<!-- BAD: Inline styles override design system -->
+<a href="/start" style="background: blue; text-decoration: underline;">
+
+<!-- GOOD: Uses design system class -->
+<a href="/start" class="button-primary">
+```
+
+### Step 5: Test All Button States
+
+| State | Check |
+|-------|-------|
+| Default | Background color matches `--interactive-primary` |
+| Hover | Background darkens, subtle lift effect |
+| Focus | Focus ring visible for accessibility |
+| Active | Slight depression effect |
+
+---
+
+## 10.6 CSS Variable Reference (Quick Copy)
+
+For easy reference when implementing:
+
+```css
+/* Copy these to any new component that needs buttons */
+.your-component .button {
+    background: var(--interactive-primary);
+    color: var(--btn-primary-text);
+    border: none;
+    padding: 12px 20px;
+    border-radius: var(--radius-md);
+    transition: var(--transition);
+    text-decoration: none;
+}
+
+.your-component .button:hover {
+    background: var(--interactive-primary-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+```
+
+---
+
+## 10.7 Dark Mode Considerations
+
+The theme file already supports dark mode via `[data-theme="dark"]`. Ensure buttons work in both modes:
+
+```css
+/* Dark mode button adjustments (if needed) */
+[data-theme="dark"] .button-secondary {
+    border-color: var(--primary-light);
+    color: var(--primary-light);
+}
+
+[data-theme="dark"] .button-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+```
+
+---
+
+**Session Status:** Comprehensive brainstorming complete for all three track types, platform feasibility, authentication, admin architecture, AADOS integration, and UI design system standardization.
 
 *This document enables seamless continuation of the multi-track schema discussion in future sessions.*
