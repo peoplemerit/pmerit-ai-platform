@@ -12,6 +12,319 @@ This document explores how to evolve PMERIT's current schema (76 tables, pathway
 
 ---
 
+# PART 0: FRONT PAGE SHELL — MUST BE FUNCTIONAL FIRST
+
+Before building any inner flows (catalog, classroom, assessment), the **front page shell must be solid and functional**. This section defines the header CTA strategy and minimum viable elements that represent a guest user's first contact with PMERIT.
+
+## 0.1 Header CTA Strategy: "Start Learning" + "Sign In" + "Donate"
+
+### The Challenge: Three Actions, One Clean Header
+
+The header must accomplish three goals simultaneously:
+- **Pull new users** into learning → "Start Learning"
+- **Give returning users** quick access → "Sign In"
+- **Offer a trustworthy way** to support the mission → "Donate"
+
+### Recommended Header Layout (Desktop)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  [LOGO: PMERIT]                                                      │
+│                                                                     │
+│                [ Language ▼ ] | Pricing | Donate | Sign In | [Start Learning] │
+│                                                                     │
+│                 ↑ text       ↑ text   ↑ outline  ↑ ghost   ↑ PRIMARY FILLED   │
+│                 dropdown      link     button     link      button (blue)     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Visual Weight Hierarchy
+
+| Element | Style | Purpose |
+|---------|-------|---------|
+| **Start Learning** | Primary filled button (blue) | Main CTA for new users |
+| **Donate** | Outline button (lighter emphasis) | Visible but not competing |
+| **Sign In** | Text link or ghost button | Quick access for returning users |
+| **Pricing / Language** | Text links | Informational, low visual weight |
+
+### Behavior: Same Auth Page, Different Modes
+
+Both CTAs lead to the **same auth page** but with different initial states:
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    SINGLE AUTH PAGE, TWO MODES                       │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  "Start Learning" button                                            │
+│   └── Navigates to: /auth?action=start                              │
+│       └── Auth page shows: "Create account / Get started" view      │
+│       └── Secondary text: "Already have an account? Sign in"        │
+│                                                                     │
+│  "Sign In" link                                                     │
+│   └── Navigates to: /auth?action=signin                             │
+│       └── Auth page shows: "Sign In" form first                     │
+│       └── Secondary text: "New here? Create an account"             │
+│                                                                     │
+│  IMPLEMENTATION:                                                    │
+│  ├── Single /auth route                                             │
+│  ├── Query param determines initial mode                            │
+│  └── No duplicate auth logic — just a frontend switch               │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+**Why this approach?**
+- **Clear mental model:** New → "Start Learning", Returning → "Sign In"
+- **No duplicate logic:** One auth page, one set of components
+- **Works with MOSA:** Header as `/partials/header.html`, loaded via `layout-loader.js`
+
+---
+
+## 0.2 Donate Button Strategy
+
+### Placement & Visual Weight
+
+Donate should be **visible but not competing** with the learning CTA:
+
+```
+Visual Hierarchy:
+├── 1st: [Start Learning] — Primary filled button (blue)
+├── 2nd: [Donate] — Outline button (border, no fill)
+├── 3rd: Sign In — Text link or ghost button
+└── 4th: Pricing / Language — Plain text links
+```
+
+### Donate Flow (MVP)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    DONATE PAGE MVP                                   │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ROUTE: /donate                                                     │
+│                                                                     │
+│  PAGE CONTENT:                                                      │
+│  ┌─────────────────────────────────────────────────────────────┐    │
+│  │                                                             │    │
+│  │  🎓 Support Free Education for Everyone                     │    │
+│  │                                                             │    │
+│  │  Your donation helps us provide free education to:         │    │
+│  │  • Learners in low-income communities                      │    │
+│  │  • Students in low-bandwidth regions                       │    │
+│  │  • Anyone seeking career transformation                    │    │
+│  │                                                             │    │
+│  │  Every dollar funds AI tutoring, course development,       │    │
+│  │  and infrastructure to reach 3+ billion learners.          │    │
+│  │                                                             │    │
+│  │              [ Donate Now ]                                 │    │
+│  │                                                             │    │
+│  │  (Links to Stripe Checkout / PayPal, or shows              │    │
+│  │   "Donation processing coming soon" if not wired)          │    │
+│  │                                                             │    │
+│  └─────────────────────────────────────────────────────────────┘    │
+│                                                                     │
+│  MOSA COMPLIANCE:                                                   │
+│  └── Simple static layout, uses shared header/footer partials       │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 0.3 Header Functionality Checklist (Must Pass Before Inner Flows)
+
+Before building catalog, classroom, or assessment flows, the **header must be 100% functional**:
+
+### Navigation Links
+
+| Link | Target | Behavior |
+|------|--------|----------|
+| **Logo** | `/` (Homepage) | Always returns to homepage |
+| **Pricing** | `/pricing` | Even if placeholder text, page must load |
+| **Donate** | `/donate` | Explainer + placeholder or real payment |
+| **Sign In** | `/auth?action=signin` | Auth page in sign-in mode |
+| **Start Learning** | `/auth?action=start` | Auth page in sign-up mode |
+| **Language** | Dropdown | Visual working, behavior can be "coming soon" |
+
+### Auth Routing Logic
+
+```javascript
+// /auth route behavior
+const authPage = {
+    routes: {
+        '/auth':               'default → show sign-up view',
+        '/auth?action=start':  'show "Create account / Get started" first',
+        '/auth?action=signin': 'show "Sign In" form first'
+    },
+
+    // Both views on same page, just different initial state
+    implementation: 'Single page, query param toggles initial view'
+};
+```
+
+### Responsiveness Requirements
+
+```
+Desktop (1024px+):
+├── Full header with all elements visible
+└── [Language ▼] | Pricing | Donate | Sign In | [Start Learning]
+
+Tablet (768px - 1023px):
+├── Logo left, hamburger menu right
+├── Menu contains: Pricing, Donate, Sign In
+└── [Start Learning] remains visible OR 1 tap away
+
+Mobile (< 768px):
+├── Logo left, hamburger menu right
+├── All nav items in menu
+├── [Start Learning] prominent in menu OR sticky CTA
+└── Buttons tappable, not overlapping
+```
+
+### MOSA Alignment
+
+```
+Header Implementation:
+├── File: /partials/header.html
+├── Loaded via: layout-loader.js
+├── Consistent across: Homepage, catalog, inner pages
+└── Dynamic elements: Language dropdown, mobile menu toggle
+```
+
+---
+
+## 0.4 What "Must Be Functional" Means
+
+### Definition: Functional ≠ Complete
+
+A page is "functional" when:
+- ✅ Route exists and page loads without errors
+- ✅ Console shows no JavaScript errors
+- ✅ All clickable elements have working destinations
+- ✅ Page explains its purpose (even if behind placeholder)
+- ✅ Mobile view doesn't break layout
+
+A page is NOT functional if:
+- ❌ Clicking leads to 404 or error page
+- ❌ Console shows JavaScript errors
+- ❌ Layout breaks on mobile
+- ❌ Dead links or buttons do nothing
+
+### Front Page Shell Completion Criteria
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    FRONT PAGE SHELL COMPLETE WHEN:                   │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ✅ HEADER                                                          │
+│     □ Logo → back to /                                              │
+│     □ Pricing → /pricing (loads)                                    │
+│     □ Donate → /donate (loads with explainer)                       │
+│     □ Sign In → /auth?action=signin (loads)                         │
+│     □ Start Learning → /auth?action=start (loads)                   │
+│     □ Language selector visually works                              │
+│                                                                     │
+│  ✅ AUTH ROUTING                                                    │
+│     □ /auth uses same page for sign-up and sign-in                  │
+│     □ Query param determines initial view                           │
+│     □ Both modes switch between each other                          │
+│                                                                     │
+│  ✅ RESPONSIVENESS                                                  │
+│     □ Header collapses on mobile (hamburger menu)                   │
+│     □ Buttons tappable, not overlapping                             │
+│     □ Start Learning visible or 1 tap away                          │
+│                                                                     │
+│  ✅ MOSA COMPLIANCE                                                 │
+│     □ Header as /partials/header.html                               │
+│     □ Loaded via layout-loader.js                                   │
+│     □ Footer as /partials/footer.html                               │
+│                                                                     │
+│  ✅ NO ERRORS                                                       │
+│     □ Console shows no JavaScript errors                            │
+│     □ No broken images or assets                                    │
+│     □ All routes load without 404                                   │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 0.5 User Experience: First Contact Flow
+
+### How This Feels to Users
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    FIRST CONTACT SCENARIOS                           │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  SCENARIO 1: New Visitor                                            │
+│  ─────────────────────────                                          │
+│  1. Lands on pmerit.com homepage                                    │
+│  2. Sees hero, sees [Start Learning] as big button                  │
+│  3. Clicks [Start Learning]                                         │
+│  4. Goes to /auth?action=start                                      │
+│  5. Sees: "Create account to begin your personalized learning"      │
+│                                                                     │
+│  SCENARIO 2: Returning User                                         │
+│  ───────────────────────────                                        │
+│  1. Returns to pmerit.com                                           │
+│  2. Clicks [Sign In] in header                                      │
+│  3. Goes to /auth?action=signin                                     │
+│  4. Sees: Login form first                                          │
+│                                                                     │
+│  SCENARIO 3: Potential Donor                                        │
+│  ────────────────────────────                                       │
+│  1. Hears about PMERIT's mission                                    │
+│  2. Visits pmerit.com                                               │
+│  3. Clicks [Donate] in header                                       │
+│  4. Goes to /donate                                                 │
+│  5. Reads mission explanation                                       │
+│  6. Clicks donation button (real or placeholder)                    │
+│                                                                     │
+│  RESULT: Clear, predictable, low cognitive load                     │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 0.6 Schema Additions: Donation Tracking (Future)
+
+```sql
+-- Donation tracking (for when payment is wired)
+CREATE TABLE donations (
+    donation_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    donor_user_id UUID REFERENCES users(user_id),  -- NULL if anonymous
+    donor_email VARCHAR(255),  -- For non-registered donors
+    donor_name VARCHAR(255),
+    amount_usd DECIMAL(10,2) NOT NULL,
+    currency_original VARCHAR(3) DEFAULT 'USD',
+    amount_original DECIMAL(10,2),
+    payment_provider VARCHAR(50),  -- "stripe", "paypal"
+    payment_reference VARCHAR(255),
+    is_recurring BOOLEAN DEFAULT FALSE,
+    recurrence_frequency VARCHAR(20),  -- "monthly", "annually"
+    donation_message TEXT,
+    is_anonymous BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Donation impact tracking (for transparency reports)
+CREATE TABLE donation_allocations (
+    allocation_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    donation_id UUID REFERENCES donations(donation_id),
+    category VARCHAR(100) NOT NULL,  -- "ai_infrastructure", "content_development", "operations"
+    amount_usd DECIMAL(10,2) NOT NULL,
+    description TEXT,
+    allocated_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+---
+
 # PART 1: PUBLIC CATALOG EXPERIENCE (ASU.edu Style)
 
 ## The Pre-Registration Experience
@@ -2573,6 +2886,175 @@ export async function SupportDashboard({ context }) {
 
 ---
 
-**Session Status:** Comprehensive brainstorming complete for all three track types, platform feasibility, authentication, and admin architecture.
+# PART 9: AADOS INTEGRATION — GOVERNANCE SYSTEM RECOMMENDATIONS
+
+## 9.1 What is AADOS?
+
+The `docs/aados/` directory contains the **AI-Assisted Development Operations System** — a comprehensive governance framework for working with Claude (Web and Code Desktop). It was designed to solve the challenge of maintaining context and consistency across multiple AI sessions.
+
+### Current AADOS Files
+
+| File | Purpose | Last Updated |
+|------|---------|--------------|
+| `PMERIT_MASTER_INSTRUCTIONS.md` | Master coordination document for all Claude interactions | 2024-11-29 |
+| `GOVERNANCE.md` | Full rules, phases, workflows (V5 FINAL) | 2024-11-29 |
+| `TASK_TRACKER.md` | Living status, attempt tracking, session history | Active |
+| `STATE.json` | Machine-readable current state pointer | Active |
+| `ENVIRONMENTS.md` | Environment definitions (FE, BE, DB, TR) | 2024-11-29 |
+| `PMERIT_OPERATIONAL_CHEAT_SHEET.md` | Quick reference for developer | 2024-11-30 |
+| `PMERIT_CURRICULUM_SCHEMA.sql` | Curriculum database schema | Legacy |
+| `PMERIT_CURRICULUM_IMPLEMENTATION_PLAN_FINAL.md` | Implementation plan | Legacy |
+
+---
+
+## 9.2 How to Best Use AADOS
+
+### Recommendation 1: Align AADOS Phases with Brainstorm Parts
+
+The AADOS governance defines a **phase-gated execution** system:
+
+```
+AADOS Phase Map:
+🏠 HOMEPAGE GATE → Phase 0 → Phase 1 → ... → Phase 10
+```
+
+**Recommendation:** Map AADOS phases to brainstorm document parts:
+
+| AADOS Phase | Maps To | Brainstorm Reference |
+|-------------|---------|---------------------|
+| **HOMEPAGE GATE** | PART 0 | Front Page Shell (Header, Auth, Donate) |
+| **Phase 0: AI Receptionist** | PART 3 | Virtual Classroom (AI Tutor waiting) |
+| **Phase 1: Assessment Entry** | PART 4 | Assessment & Proctoring |
+| **Phase 2: Assessment Flow** | PART 4 | Assessment completion flow |
+| **Phase 3: Sign-Up & Onboarding** | PART 7 | Authentication & Security |
+| **Phase 4: Dashboard & Courses** | PART 1 | Public Catalog + Registration |
+| **Phase 5: Virtual Classroom** | PART 3 | Virtual Classroom Session Flow |
+| **Phase 6: Job Matching** | PART 2.5 | Portfolio Projects for employers |
+| **Phase 7-10: Admin Journey** | PART 8 | Admin Interface Architecture |
+
+### Recommendation 2: Use TASK_TRACKER.md as Living Source of Truth
+
+The `TASK_TRACKER.md` file tracks:
+- Current phase and requirement status
+- Attempt counts (3 default, extendable to 5)
+- Session history
+- Escalated issues
+
+**Best Practice:**
+```
+Before starting work:
+1. Read TASK_TRACKER.md for current state
+2. Use "PMERIT CONTINUE" to auto-resume
+3. Update TASK_TRACKER.md after each session
+
+Example Command Flow:
+"PMERIT CONTINUE" → Claude reads tracker → Resumes from last incomplete task
+```
+
+### Recommendation 3: Consolidate with This Handoff Document
+
+**Current State:** AADOS governance and this brainstorm document are separate.
+
+**Recommendation:** Make this brainstorm document the **feature specification source**, while AADOS remains the **workflow governance source**.
+
+```
+Document Hierarchy (Updated):
+1. BRAINSTORM_ASU_LIKE_SCHEMA.md — WHAT to build (features, schema, UX)
+2. AADOS/GOVERNANCE.md — HOW to work (phases, attempts, escalation)
+3. AADOS/TASK_TRACKER.md — WHERE we are (living status)
+4. Pmerit Project Document — WHY and roadmap (consolidated plan)
+```
+
+### Recommendation 4: Update AADOS Homepage Gate Requirements
+
+The current AADOS Homepage Gate requirements (H1-H10) should align with PART 0:
+
+| Current H# | Description | Update to Match PART 0 |
+|------------|-------------|------------------------|
+| H1 | No console errors | ✅ Keep |
+| H2 | Google-style design | ✅ Keep |
+| H3 | AI chatbox functional | ✅ Keep |
+| H4 | Left panel actions | Update: Include "Donate" |
+| H5 | Sign-Up modal triggers | Update: `/auth?action=start` pattern |
+| H6 | Customer Service badge | ✅ Keep (becomes "Raise Hand") |
+| H7 | Google Translate works | ✅ Keep |
+| H8 | Header/Footer correct | Update: Add Pricing, Donate links |
+| H9 | Mobile responsive | ✅ Keep |
+| H10 | No broken assets | ✅ Keep |
+
+---
+
+## 9.3 AADOS Commands Quick Reference
+
+For easy integration with brainstorm workflow:
+
+| Command | When to Use |
+|---------|-------------|
+| `PMERIT CONTINUE` | Start any session — auto-resumes from current state |
+| `PMERIT STATUS` | Check where we are without starting work |
+| `PMERIT QUICK FIX: [desc]` | Minor fixes that don't need full protocol |
+| `EXTEND: [H#]` | Grant 2 more attempts (3→5) for a stuck requirement |
+| `HOMEPAGE GATE COMPLETE` | After PART 0 is fully functional |
+| `PHASE [X] COMPLETE` | After completing each subsequent part |
+
+---
+
+## 9.4 Recommended AADOS Updates
+
+To integrate this brainstorm with AADOS, update these files:
+
+### Update TASK_TRACKER.md
+
+Add reference to brainstorm document:
+
+```markdown
+## 🔗 FEATURE SPECIFICATIONS
+
+For detailed feature specifications and schema designs, see:
+- `docs/handoffs/BRAINSTORM_ASU_LIKE_SCHEMA.md`
+
+Part → Phase Mapping:
+- PART 0 → HOMEPAGE GATE
+- PART 1-5 → USER JOURNEY (Phases 0-6)
+- PART 6-8 → PLATFORM & ADMIN (Phases 7-10)
+```
+
+### Update GOVERNANCE.md Homepage Gate
+
+Add new requirements from PART 0:
+
+```markdown
+### Homepage Gate Requirements (Updated)
+
+| # | Requirement | Verification |
+|---|-------------|--------------|
+| H1 | No console errors | DevTools Console clean |
+| H2 | Clean Google-style design | Visual inspection |
+| H3 | AI chatbox functional | Can send/receive messages |
+| H4 | Header CTAs functional | Start Learning, Sign In, Donate work |
+| H5 | Auth routing works | `/auth?action=start` and `?action=signin` |
+| H6 | Donate page loads | `/donate` shows mission explainer |
+| H7 | Google Translate works | Widget on all pages |
+| H8 | Pricing page loads | `/pricing` exists (placeholder OK) |
+| H9 | Mobile responsive | Test at 375px |
+| H10 | No broken assets | Visual inspection passes |
+```
+
+---
+
+## 9.5 Legacy Files in AADOS
+
+These files in `docs/aados/` are **legacy** and can be archived or updated:
+
+| File | Status | Recommendation |
+|------|--------|----------------|
+| `PMERIT_CURRICULUM_SCHEMA.sql` | Legacy | Superseded by this brainstorm's schema |
+| `PMERIT_CURRICULUM_IMPLEMENTATION_PLAN_FINAL.md` | Legacy | Superseded by PART 5 Implementation Flow |
+
+**Action:** Move to `docs/archive/` or update to reference this brainstorm document.
+
+---
+
+**Session Status:** Comprehensive brainstorming complete for all three track types, platform feasibility, authentication, admin architecture, and AADOS integration.
 
 *This document enables seamless continuation of the multi-track schema discussion in future sessions.*
