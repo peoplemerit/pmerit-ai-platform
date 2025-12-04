@@ -815,35 +815,113 @@
       });
     });
 
-    // Fetch and render career tracks
+    // API Configuration
+    const API_BASE = 'https://pmerit-api-worker.peoplemerit.workers.dev/api/v1';
+
+    // Fetch and render career tracks from live API
     async function loadCareerTracks() {
       try {
-        const response = await fetch('assets/data/career-tracks.json');
-        
-        // Check if response is OK
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+        // Fetch pathways by track type (parallel requests)
+        const [globalResponse, educationResponse, careerResponse] = await Promise.all([
+          fetch(`${API_BASE}/pathways?track_type=global_remote`),
+          fetch(`${API_BASE}/pathways?track_type=local_education`),
+          fetch(`${API_BASE}/pathways?track_type=local_career`)
+        ]);
+
+        // Check responses
+        if (!globalResponse.ok || !educationResponse.ok || !careerResponse.ok) {
+          throw new Error('Failed to fetch pathways from API');
         }
-        
-        const data = await response.json();
 
-        // Render Global Remote Tracks
-        renderCards(data.globalRemoteTracks, 'global-cards');
+        const [globalData, educationData, careerData] = await Promise.all([
+          globalResponse.json(),
+          educationResponse.json(),
+          careerResponse.json()
+        ]);
 
-        // Render Local Education Tracks
-        renderCards(data.localEducationTracks, 'education-cards');
+        // Transform API data to frontend format and fetch courses for each pathway
+        const globalTracks = await transformPathways(globalData.pathways || []);
+        const educationTracks = await transformPathways(educationData.pathways || []);
+        const careerTracks = await transformPathways(careerData.pathways || []);
 
-        // Render Local Career Pathways
-        renderCards(data.localCareerPathways, 'career-cards');
+        // Render all sections
+        renderCards(globalTracks, 'global-cards');
+        renderCards(educationTracks, 'education-cards');
+        renderCards(careerTracks, 'career-cards');
 
         // Initialize accordions ONCE after all cards are rendered
         initAccordions();
+
+        console.log('[Pathways] Loaded from live API:', {
+          global: globalTracks.length,
+          education: educationTracks.length,
+          career: careerTracks.length
+        });
       } catch (error) {
-        console.error('Error loading career tracks:', error);
-        
-        // Display user-friendly error message
+        console.error('Error loading career tracks from API:', error);
+
+        // Fallback to static JSON if API fails
+        console.log('[Pathways] Falling back to static JSON...');
+        await loadCareerTracksFromJSON();
+      }
+    }
+
+    // Fallback to static JSON
+    async function loadCareerTracksFromJSON() {
+      try {
+        const response = await fetch('assets/data/career-tracks.json');
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        const data = await response.json();
+        renderCards(data.globalRemoteTracks, 'global-cards');
+        renderCards(data.localEducationTracks, 'education-cards');
+        renderCards(data.localCareerPathways, 'career-cards');
+        initAccordions();
+        console.log('[Pathways] Loaded from static JSON (fallback)');
+      } catch (error) {
+        console.error('Error loading from JSON fallback:', error);
         displayErrorMessage('Unable to load career tracks. Please refresh the page or try again later.');
       }
+    }
+
+    // Transform API pathway data to frontend format
+    async function transformPathways(pathways) {
+      const transformed = await Promise.all(pathways.map(async (pathway) => {
+        // Fetch courses for this pathway
+        let sampleCourses = [];
+        try {
+          const coursesResponse = await fetch(`${API_BASE}/courses?pathway_id=${pathway.pathway_id}`);
+          if (coursesResponse.ok) {
+            const coursesData = await coursesResponse.json();
+            sampleCourses = (coursesData.courses || []).slice(0, 3).map(course => ({
+              title: course.title,
+              duration: course.estimated_hours ? `${Math.ceil(course.estimated_hours / 5)} weeks` : '4 weeks',
+              level: capitalizeFirst(course.difficulty_level || 'beginner'),
+              description: course.description || ''
+            }));
+          }
+        } catch (e) {
+          console.warn(`Failed to fetch courses for pathway ${pathway.pathway_slug}:`, e);
+        }
+
+        return {
+          id: pathway.pathway_slug,
+          title: pathway.pathway_name,
+          icon: pathway.icon_class || 'fa-folder',
+          summary: pathway.description || '',
+          tags: pathway.tags || [],
+          section: pathway.track_type,
+          sampleCourses: sampleCourses
+        };
+      }));
+
+      return transformed;
+    }
+
+    // Helper to capitalize first letter
+    function capitalizeFirst(str) {
+      if (!str) return '';
+      return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
     function displayErrorMessage(message) {
@@ -919,8 +997,9 @@
                             course.level.toLowerCase().includes('intermediate') ? 'intermediate' :
                             course.level.toLowerCase().includes('advanced') ? 'advanced' :
                             course.level.toLowerCase().includes('entry') ? 'entry-level' : 'ages';
+          const courseSlug = course.title.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, '-');
           return `
-            <div class="sample-course-card">
+            <a href="course.html?slug=${escapeHtml(courseSlug)}" class="sample-course-card" style="text-decoration: none; color: inherit;">
               <div class="course-header">
                 <span class="course-title">${escapeHtml(course.title)}</span>
                 <span class="course-badge ${levelClass}">${escapeHtml(course.level)}</span>
@@ -932,7 +1011,7 @@
                   ${escapeHtml(course.duration)}
                 </span>
               </div>
-            </div>
+            </a>
           `;
         }).join('') : '';
 
@@ -946,8 +1025,8 @@
               ${sampleCoursesHtml}
             </div>
             <div class="accordion-cta">
-              <a href="courses.html#${escapeHtml(track.id)}" class="btn-enroll">
-                Start Learning
+              <a href="course.html?slug=${escapeHtml(track.sampleCourses[0]?.title ? track.sampleCourses[0].title.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, '-') : track.id)}" class="btn-enroll">
+                View First Course
                 <i class="fas fa-arrow-right" aria-hidden="true"></i>
               </a>
             </div>
