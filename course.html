@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Details - PMERIT</title>
+  <meta name="description" content="View course details, curriculum, and enrollment options on PMERIT.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <!-- PMERIT Standard CSS -->
+  <link rel="stylesheet" href="assets/css/theme-variables.css">
+  <link rel="stylesheet" href="assets/css/typography.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-secondary);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Hero Section */
+    .course-hero {
+      background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+      color: white;
+      padding: var(--space-16) var(--space-6);
+    }
+
+    .hero-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 350px;
+      gap: var(--space-8);
+      align-items: start;
+    }
+
+    .course-info h1 {
+      font-size: var(--text-4xl);
+      font-weight: var(--weight-bold);
+      margin: 0 0 var(--space-4);
+      line-height: var(--leading-tight);
+    }
+
+    .course-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-4);
+      margin-bottom: var(--space-4);
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: var(--text-base);
+      opacity: 0.9;
+    }
+
+    .meta-item i {
+      font-size: var(--text-lg);
+    }
+
+    .course-description {
+      font-size: var(--text-lg);
+      line-height: var(--leading-relaxed);
+      opacity: 0.95;
+      max-width: 700px;
+    }
+
+    .course-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      margin-top: var(--space-4);
+    }
+
+    .tag {
+      background: rgba(255, 255, 255, 0.2);
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--border-radius-full);
+      font-size: var(--text-sm);
+      font-weight: var(--weight-medium);
+    }
+
+    /* Enrollment Card */
+    .enrollment-card {
+      background: white;
+      border-radius: var(--border-radius-lg);
+      padding: var(--space-6);
+      box-shadow: var(--shadow-lg);
+      color: var(--text-primary);
+    }
+
+    .price-section {
+      margin-bottom: var(--space-4);
+    }
+
+    .price {
+      font-size: var(--text-3xl);
+      font-weight: var(--weight-bold);
+      color: var(--color-primary);
+    }
+
+    .price-label {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      margin-left: var(--space-2);
+    }
+
+    .btn-enroll {
+      width: 100%;
+      padding: var(--space-4);
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      color: white;
+      border: none;
+      border-radius: var(--border-radius-md);
+      font-size: var(--text-lg);
+      font-weight: var(--weight-semibold);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+    }
+
+    .btn-enroll:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-enroll:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .enrollment-features {
+      margin-top: var(--space-5);
+      padding-top: var(--space-5);
+      border-top: 1px solid var(--border-color);
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      margin-bottom: var(--space-3);
+      font-size: var(--text-base);
+    }
+
+    .feature-item i {
+      color: var(--color-success);
+      width: 20px;
+    }
+
+    /* Main Content */
+    main {
+      flex: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-6);
+      width: 100%;
+    }
+
+    /* Tabs */
+    .course-tabs {
+      display: flex;
+      gap: var(--space-2);
+      margin-bottom: var(--space-8);
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: var(--space-3);
+    }
+
+    .tab-btn {
+      padding: var(--space-3) var(--space-5);
+      background: none;
+      border: none;
+      font-size: var(--text-base);
+      font-weight: var(--weight-medium);
+      color: var(--text-secondary);
+      cursor: pointer;
+      border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
+      transition: all var(--transition-fast);
+    }
+
+    .tab-btn:hover {
+      color: var(--color-primary);
+      background: var(--bg-secondary);
+    }
+
+    .tab-btn.active {
+      color: var(--color-primary);
+      background: var(--bg-secondary);
+      font-weight: var(--weight-semibold);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Curriculum Section */
+    .curriculum-section {
+      margin-bottom: var(--space-8);
+    }
+
+    .section-title {
+      font-size: var(--text-2xl);
+      font-weight: var(--weight-bold);
+      margin-bottom: var(--space-6);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .section-title i {
+      color: var(--color-primary);
+    }
+
+    /* Module Accordion */
+    .module-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-lg);
+      margin-bottom: var(--space-4);
+      overflow: hidden;
+    }
+
+    .module-header {
+      padding: var(--space-5);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: background var(--transition-fast);
+    }
+
+    .module-header:hover {
+      background: var(--bg-secondary);
+    }
+
+    .module-info {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .module-number {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: var(--weight-bold);
+    }
+
+    .module-title {
+      font-size: var(--text-lg);
+      font-weight: var(--weight-semibold);
+    }
+
+    .module-meta {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      margin-top: var(--space-1);
+    }
+
+    .module-toggle {
+      font-size: var(--text-xl);
+      color: var(--text-secondary);
+      transition: transform var(--transition-fast);
+    }
+
+    .module-card.open .module-toggle {
+      transform: rotate(180deg);
+    }
+
+    .module-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+
+    .module-card.open .module-content {
+      max-height: 1000px;
+    }
+
+    /* Lesson List */
+    .lesson-list {
+      padding: 0 var(--space-5) var(--space-5);
+      border-top: 1px solid var(--border-color);
+    }
+
+    .lesson-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      padding: var(--space-4);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .lesson-item:last-child {
+      border-bottom: none;
+    }
+
+    .lesson-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--bg-secondary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-primary);
+    }
+
+    .lesson-info {
+      flex: 1;
+    }
+
+    .lesson-title {
+      font-weight: var(--weight-medium);
+      margin-bottom: var(--space-1);
+    }
+
+    .lesson-meta {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      display: flex;
+      gap: var(--space-4);
+    }
+
+    .lesson-duration {
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+    }
+
+    .preview-badge {
+      background: rgba(74, 164, 185, 0.15);
+      color: #4AA4B9;
+      padding: var(--space-1) var(--space-2);
+      border-radius: var(--border-radius-full);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+    }
+
+    /* About Tab */
+    .about-section {
+      margin-bottom: var(--space-8);
+    }
+
+    .about-section h3 {
+      font-size: var(--text-xl);
+      font-weight: var(--weight-semibold);
+      margin-bottom: var(--space-4);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .about-section h3 i {
+      color: var(--color-primary);
+    }
+
+    .about-section p,
+    .about-section ul {
+      color: var(--text-secondary);
+      line-height: var(--leading-relaxed);
+    }
+
+    .about-section ul {
+      padding-left: var(--space-6);
+    }
+
+    .about-section li {
+      margin-bottom: var(--space-2);
+    }
+
+    /* Instructor Card */
+    .instructor-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-lg);
+      padding: var(--space-6);
+      display: flex;
+      gap: var(--space-5);
+      align-items: flex-start;
+    }
+
+    .instructor-avatar {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: var(--text-2xl);
+      font-weight: var(--weight-bold);
+      flex-shrink: 0;
+    }
+
+    .instructor-info h4 {
+      font-size: var(--text-xl);
+      font-weight: var(--weight-semibold);
+      margin: 0 0 var(--space-2);
+    }
+
+    .instructor-info p {
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
+    /* Loading & Error States */
+    .loading-state,
+    .error-state {
+      text-align: center;
+      padding: var(--space-16);
+      color: var(--text-secondary);
+    }
+
+    .loading-state i,
+    .error-state i {
+      font-size: 4rem;
+      margin-bottom: var(--space-4);
+    }
+
+    .loading-state i {
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: var(--space-6);
+      right: var(--space-6);
+      padding: var(--space-4) var(--space-6);
+      border-radius: var(--border-radius-md);
+      color: white;
+      font-weight: var(--weight-medium);
+      display: none;
+      z-index: 2000;
+    }
+
+    .toast.success { background: #43e97b; }
+    .toast.error { background: #dc3545; }
+    .toast.show { display: block; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero-content {
+        grid-template-columns: 1fr;
+      }
+
+      .enrollment-card {
+        position: relative;
+        order: -1;
+      }
+
+      .course-info h1 {
+        font-size: var(--text-3xl);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .course-tabs {
+        flex-wrap: wrap;
+      }
+
+      .tab-btn {
+        flex: 1;
+        text-align: center;
+      }
+
+      .instructor-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div id="header-container"></div>
+
+  <!-- Course Hero (populated by JS) -->
+  <section class="course-hero" id="course-hero">
+    <div class="hero-content">
+      <div class="course-info">
+        <div class="loading-state">
+          <i class="fas fa-spinner"></i>
+          <p>Loading course details...</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main id="main-content">
+    <div id="course-content" style="display: none;">
+      <!-- Tabs -->
+      <div class="course-tabs">
+        <button class="tab-btn active" onclick="switchTab('curriculum')">
+          <i class="fas fa-list-alt"></i> Curriculum
+        </button>
+        <button class="tab-btn" onclick="switchTab('about')">
+          <i class="fas fa-info-circle"></i> About
+        </button>
+        <button class="tab-btn" onclick="switchTab('instructor')">
+          <i class="fas fa-user-tie"></i> Instructor
+        </button>
+      </div>
+
+      <!-- Curriculum Tab -->
+      <div id="curriculum-tab" class="tab-content active">
+        <div class="curriculum-section">
+          <h2 class="section-title">
+            <i class="fas fa-book-reader"></i>
+            Course Curriculum
+          </h2>
+          <div id="modules-container">
+            <!-- Modules will be loaded here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- About Tab -->
+      <div id="about-tab" class="tab-content">
+        <div class="about-section">
+          <h3><i class="fas fa-bullseye"></i> What You'll Learn</h3>
+          <ul id="learning-outcomes">
+            <!-- Learning outcomes will be loaded here -->
+          </ul>
+        </div>
+
+        <div class="about-section">
+          <h3><i class="fas fa-clipboard-list"></i> Prerequisites</h3>
+          <p id="prerequisites">No prior experience required.</p>
+        </div>
+
+        <div class="about-section">
+          <h3><i class="fas fa-book-open"></i> Full Description</h3>
+          <p id="long-description"></p>
+        </div>
+      </div>
+
+      <!-- Instructor Tab -->
+      <div id="instructor-tab" class="tab-content">
+        <div class="about-section">
+          <h3><i class="fas fa-chalkboard-teacher"></i> Your Instructor</h3>
+          <div class="instructor-card" id="instructor-card">
+            <!-- Instructor info will be loaded here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer-container"></div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Layout Loader -->
+  <script src="assets/js/settings-manager.js"></script>
+  <script src="assets/js/layout-loader.js"></script>
+
+  <script>
+    // API Configuration
+    const API_BASE = 'https://pmerit-api-worker.peoplemerit.workers.dev/api/v1';
+
+    // State
+    let currentCourse = null;
+    let courseModules = [];
+
+    // Get course ID from URL
+    function getCourseIdFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('id') || params.get('slug');
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Load layout
+      if (window.LayoutLoader) {
+        await window.LayoutLoader.init({
+          headerInsertPoint: '#header-container',
+          footerInsertPoint: '#footer-container'
+        });
+      }
+
+      // Load course
+      const courseId = getCourseIdFromUrl();
+      if (courseId) {
+        loadCourse(courseId);
+      } else {
+        showError('No course specified. Please select a course from the catalog.');
+      }
+    });
+
+    // Load Course Details
+    async function loadCourse(courseId) {
+      try {
+        const response = await fetch(`${API_BASE}/courses/${courseId}`);
+        if (!response.ok) throw new Error('Course not found');
+
+        const data = await response.json();
+        if (!data.success) throw new Error(data.error || 'Failed to load course');
+
+        currentCourse = data.course;
+        renderCourseHero(currentCourse);
+        renderCourseContent(currentCourse);
+
+        // Load modules
+        await loadModules(currentCourse.course_id);
+
+        // Update page title
+        document.title = `${currentCourse.title} - PMERIT`;
+      } catch (error) {
+        console.error('Failed to load course:', error);
+        showError('Failed to load course. Please try again later.');
+      }
+    }
+
+    // Render Course Hero
+    function renderCourseHero(course) {
+      const hero = document.getElementById('course-hero');
+      const difficultyLabel = capitalize(course.difficulty_level || 'beginner');
+      const hours = course.estimated_hours || '--';
+      const tags = course.tags || [];
+
+      hero.innerHTML = `
+        <div class="hero-content">
+          <div class="course-info">
+            <h1>${escapeHtml(course.title)}</h1>
+            <div class="course-meta-row">
+              <span class="meta-item">
+                <i class="fas fa-signal"></i>
+                ${difficultyLabel}
+              </span>
+              <span class="meta-item">
+                <i class="fas fa-clock"></i>
+                ${hours} hours
+              </span>
+              <span class="meta-item">
+                <i class="fas fa-layer-group"></i>
+                ${course.module_count || 0} modules
+              </span>
+              ${course.pathway_name ? `
+              <span class="meta-item">
+                <i class="fas fa-route"></i>
+                ${escapeHtml(course.pathway_name)}
+              </span>
+              ` : ''}
+            </div>
+            <p class="course-description">${escapeHtml(course.description || '')}</p>
+            ${tags.length > 0 ? `
+            <div class="course-tags">
+              ${tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+            ` : ''}
+          </div>
+
+          <div class="enrollment-card">
+            <div class="price-section">
+              <span class="price">${course.is_free ? 'Free' : '$99'}</span>
+              ${!course.is_free ? '<span class="price-label">one-time</span>' : ''}
+            </div>
+            <button class="btn-enroll" onclick="enrollInCourse()">
+              <i class="fas fa-play-circle"></i>
+              Start Learning
+            </button>
+            <div class="enrollment-features">
+              <div class="feature-item">
+                <i class="fas fa-check"></i>
+                <span>Full lifetime access</span>
+              </div>
+              <div class="feature-item">
+                <i class="fas fa-check"></i>
+                <span>Access on mobile and desktop</span>
+              </div>
+              <div class="feature-item">
+                <i class="fas fa-check"></i>
+                <span>Certificate of completion</span>
+              </div>
+              ${course.is_free ? `
+              <div class="feature-item">
+                <i class="fas fa-check"></i>
+                <span>No credit card required</span>
+              </div>
+              ` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Render Course Content
+    function renderCourseContent(course) {
+      document.getElementById('course-content').style.display = 'block';
+
+      // About tab
+      const outcomes = course.learning_outcomes || ['Complete hands-on projects', 'Build real-world skills', 'Earn a certificate'];
+      document.getElementById('learning-outcomes').innerHTML = outcomes.map(o => `<li>${escapeHtml(o)}</li>`).join('');
+
+      document.getElementById('prerequisites').textContent = course.prerequisites || 'No prior experience required. Just bring your enthusiasm to learn!';
+      document.getElementById('long-description').textContent = course.long_description || course.description || 'Comprehensive course content designed to help you master new skills.';
+
+      // Instructor
+      const initials = getInitials(course.instructor_name || 'PMERIT Instructor');
+      document.getElementById('instructor-card').innerHTML = `
+        <div class="instructor-avatar">${initials}</div>
+        <div class="instructor-info">
+          <h4>${escapeHtml(course.instructor_name || 'PMERIT Instructor')}</h4>
+          <p>${escapeHtml(course.instructor_bio || 'Expert instructor with years of experience in this field.')}</p>
+        </div>
+      `;
+    }
+
+    // Load Modules
+    async function loadModules(courseId) {
+      try {
+        const response = await fetch(`${API_BASE}/courses/${courseId}/modules`);
+        const data = await response.json();
+
+        if (!data.success) {
+          throw new Error(data.error || 'Failed to load modules');
+        }
+
+        courseModules = data.modules || [];
+        renderModules(courseModules);
+      } catch (error) {
+        console.error('Failed to load modules:', error);
+        document.getElementById('modules-container').innerHTML = `
+          <div class="error-state">
+            <i class="fas fa-exclamation-circle"></i>
+            <p>Failed to load curriculum. Please refresh the page.</p>
+          </div>
+        `;
+      }
+    }
+
+    // Render Modules
+    function renderModules(modules) {
+      const container = document.getElementById('modules-container');
+
+      if (modules.length === 0) {
+        container.innerHTML = `
+          <div class="error-state">
+            <i class="fas fa-folder-open"></i>
+            <p>Curriculum coming soon!</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = modules.map((module, index) => `
+        <div class="module-card" data-module-id="${module.id}">
+          <div class="module-header" onclick="toggleModule('${module.id}')">
+            <div class="module-info">
+              <div class="module-number">${index + 1}</div>
+              <div>
+                <div class="module-title">${escapeHtml(module.title)}</div>
+                <div class="module-meta">${module.lesson_count || 0} lessons</div>
+              </div>
+            </div>
+            <i class="fas fa-chevron-down module-toggle"></i>
+          </div>
+          <div class="module-content">
+            <div class="lesson-list" id="lessons-${module.id}">
+              <div class="loading-state" style="padding: var(--space-4);">
+                <i class="fas fa-spinner"></i> Loading lessons...
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Toggle Module Accordion
+    async function toggleModule(moduleId) {
+      const moduleCard = document.querySelector(`[data-module-id="${moduleId}"]`);
+      const isOpen = moduleCard.classList.contains('open');
+
+      // Close all modules
+      document.querySelectorAll('.module-card').forEach(card => {
+        card.classList.remove('open');
+      });
+
+      if (!isOpen) {
+        moduleCard.classList.add('open');
+        // Load lessons if not already loaded
+        const lessonList = document.getElementById(`lessons-${moduleId}`);
+        if (lessonList.querySelector('.loading-state')) {
+          await loadLessons(moduleId);
+        }
+      }
+    }
+
+    // Load Lessons for a Module
+    async function loadLessons(moduleId) {
+      try {
+        const response = await fetch(`${API_BASE}/modules/${moduleId}/lessons`);
+        const data = await response.json();
+
+        const lessonList = document.getElementById(`lessons-${moduleId}`);
+
+        if (!data.success || !data.lessons || data.lessons.length === 0) {
+          lessonList.innerHTML = `<div class="lesson-item"><span>No lessons yet</span></div>`;
+          return;
+        }
+
+        lessonList.innerHTML = data.lessons.map(lesson => {
+          const icon = getLessonIcon(lesson.lesson_type);
+          const duration = lesson.estimated_duration_minutes ? `${lesson.estimated_duration_minutes} min` : '';
+
+          return `
+            <div class="lesson-item">
+              <div class="lesson-icon">
+                <i class="fas ${icon}"></i>
+              </div>
+              <div class="lesson-info">
+                <div class="lesson-title">${escapeHtml(lesson.lesson_title)}</div>
+                <div class="lesson-meta">
+                  ${duration ? `<span class="lesson-duration"><i class="fas fa-clock"></i> ${duration}</span>` : ''}
+                  <span>${capitalize(lesson.lesson_type)}</span>
+                </div>
+              </div>
+              ${lesson.is_preview ? '<span class="preview-badge">Preview</span>' : ''}
+            </div>
+          `;
+        }).join('');
+      } catch (error) {
+        console.error('Failed to load lessons:', error);
+        document.getElementById(`lessons-${moduleId}`).innerHTML = `
+          <div class="lesson-item"><span>Failed to load lessons</span></div>
+        `;
+      }
+    }
+
+    // Get Lesson Icon by Type
+    function getLessonIcon(type) {
+      const icons = {
+        video: 'fa-play-circle',
+        reading: 'fa-file-alt',
+        quiz: 'fa-question-circle',
+        interactive: 'fa-laptop-code',
+        assignment: 'fa-tasks'
+      };
+      return icons[type] || 'fa-file';
+    }
+
+    // Enroll in Course
+    async function enrollInCourse() {
+      // For now, just show a message - in production this would call the enrollment API
+      // This would typically require authentication
+      const testUserId = '00000000-0000-0000-0000-000000000001';
+
+      try {
+        const response = await fetch(`${API_BASE}/courses/${currentCourse.course_id}/enroll`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_id: testUserId })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          showToast('Successfully enrolled! Start learning now.', 'success');
+        } else if (data.error && data.error.includes('already enrolled')) {
+          showToast('You are already enrolled in this course!', 'success');
+        } else {
+          showToast(data.error || 'Failed to enroll. Please try again.', 'error');
+        }
+      } catch (error) {
+        console.error('Enrollment error:', error);
+        showToast('Enrollment failed. Please try again.', 'error');
+      }
+    }
+
+    // Switch Tab
+    function switchTab(tabName) {
+      // Update tab buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+
+      // Update tab content
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      document.getElementById(`${tabName}-tab`).classList.add('active');
+    }
+
+    // Show Error
+    function showError(message) {
+      document.getElementById('course-hero').innerHTML = `
+        <div class="hero-content">
+          <div class="error-state" style="grid-column: 1/-1;">
+            <i class="fas fa-exclamation-circle"></i>
+            <p>${escapeHtml(message)}</p>
+            <a href="pathways.html" class="btn-enroll" style="width: auto; margin-top: var(--space-4);">
+              Browse Courses
+            </a>
+          </div>
+        </div>
+      `;
+    }
+
+    // Toast Notification
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = `toast ${type} show`;
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // Helper Functions
+    function escapeHtml(str) {
+      if (!str) return '';
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function capitalize(str) {
+      if (!str) return '';
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    function getInitials(name) {
+      if (!name) return 'PI';
+      return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+    }
+  </script>
+</body>
+</html>
