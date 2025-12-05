@@ -52,14 +52,14 @@ Say "PMERIT QUICK FIX: [description]" for minor fixes.
 | H4 | Left panel actions | ⬜ | 0/3 | No | Dashboard, Career Track, etc. |
 | H5 | Sign-Up modal triggers | ⬜ | 0/3 | No | On protected action click |
 | H6 | Customer Service badge | ⬜ | 0/3 | No | AI Receptionist mode |
-| H7 | Google Translate works | 🔄 | 1/3 | No | **ACTIVE** — Not working on shared footer |
+| H7 | Azure Translator works | 🔄 | 1/3 | No | **ACTIVE** — Implement Azure Translator |
 | H8 | Header/Footer correct | 🔄 | 0/3 | No | index.html non-MOSA |
 | H9 | Mobile responsive | ⬜ | 0/3 | No | Test at 375px |
 | H10 | No broken assets | ⬜ | 0/3 | No | Visual inspection |
 
 ### Active Requirement: H7
 
-**Requirement:** Google Translate widget functional on ALL pages  
+**Requirement:** Azure Translator functional on ALL pages  
 **Status:** 🔄 In Progress  
 **Attempts:** 1/3  
 **Extended:** No  
@@ -70,12 +70,12 @@ Say "PMERIT QUICK FIX: [description]" for minor fixes.
 - **Why failed:** Script executes before element exists (timing issue with layout-loader.js)
 
 #### Attempt 2 (Session 25) — PENDING
-- **Planned approach:** Modify layout-loader.js to initialize Google Translate AFTER footer loads
+- **Planned approach:** Integrate Azure Translator API into layout-loader.js
 - **Alternative:** Add MutationObserver to detect element before initializing
 
 #### Next Action
 ```
-Modify layout-loader.js to trigger Google Translate initialization 
+Integrate Azure Translator API into layout-loader.js
 after footer partial is fully loaded into the DOM.
 ```
 
@@ -150,7 +150,7 @@ When an issue is escalated, add it here:
 
 | Task | Session | Phase | Notes |
 |------|---------|-------|-------|
-| Google Translate basic setup | 24 | Gate | Added to footer.html |
+| Language selector setup | 24 | Gate | Added to footer.html |
 | Syntax error fix | 24 | Gate | Closing brace |
 | CSS styling | 24 | Gate | Widget styled |
 | Script placement | 24 | Gate | Outside modal |
@@ -188,14 +188,14 @@ When an issue is escalated, add it here:
 - ✅ Sync checklist defined
 
 **Next:**
-- [ ] H7 Attempt 2: Google Translate on dynamic pages
+- [ ] H7 Attempt 2: Azure Translator on dynamic pages
 - [ ] Verify remaining Homepage Gate requirements
 
 ---
 
 ### Session 24 — November 2024
 
-**Focus:** Google Translate Implementation  
+**Focus:** Language Translation Implementation  
 
 **Completed:**
 - ✅ Widget added to footer
@@ -249,9 +249,9 @@ When an issue is escalated, add it here:
 ```
 📍 Phase: HOMEPAGE GATE
 📊 Status: In Progress
-🎯 Requirement: H7 — Google Translate functional
+🎯 Requirement: H7 — Azure Translator functional
 🔢 Attempt: 2/3
-⚡ Next: Modify layout-loader.js to init after footer loads
+⚡ Next: Integrate Azure Translator API into layout-loader.js
 ```
 
 ---

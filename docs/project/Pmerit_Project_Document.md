@@ -282,7 +282,7 @@ PHASE PROGRESSION
 - [ ] Homepage Gate requirements (H1-H10)
 - [ ] Header CTA implementation (Start Learning, Sign In, Donate)
 - [ ] Auth routing (`/auth?action=start|signin`)
-- [ ] Google Translate on dynamic pages (H7)
+- [ ] Azure Translator on dynamic pages (H7)
 
 ### Blocked
 
@@ -391,16 +391,17 @@ Incomplete tasks are carried forward between sessions. This section is updated a
 
 ---
 
-### CF-001: Google Translate on Dynamic Pages (H7)
+### CF-001: Azure Translator on Dynamic Pages (H7)
 **From Session:** 25 | **Priority:** High | **Phase:** HOMEPAGE GATE
 
-**Description:** Google Translate widget shows "0 × 0" on pages that load footer via layout-loader.js. Works on index.html (embedded footer).
+**Description:** Implement Microsoft Azure Translator for multi-language support across all pages. Deprecated Google Translate in favor of Azure Translator for better control and reliability.
 
-**Blockers:** Timing issue — script executes before element exists
+**Blockers:** None — Azure Translator API configured in TR environment
 
 **Next Steps:**
-1. Modify layout-loader.js to initialize Google Translate AFTER footer loads
-2. Alternative: Add MutationObserver to detect element before initializing
+1. Integrate Azure Translator widget/API into layout-loader.js
+2. Ensure language selector works on all dynamic pages
+3. Test translation functionality across all pages
 
 **Reference:** BRAINSTORM PART 0 (Section 0.4 - Responsiveness Requirements)
 

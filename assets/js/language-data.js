@@ -1,9 +1,9 @@
 /**
  * PMERIT Language Data
- * Complete list of Google Translate supported languages
+ * Complete list of Azure Translator supported languages
  *
  * Structure:
- * - code: Google Translate language code
+ * - code: Azure Translator language code
  * - name: English name
  * - nativeName: Name in native script
  * - offline: true if Language Manager supports offline mode (en, yo, ig, ha)

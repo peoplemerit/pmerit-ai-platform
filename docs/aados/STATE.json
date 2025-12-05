@@ -8,7 +8,7 @@
   "phase_status": "in_progress",
   
   "active_requirement": "H7",
-  "requirement_description": "Google Translate functional",
+  "requirement_description": "Azure Translator functional",
   "attempt_count": 2,
   "max_attempts": 3,
   "extended": false,

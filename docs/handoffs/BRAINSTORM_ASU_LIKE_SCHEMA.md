@@ -2977,7 +2977,7 @@ The current AADOS Homepage Gate requirements (H1-H10) should align with PART 0:
 | H4 | Left panel actions | Update: Include "Donate" |
 | H5 | Sign-Up modal triggers | Update: `/auth?action=start` pattern |
 | H6 | Customer Service badge | ✅ Keep (becomes "Raise Hand") |
-| H7 | Google Translate works | ✅ Keep |
+| H7 | Azure Translator works | ✅ Keep |
 | H8 | Header/Footer correct | Update: Add Pricing, Donate links |
 | H9 | Mobile responsive | ✅ Keep |
 | H10 | No broken assets | ✅ Keep |
@@ -3034,7 +3034,7 @@ Add new requirements from PART 0:
 | H4 | Header CTAs functional | Start Learning, Sign In, Donate work |
 | H5 | Auth routing works | `/auth?action=start` and `?action=signin` |
 | H6 | Donate page loads | `/donate` shows mission explainer |
-| H7 | Google Translate works | Widget on all pages |
+| H7 | Azure Translator works | Language selector on all pages |
 | H8 | Pricing page loads | `/pricing` exists (placeholder OK) |
 | H9 | Mobile responsive | Test at 375px |
 | H10 | No broken assets | Visual inspection passes |

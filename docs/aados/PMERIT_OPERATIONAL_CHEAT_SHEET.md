@@ -215,7 +215,7 @@ git push origin main
 ```
 📍 Phase: HOMEPAGE GATE
 📊 Status: In Progress
-🎯 Task: H7 — Google Translate functional
+🎯 Task: H7 — Azure Translator functional
 🔢 Attempt: 2/3 pending
 ⚡ Active Env: FE (Frontend)
 ```
