@@ -481,7 +481,7 @@ Before Claude Web session:
 | H4 | Left panel quick actions visible | Dashboard, Career Track, Virtual Human, Customer Service |
 | H5 | Sign-Up modal triggers correctly | Click protected action → Modal appears |
 | H6 | Customer Service Mode badge | AI responds with Receptionist badge |
-| H7 | Google Translate functional | Widget works on ALL pages |
+| H7 | Azure Translator functional | Language selector works on ALL pages |
 | H8 | Header/Footer display correctly | All navigation links work |
 | H9 | Mobile responsive | Test at 375px width |
 | H10 | No broken images/assets | Visual inspection passes |

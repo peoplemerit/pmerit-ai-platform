@@ -35,7 +35,7 @@ Empowering underserved communities—with primary focus on the USA and Nigeria/A
 ### Technical Features
 - **MOSA Architecture** - Modular Open Systems Approach with reusable partials
 - **Theme System** - Light/dark mode with persistence
-- **Multi-language Support** - Google Translate integration
+- **Multi-language Support** - Microsoft Azure Translator integration
 - **Accessibility** - WCAG AA compliant, keyboard navigation, screen reader support
 - **Responsive Design** - Mobile-first, works on all devices
 - **Offline-Capable** - Low-bandwidth optimized
@@ -49,7 +49,7 @@ The platform uses a partials-based architecture where shared components are load
 ```
 partials/
 ├── header.html           # Site header with navigation
-├── footer.html           # Footer with links & Google Translate
+├── footer.html           # Footer with links & language selector
 ├── nav.html              # Navigation menu
 ├── body.html             # Main content wrapper
 ├── auth-modal.html       # Authentication modal
