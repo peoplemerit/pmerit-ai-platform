@@ -256,15 +256,37 @@ When an issue is escalated, add it here:
 
 ---
 
-## 🔗 RELATED DOCUMENTS
+## 🔗 FEATURE SPECIFICATIONS
 
-| Document | Purpose |
-|----------|---------|
-| GOVERNANCE_V5_FINAL.md | Rules, workflows, commands |
-| Narrative Journey | User/Admin journey map |
-| Session Handoffs | Point-in-time snapshots |
+For detailed feature specifications and schema designs, see the **three primary project documents**:
+
+| Document | Purpose | Location |
+|----------|---------|----------|
+| **Pmerit Project Document** | Master roadmap and strategic overview | `docs/project/Pmerit_Project_Document.md` |
+| **Brainstorm ASU-Like Schema** | Feature specs, schema design, implementation flow | `docs/handoffs/BRAINSTORM_ASU_LIKE_SCHEMA.md` |
+| **User & Admin Journey** | Comprehensive user/admin narrative flows | `docs/project/Pmerit-comprehensively-narrative-users-and-Admin-Journey.md` |
+
+### Part → Phase Mapping
+
+| Brainstorm Part | AADOS Phase |
+|-----------------|-------------|
+| PART 0: Front Page Shell | HOMEPAGE GATE |
+| PART 1-5: User Journey | Phases 0-6 |
+| PART 6-8: Platform & Admin | Phases 7-10 |
+| PART 9: AADOS Integration | Governance alignment |
+| PART 10: UI Design System | Design standardization |
 
 ---
 
-*Production: https://pmerit.com*  
+## 🔗 GOVERNANCE DOCUMENTS
+
+| Document | Purpose |
+|----------|---------|
+| `docs/aados/GOVERNANCE.md` | Rules, workflows, commands |
+| `docs/aados/ENVIRONMENTS.md` | Environment definitions |
+| `docs/aados/PMERIT_OPERATIONAL_CHEAT_SHEET.md` | Quick reference |
+
+---
+
+*Production: https://pmerit.com*
 *Repository: github.com/peoplemerit/pmerit-ai-platform*
