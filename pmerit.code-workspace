@@ -2,11 +2,11 @@
 	"folders": [
 		{
 			"name": "PMERIT Frontend",
-			"path": "."
+			"path": "./pmerit-ai-platform"
 		},
 		{
 			"name": "PMERIT Backend",
-			"path": "../pmerit-api-worker"
+			"path": "./pmerit-api-worker"
 		}
 	],
 	"settings": {
