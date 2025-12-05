@@ -181,12 +181,27 @@ See [DEPLOYMENT_CHECKLIST.md](./DEPLOYMENT_CHECKLIST.md) for full deployment gui
 
 ## Documentation
 
-- [API Documentation](./docs/API_DOCUMENTATION.md)
-- [Developer Guide](./docs/DEVELOPER_GUIDE.md)
-- [User Guide](./docs/USER_GUIDE.md)
-- [Deployment Guide](./docs/DEPLOYMENT.md)
-- [Career Matching Algorithm](./docs/CAREER_MATCHING_ALGORITHM.md)
-- [Layout Loader Usage](./docs/LAYOUT_LOADER_USAGE.md)
+### Project Documents (Primary)
+
+| Document | Purpose |
+|----------|---------|
+| [Pmerit Project Document](./docs/project/Pmerit_Project_Document.md) | Master roadmap, consolidated planning, and strategic overview |
+| [Brainstorm ASU-Like Schema](./docs/handoffs/BRAINSTORM_ASU_LIKE_SCHEMA.md) | Feature specifications, schema design, and implementation details |
+| [User & Admin Journey](./docs/project/Pmerit-comprehensively-narrative-users-and-Admin-Journey.md) | Comprehensive user flows and admin journey narratives |
+
+### Technical Documentation
+
+- [API Documentation](./docs/tech/API_DOCUMENTATION.md)
+- [Developer Guide](./docs/tech/DEVELOPER_GUIDE.md)
+- [User Guide](./docs/tech/USER_GUIDE.md)
+- [Deployment Guide](./docs/tech/DEPLOYMENT.md)
+- [Career Matching Algorithm](./docs/tech/CAREER_MATCHING_ALGORITHM.md)
+- [Layout Loader Usage](./docs/tech/LAYOUT_LOADER_USAGE.md)
+
+### Governance (AADOS)
+
+- [AADOS Governance](./docs/aados/GOVERNANCE.md) - Workflow rules and phase gates
+- [Task Tracker](./docs/aados/TASK_TRACKER.md) - Living status tracker
 
 ## Contributing
 
