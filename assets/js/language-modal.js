@@ -236,7 +236,7 @@
   let searchInput = null;
   let currentLanguage = 'en';
 
-  // Detect current active language from LanguageManager or Google Translate cookie
+  // Detect current active language from LanguageManager or Azure Translator
   function getCurrentLanguage() {
     // Priority 1: Check LanguageManager for offline language (most reliable)
     if (window.LanguageManager && typeof window.LanguageManager.getCurrentLanguage === 'function') {
