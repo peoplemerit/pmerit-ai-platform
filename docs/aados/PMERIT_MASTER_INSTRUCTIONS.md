@@ -1,59 +1,85 @@
 # 🔐 PMERIT MASTER INSTRUCTIONS
 
-**Purpose:** Standalone coordination document for Claude Web and Claude Code Desktop  
-**Version:** 1.0  
-**Created:** 2024-11-29  
-**Author:** @peoplemerit (Tier 1 Admin)  
+**Purpose:** Standalone coordination document for Claude Web and Claude Code Desktop
+**Version:** 2.0
+**Updated:** 2025-12-05
+**Author:** @peoplemerit (Tier 1 Admin)
 
 ---
 
-## 🎯 DOCUMENT PURPOSE
+## 🎯 PROJECT IDENTITY
 
-This document serves as the **single source of coordination** between:
-- **Claude Web** (claude.ai)
-- **Claude Code Desktop** (local execution)
-- **Solo Developer** (@peoplemerit)
+This is the **PMERIT AI Educational Platform** project.
 
-Both Claude environments MUST read and follow these instructions.
+| Resource | URL/Path |
+|----------|----------|
+| **Production** | https://pmerit.com |
+| **API** | https://pmerit-api-worker.peoplemerit.workers.dev |
+| **Frontend Repo** | https://github.com/peoplemerit/pmerit-ai-platform |
+| **Backend Repo** | https://github.com/peoplemerit/pmerit-api-worker |
+| **Local Frontend** | `E:\pmerit\pmerit-ai-platform` |
+| **Local Backend** | `E:\pmerit\pmerit-api-worker` |
 
 ---
 
-## 📁 FILE LOCATIONS (Source of Truth)
+## 📚 PRIMARY PROJECT DOCUMENTS (What to Build)
 
-### GitHub Repositories
-| Repo | URL | Purpose |
-|------|-----|---------|
-| Frontend | `https://github.com/peoplemerit/pmerit-ai-platform` | UI, Pages, Docs |
-| Backend | `https://github.com/peoplemerit/pmerit-api-worker` | API, Workers |
+**Claude MUST reference these before making implementation decisions:**
 
-### Local Paths
-| Environment | Path |
-|-------------|------|
-| Frontend | `E:\pmerit\pmerit-ai-platform` |
-| Backend | `E:\pmerit\pmerit-api-worker` |
+| Document | Location | Purpose |
+|----------|----------|---------|
+| **Pmerit Project Document** | `docs/project/Pmerit_Project_Document.md` | Master roadmap & strategic overview |
+| **Brainstorm ASU-Like Schema** | `docs/handoffs/BRAINSTORM_ASU_LIKE_SCHEMA.md` | Feature specs, schema design, implementation flow |
+| **User & Admin Journey** | `docs/project/Pmerit-comprehensively-narrative-users-and-Admin-Journey.md` | User flows & admin journey narratives |
 
-### Production URLs
-| Environment | URL |
-|-------------|-----|
-| Site | https://pmerit.com |
-| API | https://pmerit-api-worker.peoplemerit.workers.dev |
+### Brainstorm Part → AADOS Phase Mapping
 
-### Governance Files (in Frontend Repo)
-| File | Path | Purpose |
-|------|------|---------|
-| Environments | `docs/aados/ENVIRONMENTS.md` | All environment definitions |
-| State | `docs/aados/STATE.json` | Current state pointer |
-| Governance | `docs/aados/GOVERNANCE.md` | Rules, phases, workflows |
-| Task Tracker | `docs/aados/TASK_TRACKER.md` | Living status, attempts |
-| Master Instructions | `docs/aados/PMERIT_MASTER_INSTRUCTIONS.md` | This file |
-| Cheat Sheet | `docs/aados/PMERIT_OPERATIONAL_CHEAT_SHEET.md` | Quick reference |
-| Handoffs | `docs/handoffs/SESSION_X.md` | Session snapshots |
+| Brainstorm Part | AADOS Phase |
+|-----------------|-------------|
+| PART 0: Front Page Shell | HOMEPAGE GATE |
+| PART 1-5: User Journey | Phases 0-6 |
+| PART 6-8: Platform & Admin | Phases 7-10 |
+| PART 9: AADOS Integration | Governance alignment |
+| PART 10: UI Design System | Design standardization |
 
-### Full Environment Details
-See `docs/aados/ENVIRONMENTS.md` for complete environment specifications including:
-- Azure Translation Service
-- Neon PostgreSQL Database
-- DigitalOcean (reserved)
+⚠️ **CRITICAL RULE:** Before modifying ANY functionality, Claude must:
+1. Check if the change aligns with **Brainstorm ASU-Like Schema**
+2. Verify against **User & Admin Journey**
+3. If uncertain → ASK Solo Developer before proceeding
+4. Never assume — always verify against project documents
+
+---
+
+## 🔧 GOVERNANCE FILES (How to Work)
+
+All governance files are in `docs/aados/`:
+
+| File | Purpose |
+|------|---------|
+| `GOVERNANCE.md` | Rules, phases, workflows |
+| `TASK_TRACKER.md` | Living status, attempts |
+| `STATE.json` | Current state pointer (machine-readable) |
+| `ENVIRONMENTS.md` | Environment definitions (FE, BE, DB, TR) |
+| `PMERIT_MASTER_INSTRUCTIONS.md` | This file — coordination rules |
+| `PMERIT_OPERATIONAL_CHEAT_SHEET.md` | Quick reference |
+
+**Claude MUST read these files before starting any work.**
+
+---
+
+## 🌐 ENVIRONMENT MAP
+
+| ID | Name | Local Path | When to Use |
+|----|------|------------|-------------|
+| `FE` | Frontend | `E:\pmerit\pmerit-ai-platform` | UI, styling, client JS, docs |
+| `BE` | Backend | `E:\pmerit\pmerit-api-worker` | API endpoints, AI personas, TTS |
+| `DB` | Database | Neon Dashboard | Schema changes, data migrations |
+| `TR` | Translation | Azure Portal | Translation API config |
+
+See `docs/aados/ENVIRONMENTS.md` for complete specifications.
+
+---
+
 ## ⚡ QUICK COMMANDS
 
 | Command | Effect |
@@ -66,8 +92,36 @@ See `docs/aados/ENVIRONMENTS.md` for complete environment specifications includi
 | **PMERIT PHASES** | Show phase progression map |
 | **EXTEND: [ID]** | Grant 2 more attempts (3→5) for a requirement |
 | **PHASE SKIP: [#]** | Emergency skip (requires justification) |
+| **ENV: FE** | Switch focus to Frontend |
+| **ENV: BE** | Switch focus to Backend |
+| **ENV: BOTH** | Coordinate both repositories |
 | **CODE DESKTOP UNAVAILABLE** | Switch to Fallback Two-Way workflow |
 | **CODE DESKTOP AVAILABLE** | Switch to Standard Three-Way workflow |
+
+---
+
+## 🚀 SESSION STARTUP
+
+### Using PowerShell Script (Recommended)
+
+```powershell
+# From E:\pmerit\pmerit-ai-platform
+.\Start-PmeritSession.ps1
+```
+
+This script will:
+1. ✅ Check Frontend repo sync status
+2. ✅ Check Backend repo sync status
+3. ✅ Display current state from `STATE.json`
+4. ✅ Prompt: "Say PMERIT CONTINUE to your AI assistant"
+
+### Manual Sync Check
+
+```bash
+git fetch origin && git status
+```
+
+**Expected if in sync:** `"Your branch is up to date with 'origin/main'."`
 
 ---
 
@@ -115,22 +169,16 @@ Say 'CODE DESKTOP AVAILABLE' when service is restored."
 ```
 🔒 SYNC GATE CHECK REQUIRED
 
-Before proceeding, please verify sync status:
+Before proceeding, please run:
+.\Start-PmeritSession.ps1
 
-STEP 1: Open terminal in E:\pmerit\pmerit-ai-platform
-
-STEP 2: Run these commands:
+Or manually:
     git fetch origin
     git status
 
-STEP 3: Report the output.
-
-Expected if in sync:
-    "Your branch is up to date with 'origin/main'."
-
 ⛔ Cannot proceed until sync is verified.
 
-→ Paste output, or say "PMERIT SYNC CONFIRMED" if already verified.
+→ Say "PMERIT SYNC CONFIRMED" when ready.
 ```
 
 ### Sync Gate Responses
@@ -142,76 +190,95 @@ Expected if in sync:
 | ⚠️ Diverged | (paste output) | Help resolve conflicts |
 | 🚫 Uncommitted changes | (paste output) | Instruct user to commit or stash |
 
-### Bypass (Emergency Only)
-
-Sync gate can ONLY be bypassed if:
-1. GitHub is down (verified)
-2. Network is unavailable
-3. User explicitly approves with reason
-
-Document any bypass in TASK_TRACKER.md.
-
 ---
 
 ## 📂 FILE ACCESS PROTOCOL
-
-### For Claude Web
-
-**Priority 1: GitHub Sync in Project Knowledge**
-```
-Claude Web should first attempt to access governance files through 
-the GitHub sync connection in Project Knowledge.
-
-Search for: "GOVERNANCE" or "TASK_TRACKER" in project knowledge
-```
-
-**Priority 2: Request Direct Upload**
-```
-If GitHub sync is unavailable or outdated, Claude Web should say:
-
-"I cannot access the latest governance files through GitHub sync.
-Please either:
-1. Click 'Sync now' on the GitHub connection in Project Knowledge, OR
-2. Upload the latest files directly:
-   - docs/GOVERNANCE.md
-   - docs/TASK_TRACKER.md
-   
-From: E:\pmerit\pmerit-ai-platform\docs\"
-```
-
-**Priority 3: Use Cached Version**
-```
-If user confirms files haven't changed, Claude Web may proceed 
-with previously loaded content, noting:
-
-"Using cached governance files from [date]. 
-Please confirm these are still current."
-```
 
 ### For Claude Code Desktop
 
 **Direct Repository Access:**
 ```
-Read from: E:\pmerit\pmerit-ai-platform\docs\GOVERNANCE.md
-Read from: E:\pmerit\pmerit-ai-platform\docs\TASK_TRACKER.md
+Read from: E:\pmerit\pmerit-ai-platform\docs\aados\
+Update directly: E:\pmerit\pmerit-ai-platform\docs\aados\TASK_TRACKER.md
+```
 
-Update directly: E:\pmerit\pmerit-ai-platform\docs\TASK_TRACKER.md
+### For Claude Web
+
+**Priority 1: GitHub Sync in Project Knowledge**
+```
+Search for: "GOVERNANCE" or "TASK_TRACKER" in project knowledge
+```
+
+**Priority 2: Request Direct Upload**
+```
+If GitHub sync is unavailable, request user upload:
+- docs/aados/GOVERNANCE.md
+- docs/aados/TASK_TRACKER.md
+- docs/aados/STATE.json
 ```
 
 ---
 
-## ⚖️ CONFLICT RESOLUTION & DECISION AUTHORITY
+## 📋 DOCUMENT HIERARCHY (Priority Order)
+
+1. **Brainstorm ASU-Like Schema** — Feature specifications (WHAT to build)
+2. **User & Admin Journey** — User flow definitions
+3. **TASK_TRACKER.md** — Living status (WHERE we are)
+4. **GOVERNANCE.md** — Rules and workflows (HOW to work)
+5. **Pmerit Project Document** — Strategic overview (WHY)
+
+**If documents conflict:** Solo Developer (@peoplemerit) has final say.
+
+---
+
+## 🔄 AUTO-CONTINUITY BEHAVIOR
+
+### When "PMERIT CONTINUE" is Received
+
+**Claude (Web or Code Desktop) MUST:**
+
+1. **Immediately recognize** this is the PMERIT AI Educational Platform project
+2. **Check Sync Gate** — Request sync verification before proceeding
+3. **Read** STATE.json and TASK_TRACKER.md for current phase and status
+4. **Identify** the last incomplete requirement or task
+5. **Reference** appropriate section in Brainstorm document
+6. **State** the current phase, status, and next action
+7. **Begin work** without asking for additional context
+
+### Auto-Continuity Response Template
+
+```
+🔄 PMERIT AUTO-CONTINUITY ACTIVATED
+
+🔒 Sync Gate: [Pending verification / Confirmed]
+📍 Current Phase: [From STATE.json: current_phase]
+📊 Phase Status: [From STATE.json: phase_status]
+🎯 Active Requirement: [From STATE.json: active_requirement]
+🔢 Attempt: [From STATE.json: attempt_count/max_attempts]
+⚡ Workflow Mode: [From STATE.json: workflow_mode]
+
+📚 Reference Docs:
+- Feature Spec: docs/handoffs/BRAINSTORM_ASU_LIKE_SCHEMA.md (PART X)
+- User Flow: docs/project/Pmerit-comprehensively-narrative-users-and-Admin-Journey.md
+
+Next Action:
+[Specific task from TASK_TRACKER.md]
+
+→ [Instructions for user]
+```
+
+---
+
+## ⚖️ CONFLICT RESOLUTION
 
 ### When Workflow vs. Implementation Contradict
-
-The governance documents describe an **ideal workflow**, but the **actual production implementation** at pmerit.com may differ.
 
 **When Claude detects a contradiction:**
 
 ```
 ⚠️ WORKFLOW vs. IMPLEMENTATION CONFLICT DETECTED
 
-Document says: [What governance/narrative specifies]
+Document says: [What governance/brainstorm specifies]
 Production shows: [What actually exists on pmerit.com]
 
 Options:
@@ -235,101 +302,20 @@ Your decision will be documented in TASK_TRACKER.md.
 | Escalation timing | Automatic at 3 attempts (extendable to 5) |
 | Emergency bypasses | Solo Developer only |
 
-### Decision Documentation
-
-All conflict resolutions must be recorded:
-
-```markdown
-### Decision Log Entry
-
-**Date:** [Date]
-**Conflict:** [Brief description]
-**Document Said:** [X]
-**Implementation Had:** [Y]
-**Decision:** [A/B/C/Custom]
-**Rationale:** [Why this choice]
-**Action Taken:** [What was done]
-**Decided By:** @peoplemerit
-```
-
----
-
-## 🔄 AUTO-CONTINUITY BEHAVIOR
-
-### When "PMERIT CONTINUE" is Received
-
-**Claude (Web or Code Desktop) MUST:**
-
-1. **Immediately recognize** this is the PMERIT AI Educational Platform project
-2. **Check Sync Gate** — Request sync verification before proceeding
-3. **Read** TASK_TRACKER.md for current phase and status
-4. **Identify** the last incomplete requirement or task
-5. **State** the current phase, status, and next action
-6. **Begin work** without asking for additional context
-
-### Auto-Continuity Response Template
-
-```
-🔄 PMERIT AUTO-CONTINUITY ACTIVATED
-
-🔒 Sync Gate: [Pending verification / Confirmed]
-📍 Current Phase: [HOMEPAGE GATE / Phase X]
-📊 Phase Status: [In Progress / Blocked / Complete]
-🎯 Active Requirement: [ID — Description]
-🔢 Attempt: [X/3 or X/5]
-⚡ Workflow Mode: [Standard Three-Way / Fallback Two-Way]
-
-Next Action:
-[Specific task or command]
-
-→ [Instructions for user]
-```
-
----
-
-## 📡 COMMUNICATION PROTOCOL
-
-### Switching Workflow Modes
-
-**User → Claude Web:**
-```
-"CODE DESKTOP UNAVAILABLE" → Switch to Fallback mode
-"CODE DESKTOP AVAILABLE" → Switch to Standard mode
-```
-
-**Claude Web → User (when Code Desktop needed but unavailable):**
-```
-"This task would benefit from Claude Code Desktop for direct execution.
-Current mode: Fallback Two-Way
-
-Would you like to:
-A) Proceed with manual execution (I provide commands)
-B) Wait until Claude Code Desktop is available
-C) Attempt a simpler approach that doesn't require Code Desktop"
-```
-
-### Status Updates Between Claudes
-
-Since Claude Web and Claude Code Desktop don't communicate directly, synchronization happens through:
-
-1. **TASK_TRACKER.md** — Updated by Code Desktop, read by both
-2. **Git commits** — Changes pushed to GitHub
-3. **User relay** — User copies relevant info between sessions
-
 ---
 
 ## 🛡️ GUARDRAILS
 
 ### What Claude MUST Always Do
 
-1. ✅ Check Sync Gate before any work
-2. ✅ Read TASK_TRACKER.md for current state
-3. ✅ Follow phase-gated progression (no skipping without approval)
-4. ✅ Escalate after 3 attempts (or 5 if extended)
-5. ✅ Flag workflow vs. implementation contradictions
-6. ✅ Wait for "DONE" before proceeding to next step
-7. ✅ Document decisions and changes
-8. ✅ Request file access if GitHub sync unavailable
+1. ✅ Run `.\Start-PmeritSession.ps1` or verify sync before any work
+2. ✅ Read TASK_TRACKER.md and STATE.json for current state
+3. ✅ Reference primary project documents before implementation decisions
+4. ✅ Follow phase-gated progression (no skipping without approval)
+5. ✅ Escalate after 3 attempts (or 5 if extended)
+6. ✅ Flag workflow vs. implementation contradictions
+7. ✅ Wait for "DONE" before proceeding to next step
+8. ✅ Document decisions and changes
 
 ### What Claude MUST NOT Do
 
@@ -372,64 +358,27 @@ Path: docs/handoffs/SESSION_[XX].md
 
 ---
 
-## 🔗 REFERENCE DOCUMENTS
-
-### 📚 PROJECT DOCUMENTS (What to Build)
-
-These documents define WHAT the platform should do.
-**Claude MUST reference these before making implementation decisions.**
-
-| Document | Location | Purpose |
-|----------|----------|---------|
-| Narrative User & Admin Journey | Project Knowledge | **PRIMARY** — User/Admin flow specifications |
-| Original Ongoing Plan | Project Knowledge | Project roadmap and phases |
-| Unified Assessment | Project Knowledge | Assessment feature specifications |
-| Research & Brainstorm | Project Knowledge | Ideas and research notes |
-
-⚠️ **CRITICAL RULE:** Before modifying ANY functionality, Claude must:
-1. Check if the change aligns with Narrative Journey
-2. Verify against Original Ongoing Plan
-3. If uncertain → ASK Solo Developer before proceeding
-4. Never assume — always verify against project documents
-
-### 🔧 GOVERNANCE DOCUMENTS (How to Work)
-
-| Document | Location | Purpose |
-|----------|----------|---------|
-| GOVERNANCE.md | `docs/GOVERNANCE.md` | Full rules, phases, all details |
-| TASK_TRACKER.md | `docs/TASK_TRACKER.md` | Living status, attempt tracking |
-| Session Handoffs | `docs/handoffs/` | Point-in-time snapshots |
-
-### 📋 DOCUMENT HIERARCHY (Priority Order)
-
-1. **Narrative User & Admin Journey** — Defines user flows (WHAT)
-2. **Latest Handoff Document** — Current session state
-3. **TASK_TRACKER.md** — Living status
-4. **GOVERNANCE.md** — Rules and workflows (HOW)
-5. **Original Project Docs** — Baseline (where handoffs are silent)
-
-**If documents conflict:** Solo Developer (@peoplemerit) has final say.
-
----
-
 ## ✅ VERIFICATION CHECKLIST
+
+### For Claude Code Desktop Session Start
+```
+□ Run .\Start-PmeritSession.ps1
+□ Repository path accessible: E:\pmerit\pmerit-ai-platform
+□ Sync Gate verified?
+□ STATE.json read from docs/aados/?
+□ TASK_TRACKER.md read from docs/aados/?
+□ Primary project documents accessible?
+□ Ready to proceed with "PMERIT CONTINUE"
+```
 
 ### For Claude Web Session Start
 ```
 □ GitHub sync accessible in Project Knowledge?
 □ If not, request direct file upload
 □ Sync Gate verified?
-□ TASK_TRACKER.md current state loaded?
+□ STATE.json current state loaded?
+□ TASK_TRACKER.md loaded?
 □ Workflow mode confirmed (Standard/Fallback)?
-□ Ready to proceed with "PMERIT CONTINUE"
-```
-
-### For Claude Code Desktop Session Start
-```
-□ Repository path accessible: E:\pmerit\pmerit-ai-platform
-□ Sync Gate verified (git fetch + git status)?
-□ TASK_TRACKER.md read from docs/?
-□ GOVERNANCE.md read from docs/?
 □ Ready to proceed with "PMERIT CONTINUE"
 ```
 
@@ -440,9 +389,10 @@ These documents define WHAT the platform should do.
 | Version | Date | Changes |
 |---------|------|---------|
 | 1.0 | 2024-11-29 | Initial creation |
+| 2.0 | 2025-12-05 | Consolidated to 3 primary project documents; Added Start-PmeritSession.ps1 integration; Updated file paths to docs/aados/; Removed obsolete document references |
 
 ---
 
-*This document is the authoritative source for Claude coordination.*  
-*Both Claude Web and Claude Code Desktop must follow these instructions.*  
+*This document is the authoritative source for Claude coordination.*
+*Both Claude Web and Claude Code Desktop must follow these instructions.*
 *Solo Developer (@peoplemerit) has final decision authority on all conflicts.*
