@@ -1,9 +1,57 @@
 # PMERIT Project Document
 
-**Version:** 1.0
-**Last Updated:** December 4, 2025
+**Version:** 2.0
+**Last Updated:** December 5, 2025
 **Status:** Active Development
-**Document Purpose:** Single source of truth for PMERIT platform roadmap and architecture
+**Document Purpose:** Master source of truth for PMERIT platform — roadmap, decisions, and task tracking
+
+---
+
+## How This Document Works
+
+This is the **MASTER DOCUMENT** for the PMERIT project. It serves as:
+
+1. **Strategic Roadmap** — WHY we're building and WHERE we're going
+2. **Decision Registry** — Implementation decisions made during development
+3. **Task Carryforward** — Incomplete tasks carried between sessions
+4. **Session History** — Record of development sessions
+
+### Document Workflow
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    PMERIT DOCUMENT WORKFLOW                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌─────────────────┐      ┌─────────────────┐                       │
+│  │ BRAINSTORM      │      │ USER JOURNEY    │                       │
+│  │ ASU_LIKE_SCHEMA │      │ NARRATIVE       │                       │
+│  │ (Feature Specs) │      │ (User Stories)  │                       │
+│  └────────┬────────┘      └────────┬────────┘                       │
+│           │                        │                                │
+│           └──────────┬─────────────┘                                │
+│                      │                                              │
+│                      ▼                                              │
+│  ┌─────────────────────────────────────────┐                        │
+│  │          IMPLEMENTATION                  │                        │
+│  │    (Claude Code Desktop Session)         │                        │
+│  └────────────────────┬────────────────────┘                        │
+│                       │                                             │
+│           ┌───────────┴───────────┐                                 │
+│           │                       │                                 │
+│           ▼                       ▼                                 │
+│  ┌─────────────────┐    ┌─────────────────┐                         │
+│  │ SESSION HANDOFF │    │ THIS DOCUMENT   │                         │
+│  │ (Point-in-time) │───▶│ (Decisions &    │                         │
+│  │                 │    │  Carryforward)  │                         │
+│  └─────────────────┘    └─────────────────┘                         │
+│                                                                     │
+│  ✅ Decisions made → Updated here                                   │
+│  ✅ Tasks incomplete → Carried forward here                         │
+│  ✅ Brainstorm changes → Documented here first                      │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
@@ -30,31 +78,50 @@ This document sits at the top of the PMERIT documentation hierarchy:
 
 ```
 PMERIT DOCUMENTATION HIERARCHY
-├── 📄 Pmerit_Project_Document.md (THIS FILE) — WHY & ROADMAP
+│
+├── 📄 Pmerit_Project_Document.md (THIS FILE) — MASTER DOCUMENT
+│       ├── Strategic roadmap (WHY)
+│       ├── Decision registry (WHAT was decided)
+│       ├── Task carryforward (WHAT's next)
+│       └── Session history (WHEN)
 │
 ├── 📁 docs/handoffs/
-│   └── 📄 BRAINSTORM_ASU_LIKE_SCHEMA.md — WHAT TO BUILD (Features, Schema, UX)
+│   └── 📄 BRAINSTORM_ASU_LIKE_SCHEMA.md — FEATURE SPECIFICATIONS
 │       ├── PART 0: Front Page Shell (Header, CTAs, Auth)
 │       ├── PART 1-5: User Journey (Catalog → Classroom → Assessment)
 │       ├── PART 6: Platform Feasibility Strategies
 │       ├── PART 7: Authentication & Security
 │       ├── PART 8: Admin Interface Architecture
-│       └── PART 9: AADOS Integration
-│
-├── 📁 docs/aados/
-│   ├── 📄 GOVERNANCE.md — HOW TO WORK (Phases, Workflows)
-│   ├── 📄 TASK_TRACKER.md — WHERE WE ARE (Living Status)
-│   ├── 📄 STATE.json — Current State Pointer
-│   ├── 📄 MASTER_INSTRUCTIONS.md — Claude Coordination
-│   └── 📄 CHEAT_SHEET.md — Quick Reference
+│       ├── PART 9: AADOS Integration
+│       └── PART 10: UI Design System Standardization
 │
 ├── 📁 docs/project/
-│   ├── 📄 Pmerit-comprehensively-narrative-users-and-Admin-Journey.md — User Stories
-│   └── 📄 Research-and-Brainstorm.md — Technical Research
+│   └── 📄 Pmerit-comprehensively-narrative-users-and-Admin-Journey.md — USER STORIES
 │
-└── 📁 docs/archive/
-    └── 📄 Original_Ongoing-Plan_vs2.md — Legacy Infrastructure Plans
+├── 📁 docs/aados/ — GOVERNANCE SYSTEM
+│   ├── 📄 GOVERNANCE.md — Rules, phases, workflows
+│   ├── 📄 TASK_TRACKER.md — Living status tracker
+│   ├── 📄 STATE.json — Machine-readable state pointer
+│   ├── 📄 PMERIT_MASTER_INSTRUCTIONS.md — Claude coordination
+│   ├── 📄 PMERIT_OPERATIONAL_CHEAT_SHEET.md — Quick reference
+│   └── 📄 ENVIRONMENTS.md — Environment definitions
+│
+├── 📁 docs/tech/ — TECHNICAL DOCUMENTATION
+│   ├── 📄 API_DOCUMENTATION.md
+│   ├── 📄 DEVELOPER_GUIDE.md
+│   └── ... (other tech docs)
+│
+└── 📁 docs/archive/ — LEGACY/ARCHIVED
+    └── 📄 Original_Ongoing-Plan_vs2.md — Legacy infrastructure plans
 ```
+
+### Three Primary Documents
+
+| Document | Role | Update Frequency |
+|----------|------|------------------|
+| **This Document** | Master roadmap, decisions, carryforward | Every session |
+| **Brainstorm Schema** | Feature specifications (PARTs 0-10) | When features change |
+| **User Journey** | User/Admin narrative flows | When UX changes |
 
 ---
 
@@ -233,6 +300,159 @@ PHASE PROGRESSION
 
 ---
 
+## Decision Log
+
+Implementation decisions are documented here for reference. Each decision includes context, options considered, and rationale.
+
+### How to Add Decisions
+
+```markdown
+### DEC-XXX: [Brief Title]
+**Date:** YYYY-MM-DD | **Session:** XX | **Decided By:** @peoplemerit
+
+**Context:** [What problem or question arose]
+
+**Options Considered:**
+- A) [Option A]
+- B) [Option B]
+- C) [Option C]
+
+**Decision:** [A/B/C or custom]
+
+**Rationale:** [Why this choice]
+
+**Impact:** [What changed as a result]
+```
+
+---
+
+### DEC-001: Consolidate to Three Primary Documents
+**Date:** 2025-12-05 | **Session:** Documentation Cleanup | **Decided By:** @peoplemerit
+
+**Context:** Multiple overlapping project documents created confusion about source of truth.
+
+**Options Considered:**
+- A) Keep all documents, add index
+- B) Consolidate to three primary documents
+- C) Single monolithic document
+
+**Decision:** B — Consolidate to three primary documents
+
+**Rationale:** Three documents provide clear separation of concerns:
+- This document: WHY (strategy, decisions, carryforward)
+- Brainstorm: WHAT (feature specs)
+- User Journey: WHO (user stories)
+
+**Impact:**
+- Deleted 19 obsolete files (-12,340 lines)
+- Updated README.md, TASK_TRACKER.md, MASTER_INSTRUCTIONS.md
+- Created pmerit.code-workspace
+
+---
+
+### DEC-002: UI Design System Standardization
+**Date:** 2025-12-05 | **Session:** Documentation Cleanup | **Decided By:** @peoplemerit
+
+**Context:** ChatGPT analysis revealed button/hover inconsistencies across pages.
+
+**Options Considered:**
+- A) Fix each page individually
+- B) Create centralized CSS component system
+- C) Document standards for future reference
+
+**Decision:** C then B — Document first, implement later
+
+**Rationale:** Document the standards (PART 10) to ensure consistent implementation when the CSS work begins.
+
+**Impact:** Added PART 10: UI Design System Standardization to brainstorm document
+
+---
+
+## Task Carryforward
+
+Incomplete tasks are carried forward between sessions. This section is updated at the end of each session.
+
+### Format
+
+```markdown
+### CF-XXX: [Task Title]
+**From Session:** XX | **Priority:** High/Medium/Low | **Phase:** GATE/0-10
+
+**Description:** [What needs to be done]
+
+**Blockers:** [Any dependencies or issues]
+
+**Next Steps:**
+1. [Step 1]
+2. [Step 2]
+
+**Reference:** [Link to brainstorm PART or other doc]
+```
+
+---
+
+### CF-001: Google Translate on Dynamic Pages (H7)
+**From Session:** 25 | **Priority:** High | **Phase:** HOMEPAGE GATE
+
+**Description:** Google Translate widget shows "0 × 0" on pages that load footer via layout-loader.js. Works on index.html (embedded footer).
+
+**Blockers:** Timing issue — script executes before element exists
+
+**Next Steps:**
+1. Modify layout-loader.js to initialize Google Translate AFTER footer loads
+2. Alternative: Add MutationObserver to detect element before initializing
+
+**Reference:** BRAINSTORM PART 0 (Section 0.4 - Responsiveness Requirements)
+
+---
+
+### CF-002: Implement Header CTA Strategy
+**From Session:** N/A | **Priority:** High | **Phase:** HOMEPAGE GATE
+
+**Description:** Implement the header CTA strategy defined in PART 0:
+- Start Learning (primary button) → `/auth?action=start`
+- Sign In (ghost/text) → `/auth?action=signin`
+- Donate (outline button) → `/donate`
+
+**Blockers:** None
+
+**Next Steps:**
+1. Update `/partials/header.html` with new CTA buttons
+2. Create `/auth` page with query param handling
+3. Create `/donate` page (MVP)
+
+**Reference:** BRAINSTORM PART 0 (Sections 0.1, 0.2, 0.3)
+
+---
+
+### CF-003: Apply UI Design System Fixes
+**From Session:** Current | **Priority:** Medium | **Phase:** HOMEPAGE GATE
+
+**Description:** Apply the CSS fixes documented in PART 10 to standardize button styles across all pages.
+
+**Blockers:** Depends on components.css location decision
+
+**Next Steps:**
+1. Create/update `components.css` with button reset and standardization
+2. Audit each page for inline styles and legacy classes
+3. Test all button states (default, hover, focus, active)
+
+**Reference:** BRAINSTORM PART 10 (UI Design System Standardization)
+
+---
+
+## Session History
+
+Record of development sessions for continuity.
+
+| Session | Date | Focus | Key Outcomes | Handoff |
+|---------|------|-------|--------------|---------|
+| 25 | 2024-11-29 | Governance V5 | AADOS system finalized | TASK_TRACKER.md |
+| 26 | 2024-12-04 | Brainstorm PARTs 6-9 | Platform feasibility, auth, admin | BRAINSTORM updated |
+| 27 | 2024-12-05 | Doc Consolidation | 3 primary docs, 19 files deleted, workspace setup | This document |
+
+---
+
 ## Pricing Model
 
 ### Freemium Structure
@@ -356,9 +576,12 @@ This legacy document contains:
 | Version | Date | Changes |
 |---------|------|---------|
 | 1.0 | 2024-12-04 | Initial consolidated document |
+| 2.0 | 2025-12-05 | Added document workflow, decision log, task carryforward, session history; Updated hierarchy to reflect 3 primary docs |
 
 ---
 
-*This document consolidates all PMERIT planning into a single source of truth.*
-*For detailed specifications, see the handoff documents.*
-*For workflow governance, see the AADOS system.*
+*This is the MASTER DOCUMENT for PMERIT development.*
+*Decisions made during implementation are documented here.*
+*Incomplete tasks are carried forward between sessions.*
+*For detailed feature specifications, see `docs/handoffs/BRAINSTORM_ASU_LIKE_SCHEMA.md`.*
+*For workflow governance, see `docs/aados/`.*

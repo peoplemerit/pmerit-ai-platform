@@ -1,0 +1,397 @@
+{
+	"folders": [
+		{
+			"name": "PMERIT Frontend",
+			"path": "."
+		},
+		{
+			"name": "PMERIT Backend",
+			"path": "../pmerit-api-worker"
+		}
+	],
+	"settings": {
+		// ============================================================
+		// PROJECT IDENTITY
+		// ============================================================
+		"pmerit.project.name": "PMERIT AI Educational Platform",
+		"pmerit.project.production": "https://pmerit.com",
+		"pmerit.project.api": "https://pmerit-api-worker.peoplemerit.workers.dev",
+
+		// ============================================================
+		// PRIMARY PROJECT DOCUMENTS (Source of Truth)
+		// ============================================================
+		// MASTER DOCUMENT - Strategic roadmap, decisions, project status
+		// Location: docs/project/Pmerit_Project_Document.md
+		//
+		// FEATURE SPECIFICATIONS - Schema, implementation details, PARTs 0-10
+		// Location: docs/handoffs/BRAINSTORM_ASU_LIKE_SCHEMA.md
+		//
+		// USER FLOWS - User and Admin journey narratives
+		// Location: docs/project/Pmerit-comprehensively-narrative-users-and-Admin-Journey.md
+		//
+		// GOVERNANCE - AADOS system files
+		// Location: docs/aados/
+
+		// ============================================================
+		// EDITOR SETTINGS
+		// ============================================================
+		"editor.formatOnSave": true,
+		"editor.tabSize": 2,
+		"editor.insertSpaces": true,
+		"editor.wordWrap": "on",
+		"editor.minimap.enabled": false,
+		"editor.bracketPairColorization.enabled": true,
+		"editor.guides.bracketPairs": true,
+		"editor.linkedEditing": true,
+		"editor.suggestSelection": "first",
+		"editor.quickSuggestions": {
+			"strings": true
+		},
+
+		// ============================================================
+		// FILE ASSOCIATIONS
+		// ============================================================
+		"files.associations": {
+			"*.html": "html",
+			"*.css": "css",
+			"*.js": "javascript",
+			"*.md": "markdown",
+			"*.json": "jsonc",
+			"wrangler.toml": "toml",
+			".env*": "dotenv"
+		},
+
+		// ============================================================
+		// SEARCH & EXPLORER
+		// ============================================================
+		"search.exclude": {
+			"**/node_modules": true,
+			"**/.wrangler": true,
+			"**/dist": true,
+			"**/.git": true,
+			"**/docs/archive": true
+		},
+		"files.exclude": {
+			"**/.git": true,
+			"**/.DS_Store": true,
+			"**/Thumbs.db": true
+		},
+		"explorer.fileNesting.enabled": true,
+		"explorer.fileNesting.patterns": {
+			"*.html": "${capture}.css, ${capture}.js",
+			"package.json": "package-lock.json, .npmrc, .nvmrc",
+			"wrangler.toml": ".dev.vars, .env*"
+		},
+
+		// ============================================================
+		// HTML/CSS/JS SETTINGS
+		// ============================================================
+		"html.format.wrapLineLength": 120,
+		"html.format.indentInnerHtml": true,
+		"css.validate": true,
+		"javascript.updateImportsOnFileMove.enabled": "always",
+		"javascript.suggest.autoImports": true,
+
+		// ============================================================
+		// EMMET
+		// ============================================================
+		"emmet.includeLanguages": {
+			"javascript": "javascriptreact"
+		},
+		"emmet.triggerExpansionOnTab": true,
+
+		// ============================================================
+		// GIT SETTINGS
+		// ============================================================
+		"git.enableSmartCommit": true,
+		"git.confirmSync": false,
+		"git.autofetch": true,
+		"git.defaultBranchName": "main",
+
+		// ============================================================
+		// TERMINAL
+		// ============================================================
+		"terminal.integrated.defaultProfile.windows": "PowerShell",
+		"terminal.integrated.cwd": "${workspaceFolder}",
+
+		// ============================================================
+		// MARKDOWN PREVIEW
+		// ============================================================
+		"markdown.preview.breaks": true,
+		"markdown.preview.fontFamily": "system-ui, -apple-system, sans-serif",
+
+		// ============================================================
+		// EXTENSION SETTINGS
+		// ============================================================
+		// Prettier
+		"prettier.tabWidth": 2,
+		"prettier.useTabs": false,
+		"prettier.singleQuote": true,
+		"prettier.trailingComma": "es5",
+		"prettier.printWidth": 100,
+
+		// ESLint
+		"eslint.workingDirectories": [
+			{ "directory": "./functions", "changeProcessCWD": true }
+		],
+
+		// Live Server
+		"liveServer.settings.port": 5500,
+		"liveServer.settings.donotShowInfoMsg": true,
+		"liveServer.settings.ignoreFiles": [
+			".vscode/**",
+			"**/*.md",
+			"**/docs/**"
+		],
+
+		// ============================================================
+		// COPILOT SETTINGS
+		// ============================================================
+		"github.copilot.enable": {
+			"*": true,
+			"markdown": true,
+			"plaintext": false
+		},
+
+		// ============================================================
+		// CLAUDE CODE SETTINGS
+		// ============================================================
+		// Primary documents Claude should reference
+		"claude.projectDocuments": [
+			"docs/project/Pmerit_Project_Document.md",
+			"docs/handoffs/BRAINSTORM_ASU_LIKE_SCHEMA.md",
+			"docs/project/Pmerit-comprehensively-narrative-users-and-Admin-Journey.md"
+		],
+		"claude.governanceFiles": [
+			"docs/aados/GOVERNANCE.md",
+			"docs/aados/TASK_TRACKER.md",
+			"docs/aados/STATE.json",
+			"docs/aados/PMERIT_MASTER_INSTRUCTIONS.md"
+		]
+	},
+
+	// ============================================================
+	// EXTENSION RECOMMENDATIONS
+	// ============================================================
+	"extensions": {
+		"recommendations": [
+			// Core Development
+			"dbaeumer.vscode-eslint",
+			"esbenp.prettier-vscode",
+			"ritwickdey.liveserver",
+
+			// HTML/CSS
+			"ecmel.vscode-html-css",
+			"pranaygp.vscode-css-peek",
+			"bradlc.vscode-tailwindcss",
+
+			// JavaScript
+			"xabikos.javascriptsnippets",
+
+			// Git
+			"eamodio.gitlens",
+			"mhutchie.git-graph",
+
+			// Cloudflare
+			"AdrianWilczynski.cloudflare-workers",
+
+			// Markdown
+			"yzhang.markdown-all-in-one",
+			"bierner.markdown-preview-github-styles",
+
+			// AI Assistants
+			"github.copilot",
+			"github.copilot-chat",
+
+			// Productivity
+			"christian-kohler.path-intellisense",
+			"formulahendry.auto-rename-tag",
+			"streetsidesoftware.code-spell-checker",
+
+			// Theme (optional)
+			"pkief.material-icon-theme"
+		]
+	},
+
+	// ============================================================
+	// LAUNCH CONFIGURATIONS
+	// ============================================================
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"name": "Launch Chrome (Frontend)",
+				"type": "chrome",
+				"request": "launch",
+				"url": "http://localhost:5500",
+				"webRoot": "${workspaceFolder:PMERIT Frontend}"
+			},
+			{
+				"name": "Launch Chrome (Wrangler Dev)",
+				"type": "chrome",
+				"request": "launch",
+				"url": "http://localhost:8788",
+				"webRoot": "${workspaceFolder:PMERIT Frontend}"
+			}
+		]
+	},
+
+	// ============================================================
+	// TASKS
+	// ============================================================
+	"tasks": {
+		"version": "2.0.0",
+		"tasks": [
+			// ----------------------------------------
+			// SESSION MANAGEMENT
+			// ----------------------------------------
+			{
+				"label": "PMERIT: Start Session",
+				"type": "shell",
+				"command": "powershell",
+				"args": ["-File", "${workspaceFolder:PMERIT Frontend}/Start-PmeritSession.ps1"],
+				"problemMatcher": [],
+				"group": "none",
+				"presentation": {
+					"reveal": "always",
+					"panel": "new"
+				}
+			},
+			{
+				"label": "PMERIT: Git Sync Check",
+				"type": "shell",
+				"command": "git fetch origin && git status",
+				"options": {
+					"cwd": "${workspaceFolder:PMERIT Frontend}"
+				},
+				"problemMatcher": [],
+				"group": "none"
+			},
+
+			// ----------------------------------------
+			// FRONTEND DEVELOPMENT
+			// ----------------------------------------
+			{
+				"label": "Frontend: Start Live Server",
+				"type": "shell",
+				"command": "npx live-server --port=5500 --no-browser",
+				"options": {
+					"cwd": "${workspaceFolder:PMERIT Frontend}"
+				},
+				"problemMatcher": [],
+				"isBackground": true,
+				"group": "build"
+			},
+			{
+				"label": "Frontend: Start Wrangler Dev",
+				"type": "shell",
+				"command": "npx wrangler pages dev . --port 8788",
+				"options": {
+					"cwd": "${workspaceFolder:PMERIT Frontend}"
+				},
+				"problemMatcher": [],
+				"isBackground": true,
+				"group": "build"
+			},
+			{
+				"label": "Frontend: Deploy to Cloudflare",
+				"type": "shell",
+				"command": "npx wrangler pages deploy .",
+				"options": {
+					"cwd": "${workspaceFolder:PMERIT Frontend}"
+				},
+				"problemMatcher": [],
+				"group": "build"
+			},
+
+			// ----------------------------------------
+			// BACKEND DEVELOPMENT
+			// ----------------------------------------
+			{
+				"label": "Backend: Start Wrangler Dev",
+				"type": "shell",
+				"command": "npx wrangler dev",
+				"options": {
+					"cwd": "${workspaceFolder:PMERIT Backend}"
+				},
+				"problemMatcher": [],
+				"isBackground": true,
+				"group": "build"
+			},
+			{
+				"label": "Backend: Deploy Worker",
+				"type": "shell",
+				"command": "npx wrangler deploy",
+				"options": {
+					"cwd": "${workspaceFolder:PMERIT Backend}"
+				},
+				"problemMatcher": [],
+				"group": "build"
+			},
+
+			// ----------------------------------------
+			// DOCUMENTATION
+			// ----------------------------------------
+			{
+				"label": "Docs: Open Master Document",
+				"type": "shell",
+				"command": "code",
+				"args": ["${workspaceFolder:PMERIT Frontend}/docs/project/Pmerit_Project_Document.md"],
+				"problemMatcher": []
+			},
+			{
+				"label": "Docs: Open Brainstorm Schema",
+				"type": "shell",
+				"command": "code",
+				"args": ["${workspaceFolder:PMERIT Frontend}/docs/handoffs/BRAINSTORM_ASU_LIKE_SCHEMA.md"],
+				"problemMatcher": []
+			},
+			{
+				"label": "Docs: Open User Journey",
+				"type": "shell",
+				"command": "code",
+				"args": ["${workspaceFolder:PMERIT Frontend}/docs/project/Pmerit-comprehensively-narrative-users-and-Admin-Journey.md"],
+				"problemMatcher": []
+			},
+			{
+				"label": "Docs: Open Task Tracker",
+				"type": "shell",
+				"command": "code",
+				"args": ["${workspaceFolder:PMERIT Frontend}/docs/aados/TASK_TRACKER.md"],
+				"problemMatcher": []
+			},
+			{
+				"label": "Docs: Open All Primary Docs",
+				"dependsOn": [
+					"Docs: Open Master Document",
+					"Docs: Open Brainstorm Schema",
+					"Docs: Open User Journey",
+					"Docs: Open Task Tracker"
+				],
+				"problemMatcher": []
+			},
+
+			// ----------------------------------------
+			// LINTING
+			// ----------------------------------------
+			{
+				"label": "Lint: Run ESLint (Frontend)",
+				"type": "shell",
+				"command": "npx eslint ./assets/js --fix",
+				"options": {
+					"cwd": "${workspaceFolder:PMERIT Frontend}"
+				},
+				"problemMatcher": ["$eslint-stylish"]
+			},
+			{
+				"label": "Lint: Run ESLint (Backend)",
+				"type": "shell",
+				"command": "npx eslint ./src --fix",
+				"options": {
+					"cwd": "${workspaceFolder:PMERIT Backend}"
+				},
+				"problemMatcher": ["$eslint-stylish"]
+			}
+		]
+	}
+}
