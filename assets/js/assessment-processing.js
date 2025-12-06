@@ -82,10 +82,22 @@
      */
     getAssessmentData() {
       try {
+        console.log('[AssessmentProcessing] Looking for storage key:', this.storageKey);
         const data = localStorage.getItem(this.storageKey);
+        console.log('[AssessmentProcessing] Raw localStorage data:', data ? 'found (' + data.length + ' chars)' : 'null');
+
         if (data) {
-          return JSON.parse(data);
+          const parsed = JSON.parse(data);
+          console.log('[AssessmentProcessing] Parsed data:', {
+            sessionId: parsed.sessionId,
+            answerCount: parsed.answers ? Object.keys(parsed.answers).length : 0,
+            keys: parsed.answers ? Object.keys(parsed.answers).slice(0, 5) : []
+          });
+          return parsed;
         }
+
+        // Debug: Check all localStorage keys
+        console.log('[AssessmentProcessing] All localStorage keys:', Object.keys(localStorage));
       } catch (error) {
         console.error('[AssessmentProcessing] Error reading assessment data:', error);
       }
