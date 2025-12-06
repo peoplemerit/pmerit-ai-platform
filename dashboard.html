@@ -66,6 +66,325 @@
       .dashboard-cards { flex-direction: column; }
       .classroom-iframe { height: 600px; }
     }
+
+    /* Enrolled Courses Styles */
+    .enrolled-courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .enrolled-course-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition-base);
+    }
+
+    .enrolled-course-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .enrolled-course-card .course-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .enrolled-course-card h4 {
+      margin: 0;
+      color: var(--color-primary);
+      font-size: 1.1rem;
+      line-height: 1.3;
+    }
+
+    .course-status {
+      font-size: 0.7rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .status-pending { background: var(--bg-secondary); color: var(--text-secondary); }
+    .status-active { background: #e3f2fd; color: #1976d2; }
+    .status-complete { background: #e8f5e9; color: #388e3c; }
+    .status-paused { background: #fff3e0; color: #f57c00; }
+
+    .course-description {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.75rem;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .course-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .course-meta span {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .course-progress {
+      margin-bottom: 1rem;
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: var(--bg-secondary);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 0.35rem;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--color-primary), var(--color-accent, #4caf50));
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+
+    .progress-text {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .course-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      transition: var(--transition-base);
+    }
+
+    .btn-sm {
+      padding: 0.35rem 0.75rem;
+      font-size: 0.8rem;
+    }
+
+    .btn-primary {
+      background: var(--color-primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--bg-secondary);
+    }
+
+    .btn-danger {
+      background: #dc3545;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #c82333;
+    }
+
+    /* Empty/Error States */
+    .empty-state, .error-state, .loading {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-secondary);
+    }
+
+    .empty-state h3 {
+      margin: 0.5rem 0;
+      color: var(--text-primary);
+    }
+
+    .loading {
+      font-size: 1rem;
+    }
+
+    /* Recommendations */
+    .recommendations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .recommendation-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .recommendation-card .rec-icon {
+      font-size: 2rem;
+      color: var(--color-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .recommendation-card h4 {
+      margin: 0.5rem 0;
+      font-size: 1rem;
+    }
+
+    .recommendation-card p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .match-reason {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--color-primary);
+      margin-bottom: 0.75rem;
+    }
+
+    .take-assessment-prompt {
+      background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
+      border: 2px dashed var(--border-color);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .take-assessment-prompt h4 {
+      margin: 0.75rem 0 0.5rem;
+    }
+
+    .take-assessment-prompt p {
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: -0.5rem;
+    }
+
+    /* Pathway Progress */
+    .pathway-progress-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .pathway-progress-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1rem;
+    }
+
+    .pathway-progress-card .pathway-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .pathway-progress-card h4 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .track-badge {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.5rem;
+      background: var(--bg-secondary);
+      border-radius: 4px;
+      color: var(--text-muted);
+    }
+
+    .pathway-stats {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.75rem;
+    }
+
+    .pathway-stats span {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    /* Quick Actions */
+    .quick-actions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1rem;
+    }
+
+    .quick-action-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1.25rem 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text-primary);
+      transition: var(--transition-base);
+    }
+
+    .quick-action-card:hover {
+      background: var(--bg-secondary);
+      border-color: var(--color-primary);
+      transform: translateY(-2px);
+    }
+
+    .quick-action-card i {
+      font-size: 1.5rem;
+      color: var(--color-primary);
+    }
+
+    .quick-action-card span {
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-align: center;
+    }
   </style>
   <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
   
@@ -73,6 +392,7 @@
   <script src="assets/js/config.js"></script>
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/auth-check.js"></script>
+  <script src="assets/js/dashboard-courses.js"></script>
 </head>
 <body>
   <!-- Overlay for mobile panel toggling -->
@@ -451,6 +771,60 @@
         </div>
       </div>
     </section>
+
+    <!-- MY COURSES SECTION (P4.1, P4.3) -->
+    <section class="portal-section" id="my-courses-section">
+      <h2><i class="fas fa-book-open"></i> My Courses</h2>
+      <div id="enrolled-courses-container">
+        <div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading your courses...</div>
+      </div>
+    </section>
+
+    <!-- PATHWAY PROGRESS SECTION (P4.5) -->
+    <section class="portal-section" id="pathway-progress-section">
+      <div id="pathway-progress-container">
+        <!-- Pathway progress will be loaded dynamically -->
+      </div>
+    </section>
+
+    <!-- RECOMMENDATIONS SECTION (P4.4, P4.7) -->
+    <section class="portal-section" id="recommendations-section">
+      <div id="recommendations-container">
+        <!-- Recommendations will be loaded dynamically -->
+      </div>
+    </section>
+
+    <!-- QUICK ACTIONS SECTION (P4.8) -->
+    <section class="portal-section" id="quick-actions-section">
+      <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+      <div class="quick-actions-grid">
+        <a href="/courses.html" class="quick-action-card">
+          <i class="fas fa-search"></i>
+          <span>Browse Courses</span>
+        </a>
+        <a href="/assessment-entry.html" class="quick-action-card">
+          <i class="fas fa-clipboard-check"></i>
+          <span>Take Assessment</span>
+        </a>
+        <a href="/pathways.html" class="quick-action-card">
+          <i class="fas fa-route"></i>
+          <span>Explore Pathways</span>
+        </a>
+        <a href="/portal/classroom.html" class="quick-action-card">
+          <i class="fas fa-chalkboard-teacher"></i>
+          <span>Enter Classroom</span>
+        </a>
+        <a href="/progress.html" class="quick-action-card">
+          <i class="fas fa-chart-line"></i>
+          <span>View Progress</span>
+        </a>
+        <a href="/support.html" class="quick-action-card">
+          <i class="fas fa-question-circle"></i>
+          <span>Get Help</span>
+        </a>
+      </div>
+    </section>
+
     <section class="portal-section">
       <h2>Academic Information</h2>
       <ul class="feature-list">
@@ -741,6 +1115,18 @@
 
       // Initialize: Set default section
       switchNavSection('dashboard');
+
+      // Initialize Dashboard Courses Module (Phase 4)
+      if (window.DashboardCourses) {
+        // Load enrolled courses (P4.1)
+        window.DashboardCourses.loadAndDisplayEnrollments();
+
+        // Load pathway progress (P4.5)
+        window.DashboardCourses.loadAndDisplayPathwayProgress();
+
+        // Load recommendations based on assessment results (P4.4, P4.7)
+        window.DashboardCourses.loadAndDisplayRecommendations();
+      }
     })();
   </script>
 </body>
