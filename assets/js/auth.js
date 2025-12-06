@@ -1,151 +1,261 @@
 /**
- * PMERIT Authentication Module (Phase 1: Mock Implementation)
- * Last Updated: October 2025
+ * PMERIT Authentication Module
+ * Last Updated: December 2025
  *
- * This module provides mock authentication that works without a backend.
- * All authentication logic will be replaced with real API calls in Phase 2.
- *
- * TODO (Phase 2): Replace all mock functions with real fetch() calls to ${CONFIG.API_BASE_URL}/auth/*
+ * This module provides authentication via the PMERIT API backend.
+ * Uses real API calls to /api/v1/auth/* endpoints.
+ * Falls back to mock implementation if API is unavailable (offline mode).
  */
 
 (function () {
   'use strict';
 
+  // API Configuration
+  const API_BASE = 'https://pmerit-api-worker.peoplemerit.workers.dev/api/v1';
+  const USE_MOCK_FALLBACK = true; // Set to false to disable mock fallback
+
+  // Token management utilities
+  const TokenManager = {
+    getToken: () => localStorage.getItem('pmerit_token'),
+    setToken: (token) => localStorage.setItem('pmerit_token', token),
+    removeToken: () => localStorage.removeItem('pmerit_token'),
+
+    getUser: () => {
+      try {
+        const userJson = localStorage.getItem('pmerit_user');
+        return userJson ? JSON.parse(userJson) : null;
+      } catch (e) {
+        console.error('Error parsing user data:', e);
+        return null;
+      }
+    },
+    setUser: (user) => localStorage.setItem('pmerit_user', JSON.stringify(user)),
+    removeUser: () => localStorage.removeItem('pmerit_user'),
+
+    clear: () => {
+      localStorage.removeItem('pmerit_token');
+      localStorage.removeItem('pmerit_user');
+    }
+  };
+
   const AUTH = {
     /**
-     * Sign in a user (Mock implementation)
+     * Sign in a user
      * @param {string} email - User email
      * @param {string} password - User password
      * @returns {Promise<{success: boolean, message: string, user?: object}>}
      */
     signin: async function (email, password) {
-      // TODO (Phase 2): Replace with real API call
-      // Example:
-      // const response = await fetch(`${window.CONFIG.API_BASE_URL}/auth/signin`, {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email, password })
-      // });
-      // const data = await response.json();
-      // if (response.ok) {
-      //   localStorage.setItem('pmerit_token', data.token);
-      //   localStorage.setItem('pmerit_user', JSON.stringify(data.user));
-      //   return { success: true, message: 'Signed in successfully', user: data.user };
-      // }
-      // return { success: false, message: data.message || 'Sign in failed' };
+      // Basic validation
+      if (!email || !password) {
+        return { success: false, message: 'Email and password are required' };
+      }
 
-      // Mock implementation (Phase 1)
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          // Basic validation
-          if (!email || !password) {
-            resolve({ success: false, message: 'Email and password are required' });
-            return;
-          }
+      if (password.length < 6) {
+        return { success: false, message: 'Password must be at least 6 characters' };
+      }
 
-          if (password.length < 6) {
-            resolve({ success: false, message: 'Password must be at least 6 characters' });
-            return;
-          }
+      try {
+        const response = await fetch(`${API_BASE}/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
 
-          // Mock success - any email with password >= 6 chars
-          const user = {
-            id: 'mock-user-' + Date.now(),
+        const data = await response.json();
+
+        if (data.success) {
+          // Store token
+          TokenManager.setToken(data.token);
+
+          // Store user data
+          const user = data.user || {
+            id: data.userId,
             email: email,
-            firstName: email.split('@')[0],
-            lastName: 'User',
-            createdAt: new Date().toISOString()
+            firstName: data.firstName || email.split('@')[0],
+            lastName: data.lastName || 'User',
+            emailVerified: data.emailVerified || false
           };
+          TokenManager.setUser(user);
 
-          // Store mock token and user data
-          localStorage.setItem('pmerit_token', 'mock-token-' + Date.now());
-          localStorage.setItem('pmerit_user', JSON.stringify(user));
-
-          resolve({
+          return {
             success: true,
             message: 'Signed in successfully',
             user: user
-          });
-        }, 500); // Simulate network delay
-      });
+          };
+        }
+
+        return {
+          success: false,
+          message: data.message || 'Invalid email or password'
+        };
+      } catch (error) {
+        console.error('Sign in error:', error);
+
+        // Fallback to mock if enabled and network fails
+        if (USE_MOCK_FALLBACK) {
+          console.warn('API unavailable, using mock sign in');
+          return this._mockSignin(email, password);
+        }
+
+        return {
+          success: false,
+          message: 'Network error. Please check your connection and try again.'
+        };
+      }
     },
 
     /**
-     * Sign up a new user (Mock implementation)
+     * Mock signin fallback (offline mode)
+     * @private
+     */
+    _mockSignin: function (email, password) {
+      const user = {
+        id: 'mock-user-' + Date.now(),
+        email: email,
+        firstName: email.split('@')[0],
+        lastName: 'User',
+        emailVerified: true,
+        createdAt: new Date().toISOString()
+      };
+
+      TokenManager.setToken('mock-token-' + Date.now());
+      TokenManager.setUser(user);
+
+      return {
+        success: true,
+        message: 'Signed in (offline mode)',
+        user: user
+      };
+    },
+
+    /**
+     * Sign up a new user
      * @param {string} email - User email
      * @param {string} password - User password
      * @param {string} firstName - User first name
      * @param {string} lastName - User last name
-     * @returns {Promise<{success: boolean, message: string, user?: object}>}
+     * @returns {Promise<{success: boolean, message: string, user?: object, requiresVerification?: boolean}>}
      */
     signup: async function (email, password, firstName, lastName) {
-      // TODO (Phase 2): Replace with real API call
-      // Example:
-      // const response = await fetch(`${window.CONFIG.API_BASE_URL}/auth/signup`, {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email, password, firstName, lastName })
-      // });
-      // const data = await response.json();
-      // if (response.ok) {
-      //   localStorage.setItem('pmerit_token', data.token);
-      //   localStorage.setItem('pmerit_user', JSON.stringify(data.user));
-      //   return { success: true, message: 'Account created successfully', user: data.user };
-      // }
-      // return { success: false, message: data.message || 'Sign up failed' };
+      // Basic validation
+      if (!email || !password || !firstName || !lastName) {
+        return { success: false, message: 'All fields are required' };
+      }
 
-      // Mock implementation (Phase 1)
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          // Basic validation
-          if (!email || !password || !firstName || !lastName) {
-            resolve({ success: false, message: 'All fields are required' });
-            return;
+      if (password.length < 6) {
+        return { success: false, message: 'Password must be at least 6 characters' };
+      }
+
+      try {
+        const response = await fetch(`${API_BASE}/auth/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password, firstName, lastName })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          // Store token and user data
+          if (data.token) {
+            TokenManager.setToken(data.token);
           }
 
-          if (password.length < 6) {
-            resolve({ success: false, message: 'Password must be at least 6 characters' });
-            return;
-          }
-
-          // Mock success
           const user = {
-            id: 'mock-user-' + Date.now(),
+            id: data.userId,
             email: email,
             firstName: firstName,
             lastName: lastName,
+            emailVerified: false,
             createdAt: new Date().toISOString()
           };
+          TokenManager.setUser(user);
 
-          // Store mock token and user data
-          localStorage.setItem('pmerit_token', 'mock-token-' + Date.now());
-          localStorage.setItem('pmerit_user', JSON.stringify(user));
-
-          resolve({
+          return {
             success: true,
-            message: 'Account created successfully',
-            user: user
-          });
-        }, 500); // Simulate network delay
-      });
+            message: data.message || 'Account created successfully. Please check your email for verification.',
+            user: user,
+            requiresVerification: true,
+            verificationCode: data.verificationCode // For development/testing only
+          };
+        }
+
+        return {
+          success: false,
+          message: data.message || 'Registration failed. Please try again.'
+        };
+      } catch (error) {
+        console.error('Registration error:', error);
+
+        // Fallback to mock if enabled and network fails
+        if (USE_MOCK_FALLBACK) {
+          console.warn('API unavailable, using mock registration');
+          return this._mockSignup(email, password, firstName, lastName);
+        }
+
+        return {
+          success: false,
+          message: 'Network error. Please check your connection and try again.'
+        };
+      }
+    },
+
+    /**
+     * Mock signup fallback (offline mode)
+     * @private
+     */
+    _mockSignup: function (email, password, firstName, lastName) {
+      const user = {
+        id: 'mock-user-' + Date.now(),
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+        emailVerified: true, // Mock users are auto-verified
+        createdAt: new Date().toISOString()
+      };
+
+      TokenManager.setToken('mock-token-' + Date.now());
+      TokenManager.setUser(user);
+
+      return {
+        success: true,
+        message: 'Account created (offline mode)',
+        user: user,
+        requiresVerification: false
+      };
     },
 
     /**
      * Log out the current user
+     * @param {boolean} redirect - Whether to redirect after logout (default: true)
      */
-    logout: function () {
-      // Clear authentication data
-      localStorage.removeItem('pmerit_token');
-      localStorage.removeItem('pmerit_user');
+    logout: async function (redirect = true) {
+      const token = TokenManager.getToken();
 
-      // TODO (Phase 2): Call backend to invalidate token
-      // await fetch(`${window.CONFIG.API_BASE_URL}/auth/logout`, {
-      //   method: 'POST',
-      //   headers: { 'Authorization': `Bearer ${token}` }
-      // });
+      // Clear local auth data first
+      TokenManager.clear();
 
-      // Redirect to sign in page
-      window.location.href = '/signin.html';
+      // Optionally call backend to invalidate token
+      if (token && !token.startsWith('mock-')) {
+        try {
+          await fetch(`${API_BASE}/auth/logout`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            }
+          });
+        } catch (error) {
+          // Ignore logout errors - local data already cleared
+          console.warn('Backend logout failed:', error);
+        }
+      }
+
+      // Redirect to home page
+      if (redirect) {
+        window.location.href = '/';
+      }
     },
 
     /**
@@ -153,39 +263,210 @@
      * @returns {boolean}
      */
     isAuthenticated: function () {
-      const token = localStorage.getItem('pmerit_token');
-      const user = localStorage.getItem('pmerit_user');
-
-      // TODO (Phase 2): Validate token with backend
-      // const response = await fetch(`${window.CONFIG.API_BASE_URL}/auth/verify`, {
-      //   headers: { 'Authorization': `Bearer ${token}` }
-      // });
-      // return response.ok;
-
-      // Mock: check if both token and user exist
+      const token = TokenManager.getToken();
+      const user = TokenManager.getUser();
       return !!(token && user);
     },
 
     /**
-     * Get current authenticated user
+     * Get current authenticated user from localStorage
      * @returns {object|null}
      */
     getCurrentUser: function () {
-      try {
-        const userJson = localStorage.getItem('pmerit_user');
-        return userJson ? JSON.parse(userJson) : null;
-      } catch (error) {
-        console.error('Error parsing user data:', error);
-        return null;
+      return TokenManager.getUser();
+    },
+
+    /**
+     * Fetch current user from backend API
+     * Validates token and returns fresh user data
+     * @returns {Promise<{success: boolean, user?: object, message?: string}>}
+     */
+    fetchCurrentUser: async function () {
+      const token = TokenManager.getToken();
+
+      if (!token) {
+        return { success: false, message: 'Not authenticated' };
       }
+
+      // Mock tokens don't need backend validation
+      if (token.startsWith('mock-')) {
+        const user = TokenManager.getUser();
+        return user
+          ? { success: true, user: user }
+          : { success: false, message: 'No user data' };
+      }
+
+      try {
+        const response = await fetch(`${API_BASE}/auth/me`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        const data = await response.json();
+
+        if (data.success && data.user) {
+          // Update local user data with fresh data from server
+          TokenManager.setUser(data.user);
+          return { success: true, user: data.user };
+        }
+
+        // Token invalid or expired - clear auth
+        if (response.status === 401) {
+          TokenManager.clear();
+        }
+
+        return {
+          success: false,
+          message: data.message || 'Failed to fetch user data'
+        };
+      } catch (error) {
+        console.error('Fetch user error:', error);
+        return {
+          success: false,
+          message: 'Network error'
+        };
+      }
+    },
+
+    /**
+     * Verify email with code
+     * @param {string} email - User email
+     * @param {string} code - 6-digit verification code
+     * @returns {Promise<{success: boolean, message: string}>}
+     */
+    verifyEmail: async function (email, code) {
+      try {
+        const response = await fetch(`${API_BASE}/auth/verify-email`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, code })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          // Update local user data to reflect verified status
+          const user = TokenManager.getUser();
+          if (user) {
+            user.emailVerified = true;
+            TokenManager.setUser(user);
+          }
+        }
+
+        return {
+          success: data.success,
+          message: data.message || (data.success ? 'Email verified!' : 'Verification failed')
+        };
+      } catch (error) {
+        console.error('Email verification error:', error);
+        return {
+          success: false,
+          message: 'Network error. Please try again.'
+        };
+      }
+    },
+
+    /**
+     * Resend verification email
+     * @param {string} email - User email
+     * @returns {Promise<{success: boolean, message: string}>}
+     */
+    resendVerification: async function (email) {
+      try {
+        const response = await fetch(`${API_BASE}/auth/resend-verification`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+
+        const data = await response.json();
+        return {
+          success: data.success,
+          message: data.message || (data.success ? 'Verification email sent!' : 'Failed to send email')
+        };
+      } catch (error) {
+        console.error('Resend verification error:', error);
+        return {
+          success: false,
+          message: 'Network error. Please try again.'
+        };
+      }
+    },
+
+    /**
+     * Request password reset
+     * @param {string} email - User email
+     * @returns {Promise<{success: boolean, message: string}>}
+     */
+    forgotPassword: async function (email) {
+      try {
+        const response = await fetch(`${API_BASE}/auth/forgot-password`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+
+        const data = await response.json();
+        return {
+          success: data.success,
+          message: data.message || 'If an account exists, a reset code has been sent.'
+        };
+      } catch (error) {
+        console.error('Forgot password error:', error);
+        return {
+          success: false,
+          message: 'Network error. Please try again.'
+        };
+      }
+    },
+
+    /**
+     * Reset password with code
+     * @param {string} email - User email
+     * @param {string} code - Reset code
+     * @param {string} newPassword - New password
+     * @returns {Promise<{success: boolean, message: string}>}
+     */
+    resetPassword: async function (email, code, newPassword) {
+      if (newPassword.length < 6) {
+        return { success: false, message: 'Password must be at least 6 characters' };
+      }
+
+      try {
+        const response = await fetch(`${API_BASE}/auth/reset-password`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, code, newPassword })
+        });
+
+        const data = await response.json();
+        return {
+          success: data.success,
+          message: data.message || (data.success ? 'Password reset successful!' : 'Reset failed')
+        };
+      } catch (error) {
+        console.error('Reset password error:', error);
+        return {
+          success: false,
+          message: 'Network error. Please try again.'
+        };
+      }
+    },
+
+    /**
+     * Get the authentication token
+     * @returns {string|null}
+     */
+    getToken: function () {
+      return TokenManager.getToken();
     }
   };
 
   // Make AUTH globally available
   window.AUTH = AUTH;
 
-  // Log in development
-  if (window.CONFIG && window.CONFIG.ENV === 'development') {
-    logger.debug('🔐 PMERIT Auth module loaded (Phase 1: Mock)');
-  }
+  // Log auth module initialization
+  console.log('🔐 PMERIT Auth module loaded (API: ' + API_BASE + ')');
 })();
