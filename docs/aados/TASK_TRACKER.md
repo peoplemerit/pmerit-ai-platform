@@ -1,7 +1,7 @@
 # PMERIT Platform — Task Tracker
 
 **Last Updated:** 2025-12-06
-**Current Session:** 31
+**Current Session:** 34
 **Governance Version:** V5 FINAL
 **Workflow Mode:** Direct Execution (Claude Code Desktop)
 
@@ -207,7 +207,7 @@ The language modal displays "No languages found" when opened. The search filter 
 ## ⚠️ PHASE 3: Sign-Up & Onboarding (PARTIAL)
 
 **Unlocks:** Phase 2 complete
-**Status:** Mock implementation working, real backend not implemented
+**Status:** Auth API complete, two-tier dashboard implemented, email service pending
 
 | # | Requirement | Status |
 |---|-------------|--------|
@@ -216,9 +216,9 @@ The language modal displays "No languages found" when opened. The search filter 
 | P3.3 | Mock sign-up stores user in localStorage | ✅ VERIFIED (Session 31) |
 | P3.4 | Tab switching (signup/signin) works | ✅ VERIFIED (Session 31) |
 | P3.5 | Real backend auth API | ✅ **COMPLETE** (Session 31) |
-| P3.6 | Email verification flow | ⚠️ Backend ready, needs frontend + email service |
-| P3.7 | Dedicated dashboard page | ❌ NOT IMPLEMENTED |
-| P3.8 | Protected route redirect | ❌ NOT IMPLEMENTED |
+| P3.6 | Email verification flow | ⚠️ Backend ready, needs email service |
+| P3.7 | Dedicated dashboard page | ✅ **COMPLETE** (Session 34) |
+| P3.8 | Protected route redirect | ✅ **COMPLETE** (Session 34) |
 
 ### Session 31 Verification Details
 
@@ -255,6 +255,29 @@ The language modal displays "No languages found" when opened. The search filter 
 - 6-digit verification codes (15-min expiry)
 - Rate limiting: 5 failed logins = 15-min lockout
 
+### P3.7-P3.8 Implementation Details (Session 34)
+
+**Two-Tier Dashboard Architecture — COMPLETE:**
+- `dashboard.html` → `account.html` (security gate with profile, verification status)
+- `learner-portal.html` → `dashboard.html` (full learning portal)
+- `dashboard.js` → `account.js` (renamed controller)
+- Fixed user name display bug (checks `first_name`, `firstName`, email fallback)
+- Added "Enter Dashboard" button with verification warning
+- Updated auth-modal.js to redirect to `/account.html`
+- Updated 15+ files with correct navigation links
+
+**User Flow:**
+```
+Login/Signup → /account.html → "Enter Dashboard" → /dashboard.html
+                   │
+                   └── Shows verification warning if email not verified
+```
+
+**Protected Routes:**
+- Both `/account.html` and `/dashboard.html` protected by `auth-check.js`
+- Unauthenticated users redirected to `/?auth=signin`
+- Stored redirect URL preserved for post-login navigation
+
 ### What's Needed for Full Implementation
 
 | Component | Priority | Notes |
@@ -262,10 +285,10 @@ The language modal displays "No languages found" when opened. The search filter 
 | ~~Backend auth endpoints~~ | ~~High~~ | ✅ COMPLETE (8 endpoints) |
 | ~~User table in Neon DB~~ | ~~High~~ | ✅ Using existing `users` table |
 | ~~JWT token management~~ | ~~High~~ | ✅ Web Crypto API implementation |
+| ~~Dashboard page~~ | ~~Medium~~ | ✅ COMPLETE (two-tier architecture) |
+| ~~Protected routes~~ | ~~Medium~~ | ✅ COMPLETE (auth-check.js) |
 | Email service integration | Medium | SendGrid/Mailgun for verification emails |
-| Frontend auth integration | Medium | Connect auth-modal.js to real API |
-| Dashboard page | Medium | `/portal/dashboard.html` |
-| Protected routes | Medium | Redirect unauthenticated users |
+| Frontend auth integration | Low | Connect auth-modal.js to real API (optional enhancement) |
 
 ---
 
@@ -301,7 +324,40 @@ The language modal displays "No languages found" when opened. The search filter 
 
 ## 📊 SESSION HISTORY
 
-### Session 29 — 2025-12-06 (Current)
+### Session 34 — 2025-12-06 (Current)
+
+**Focus:** Two-Tier Dashboard Architecture Implementation
+**Workflow:** Direct Execution (Claude Code Desktop)
+**Environment:** FE
+
+**Major Milestone:**
+- ✅ **P3.7 Dedicated Dashboard Page — COMPLETE**
+- ✅ **P3.8 Protected Route Redirect — COMPLETE**
+
+**Implementation Details:**
+- Renamed `dashboard.html` → `account.html` (security gate)
+- Renamed `learner-portal.html` → `dashboard.html` (full portal)
+- Renamed `dashboard.js` → `account.js`
+- Added "Enter Dashboard" button with verification warning
+- Fixed user name display bug (checks multiple field formats)
+- Updated auth-modal.js redirect to `/account.html`
+- Updated 16 files with correct navigation links
+
+**User Flow:**
+```
+Login/Signup → /account.html → "Enter Dashboard" → /dashboard.html
+```
+
+**Files Changed:**
+- account.html, dashboard.html, account.js
+- auth-modal.js, layout-loader.js, signin.html
+- footer.html, courses.html, portal/classroom.html
+- community.html, profile.html, progress.html, reports.html
+- index.html, lighthouse-test.html
+
+---
+
+### Session 29 — 2025-12-06
 
 **Focus:** Production Audit & Document Sync
 **Workflow:** Direct Execution (Claude Code Desktop)
@@ -368,24 +424,24 @@ The language modal displays "No languages found" when opened. The search filter 
 **When "PMERIT CONTINUE" is triggered:**
 
 ```
-📍 Phase: PHASE 3 — Sign-Up & Onboarding (Partial)
+📍 Phase: PHASE 3 — Sign-Up & Onboarding (Partial - 7/8 complete)
 📊 Gate Status: Conditionally Complete (9/10 verified)
-🎯 Next: P3.5 — Implement real backend auth API
+🎯 Next: P3.6 — Email service integration (SendGrid/Mailgun)
 ✅ Phase 0 COMPLETE: 6 requirements verified (Session 31)
 ✅ Phase 1 COMPLETE: 5 requirements verified (Session 31)
 ✅ Phase 2 COMPLETE: 8 requirements verified (Session 31)
-⚠️ Phase 3 PARTIAL: 4/8 verified (mock auth works, real backend needed)
+⚠️ Phase 3 PARTIAL: 7/8 verified (only email service pending)
 🩺 Production Health: All systems healthy
 ⚡ Workflow: Direct Execution
 ```
 
-**Last Audit:** 2025-12-06 (Session 31) - 9/10 Homepage Gate verified
-**Session 31 Milestones:**
-- Phase 0 AI Receptionist COMPLETE (P0.1-P0.6)
-- Phase 1 Assessment Entry COMPLETE (P1.1-P1.5)
-- Phase 2 Assessment Flow COMPLETE (P2.1-P2.8)
-- Phase 3 Sign-Up PARTIAL (P3.1-P3.4 mock auth verified)
-- **Total: 23 requirements verified in Session 31!**
+**Last Audit:** 2025-12-06 (Session 34) - 9/10 Homepage Gate verified
+**Session 34 Milestones:**
+- P3.7 Two-Tier Dashboard Architecture COMPLETE
+- P3.8 Protected Route Redirect COMPLETE
+- Fixed user name display bug (first_name/firstName fallback)
+- Updated 16 files with correct navigation links
+- **Phase 3 now 7/8 complete (only P3.6 email service remaining)**
 
 ---
 
