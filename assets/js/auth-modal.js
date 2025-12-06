@@ -298,13 +298,13 @@
 
             // Redirect to verification page or portal after delay
             setTimeout(() => {
-              window.location.href = '/learner-portal.html';
+              window.location.href = '/dashboard.html';
             }, 3000);
           } else {
             // Mock/offline mode - redirect immediately
             this.showMessage('signup', 'success', 'Account created! Redirecting...');
             setTimeout(() => {
-              window.location.href = '/learner-portal.html';
+              window.location.href = '/dashboard.html';
             }, 1000);
           }
         } else {
@@ -361,9 +361,13 @@
         if (result.success) {
           this.showMessage('signin', 'success', 'Signed in! Redirecting...');
 
+          // Check for stored redirect URL (from protected route)
+          const redirectUrl = sessionStorage.getItem('pmerit_redirect_after_login');
+          sessionStorage.removeItem('pmerit_redirect_after_login');
+
           // Redirect after short delay
           setTimeout(() => {
-            window.location.href = '/learner-portal.html';
+            window.location.href = redirectUrl || '/dashboard.html';
           }, 1000);
         } else {
           this.showMessage('signin', 'error', result.message || 'Sign in failed');
@@ -475,9 +479,21 @@
     checkAutoOpen: function () {
       const urlParams = new URLSearchParams(window.location.search);
       const openParam = urlParams.get('open');
+      const authParam = urlParams.get('auth');
 
+      // Check for ?auth=signin or ?auth=signup (from protected route redirect)
+      if (authParam && !window.AUTH?.isAuthenticated()) {
+        const tab = authParam === 'signup' ? 'signup' : 'signin';
+        setTimeout(() => this.open(tab), 100);
+
+        // Clean up URL
+        const newUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, newUrl);
+        return;
+      }
+
+      // Legacy: Check for ?open=dashboard
       if (openParam === 'dashboard' && !window.AUTH?.isAuthenticated()) {
-        // Auto-open modal if user is not authenticated
         setTimeout(() => this.open('signup'), 100);
       }
     },
