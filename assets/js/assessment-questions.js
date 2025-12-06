@@ -488,15 +488,23 @@
      */
     completeAssessment() {
       logger.debug('[AssessmentQuestions] Assessment completed!');
-      
+
       // Save final progress
       this.saveProgress();
-      
+
+      // Verify save was successful
+      const savedData = localStorage.getItem(this.storageKey);
+      console.log('[AssessmentQuestions] Verification - saved data exists:', !!savedData);
+      if (savedData) {
+        const parsed = JSON.parse(savedData);
+        console.log('[AssessmentQuestions] Verification - answer count:', Object.keys(parsed.answers || {}).length);
+        console.log('[AssessmentQuestions] Verification - sessionId:', parsed.sessionId);
+      }
+
       // Show loading
       this.showLoading();
-      
-      // In real implementation, would submit to backend
-      // For now, just redirect to processing page
+
+      // Redirect to processing page
       setTimeout(() => {
         window.location.href = 'assessment-processing.html';
       }, 1000);
