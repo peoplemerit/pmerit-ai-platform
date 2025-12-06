@@ -20,17 +20,20 @@
     getEnrollments: async function () {
       const user = window.AUTH?.getCurrentUser();
 
-      if (!user || !user.id) {
+      // Handle both 'id' (mock/local) and 'userId' (API response) property names
+      const userId = user?.id || user?.userId;
+
+      if (!user || !userId) {
         return { success: false, enrollments: [], error: 'User not authenticated' };
       }
 
       // Mock users don't have real enrollments
-      if (user.id.startsWith('mock-')) {
+      if (userId.startsWith('mock-')) {
         return { success: true, enrollments: [], message: 'Mock user - no enrollments' };
       }
 
       try {
-        const response = await fetch(`${API_BASE}/users/${user.id}/enrollments`);
+        const response = await fetch(`${API_BASE}/users/${userId}/enrollments`);
         const data = await response.json();
 
         if (data.success) {
@@ -52,11 +55,14 @@
     enrollInCourse: async function (courseId) {
       const user = window.AUTH?.getCurrentUser();
 
-      if (!user || !user.id) {
+      // Handle both 'id' (mock/local) and 'userId' (API response) property names
+      const userId = user?.id || user?.userId;
+
+      if (!user || !userId) {
         return { success: false, error: 'User not authenticated' };
       }
 
-      if (user.id.startsWith('mock-')) {
+      if (userId.startsWith('mock-')) {
         return { success: false, error: 'Mock users cannot enroll. Please sign up for a real account.' };
       }
 
@@ -64,7 +70,7 @@
         const response = await fetch(`${API_BASE}/courses/${courseId}/enroll`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ user_id: user.id })
+          body: JSON.stringify({ user_id: userId })
         });
 
         const data = await response.json();
@@ -87,7 +93,10 @@
     dropCourse: async function (courseId) {
       const user = window.AUTH?.getCurrentUser();
 
-      if (!user || !user.id) {
+      // Handle both 'id' (mock/local) and 'userId' (API response) property names
+      const userId = user?.id || user?.userId;
+
+      if (!user || !userId) {
         return { success: false, error: 'User not authenticated' };
       }
 
@@ -95,7 +104,7 @@
         const response = await fetch(`${API_BASE}/courses/${courseId}/enroll`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ user_id: user.id })
+          body: JSON.stringify({ user_id: userId })
         });
 
         const data = await response.json();

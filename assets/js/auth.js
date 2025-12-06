@@ -68,13 +68,14 @@
           // Store token
           TokenManager.setToken(data.token);
 
-          // Store user data
-          const user = data.user || {
-            id: data.userId,
-            email: email,
-            firstName: data.firstName || email.split('@')[0],
-            lastName: data.lastName || 'User',
-            emailVerified: data.emailVerified || false
+          // Store user data - normalize to always use 'id' property
+          const userData = data.user || {};
+          const user = {
+            id: userData.userId || userData.id || data.userId,
+            email: userData.email || email,
+            firstName: userData.firstName || data.firstName || email.split('@')[0],
+            lastName: userData.lastName || data.lastName || 'User',
+            emailVerified: userData.emailVerified || data.emailVerified || false
           };
           TokenManager.setUser(user);
 
