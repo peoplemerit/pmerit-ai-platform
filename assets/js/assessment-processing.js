@@ -185,24 +185,7 @@
           answerCount: Object.keys(assessmentData.answers).length
         });
 
-        // Transform answers object to responses array for backend
-        // Backend expects: { visitorId, responses: [{ questionId, answer }] }
-        const responses = Object.entries(assessmentData.answers).map(([key, value]) => {
-          // Parse question ID from key like "O1_1" -> calculate sequential number
-          const match = key.match(/^([OCEAN])(\d)_(\d)$/);
-          if (match) {
-            const traitMap = { 'O': 0, 'C': 1, 'E': 2, 'A': 3, 'N': 4 };
-            const traitIndex = traitMap[match[1]];
-            const facetNum = parseInt(match[2], 10);
-            const questionInFacet = parseInt(match[3], 10);
-            // Calculate: (traitIndex * 24) + ((facetNum - 1) * 4) + questionInFacet
-            const questionId = (traitIndex * 24) + ((facetNum - 1) * 4) + questionInFacet;
-            return { questionId, answer: value };
-          }
-          return null;
-        }).filter(Boolean);
-
-        // Submit to API
+        // Submit to API - send raw answers format (backend handles transformation)
         const response = await fetch(this.config.API_ENDPOINT, {
           method: 'POST',
           headers: {
@@ -210,9 +193,8 @@
           },
           credentials: 'omit',
           body: JSON.stringify({
-            visitorId: assessmentData.sessionId,
             sessionId: assessmentData.sessionId,
-            responses: responses
+            answers: assessmentData.answers
           })
         });
 
