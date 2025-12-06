@@ -284,12 +284,29 @@
         const result = await window.AUTH.signup(email, password, firstname, lastname);
 
         if (result.success) {
-          this.showMessage('signup', 'success', 'Account created! Redirecting...');
+          // Check if email verification is required
+          if (result.requiresVerification) {
+            // Show verification message with code (for development/testing)
+            let message = 'Account created! Please check your email for verification.';
+            if (result.verificationCode) {
+              message += ` (Dev code: ${result.verificationCode})`;
+            }
+            this.showMessage('signup', 'success', message);
 
-          // Redirect after short delay
-          setTimeout(() => {
-            window.location.href = '/learner-portal.html';
-          }, 1000);
+            // Store email for verification flow
+            sessionStorage.setItem('pmerit_pending_verification', email);
+
+            // Redirect to verification page or portal after delay
+            setTimeout(() => {
+              window.location.href = '/learner-portal.html';
+            }, 3000);
+          } else {
+            // Mock/offline mode - redirect immediately
+            this.showMessage('signup', 'success', 'Account created! Redirecting...');
+            setTimeout(() => {
+              window.location.href = '/learner-portal.html';
+            }, 1000);
+          }
         } else {
           this.showMessage('signup', 'error', result.message || 'Sign up failed');
           this.setFormLoading('signup', false);
