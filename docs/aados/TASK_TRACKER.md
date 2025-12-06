@@ -25,8 +25,8 @@ Say "PMERIT QUICK FIX: [description]" for minor fixes.
 | 0 | AI Receptionist | ✅ COMPLETE (Session 31) | — | — |
 | 1 | Assessment Entry | ✅ COMPLETE (Session 31) | — | — |
 | 2 | Assessment Flow | ✅ COMPLETE (Session 31) | — | — |
-| 3 | Sign-Up & Onboarding | ⚠️ PARTIAL (Mock Auth) | — | — |
-| 4 | Dashboard & Courses | 🔒 Locked | — | — |
+| 3 | Sign-Up & Onboarding | ✅ **COMPLETE** (Session 34) | — | — |
+| 4 | Dashboard & Courses | 🔓 **UNLOCKED** | — | — |
 | 5 | Virtual Classroom | 🔒 Locked | — | — |
 | 6 | Job Matching | 🔒 Locked | — | — |
 | 7 | Tier 1 Admin Portal | 🔒 Locked | — | — |
@@ -204,10 +204,10 @@ The language modal displays "No languages found" when opened. The search filter 
 
 ---
 
-## ⚠️ PHASE 3: Sign-Up & Onboarding (PARTIAL)
+## ✅ PHASE 3: Sign-Up & Onboarding (COMPLETE)
 
 **Unlocks:** Phase 2 complete
-**Status:** Auth API complete, two-tier dashboard implemented, email service pending
+**Status:** ✅ ALL 8 REQUIREMENTS COMPLETE (Session 34)
 
 | # | Requirement | Status |
 |---|-------------|--------|
@@ -216,7 +216,7 @@ The language modal displays "No languages found" when opened. The search filter 
 | P3.3 | Mock sign-up stores user in localStorage | ✅ VERIFIED (Session 31) |
 | P3.4 | Tab switching (signup/signin) works | ✅ VERIFIED (Session 31) |
 | P3.5 | Real backend auth API | ✅ **COMPLETE** (Session 31) |
-| P3.6 | Email verification flow | ⚠️ Backend ready, needs email service |
+| P3.6 | Email verification flow | ✅ **COMPLETE** (Session 34) — Resend integration |
 | P3.7 | Dedicated dashboard page | ✅ **COMPLETE** (Session 34) |
 | P3.8 | Protected route redirect | ✅ **COMPLETE** (Session 34) |
 
@@ -287,8 +287,24 @@ Login/Signup → /account.html → "Enter Dashboard" → /dashboard.html
 | ~~JWT token management~~ | ~~High~~ | ✅ Web Crypto API implementation |
 | ~~Dashboard page~~ | ~~Medium~~ | ✅ COMPLETE (two-tier architecture) |
 | ~~Protected routes~~ | ~~Medium~~ | ✅ COMPLETE (auth-check.js) |
-| Email service integration | Medium | SendGrid/Mailgun for verification emails |
+| ~~Email service integration~~ | ~~Medium~~ | ✅ COMPLETE — Resend (DKIM/SPF verified) |
 | Frontend auth integration | Low | Connect auth-modal.js to real API (optional enhancement) |
+
+### P3.6 Email Service Details (Session 34)
+
+**Resend Integration — COMPLETE:**
+- Domain `pmerit.com` verified with DKIM, SPF, MX records
+- `RESEND_API_KEY` secret configured in Cloudflare Workers
+- Email templates implemented:
+  - Verification code email (HTML template)
+  - Password reset email (HTML template)
+  - Welcome email (sent after verification)
+  - Resend verification email
+
+**Email Flow:**
+```
+Register → Verification email sent → User enters 6-digit code → Account verified → Welcome email sent
+```
 
 ---
 
@@ -424,24 +440,24 @@ Login/Signup → /account.html → "Enter Dashboard" → /dashboard.html
 **When "PMERIT CONTINUE" is triggered:**
 
 ```
-📍 Phase: PHASE 3 — Sign-Up & Onboarding (Partial - 7/8 complete)
+📍 Phase: PHASE 4 — Dashboard & Courses (UNLOCKED)
 📊 Gate Status: Conditionally Complete (9/10 verified)
-🎯 Next: P3.6 — Email service integration (SendGrid/Mailgun)
+🎯 Next: Phase 4 requirements (course enrollment, progress tracking)
 ✅ Phase 0 COMPLETE: 6 requirements verified (Session 31)
 ✅ Phase 1 COMPLETE: 5 requirements verified (Session 31)
 ✅ Phase 2 COMPLETE: 8 requirements verified (Session 31)
-⚠️ Phase 3 PARTIAL: 7/8 verified (only email service pending)
+✅ Phase 3 COMPLETE: 8 requirements verified (Session 34)
 🩺 Production Health: All systems healthy
 ⚡ Workflow: Direct Execution
 ```
 
 **Last Audit:** 2025-12-06 (Session 34) - 9/10 Homepage Gate verified
 **Session 34 Milestones:**
+- **PHASE 3 COMPLETE** (8/8 requirements)
+- P3.6 Resend email service integration COMPLETE
 - P3.7 Two-Tier Dashboard Architecture COMPLETE
 - P3.8 Protected Route Redirect COMPLETE
-- Fixed user name display bug (first_name/firstName fallback)
-- Updated 16 files with correct navigation links
-- **Phase 3 now 7/8 complete (only P3.6 email service remaining)**
+- **Total: 27 requirements verified (P0-P3 complete!)**
 
 ---
 
