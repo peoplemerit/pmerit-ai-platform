@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="PMERIT Dashboard - Your personalized learning hub"/>
+  <title>Dashboard - PMERIT</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico"/>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+  <!-- Theme Init - Prevent FOUC -->
+  <script>
+  (function() {
+    var theme = localStorage.getItem('theme');
+    if (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      theme = 'dark';
+    }
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="assets/css/light-theme.css?v=4">
+  <link rel="stylesheet" href="assets/css/components.css?v=4">
+  <link rel="stylesheet" href="assets/css/responsive-fixes.css?v=4">
+
+  <!-- Debug Logger -->
+  <script src="assets/js/utils/logger.js"></script>
+
+  <style>
+    /* Dashboard-specific styles */
+    .dashboard-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      min-height: calc(100vh - 200px);
+    }
+
+    .dashboard-header {
+      margin-bottom: 2rem;
+    }
+
+    .dashboard-header h1 {
+      font-size: 2rem;
+      color: var(--text-primary, #333);
+      margin-bottom: 0.5rem;
+    }
+
+    .dashboard-header .subtitle {
+      color: var(--text-secondary, #666);
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .dashboard-card {
+      background: var(--card-bg, #fff);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      border: 1px solid var(--border-color, #e0e0e0);
+    }
+
+    .dashboard-card h2 {
+      font-size: 1.25rem;
+      color: var(--text-primary, #333);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .dashboard-card h2 i {
+      color: var(--primary-color, #2A5B8C);
+    }
+
+    .profile-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .profile-info .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border-color, #e0e0e0);
+    }
+
+    .profile-info .info-row:last-child {
+      border-bottom: none;
+    }
+
+    .profile-info .label {
+      color: var(--text-secondary, #666);
+      font-weight: 500;
+    }
+
+    .profile-info .value {
+      color: var(--text-primary, #333);
+    }
+
+    .verification-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .verification-status.verified {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .verification-status.pending {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .btn-resend {
+      background: var(--primary-color, #2A5B8C);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+    }
+
+    .btn-resend:hover {
+      background: var(--primary-hover, #1e4a6f);
+    }
+
+    .btn-resend:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .quick-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .action-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem;
+      background: var(--bg-secondary, #f5f5f5);
+      border: 1px solid var(--border-color, #e0e0e0);
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--text-primary, #333);
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      background: var(--primary-color, #2A5B8C);
+      color: white;
+      border-color: var(--primary-color, #2A5B8C);
+    }
+
+    .action-btn i {
+      font-size: 1.25rem;
+      width: 24px;
+      text-align: center;
+    }
+
+    .assessment-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .assessment-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem;
+      background: var(--bg-secondary, #f5f5f5);
+      border-radius: 8px;
+    }
+
+    .assessment-item .date {
+      font-size: 0.875rem;
+      color: var(--text-secondary, #666);
+    }
+
+    .assessment-item .status {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-secondary, #666);
+    }
+
+    .empty-state i {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      opacity: 0.5;
+    }
+
+    .logout-section {
+      margin-top: 2rem;
+      text-align: center;
+    }
+
+    .btn-logout {
+      background: #dc3545;
+      color: white;
+      border: none;
+      padding: 0.75rem 2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-logout:hover {
+      background: #c82333;
+    }
+
+    .message {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .message.success {
+      background: #d4edda;
+      color: #155724;
+      display: block;
+    }
+
+    .message.error {
+      background: #f8d7da;
+      color: #721c24;
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-container {
+        padding: 1rem;
+      }
+
+      .dashboard-header h1 {
+        font-size: 1.5rem;
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header placeholder - loaded by layout-loader.js -->
+  <div id="header-placeholder"></div>
+
+  <main class="dashboard-container">
+    <!-- Message area -->
+    <div id="dashboard-message" class="message"></div>
+
+    <div class="dashboard-header">
+      <h1>Welcome, <span id="user-name">User</span>!</h1>
+      <p class="subtitle">Your personalized learning dashboard</p>
+    </div>
+
+    <div class="dashboard-grid">
+      <!-- Profile Card -->
+      <div class="dashboard-card">
+        <h2><i class="fas fa-user-circle"></i> Your Profile</h2>
+        <div class="profile-info">
+          <div class="info-row">
+            <span class="label">Name</span>
+            <span class="value" id="profile-name">-</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Email</span>
+            <span class="value" id="profile-email">-</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Email Status</span>
+            <span class="value">
+              <span id="email-status" class="verification-status pending">
+                <i class="fas fa-clock"></i> Pending
+              </span>
+            </span>
+          </div>
+          <div id="resend-container" style="display: none;">
+            <button class="btn-resend" id="btn-resend-verification">
+              <i class="fas fa-paper-plane"></i> Resend Verification Email
+            </button>
+          </div>
+          <div class="info-row">
+            <span class="label">Member Since</span>
+            <span class="value" id="profile-joined">-</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions Card -->
+      <div class="dashboard-card">
+        <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+        <div class="quick-actions">
+          <a href="index.html" class="action-btn">
+            <i class="fas fa-comments"></i>
+            <span>Chat with AI Advisor</span>
+          </a>
+          <a href="index.html#take-assessment" class="action-btn">
+            <i class="fas fa-clipboard-list"></i>
+            <span>Take Career Assessment</span>
+          </a>
+          <a href="index.html#pathways" class="action-btn">
+            <i class="fas fa-road"></i>
+            <span>Browse Learning Pathways</span>
+          </a>
+          <a href="index.html#courses" class="action-btn">
+            <i class="fas fa-graduation-cap"></i>
+            <span>Explore Courses</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Assessment History Card -->
+      <div class="dashboard-card">
+        <h2><i class="fas fa-history"></i> Assessment History</h2>
+        <div id="assessment-history" class="assessment-list">
+          <div class="empty-state">
+            <i class="fas fa-clipboard"></i>
+            <p>No assessments completed yet.</p>
+            <p><a href="index.html#take-assessment">Take your first assessment</a></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Learning Progress Card -->
+      <div class="dashboard-card">
+        <h2><i class="fas fa-chart-line"></i> Learning Progress</h2>
+        <div class="empty-state">
+          <i class="fas fa-seedling"></i>
+          <p>Your learning journey begins here!</p>
+          <p>Enroll in a course to track your progress.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logout Section -->
+    <div class="logout-section">
+      <button class="btn-logout" id="btn-logout">
+        <i class="fas fa-sign-out-alt"></i> Sign Out
+      </button>
+    </div>
+  </main>
+
+  <!-- Footer placeholder - loaded by layout-loader.js -->
+  <div id="footer-placeholder"></div>
+
+  <!-- Core Scripts -->
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/auth-check.js"></script>
+  <script src="assets/js/dashboard.js"></script>
+  <script src="assets/js/layout-loader.js"></script>
+</body>
+</html>
