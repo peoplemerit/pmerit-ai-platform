@@ -98,18 +98,18 @@ The AI chatbox UI is fully functional, but the backend returns empty responses d
 
 ---
 
-## 🔓 PHASE 0: AI Receptionist (READY)
+## 🔓 PHASE 0: AI Receptionist (IN PROGRESS)
 
 **Unlocks:** Homepage Gate conditionally complete
 **Blocker:** AI backend (env.AI issue affects P0.2-P0.4)
 
 | # | Requirement | Status |
 |---|-------------|--------|
-| P0.1 | Customer Service badge appears | 🔄 Ready to test |
+| P0.1 | Customer Service badge appears | ✅ VERIFIED (Session 28) |
 | P0.2 | AI introduces as Receptionist | 🚫 Blocked (AI binding) |
 | P0.3 | AI recommends assessment | 🚫 Blocked (AI binding) |
 | P0.4 | Follow-up questions work | 🚫 Blocked (AI binding) |
-| P0.5 | "Begin Assessment" appears | 🔄 Ready to test |
+| P0.5 | "Begin Assessment" appears | ✅ VERIFIED (Session 28) |
 
 ---
 
@@ -117,6 +117,8 @@ The AI chatbox UI is fully functional, but the backend returns empty responses d
 
 | Task | Session | Phase | Notes |
 |------|---------|-------|-------|
+| P0.1 Customer Service badge | 28 | Phase 0 | Verified same as H6 |
+| P0.5 Begin Assessment button | 28 | Phase 0 | Homepage → /assessment-entry works |
 | Production Audit | 27 | Gate | Full audit of pmerit.com |
 | H1-H10 Verification | 27 | Gate | 9/10 working, 1 partial |
 | Language system | 24-27 | Gate | Custom modal working |
@@ -140,7 +142,27 @@ The AI chatbox UI is fully functional, but the backend returns empty responses d
 
 ## 📊 SESSION HISTORY
 
-### Session 27 — 2025-12-05 (Current)
+### Session 28 — 2025-12-05 (Current)
+
+**Focus:** Assessment Flow Fixes
+**Workflow:** Direct Execution (Claude Code Desktop)
+**Environment:** BOTH (FE + BE)
+
+**User Testing Results:**
+- ✅ P0.5: "Begin Assessment" button works (homepage → /assessment-entry)
+- ✅ Assessment entry page works (consent, FAQ, Begin Assessment button)
+- ✅ Assessment questions work (120 questions, Complete Assessment button)
+- ❌ Assessment processing page broken (no results displayed)
+- ⚠️ Header/footer rendering issues on /assessment-questions and /assessment-processing
+
+**In Progress:**
+- [ ] Fix header/footer on assessment pages
+- [ ] Investigate /assessment-processing page issues
+- [ ] Document findings
+
+---
+
+### Session 27 — 2025-12-05
 
 **Focus:** Production Audit & Document Sync
 **Workflow:** Direct Execution (Claude Code Desktop)
