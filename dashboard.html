@@ -467,7 +467,7 @@
             </a>
           </li>
           <li class="nav-menu-item">
-            <a href="#classroom" class="nav-menu-link">
+            <a href="#my-courses-section" class="nav-menu-link" onclick="document.getElementById('my-courses-section').scrollIntoView({behavior:'smooth'}); return false;">
               <i class="fas fa-chalkboard-teacher"></i>
               <span>Enter Classroom</span>
             </a>
@@ -738,7 +738,7 @@
           <ul>
             <li>View enrolled courses and recommended paths</li>
             <li>Access interactive modules, quizzes, and offline content</li>
-            <li><a href="#classroom" class="text-accent"><i class="fas fa-graduation-cap"></i> Enter Classroom (with Virtual Human)</a></li>
+            <li><a href="#my-courses-section" class="text-accent" onclick="document.getElementById('my-courses-section').scrollIntoView({behavior:'smooth'}); return false;"><i class="fas fa-graduation-cap"></i> Enter Classroom (with Virtual Human)</a></li>
           </ul>
         </div>
         <div class="dashboard-card">
@@ -810,7 +810,7 @@
           <i class="fas fa-route"></i>
           <span>Explore Pathways</span>
         </a>
-        <a href="/portal/classroom.html" class="quick-action-card">
+        <a href="#my-courses-section" class="quick-action-card" onclick="document.getElementById('my-courses-section').scrollIntoView({behavior:'smooth'}); return false;">
           <i class="fas fa-chalkboard-teacher"></i>
           <span>Enter Classroom</span>
         </a>
@@ -925,21 +925,29 @@
         <p>Interactive learning environment with AI Tutor and Virtual Human support.</p>
         <p>
           <small>
-            <a href="/portal/classroom.html" target="_blank" class="text-accent">
-              <i class="fas fa-external-link-alt"></i> Open in new window
+            <a id="classroom-open-link" href="#my-courses-section" class="text-accent" onclick="document.getElementById('my-courses-section').scrollIntoView({behavior:'smooth'}); return false;">
+              <i class="fas fa-external-link-alt"></i> Select a course to open classroom
             </a>
           </small>
         </p>
       </div>
-      <div class="classroom-iframe-container">
-        <iframe 
+      <div class="classroom-iframe-container" id="classroom-iframe-container" style="display: none;">
+        <iframe
           id="classroom-iframe"
-          class="classroom-iframe" 
-          src="/portal/classroom.html?courseId=demo-course-001" 
+          class="classroom-iframe"
+          src="about:blank"
           title="PMERIT Classroom"
           allow="microphone; camera; fullscreen"
           loading="lazy">
         </iframe>
+      </div>
+      <div id="classroom-placeholder" class="empty-state">
+        <i class="fas fa-chalkboard-teacher" style="font-size: 3rem; color: var(--color-primary); margin-bottom: 1rem;"></i>
+        <h3>Select a Course</h3>
+        <p>Choose a course from "My Courses" above to enter the classroom.</p>
+        <a href="#my-courses-section" class="btn btn-primary" onclick="document.getElementById('my-courses-section').scrollIntoView({behavior:'smooth'}); return false;">
+          <i class="fas fa-book"></i> Go to My Courses
+        </a>
       </div>
     </section>
   </main>
@@ -1061,19 +1069,46 @@
         });
       });
 
-      // Handle links within dashboard that point to #classroom
+      // Handle links within dashboard that point to #classroom - redirect to My Courses
       document.addEventListener('click', function (e) {
         const link = e.target.closest('a[href="#classroom"]');
         if (link) {
           e.preventDefault();
-          // Show classroom iframe in main content
-          const classroomSection = document.getElementById('classroom-content');
-          if (classroomSection) {
-            classroomSection.classList.add('active');
-            classroomSection.scrollIntoView({ behavior: 'smooth' });
+          // Scroll to My Courses section so user can pick a course
+          const myCoursesSection = document.getElementById('my-courses-section');
+          if (myCoursesSection) {
+            myCoursesSection.scrollIntoView({ behavior: 'smooth' });
           }
         }
       });
+
+      // Function to load classroom with a specific course (called from enrolled course cards)
+      window.loadClassroomWithCourse = function(courseId) {
+        const classroomSection = document.getElementById('classroom-content');
+        const iframe = document.getElementById('classroom-iframe');
+        const iframeContainer = document.getElementById('classroom-iframe-container');
+        const placeholder = document.getElementById('classroom-placeholder');
+        const openLink = document.getElementById('classroom-open-link');
+
+        if (classroomSection && iframe && courseId) {
+          // Update iframe src with courseId
+          iframe.src = `/portal/classroom.html?courseId=${courseId}`;
+
+          // Show iframe, hide placeholder
+          iframeContainer.style.display = 'block';
+          placeholder.style.display = 'none';
+
+          // Update the open in new window link
+          openLink.href = `/portal/classroom.html?courseId=${courseId}`;
+          openLink.onclick = null;
+          openLink.innerHTML = '<i class="fas fa-external-link-alt"></i> Open in new window';
+          openLink.target = '_blank';
+
+          // Show and scroll to classroom section
+          classroomSection.classList.add('active');
+          classroomSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      };
 
       // Mobile panel toggles
       function toggleNavPanel() {

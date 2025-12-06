@@ -1056,28 +1056,33 @@
       
       async enrollCourse(courseId) {
         try {
-          // Check if user is authenticated
-          if (!window.PMERIT?.auth?.authenticated) {
+          // Check if user is authenticated using AUTH module
+          const user = window.AUTH?.getCurrentUser();
+          if (!user || !user.id) {
+            // Not logged in - redirect to sign up
             window.location.href = '/index.html#sign-up';
             return;
           }
-          
-          const response = await fetch('/functions/api/courses/enroll', {
+
+          // Use the correct API endpoint
+          const API_BASE = 'https://pmerit-api-worker.peoplemerit.workers.dev/api/v1';
+          const response = await fetch(`${API_BASE}/courses/${courseId}/enroll`, {
             method: 'POST',
             headers: {
-              'Authorization': `Bearer ${window.PMERIT.auth.token}`,
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ courseId })
+            body: JSON.stringify({ user_id: user.id })
           });
-          
-          if (!response.ok) {
-            throw new Error(`HTTP ${response.status}`);
+
+          const data = await response.json();
+
+          if (!data.success) {
+            throw new Error(data.error || 'Enrollment failed');
           }
-          
-          // Redirect to classroom in dashboard
-          window.location.href = `/dashboard.html#classroom`;
-          
+
+          // Redirect to classroom with course context
+          window.location.href = `/portal/classroom.html?courseId=${courseId}`;
+
         } catch (error) {
           console.error('Failed to enroll in course:', error);
           alert('Failed to enroll in course. Please try again.');
