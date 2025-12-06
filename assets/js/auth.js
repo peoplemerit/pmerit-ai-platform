@@ -143,8 +143,25 @@
         return { success: false, message: 'All fields are required' };
       }
 
-      if (password.length < 6) {
-        return { success: false, message: 'Password must be at least 6 characters' };
+      // Password strength validation (matches backend requirements)
+      const passwordErrors = [];
+      if (password.length < 8) {
+        passwordErrors.push('at least 8 characters');
+      }
+      if (!/[A-Z]/.test(password)) {
+        passwordErrors.push('one uppercase letter');
+      }
+      if (!/[a-z]/.test(password)) {
+        passwordErrors.push('one lowercase letter');
+      }
+      if (!/[0-9]/.test(password)) {
+        passwordErrors.push('one number');
+      }
+      if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+        passwordErrors.push('one special character');
+      }
+      if (passwordErrors.length > 0) {
+        return { success: false, message: `Password must include: ${passwordErrors.join(', ')}` };
       }
 
       try {

@@ -262,8 +262,15 @@
         return;
       }
 
-      if (password.length < 6) {
-        this.showMessage('signup', 'error', 'Password must be at least 6 characters');
+      // Password strength validation (matches backend requirements)
+      const hasMinLength = password.length >= 8;
+      const hasUppercase = /[A-Z]/.test(password);
+      const hasLowercase = /[a-z]/.test(password);
+      const hasNumber = /[0-9]/.test(password);
+      const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+      if (!hasMinLength || !hasUppercase || !hasLowercase || !hasNumber || !hasSpecial) {
+        this.showMessage('signup', 'error', 'Password must be 8+ chars with uppercase, lowercase, number, and special character');
         return;
       }
 
@@ -337,8 +344,8 @@
         return;
       }
 
-      if (password.length < 6) {
-        this.showMessage('signin', 'error', 'Password must be at least 6 characters');
+      if (password.length < 8) {
+        this.showMessage('signin', 'error', 'Invalid email or password');
         return;
       }
 
