@@ -63,7 +63,10 @@
   
   <!-- TTS module -->
   <script src="../assets/js/tts.js"></script>
-  
+
+  <!-- Classroom Session API -->
+  <script src="../assets/js/classroom-session.js"></script>
+
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { 
@@ -303,8 +306,35 @@
 
       <!-- Content Area (lesson content scrolls here) -->
       <div class="content-area">
-        <div class="player-area">
+        <div class="player-area" id="player-area">
           <!-- Lesson content goes here -->
+        </div>
+
+        <!-- Student Controls -->
+        <div class="student-controls" style="display: flex; justify-content: center; gap: 10px; margin-top: 15px; flex-wrap: wrap;">
+          <button id="prev-lesson-btn" class="control-btn" style="background: var(--bg-elevated); color: var(--text-primary); border: 1px solid var(--border-color);" disabled>
+            <i class="fas fa-step-backward"></i> Previous
+          </button>
+          <button id="pause-lesson-btn" class="control-btn" style="background: var(--bg-elevated); color: var(--text-primary); border: 1px solid var(--border-color);">
+            <i class="fas fa-pause"></i> Pause
+          </button>
+          <button id="bookmark-btn" class="control-btn" style="background: var(--bg-elevated); color: var(--text-primary); border: 1px solid var(--border-color);">
+            <i class="fas fa-bookmark"></i> Bookmark
+          </button>
+          <button id="next-lesson-btn" class="control-btn" style="background: var(--bg-elevated); color: var(--text-primary); border: 1px solid var(--border-color);" disabled>
+            <i class="fas fa-step-forward"></i> Next
+          </button>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="lesson-progress" style="margin-top: 15px;">
+          <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 5px;">
+            <span>Lesson Progress</span>
+            <span id="progress-percent">0%</span>
+          </div>
+          <div style="height: 8px; background: var(--bg-elevated); border-radius: 4px; overflow: hidden;">
+            <div id="progress-bar" style="height: 100%; width: 0%; background: var(--color-secondary); transition: width 0.3s;"></div>
+          </div>
         </div>
       </div>
     </main>
@@ -312,11 +342,31 @@
     <!-- Right Panel: AI Tutor Chat -->
     <aside class="panel right-panel">
       <div class="panel-title">AI Tutor Chat</div>
+
+      <!-- Raise Hand Button -->
+      <div class="raise-hand-container" style="margin-bottom: 15px;">
+        <button id="raise-hand-btn" class="raise-hand-btn" style="width: 100%; background: var(--color-secondary, #4AA4B9); display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px;">
+          <i class="fas fa-hand-paper"></i> Raise Hand
+        </button>
+      </div>
+
       <div class="messages-container" id="chat-messages"></div>
       <form class="chat-form" id="chat-form">
         <input type="text" id="chat-input" placeholder="Ask your AI tutor..." required>
         <button type="submit">Send</button>
       </form>
+
+      <!-- Session Stats -->
+      <div class="session-stats" style="margin-top: 15px; padding: 10px; background: var(--bg-elevated); border-radius: 8px; font-size: 0.85rem;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+          <span><i class="fas fa-hand-paper"></i> Hand Raises:</span>
+          <span id="stat-hand-raises">0</span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span><i class="fas fa-question-circle"></i> Questions:</span>
+          <span id="stat-questions">0</span>
+        </div>
+      </div>
     </aside>
   </div>
 
@@ -324,18 +374,24 @@
     (function () {
       'use strict';
 
-      // Parse courseId from URL
+      // Parse courseId and lessonId from URL
       const urlParams = new URLSearchParams(window.location.search);
-      const courseId = urlParams.get('courseId') || 'demo-course-001';
+      const courseId = urlParams.get('courseId') || urlParams.get('course_id');
+      const lessonId = urlParams.get('lessonId') || urlParams.get('lesson_id');
 
       // State management
       const state = {
         courseId: courseId,
+        lessonId: lessonId,
         courseData: null,
+        currentLesson: null,
+        lessonNavigation: null,
+        modules: [],
         notes: { content: "", timestamp: null },
         resources: [],
         avatarManager: null,
-        sessionStart: Date.now()
+        sessionStart: Date.now(),
+        chatMessages: []
       };
 
       // DOM elements
@@ -352,30 +408,69 @@
         chatInput: document.getElementById('chat-input'),
         vhToggle: document.getElementById('vh-toggle'),
         vhContainer: document.getElementById('vh-root'),
-        userDisplay: document.getElementById('user-display')
+        userDisplay: document.getElementById('user-display'),
+        playerArea: document.getElementById('player-area'),
+        // New controls
+        raiseHandBtn: document.getElementById('raise-hand-btn'),
+        prevLessonBtn: document.getElementById('prev-lesson-btn'),
+        nextLessonBtn: document.getElementById('next-lesson-btn'),
+        pauseBtn: document.getElementById('pause-lesson-btn'),
+        bookmarkBtn: document.getElementById('bookmark-btn'),
+        progressBar: document.getElementById('progress-bar'),
+        progressPercent: document.getElementById('progress-percent'),
+        statHandRaises: document.getElementById('stat-hand-raises'),
+        statQuestions: document.getElementById('stat-questions')
       };
 
       // Initialize
       async function init() {
         console.log('🎓 Initializing classroom for course:', courseId);
-        
+
+        // Validate course ID
+        if (!courseId) {
+          showError('No course specified. Please select a course from your dashboard.');
+          return;
+        }
+
         // Set user display
-        const user = window.AUTH.getCurrentUser();
+        const user = window.AUTH?.getCurrentUser();
         if (user) {
-          const displayName = user.firstName || user.email.split('@')[0];
+          const displayName = user.firstName || user.email?.split('@')[0] || 'Student';
           dom.userDisplay.textContent = displayName;
         }
 
         // Load saved VH preference, defaulting to true (enabled)
         const savedPreference = localStorage.getItem('pmerit_vh_enabled');
-        // Explicitly check for 'true' or 'false' strings, default to true for new users
         const vhEnabled = savedPreference === 'false' ? false : true;
         updateVHToggle(vhEnabled);
 
         bindEvents();
-        await loadCourseData();
+
+        // Start classroom session via API
+        try {
+          dom.lessonTitle.textContent = 'Starting session...';
+          const session = await window.ClassroomSession.startSession(courseId, lessonId);
+
+          if (session.resumed) {
+            addChatMessage('ai', `Welcome back! Resuming your session for "${session.course.title}".`);
+          } else {
+            addChatMessage('ai', `Welcome to "${session.course.title}"! I'm your AI tutor. Feel free to ask questions anytime.`);
+          }
+
+          state.courseData = session.course;
+          dom.lessonTitle.textContent = session.course.title;
+
+          // Load course modules and lessons
+          await loadCourseModules();
+
+        } catch (error) {
+          console.error('Failed to start session:', error);
+          // Fallback to demo mode
+          addChatMessage('ai', 'Hello! I\'m your AI tutor. How can I help you today?');
+          await loadCourseDataFallback();
+        }
+
         loadUserNotes();
-        initializeChat();
         renderOutline();
 
         // Initialize avatar manager
@@ -384,14 +479,169 @@
         console.log('✅ Classroom initialized');
       }
 
+      // Show error message
+      function showError(message) {
+        dom.lessonTitle.textContent = 'Error';
+        dom.playerArea.innerHTML = `
+          <div style="text-align: center; padding: 40px; color: var(--color-error, #C4314B);">
+            <i class="fas fa-exclamation-circle" style="font-size: 48px; margin-bottom: 16px;"></i>
+            <p>${message}</p>
+            <a href="../dashboard.html" class="btn" style="margin-top: 20px;">
+              <i class="fas fa-home"></i> Return to Dashboard
+            </a>
+          </div>
+        `;
+      }
+
+      // Load course modules from API
+      async function loadCourseModules() {
+        try {
+          const modules = await window.ClassroomSession.getCourseModules(courseId);
+          state.modules = modules;
+          renderOutline();
+
+          // Load first lesson if no specific lesson requested
+          if (!lessonId && modules.length > 0 && modules[0].lessons?.length > 0) {
+            const firstLesson = modules[0].lessons[0];
+            await loadLesson(firstLesson.lesson_id);
+          } else if (lessonId) {
+            await loadLesson(lessonId);
+          }
+        } catch (error) {
+          console.error('Failed to load modules:', error);
+        }
+      }
+
+      // Load lesson content
+      async function loadLesson(lessonId) {
+        try {
+          const data = await window.ClassroomSession.getLessonDetails(lessonId);
+          state.currentLesson = data.lesson;
+          state.lessonId = lessonId;
+
+          // Update UI
+          dom.lessonTitle.textContent = `${state.courseData?.title || 'Course'} - ${data.lesson.title}`;
+
+          // Render lesson content
+          renderLessonContent(data.lesson);
+
+          // Update navigation buttons
+          updateNavigation(data.navigation);
+
+          // Update session with current lesson
+          await window.ClassroomSession.updateProgress({
+            lesson_id: lessonId
+          });
+
+          // Reset progress bar for new lesson
+          updateProgressBar(0);
+
+          // Update outline to show active lesson
+          renderOutline();
+
+          // Update stats
+          updateStats();
+
+        } catch (error) {
+          console.error('Failed to load lesson:', error);
+        }
+      }
+
+      // Render lesson content in player area
+      function renderLessonContent(lesson) {
+        const typeIcon = {
+          video: 'fa-play-circle',
+          reading: 'fa-book-open',
+          interactive: 'fa-hand-pointer',
+          quiz: 'fa-question-circle',
+          project: 'fa-project-diagram',
+          discussion: 'fa-comments'
+        };
+
+        const icon = typeIcon[lesson.lesson_type] || 'fa-file';
+        const duration = lesson.estimated_duration_minutes
+          ? `${lesson.estimated_duration_minutes} min`
+          : '';
+
+        let contentHTML = `
+          <div class="lesson-header" style="margin-bottom: 20px;">
+            <h3><i class="fas ${icon}"></i> ${lesson.title}</h3>
+            <div class="lesson-meta" style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 8px;">
+              <span><i class="fas fa-clock"></i> ${duration}</span>
+              <span style="margin-left: 16px;"><i class="fas fa-layer-group"></i> ${lesson.module_title || 'Module'}</span>
+            </div>
+          </div>
+        `;
+
+        // Render based on lesson type
+        if (lesson.lesson_type === 'video' && lesson.content_url) {
+          contentHTML += `
+            <div class="video-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px;">
+              <iframe src="${lesson.content_url}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" allowfullscreen></iframe>
+            </div>
+          `;
+        } else if (lesson.transcript) {
+          contentHTML += `
+            <div class="lesson-content" style="background: var(--bg-elevated); padding: 20px; border-radius: 8px; max-height: 400px; overflow-y: auto;">
+              ${lesson.transcript}
+            </div>
+          `;
+        } else {
+          contentHTML += `
+            <div class="lesson-placeholder" style="text-align: center; padding: 60px; background: var(--bg-elevated); border-radius: 8px;">
+              <i class="fas ${icon}" style="font-size: 64px; color: var(--color-secondary); margin-bottom: 16px;"></i>
+              <p>Lesson content is being prepared.</p>
+              <p style="color: var(--text-secondary); margin-top: 8px;">Use the AI tutor chat to ask questions about this topic.</p>
+            </div>
+          `;
+        }
+
+        dom.playerArea.innerHTML = contentHTML;
+      }
+
+      // Fallback to demo data if API fails
+      async function loadCourseDataFallback() {
+        const demoData = {
+          id: courseId || 'demo-course',
+          title: "Introduction to PMERIT Classroom",
+          modules: [
+            {
+              id: 'mod-1',
+              title: "Module 1: Getting Started",
+              lessons: [
+                { lesson_id: 'les-1', title: "Welcome to PMERIT", lesson_type: "video", estimated_duration_minutes: 3 },
+                { lesson_id: 'les-2', title: "How to Use This Platform", lesson_type: "video", estimated_duration_minutes: 5 }
+              ]
+            },
+            {
+              id: 'mod-2',
+              title: "Module 2: Core Concepts",
+              lessons: [
+                { lesson_id: 'les-3', title: "Basic Principles", lesson_type: "video", estimated_duration_minutes: 7 },
+                { lesson_id: 'les-4', title: "Advanced Techniques", lesson_type: "reading", estimated_duration_minutes: 10 }
+              ]
+            }
+          ]
+        };
+
+        state.courseData = demoData;
+        state.modules = demoData.modules;
+        dom.lessonTitle.textContent = demoData.title;
+      }
+
       // Initialize Avatar Manager
       async function initAvatarManager(enabled) {
         try {
+          if (!window.AvatarManager) {
+            console.warn('AvatarManager not loaded');
+            return;
+          }
+
           state.avatarManager = new window.AvatarManager({
             canvasId: 'vh-canvas',
             captionsId: 'vh-captions',
             enabled: enabled,
-            apiBaseUrl: window.CONFIG.API_BASE_URL,
+            apiBaseUrl: window.CONFIG?.API_BASE_URL,
             onSpeakStart: () => {
               dom.vhContainer.classList.add('speaking');
             },
@@ -424,22 +674,142 @@
         dom.endClassBtn.addEventListener('click', endClass);
         dom.chatForm.addEventListener('submit', handleChatSubmit);
         dom.vhToggle.addEventListener('click', toggleVirtualHuman);
+
+        // New control handlers
+        dom.raiseHandBtn.addEventListener('click', handleRaiseHand);
+        dom.prevLessonBtn.addEventListener('click', handlePrevLesson);
+        dom.nextLessonBtn.addEventListener('click', handleNextLesson);
+        dom.pauseBtn.addEventListener('click', handlePauseResume);
+        dom.bookmarkBtn.addEventListener('click', handleBookmark);
+      }
+
+      // Handle Raise Hand button
+      async function handleRaiseHand() {
+        // Focus chat input for question
+        dom.chatInput.focus();
+        dom.chatInput.placeholder = 'Type your question here...';
+
+        // Visual feedback
+        dom.raiseHandBtn.innerHTML = '<i class="fas fa-hand-paper"></i> Hand Raised!';
+        dom.raiseHandBtn.style.background = 'var(--color-success, #3A7F5C)';
+
+        // Log interaction
+        if (window.ClassroomSession?.hasActiveSession()) {
+          await window.ClassroomSession.logInteraction('hand_raise', {
+            position: { lessonId: state.lessonId }
+          });
+          updateStats();
+        }
+
+        // Reset button after 3 seconds
+        setTimeout(() => {
+          dom.raiseHandBtn.innerHTML = '<i class="fas fa-hand-paper"></i> Raise Hand';
+          dom.raiseHandBtn.style.background = 'var(--color-secondary, #4AA4B9)';
+          dom.chatInput.placeholder = 'Ask your AI tutor...';
+        }, 3000);
+      }
+
+      // Handle Previous Lesson
+      async function handlePrevLesson() {
+        if (state.lessonNavigation?.prev_lesson_id) {
+          await loadLesson(state.lessonNavigation.prev_lesson_id);
+        }
+      }
+
+      // Handle Next Lesson
+      async function handleNextLesson() {
+        if (state.lessonNavigation?.next_lesson_id) {
+          await loadLesson(state.lessonNavigation.next_lesson_id);
+        }
+      }
+
+      // Handle Pause/Resume
+      let isPaused = false;
+      function handlePauseResume() {
+        isPaused = !isPaused;
+
+        if (isPaused) {
+          dom.pauseBtn.innerHTML = '<i class="fas fa-play"></i> Resume';
+          // Log pause
+          if (window.ClassroomSession?.hasActiveSession()) {
+            window.ClassroomSession.logInteraction('pause', {
+              position: { lessonId: state.lessonId }
+            });
+          }
+        } else {
+          dom.pauseBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+          // Log resume
+          if (window.ClassroomSession?.hasActiveSession()) {
+            window.ClassroomSession.logInteraction('resume', {
+              position: { lessonId: state.lessonId }
+            });
+          }
+        }
+      }
+
+      // Handle Bookmark
+      async function handleBookmark() {
+        // Save bookmark
+        const bookmarks = JSON.parse(localStorage.getItem(`pmerit_bookmarks_${courseId}`) || '[]');
+        const bookmark = {
+          lessonId: state.lessonId,
+          lessonTitle: state.currentLesson?.title,
+          timestamp: new Date().toISOString()
+        };
+        bookmarks.push(bookmark);
+        localStorage.setItem(`pmerit_bookmarks_${courseId}`, JSON.stringify(bookmarks));
+
+        // Log interaction
+        if (window.ClassroomSession?.hasActiveSession()) {
+          await window.ClassroomSession.logInteraction('bookmark', {
+            position: { lessonId: state.lessonId }
+          });
+        }
+
+        // Visual feedback
+        dom.bookmarkBtn.innerHTML = '<i class="fas fa-bookmark"></i> Saved!';
+        dom.bookmarkBtn.style.color = 'var(--color-success, #3A7F5C)';
+        setTimeout(() => {
+          dom.bookmarkBtn.innerHTML = '<i class="fas fa-bookmark"></i> Bookmark';
+          dom.bookmarkBtn.style.color = '';
+        }, 2000);
+      }
+
+      // Update session stats display
+      function updateStats() {
+        const sessionState = window.ClassroomSession?.getState() || {};
+        dom.statHandRaises.textContent = sessionState.handRaises || 0;
+        dom.statQuestions.textContent = sessionState.questionsAsked || 0;
+      }
+
+      // Update progress bar
+      function updateProgressBar(percent) {
+        dom.progressBar.style.width = `${percent}%`;
+        dom.progressPercent.textContent = `${Math.round(percent)}%`;
+      }
+
+      // Update navigation buttons
+      function updateNavigation(navigation) {
+        state.lessonNavigation = navigation;
+        dom.prevLessonBtn.disabled = !navigation?.prev_lesson_id;
+        dom.nextLessonBtn.disabled = !navigation?.next_lesson_id;
       }
 
       // Toggle Virtual Human
       function toggleVirtualHuman() {
         const currentlyEnabled = !dom.vhToggle.classList.contains('off');
         const newState = !currentlyEnabled;
-        
+
         updateVHToggle(newState);
-        
+        localStorage.setItem('pmerit_vh_enabled', newState.toString());
+
         if (state.avatarManager) {
           state.avatarManager.setEnabled(newState);
         }
 
         if (newState) {
           dom.vhContainer.classList.remove('audio-only');
-          if (state.avatarManager && !state.avatarManager.state.initialized) {
+          if (state.avatarManager && !state.avatarManager.state?.initialized) {
             initAvatarManager(true);
           }
         } else {
@@ -456,72 +826,65 @@
         }
       }
 
-      // Load course data
-      async function loadCourseData() {
-        // TODO: Fetch from API based on courseId
-        // For now, use demo data
-        const demoData = {
-          id: courseId,
-          title: "Introduction to PMERIT Classroom",
-          modules: [
-            { 
-              title: "Module 1: Getting Started", 
-              lessons: [ 
-                { title: "Welcome to PMERIT", type: "video", duration: "2:30" }, 
-                { title: "How to Use This Platform", type: "video", duration: "5:15" } 
-              ] 
-            },
-            { 
-              title: "Module 2: Core Concepts", 
-              lessons: [ 
-                { title: "Basic Principles", type: "video", duration: "7:20" }, 
-                { title: "Advanced Techniques", type: "reading", duration: "10:00" } 
-              ] 
-            }
-          ]
-        };
-
-        dom.lessonTitle.textContent = demoData.title;
-        state.courseData = demoData;
-      }
-
       // Load user notes
       function loadUserNotes() {
-        const savedNotes = localStorage.getItem(`pmerit_notes_${courseId}`);
+        const noteKey = `pmerit_notes_${courseId}`;
+        const savedNotes = localStorage.getItem(noteKey);
         if (savedNotes) {
           state.notes = JSON.parse(savedNotes);
           dom.notesText.value = state.notes.content || "";
         }
       }
 
-      // Initialize chat
-      function initializeChat() {
-        addChatMessage("ai", "Hello! I'm your AI tutor. How can I help you today?");
-      }
-
       // Render course outline
       function renderOutline() {
-        if (!state.courseData || !state.courseData.modules) return;
-        
+        if (!state.modules || state.modules.length === 0) {
+          dom.outlineContainer.innerHTML = '<p style="color: var(--text-secondary);">No modules available.</p>';
+          return;
+        }
+
         let outlineHTML = '';
-        state.courseData.modules.forEach((module, moduleIndex) => {
-          outlineHTML += `<div class="outline-item module">${module.title}</div>`;
-          if (module.lessons) {
-            module.lessons.forEach((lesson, lessonIndex) => {
-              outlineHTML += `<div class="outline-item lesson" style="padding-left: 20px;">${lesson.title} (${lesson.duration})</div>`;
+        state.modules.forEach((module, moduleIndex) => {
+          outlineHTML += `<div class="outline-item module"><i class="fas fa-folder"></i> ${module.title}</div>`;
+          if (module.lessons && module.lessons.length > 0) {
+            module.lessons.forEach((lesson) => {
+              const isActive = state.lessonId === lesson.lesson_id;
+              const icon = lesson.lesson_type === 'video' ? 'fa-play-circle' :
+                          lesson.lesson_type === 'reading' ? 'fa-book' : 'fa-file';
+              const duration = lesson.estimated_duration_minutes ? `${lesson.estimated_duration_minutes}m` : '';
+              outlineHTML += `
+                <div class="outline-item lesson ${isActive ? 'active' : ''}"
+                     style="padding-left: 25px;"
+                     data-lesson-id="${lesson.lesson_id}"
+                     onclick="window.loadLesson('${lesson.lesson_id}')">
+                  <i class="fas ${icon}"></i> ${lesson.title || lesson.lesson_title} ${duration ? `<small>(${duration})</small>` : ''}
+                </div>
+              `;
             });
           }
         });
         dom.outlineContainer.innerHTML = outlineHTML;
       }
 
+      // Expose loadLesson globally for outline clicks
+      window.loadLesson = async function(lessonId) {
+        await loadLesson(lessonId);
+      };
+
       // Save notes
       function saveNotes() {
         state.notes.content = dom.notesText.value;
         state.notes.timestamp = new Date().toISOString();
         localStorage.setItem(`pmerit_notes_${courseId}`, JSON.stringify(state.notes));
-        
-        // Show success feedback (better UX than alert)
+
+        // Log interaction
+        if (window.ClassroomSession?.hasActiveSession()) {
+          window.ClassroomSession.logInteraction('note', {
+            position: { lessonId: state.lessonId }
+          });
+        }
+
+        // Show success feedback
         const btn = dom.saveNotesBtn;
         const originalText = btn.textContent;
         btn.textContent = '✓ Saved!';
@@ -557,7 +920,7 @@
         else return (bytes / 1048576).toFixed(1) + ' MB';
       }
 
-      // Handle chat submit
+      // Handle chat submit - uses real AI API
       async function handleChatSubmit(event) {
         event.preventDefault();
         const message = dom.chatInput.value.trim();
@@ -566,23 +929,77 @@
         addChatMessage('user', message);
         dom.chatInput.value = '';
 
-        // Simulate AI response
-        setTimeout(async () => {
-          const responses = [
-            "That's a great question! Based on what we've covered, the key concept is...",
-            "I'd be happy to explain that. The main idea here is...",
-            "Let me break that down for you. First, consider...",
-            "Good observation! This relates to what we discussed earlier about..."
-          ];
-          const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-          
-          addChatMessage('ai', randomResponse);
+        // Log hand raise interaction
+        const startTime = Date.now();
+        if (window.ClassroomSession?.hasActiveSession()) {
+          await window.ClassroomSession.raiseHand(message);
+        }
+
+        // Call AI Tutor API
+        try {
+          const response = await fetch(`${window.CONFIG?.API_BASE_URL || 'https://pmerit-api-worker.peoplemerit.workers.dev'}/api/v1/ai/tutor`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              messages: state.chatMessages.concat([{ role: 'user', content: message }])
+            })
+          });
+
+          // Handle streaming response
+          const reader = response.body.getReader();
+          const decoder = new TextDecoder();
+          let aiResponse = '';
+
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            const chunk = decoder.decode(value, { stream: true });
+            // Parse SSE data
+            const lines = chunk.split('\n');
+            for (const line of lines) {
+              if (line.startsWith('data: ')) {
+                try {
+                  const data = JSON.parse(line.slice(6));
+                  if (data.response) {
+                    aiResponse += data.response;
+                  }
+                } catch (e) {
+                  // Not JSON, might be raw text
+                  aiResponse += line.slice(6);
+                }
+              }
+            }
+          }
+
+          // Clean up response
+          aiResponse = aiResponse.trim() || "I'm here to help! Could you please rephrase your question?";
+
+          // Log response time
+          const responseTime = Date.now() - startTime;
+          if (window.ClassroomSession?.hasActiveSession()) {
+            await window.ClassroomSession.logInteraction('question', {
+              question: message,
+              response: aiResponse,
+              responseTimeMs: responseTime
+            });
+          }
+
+          // Update chat history
+          state.chatMessages.push({ role: 'user', content: message });
+          state.chatMessages.push({ role: 'assistant', content: aiResponse });
+
+          addChatMessage('ai', aiResponse);
 
           // Speak with avatar if enabled
-          if (state.avatarManager && state.avatarManager.isEnabled()) {
-            await state.avatarManager.speak(randomResponse);
+          if (state.avatarManager?.isEnabled()) {
+            await state.avatarManager.speak(aiResponse);
           }
-        }, 1000);
+
+        } catch (error) {
+          console.error('AI chat error:', error);
+          addChatMessage('ai', 'I apologize, but I encountered an issue. Please try again.');
+        }
       }
 
       // Add chat message
@@ -612,22 +1029,14 @@
           return;
         }
 
-        // Save session summary
-        const sessionData = {
-          userId: window.AUTH.getCurrentUser()?.id || 'guest',
-          courseId: courseId,
-          startedAt: new Date(state.sessionStart).toISOString(),
-          endedAt: new Date().toISOString(),
-          durationSec: Math.floor((Date.now() - state.sessionStart) / 1000),
-          vhMode: state.avatarManager?.isEnabled() || false
-        };
-
         try {
-          // TODO: Send to API endpoint /api/session/summary
-          console.log('Session summary:', sessionData);
-          localStorage.setItem(`pmerit_session_${courseId}_last`, JSON.stringify(sessionData));
+          // End session via API
+          if (window.ClassroomSession?.hasActiveSession()) {
+            const notes = dom.notesText.value;
+            await window.ClassroomSession.endSession(notes);
+          }
         } catch (error) {
-          console.error('Failed to save session:', error);
+          console.error('Failed to end session:', error);
         }
 
         // Clean up avatar
