@@ -2,19 +2,19 @@
   "schema_version": "2.0",
   "schema_notes": "Enhanced with production_health and audit tracking - Version 2.0",
 
-  "last_updated": "2025-12-06T18:50:00Z",
+  "last_updated": "2025-12-06T22:30:00Z",
   "last_updated_by": "claude-code",
 
-  "session_number": 35,
+  "session_number": 36,
   "last_audit_date": "2025-12-06",
 
-  "current_phase": "PHASE_4",
-  "phase_name": "Dashboard & Courses",
+  "current_phase": "PHASE_5",
+  "phase_name": "Virtual Classroom",
   "phase_status": "complete",
   "gate_status": "complete",
 
-  "active_requirement": "PHASE_5",
-  "requirement_description": "Virtual Classroom (Next Phase)",
+  "active_requirement": "PHASE_6",
+  "requirement_description": "Progress & Assessment Integration (Next Phase)",
   "attempt_count": 0,
   "max_attempts": 3,
   "extended": false,
@@ -28,7 +28,8 @@
     "ai_services": "healthy",
     "database": "healthy",
     "assessment": "healthy",
-    "last_check": "2025-12-06T18:42:00Z",
+    "classroom": "healthy",
+    "last_check": "2025-12-06T22:30:00Z",
     "homepage_gate_score": "9/10"
   },
 
@@ -42,16 +43,38 @@
       "resolved": "Session 29",
       "resolution": "AI binding now working - verified via /api/v1/ai/chat endpoint",
       "affected": ["H3", "P0.2", "P0.3", "P0.4"]
+    },
+    {
+      "id": "ENROLLMENT_REDIRECT",
+      "description": "Enrollment on courses.html redirected to sign-up even when logged in",
+      "since": "Session 36",
+      "resolved": "Session 36",
+      "resolution": "Fixed auth check to use window.AUTH?.getCurrentUser() and correct API endpoint",
+      "affected": ["courses.html"]
+    },
+    {
+      "id": "CLASSROOM_NO_COURSE",
+      "description": "Enter Classroom links had no courseId, causing errors",
+      "since": "Session 36",
+      "resolved": "Session 36",
+      "resolution": "Changed all Enter Classroom links to redirect to My Courses section for course selection",
+      "affected": ["dashboard.html"]
     }
   ],
 
   "notes": {
-    "current_focus": "Phase 4 COMPLETE - Ready for Phase 5 (Virtual Classroom)",
-    "session_35_milestone": "Phase 4 Dashboard & Courses COMPLETE (8/8 requirements)",
+    "current_focus": "Phase 5 COMPLETE - Ready for Phase 6 (Progress & Assessment Integration)",
+    "session_36_milestone": "Phase 5 Virtual Classroom COMPLETE (8/8 requirements) + Bug Fixes",
     "remaining_partial": "H7 language modal only"
   },
 
   "recent_changes": [
+    {
+      "session": 36,
+      "date": "2025-12-06",
+      "change": "Phase 5 Virtual Classroom COMPLETE + Bug Fixes",
+      "impact": "P5.1-P5.8 implemented: classroom-session.js API client, classroom.html with API integration, backend classroom routes (sessions, interactions, lessons), student controls (prev/next, pause, bookmark), raise hand, session stats. Fixed enrollment redirect bug and classroom entry without courseId bug."
+    },
     {
       "session": 35,
       "date": "2025-12-06",
@@ -69,18 +92,6 @@
       "date": "2025-12-06",
       "change": "P3.5 Backend Auth API COMPLETE - 8 endpoints implemented",
       "impact": "Register, login, logout, verify-email, resend, forgot-password, reset-password, /me all working"
-    },
-    {
-      "session": 31,
-      "date": "2025-12-06",
-      "change": "Phase 0-2 COMPLETE + Phase 3 PARTIAL - 23 requirements verified",
-      "impact": "P0.1-P0.6, P1.1-P1.5, P2.1-P2.8 verified; P3.1-P3.4 mock auth works"
-    },
-    {
-      "session": 30,
-      "date": "2025-12-06",
-      "change": "Enhanced PMERIT CONTINUE with production audit integration",
-      "impact": "Auto-audit on session start, documents stay synchronized"
     }
   ],
 
