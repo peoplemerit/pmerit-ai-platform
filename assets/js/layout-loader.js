@@ -494,7 +494,7 @@ if (typeof window.logger === 'undefined') {
           // Check authentication
           const isAuth = window.AUTH && window.AUTH.isAuthenticated();
           if (isAuth) {
-            window.location.href = '/learner-portal.html';
+            window.location.href = '/dashboard.html';
           } else {
             // Open auth modal if available
             if (window.AuthModal) {
@@ -819,10 +819,10 @@ if (typeof window.logger === 'undefined') {
         
         // Create dashboard link
         const dashboardLink = document.createElement('a');
-        dashboardLink.href = '/learner-portal.html';
+        dashboardLink.href = '/dashboard.html';
         dashboardLink.className = 'menu-btn primary';
         dashboardLink.textContent = 'Go to Dashboard';
-        
+
         // Append elements
         userSection.appendChild(statusP);
         userSection.appendChild(dashboardLink);
@@ -831,7 +831,7 @@ if (typeof window.logger === 'undefined') {
       // Update header sign-in button
       if (isAuth && signInBtn) {
         signInBtn.textContent = 'Dashboard';
-        signInBtn.href = '/learner-portal.html';
+        signInBtn.href = '/dashboard.html';
       }
     }
 

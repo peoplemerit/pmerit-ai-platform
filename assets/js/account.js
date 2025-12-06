@@ -1,16 +1,16 @@
 /**
- * PMERIT Dashboard Controller
- * Version: 1.0
+ * PMERIT Account Controller
+ * Version: 2.0
  * Last Updated: December 2025
  *
- * Manages the user dashboard page
- * Features: Profile display, verification status, logout, assessment history
+ * Manages the user account page (security gate before dashboard)
+ * Features: Profile display, verification status, Enter Dashboard button, logout
  */
 
 (function () {
   'use strict';
 
-  const Dashboard = {
+  const Account = {
     elements: {
       userName: null,
       profileName: null,
@@ -21,11 +21,13 @@
       profileJoined: null,
       assessmentHistory: null,
       btnLogout: null,
-      message: null
+      message: null,
+      enterDashboardBtn: null,
+      verificationWarning: null
     },
 
     /**
-     * Initialize the dashboard
+     * Initialize the account page
      */
     init: function () {
       // Get DOM elements
@@ -39,8 +41,10 @@
       this.elements.assessmentHistory = document.getElementById('assessment-history');
       this.elements.btnLogout = document.getElementById('btn-logout');
       this.elements.message = document.getElementById('dashboard-message');
+      this.elements.enterDashboardBtn = document.getElementById('enter-dashboard-btn');
+      this.elements.verificationWarning = document.getElementById('verification-warning');
 
-      // Load user data
+      // Load user data (try API first, then localStorage)
       this.loadUserData();
 
       // Bind events
@@ -49,22 +53,38 @@
       // Load assessment history
       this.loadAssessmentHistory();
 
-      logger.debug('Dashboard initialized');
+      logger.debug('Account page initialized');
     },
 
     /**
-     * Load user data from localStorage/AUTH
+     * Load user data - try API first to get fresh data, fall back to localStorage
      */
-    loadUserData: function () {
-      const user = window.AUTH?.getCurrentUser();
+    loadUserData: async function () {
+      let user = window.AUTH?.getCurrentUser();
+
+      // If user data is incomplete (no first_name), try fetching from API
+      if (!user?.first_name && window.AUTH?.isAuthenticated()) {
+        try {
+          const result = await window.AUTH.fetchCurrentUser();
+          if (result.success && result.user) {
+            user = result.user;
+            logger.debug('Fetched fresh user data from API');
+          }
+        } catch (e) {
+          logger.warn('Failed to fetch user from API:', e);
+        }
+      }
 
       if (!user) {
-        logger.warn('Dashboard: No user data found');
+        logger.warn('Account: No user data found');
         return;
       }
 
-      // Display name
-      const fullName = `${user.first_name || ''} ${user.last_name || ''}`.trim() || 'User';
+      // Display name - check multiple possible field names
+      const firstName = user.first_name || user.firstName || '';
+      const lastName = user.last_name || user.lastName || '';
+      const fullName = `${firstName} ${lastName}`.trim() || user.email?.split('@')[0] || 'User';
+
       if (this.elements.userName) {
         this.elements.userName.textContent = fullName;
       }
@@ -77,12 +97,14 @@
         this.elements.profileEmail.textContent = user.email || '-';
       }
 
-      // Display email verification status
-      this.updateVerificationStatus(user.email_verified);
+      // Display email verification status and update Enter Dashboard button
+      const isVerified = user.email_verified || user.emailVerified || false;
+      this.updateVerificationStatus(isVerified);
 
       // Display join date
-      if (this.elements.profileJoined && user.created_at) {
-        const joinDate = new Date(user.created_at);
+      const createdAt = user.created_at || user.createdAt;
+      if (this.elements.profileJoined && createdAt) {
+        const joinDate = new Date(createdAt);
         this.elements.profileJoined.textContent = joinDate.toLocaleDateString('en-US', {
           year: 'numeric',
           month: 'long',
@@ -92,7 +114,7 @@
     },
 
     /**
-     * Update email verification status display
+     * Update email verification status display and Enter Dashboard button state
      */
     updateVerificationStatus: function (isVerified) {
       if (!this.elements.emailStatus) return;
@@ -103,11 +125,19 @@
         if (this.elements.resendContainer) {
           this.elements.resendContainer.style.display = 'none';
         }
+        // Hide verification warning for Enter Dashboard
+        if (this.elements.verificationWarning) {
+          this.elements.verificationWarning.style.display = 'none';
+        }
       } else {
         this.elements.emailStatus.className = 'verification-status pending';
         this.elements.emailStatus.innerHTML = '<i class="fas fa-clock"></i> Pending';
         if (this.elements.resendContainer) {
           this.elements.resendContainer.style.display = 'block';
+        }
+        // Show verification warning for Enter Dashboard (but still allow access)
+        if (this.elements.verificationWarning) {
+          this.elements.verificationWarning.style.display = 'block';
         }
       }
     },
@@ -271,13 +301,13 @@
 
   // Initialize when DOM is ready
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => Dashboard.init());
+    document.addEventListener('DOMContentLoaded', () => Account.init());
   } else {
-    Dashboard.init();
+    Account.init();
   }
 
   // Export globally
-  window.Dashboard = Dashboard;
+  window.Account = Account;
 
-  logger.debug('Dashboard controller loaded');
+  logger.debug('Account controller loaded');
 })();
