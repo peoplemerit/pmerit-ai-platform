@@ -130,6 +130,87 @@ Every `PMERIT CONTINUE` command triggers an automatic production audit:
 
 ---
 
+## 📋 HANDOFF MANAGEMENT
+
+### Automatic Handoff Reading
+
+Every `PMERIT CONTINUE` command reads the latest handoff(s):
+
+1. **Find Latest** — `ls -lt docs/handoffs/PMERIT_HANDOFF_*.md | head -3`
+2. **Read Content** — Extract tasks, decisions, blockers
+3. **Note Carryforward** — Items that affect current session
+4. **Check for FINAL** — If `_FINAL.md` exists, it supersedes base version
+
+### Information to Extract from Handoffs
+
+| Item | Look For | Action |
+|------|----------|--------|
+| Incomplete Tasks | `[ ]` markers | Add to current session tasks |
+| Key Decisions | "Decision:" or "Decided:" | Note for reference |
+| Blockers | "Blocked:", "🚫" | Check if resolved |
+| Carryforward | "Next Steps:", "Carryforward:" | Include in session plan |
+
+### Handoff Cleanup Rules
+
+| Age | Status | Action |
+|-----|--------|--------|
+| ≤ 3 sessions | Any | Keep |
+| 4-5 sessions | Complete | Review for archive |
+| > 5 sessions | Complete | Archive automatically |
+| Any age | Incomplete | Keep until resolved |
+| Superseded | Any | Archive (e.g., SESSION_28.md when SESSION_28_FINAL.md exists) |
+
+### Files to Never Archive
+
+- `BRAINSTORM_ASU_LIKE_SCHEMA.md` — Feature specification document
+- Last 3 session handoffs — Recent context needed
+- Any handoff with unresolved items
+
+### Archive Location
+
+```
+docs/handoffs/archive/
+```
+
+### Cleanup Command
+
+```
+PMERIT CLEANUP HANDOFFS
+```
+
+Triggers manual review and cleanup:
+1. Lists all handoffs with age (sessions since created)
+2. Identifies archive candidates
+3. Confirms with user before archiving
+4. Moves to `docs/handoffs/archive/`
+5. Commits changes
+
+### Handoff Cleanup Process
+
+```bash
+# Step 1: Create archive directory if needed
+mkdir -p docs/handoffs/archive/
+
+# Step 2: Identify candidates (> 5 sessions old, complete)
+# Current session: 30
+# Archive if session ≤ 25 AND status = Complete
+
+# Step 3: Check each candidate
+# - Status: "Complete" or "✅ COMPLETE"
+# - No [ ] items remaining
+# - No "Blocked" status
+
+# Step 4: Archive
+mv docs/handoffs/PMERIT_HANDOFF_SESSION_XX.md docs/handoffs/archive/
+
+# Step 5: Commit
+git add docs/handoffs/
+git commit -m "chore: Archive completed handoffs"
+git push origin main
+```
+
+---
+
 ## 🌐 MULTI-ENVIRONMENT SUPPORT
 
 ### Environment Reference
