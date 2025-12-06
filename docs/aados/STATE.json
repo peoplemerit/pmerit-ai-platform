@@ -1,7 +1,12 @@
 {
-  "schema_version": "1.0",
-  "last_updated": "2025-12-06T07:45:00Z",
+  "schema_version": "2.0",
+  "schema_notes": "Enhanced with production_health and audit tracking - Version 2.0",
+
+  "last_updated": "2025-12-06T12:00:00Z",
   "last_updated_by": "claude-code",
+
+  "session_number": 30,
+  "last_audit_date": "2025-12-06",
 
   "current_phase": "PHASE_0",
   "phase_name": "AI Receptionist",
@@ -17,6 +22,16 @@
   "active_environment": "FE",
   "workflow_mode": "direct_execution",
 
+  "production_health": {
+    "frontend": "healthy",
+    "backend": "healthy",
+    "ai_services": "healthy",
+    "database": "healthy",
+    "assessment": "healthy",
+    "last_check": "2025-12-06T12:00:00Z",
+    "homepage_gate_score": "9/10"
+  },
+
   "blockers": [],
 
   "resolved_blockers": [
@@ -30,26 +45,37 @@
     }
   ],
 
-  "session": {
-    "number": 29,
-    "focus": "Production Audit & Document Sync",
-    "started": "2025-12-06"
+  "notes": {
+    "current_focus": "Verify P0.2-P0.4 AI Receptionist on production now that env.AI is working",
+    "session_29_discovery": "AI backend (env.AI binding) is now WORKING - major unblock!",
+    "remaining_partial": "H7 language modal shows empty state"
   },
 
-  "audit": {
-    "date": "2025-12-06",
-    "report": "docs/aados/PRODUCTION_AUDIT_2025-12-06.md",
-    "homepage_gate": {
-      "total": 10,
-      "verified": 9,
-      "partial": 1,
-      "failed": 0
+  "recent_changes": [
+    {
+      "session": 30,
+      "date": "2025-12-06",
+      "change": "Enhanced PMERIT CONTINUE with production audit integration",
+      "impact": "Auto-audit on session start, documents stay synchronized"
     },
-    "notes": "AI binding fixed - H3 now fully working. H7 (language modal) still partial."
-  },
+    {
+      "session": 29,
+      "date": "2025-12-06",
+      "change": "AI backend fixed - env.AI binding now operational",
+      "impact": "Unblocks P0.2, P0.3, P0.4"
+    },
+    {
+      "session": 28,
+      "date": "2025-12-06",
+      "change": "Assessment pipeline fully operational",
+      "impact": "P0.6 complete, full user flow working"
+    }
+  ],
 
-  "milestones": {
-    "session_28": "Assessment pipeline fully operational",
-    "session_29": "AI backend binding resolved"
+  "reference_docs": {
+    "feature_spec": "docs/handoffs/BRAINSTORM_ASU_LIKE_SCHEMA.md",
+    "user_journey": "docs/project/Pmerit-comprehensively-narrative-users-and-Admin-Journey.md",
+    "latest_audit": "docs/aados/PRODUCTION_AUDIT_2025-12-06.md",
+    "master_doc": "docs/project/Pmerit_Project_Document.md"
   }
 }
