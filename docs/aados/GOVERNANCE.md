@@ -47,8 +47,86 @@ Resuming from: [Last known state]
 ❌ Ask "Can you provide context?"  
 ❌ Ask "Where did we leave off?"  
 ❌ Summarize the entire project history  
-❌ Wait for additional instructions before starting  
+❌ Wait for additional instructions before starting
 
+---
+
+## 🩺 PRODUCTION AUDIT INTEGRATION
+
+### Automatic Audit on Session Start
+
+Every `PMERIT CONTINUE` command triggers an automatic production audit:
+
+1. **Homepage Check** — Verify pmerit.com loads correctly
+2. **API Health** — Verify backend Worker is healthy (v2.1.1+)
+3. **Key Endpoints** — Test pathways, courses, AI chat
+4. **Document Update** — Update production snapshot in master doc
+
+### Audit Endpoints
+
+| Check | Endpoint | Expected |
+|-------|----------|----------|
+| Homepage | https://pmerit.com | HTML with chatbox |
+| API Health | https://pmerit-api-worker.peoplemerit.workers.dev/ | `{"status":"healthy"}` |
+| Pathways | /api/v1/pathways | Array of 14 items |
+| Courses | /api/v1/courses | Array of courses |
+| AI Chat | POST /api/v1/ai/chat | Streaming response |
+| Assessment | POST /api/v1/assessment/submit | 200 or structured error |
+
+### Audit Output
+
+- Full report: `docs/aados/PRODUCTION_AUDIT_YYYY-MM-DD.md`
+- Quick status: Included in Auto-Continuity response
+- Snapshot: Updated in `docs/project/Pmerit_Project_Document.md`
+
+### Audit Frequency
+
+| Trigger | Audit Type |
+|---------|------------|
+| `PMERIT CONTINUE` | Full audit + document updates |
+| `PMERIT STATUS` | Quick health check only |
+| `PMERIT QUICK FIX` | Skip audit (minor fixes only) |
+
+### Documents Updated After Audit
+
+1. **PRODUCTION_AUDIT_[DATE].md** — Full audit with H1-H10 status
+2. **Pmerit_Project_Document.md** — "Production Status Snapshot" section
+3. **STATE.json** — session_number, production_health, blockers
+4. **TASK_TRACKER.md** — Resumption point with audit summary
+
+### Enhanced Auto-Continuity Response
+
+```
+🔄 PMERIT AUTO-CONTINUITY ACTIVATED — Session [#]
+
+🔒 Sync Gate: [Pending/Confirmed]
+📍 Current Phase: [From STATE.json]
+📊 Phase Status: [From STATE.json]
+🎯 Active Requirement: [From STATE.json]
+🔢 Attempt: [From STATE.json]
+⚡ Workflow Mode: [From STATE.json]
+
+🩺 PRODUCTION AUDIT (Quick Check)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+| Component      | Status | Notes                    |
+|----------------|--------|--------------------------|
+| Frontend       | ✅/⚠️/❌ | [brief]                  |
+| Backend API    | ✅/⚠️/❌ | [version]                |
+| AI Services    | ✅/⚠️/❌ | [binding status]         |
+| Assessment     | ✅/⚠️/❌ | [pipeline status]        |
+| Homepage Gate  | X/10   | [count verified]         |
+
+📊 Changes Since Last Session:
+- [Any detected changes]
+- [New issues or resolved items]
+
+📚 Reference Docs:
+- Feature Spec: docs/handoffs/BRAINSTORM_ASU_LIKE_SCHEMA.md
+- User Flow: docs/project/Pmerit-comprehensively-narrative-users-and-Admin-Journey.md
+- Latest Audit: docs/aados/PRODUCTION_AUDIT_[DATE].md
+
+⏭️ Next Action: [Based on audit findings and current phase]
+```
 
 ---
 
