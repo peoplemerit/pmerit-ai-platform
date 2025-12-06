@@ -324,8 +324,8 @@
             const redirectUrl = sessionStorage.getItem('redirect_after_login');
             sessionStorage.removeItem('redirect_after_login');
 
-            // Redirect to portal or saved URL
-            window.location.href = redirectUrl || '/learner-portal.html';
+            // Redirect to account or saved URL
+            window.location.href = redirectUrl || '/account.html';
           } else {
             // Show error
             showError(result.message || 'Sign in failed. Please try again.');

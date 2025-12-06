@@ -303,15 +303,15 @@
             // Store email for verification flow
             sessionStorage.setItem('pmerit_pending_verification', email);
 
-            // Redirect to verification page or portal after delay
+            // Redirect to account page after delay
             setTimeout(() => {
-              window.location.href = '/dashboard.html';
+              window.location.href = '/account.html';
             }, 3000);
           } else {
             // Mock/offline mode - redirect immediately
             this.showMessage('signup', 'success', 'Account created! Redirecting...');
             setTimeout(() => {
-              window.location.href = '/dashboard.html';
+              window.location.href = '/account.html';
             }, 1000);
           }
         } else {
@@ -374,7 +374,7 @@
 
           // Redirect after short delay
           setTimeout(() => {
-            window.location.href = redirectUrl || '/dashboard.html';
+            window.location.href = redirectUrl || '/account.html';
           }, 1000);
         } else {
           this.showMessage('signin', 'error', result.message || 'Sign in failed');
