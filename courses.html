@@ -738,23 +738,24 @@
           }
 
           const data = await response.json();
-          // Map courses to expected format
+          // Map courses to expected format (API returns: course_id, slug, title, etc.)
           this.allCourses = (data.courses || []).map(c => ({
-            id: c.course_slug || c.id,
-            title: c.title || c.course_name,
-            instructor: c.instructor || 'PMERIT',
+            id: c.slug || c.course_id,
+            title: c.title,
+            instructor: c.instructor_name || 'PMERIT',
             description: c.description || '',
             category: c.category || 'general',
             level: c.difficulty_level || 'Beginner',
             duration: c.estimated_hours ? `${c.estimated_hours} hours` : '10 hours',
-            rating: c.rating || 4.5,
-            reviews: c.review_count || 0,
-            price: c.price || 0,
+            rating: c.rating_average || 4.5,
+            reviews: c.rating_count || 0,
+            price: c.is_free ? 0 : (c.price || 0),
             tags: c.tags || [],
-            icon: c.icon_class || 'fas fa-book'
+            icon: this.getCategoryIcon(c.category)
           }));
           this.filteredCourses = [...this.allCourses];
           this.displayCourses();
+          console.log(`✅ Loaded ${this.allCourses.length} courses from API`);
 
         } catch (error) {
           console.error('Failed to load courses:', error);
@@ -1038,6 +1039,27 @@
       },
       
       // Helper functions
+      getCategoryIcon(category) {
+        const icons = {
+          'Data Science': 'fas fa-chart-line',
+          'Marketing': 'fas fa-bullhorn',
+          'Design': 'fas fa-paint-brush',
+          'Web Development': 'fas fa-code',
+          'Management': 'fas fa-tasks',
+          'Business': 'fas fa-briefcase',
+          'Healthcare': 'fas fa-heartbeat',
+          'Trades': 'fas fa-tools',
+          'Hospitality': 'fas fa-utensils',
+          'Public Safety': 'fas fa-shield-alt',
+          'Social Services': 'fas fa-hands-helping',
+          'Government': 'fas fa-landmark',
+          'Early Education': 'fas fa-child',
+          'Primary Education': 'fas fa-book-reader',
+          'Secondary Education': 'fas fa-graduation-cap'
+        };
+        return icons[category] || 'fas fa-book';
+      },
+
       renderStars(rating) {
         const fullStars = Math.floor(rating);
         const hasHalfStar = rating % 1 >= 0.5;
