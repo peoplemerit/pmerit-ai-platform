@@ -2,10 +2,10 @@
   "schema_version": "2.0",
   "schema_notes": "Enhanced with production_health and audit tracking - Version 2.0",
 
-  "last_updated": "2025-12-06T13:20:00Z",
+  "last_updated": "2025-12-06T20:00:00Z",
   "last_updated_by": "claude-code",
 
-  "session_number": 31,
+  "session_number": 34,
   "last_audit_date": "2025-12-06",
 
   "current_phase": "PHASE_3",
@@ -13,13 +13,13 @@
   "phase_status": "partial",
   "gate_status": "conditionally_complete",
 
-  "active_requirement": "P3.6",
-  "requirement_description": "Implement email verification flow",
+  "active_requirement": "P3.8",
+  "requirement_description": "Protected route redirect (full implementation)",
   "attempt_count": 0,
   "max_attempts": 3,
   "extended": false,
 
-  "active_environment": "BE",
+  "active_environment": "FE",
   "workflow_mode": "direct_execution",
 
   "production_health": {
@@ -46,12 +46,18 @@
   ],
 
   "notes": {
-    "current_focus": "Phase 3 needs real backend auth implementation",
-    "session_31_milestone": "23 requirements verified! P0-P2 complete, P3 partial (mock auth)",
-    "remaining_partial": "H7 language modal, P3.5-P3.8 backend auth"
+    "current_focus": "P3.7 Two-Tier Dashboard COMPLETE - P3.8 protected routes next",
+    "session_34_milestone": "Two-tier dashboard architecture implemented (account.html + dashboard.html)",
+    "remaining_partial": "H7 language modal, P3.6 email service, P3.8 enhanced protected routes"
   },
 
   "recent_changes": [
+    {
+      "session": 34,
+      "date": "2025-12-06",
+      "change": "P3.7 Two-Tier Dashboard Architecture COMPLETE",
+      "impact": "dashboard.html → account.html (security gate), learner-portal.html → dashboard.html (full portal), fixed user name display bug"
+    },
     {
       "session": 31,
       "date": "2025-12-06",
@@ -75,12 +81,6 @@
       "date": "2025-12-06",
       "change": "AI backend fixed - env.AI binding now operational",
       "impact": "Unblocks P0.2, P0.3, P0.4"
-    },
-    {
-      "session": 28,
-      "date": "2025-12-06",
-      "change": "Assessment pipeline fully operational",
-      "impact": "P0.6 complete, full user flow working"
     }
   ],
 
