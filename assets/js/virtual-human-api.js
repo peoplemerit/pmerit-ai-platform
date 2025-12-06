@@ -267,24 +267,38 @@
     }
 
     /**
-     * Get default avatar list
+     * Get default avatar list (fallback when API unavailable)
+     * These IDs must match the backend API response
      * @returns {Array} Default avatars
      */
     getDefaultAvatars() {
       return [
         {
-          id: 'pm_classic',
-          name: 'PMERIT Assistant',
-          model_url: '/assets/avatars/pm_classic.glb',
-          thumbnail: '/assets/avatars/thumbnails/pm_classic.jpg',
-          description: 'Professional career counselor'
+          id: 'ty_child',
+          name: 'Ty - Young Learner Guide',
+          model: 'ty_character.glb',
+          model_url: '/assets/avatars/ty_character.glb',
+          thumbnail: '/assets/avatars/ty_thumb.jpg',
+          description: 'Child-friendly educational guide for young learners',
+          available: true
         },
         {
-          id: 'chris_redfield',
-          name: 'Chris',
-          model_url: '/assets/avatars/chris_redfield__re6_bad.glb',
-          thumbnail: '/assets/avatars/thumbnails/chris.jpg',
-          description: 'Friendly mentor'
+          id: 'humano_professional',
+          name: 'Professional Guide - Adult',
+          model: 'humano_professional.glb',
+          model_url: '/assets/avatars/humano_professional.glb',
+          thumbnail: '/assets/avatars/humano_thumb.jpg',
+          description: 'Professional adult educational guide',
+          available: true
+        },
+        {
+          id: 'pm_classic',
+          name: 'PMERIT Classic',
+          model: 'pm_classic.glb',
+          model_url: '/assets/avatars/pm_classic.glb',
+          thumbnail: '/assets/avatars/pm_classic_thumb.jpg',
+          description: 'Classic PMERIT avatar',
+          available: true
         }
       ];
     }
@@ -323,7 +337,9 @@
      * @returns {string} Avatar ID
      */
     getPreferredAvatar() {
-      return localStorage.getItem('pmerit_preferred_avatar') || 'ty_character';
+      // Default to 'ty_child' (matches backend API response)
+      // Previously was 'ty_character' which caused "not found" errors
+      return localStorage.getItem('pmerit_preferred_avatar') || 'ty_child';
     }
 
     /**
