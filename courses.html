@@ -642,9 +642,9 @@
   <div id="footer-container"></div>
   
   <!-- Core Scripts -->
+  <script src="assets/js/auth.js"></script>
   <script src="assets/js/settings-manager.js"></script>
   <script src="assets/js/layout-loader.js"></script>
-  <script src="assets/nav-config.js"></script>
   
   <!-- Courses-specific JavaScript -->
   <script>
@@ -688,48 +688,74 @@
         }
       },
       
+      // API Base URL
+      API_BASE: 'https://pmerit-api-worker.peoplemerit.workers.dev/api/v1',
+
       // Load career tracks from database/API
       async loadCareerTracks() {
         try {
-          const response = await fetch('/functions/api/career/tracks', {
+          const response = await fetch(`${this.API_BASE}/pathways`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json'
             }
           });
-          
+
           if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
           }
-          
+
           const data = await response.json();
-          this.careerTracks = data.tracks || [];
+          // Map pathways to expected track format
+          this.careerTracks = (data.pathways || []).map(p => ({
+            id: p.pathway_slug || p.id,
+            name: p.pathway_name || p.name,
+            description: p.description || '',
+            icon: p.icon_class || 'fas fa-graduation-cap',
+            courseCount: p.course_count || 0,
+            duration: p.estimated_duration || '3-6 months'
+          }));
           this.displayCareerTracks();
-          
+
         } catch (error) {
           console.error('Failed to load career tracks:', error);
           this.loadSampleTracks();
         }
       },
-      
+
       // Load courses from database/API
       async loadCourses() {
         try {
-          const response = await fetch('/functions/api/courses', {
+          const response = await fetch(`${this.API_BASE}/courses`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json'
             }
           });
-          
+
           if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
           }
-          
+
           const data = await response.json();
-          this.allCourses = data.courses || [];
+          // Map courses to expected format
+          this.allCourses = (data.courses || []).map(c => ({
+            id: c.course_slug || c.id,
+            title: c.title || c.course_name,
+            instructor: c.instructor || 'PMERIT',
+            description: c.description || '',
+            category: c.category || 'general',
+            level: c.difficulty_level || 'Beginner',
+            duration: c.estimated_hours ? `${c.estimated_hours} hours` : '10 hours',
+            rating: c.rating || 4.5,
+            reviews: c.review_count || 0,
+            price: c.price || 0,
+            tags: c.tags || [],
+            icon: c.icon_class || 'fas fa-book'
+          }));
           this.filteredCourses = [...this.allCourses];
-          
+          this.displayCourses();
+
         } catch (error) {
           console.error('Failed to load courses:', error);
           this.loadSampleCourses();
@@ -1058,20 +1084,21 @@
         try {
           // Check if user is authenticated using AUTH module
           const user = window.AUTH?.getCurrentUser();
-          if (!user || !user.id) {
+          // Handle both 'id' (mock/local) and 'userId' (API response) property names
+          const userId = user?.id || user?.userId;
+
+          if (!user || !userId) {
             // Not logged in - redirect to sign up
             window.location.href = '/index.html#sign-up';
             return;
           }
 
-          // Use the correct API endpoint
-          const API_BASE = 'https://pmerit-api-worker.peoplemerit.workers.dev/api/v1';
-          const response = await fetch(`${API_BASE}/courses/${courseId}/enroll`, {
+          const response = await fetch(`${this.API_BASE}/courses/${courseId}/enroll`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ user_id: user.id })
+            body: JSON.stringify({ user_id: userId })
           });
 
           const data = await response.json();
