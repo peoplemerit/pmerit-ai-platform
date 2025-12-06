@@ -1,7 +1,7 @@
 # PMERIT Project Document
 
-**Version:** 2.0
-**Last Updated:** December 5, 2025
+**Version:** 2.1
+**Last Updated:** December 6, 2025
 **Status:** Active Development
 **Document Purpose:** Master source of truth for PMERIT platform — roadmap, decisions, and task tracking
 
@@ -181,6 +181,7 @@ PMERIT serves three distinct learner populations:
 | **Database** | Neon DB (Postgres + pgvector) | Serverless, auto-pause |
 | **AI (Edge)** | Cloudflare Workers AI | Embedding, basic queries |
 | **AI (Premium)** | OpenAI/Claude API | Complex tutoring |
+| **Email** | Resend | Transactional emails (verification, password reset) |
 | **GPU (On-Demand)** | RunPod/Lambda Labs | Unreal Virtual Human |
 
 ### Production URLs
@@ -202,7 +203,7 @@ PMERIT serves three distinct learner populations:
 
 ## Production Status Snapshot
 
-**Last Verified:** 2025-12-06 (Session 30)
+**Last Verified:** 2025-12-06 (Session 34)
 **Audit Report:** [docs/aados/PRODUCTION_AUDIT_2025-12-06.md](../aados/PRODUCTION_AUDIT_2025-12-06.md)
 
 ### Platform Health
@@ -210,9 +211,10 @@ PMERIT serves three distinct learner populations:
 | Component | Status | Version/Details | Notes |
 |-----------|--------|-----------------|-------|
 | Frontend | ✅ Healthy | pmerit.com | All pages loading, CDN active |
-| Backend API | ✅ Healthy | v2.1.1 | 14 endpoints available |
+| Backend API | ✅ Healthy | v2.2.0 | 22 endpoints available |
 | Database | ✅ Active | Neon PostgreSQL | 76 tables, DATABASE_URL configured |
 | AI Services | ✅ Operational | Workers AI | env.AI binding working |
+| Email Service | ✅ Operational | Resend | DKIM/SPF verified, RESEND_API_KEY configured |
 | Vectorize | ✅ Available | pmerit-knowledge-base | RAG index ready |
 
 ### Current Capabilities (Verified in Production)
@@ -230,6 +232,9 @@ PMERIT serves three distinct learner populations:
 | Customer Service Mode | ✅ Available | 27 | POST /api/v1/ai/support endpoint active |
 | Virtual Human Tutor | ✅ Available | 27 | POST /api/v1/ai/tutor endpoint active |
 | Text-to-Speech | ✅ Available | 27 | POST /api/v1/tts endpoint active |
+| User Authentication | ✅ Operational | 31 | 8 auth endpoints (register, login, verify, etc.) |
+| Email Verification | ✅ Operational | 34 | Resend integration with HTML templates |
+| Two-Tier Dashboard | ✅ Operational | 34 | account.html (gate) + dashboard.html (portal) |
 | Language Modal | ⚠️ Partial | 24 | Modal shows "No languages found" |
 
 ### API Endpoints Summary
@@ -237,7 +242,7 @@ PMERIT serves three distinct learner populations:
 ```
 Backend: https://pmerit-api-worker.peoplemerit.workers.dev
 
-Verified Working (14):
+Verified Working (22):
 ├── GET  /                              Health check
 ├── GET  /api/v1/pathways               Curriculum pathways
 ├── GET  /api/v1/courses                Course catalog
@@ -251,7 +256,15 @@ Verified Working (14):
 ├── POST /api/v1/assessment/submit      Submit assessment
 ├── GET  /api/v1/assessment/results/:id Get results
 ├── POST /api/v1/tts                    Text-to-speech
-└── GET  /api/v1/tts/quota              TTS quota status
+├── GET  /api/v1/tts/quota              TTS quota status
+├── POST /api/v1/auth/register          Create account (with Resend email)
+├── POST /api/v1/auth/login             Authenticate user
+├── POST /api/v1/auth/logout            End session
+├── POST /api/v1/auth/verify-email      Verify with 6-digit code
+├── POST /api/v1/auth/resend-verification Resend verification email
+├── POST /api/v1/auth/forgot-password   Request password reset
+├── POST /api/v1/auth/reset-password    Reset with code
+└── GET  /api/v1/auth/me                Get current user (protected)
 
 Not Yet Implemented (2):
 ├── GET  /api/v1/locales/:lang          Translation API
@@ -292,11 +305,11 @@ Not Yet Implemented (2):
 
 | Date | Session | Achievement |
 |------|---------|-------------|
+| 2025-12-06 | 34 | **Phase 3 COMPLETE** — Two-tier dashboard + Resend email verification |
+| 2025-12-06 | 31 | **Backend Auth API** — 8 endpoints with PBKDF2, JWT, rate limiting |
 | 2025-12-06 | 30 | Enhanced PMERIT CONTINUE with production audit integration |
 | 2025-12-06 | 29 | **AI backend fixed** — env.AI binding now working, unblocks P0.2-P0.4 |
 | 2025-12-06 | 28 | **Assessment pipeline operational** — Full 120-question flow working |
-| 2025-12-05 | 27 | Production audit system established — governance aligned with reality |
-| 2025-12-04 | 26 | Brainstorm PARTs 6-9 completed — platform feasibility, auth, admin |
 
 ### Infrastructure Costs (Current Month)
 
@@ -307,6 +320,7 @@ Not Yet Implemented (2):
 | Workers AI | Free | $0 | Included in Workers |
 | Neon PostgreSQL | Free | $0 | Auto-pause enabled |
 | Azure Translator | Free | $0 | 2M chars/month |
+| Resend | Free | $0 | 3K emails/month, pmerit.com domain verified |
 | **Total** | — | **$0** | All within free tiers |
 
 ---
@@ -689,6 +703,7 @@ This legacy document contains:
 |---------|------|---------|
 | 1.0 | 2024-12-04 | Initial consolidated document |
 | 2.0 | 2025-12-05 | Added document workflow, decision log, task carryforward, session history; Updated hierarchy to reflect 3 primary docs |
+| 2.1 | 2025-12-06 | Added Resend to tech stack; Updated production status with Phase 3 completion; Added 8 auth endpoints; Updated infrastructure costs |
 
 ---
 
