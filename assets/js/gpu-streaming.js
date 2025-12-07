@@ -1006,8 +1006,27 @@
           throw new Error('Avatar frame container not found');
         }
 
-        const width = container.clientWidth || 300;
-        const height = container.clientHeight || 400;
+        // Get dimensions - use reasonable defaults if container is hidden
+        // Container may be hidden initially, so fallback dimensions are important
+        let width = container.clientWidth;
+        let height = container.clientHeight;
+
+        // If container is hidden/collapsed, use CSS variable values or defaults
+        if (width < 50 || height < 50) {
+          // Try to get from computed style
+          const style = getComputedStyle(document.documentElement);
+          const cssWidth = parseInt(style.getPropertyValue('--vh-container-max-width')) || 400;
+          const cssHeight = parseInt(style.getPropertyValue('--vh-container-height')) || 380;
+          width = width || cssWidth;
+          height = height || cssHeight;
+          console.log(`📐 Container hidden, using fallback dimensions: ${width}x${height}`);
+        }
+
+        // Ensure minimum dimensions for WebGL
+        width = Math.max(width, 300);
+        height = Math.max(height, 350);
+
+        console.log(`📐 WebGL canvas dimensions: ${width}x${height}`);
 
         // Create scene
         this.webgl.scene = new THREE.Scene();
@@ -1024,6 +1043,11 @@
         let existingCanvas = canvasContainer.querySelector('canvas#vh-canvas');
 
         if (existingCanvas) {
+          // IMPORTANT: Set canvas pixel dimensions explicitly
+          // CSS width/height (100%) only controls display size, not render buffer
+          existingCanvas.width = width;
+          existingCanvas.height = height;
+
           // Use existing canvas
           this.webgl.renderer = new THREE.WebGLRenderer({
             canvas: existingCanvas,
@@ -1031,7 +1055,7 @@
             alpha: true,
             powerPreference: 'high-performance'
           });
-          console.log('🎭 Using existing #vh-canvas for WebGL rendering');
+          console.log(`🎭 Using existing #vh-canvas for WebGL rendering (${width}x${height}px)`);
         } else {
           // Create new renderer (canvas will be auto-created)
           this.webgl.renderer = new THREE.WebGLRenderer({
@@ -1254,12 +1278,40 @@
         const width = this.avatarFrame.clientWidth;
         const height = this.avatarFrame.clientHeight;
 
+        // Skip if container is collapsed/hidden (dimensions too small)
+        if (width < 50 || height < 50) return;
+
+        // Update canvas pixel dimensions
+        const canvas = this.webgl.renderer.domElement;
+        if (canvas) {
+          canvas.width = width;
+          canvas.height = height;
+        }
+
         this.webgl.camera.aspect = width / height;
         this.webgl.camera.updateProjectionMatrix();
         this.webgl.renderer.setSize(width, height);
       };
 
       window.addEventListener('resize', this._resizeHandler);
+
+      // Also trigger resize when container becomes visible
+      // This handles the case where model loads while container is hidden
+      this._visibilityObserver = new MutationObserver((mutations) => {
+        for (const mutation of mutations) {
+          if (mutation.type === 'attributes' &&
+              (mutation.attributeName === 'hidden' || mutation.attributeName === 'class')) {
+            // Container visibility may have changed
+            setTimeout(() => this._resizeHandler(), 100);
+          }
+        }
+      });
+
+      // Observe the vh-root container for visibility changes
+      const vhRoot = this.avatarFrame?.closest('.vh-root') || this.avatarFrame?.parentElement;
+      if (vhRoot) {
+        this._visibilityObserver.observe(vhRoot, { attributes: true });
+      }
     }
 
     /**
@@ -1278,6 +1330,12 @@
       if (this._resizeHandler) {
         window.removeEventListener('resize', this._resizeHandler);
         this._resizeHandler = null;
+      }
+
+      // Disconnect visibility observer
+      if (this._visibilityObserver) {
+        this._visibilityObserver.disconnect();
+        this._visibilityObserver = null;
       }
 
       // Dispose mixer
