@@ -486,9 +486,13 @@
         notes: { content: "", timestamp: null },
         resources: [],
         avatarManager: null,
+        gpuStreaming: null,
         sessionStart: Date.now(),
         chatMessages: []
       };
+
+      // Expose state for debugging
+      window.classroomState = state;
 
       // DOM elements
       const dom = {
