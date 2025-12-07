@@ -36,7 +36,22 @@
     "homepage_gate_score": "9/10"
   },
 
-  "blockers": [],
+  "blockers": [
+    {
+      "id": "AVATAR_INIT_FAIL",
+      "description": "AvatarManager initialization fails, showing error overlay instead of graceful fallback",
+      "since": "Session 39",
+      "affected": ["classroom.html", "AvatarManager.js"],
+      "priority": "high"
+    },
+    {
+      "id": "TTS_404",
+      "description": "TTS API endpoint /api/v1/tts returns 404",
+      "since": "Session 39",
+      "affected": ["AvatarManager.js"],
+      "priority": "medium"
+    }
+  ],
 
   "resolved_blockers": [
     {
@@ -104,6 +119,6 @@
     "user_journey": "docs/project/Pmerit-comprehensively-narrative-users-and-Admin-Journey.md",
     "latest_audit": "docs/aados/PRODUCTION_AUDIT_2025-12-06.md",
     "master_doc": "docs/project/Pmerit_Project_Document.md",
-    "session_37_handoff": "docs/handoffs/PMERIT_HANDOFF_SESSION_37.md"
+    "session_39_handoff": "docs/handoffs/PMERIT_HANDOFF_SESSION_39.md"
   }
 }
