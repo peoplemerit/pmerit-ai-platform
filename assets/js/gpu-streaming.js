@@ -1183,12 +1183,18 @@
     setupLighting() {
       if (!this.webgl.scene) return;
 
-      // Ambient light for overall illumination
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+      // Ambient light for overall illumination (increased for better visibility)
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
       this.webgl.scene.add(ambientLight);
 
+      // Hemisphere light for natural sky/ground gradient lighting
+      // This helps PBR materials look good without full environment map
+      const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.6);
+      hemiLight.position.set(0, 10, 0);
+      this.webgl.scene.add(hemiLight);
+
       // Key light (main light from front-right)
-      const keyLight = new THREE.DirectionalLight(0xffffff, 0.8);
+      const keyLight = new THREE.DirectionalLight(0xffffff, 1.0);
       keyLight.position.set(2, 3, 2);
       keyLight.castShadow = true;
       keyLight.shadow.mapSize.width = 1024;
@@ -1196,12 +1202,12 @@
       this.webgl.scene.add(keyLight);
 
       // Fill light (softer, from front-left)
-      const fillLight = new THREE.DirectionalLight(0x9bb5ff, 0.3);
+      const fillLight = new THREE.DirectionalLight(0x9bb5ff, 0.4);
       fillLight.position.set(-2, 2, 2);
       this.webgl.scene.add(fillLight);
 
       // Rim light (from behind for edge definition)
-      const rimLight = new THREE.DirectionalLight(0x4aa4b9, 0.4);
+      const rimLight = new THREE.DirectionalLight(0x4aa4b9, 0.5);
       rimLight.position.set(0, 2, -3);
       this.webgl.scene.add(rimLight);
 
@@ -1259,11 +1265,45 @@
             this.webgl.model.position.y = -box.min.y;
             this.webgl.model.position.z = -center.z;
 
-            // Enable shadows
+            // Enable shadows and fix materials for proper texture display
             this.webgl.model.traverse((child) => {
               if (child.isMesh) {
                 child.castShadow = true;
                 child.receiveShadow = true;
+
+                // DEBUG: Log material/texture info
+                console.log('🎨 Mesh:', child.name);
+                console.log('   Material type:', child.material?.type);
+                console.log('   Map (diffuse):', child.material?.map ? 'EXISTS' : 'NONE');
+                console.log('   Normal map:', child.material?.normalMap ? 'EXISTS' : 'NONE');
+                console.log('   Metalness:', child.material?.metalness);
+                console.log('   Roughness:', child.material?.roughness);
+
+                // Fix texture encoding for proper color display
+                const mat = child.material;
+                if (mat) {
+                  // Ensure textures use correct color space encoding
+                  if (mat.map) {
+                    mat.map.encoding = THREE.sRGBEncoding;
+                  }
+                  if (mat.emissiveMap) {
+                    mat.emissiveMap.encoding = THREE.sRGBEncoding;
+                  }
+
+                  // For skin/fabric: reduce metalness (should be 0 for non-metal)
+                  // High metalness without environment map = grey appearance
+                  if (mat.metalness !== undefined && mat.metalness > 0.1) {
+                    console.log('   ⚠️ Reducing metalness from', mat.metalness, 'to 0');
+                    mat.metalness = 0;
+                  }
+
+                  // Ensure roughness is reasonable for skin/fabric
+                  if (mat.roughness !== undefined && mat.roughness < 0.3) {
+                    mat.roughness = 0.5; // More diffuse = better without env map
+                  }
+
+                  mat.needsUpdate = true;
+                }
               }
             });
 
