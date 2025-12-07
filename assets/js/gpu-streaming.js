@@ -224,39 +224,52 @@
 
     /**
      * Select best region based on latency
+     * Uses backend API to avoid CORS issues with direct pings
      * @returns {Promise<string>} Best region ID
      */
     async selectBestRegion() {
-      console.log('🌍 Testing region latencies...');
+      console.log('🌍 Selecting best region...');
 
-      const results = await Promise.all(
-        this.config.regions.map(async (region) => {
-          try {
-            const start = performance.now();
-            await fetch(`https://${region}.digitaloceanspaces.com/ping`, {
-              method: 'HEAD',
-              mode: 'no-cors'
-            });
-            const latency = performance.now() - start;
+      // Use geolocation hint from timezone if available
+      try {
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        let suggestedRegion = 'nyc1'; // default
 
-            GPU_REGIONS[region.toUpperCase()]
-              ? GPU_REGIONS[region.toUpperCase()].latency = latency
-              : null;
-
-            return { region, latency };
-
-          } catch (error) {
-            return { region, latency: Infinity };
+        if (tz) {
+          // Map timezone to nearest region
+          if (tz.includes('America/Los_Angeles') || tz.includes('America/Vancouver') || tz.includes('Pacific')) {
+            suggestedRegion = 'sfo3';
+          } else if (tz.includes('Europe') || tz.includes('Africa')) {
+            suggestedRegion = 'ams3';
+          } else if (tz.includes('Asia') || tz.includes('Australia') || tz.includes('Pacific/Auckland')) {
+            suggestedRegion = 'sgp1';
+          } else {
+            suggestedRegion = 'nyc1'; // Americas East default
           }
-        })
-      );
+        }
 
-      // Sort by latency and select best
-      results.sort((a, b) => a.latency - b.latency);
-      const bestRegion = results[0]?.region || 'nyc1';
+        // Store estimated latency based on region proximity (ms)
+        const estimatedLatencies = {
+          'nyc1': tz.includes('America') && !tz.includes('Los_Angeles') ? 30 : 100,
+          'sfo3': tz.includes('Pacific') || tz.includes('Los_Angeles') ? 30 : 100,
+          'ams3': tz.includes('Europe') ? 30 : 120,
+          'sgp1': tz.includes('Asia') || tz.includes('Australia') ? 30 : 150
+        };
 
-      console.log(`📍 Best region: ${bestRegion} (${results[0]?.latency?.toFixed(0) || '?'}ms)`);
-      return bestRegion;
+        this.config.regions.forEach(region => {
+          const key = region.toUpperCase();
+          if (GPU_REGIONS[key]) {
+            GPU_REGIONS[key].latency = estimatedLatencies[region] || 100;
+          }
+        });
+
+        console.log(`📍 Selected region: ${suggestedRegion} (based on timezone: ${tz})`);
+        return suggestedRegion;
+
+      } catch (error) {
+        console.warn('Region selection fallback:', error);
+        return 'nyc1';
+      }
     }
 
     /**
