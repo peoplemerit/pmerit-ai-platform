@@ -291,6 +291,179 @@
     .vh-root.audio-only .vh-status-badge {
       background: var(--color-secondary, #4AA4B9);
     }
+
+    /* ========================================
+       FLOATING AVATAR WIDGET (Picture-in-Picture)
+       ======================================== */
+    .vh-widget {
+      position: fixed;
+      top: 100px;
+      right: 340px; /* Don't overlap AI Chat sidebar (320px + margin) */
+      width: 260px;
+      height: auto;
+      z-index: 1000;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 2px 8px rgba(0,0,0,0.2);
+      background: linear-gradient(135deg, rgba(30,30,50,0.95), rgba(20,20,40,0.98));
+      overflow: hidden;
+      transition: opacity 0.3s, transform 0.3s;
+      border: 1px solid rgba(74, 164, 185, 0.3);
+    }
+    .vh-widget.is-hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.9);
+    }
+    .vh-widget:not(.is-hidden) {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .vh-widget.minimized {
+      height: auto !important;
+    }
+    .vh-widget.minimized .avatar-frame,
+    .vh-widget.minimized .widget-footer {
+      display: none;
+    }
+
+    /* Widget Header (Drag Handle) */
+    .widget-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      background: linear-gradient(90deg, var(--color-primary, #2A5B8C), #1E4567);
+      cursor: move;
+      user-select: none;
+    }
+    .widget-title {
+      color: white;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .widget-controls {
+      display: flex;
+      gap: 4px;
+    }
+    .widget-btn {
+      width: 24px;
+      height: 24px;
+      border: none;
+      background: rgba(255,255,255,0.15);
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      transition: background 0.2s;
+    }
+    .widget-btn:hover {
+      background: rgba(255,255,255,0.25);
+    }
+
+    /* Widget Avatar Frame */
+    .vh-widget .avatar-frame {
+      width: 100%;
+      height: 200px;
+      position: relative;
+      background: transparent;
+      border-radius: 0;
+    }
+    .vh-widget .avatar-stage {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+    .vh-widget #vh-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .vh-widget .avatar-captions {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      right: 8px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      text-align: center;
+      display: none;
+    }
+    .vh-widget .avatar-captions:not(:empty) {
+      display: block;
+    }
+    .vh-widget .avatar-live-badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: #e53935;
+      color: white;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.65rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      z-index: 10;
+    }
+    .vh-widget .live-dot {
+      width: 6px;
+      height: 6px;
+      background: white;
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Widget Footer */
+    .widget-footer {
+      padding: 6px 12px;
+      background: rgba(0,0,0,0.3);
+      text-align: center;
+    }
+    .widget-footer #vh-status-text {
+      color: var(--color-secondary, #4AA4B9);
+      font-size: 0.75rem;
+    }
+
+    /* Fallback in widget */
+    .vh-widget .avatar-static {
+      width: 100%;
+      height: 200px;
+      border-radius: 0;
+      font-size: 48px;
+    }
+
+    /* Dragging state */
+    .vh-widget.dragging {
+      opacity: 0.9;
+      cursor: grabbing;
+    }
+
+    /* Mobile: Bottom-right, smaller */
+    @media (max-width: 768px) {
+      .vh-widget {
+        right: 10px;
+        top: auto;
+        bottom: 80px;
+        width: 180px;
+      }
+      .vh-widget .avatar-frame {
+        height: 140px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -343,64 +516,7 @@
         </label>
       </div>
 
-      <!-- Virtual Human Viewport - "Hologram Frame" Design -->
-      <div id="vh-root" class="vh-root is-hidden" hidden aria-hidden="true">
-        <!-- Avatar Frame Container (Tiered styling applied via JS) -->
-        <div class="avatar-frame tier-standard" id="avatar-frame">
-          <!-- Live Badge (Premium only) -->
-          <div class="avatar-live-badge" id="avatar-live-badge" style="display: none;">
-            <span class="live-dot"></span>
-            <span>LIVE</span>
-          </div>
-
-          <!-- Avatar Stage (Canvas/Image renders here) -->
-          <div class="avatar-stage">
-            <canvas id="vh-canvas" style="width: 100%; height: 100%; display: block;"></canvas>
-            <!-- Fallback static avatar -->
-            <div class="avatar-static" id="avatar-fallback" style="display: none;">
-              <i class="fas fa-user-graduate"></i>
-            </div>
-            <!-- State indicator ring -->
-            <div class="state-indicator"></div>
-          </div>
-
-          <!-- Captions overlay -->
-          <div class="avatar-captions" id="vh-captions" aria-live="polite"></div>
-
-          <!-- Quick Actions Drawer -->
-          <div class="avatar-quick-actions" id="avatar-actions">
-            <div class="drawer-handle"></div>
-            <button class="quick-action-btn primary" id="qa-raise-hand">
-              <i class="fas fa-hand-paper"></i> Raise Hand
-            </button>
-            <button class="quick-action-btn" id="qa-submit-work">
-              <i class="fas fa-file-upload"></i> Submit Work
-            </button>
-            <button class="quick-action-btn" id="qa-ask-hint">
-              <i class="fas fa-lightbulb"></i> Ask for Hint
-            </button>
-          </div>
-
-          <!-- Assignment Drop Zone (Drag & Drop) -->
-          <div class="avatar-drop-zone" id="avatar-drop-zone">
-            <div class="drop-icon"><i class="fas fa-cloud-upload-alt"></i></div>
-            <div class="drop-text">Drop assignment here<br><small>to submit to your tutor</small></div>
-          </div>
-
-          <!-- Bandwidth Toggle -->
-          <div class="bandwidth-toggle" id="bandwidth-toggle" title="Toggle quality">
-            <i class="toggle-icon fas fa-signal"></i>
-            <span>HD</span>
-          </div>
-        </div>
-
-        <!-- Status Badge (Below frame) -->
-        <div class="vh-status-badge">
-          <span id="vh-status-text">Virtual Human is loading...</span>
-        </div>
-      </div>
-
-      <!-- Content Area (lesson content scrolls here) -->
+      <!-- Content Area (lesson content scrolls here) - NOW PRIMARY -->
       <div class="content-area">
         <div class="player-area" id="player-area">
           <!-- Lesson content goes here -->
@@ -464,6 +580,37 @@
         </div>
       </div>
     </aside>
+  </div>
+
+  <!-- FLOATING AVATAR WIDGET (Draggable, Picture-in-Picture style) -->
+  <div id="vh-root" class="vh-root vh-widget is-hidden" hidden aria-hidden="true">
+    <div class="widget-header" id="widget-drag-handle">
+      <span class="widget-title"><i class="fas fa-robot"></i> AI Tutor</span>
+      <div class="widget-controls">
+        <button class="widget-btn" id="widget-minimize" title="Minimize">
+          <i class="fas fa-minus"></i>
+        </button>
+        <button class="widget-btn" id="widget-close" title="Hide">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+    <div class="avatar-frame tier-standard" id="avatar-frame">
+      <div class="avatar-live-badge" id="avatar-live-badge" style="display: none;">
+        <span class="live-dot"></span>
+        <span>LIVE</span>
+      </div>
+      <div class="avatar-stage">
+        <canvas id="vh-canvas"></canvas>
+        <div class="avatar-static" id="avatar-fallback" style="display: none;">
+          <i class="fas fa-user-graduate"></i>
+        </div>
+      </div>
+      <div class="avatar-captions" id="vh-captions" aria-live="polite"></div>
+    </div>
+    <div class="widget-footer">
+      <span id="vh-status-text">Ready</span>
+    </div>
   </div>
 
   <script>
@@ -814,7 +961,8 @@
       // Initialize GPU Streaming for tiered avatar rendering
       async function initGPUStreaming() {
         if (!window.GPUStreaming) {
-          console.warn('GPUStreaming module not loaded');
+          console.warn('GPUStreaming module not loaded - using fallback');
+          showAvatarError({ message: 'WebGL not available' });
           return null;
         }
 
@@ -844,18 +992,27 @@
             console.log(`Session cost: $${(costCents / 100).toFixed(2)}`);
           });
 
+          // Listen for errors - SILENT FALLBACK
+          gpuStreaming.onError((type, message) => {
+            console.warn(`GPU streaming error (${type}):`, message);
+            // Silent fallback - no scary error screens
+            showAvatarError({ message });
+          });
+
           // Start streaming to load the avatar
           // Check if VH is enabled before starting
           const vhEnabled = localStorage.getItem('pmerit_vh_enabled') !== 'false';
           if (vhEnabled) {
             console.log('🎬 Starting avatar streaming...');
             await gpuStreaming.startStreaming();
-            updateVHStatus('Virtual Human is ready');
+            updateVHStatus('Ready');
           }
 
           return gpuStreaming;
         } catch (error) {
           console.error('Failed to initialize GPU streaming:', error);
+          // Silent fallback
+          showAvatarError(error);
           return null;
         }
       }
@@ -986,6 +1143,134 @@
         dom.nextLessonBtn.addEventListener('click', handleNextLesson);
         dom.pauseBtn.addEventListener('click', handlePauseResume);
         dom.bookmarkBtn.addEventListener('click', handleBookmark);
+
+        // Widget controls
+        setupWidgetControls();
+      }
+
+      // =========================================
+      // FLOATING WIDGET CONTROLS
+      // =========================================
+      function setupWidgetControls() {
+        const widget = document.getElementById('vh-root');
+        const dragHandle = document.getElementById('widget-drag-handle');
+        const minimizeBtn = document.getElementById('widget-minimize');
+        const closeBtn = document.getElementById('widget-close');
+
+        if (!widget || !dragHandle) return;
+
+        // Make widget draggable
+        let isDragging = false;
+        let startX, startY, startLeft, startTop;
+
+        dragHandle.addEventListener('mousedown', (e) => {
+          if (e.target.closest('.widget-btn')) return; // Don't drag when clicking buttons
+          isDragging = true;
+          widget.classList.add('dragging');
+          startX = e.clientX;
+          startY = e.clientY;
+          const rect = widget.getBoundingClientRect();
+          startLeft = rect.left;
+          startTop = rect.top;
+          e.preventDefault();
+        });
+
+        document.addEventListener('mousemove', (e) => {
+          if (!isDragging) return;
+          const dx = e.clientX - startX;
+          const dy = e.clientY - startY;
+
+          // Calculate new position
+          let newLeft = startLeft + dx;
+          let newTop = startTop + dy;
+
+          // Keep within viewport
+          const maxLeft = window.innerWidth - widget.offsetWidth - 10;
+          const maxTop = window.innerHeight - widget.offsetHeight - 10;
+          newLeft = Math.max(10, Math.min(newLeft, maxLeft));
+          newTop = Math.max(10, Math.min(newTop, maxTop));
+
+          widget.style.left = newLeft + 'px';
+          widget.style.top = newTop + 'px';
+          widget.style.right = 'auto'; // Override CSS right positioning
+        });
+
+        document.addEventListener('mouseup', () => {
+          if (isDragging) {
+            isDragging = false;
+            widget.classList.remove('dragging');
+            // Save position to localStorage
+            localStorage.setItem('pmerit_widget_pos', JSON.stringify({
+              left: widget.style.left,
+              top: widget.style.top
+            }));
+          }
+        });
+
+        // Touch support for mobile
+        dragHandle.addEventListener('touchstart', (e) => {
+          if (e.target.closest('.widget-btn')) return;
+          const touch = e.touches[0];
+          isDragging = true;
+          startX = touch.clientX;
+          startY = touch.clientY;
+          const rect = widget.getBoundingClientRect();
+          startLeft = rect.left;
+          startTop = rect.top;
+        }, { passive: true });
+
+        document.addEventListener('touchmove', (e) => {
+          if (!isDragging) return;
+          const touch = e.touches[0];
+          const dx = touch.clientX - startX;
+          const dy = touch.clientY - startY;
+          let newLeft = startLeft + dx;
+          let newTop = startTop + dy;
+          const maxLeft = window.innerWidth - widget.offsetWidth - 10;
+          const maxTop = window.innerHeight - widget.offsetHeight - 10;
+          newLeft = Math.max(10, Math.min(newLeft, maxLeft));
+          newTop = Math.max(10, Math.min(newTop, maxTop));
+          widget.style.left = newLeft + 'px';
+          widget.style.top = newTop + 'px';
+          widget.style.right = 'auto';
+        }, { passive: true });
+
+        document.addEventListener('touchend', () => {
+          isDragging = false;
+        });
+
+        // Restore saved position
+        const savedPos = localStorage.getItem('pmerit_widget_pos');
+        if (savedPos) {
+          try {
+            const pos = JSON.parse(savedPos);
+            widget.style.left = pos.left;
+            widget.style.top = pos.top;
+            widget.style.right = 'auto';
+          } catch (e) { /* ignore */ }
+        }
+
+        // Minimize button
+        if (minimizeBtn) {
+          minimizeBtn.addEventListener('click', () => {
+            widget.classList.toggle('minimized');
+            const icon = minimizeBtn.querySelector('i');
+            if (widget.classList.contains('minimized')) {
+              icon.className = 'fas fa-plus';
+              minimizeBtn.title = 'Expand';
+            } else {
+              icon.className = 'fas fa-minus';
+              minimizeBtn.title = 'Minimize';
+            }
+          });
+        }
+
+        // Close button (hides widget, toggles VH off)
+        if (closeBtn) {
+          closeBtn.addEventListener('click', () => {
+            toggleVirtualHuman(); // This will hide the widget
+          });
+        }
       }
 
       // Handle Raise Hand button
