@@ -1,0 +1,536 @@
+/**
+ * Proctor Mode - Secure Assessment UI Theme
+ * Digital Desk Classroom Redesign
+ *
+ * When an exam starts, the interface transforms:
+ * - UI colors dim (muted theme)
+ * - Sidebars retract
+ * - "AI Proctor Active" indicator pulses
+ * - Avatar moves to corner (monitoring pose)
+ * - Privacy-first design with clear indicators
+ */
+
+/* ========================================
+   Proctor Mode Container State
+   ======================================== */
+
+body.proctor-mode {
+  --proctor-accent: #dc3545;
+  --proctor-bg: rgba(0, 0, 0, 0.03);
+}
+
+/* Dim the overall interface */
+body.proctor-mode .app-container {
+  filter: saturate(0.7);
+  transition: filter 0.5s ease;
+}
+
+body.proctor-mode .app-container:focus-within {
+  filter: saturate(0.85);
+}
+
+/* ========================================
+   Proctor Status Indicator (Header)
+   ======================================== */
+
+.proctor-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  transition: all 0.3s ease;
+}
+
+.proctor-status .status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #28a745;
+  transition: background 0.3s ease;
+}
+
+/* Proctor OFF state */
+.proctor-status.off .status-dot {
+  background: #6c757d;
+}
+
+.proctor-status.off .status-text {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Proctor ACTIVE state */
+.proctor-status.active {
+  background: rgba(220, 53, 69, 0.9);
+  animation: proctorPulse 2s ease-in-out infinite;
+}
+
+.proctor-status.active .status-dot {
+  background: white;
+  animation: proctorDotPulse 1s ease-in-out infinite;
+}
+
+@keyframes proctorPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(220, 53, 69, 0); }
+}
+
+@keyframes proctorDotPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* ========================================
+   Sidebar Retraction
+   ======================================== */
+
+body.proctor-mode .left-panel,
+body.proctor-mode .right-panel {
+  transform: translateX(0);
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+body.proctor-mode.exam-active .left-panel {
+  transform: translateX(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.proctor-mode.exam-active .right-panel {
+  transform: translateX(100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Expand center panel when sidebars retract */
+body.proctor-mode.exam-active .app-container {
+  grid-template-columns: 0 1fr 0;
+}
+
+body.proctor-mode.exam-active .center-panel {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ========================================
+   Exam Content Area
+   ======================================== */
+
+.exam-container {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.exam-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--border-color, #E9ECEF);
+  margin-bottom: 24px;
+}
+
+.exam-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.exam-timer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--bg-elevated);
+  border-radius: 8px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  font-family: 'Monaco', 'Consolas', monospace;
+}
+
+.exam-timer.warning {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.exam-timer.critical {
+  background: #f8d7da;
+  color: #721c24;
+  animation: timerCritical 0.5s ease-in-out infinite;
+}
+
+@keyframes timerCritical {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+/* ========================================
+   Proctor Avatar Position
+   ======================================== */
+
+body.proctor-mode .avatar-frame {
+  position: fixed !important;
+  top: 100px;
+  right: 20px;
+  width: 140px !important;
+  max-width: 140px !important;
+  z-index: 1000;
+  border-color: rgba(220, 53, 69, 0.5);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.2),
+    0 0 0 2px rgba(220, 53, 69, 0.3);
+}
+
+body.proctor-mode .avatar-frame .avatar-quick-actions {
+  display: none;
+}
+
+/* Monitoring pose indicator */
+body.proctor-mode .avatar-frame::after {
+  content: 'Monitoring';
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--proctor-accent);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ========================================
+   Vision AI Indicators
+   ======================================== */
+
+.vision-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* Eye tracking indicator */
+.eye-track-indicator {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 20px;
+  color: white;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1001;
+}
+
+.eye-track-indicator.visible {
+  opacity: 1;
+}
+
+.eye-track-indicator .eye-icon {
+  font-size: 16px;
+}
+
+.eye-track-indicator.warning {
+  background: rgba(255, 193, 7, 0.9);
+  color: #333;
+}
+
+.eye-track-indicator.alert {
+  background: rgba(220, 53, 69, 0.9);
+  animation: alertPulse 0.5s ease-in-out infinite;
+}
+
+@keyframes alertPulse {
+  0%, 100% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.05); }
+}
+
+/* ========================================
+   Violation Warning Modal
+   ======================================== */
+
+.violation-warning {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 30px 40px;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  z-index: 1010;
+  max-width: 400px;
+  animation: warningAppear 0.3s ease-out;
+}
+
+.violation-warning .warning-icon {
+  font-size: 48px;
+  color: #ffc107;
+  margin-bottom: 16px;
+}
+
+.violation-warning .warning-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.violation-warning .warning-message {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.violation-warning .warning-count {
+  font-size: 12px;
+  color: #dc3545;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.violation-warning button {
+  padding: 12px 24px;
+  font-weight: 600;
+}
+
+@keyframes warningAppear {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* Backdrop */
+.violation-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1009;
+  animation: backdropFade 0.3s ease-out;
+}
+
+@keyframes backdropFade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* ========================================
+   Camera Privacy Shutter
+   ======================================== */
+
+.camera-shutter {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: shutterClose 0.5s ease-out;
+}
+
+.camera-shutter .shutter-icon {
+  font-size: 64px;
+  color: #28a745;
+  margin-bottom: 20px;
+}
+
+.camera-shutter .shutter-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 8px;
+}
+
+.camera-shutter .shutter-subtext {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+@keyframes shutterClose {
+  0% {
+    clip-path: circle(150% at 50% 50%);
+  }
+  100% {
+    clip-path: circle(0% at 50% 50%);
+  }
+}
+
+.camera-shutter.opening {
+  animation: shutterOpen 0.5s ease-out forwards;
+}
+
+@keyframes shutterOpen {
+  0% {
+    clip-path: circle(0% at 50% 50%);
+    opacity: 1;
+  }
+  100% {
+    clip-path: circle(150% at 50% 50%);
+    opacity: 0;
+  }
+}
+
+/* ========================================
+   Exam Controls
+   ======================================== */
+
+.exam-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+.exam-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.exam-nav-btn:hover:not(:disabled) {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.exam-nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.exam-submit-btn {
+  background: var(--color-success, #28a745);
+  color: white;
+  border-color: var(--color-success, #28a745);
+}
+
+.exam-submit-btn:hover {
+  background: #218838;
+  border-color: #218838;
+}
+
+/* ========================================
+   Question Progress
+   ======================================== */
+
+.question-progress {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.question-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  border: 2px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.question-dot:hover {
+  border-color: var(--color-primary);
+}
+
+.question-dot.current {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+}
+
+.question-dot.answered {
+  background: var(--color-success);
+  border-color: var(--color-success);
+  color: white;
+}
+
+.question-dot.flagged {
+  border-color: #ffc107;
+  background: #fff3cd;
+}
+
+.question-dot.flagged::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  background: #ffc107;
+  border-radius: 50%;
+}
+
+/* ========================================
+   Responsive Adjustments
+   ======================================== */
+
+@media (max-width: 768px) {
+  body.proctor-mode .avatar-frame {
+    width: 100px !important;
+    max-width: 100px !important;
+    top: auto;
+    bottom: 20px;
+    right: 10px;
+  }
+
+  .exam-container {
+    padding: 20px;
+    margin: 10px;
+  }
+
+  .exam-header {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .violation-warning {
+    width: calc(100% - 40px);
+    max-width: none;
+    padding: 24px;
+  }
+}

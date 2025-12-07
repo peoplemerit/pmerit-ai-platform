@@ -1,0 +1,564 @@
+/**
+ * Avatar Frame - "Hologram Frame" Design System
+ * Digital Desk Classroom Redesign
+ *
+ * Supports tiered Virtual Humans:
+ * - Premium: GPU-streamed Unreal MetaHuman (LIVE badge, glow effect)
+ * - Standard: WebGL 3D avatar (client-side)
+ * - Free: Cartoonish 2D/CSS avatar (sketch border)
+ * - Fallback: Static image + text
+ */
+
+/* ========================================
+   Avatar Frame Container
+   ======================================== */
+
+.avatar-frame {
+  position: relative;
+  width: 100%;
+  max-width: 280px;
+  aspect-ratio: 9 / 16;
+  border-radius: 20px;
+  overflow: hidden;
+  background: linear-gradient(180deg,
+    rgba(42, 91, 140, 0.1) 0%,
+    rgba(74, 164, 185, 0.05) 100%
+  );
+  box-shadow:
+    0 0 0 2px rgba(74, 164, 185, 0.3),
+    0 8px 32px rgba(0, 0, 0, 0.15),
+    inset 0 0 60px rgba(74, 164, 185, 0.05);
+  transition: all 0.4s ease;
+}
+
+/* Hologram glow effect */
+.avatar-frame::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 22px;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(74, 164, 185, 0.2) 50%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.avatar-frame:hover::before,
+.avatar-frame.speaking::before {
+  opacity: 1;
+  animation: hologramShimmer 2s linear infinite;
+}
+
+@keyframes hologramShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ========================================
+   Tier Indicators
+   ======================================== */
+
+/* Premium Tier - Unreal MetaHuman (GPU Streamed) */
+.avatar-frame.tier-premium {
+  border: 2px solid rgba(255, 215, 0, 0.6);
+  box-shadow:
+    0 0 0 2px rgba(255, 215, 0, 0.3),
+    0 0 30px rgba(255, 215, 0, 0.2),
+    0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.avatar-frame.tier-premium::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 18px;
+  box-shadow: inset 0 0 40px rgba(255, 215, 0, 0.1);
+  pointer-events: none;
+}
+
+/* Standard Tier - WebGL 3D */
+.avatar-frame.tier-standard {
+  border: 2px solid rgba(74, 164, 185, 0.5);
+}
+
+/* Free Tier - Cartoonish/2D */
+.avatar-frame.tier-free {
+  border: 3px dashed rgba(74, 164, 185, 0.4);
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(74, 164, 185, 0.02) 10px,
+      rgba(74, 164, 185, 0.02) 20px
+    ),
+    linear-gradient(180deg,
+      rgba(42, 91, 140, 0.08) 0%,
+      rgba(74, 164, 185, 0.03) 100%
+    );
+}
+
+/* Fallback - Text Only */
+.avatar-frame.tier-fallback {
+  border: 1px solid var(--border-color, #E9ECEF);
+  background: var(--bg-elevated, #FAFBFC);
+}
+
+/* ========================================
+   Live Badge (Premium Only)
+   ======================================== */
+
+.avatar-live-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  z-index: 10;
+  backdrop-filter: blur(4px);
+}
+
+.avatar-live-badge .live-dot {
+  width: 8px;
+  height: 8px;
+  background: #ff4444;
+  border-radius: 50%;
+  animation: livePulse 1.5s ease-in-out infinite;
+}
+
+.avatar-live-badge.premium .live-dot {
+  background: #ffd700;
+}
+
+.avatar-live-badge.hd {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+@keyframes livePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+/* ========================================
+   Avatar Stage (Where avatar renders)
+   ======================================== */
+
+.avatar-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-stage canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Cartoon avatar placeholder */
+.avatar-cartoon {
+  width: 80%;
+  height: auto;
+  max-height: 70%;
+  object-fit: contain;
+}
+
+/* Static fallback image */
+.avatar-static {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  color: white;
+}
+
+/* ========================================
+   Listening/Processing States
+   ======================================== */
+
+.avatar-frame .state-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Listening state - user is talking */
+.avatar-frame.listening .state-indicator {
+  opacity: 1;
+  border: 3px solid rgba(74, 164, 185, 0.5);
+  animation: listeningPulse 1.5s ease-in-out infinite;
+}
+
+/* Processing state - AI is thinking */
+.avatar-frame.processing .state-indicator {
+  opacity: 1;
+  border: 3px solid rgba(255, 193, 7, 0.5);
+  animation: processingRotate 2s linear infinite;
+}
+
+/* Speaking state */
+.avatar-frame.speaking .state-indicator {
+  opacity: 1;
+  border: 3px solid rgba(58, 127, 92, 0.5);
+  animation: speakingWave 0.8s ease-in-out infinite;
+}
+
+@keyframes listeningPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+  50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.4; }
+}
+
+@keyframes processingRotate {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes speakingWave {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.05); }
+}
+
+/* ========================================
+   Quick Actions Drawer
+   ======================================== */
+
+.avatar-quick-actions {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(0deg,
+    rgba(0, 0, 0, 0.85) 0%,
+    rgba(0, 0, 0, 0.6) 70%,
+    transparent 100%
+  );
+  padding: 40px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transform: translateY(calc(100% - 50px));
+  transition: transform 0.3s ease;
+}
+
+.avatar-frame:hover .avatar-quick-actions,
+.avatar-quick-actions.expanded {
+  transform: translateY(0);
+}
+
+.avatar-quick-actions .drawer-handle {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.quick-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: white;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quick-action-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.quick-action-btn i {
+  width: 18px;
+  text-align: center;
+}
+
+.quick-action-btn.primary {
+  background: var(--color-secondary, #4AA4B9);
+  border-color: var(--color-secondary, #4AA4B9);
+}
+
+.quick-action-btn.primary:hover {
+  background: #3d8fa1;
+}
+
+/* ========================================
+   Drop Zone for Assignments
+   ======================================== */
+
+.avatar-drop-zone {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(74, 164, 185, 0.9);
+  border-radius: 18px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 20;
+}
+
+.avatar-drop-zone.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.avatar-drop-zone .drop-icon {
+  font-size: 48px;
+  color: white;
+  margin-bottom: 12px;
+  animation: dropBounce 0.8s ease-in-out infinite;
+}
+
+.avatar-drop-zone .drop-text {
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+}
+
+@keyframes dropBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Avatar "extending hand" animation hint */
+.avatar-frame.receiving .avatar-stage {
+  animation: avatarReach 0.5s ease-out;
+}
+
+@keyframes avatarReach {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02) translateY(-5px); }
+  100% { transform: scale(1); }
+}
+
+/* ========================================
+   Bandwidth Toggle
+   ======================================== */
+
+.bandwidth-toggle {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 12px;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.bandwidth-toggle:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.bandwidth-toggle .toggle-icon {
+  font-size: 12px;
+}
+
+/* ========================================
+   Energy Saver Notification
+   ======================================== */
+
+.energy-saver-notice {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.85);
+  padding: 16px 20px;
+  border-radius: 12px;
+  text-align: center;
+  color: white;
+  z-index: 25;
+  animation: noticeAppear 0.3s ease-out;
+}
+
+.energy-saver-notice .notice-icon {
+  font-size: 24px;
+  margin-bottom: 8px;
+  color: #ffc107;
+}
+
+.energy-saver-notice .notice-text {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+@keyframes noticeAppear {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* ========================================
+   Tier Transition "Glitch" Effect
+   ======================================== */
+
+.avatar-frame.transitioning {
+  animation: tierGlitch 0.5s ease-out;
+}
+
+@keyframes tierGlitch {
+  0%, 100% {
+    filter: none;
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    filter: hue-rotate(90deg) saturate(2);
+    transform: translateX(-2px);
+  }
+  20%, 40%, 60%, 80% {
+    filter: hue-rotate(-90deg) saturate(0.5);
+    transform: translateX(2px);
+  }
+}
+
+/* ========================================
+   Captions Area
+   ======================================== */
+
+.avatar-captions {
+  position: absolute;
+  bottom: 60px;
+  left: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: white;
+  text-align: center;
+  backdrop-filter: blur(4px);
+  max-height: 80px;
+  overflow-y: auto;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.avatar-captions.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ========================================
+   Proctor Mode Modifications
+   ======================================== */
+
+.avatar-frame.proctor-mode {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  width: 160px;
+  max-width: 160px;
+  z-index: 1000;
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.3),
+    0 0 0 2px rgba(255, 68, 68, 0.5);
+}
+
+.avatar-frame.proctor-mode .avatar-quick-actions {
+  display: none;
+}
+
+.avatar-frame.proctor-mode .avatar-live-badge {
+  background: rgba(255, 68, 68, 0.9);
+}
+
+.avatar-frame.proctor-mode .avatar-live-badge .live-dot {
+  background: white;
+}
+
+/* ========================================
+   Responsive Design
+   ======================================== */
+
+@media (max-width: 1024px) {
+  .avatar-frame {
+    max-width: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .avatar-frame {
+    max-width: 180px;
+    aspect-ratio: 3 / 4;
+  }
+
+  .avatar-quick-actions {
+    padding: 30px 10px 10px;
+  }
+
+  .quick-action-btn {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .avatar-frame {
+    max-width: 140px;
+  }
+
+  .avatar-live-badge {
+    font-size: 9px;
+    padding: 3px 8px;
+  }
+}
