@@ -1294,6 +1294,10 @@
             }
 
             console.log(`✅ 3D avatar loaded: ${path}`);
+
+            // Initialize lip sync after model loads
+            this.initLipSync();
+
             resolve();
           },
           (progress) => {
@@ -1475,6 +1479,94 @@
       console.log('✅ WebGL resources disposed');
     }
 
+    // =========================================================================
+    // Lip Sync - Connect TTS audio to avatar mouth movement
+    // =========================================================================
+
+    /**
+     * Initialize lip sync listener for TTS viseme events
+     * Listens to tts:viseme events emitted by tts.js
+     */
+    initLipSync() {
+      // Remove existing listener if any
+      if (this._lipSyncHandler) {
+        document.removeEventListener('tts:viseme', this._lipSyncHandler);
+      }
+
+      this._lipSyncHandler = (event) => {
+        const intensity = event.detail?.intensity || 0;
+        this.applyMouthMovement(intensity);
+      };
+
+      document.addEventListener('tts:viseme', this._lipSyncHandler);
+
+      // Also listen for TTS start/end to control animation state
+      document.addEventListener('tts:start', () => {
+        this._isSpeaking = true;
+        console.log('🎤 TTS started - lip sync active');
+      });
+
+      document.addEventListener('tts:end', () => {
+        this._isSpeaking = false;
+        // Reset mouth to closed position
+        this.applyMouthMovement(0);
+        console.log('🎤 TTS ended - lip sync stopped');
+      });
+
+      console.log('👄 Lip sync listener initialized');
+    }
+
+    /**
+     * Apply mouth movement to avatar model based on audio intensity
+     * @param {number} intensity - Audio intensity [0..1]
+     */
+    applyMouthMovement(intensity) {
+      if (!this.webgl?.model) return;
+
+      // Clamp and smooth the intensity
+      const mouthOpen = Math.min(Math.max(intensity, 0), 1);
+
+      this.webgl.model.traverse((child) => {
+        // Method 1: Morph targets (blend shapes)
+        if (child.isMesh && child.morphTargetInfluences && child.morphTargetDictionary) {
+          // Try common mouth morph target names
+          const morphNames = [
+            'mouthOpen', 'jawOpen', 'viseme_aa', 'viseme_O',
+            'mouth_open', 'Jaw_Open', 'MouthOpen', 'A'
+          ];
+
+          for (const name of morphNames) {
+            const idx = child.morphTargetDictionary[name];
+            if (idx !== undefined) {
+              child.morphTargetInfluences[idx] = mouthOpen;
+              return; // Found one, done for this mesh
+            }
+          }
+        }
+
+        // Method 2: Jaw bone rotation (fallback)
+        if (child.isBone) {
+          const boneName = child.name?.toLowerCase() || '';
+          if (boneName.includes('jaw') || boneName.includes('chin') || boneName.includes('mouth')) {
+            // Rotate jaw down based on intensity (around X axis)
+            // Typical range is 0 to 0.2 radians for natural mouth opening
+            child.rotation.x = mouthOpen * 0.18;
+          }
+        }
+      });
+    }
+
+    /**
+     * Clean up lip sync listener
+     */
+    disposeLipSync() {
+      if (this._lipSyncHandler) {
+        document.removeEventListener('tts:viseme', this._lipSyncHandler);
+        this._lipSyncHandler = null;
+      }
+      this._isSpeaking = false;
+    }
+
     /**
      * Handle stream error
      * @param {Error} error - Error object
@@ -1588,6 +1680,9 @@
       // Dispose WebGL resources
       this.disposeWebGL();
 
+      // Dispose lip sync listeners
+      this.disposeLipSync();
+
       // Remove stream container
       if (this.streamContainer && this.streamContainer.parentNode) {
         this.streamContainer.parentNode.removeChild(this.streamContainer);
@@ -1609,6 +1704,8 @@
   window.createGPUStreaming = async function(avatarFrameElement, config = {}) {
     const gpuStreaming = new GPUStreaming(config);
     await gpuStreaming.init(avatarFrameElement);
+    // Export globally for TTS lip sync integration
+    window.gpuStreaming = gpuStreaming;
     return gpuStreaming;
   };
 
