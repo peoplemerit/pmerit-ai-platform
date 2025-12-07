@@ -1018,12 +1018,44 @@
         this.webgl.camera.position.set(0, 1.4, 2.5);
         this.webgl.camera.lookAt(0, 1.2, 0);
 
-        // Create renderer
-        this.webgl.renderer = new THREE.WebGLRenderer({
-          antialias: true,
-          alpha: true,
-          powerPreference: 'high-performance'
-        });
+        // Try to use existing #vh-canvas if available (inside avatar-stage), otherwise create new
+        const avatarStage = container.querySelector('.avatar-stage');
+        const canvasContainer = avatarStage || container;
+        let existingCanvas = canvasContainer.querySelector('canvas#vh-canvas');
+
+        if (existingCanvas) {
+          // Use existing canvas
+          this.webgl.renderer = new THREE.WebGLRenderer({
+            canvas: existingCanvas,
+            antialias: true,
+            alpha: true,
+            powerPreference: 'high-performance'
+          });
+          console.log('🎭 Using existing #vh-canvas for WebGL rendering');
+        } else {
+          // Create new renderer (canvas will be auto-created)
+          this.webgl.renderer = new THREE.WebGLRenderer({
+            antialias: true,
+            alpha: true,
+            powerPreference: 'high-performance'
+          });
+
+          // Style the new canvas
+          this.webgl.renderer.domElement.style.cssText = `
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 18px;
+            z-index: 1;
+          `;
+
+          // Add to avatar-stage if it exists, otherwise to container
+          canvasContainer.appendChild(this.webgl.renderer.domElement);
+          console.log('🎭 Created new canvas for WebGL rendering');
+        }
+
         this.webgl.renderer.setSize(width, height);
         this.webgl.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         this.webgl.renderer.outputEncoding = THREE.sRGBEncoding;
@@ -1031,19 +1063,6 @@
         this.webgl.renderer.toneMappingExposure = 1.0;
         this.webgl.renderer.shadowMap.enabled = true;
         this.webgl.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
-        // Style the canvas
-        this.webgl.renderer.domElement.style.cssText = `
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          border-radius: 18px;
-        `;
-
-        // Add to container
-        container.appendChild(this.webgl.renderer.domElement);
 
         // Add lighting
         this.setupLighting();
