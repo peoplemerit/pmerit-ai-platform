@@ -106,7 +106,26 @@
     .portal-nav a:hover {
       background-color: rgba(255, 255, 255, 0.15);
     }
-    
+
+    /* User display in header - FIX visibility */
+    #user-display {
+      color: #E0F7FA;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    #user-display::before {
+      content: '\f007'; /* Font Awesome user icon */
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      font-size: 0.8rem;
+    }
+
     .app-container { 
       display: grid; 
       grid-template-columns: 280px 1fr 320px; 
@@ -230,18 +249,52 @@
       border: 1px solid var(--border-color, #E9ECEF);
     }
     
-    .chat-form { 
-      display: flex; 
-      gap: 10px; 
+    .chat-form {
+      display: flex;
+      gap: 8px;
+      padding: 12px;
+      background: rgba(248, 249, 250, 0.5);
+      border-top: 1px solid var(--border-color, #E9ECEF);
+      border-radius: 0 0 8px 8px;
+      margin: 0 -15px -15px -15px; /* Extend to panel edges */
     }
-    
-    .chat-form input { 
-      flex-grow: 1; 
-      padding: 10px; 
-      background-color: var(--bg-card, #FFFFFF); 
-      color: var(--text-primary, #2C2C2C); 
-      border: 1px solid var(--border-color, #E9ECEF); 
-      border-radius: 4px; 
+
+    .chat-form input {
+      flex: 1;
+      min-width: 0; /* Allow shrinking */
+      padding: 10px 16px;
+      background-color: var(--bg-card, #FFFFFF);
+      color: var(--text-primary, #2C2C2C);
+      border: 1px solid var(--border-color, #E9ECEF);
+      border-radius: 20px;
+      font-size: 0.9rem;
+    }
+
+    .chat-form input:focus {
+      outline: none;
+      border-color: var(--color-secondary, #4AA4B9);
+      box-shadow: 0 0 0 2px rgba(74, 164, 185, 0.2);
+    }
+
+    .chat-form button[type="submit"] {
+      padding: 10px 20px;
+      border-radius: 20px;
+      background: var(--color-secondary, #4AA4B9);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+
+    .chat-form button[type="submit"]:hover {
+      background: #3d8fa0;
+    }
+
+    .chat-form button[type="submit"]:active {
+      transform: scale(0.97);
     }
     
     @media (max-width: 1024px) { 
