@@ -1098,8 +1098,16 @@
       function updateVHToggle(enabled) {
         if (enabled) {
           dom.vhToggle.classList.remove('off');
+          // Show vh-root container
+          dom.vhContainer.classList.remove('is-hidden');
+          dom.vhContainer.removeAttribute('hidden');
+          dom.vhContainer.setAttribute('aria-hidden', 'false');
         } else {
           dom.vhToggle.classList.add('off');
+          // Hide vh-root container
+          dom.vhContainer.classList.add('is-hidden');
+          dom.vhContainer.setAttribute('hidden', '');
+          dom.vhContainer.setAttribute('aria-hidden', 'true');
         }
       }
 
