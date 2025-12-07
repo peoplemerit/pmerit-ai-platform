@@ -38,7 +38,7 @@
       avatar: 'webgl',
       description: 'WebGL 3D Avatar',
       cost: 0,
-      model: '/assets/models/avatars/Ty.glb' // 4.3 MB standard avatar
+      model: '/assets/models/avatars/humano_professional.glb' // Use same model for debugging
     },
     PREMIUM: {
       name: 'premium',
@@ -1088,12 +1088,14 @@
 
         // Create scene
         this.webgl.scene = new THREE.Scene();
-        this.webgl.scene.background = new THREE.Color(0x1a1a2e); // Dark purple-ish
+        // DEBUG: Use bright color to confirm scene renders
+        this.webgl.scene.background = new THREE.Color(0x2a5b8c); // Visible blue background
 
-        // Create camera
-        this.webgl.camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
-        this.webgl.camera.position.set(0, 1.4, 2.5);
-        this.webgl.camera.lookAt(0, 1.2, 0);
+        // Create camera - will reposition after model loads
+        this.webgl.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+        // Start with a default position, will adjust after model loads
+        this.webgl.camera.position.set(0, 1, 3);
+        this.webgl.camera.lookAt(0, 0.5, 0);
 
         // Find the avatar-stage container (or fall back to avatar-frame)
         const avatarStage = container.querySelector('.avatar-stage');
@@ -1109,9 +1111,12 @@
         // Create new WebGL renderer (creates its own canvas)
         this.webgl.renderer = new THREE.WebGLRenderer({
           antialias: true,
-          alpha: true,
+          alpha: false, // DEBUG: Disable alpha to see background color
           powerPreference: 'high-performance'
         });
+
+        // DEBUG: Set clear color to ensure we see something
+        this.webgl.renderer.setClearColor(0x2a5b8c, 1);
 
         // Get the canvas element from the renderer
         const canvas = this.webgl.renderer.domElement;
@@ -1242,50 +1247,93 @@
         loader.load(
           path,
           (gltf) => {
+            console.log('📦 GLTF loaded, processing model...');
             this.webgl.model = gltf.scene;
 
-            // Center and scale the model
+            // DEBUG: Log raw model info
+            const rawBox = new THREE.Box3().setFromObject(this.webgl.model);
+            const rawSize = rawBox.getSize(new THREE.Vector3());
+            const rawCenter = rawBox.getCenter(new THREE.Vector3());
+            console.log('📏 RAW model size:', rawSize.x.toFixed(2), rawSize.y.toFixed(2), rawSize.z.toFixed(2));
+            console.log('📍 RAW model center:', rawCenter.x.toFixed(2), rawCenter.y.toFixed(2), rawCenter.z.toFixed(2));
+            console.log('📍 RAW model min Y:', rawBox.min.y.toFixed(2));
+
+            // Scale to fit ~1.8m height (if model isn't already roughly that size)
+            const targetHeight = 1.8;
+            let scale = 1;
+            if (rawSize.y > 0.01) { // Avoid division by zero
+              scale = targetHeight / rawSize.y;
+            }
+            console.log('📐 Applying scale:', scale.toFixed(4));
+            this.webgl.model.scale.setScalar(scale);
+
+            // Recalculate bounds after scaling
             const box = new THREE.Box3().setFromObject(this.webgl.model);
             const center = box.getCenter(new THREE.Vector3());
             const size = box.getSize(new THREE.Vector3());
-
-            // Scale to fit ~1.8m height
-            const targetHeight = 1.8;
-            const scale = targetHeight / size.y;
-            this.webgl.model.scale.setScalar(scale);
+            console.log('📏 SCALED model size:', size.x.toFixed(2), size.y.toFixed(2), size.z.toFixed(2));
 
             // Center horizontally, place feet at y=0
-            this.webgl.model.position.x = -center.x * scale;
-            this.webgl.model.position.y = -box.min.y * scale;
-            this.webgl.model.position.z = -center.z * scale;
+            this.webgl.model.position.x = -center.x;
+            this.webgl.model.position.y = -box.min.y;
+            this.webgl.model.position.z = -center.z;
+            console.log('📍 Model position set to:', this.webgl.model.position.x.toFixed(2), this.webgl.model.position.y.toFixed(2), this.webgl.model.position.z.toFixed(2));
 
-            // Enable shadows
+            // Enable shadows and count meshes
+            let meshCount = 0;
             this.webgl.model.traverse((child) => {
               if (child.isMesh) {
+                meshCount++;
                 child.castShadow = true;
                 child.receiveShadow = true;
               }
             });
+            console.log('🔷 Model contains', meshCount, 'meshes');
 
             // Add to scene
             this.webgl.scene.add(this.webgl.model);
+            console.log('✅ Model added to scene. Scene children:', this.webgl.scene.children.length);
+
+            // CRITICAL: Position camera to see the model
+            // Camera should look at model center, positioned in front
+            const modelHeight = size.y;
+            const cameraDistance = Math.max(size.z * 2.5, 2.5); // At least 2.5 units away
+            const cameraHeight = modelHeight * 0.6; // Look at upper body
+
+            this.webgl.camera.position.set(0, cameraHeight, cameraDistance);
+            this.webgl.camera.lookAt(0, cameraHeight * 0.8, 0);
+            console.log('📷 Camera positioned at:', this.webgl.camera.position.x.toFixed(2), this.webgl.camera.position.y.toFixed(2), this.webgl.camera.position.z.toFixed(2));
 
             // Set up animations if present
             if (gltf.animations && gltf.animations.length > 0) {
+              console.log('🎬 Found', gltf.animations.length, 'animations');
               this.webgl.mixer = new THREE.AnimationMixer(this.webgl.model);
               const action = this.webgl.mixer.clipAction(gltf.animations[0]);
               action.play();
+              console.log('▶️ Playing animation:', gltf.animations[0].name);
+            } else {
+              console.log('ℹ️ No animations in model');
             }
 
-            console.log(`✅ Model loaded: ${path}`);
+            // FORCE an immediate render to see if it works
+            if (this.webgl.renderer && this.webgl.scene && this.webgl.camera) {
+              this.webgl.renderer.render(this.webgl.scene, this.webgl.camera);
+              console.log('🎬 Forced initial render complete');
+            }
+
+            console.log(`✅ Model loaded and configured: ${path}`);
             resolve();
           },
           (progress) => {
-            const percent = (progress.loaded / progress.total * 100).toFixed(0);
-            console.log(`📦 Loading model: ${percent}%`);
+            if (progress.total > 0) {
+              const percent = (progress.loaded / progress.total * 100).toFixed(0);
+              console.log(`📦 Loading model: ${percent}%`);
+            } else {
+              console.log(`📦 Loading model: ${progress.loaded} bytes...`);
+            }
           },
           (error) => {
-            console.error('Model load error:', error);
+            console.error('❌ Model load error:', error);
             reject(error);
           }
         );
@@ -1296,15 +1344,25 @@
      * Start WebGL animation loop
      */
     startWebGLAnimation() {
+      console.log('🎬 startWebGLAnimation called');
+
       if (this.webgl.animationId) {
         cancelAnimationFrame(this.webgl.animationId);
       }
 
+      let frameCount = 0;
       const animate = () => {
         this.webgl.animationId = requestAnimationFrame(animate);
 
         if (!this.webgl.renderer || !this.webgl.scene || !this.webgl.camera) {
+          if (frameCount < 5) console.warn('⚠️ Animation loop: missing renderer/scene/camera');
           return;
+        }
+
+        // Log first few frames to confirm loop is running
+        frameCount++;
+        if (frameCount <= 3) {
+          console.log(`🔄 Animation frame ${frameCount} - scene children: ${this.webgl.scene.children.length}`);
         }
 
         // Update animation mixer
@@ -1316,10 +1374,13 @@
         // Gentle idle animation (subtle breathing/swaying)
         if (this.webgl.model) {
           const time = Date.now() * 0.001;
-          // Subtle vertical movement (breathing)
-          this.webgl.model.position.y += Math.sin(time * 2) * 0.0003;
+          // Subtle vertical movement (breathing) - store base Y to avoid drift
+          if (!this.webgl._baseY) {
+            this.webgl._baseY = this.webgl.model.position.y;
+          }
+          this.webgl.model.position.y = this.webgl._baseY + Math.sin(time * 2) * 0.01;
           // Very subtle rotation
-          this.webgl.model.rotation.y = Math.sin(time * 0.5) * 0.02;
+          this.webgl.model.rotation.y = Math.sin(time * 0.5) * 0.05;
         }
 
         // Render
@@ -1327,6 +1388,7 @@
       };
 
       animate();
+      console.log('✅ Animation loop started');
     }
 
     /**
