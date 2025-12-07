@@ -2,10 +2,10 @@
   "schema_version": "2.0",
   "schema_notes": "Enhanced with production_health and audit tracking - Version 2.0",
 
-  "last_updated": "2025-12-07T22:15:00Z",
+  "last_updated": "2025-12-07T23:30:00Z",
   "last_updated_by": "claude-code",
 
-  "session_number": 40,
+  "session_number": 41,
   "last_audit_date": "2025-12-07",
 
   "current_phase": "PHASE_5",
@@ -37,25 +37,25 @@
     "homepage_gate_score": "9/10"
   },
 
-  "blockers": [
+  "blockers": [],
+
+  "resolved_blockers": [
     {
       "id": "AVATAR_INIT_FAIL",
       "description": "AvatarManager initialization fails due to incorrect TTS path - shows error overlay instead of graceful fallback",
       "since": "Session 39",
-      "affected": ["classroom.html", "AvatarManager.js"],
-      "priority": "high",
-      "root_cause": "AvatarManager.js calls /tts instead of /api/v1/tts"
+      "resolved": "Session 41",
+      "resolution": "Fixed TTS path in AvatarManager.js (now uses window.CONFIG?.API_BASE_URL + /api/v1/tts). Also fixed tts.js and virtual-human-api.js. Graceful fallback already implemented.",
+      "affected": ["AvatarManager.js", "tts.js", "virtual-human-api.js"]
     },
     {
       "id": "AVATAR_SYSTEM_CONFLICT",
       "description": "Two competing avatar systems (AvatarManager vs GPUStreaming) both try to render to same container",
       "since": "Session 39",
-      "affected": ["AvatarManager.js", "gpu-streaming.js", "classroom.html"],
-      "priority": "medium"
-    }
-  ],
-
-  "resolved_blockers": [
+      "resolved": "Session 41",
+      "resolution": "Systems are now properly unified: AvatarManager handles TTS/audio only (canvasId: null, enabled: false in classroom), GPUStreaming handles all WebGL rendering. Graceful fallback chain: Premium → Standard → Free → Static with toast notifications instead of error overlays.",
+      "affected": ["AvatarManager.js", "gpu-streaming.js", "classroom.html"]
+    },
     {
       "id": "TTS_404",
       "description": "TTS API endpoint appeared to return 404",
@@ -91,7 +91,8 @@
   ],
 
   "notes": {
-    "current_focus": "Avatar UX fixes - then Phase 6 (Progress & Assessment Integration)",
+    "current_focus": "Phase 6 (Progress & Assessment Integration) - Avatar blockers RESOLVED",
+    "session_41_milestone": "Fixed TTS paths, unified avatar systems, verified graceful fallbacks",
     "session_40_milestone": "Production Audit - TTS confirmed working, handoffs archived",
     "session_38_39_milestone": "Digital Desk Backend + Frontend COMPLETE",
     "remaining_partial": "H7 language modal only",
@@ -99,6 +100,12 @@
   },
 
   "recent_changes": [
+    {
+      "session": 41,
+      "date": "2025-12-07",
+      "change": "Avatar UX Fixes COMPLETE",
+      "impact": "Fixed TTS paths in AvatarManager.js, tts.js, virtual-human-api.js. Verified avatar systems are properly unified (AvatarManager=TTS, GPUStreaming=rendering). Graceful fallbacks already in place with toast notifications. All blockers resolved."
+    },
     {
       "session": 40,
       "date": "2025-12-07",

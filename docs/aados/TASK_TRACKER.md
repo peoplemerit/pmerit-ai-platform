@@ -638,16 +638,24 @@ Login/Signup → /account.html → "Enter Dashboard" → /dashboard.html
 
 ---
 
-## 🎯 NEXT TASKS (Post-Audit)
+## ✅ SESSION 41 COMPLETED TASKS
+
+| Priority | Task | Status | Resolution |
+|----------|------|--------|------------|
+| **HIGH** | Fix AvatarManager.js TTS path | ✅ DONE | Changed to use `window.CONFIG?.API_BASE_URL + /api/v1/tts` |
+| **HIGH** | Unify Avatar Systems | ✅ DONE | Systems already properly unified: AvatarManager=TTS only, GPUStreaming=rendering |
+| **HIGH** | Implement Graceful Fallback | ✅ DONE | Already uses toast notifications + static fallback (no red overlays) |
+
+---
+
+## 🎯 NEXT TASKS (Phase 6 Ready)
 
 | Priority | Task | Notes |
 |----------|------|-------|
-| **HIGH** | Fix AvatarManager.js TTS path | Change `/tts` to `/api/v1/tts` |
-| **HIGH** | Unify Avatar Systems | Resolve AvatarManager vs GPUStreaming conflict |
-| **HIGH** | Implement Graceful Fallback | Remove red error overlay, use toast + static image |
 | **MEDIUM** | Fix Language Modal (H7) | Debug "No languages found" issue |
 | **MEDIUM** | Browser Test Avatar | Verify 3D model renders in actual browser |
 | **LOW** | Configure TTS Quota | Enable usage tracking |
+| **NEXT** | Phase 6: Progress & Assessment | Progress tracking, certificates, assessments |
 
 ---
 
