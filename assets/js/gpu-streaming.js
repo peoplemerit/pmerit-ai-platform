@@ -1031,8 +1031,6 @@
       // Use tier model if not specified
       const tierInfo = this.getTierInfo(this.state.currentTier);
       const path = modelPath || tierInfo?.model || TIERS.STANDARD.model;
-      console.log(`🎭 Model path resolved to: ${path}`);
-
       if (!path) {
         console.warn('No model path specified for WebGL avatar');
         return false;
@@ -1043,15 +1041,13 @@
         console.error('Three.js not loaded. Cannot render WebGL avatar.');
         return false;
       }
-      console.log('✅ Three.js is available');
 
       // Don't reload same model
       if (this.webgl.loadedModel === path && this.webgl.renderer) {
-        console.log('🎭 WebGL avatar already loaded:', path);
         return true;
       }
 
-      console.log('🎭 Loading WebGL 3D avatar:', path);
+      console.log('🎭 Loading 3D avatar:', path);
       this.webgl.isLoading = true;
 
       try {
@@ -1084,18 +1080,17 @@
         width = Math.max(width, 300);
         height = Math.max(height, 350);
 
-        console.log(`📐 WebGL canvas dimensions: ${width}x${height}`);
+        // Canvas dimensions set
 
-        // Create scene
+        // Create scene with transparent background (shows avatar-frame gradient)
         this.webgl.scene = new THREE.Scene();
-        // DEBUG: Use bright color to confirm scene renders
-        this.webgl.scene.background = new THREE.Color(0x2a5b8c); // Visible blue background
+        // Transparent background - let CSS gradient show through
+        this.webgl.scene.background = null;
 
-        // Create camera - will reposition after model loads
-        this.webgl.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-        // Start with a default position, will adjust after model loads
-        this.webgl.camera.position.set(0, 1, 3);
-        this.webgl.camera.lookAt(0, 0.5, 0);
+        // Create camera - will reposition after model loads for waist-up framing
+        this.webgl.camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
+        this.webgl.camera.position.set(0, 1.4, 2.5);
+        this.webgl.camera.lookAt(0, 1.2, 0);
 
         // Find the avatar-stage container (or fall back to avatar-frame)
         const avatarStage = container.querySelector('.avatar-stage');
@@ -1104,19 +1099,18 @@
         // Remove any existing vh-canvas to prevent conflicts
         const existingCanvas = canvasContainer.querySelector('canvas#vh-canvas');
         if (existingCanvas) {
-          console.log('🧹 Removing existing canvas before creating new WebGL renderer');
           existingCanvas.remove();
         }
 
-        // Create new WebGL renderer (creates its own canvas)
+        // Create new WebGL renderer with transparency
         this.webgl.renderer = new THREE.WebGLRenderer({
           antialias: true,
-          alpha: false, // DEBUG: Disable alpha to see background color
+          alpha: true, // Enable transparency for CSS background to show
           powerPreference: 'high-performance'
         });
 
-        // DEBUG: Set clear color to ensure we see something
-        this.webgl.renderer.setClearColor(0x2a5b8c, 1);
+        // Transparent clear color
+        this.webgl.renderer.setClearColor(0x000000, 0);
 
         // Get the canvas element from the renderer
         const canvas = this.webgl.renderer.domElement;
@@ -1138,14 +1132,11 @@
         canvas.width = width;
         canvas.height = height;
 
-        // CRITICAL: Append canvas to the container
+        // Append canvas to the container
         canvasContainer.appendChild(canvas);
-        console.log(`🎭 WebGL canvas created and attached to ${canvasContainer.className || 'container'} (${width}x${height}px)`);
-        console.log(`📍 Canvas parent: ${canvas.parentElement?.id || canvas.parentElement?.className || 'none'}`);
 
         // Verify canvas is in DOM
         if (!canvas.parentElement) {
-          console.error('❌ Canvas failed to attach to DOM!');
           throw new Error('Canvas not attached to DOM');
         }
 
@@ -1230,98 +1221,79 @@
      * @returns {Promise<void>}
      */
     async loadGLBModel(path) {
-      console.log(`🔄 loadGLBModel called with path: ${path}`);
 
       return new Promise((resolve, reject) => {
         // Check for GLTFLoader
         if (typeof THREE.GLTFLoader === 'undefined') {
-          console.error('❌ THREE.GLTFLoader is undefined!');
           reject(new Error('GLTFLoader not available'));
           return;
         }
 
-        console.log('✅ GLTFLoader is available');
         const loader = new THREE.GLTFLoader();
 
         // Add loading progress
         loader.load(
           path,
           (gltf) => {
-            console.log('📦 GLTF loaded, processing model...');
             this.webgl.model = gltf.scene;
 
-            // DEBUG: Log raw model info
+            // Calculate model bounds
             const rawBox = new THREE.Box3().setFromObject(this.webgl.model);
             const rawSize = rawBox.getSize(new THREE.Vector3());
-            const rawCenter = rawBox.getCenter(new THREE.Vector3());
-            console.log('📏 RAW model size:', rawSize.x.toFixed(2), rawSize.y.toFixed(2), rawSize.z.toFixed(2));
-            console.log('📍 RAW model center:', rawCenter.x.toFixed(2), rawCenter.y.toFixed(2), rawCenter.z.toFixed(2));
-            console.log('📍 RAW model min Y:', rawBox.min.y.toFixed(2));
 
-            // Scale to fit ~1.8m height (if model isn't already roughly that size)
+            // Scale to fit ~1.8m height
             const targetHeight = 1.8;
             let scale = 1;
-            if (rawSize.y > 0.01) { // Avoid division by zero
+            if (rawSize.y > 0.01) {
               scale = targetHeight / rawSize.y;
             }
-            console.log('📐 Applying scale:', scale.toFixed(4));
             this.webgl.model.scale.setScalar(scale);
 
             // Recalculate bounds after scaling
             const box = new THREE.Box3().setFromObject(this.webgl.model);
             const center = box.getCenter(new THREE.Vector3());
             const size = box.getSize(new THREE.Vector3());
-            console.log('📏 SCALED model size:', size.x.toFixed(2), size.y.toFixed(2), size.z.toFixed(2));
 
             // Center horizontally, place feet at y=0
             this.webgl.model.position.x = -center.x;
             this.webgl.model.position.y = -box.min.y;
             this.webgl.model.position.z = -center.z;
-            console.log('📍 Model position set to:', this.webgl.model.position.x.toFixed(2), this.webgl.model.position.y.toFixed(2), this.webgl.model.position.z.toFixed(2));
 
-            // Enable shadows and count meshes
-            let meshCount = 0;
+            // Enable shadows
             this.webgl.model.traverse((child) => {
               if (child.isMesh) {
-                meshCount++;
                 child.castShadow = true;
                 child.receiveShadow = true;
               }
             });
-            console.log('🔷 Model contains', meshCount, 'meshes');
 
             // Add to scene
             this.webgl.scene.add(this.webgl.model);
-            console.log('✅ Model added to scene. Scene children:', this.webgl.scene.children.length);
 
-            // CRITICAL: Position camera to see the model
-            // Camera should look at model center, positioned in front
-            const modelHeight = size.y;
-            const cameraDistance = Math.max(size.z * 2.5, 2.5); // At least 2.5 units away
-            const cameraHeight = modelHeight * 0.6; // Look at upper body
+            // Position camera for waist-up "video call" framing
+            // Camera looks at upper body (chest/face area)
+            const waistY = size.y * 0.55; // Waist level
+            const headY = size.y * 0.9;   // Head level
+            const lookAtY = (waistY + headY) / 2; // Look at chest/neck area
+            const cameraDistance = size.y * 0.9; // Closer for waist-up view
 
-            this.webgl.camera.position.set(0, cameraHeight, cameraDistance);
-            this.webgl.camera.lookAt(0, cameraHeight * 0.8, 0);
-            console.log('📷 Camera positioned at:', this.webgl.camera.position.x.toFixed(2), this.webgl.camera.position.y.toFixed(2), this.webgl.camera.position.z.toFixed(2));
+            this.webgl.camera.position.set(0, lookAtY, cameraDistance);
+            this.webgl.camera.lookAt(0, lookAtY, 0);
 
             // Set up animations if present
             if (gltf.animations && gltf.animations.length > 0) {
-              console.log('🎬 Found', gltf.animations.length, 'animations');
+              console.log(`🎬 Playing animation: ${gltf.animations[0].name || 'default'}`);
               this.webgl.mixer = new THREE.AnimationMixer(this.webgl.model);
               const action = this.webgl.mixer.clipAction(gltf.animations[0]);
               action.play();
-              console.log('▶️ Playing animation:', gltf.animations[0].name);
-            } else {
-              console.log('ℹ️ No animations in model');
             }
 
-            // FORCE an immediate render to see if it works
+            // Force initial render
             if (this.webgl.renderer && this.webgl.scene && this.webgl.camera) {
               this.webgl.renderer.render(this.webgl.scene, this.webgl.camera);
-              console.log('🎬 Forced initial render complete');
             }
 
-            console.log(`✅ Model loaded and configured: ${path}`);
+            console.log(`✅ 3D avatar loaded: ${path}`);
             resolve();
           },
           (progress) => {
@@ -1344,51 +1316,41 @@
      * Start WebGL animation loop
      */
     startWebGLAnimation() {
-      console.log('🎬 startWebGLAnimation called');
-
       if (this.webgl.animationId) {
         cancelAnimationFrame(this.webgl.animationId);
       }
 
-      let frameCount = 0;
       const animate = () => {
         this.webgl.animationId = requestAnimationFrame(animate);
 
         if (!this.webgl.renderer || !this.webgl.scene || !this.webgl.camera) {
-          if (frameCount < 5) console.warn('⚠️ Animation loop: missing renderer/scene/camera');
           return;
         }
 
-        // Log first few frames to confirm loop is running
-        frameCount++;
-        if (frameCount <= 3) {
-          console.log(`🔄 Animation frame ${frameCount} - scene children: ${this.webgl.scene.children.length}`);
-        }
-
-        // Update animation mixer
+        // Update animation mixer (plays GLB animations)
         if (this.webgl.mixer && this.webgl.clock) {
           const delta = this.webgl.clock.getDelta();
           this.webgl.mixer.update(delta);
         }
 
-        // Gentle idle animation (subtle breathing/swaying)
-        if (this.webgl.model) {
+        // Subtle idle animation (breathing/swaying) when no GLB animation
+        if (this.webgl.model && !this.webgl.mixer) {
           const time = Date.now() * 0.001;
-          // Subtle vertical movement (breathing) - store base Y to avoid drift
-          if (!this.webgl._baseY) {
+          // Store base Y to avoid drift
+          if (this.webgl._baseY === undefined) {
             this.webgl._baseY = this.webgl.model.position.y;
           }
-          this.webgl.model.position.y = this.webgl._baseY + Math.sin(time * 2) * 0.01;
-          // Very subtle rotation
-          this.webgl.model.rotation.y = Math.sin(time * 0.5) * 0.05;
+          // Subtle breathing motion
+          this.webgl.model.position.y = this.webgl._baseY + Math.sin(time * 2) * 0.005;
+          // Very subtle sway
+          this.webgl.model.rotation.y = Math.sin(time * 0.5) * 0.02;
         }
 
-        // Render
+        // Render frame
         this.webgl.renderer.render(this.webgl.scene, this.webgl.camera);
       };
 
       animate();
-      console.log('✅ Animation loop started');
     }
 
     /**
