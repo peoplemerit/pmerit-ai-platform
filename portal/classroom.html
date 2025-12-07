@@ -840,6 +840,15 @@
             console.log(`Session cost: $${(costCents / 100).toFixed(2)}`);
           });
 
+          // Start streaming to load the avatar
+          // Check if VH is enabled before starting
+          const vhEnabled = localStorage.getItem('pmerit_vh_enabled') !== 'false';
+          if (vhEnabled) {
+            console.log('🎬 Starting avatar streaming...');
+            await gpuStreaming.startStreaming();
+            updateVHStatus('Virtual Human is ready');
+          }
+
           return gpuStreaming;
         } catch (error) {
           console.error('Failed to initialize GPU streaming:', error);
@@ -1092,7 +1101,7 @@
       }
 
       // Toggle Virtual Human
-      function toggleVirtualHuman() {
+      async function toggleVirtualHuman() {
         const currentlyEnabled = !dom.vhToggle.classList.contains('off');
         const newState = !currentlyEnabled;
 
@@ -1124,14 +1133,24 @@
             }
           }
 
-          // Also init GPU streaming if available and not already initialized
-          if (!state.gpuStreaming && window.GPUStreaming) {
-            initGPUStreaming();
+          // Also init/start GPU streaming if available
+          if (window.GPUStreaming) {
+            if (!state.gpuStreaming) {
+              state.gpuStreaming = await initGPUStreaming();
+            } else {
+              // GPUStreaming exists but may not be streaming
+              console.log('🎬 Starting avatar streaming...');
+              await state.gpuStreaming.startStreaming();
+              updateVHStatus('Virtual Human is ready');
+            }
           }
         } else {
-          // Turning OFF - hide VH
+          // Turning OFF - hide VH and stop streaming
           dom.vhContainer.classList.add('audio-only');
           updateVHStatus('Virtual Human disabled');
+          if (state.gpuStreaming) {
+            state.gpuStreaming.stopStreaming();
+          }
         }
       }
 
