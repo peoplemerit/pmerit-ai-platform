@@ -1091,47 +1091,53 @@
         this.webgl.camera.position.set(0, 1.4, 2.5);
         this.webgl.camera.lookAt(0, 1.2, 0);
 
-        // Try to use existing #vh-canvas if available (inside avatar-stage), otherwise create new
+        // Find the avatar-stage container (or fall back to avatar-frame)
         const avatarStage = container.querySelector('.avatar-stage');
         const canvasContainer = avatarStage || container;
-        let existingCanvas = canvasContainer.querySelector('canvas#vh-canvas');
 
+        // Remove any existing vh-canvas to prevent conflicts
+        const existingCanvas = canvasContainer.querySelector('canvas#vh-canvas');
         if (existingCanvas) {
-          // IMPORTANT: Set canvas pixel dimensions explicitly
-          // CSS width/height (100%) only controls display size, not render buffer
-          existingCanvas.width = width;
-          existingCanvas.height = height;
+          console.log('🧹 Removing existing canvas before creating new WebGL renderer');
+          existingCanvas.remove();
+        }
 
-          // Use existing canvas
-          this.webgl.renderer = new THREE.WebGLRenderer({
-            canvas: existingCanvas,
-            antialias: true,
-            alpha: true,
-            powerPreference: 'high-performance'
-          });
-          console.log(`🎭 Using existing #vh-canvas for WebGL rendering (${width}x${height}px)`);
-        } else {
-          // Create new renderer (canvas will be auto-created)
-          this.webgl.renderer = new THREE.WebGLRenderer({
-            antialias: true,
-            alpha: true,
-            powerPreference: 'high-performance'
-          });
+        // Create new WebGL renderer (creates its own canvas)
+        this.webgl.renderer = new THREE.WebGLRenderer({
+          antialias: true,
+          alpha: true,
+          powerPreference: 'high-performance'
+        });
 
-          // Style the new canvas
-          this.webgl.renderer.domElement.style.cssText = `
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 18px;
-            z-index: 1;
-          `;
+        // Get the canvas element from the renderer
+        const canvas = this.webgl.renderer.domElement;
 
-          // Add to avatar-stage if it exists, otherwise to container
-          canvasContainer.appendChild(this.webgl.renderer.domElement);
-          console.log('🎭 Created new canvas for WebGL rendering');
+        // Set canvas ID and styling
+        canvas.id = 'vh-canvas';
+        canvas.style.cssText = `
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          border-radius: 18px;
+          z-index: 10;
+          display: block;
+        `;
+
+        // Set pixel dimensions for WebGL rendering
+        canvas.width = width;
+        canvas.height = height;
+
+        // CRITICAL: Append canvas to the container
+        canvasContainer.appendChild(canvas);
+        console.log(`🎭 WebGL canvas created and attached to ${canvasContainer.className || 'container'} (${width}x${height}px)`);
+        console.log(`📍 Canvas parent: ${canvas.parentElement?.id || canvas.parentElement?.className || 'none'}`);
+
+        // Verify canvas is in DOM
+        if (!canvas.parentElement) {
+          console.error('❌ Canvas failed to attach to DOM!');
+          throw new Error('Canvas not attached to DOM');
         }
 
         this.webgl.renderer.setSize(width, height);
