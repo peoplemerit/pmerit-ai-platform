@@ -16,9 +16,9 @@
 .avatar-frame {
   position: relative;
   width: 100%;
-  max-width: 280px;
-  aspect-ratio: 9 / 16;
-  border-radius: 20px;
+  height: 100%;
+  max-width: 100%; /* Fill vh-root container */
+  border-radius: 12px;
   overflow: hidden;
   background: linear-gradient(180deg,
     rgba(42, 91, 140, 0.1) 0%,

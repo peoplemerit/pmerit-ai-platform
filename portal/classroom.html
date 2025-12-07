@@ -740,23 +740,22 @@
       }
 
       // Initialize Avatar Manager
+      // NOTE: In classroom, GPUStreaming handles WebGL rendering.
+      // AvatarManager is only used for TTS/audio, NOT for canvas rendering.
       async function initAvatarManager(enabled) {
         try {
           if (!window.AvatarManager) {
-            console.warn('AvatarManager not loaded - using fallback');
-            // Show fallback avatar silently (not an error)
-            if (dom.avatarFallback) {
-              dom.avatarFallback.style.display = 'flex';
-            }
-            setAvatarTier('fallback');
-            updateVHStatus('Ready (basic mode)');
+            console.warn('AvatarManager not loaded - using GPUStreaming only');
+            updateVHStatus('Virtual Human is ready');
             return;
           }
 
+          // Create AvatarManager but DISABLE its WebGL provider
+          // (GPUStreaming handles all canvas rendering)
           state.avatarManager = new window.AvatarManager({
-            canvasId: 'vh-canvas',
+            canvasId: null, // Don't use canvas - GPUStreaming handles it
             captionsId: 'vh-captions',
-            enabled: enabled,
+            enabled: false, // Disable WebGL provider
             apiBaseUrl: window.CONFIG?.API_BASE_URL || 'https://pmerit-api-worker.peoplemerit.workers.dev',
             onSpeakStart: () => {
               dom.vhContainer.classList.add('speaking');
@@ -766,47 +765,17 @@
               dom.vhContainer.classList.remove('speaking');
               dom.avatarFrame?.classList.remove('speaking');
             },
-            onListenStart: () => {
-              dom.avatarFrame?.classList.add('listening');
-            },
-            onListenEnd: () => {
-              dom.avatarFrame?.classList.remove('listening');
-            },
-            onProcessing: (isProcessing) => {
-              if (isProcessing) {
-                dom.avatarFrame?.classList.add('processing');
-              } else {
-                dom.avatarFrame?.classList.remove('processing');
-              }
-            },
-            // Don't use onError for initialization issues - handle gracefully
             onError: null
           });
 
+          // Initialize for TTS only (no WebGL)
+          await state.avatarManager.init();
+          console.log('AvatarManager initialized for TTS only (GPUStreaming handles rendering)');
+
           if (enabled) {
-            dom.vhContainer.classList.add('loading');
-            dom.avatarFrame?.classList.add('processing');
-            updateVHStatus('Initializing...');
-
-            await state.avatarManager.init();
-
-            dom.vhContainer.classList.remove('loading');
-            dom.avatarFrame?.classList.remove('processing');
-
-            // Check if we have a provider (WebGL) or are in audio-only mode
-            if (state.avatarManager.state?.provider) {
-              // Full avatar mode
-              const userTier = getUserTier();
-              setAvatarTier(userTier);
-              updateVHStatus('Virtual Human is ready');
-            } else {
-              // Audio-only mode (graceful degradation)
-              setAvatarTier('fallback');
-              updateVHStatus('Ready (audio mode)');
-              if (dom.avatarFallback) {
-                dom.avatarFallback.style.display = 'flex';
-              }
-            }
+            updateVHStatus('Virtual Human is ready');
+            const userTier = getUserTier();
+            setAvatarTier(userTier);
           } else {
             dom.vhContainer.classList.add('audio-only');
             setAvatarTier('fallback');
@@ -814,12 +783,7 @@
           }
         } catch (error) {
           console.warn('Avatar init graceful fallback:', error.message);
-          // Graceful fallback - don't show scary errors
-          setAvatarTier('fallback');
           updateVHStatus('Ready (basic mode)');
-          if (dom.avatarFallback) {
-            dom.avatarFallback.style.display = 'flex';
-          }
         }
       }
 

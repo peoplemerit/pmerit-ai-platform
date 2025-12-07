@@ -4,9 +4,9 @@
  */
 
 :root {
-  /* VH container dimensions */
-  --vh-container-max-width: 820px;
-  --vh-container-height: 420px;
+  /* VH container dimensions - constrained to not break layout */
+  --vh-container-max-width: 400px;
+  --vh-container-height: 380px;
 }
 
 /* VH Root Container - Pinned viewport at top of center panel */
@@ -15,7 +15,7 @@
   width: 100%;
   max-width: var(--vh-container-max-width);
   height: var(--vh-container-height);  /* finite height so chat below is visible */
-  margin: 0 auto;
+  margin: 0 auto 1rem auto;
   overflow: hidden;
   border-radius: 12px;
   background: #1f2630;
