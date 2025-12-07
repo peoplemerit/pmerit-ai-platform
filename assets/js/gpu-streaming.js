@@ -169,7 +169,7 @@
           const connection = navigator.connection;
           if (connection.downlink) {
             this.state.bandwidth = connection.downlink; // Already in Mbps
-            this.selectTierForBandwidth(this.state.bandwidth);
+            await this.selectTierForBandwidth(this.state.bandwidth);
             return this.state.bandwidth;
           }
         }
@@ -186,7 +186,7 @@
         if (!response.ok) {
           // Fallback to default moderate bandwidth
           this.state.bandwidth = 10;
-          this.selectTierForBandwidth(this.state.bandwidth);
+          await this.selectTierForBandwidth(this.state.bandwidth);
           return this.state.bandwidth;
         }
 
@@ -199,7 +199,7 @@
         const mbps = bps / 1000000;
 
         this.state.bandwidth = mbps;
-        this.selectTierForBandwidth(mbps);
+        await this.selectTierForBandwidth(mbps);
 
         return mbps;
 
@@ -207,7 +207,7 @@
         console.warn('Bandwidth detection failed:', error);
         // Default to standard tier bandwidth
         this.state.bandwidth = 10;
-        this.selectTierForBandwidth(10);
+        await this.selectTierForBandwidth(10);
         return 10;
       }
     }
@@ -217,7 +217,7 @@
      * @param {number} mbps - Bandwidth in Mbps
      * @returns {string} Selected tier name
      */
-    selectTierForBandwidth(mbps) {
+    async selectTierForBandwidth(mbps) {
       let selectedTier = 'free';
 
       if (mbps >= TIERS.PREMIUM.minBandwidth) {
@@ -234,6 +234,17 @@
       if (previousTier !== selectedTier) {
         this.updateAvatarFrameTier(selectedTier);
         this.emitTierChange(selectedTier, previousTier);
+      }
+
+      // Auto-load WebGL avatar for standard tier
+      if (selectedTier === 'standard' && this.avatarFrame) {
+        // Wait a frame for container to be visible and sized
+        await new Promise(resolve => requestAnimationFrame(resolve));
+        const tierInfo = this.getTierInfo('standard');
+        if (tierInfo.model) {
+          console.log('🎭 Auto-loading WebGL avatar for standard tier...');
+          await this.loadWebGLAvatar(tierInfo.model);
+        }
       }
 
       return selectedTier;
