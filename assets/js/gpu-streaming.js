@@ -1240,7 +1240,7 @@
         // Add loading progress
         loader.load(
           path,
-          (gltf) => {
+          async (gltf) => {
             this.webgl.model = gltf.scene;
 
             // Calculate model bounds
@@ -1269,21 +1269,49 @@
             const textureLoader = new THREE.TextureLoader();
             const texturePath = '/assets/avatars/';
 
-            // Load PBR texture maps
-            const colorMap = textureLoader.load(texturePath + 'Humano_Rig_064-4893_Color01_1K.jpg');
-            const normalMap = textureLoader.load(texturePath + 'Humano_Rig_064-4893_Normal-LOD3_1K.jpg');
-            const roughnessMap = textureLoader.load(texturePath + 'Humano_Rig_064-4893_Roughness_1K.jpg');
-            const aoMap = textureLoader.load(texturePath + 'Humano_Rig_064-4893_AO_1K.jpg');
+            // Helper to load texture with promise and logging
+            const loadTexture = (filename) => new Promise((resolve) => {
+              const url = texturePath + filename;
+              textureLoader.load(
+                url,
+                (tex) => {
+                  console.log('✅ Texture loaded:', filename, tex.image?.width + 'x' + tex.image?.height);
+                  resolve(tex);
+                },
+                undefined,
+                (err) => {
+                  console.warn('⚠️ Texture failed to load:', filename, err?.message || err);
+                  resolve(null); // Continue without this texture
+                }
+              );
+            });
+
+            console.log('📷 Loading avatar textures from:', texturePath);
+
+            // Load all textures in parallel (wait for them to actually load)
+            const [colorMap, normalMap, roughnessMap, aoMap] = await Promise.all([
+              loadTexture('Humano_Rig_064-4893_Color01_1K.jpg'),
+              loadTexture('Humano_Rig_064-4893_Normal-LOD3_1K.jpg'),
+              loadTexture('Humano_Rig_064-4893_Roughness_1K.jpg'),
+              loadTexture('Humano_Rig_064-4893_AO_1K.jpg'),
+            ]);
 
             // Configure textures for GLB/glTF compatibility
-            [colorMap, normalMap, roughnessMap, aoMap].forEach(tex => {
+            [colorMap, normalMap, roughnessMap, aoMap].filter(Boolean).forEach(tex => {
               tex.flipY = false; // GLB models need flipY = false
             });
 
             // Set color space for accurate color display
-            colorMap.encoding = THREE.sRGBEncoding;
+            if (colorMap) {
+              colorMap.encoding = THREE.sRGBEncoding;
+            }
 
-            console.log('📷 Loading avatar textures from:', texturePath);
+            console.log('🖼️ Texture load results:', {
+              color: colorMap ? 'OK' : 'FAILED',
+              normal: normalMap ? 'OK' : 'FAILED',
+              roughness: roughnessMap ? 'OK' : 'FAILED',
+              ao: aoMap ? 'OK' : 'FAILED'
+            });
 
             // Apply textures and enable shadows (preserve existing material properties)
             this.webgl.model.traverse((child) => {
@@ -1296,10 +1324,11 @@
 
                 // Update existing material's texture maps (preserves skinning/morphing)
                 if (child.material) {
-                  child.material.map = colorMap;
-                  child.material.normalMap = normalMap;
-                  child.material.roughnessMap = roughnessMap;
-                  child.material.aoMap = aoMap;
+                  // Only apply textures that successfully loaded
+                  if (colorMap) child.material.map = colorMap;
+                  if (normalMap) child.material.normalMap = normalMap;
+                  if (roughnessMap) child.material.roughnessMap = roughnessMap;
+                  if (aoMap) child.material.aoMap = aoMap;
                   child.material.roughness = 0.8;
                   child.material.metalness = 0.0; // Skin/fabric are non-metallic
                   child.material.envMapIntensity = 0.3;
