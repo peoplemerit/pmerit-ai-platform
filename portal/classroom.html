@@ -26,6 +26,9 @@
   <link rel="stylesheet" href="../assets/css/components.css">
   <link rel="stylesheet" href="../assets/css/avatar.css">
   <link rel="stylesheet" href="../assets/css/virtual-human-overlay.css">
+  <!-- Digital Desk Redesign -->
+  <link rel="stylesheet" href="../assets/css/avatar-frame.css">
+  <link rel="stylesheet" href="../assets/css/proctor-mode.css">
   
   <!-- Three.js for WebGL avatar - loaded synchronously before app scripts -->
   <script 
@@ -256,6 +259,13 @@
   <!-- Portal Header -->
   <header class="portal-header">
     <h1><i class="fas fa-chalkboard-teacher"></i> PMERIT Classroom</h1>
+
+    <!-- Proctor Status Indicator (Center) -->
+    <div class="proctor-status off" id="proctor-status">
+      <span class="status-dot"></span>
+      <span class="status-text">Proctor: Off</span>
+    </div>
+
     <nav class="portal-nav">
       <a href="../dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
       <a href="../courses.html"><i class="fas fa-book"></i> Courses</a>
@@ -295,10 +305,58 @@
         </label>
       </div>
 
-      <!-- Virtual Human Viewport (Hidden by default) -->
+      <!-- Virtual Human Viewport - "Hologram Frame" Design -->
       <div id="vh-root" class="vh-root is-hidden" hidden aria-hidden="true">
-        <canvas id="vh-canvas"></canvas>
-        <div id="vh-captions" aria-live="polite"></div>
+        <!-- Avatar Frame Container (Tiered styling applied via JS) -->
+        <div class="avatar-frame tier-standard" id="avatar-frame">
+          <!-- Live Badge (Premium only) -->
+          <div class="avatar-live-badge" id="avatar-live-badge" style="display: none;">
+            <span class="live-dot"></span>
+            <span>LIVE</span>
+          </div>
+
+          <!-- Avatar Stage (Canvas/Image renders here) -->
+          <div class="avatar-stage">
+            <canvas id="vh-canvas"></canvas>
+            <!-- Fallback static avatar -->
+            <div class="avatar-static" id="avatar-fallback" style="display: none;">
+              <i class="fas fa-user-graduate"></i>
+            </div>
+            <!-- State indicator ring -->
+            <div class="state-indicator"></div>
+          </div>
+
+          <!-- Captions overlay -->
+          <div class="avatar-captions" id="vh-captions" aria-live="polite"></div>
+
+          <!-- Quick Actions Drawer -->
+          <div class="avatar-quick-actions" id="avatar-actions">
+            <div class="drawer-handle"></div>
+            <button class="quick-action-btn primary" id="qa-raise-hand">
+              <i class="fas fa-hand-paper"></i> Raise Hand
+            </button>
+            <button class="quick-action-btn" id="qa-submit-work">
+              <i class="fas fa-file-upload"></i> Submit Work
+            </button>
+            <button class="quick-action-btn" id="qa-ask-hint">
+              <i class="fas fa-lightbulb"></i> Ask for Hint
+            </button>
+          </div>
+
+          <!-- Assignment Drop Zone (Drag & Drop) -->
+          <div class="avatar-drop-zone" id="avatar-drop-zone">
+            <div class="drop-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+            <div class="drop-text">Drop assignment here<br><small>to submit to your tutor</small></div>
+          </div>
+
+          <!-- Bandwidth Toggle -->
+          <div class="bandwidth-toggle" id="bandwidth-toggle" title="Toggle quality">
+            <i class="toggle-icon fas fa-signal"></i>
+            <span>HD</span>
+          </div>
+        </div>
+
+        <!-- Status Badge (Below frame) -->
         <div class="vh-status-badge">
           <span id="vh-status-text">Virtual Human is loading...</span>
         </div>
@@ -419,7 +477,17 @@
         progressBar: document.getElementById('progress-bar'),
         progressPercent: document.getElementById('progress-percent'),
         statHandRaises: document.getElementById('stat-hand-raises'),
-        statQuestions: document.getElementById('stat-questions')
+        statQuestions: document.getElementById('stat-questions'),
+        // Avatar frame elements (Digital Desk)
+        avatarFrame: document.getElementById('avatar-frame'),
+        avatarDropZone: document.getElementById('avatar-drop-zone'),
+        avatarLiveBadge: document.getElementById('avatar-live-badge'),
+        avatarFallback: document.getElementById('avatar-fallback'),
+        bandwidthToggle: document.getElementById('bandwidth-toggle'),
+        qaRaiseHand: document.getElementById('qa-raise-hand'),
+        qaSubmitWork: document.getElementById('qa-submit-work'),
+        qaAskHint: document.getElementById('qa-ask-hint'),
+        proctorStatus: document.getElementById('proctor-status')
       };
 
       // Initialize
@@ -634,6 +702,11 @@
         try {
           if (!window.AvatarManager) {
             console.warn('AvatarManager not loaded');
+            // Show fallback avatar
+            if (dom.avatarFallback) {
+              dom.avatarFallback.style.display = 'flex';
+              setAvatarTier('fallback');
+            }
             return;
           }
 
@@ -644,9 +717,24 @@
             apiBaseUrl: window.CONFIG?.API_BASE_URL,
             onSpeakStart: () => {
               dom.vhContainer.classList.add('speaking');
+              dom.avatarFrame?.classList.add('speaking');
             },
             onSpeakEnd: () => {
               dom.vhContainer.classList.remove('speaking');
+              dom.avatarFrame?.classList.remove('speaking');
+            },
+            onListenStart: () => {
+              dom.avatarFrame?.classList.add('listening');
+            },
+            onListenEnd: () => {
+              dom.avatarFrame?.classList.remove('listening');
+            },
+            onProcessing: (isProcessing) => {
+              if (isProcessing) {
+                dom.avatarFrame?.classList.add('processing');
+              } else {
+                dom.avatarFrame?.classList.remove('processing');
+              }
             },
             onError: (error) => {
               console.error('Avatar error:', error);
@@ -656,15 +744,31 @@
 
           if (enabled) {
             dom.vhContainer.classList.add('loading');
+            dom.avatarFrame?.classList.add('processing');
             await state.avatarManager.init();
             dom.vhContainer.classList.remove('loading');
+            dom.avatarFrame?.classList.remove('processing');
+
+            // Set tier based on user subscription (default to standard)
+            const userTier = getUserTier();
+            setAvatarTier(userTier);
           } else {
             dom.vhContainer.classList.add('audio-only');
+            setAvatarTier('fallback');
           }
         } catch (error) {
           console.error('Failed to initialize avatar:', error);
           showAvatarError(error);
+          setAvatarTier('fallback');
         }
+      }
+
+      // Get user subscription tier
+      function getUserTier() {
+        // Check user subscription from localStorage or API
+        const user = window.AUTH?.getCurrentUser();
+        const tier = user?.subscription_tier || localStorage.getItem('pmerit_user_tier') || 'standard';
+        return tier; // 'premium', 'standard', 'free', or 'fallback'
       }
 
       // Bind event handlers
