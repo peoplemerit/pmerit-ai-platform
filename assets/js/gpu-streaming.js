@@ -1285,37 +1285,35 @@
 
             console.log('📷 Loading avatar textures from:', texturePath);
 
-            // Apply textures and enable shadows
+            // Apply textures and enable shadows (preserve existing material properties)
             this.webgl.model.traverse((child) => {
               if (child.isMesh) {
                 child.castShadow = true;
                 child.receiveShadow = true;
 
-                console.log('🎨 Applying textures to mesh:', child.name);
+                const isSkinnedMesh = child.isSkinnedMesh;
+                console.log('🎨 Applying textures to mesh:', child.name, isSkinnedMesh ? '(skinned)' : '');
 
-                // Create PBR material with loaded textures
-                const pbrMaterial = new THREE.MeshStandardMaterial({
-                  map: colorMap,
-                  normalMap: normalMap,
-                  roughnessMap: roughnessMap,
-                  aoMap: aoMap,
-                  roughness: 0.8,
-                  metalness: 0.0, // Skin/fabric are non-metallic
-                  envMapIntensity: 0.3,
-                });
+                // Update existing material's texture maps (preserves skinning/morphing)
+                if (child.material) {
+                  child.material.map = colorMap;
+                  child.material.normalMap = normalMap;
+                  child.material.roughnessMap = roughnessMap;
+                  child.material.aoMap = aoMap;
+                  child.material.roughness = 0.8;
+                  child.material.metalness = 0.0; // Skin/fabric are non-metallic
+                  child.material.envMapIntensity = 0.3;
+                  child.material.needsUpdate = true;
+                }
 
                 // Copy UV coordinates to UV2 for ambient occlusion map
                 if (child.geometry && child.geometry.attributes.uv && !child.geometry.attributes.uv2) {
                   child.geometry.setAttribute('uv2', child.geometry.attributes.uv);
                 }
-
-                // Apply the new material
-                child.material = pbrMaterial;
-                child.material.needsUpdate = true;
               }
             });
 
-            console.log('✅ Avatar textures applied');
+            console.log('✅ Avatar textures applied (skinning preserved)');
 
             // Add to scene
             this.webgl.scene.add(this.webgl.model);
