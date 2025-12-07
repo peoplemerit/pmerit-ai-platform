@@ -1,7 +1,7 @@
 # PMERIT Project Document
 
-**Version:** 2.1
-**Last Updated:** December 6, 2025
+**Version:** 2.2
+**Last Updated:** December 7, 2025
 **Status:** Active Development
 **Document Purpose:** Master source of truth for PMERIT platform — roadmap, decisions, and task tracking
 
@@ -178,11 +178,29 @@ PMERIT serves three distinct learner populations:
 | **Hosting** | Cloudflare Pages | Static frontend, global CDN |
 | **API** | Cloudflare Workers | Backend logic, API routing |
 | **Storage** | Cloudflare R2 | Asset storage, RAG data |
-| **Database** | Neon DB (Postgres + pgvector) | Serverless, auto-pause |
+| **Database** | Neon DB (Postgres + pgvector) | Serverless, auto-pause, 82+ tables |
 | **AI (Edge)** | Cloudflare Workers AI | Embedding, basic queries |
 | **AI (Premium)** | OpenAI/Claude API | Complex tutoring |
 | **Email** | Resend | Transactional emails (verification, password reset) |
-| **GPU (On-Demand)** | RunPod/Lambda Labs | Unreal Virtual Human |
+| **GPU (On-Demand)** | DigitalOcean GPU Droplets | Unreal MetaHuman streaming |
+
+### Digital Desk (Virtual Classroom Enhancement) Stack
+
+| Component | Technology | Purpose |
+|-----------|------------|---------|
+| **Proctor Controller** | JavaScript (proctor-controller.js, 1200 lines) | Exam session management, violation detection, timer |
+| **Vision AI** | TensorFlow.js + MediaPipe FaceMesh | Face detection, gaze tracking, privacy controls |
+| **GPU Streaming** | WebRTC + Pixel Streaming | Tiered avatar rendering (Free/Standard/Premium) |
+| **Avatar Rendering** | CSS/SVG (Free), WebGL (Standard), Unreal (Premium) | Bandwidth-adaptive avatar quality |
+
+### Digital Desk Avatar Tiers
+
+| Tier | Min Bandwidth | Technology | Cost |
+|------|---------------|------------|------|
+| **Free** | 0 Mbps | CSS/SVG animations | $0 |
+| **Standard** | 5 Mbps | WebGL 3D rendering | $0 |
+| **Premium** | 25 Mbps | Unreal MetaHuman via GPU streaming | ~$2.68/hr |
+| **Fallback** | N/A | Static image | $0 |
 
 ### Production URLs
 
@@ -190,7 +208,7 @@ PMERIT serves three distinct learner populations:
 |-------------|-----|
 | **Frontend** | https://pmerit.com |
 | **API** | https://pmerit-api-worker.peoplemerit.workers.dev |
-| **Database** | Neon Dashboard (65+ tables) |
+| **Database** | Neon Dashboard (82+ tables) |
 
 ### Repository Structure
 
@@ -203,7 +221,7 @@ PMERIT serves three distinct learner populations:
 
 ## Production Status Snapshot
 
-**Last Verified:** 2025-12-06 (Session 34)
+**Last Verified:** 2025-12-07 (Session 38)
 **Audit Report:** [docs/aados/PRODUCTION_AUDIT_2025-12-06.md](../aados/PRODUCTION_AUDIT_2025-12-06.md)
 
 ### Platform Health
@@ -211,11 +229,14 @@ PMERIT serves three distinct learner populations:
 | Component | Status | Version/Details | Notes |
 |-----------|--------|-----------------|-------|
 | Frontend | ✅ Healthy | pmerit.com | All pages loading, CDN active |
-| Backend API | ✅ Healthy | v2.2.0 | 22 endpoints available |
-| Database | ✅ Active | Neon PostgreSQL | 76 tables, DATABASE_URL configured |
+| Backend API | ✅ Healthy | v2.2.0 | 39 endpoints available |
+| Database | ✅ Active | Neon PostgreSQL | 82 tables, DATABASE_URL configured |
 | AI Services | ✅ Operational | Workers AI | env.AI binding working |
 | Email Service | ✅ Operational | Resend | DKIM/SPF verified, RESEND_API_KEY configured |
 | Vectorize | ✅ Available | pmerit-knowledge-base | RAG index ready |
+| Digital Desk | ✅ Deployed | Phase 2-4 Complete | Proctor, Vision AI, GPU Streaming frontend modules |
+| Exam API | ✅ Deployed | 6 endpoints | Session management, violations, submit |
+| GPU API | ✅ Deployed | 7 endpoints | Provisioning, tiers, bandwidth test |
 
 ### Current Capabilities (Verified in Production)
 
@@ -235,6 +256,12 @@ PMERIT serves three distinct learner populations:
 | User Authentication | ✅ Operational | 31 | 8 auth endpoints (register, login, verify, etc.) |
 | Email Verification | ✅ Operational | 34 | Resend integration with HTML templates |
 | Two-Tier Dashboard | ✅ Operational | 34 | account.html (gate) + dashboard.html (portal) |
+| Virtual Classroom | ✅ Operational | 36 | Full classroom session API integration |
+| Digital Desk Proctor | ✅ Frontend Ready | 37 | proctor-controller.js with violation detection |
+| Digital Desk Vision AI | ✅ Frontend Ready | 37 | vision-ai.js with TensorFlow.js face detection |
+| Digital Desk GPU Streaming | ✅ Frontend Ready | 37 | gpu-streaming.js with tiered avatar rendering |
+| Exam Session API | ✅ Operational | 38 | 6 endpoints for proctored exam management |
+| GPU Provisioning API | ✅ Operational | 38 | 7 endpoints for GPU streaming management |
 | Language Modal | ⚠️ Partial | 24 | Modal shows "No languages found" |
 
 ### API Endpoints Summary
@@ -242,7 +269,7 @@ PMERIT serves three distinct learner populations:
 ```
 Backend: https://pmerit-api-worker.peoplemerit.workers.dev
 
-Verified Working (22):
+Verified Working (39):
 ├── GET  /                              Health check
 ├── GET  /api/v1/pathways               Curriculum pathways
 ├── GET  /api/v1/courses                Course catalog
@@ -264,7 +291,26 @@ Verified Working (22):
 ├── POST /api/v1/auth/resend-verification Resend verification email
 ├── POST /api/v1/auth/forgot-password   Request password reset
 ├── POST /api/v1/auth/reset-password    Reset with code
-└── GET  /api/v1/auth/me                Get current user (protected)
+├── GET  /api/v1/auth/me                Get current user (protected)
+├── POST /api/v1/classroom/sessions     Start classroom session
+├── GET  /api/v1/classroom/sessions/:id Get session details
+├── PUT  /api/v1/classroom/sessions/:id Update/end session
+├── POST /api/v1/classroom/interactions Log interaction
+├── GET  /api/v1/users/:id/classroom/sessions  Get user sessions
+├── GET  /api/v1/lessons/:id            Get lesson details
+├── POST /api/v1/exams/:examId/sessions Start proctored exam session
+├── GET  /api/v1/exams/:examId/sessions/:id Get exam session
+├── PUT  /api/v1/exams/:examId/sessions/:id Update exam session
+├── POST /api/v1/exams/:examId/sessions/:id/violations Log violation
+├── POST /api/v1/exams/:examId/sessions/:id/submit Submit exam
+├── GET  /api/v1/users/:id/exam-sessions Get user exam sessions
+├── POST /api/v1/gpu/provision          Provision GPU droplet
+├── GET  /api/v1/gpu/status/:sessionId  Get GPU session status
+├── POST /api/v1/gpu/destroy            Destroy GPU droplet
+├── POST /api/v1/gpu/log-session        Log GPU session activity
+├── GET  /api/v1/gpu/tiers              Get available GPU tiers
+├── GET  /api/v1/bandwidth-test         Bandwidth detection endpoint
+└── GET  /api/v1/users/:id/gpu-sessions Get user GPU sessions
 
 Not Yet Implemented (2):
 ├── GET  /api/v1/locales/:lang          Translation API
@@ -305,9 +351,12 @@ Not Yet Implemented (2):
 
 | Date | Session | Achievement |
 |------|---------|-------------|
+| 2025-12-07 | 38 | **Digital Desk Backend COMPLETE** — Exam API (6 endpoints) + GPU API (7 endpoints) deployed |
+| 2025-12-07 | 37 | **Digital Desk Frontend COMPLETE** — Proctor Controller, Vision AI, GPU Streaming modules |
+| 2025-12-06 | 36 | **Phase 5 Virtual Classroom COMPLETE** — 8/8 requirements implemented |
+| 2025-12-06 | 35 | **Phase 4 Dashboard & Courses COMPLETE** — Enrollments, My Courses, pathway recommendations |
 | 2025-12-06 | 34 | **Phase 3 COMPLETE** — Two-tier dashboard + Resend email verification |
 | 2025-12-06 | 31 | **Backend Auth API** — 8 endpoints with PBKDF2, JWT, rate limiting |
-| 2025-12-06 | 30 | Enhanced PMERIT CONTINUE with production audit integration |
 | 2025-12-06 | 29 | **AI backend fixed** — env.AI binding now working, unblocks P0.2-P0.4 |
 | 2025-12-06 | 28 | **Assessment pipeline operational** — Full 120-question flow working |
 
@@ -704,6 +753,7 @@ This legacy document contains:
 | 1.0 | 2024-12-04 | Initial consolidated document |
 | 2.0 | 2025-12-05 | Added document workflow, decision log, task carryforward, session history; Updated hierarchy to reflect 3 primary docs |
 | 2.1 | 2025-12-06 | Added Resend to tech stack; Updated production status with Phase 3 completion; Added 8 auth endpoints; Updated infrastructure costs |
+| 2.2 | 2025-12-07 | Added Digital Desk stack (Proctor, Vision AI, GPU Streaming); Added 17 new API endpoints (exam + GPU); Updated to 82 database tables; Added Avatar Tiers documentation; Sessions 37-38 milestones |
 
 ---
 
