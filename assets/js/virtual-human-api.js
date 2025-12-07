@@ -23,7 +23,7 @@
     constructor(config = {}) {
       this.config = {
         apiBase: config.apiBase || 'https://pmerit-api-worker.peoplemerit.workers.dev',
-        ttsEndpoint: config.ttsEndpoint || '/api/v1/tts/speak',
+        ttsEndpoint: config.ttsEndpoint || '/api/v1/tts',
         defaultVoice: config.defaultVoice || 'alloy',
         cacheEnabled: config.cacheEnabled !== false,
         maxCacheSize: config.maxCacheSize || 50,

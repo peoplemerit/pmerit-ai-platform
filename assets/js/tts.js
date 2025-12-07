@@ -316,11 +316,15 @@ if (typeof window.logger === 'undefined') {
             source: 'server'
           });
 
-          // Call server-side TTS endpoint with voiceEngine parameter
-          const res = await fetch(`/functions/tts/speak?voiceEngine=${encodeURIComponent(voiceEngine)}`, {
+          // Call Worker API TTS endpoint
+          const apiBase = window.CONFIG?.API_BASE_URL || 'https://pmerit-api-worker.peoplemerit.workers.dev';
+          const res = await fetch(`${apiBase}/api/v1/tts`, {
             method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ text })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              text,
+              voice: voiceEngine || 'alloy'
+            })
           });
 
           if (!res.ok) {

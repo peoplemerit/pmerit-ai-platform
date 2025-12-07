@@ -194,12 +194,12 @@
      * @private
      */
     async _getTTS(text, options = {}) {
-      // Use correct API path: /api/v1/tts (not /api/tts)
-      const baseUrl = this.config.apiBaseUrl || 'https://pmerit-api-worker.peoplemerit.workers.dev';
-      const apiPath = baseUrl.includes('/api') ? '/v1/tts' : '/api/v1/tts';
+      // Always use the full Worker API URL for TTS
+      const apiBase = window.CONFIG?.API_BASE_URL || 'https://pmerit-api-worker.peoplemerit.workers.dev';
+      const ttsUrl = `${apiBase}/api/v1/tts`;
 
       try {
-        const response = await fetch(`${baseUrl}${apiPath}`, {
+        const response = await fetch(ttsUrl, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
