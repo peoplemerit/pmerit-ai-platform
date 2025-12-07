@@ -30,17 +30,42 @@ window.ClassroomSession = (function () {
    * Initialize a classroom session
    * @param {string} courseId - Course ID or slug
    * @param {string} [lessonId] - Optional lesson ID
+   * @param {Object} [options] - Options { allowGuest: boolean }
    * @returns {Promise<Object>} Session data
    */
-  async function startSession(courseId, lessonId = null) {
+  async function startSession(courseId, lessonId = null, options = {}) {
     const user = window.AUTH?.getCurrentUser();
+    const allowGuest = options.allowGuest !== false; // Default to allowing guest mode
+
+    // Allow guest/preview mode without authentication
     if (!user || !user.id) {
-      throw new Error('User must be logged in to start a classroom session');
+      if (!allowGuest) {
+        throw new Error('User must be logged in to start a classroom session');
+      }
+      // Guest preview mode - use localStorage for tracking
+      console.log('📖 Starting classroom in guest preview mode');
+      sessionState.userId = 'guest';
+      sessionState.courseId = courseId;
+      sessionState.lessonId = lessonId;
+      sessionState.guestMode = true;
+      sessionState.sessionId = `guest-${Date.now()}`;
+      sessionState.startedAt = new Date().toISOString();
+
+      // Return minimal session data for guest mode
+      return {
+        success: true,
+        sessionId: sessionState.sessionId,
+        course: { id: courseId, title: 'Preview Mode' },
+        lesson: null,
+        resumed: false,
+        guestMode: true
+      };
     }
 
     sessionState.userId = user.id;
     sessionState.courseId = courseId;
     sessionState.lessonId = lessonId;
+    sessionState.guestMode = false;
 
     try {
       const payload = {
@@ -225,6 +250,28 @@ window.ClassroomSession = (function () {
       return null;
     }
 
+    // Guest mode - store interactions locally only
+    if (sessionState.guestMode) {
+      const interaction = {
+        id: `local-${Date.now()}`,
+        type: type,
+        timestamp: new Date().toISOString(),
+        details: details
+      };
+
+      // Update local counters
+      if (type === 'hand_raise') {
+        sessionState.handRaises++;
+      }
+      if (type === 'question') {
+        sessionState.questionsAsked++;
+      }
+
+      sessionState.interactions.push(interaction);
+      console.log('📝 Guest interaction logged:', type);
+      return interaction;
+    }
+
     try {
       const payload = {
         session_id: sessionState.sessionId,
@@ -394,9 +441,18 @@ window.ClassroomSession = (function () {
     return !!sessionState.sessionId;
   }
 
+  /**
+   * Check if current session is guest mode
+   * @returns {boolean}
+   */
+  function isGuestMode() {
+    return !!sessionState.guestMode;
+  }
+
   // Public API
   return {
     startSession,
+    isGuestMode,
     getSession,
     updateProgress,
     endSession,

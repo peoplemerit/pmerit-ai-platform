@@ -152,10 +152,23 @@
       border-left-color: var(--color-secondary, #4AA4B9); 
     }
     
-    .outline-item.active { 
-      background-color: var(--bg-primary, #F8F9FA); 
-      border-left-color: var(--color-primary, #2A5B8C); 
-      font-weight: bold; 
+    .outline-item.active {
+      background-color: var(--bg-primary, #F8F9FA);
+      border-left-color: var(--color-primary, #2A5B8C);
+      font-weight: bold;
+    }
+
+    .outline-item.completed {
+      color: var(--text-secondary, #666);
+    }
+
+    .outline-item.lesson.completed:not(.active) {
+      opacity: 0.85;
+    }
+
+    .outline-item.module.completed {
+      background-color: rgba(58, 127, 92, 0.08);
+      border-left-color: var(--color-success, #3A7F5C);
     }
     
     textarea { 
@@ -988,6 +1001,10 @@
       // Handle Next Lesson
       async function handleNextLesson() {
         if (state.lessonNavigation?.next_lesson_id) {
+          // Mark current lesson as completed before moving to next
+          if (state.lessonId) {
+            markLessonCompleted(state.lessonId);
+          }
           await loadLesson(state.lessonNavigation.next_lesson_id);
         }
       }
@@ -1105,28 +1122,46 @@
         }
       }
 
-      // Render course outline
+      // Render course outline with completion indicators
       function renderOutline() {
         if (!state.modules || state.modules.length === 0) {
           dom.outlineContainer.innerHTML = '<p style="color: var(--text-secondary);">No modules available.</p>';
           return;
         }
 
+        // Get completed lessons from localStorage
+        const completedLessons = JSON.parse(localStorage.getItem(`pmerit_completed_${state.courseId}`) || '[]');
+
         let outlineHTML = '';
         state.modules.forEach((module, moduleIndex) => {
-          outlineHTML += `<div class="outline-item module"><i class="fas fa-folder"></i> ${module.title}</div>`;
+          // Count completed lessons in this module
+          const moduleLessons = module.lessons || [];
+          const completedInModule = moduleLessons.filter(l => completedLessons.includes(l.lesson_id)).length;
+          const moduleComplete = moduleLessons.length > 0 && completedInModule === moduleLessons.length;
+          const moduleProgress = moduleLessons.length > 0 ? Math.round((completedInModule / moduleLessons.length) * 100) : 0;
+
+          outlineHTML += `
+            <div class="outline-item module ${moduleComplete ? 'completed' : ''}" style="display: flex; align-items: center; justify-content: space-between;">
+              <span><i class="fas ${moduleComplete ? 'fa-folder-open' : 'fa-folder'}"></i> ${module.title}</span>
+              ${moduleProgress > 0 ? `<span class="module-progress" style="font-size: 0.75rem; color: var(--color-secondary); margin-left: 8px;">${moduleProgress}%</span>` : ''}
+            </div>`;
           if (module.lessons && module.lessons.length > 0) {
             module.lessons.forEach((lesson) => {
               const isActive = state.lessonId === lesson.lesson_id;
-              const icon = lesson.lesson_type === 'video' ? 'fa-play-circle' :
+              const isCompleted = completedLessons.includes(lesson.lesson_id);
+              const icon = isCompleted ? 'fa-check-circle' :
+                          lesson.lesson_type === 'video' ? 'fa-play-circle' :
                           lesson.lesson_type === 'reading' ? 'fa-book' : 'fa-file';
+              const iconColor = isCompleted ? 'color: var(--color-success, #3A7F5C);' : '';
               const duration = lesson.estimated_duration_minutes ? `${lesson.estimated_duration_minutes}m` : '';
               outlineHTML += `
-                <div class="outline-item lesson ${isActive ? 'active' : ''}"
-                     style="padding-left: 25px;"
+                <div class="outline-item lesson ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}"
+                     style="padding-left: 25px; display: flex; align-items: center; gap: 8px;"
                      data-lesson-id="${lesson.lesson_id}"
                      onclick="window.loadLesson('${lesson.lesson_id}')">
-                  <i class="fas ${icon}"></i> ${lesson.title || lesson.lesson_title} ${duration ? `<small>(${duration})</small>` : ''}
+                  <i class="fas ${icon}" style="${iconColor}"></i>
+                  <span style="flex: 1;">${lesson.title || lesson.lesson_title}</span>
+                  ${duration ? `<small style="color: var(--text-secondary);">(${duration})</small>` : ''}
                 </div>
               `;
             });
@@ -1134,6 +1169,19 @@
         });
         dom.outlineContainer.innerHTML = outlineHTML;
       }
+
+      // Mark lesson as completed
+      function markLessonCompleted(lessonId) {
+        const completedLessons = JSON.parse(localStorage.getItem(`pmerit_completed_${state.courseId}`) || '[]');
+        if (!completedLessons.includes(lessonId)) {
+          completedLessons.push(lessonId);
+          localStorage.setItem(`pmerit_completed_${state.courseId}`, JSON.stringify(completedLessons));
+          renderOutline(); // Re-render to show checkmark
+        }
+      }
+
+      // Expose for testing
+      window.markLessonCompleted = markLessonCompleted;
 
       // Expose loadLesson globally for outline clicks
       window.loadLesson = async function(lessonId) {
