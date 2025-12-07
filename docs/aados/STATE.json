@@ -2,10 +2,10 @@
   "schema_version": "2.0",
   "schema_notes": "Enhanced with production_health and audit tracking - Version 2.0",
 
-  "last_updated": "2025-12-07T02:47:00Z",
+  "last_updated": "2025-12-07T22:15:00Z",
   "last_updated_by": "claude-code",
 
-  "session_number": 39,
+  "session_number": 40,
   "last_audit_date": "2025-12-07",
 
   "current_phase": "PHASE_5",
@@ -19,7 +19,7 @@
   "max_attempts": 3,
   "extended": false,
 
-  "active_environment": "BE",
+  "active_environment": "FE",
   "workflow_mode": "direct_execution",
 
   "production_health": {
@@ -32,28 +32,38 @@
     "digital_desk": "healthy",
     "exam_api": "healthy",
     "gpu_api": "healthy",
-    "last_check": "2025-12-07T02:47:00Z",
+    "tts_api": "healthy",
+    "last_check": "2025-12-07T22:00:00Z",
     "homepage_gate_score": "9/10"
   },
 
   "blockers": [
     {
       "id": "AVATAR_INIT_FAIL",
-      "description": "AvatarManager initialization fails, showing error overlay instead of graceful fallback",
+      "description": "AvatarManager initialization fails due to incorrect TTS path - shows error overlay instead of graceful fallback",
       "since": "Session 39",
       "affected": ["classroom.html", "AvatarManager.js"],
-      "priority": "high"
+      "priority": "high",
+      "root_cause": "AvatarManager.js calls /tts instead of /api/v1/tts"
     },
     {
-      "id": "TTS_404",
-      "description": "TTS API endpoint /api/v1/tts returns 404",
+      "id": "AVATAR_SYSTEM_CONFLICT",
+      "description": "Two competing avatar systems (AvatarManager vs GPUStreaming) both try to render to same container",
       "since": "Session 39",
-      "affected": ["AvatarManager.js"],
+      "affected": ["AvatarManager.js", "gpu-streaming.js", "classroom.html"],
       "priority": "medium"
     }
   ],
 
   "resolved_blockers": [
+    {
+      "id": "TTS_404",
+      "description": "TTS API endpoint appeared to return 404",
+      "since": "Session 39",
+      "resolved": "Session 40",
+      "resolution": "TTS endpoint /api/v1/tts is WORKING - returns valid WAV audio. The 404 was from incorrect path /tts in AvatarManager.js",
+      "affected": ["AvatarManager.js"]
+    },
     {
       "id": "AI_BINDING",
       "description": "env.AI binding undefined - AI chat returns empty responses",
@@ -81,13 +91,20 @@
   ],
 
   "notes": {
-    "current_focus": "Digital Desk COMPLETE - Ready for Phase 6 (Progress & Assessment Integration)",
-    "session_37_milestone": "Digital Desk Phases 2-4 COMPLETE (Proctor, Vision AI, GPU Streaming frontend)",
-    "session_38_milestone": "Digital Desk Backend API COMPLETE (Exam + GPU endpoints)",
-    "remaining_partial": "H7 language modal only"
+    "current_focus": "Avatar UX fixes - then Phase 6 (Progress & Assessment Integration)",
+    "session_40_milestone": "Production Audit - TTS confirmed working, handoffs archived",
+    "session_38_39_milestone": "Digital Desk Backend + Frontend COMPLETE",
+    "remaining_partial": "H7 language modal only",
+    "handoffs_archived": "Sessions 27, 28, 33, 34, 35, 36 (non-FINAL) moved to archive/"
   },
 
   "recent_changes": [
+    {
+      "session": 40,
+      "date": "2025-12-07",
+      "change": "Production Audit + Handoff Cleanup",
+      "impact": "Verified all 40 API endpoints working. TTS confirmed functional (was misreported as 404). Archived 7 old handoffs. Updated all governance documents."
+    },
     {
       "session": 38,
       "date": "2025-12-07",
@@ -105,20 +122,14 @@
       "date": "2025-12-06",
       "change": "Phase 5 Virtual Classroom COMPLETE + Bug Fixes",
       "impact": "P5.1-P5.8 implemented: classroom-session.js API client, classroom.html with API integration, backend classroom routes (sessions, interactions, lessons), student controls (prev/next, pause, bookmark), raise hand, session stats."
-    },
-    {
-      "session": 35,
-      "date": "2025-12-06",
-      "change": "Phase 4 Dashboard & Courses COMPLETE",
-      "impact": "P4.1-P4.8 implemented: enrolled courses display, enrollment API, My Courses section, pathway recommendations, learning path progress, course catalog access, assessment-to-courses link, Quick Actions"
     }
   ],
 
   "reference_docs": {
     "feature_spec": "docs/handoffs/BRAINSTORM_ASU_LIKE_SCHEMA.md",
     "user_journey": "docs/project/Pmerit-comprehensively-narrative-users-and-Admin-Journey.md",
-    "latest_audit": "docs/aados/PRODUCTION_AUDIT_2025-12-06.md",
+    "latest_audit": "docs/aados/PRODUCTION_AUDIT_2025-12-07.md",
     "master_doc": "docs/project/Pmerit_Project_Document.md",
-    "session_39_handoff": "docs/handoffs/PMERIT_HANDOFF_SESSION_39.md"
+    "latest_handoff": "docs/handoffs/PMERIT_HANDOFF_SESSION_40.md"
   }
 }

@@ -1,7 +1,7 @@
 # PMERIT Platform — Task Tracker
 
 **Last Updated:** 2025-12-07
-**Current Session:** 39
+**Current Session:** 40
 **Governance Version:** V5 FINAL
 **Workflow Mode:** Direct Execution (Claude Code Desktop)
 
@@ -342,7 +342,38 @@ Register → Verification email sent → User enters 6-digit code → Account ve
 
 ## 📊 SESSION HISTORY
 
-### Session 38 — 2025-12-07 (Current)
+### Session 40 — 2025-12-07 (Current)
+
+**Focus:** Production Audit + Handoff Cleanup + Documentation Sync
+**Workflow:** Direct Execution (Claude Code Desktop)
+**Environment:** FE
+
+**Major Actions:**
+- **Full Production Audit** — Verified all 40 API endpoints against handoff claims
+- **TTS Status Corrected** — Endpoint /api/v1/tts IS working (Session 39 incorrectly reported 404)
+- **Root Cause Identified** — AvatarManager.js calls wrong path `/tts` instead of `/api/v1/tts`
+- **Handoffs Archived** — Sessions 27, 28, 33, 34, 35, 36 (non-FINAL) moved to archive/
+- **Governance Updated** — STATE.json, TASK_TRACKER.md, Project Document synced
+
+**Audit Results:**
+| Component | Status |
+|-----------|--------|
+| Frontend | Healthy |
+| Backend API v2.2.0 | Healthy - 40 endpoints |
+| AI Services | Healthy - Chat, Support, Tutor |
+| TTS | **Healthy** (was misreported) |
+| Database | 82 tables verified |
+| GPU Tiers | 3 tiers, 4 regions |
+
+**Documents Created/Updated:**
+- `docs/aados/PRODUCTION_AUDIT_2025-12-07.md` — Full audit report
+- `docs/aados/STATE.json` — Session 40, TTS resolved
+- `docs/aados/TASK_TRACKER.md` — Updated resumption point
+- `docs/project/Pmerit_Project_Document.md` — Production snapshot
+
+---
+
+### Session 38 — 2025-12-07
 
 **Focus:** Digital Desk Backend API Implementation
 **Workflow:** Direct Execution (Claude Code Desktop)
@@ -572,25 +603,51 @@ Login/Signup → /account.html → "Enter Dashboard" → /dashboard.html
 ```
 📍 Phase: PHASE 6 — Progress & Assessment Integration (UNLOCKED)
 📊 Gate Status: Conditionally Complete (9/10 verified)
-🎯 Next: Phase 6 requirements (progress tracking, learning analytics, certificates)
+🎯 Next: Fix Avatar UX issues, then Phase 6 requirements
 ✅ Phase 0 COMPLETE: 6 requirements verified (Session 31)
 ✅ Phase 1 COMPLETE: 5 requirements verified (Session 31)
 ✅ Phase 2 COMPLETE: 8 requirements verified (Session 31)
 ✅ Phase 3 COMPLETE: 8 requirements verified (Session 34)
 ✅ Phase 4 COMPLETE: 8 requirements verified (Session 35)
 ✅ Phase 5 COMPLETE: 8 requirements verified (Session 36)
-🩺 Production Health: All systems healthy
+🩺 Production Health: All systems healthy (TTS confirmed working)
 ⚡ Workflow: Direct Execution
 ```
 
-**Last Audit:** 2025-12-07 (Session 39) - 9/10 Homepage Gate verified
-**Session 37-38 Milestones:**
+**Last Audit:** 2025-12-07 (Session 40) - Full production verification
+**Session 40 Actions:**
+- **Production Audit:** Verified all 40 API endpoints
+- **TTS Corrected:** Endpoint /api/v1/tts IS working (was misreported as 404)
+- **Handoffs Archived:** Sessions 27, 28, 33, 34, 35, 36 moved to archive/
+- **Root Cause Found:** AvatarManager.js uses wrong path /tts instead of /api/v1/tts
+
+**Active Handoffs:**
+- `PMERIT_HANDOFF_SESSION_36_FINAL.md`
+- `PMERIT_HANDOFF_SESSION_37.md`
+- `PMERIT_HANDOFF_SESSION_38_39_UPDATED.md`
+- `PMERIT_HANDOFF_SESSION_39.md` (to be consolidated)
+
+**Session 37-39 Milestones:**
 - **DIGITAL DESK COMPLETE** (Frontend + Backend)
 - Session 37: Proctor Controller, Vision AI, GPU Streaming (Frontend)
 - Session 38: Exam API (6 endpoints), GPU API (7 endpoints) (Backend)
+- Session 39: Three.js r128 fix, VH container visibility
 - Database: 82 tables (exam_sessions, proctoring_violations, gpu_sessions)
 - **Total: 43 requirements verified (P0-P5 complete!) + Digital Desk**
-- **Total API Endpoints: 39+** (Backend v2.2.0)
+- **Total API Endpoints: 40** (Backend v2.2.0)
+
+---
+
+## 🎯 NEXT TASKS (Post-Audit)
+
+| Priority | Task | Notes |
+|----------|------|-------|
+| **HIGH** | Fix AvatarManager.js TTS path | Change `/tts` to `/api/v1/tts` |
+| **HIGH** | Unify Avatar Systems | Resolve AvatarManager vs GPUStreaming conflict |
+| **HIGH** | Implement Graceful Fallback | Remove red error overlay, use toast + static image |
+| **MEDIUM** | Fix Language Modal (H7) | Debug "No languages found" issue |
+| **MEDIUM** | Browser Test Avatar | Verify 3D model renders in actual browser |
+| **LOW** | Configure TTS Quota | Enable usage tracking |
 
 ---
 
@@ -600,7 +657,8 @@ Login/Signup → /account.html → "Enter Dashboard" → /dashboard.html
 |----------|---------|
 | docs/aados/GOVERNANCE.md | Rules, workflows, commands |
 | docs/aados/ENVIRONMENTS.md | Environment definitions |
-| docs/aados/PRODUCTION_AUDIT_2025-12-06.md | Latest audit report |
+| docs/aados/PRODUCTION_AUDIT_2025-12-07.md | Latest audit report |
+| docs/aados/STATE.json | Machine-readable state |
 
 ---
 
