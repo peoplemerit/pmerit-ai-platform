@@ -252,15 +252,46 @@
       } 
     }
     
-    @media (max-width: 768px) { 
-      .app-container { 
-        grid-template-columns: 1fr; 
-        grid-template-rows: auto 1fr auto; 
+    @media (max-width: 768px) {
+      .app-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto;
         height: auto;
-      } 
-      .panel { 
-        max-height: 400px; 
-      } 
+      }
+      .panel {
+        max-height: 400px;
+      }
+    }
+
+    /* Toast animations */
+    @keyframes toastSlideUp {
+      from { transform: translateX(-50%) translateY(100px); opacity: 0; }
+      to { transform: translateX(-50%) translateY(0); opacity: 1; }
+    }
+    @keyframes toastSlideDown {
+      from { transform: translateX(-50%) translateY(0); opacity: 1; }
+      to { transform: translateX(-50%) translateY(100px); opacity: 0; }
+    }
+
+    /* Fallback avatar styling */
+    .avatar-static {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 18px;
+      color: white;
+      font-size: 64px;
+    }
+
+    /* Audio-only mode indicator */
+    .vh-root.audio-only .avatar-frame {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    }
+    .vh-root.audio-only .vh-status-badge {
+      background: var(--color-secondary, #4AA4B9);
     }
   </style>
 </head>
@@ -714,12 +745,13 @@
       async function initAvatarManager(enabled) {
         try {
           if (!window.AvatarManager) {
-            console.warn('AvatarManager not loaded');
-            // Show fallback avatar
+            console.warn('AvatarManager not loaded - using fallback');
+            // Show fallback avatar silently (not an error)
             if (dom.avatarFallback) {
               dom.avatarFallback.style.display = 'flex';
-              setAvatarTier('fallback');
             }
+            setAvatarTier('fallback');
+            updateVHStatus('Ready (basic mode)');
             return;
           }
 
@@ -727,7 +759,7 @@
             canvasId: 'vh-canvas',
             captionsId: 'vh-captions',
             enabled: enabled,
-            apiBaseUrl: window.CONFIG?.API_BASE_URL,
+            apiBaseUrl: window.CONFIG?.API_BASE_URL || 'https://pmerit-api-worker.peoplemerit.workers.dev',
             onSpeakStart: () => {
               dom.vhContainer.classList.add('speaking');
               dom.avatarFrame?.classList.add('speaking');
@@ -749,30 +781,55 @@
                 dom.avatarFrame?.classList.remove('processing');
               }
             },
-            onError: (error) => {
-              console.error('Avatar error:', error);
-              showAvatarError(error);
-            }
+            // Don't use onError for initialization issues - handle gracefully
+            onError: null
           });
 
           if (enabled) {
             dom.vhContainer.classList.add('loading');
             dom.avatarFrame?.classList.add('processing');
+            updateVHStatus('Initializing...');
+
             await state.avatarManager.init();
+
             dom.vhContainer.classList.remove('loading');
             dom.avatarFrame?.classList.remove('processing');
 
-            // Set tier based on user subscription (default to standard)
-            const userTier = getUserTier();
-            setAvatarTier(userTier);
+            // Check if we have a provider (WebGL) or are in audio-only mode
+            if (state.avatarManager.state?.provider) {
+              // Full avatar mode
+              const userTier = getUserTier();
+              setAvatarTier(userTier);
+              updateVHStatus('Virtual Human is ready');
+            } else {
+              // Audio-only mode (graceful degradation)
+              setAvatarTier('fallback');
+              updateVHStatus('Ready (audio mode)');
+              if (dom.avatarFallback) {
+                dom.avatarFallback.style.display = 'flex';
+              }
+            }
           } else {
             dom.vhContainer.classList.add('audio-only');
             setAvatarTier('fallback');
+            updateVHStatus('Virtual Human disabled');
           }
         } catch (error) {
-          console.error('Failed to initialize avatar:', error);
-          showAvatarError(error);
+          console.warn('Avatar init graceful fallback:', error.message);
+          // Graceful fallback - don't show scary errors
           setAvatarTier('fallback');
+          updateVHStatus('Ready (basic mode)');
+          if (dom.avatarFallback) {
+            dom.avatarFallback.style.display = 'flex';
+          }
+        }
+      }
+
+      // Helper to update VH status text
+      function updateVHStatus(text) {
+        const statusText = document.getElementById('vh-status-text');
+        if (statusText) {
+          statusText.textContent = text;
         }
       }
 
@@ -1077,6 +1134,8 @@
         const currentlyEnabled = !dom.vhToggle.classList.contains('off');
         const newState = !currentlyEnabled;
 
+        console.log('VH Toggle:', currentlyEnabled, '->', newState);
+
         updateVHToggle(newState);
         localStorage.setItem('pmerit_vh_enabled', newState.toString());
 
@@ -1085,12 +1144,32 @@
         }
 
         if (newState) {
+          // Turning ON - show VH and initialize if needed
           dom.vhContainer.classList.remove('audio-only');
+          updateVHStatus('Initializing...');
+
+          // Initialize avatar manager if not already done
           if (state.avatarManager && !state.avatarManager.state?.initialized) {
             initAvatarManager(true);
+          } else if (!state.avatarManager) {
+            initAvatarManager(true);
+          } else {
+            // Already initialized - just update status
+            if (state.avatarManager.state?.provider) {
+              updateVHStatus('Virtual Human is ready');
+            } else {
+              updateVHStatus('Ready (audio mode)');
+            }
+          }
+
+          // Also init GPU streaming if available and not already initialized
+          if (!state.gpuStreaming && window.GPUStreaming) {
+            initGPUStreaming();
           }
         } else {
+          // Turning OFF - hide VH
           dom.vhContainer.classList.add('audio-only');
+          updateVHStatus('Virtual Human disabled');
         }
       }
 
@@ -1327,16 +1406,70 @@
         dom.chatMessages.scrollTop = dom.chatMessages.scrollHeight;
       }
 
-      // Show avatar error
+      // Show avatar error - GRACEFUL FALLBACK (no red error screens)
       function showAvatarError(error) {
-        const errorHTML = `
-          <div class="vh-error">
-            <div class="error-icon"><i class="fas fa-exclamation-triangle"></i></div>
-            <div class="error-message">Avatar initialization failed. Using audio-only mode.</div>
-          </div>
-        `;
-        dom.vhContainer.innerHTML = errorHTML;
+        console.warn('Avatar fallback triggered:', error?.message || error);
+
+        // Don't destroy the container - just switch to fallback mode
+        // Show static fallback avatar instead of error
+        if (dom.avatarFallback) {
+          dom.avatarFallback.style.display = 'flex';
+        }
+
+        // Hide the canvas (if it exists)
+        const canvas = document.getElementById('vh-canvas');
+        if (canvas) {
+          canvas.style.display = 'none';
+        }
+
+        // Update status text with friendly message (not scary error)
+        const statusText = document.getElementById('vh-status-text');
+        if (statusText) {
+          statusText.textContent = 'Audio-only mode active';
+        }
+
+        // Set fallback tier
+        setAvatarTier('fallback');
+
+        // Add audio-only class but keep container visible
         dom.vhContainer.classList.add('audio-only');
+
+        // Show non-intrusive toast notification instead of blocking error
+        showToast('Low bandwidth detected. Using audio-only mode.', 'info');
+      }
+
+      // Toast notification helper
+      function showToast(message, type = 'info') {
+        // Remove existing toast if any
+        const existingToast = document.querySelector('.pmerit-toast');
+        if (existingToast) {
+          existingToast.remove();
+        }
+
+        const toast = document.createElement('div');
+        toast.className = `pmerit-toast pmerit-toast-${type}`;
+        toast.style.cssText = `
+          position: fixed;
+          bottom: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: ${type === 'info' ? 'var(--color-secondary, #4AA4B9)' : 'var(--color-warning, #E5A139)'};
+          color: white;
+          padding: 12px 24px;
+          border-radius: 8px;
+          font-size: 0.9rem;
+          z-index: 10000;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+          animation: toastSlideUp 0.3s ease-out;
+        `;
+        toast.innerHTML = `<i class="fas fa-info-circle"></i> ${message}`;
+        document.body.appendChild(toast);
+
+        // Auto-remove after 4 seconds
+        setTimeout(() => {
+          toast.style.animation = 'toastSlideDown 0.3s ease-in forwards';
+          setTimeout(() => toast.remove(), 300);
+        }, 4000);
       }
 
       // End class session

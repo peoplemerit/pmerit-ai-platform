@@ -26,6 +26,14 @@
     return;
   }
 
+  // Safe logger wrapper - use window.logger if available, otherwise console
+  const safeLog = {
+    debug: (...args) => (window.logger?.debug || console.log)(...args),
+    info: (...args) => (window.logger?.info || console.info)(...args),
+    warn: (...args) => console.warn(...args),
+    error: (...args) => console.error(...args)
+  };
+
   class WebGLProvider {
     constructor(canvas, config = {}) {
       this.canvas = canvas;
@@ -72,11 +80,15 @@
       }
 
       try {
-        logger.debug('🎨 Initializing WebGLProvider...');
+        // Use logger if available, otherwise console
+        const log = window.logger?.debug || console.log;
+        log('🎨 Initializing WebGLProvider...');
 
         // Check if Three.js is available
         if (typeof THREE === 'undefined') {
-          throw new Error('Three.js not loaded. Please include Three.js before WebGLProvider.');
+          console.warn('Three.js not loaded - WebGLProvider will use fallback mode');
+          this.state.initialized = true;
+          return;
         }
 
         // Set up scene
@@ -108,14 +120,16 @@
         }
 
         this.state.initialized = true;
-        logger.debug('✅ WebGLProvider initialized');
-        
+        log('✅ WebGLProvider initialized');
+
         if (this.state.reducedMotion) {
-          logger.debug('ℹ️ Reduced motion mode detected');
+          log('ℹ️ Reduced motion mode detected');
         }
       } catch (error) {
-        console.error('❌ WebGLProvider initialization failed:', error);
-        throw error;
+        // Don't throw - just mark as initialized with fallback
+        console.warn('⚠️ WebGLProvider init warning:', error.message);
+        this.state.initialized = true;
+        // The provider will work in fallback mode (placeholder avatar)
       }
     }
 
@@ -231,13 +245,13 @@
           : window.location.origin + this.config.avatarBaseUrl;
         const modelUrl = new URL(this.config.modelFile, baseUrl).toString();
 
-        logger.debug(`📦 Attempting to load avatar from: ${modelUrl}`);
-        logger.debug(`📦 Config: avatarBaseUrl="${this.config.avatarBaseUrl}", modelFile="${this.config.modelFile}"`);
+        safeLog.debug(`📦 Attempting to load avatar from: ${modelUrl}`);
+        safeLog.debug(`📦 Config: avatarBaseUrl="${this.config.avatarBaseUrl}", modelFile="${this.config.modelFile}"`);
 
         // Attempt to load GLB model with try-catch for GLTFLoader availability
         try {
           await this._loadGLBModel(modelUrl);
-          logger.debug(`✅ Successfully loaded GLB model from ${modelUrl}`);
+          safeLog.debug(`✅ Successfully loaded GLB model from ${modelUrl}`);
         } catch (loadError) {
           // GLTFLoader not available or model load failed
           console.warn('⚠️ GLTFLoader not available or load failed, using placeholder orb fallback');
@@ -263,7 +277,7 @@
         }
         const loader = new THREE.GLTFLoader();
         
-        logger.debug(`🔄 Starting GLB load from: ${url}`);
+        safeLog.debug(`🔄 Starting GLB load from: ${url}`);
         
         // Set configurable timeout for loading
         const timeout = setTimeout(() => {
@@ -300,30 +314,30 @@
             
             // Look for idle and speaking animations
             if (gltf.animations && gltf.animations.length > 0) {
-              logger.debug(`🎬 Found ${gltf.animations.length} animation(s) in model`);
+              safeLog.debug(`🎬 Found ${gltf.animations.length} animation(s) in model`);
               gltf.animations.forEach((clip) => {
                 if (clip.name.toLowerCase().includes('idle')) {
                   this.state.idleAction = this.state.mixer.clipAction(clip);
                   this.state.idleAction.play();
-                  logger.debug(`▶️ Playing idle animation: ${clip.name}`);
+                  safeLog.debug(`▶️ Playing idle animation: ${clip.name}`);
                 } else if (clip.name.toLowerCase().includes('speak')) {
                   this.state.speakAction = this.state.mixer.clipAction(clip);
-                  logger.debug(`🔊 Found speaking animation: ${clip.name}`);
+                  safeLog.debug(`🔊 Found speaking animation: ${clip.name}`);
                 }
               });
             } else {
-              logger.debug('ℹ️ No animations found in model');
+              safeLog.debug('ℹ️ No animations found in model');
             }
 
-            logger.debug('✅ Avatar model loaded and initialized successfully');
+            safeLog.debug('✅ Avatar model loaded and initialized successfully');
             resolve();
           },
           (progress) => {
             if (progress.total > 0) {
               const percent = (progress.loaded / progress.total * 100).toFixed(0);
-              logger.debug(`📦 Loading avatar: ${percent}% (${progress.loaded}/${progress.total} bytes)`);
+              safeLog.debug(`📦 Loading avatar: ${percent}% (${progress.loaded}/${progress.total} bytes)`);
             } else {
-              logger.debug(`📦 Loading avatar: ${progress.loaded} bytes received...`);
+              safeLog.debug(`📦 Loading avatar: ${progress.loaded} bytes received...`);
             }
           },
           (error) => {
@@ -345,7 +359,7 @@
      * @private
      */
     _createPlaceholderAvatar() {
-      logger.debug('📦 Creating placeholder avatar (orb)...');
+      safeLog.debug('📦 Creating placeholder avatar (orb)...');
 
       // Create a simple sphere as avatar placeholder
       const geometry = new THREE.SphereGeometry(0.3, 32, 32);
@@ -366,7 +380,7 @@
       // Simple idle animation (gentle bobbing)
       this._createIdleAnimation();
 
-      logger.debug('✅ Placeholder avatar created');
+      safeLog.debug('✅ Placeholder avatar created');
     }
 
     /**
@@ -393,7 +407,7 @@
      */
     startSpeaking() {
       this.state.speaking = true;
-      logger.debug('🗣️ Avatar started speaking');
+      safeLog.debug('🗣️ Avatar started speaking');
     }
 
     /**
@@ -401,7 +415,7 @@
      */
     stopSpeaking() {
       this.state.speaking = false;
-      logger.debug('🤐 Avatar stopped speaking');
+      safeLog.debug('🤐 Avatar stopped speaking');
     }
 
     /**
@@ -499,7 +513,7 @@
      */
     _onReducedMotionChange(event) {
       this.state.reducedMotion = event.matches;
-      logger.debug(`ℹ️ Reduced motion: ${this.state.reducedMotion ? 'enabled' : 'disabled'}`);
+      safeLog.debug(`ℹ️ Reduced motion: ${this.state.reducedMotion ? 'enabled' : 'disabled'}`);
       
       // Pause animations if reduced motion is enabled
       if (this.state.reducedMotion) {
@@ -558,7 +572,7 @@
       }
 
       this.state.initialized = false;
-      logger.debug('🧹 WebGLProvider disposed');
+      safeLog.debug('🧹 WebGLProvider disposed');
     }
   }
 

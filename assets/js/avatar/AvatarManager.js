@@ -55,7 +55,7 @@
       }
 
       try {
-        logger.debug('🎭 Initializing AvatarManager...');
+        console.log('🎭 Initializing AvatarManager...');
 
         // Initialize WebGL provider if enabled
         if (this.config.enabled) {
@@ -63,8 +63,14 @@
           if (canvas) {
             // Lazy load WebGLProvider
             if (window.WebGLProvider) {
-              this.state.provider = new window.WebGLProvider(canvas, this.config);
-              await this.state.provider.init();
+              try {
+                this.state.provider = new window.WebGLProvider(canvas, this.config);
+                await this.state.provider.init();
+              } catch (providerError) {
+                // WebGL failed - continue without visual avatar
+                console.warn('WebGLProvider init failed, using audio-only mode:', providerError.message);
+                this.state.provider = null;
+              }
             } else {
               console.warn('WebGLProvider not available, running in audio-only mode');
             }
@@ -72,16 +78,17 @@
         }
 
         this.state.initialized = true;
-        
+
         // Set up TTS event listeners if TTS module is available
         this._setupTTSListeners();
-        
-        logger.debug('✅ AvatarManager initialized');
+
+        console.log('✅ AvatarManager initialized (audio-only mode:', !this.state.provider, ')');
       } catch (error) {
-        console.error('❌ AvatarManager initialization failed:', error);
-        if (this.callbacks.onError) {
-          this.callbacks.onError(error);
-        }
+        // Even on error, mark as initialized to prevent repeated attempts
+        this.state.initialized = true;
+        console.warn('⚠️ AvatarManager init warning:', error.message);
+        // Don't call onError for non-critical initialization issues
+        // The avatar will simply work in audio-only/fallback mode
       }
     }
 
@@ -187,23 +194,35 @@
      * @private
      */
     async _getTTS(text, options = {}) {
-      const response = await fetch(`${this.config.apiBaseUrl}/tts`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          text,
-          voice: options.voice || 'default',
-          speed: options.speed || 1.0
-        })
-      });
+      // Use correct API path: /api/v1/tts (not /api/tts)
+      const baseUrl = this.config.apiBaseUrl || 'https://pmerit-api-worker.peoplemerit.workers.dev';
+      const apiPath = baseUrl.includes('/api') ? '/v1/tts' : '/api/v1/tts';
 
-      if (!response.ok) {
-        throw new Error(`TTS API error: ${response.status}`);
+      try {
+        const response = await fetch(`${baseUrl}${apiPath}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            text,
+            voice: options.voice || 'default',
+            speed: options.speed || 1.0
+          })
+        });
+
+        if (!response.ok) {
+          // TTS not available - return empty result for graceful degradation
+          console.warn(`TTS API returned ${response.status}, using silent mode`);
+          return { audioUrl: null, visemes: [] };
+        }
+
+        return await response.json();
+      } catch (error) {
+        // Network error - gracefully degrade
+        console.warn('TTS API unavailable:', error.message);
+        return { audioUrl: null, visemes: [] };
       }
-
-      return await response.json();
     }
 
     /**
