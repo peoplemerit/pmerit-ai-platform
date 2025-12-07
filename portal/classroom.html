@@ -70,6 +70,11 @@
   <!-- Classroom Session API -->
   <script src="../assets/js/classroom-session.js"></script>
 
+  <!-- Digital Desk Phase 2-4: Proctor, Vision AI, GPU Streaming -->
+  <script src="../assets/js/proctor-controller.js"></script>
+  <script src="../assets/js/vision-ai.js"></script>
+  <script src="../assets/js/gpu-streaming.js"></script>
+
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { 
@@ -544,7 +549,11 @@
         // Initialize avatar manager
         await initAvatarManager(vhEnabled);
 
+        // Initialize GPU Streaming for tiered avatar (Phase 4)
+        state.gpuStreaming = await initGPUStreaming();
+
         console.log('✅ Classroom initialized');
+        console.log('🎮 Digital Desk modules loaded: ProctorController, VisionAI, GPUStreaming');
       }
 
       // Show error message
@@ -769,6 +778,162 @@
         const user = window.AUTH?.getCurrentUser();
         const tier = user?.subscription_tier || localStorage.getItem('pmerit_user_tier') || 'standard';
         return tier; // 'premium', 'standard', 'free', or 'fallback'
+      }
+
+      // =========================================
+      // DIGITAL DESK MODULES (Phase 2-4)
+      // =========================================
+
+      // Initialize GPU Streaming for tiered avatar rendering
+      async function initGPUStreaming() {
+        if (!window.GPUStreaming) {
+          console.warn('GPUStreaming module not loaded');
+          return null;
+        }
+
+        try {
+          const gpuStreaming = await window.createGPUStreaming(dom.avatarFrame, {
+            idleTimeout: 300000, // 5 minutes
+            maxSessionDuration: 3600000 // 1 hour
+          });
+
+          // Listen for tier changes
+          gpuStreaming.onTierChange((newTier, previousTier) => {
+            console.log(`Avatar tier changed: ${previousTier} -> ${newTier}`);
+            setAvatarTier(newTier);
+          });
+
+          // Listen for connection changes
+          gpuStreaming.onConnectionChange((isConnected) => {
+            if (isConnected) {
+              console.log('GPU streaming connected');
+            } else {
+              console.log('GPU streaming disconnected');
+            }
+          });
+
+          // Listen for cost updates
+          gpuStreaming.onCostUpdate((costCents) => {
+            console.log(`Session cost: $${(costCents / 100).toFixed(2)}`);
+          });
+
+          return gpuStreaming;
+        } catch (error) {
+          console.error('Failed to initialize GPU streaming:', error);
+          return null;
+        }
+      }
+
+      // Initialize Vision AI for proctored exams
+      async function initVisionAI() {
+        if (!window.VisionAI) {
+          console.warn('VisionAI module not loaded');
+          return null;
+        }
+
+        // Only initialize when entering an exam
+        return null; // Will be initialized on-demand
+      }
+
+      // Start a proctored exam session
+      async function startProctoredExam(examData) {
+        if (!window.ProctorController) {
+          console.error('ProctorController module not loaded');
+          return false;
+        }
+
+        try {
+          // Create proctor session
+          const proctor = await window.createProctorSession(examData, {
+            maxViolations: 3,
+            enableVisionAI: true,
+            timerWarningMinutes: 5,
+            timerCriticalMinutes: 1,
+            onViolation: (violation) => {
+              console.warn('Proctor violation:', violation);
+            },
+            onExamEnd: (result) => {
+              console.log('Exam ended:', result);
+              endProctoredExam();
+            }
+          });
+
+          // Initialize Vision AI if enabled
+          if (examData.enableVisionAI !== false) {
+            const visionAI = await window.createVisionAI('vision-ai-video', {
+              faceDetectionInterval: 1000,
+              gazeThreshold: 0.3,
+              confidenceThreshold: 0.7
+            });
+
+            if (visionAI) {
+              // Connect Vision AI to Proctor Controller
+              proctor.setVisionAI(visionAI);
+
+              // Start detection
+              await visionAI.startDetection();
+            }
+          }
+
+          // Enter proctor mode
+          proctor.enterProctorMode();
+
+          return proctor;
+
+        } catch (error) {
+          console.error('Failed to start proctored exam:', error);
+          return false;
+        }
+      }
+
+      // End proctored exam
+      async function endProctoredExam() {
+        if (window.proctorController) {
+          // Vision AI cleanup
+          if (window.proctorController.visionAI) {
+            window.proctorController.visionAI.destroy();
+          }
+
+          // Exit proctor mode
+          window.proctorController.exitProctorMode();
+        }
+      }
+
+      // Expose functions globally for testing
+      window.startProctoredExam = startProctoredExam;
+      window.endProctoredExam = endProctoredExam;
+
+      // Set avatar tier styling
+      function setAvatarTier(tier) {
+        if (!dom.avatarFrame) return;
+
+        // Remove all tier classes
+        dom.avatarFrame.classList.remove('tier-free', 'tier-standard', 'tier-premium', 'tier-fallback');
+
+        // Add new tier class
+        dom.avatarFrame.classList.add(`tier-${tier}`);
+
+        // Update live badge
+        if (dom.avatarLiveBadge) {
+          if (tier === 'premium') {
+            dom.avatarLiveBadge.innerHTML = '<span class="live-dot"></span> LIVE HD';
+            dom.avatarLiveBadge.classList.add('premium', 'hd');
+            dom.avatarLiveBadge.style.display = 'flex';
+          } else if (tier === 'standard') {
+            dom.avatarLiveBadge.innerHTML = '<span class="live-dot"></span> LIVE';
+            dom.avatarLiveBadge.classList.remove('premium', 'hd');
+            dom.avatarLiveBadge.style.display = 'flex';
+          } else {
+            dom.avatarLiveBadge.style.display = 'none';
+          }
+        }
+
+        // Update fallback visibility
+        if (dom.avatarFallback) {
+          dom.avatarFallback.style.display = tier === 'fallback' ? 'flex' : 'none';
+        }
+
+        console.log(`Avatar tier set to: ${tier}`);
       }
 
       // Bind event handlers
