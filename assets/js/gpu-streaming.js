@@ -1265,47 +1265,57 @@
             this.webgl.model.position.y = -box.min.y;
             this.webgl.model.position.z = -center.z;
 
-            // Enable shadows and fix materials for proper texture display
+            // Load and apply external textures for photorealistic rendering
+            const textureLoader = new THREE.TextureLoader();
+            const texturePath = '/assets/avatars/';
+
+            // Load PBR texture maps
+            const colorMap = textureLoader.load(texturePath + 'Humano_Rig_064-4893_Color01_1K.jpg');
+            const normalMap = textureLoader.load(texturePath + 'Humano_Rig_064-4893_Normal-LOD3_1K.jpg');
+            const roughnessMap = textureLoader.load(texturePath + 'Humano_Rig_064-4893_Roughness_1K.jpg');
+            const aoMap = textureLoader.load(texturePath + 'Humano_Rig_064-4893_AO_1K.jpg');
+
+            // Configure textures for GLB/glTF compatibility
+            [colorMap, normalMap, roughnessMap, aoMap].forEach(tex => {
+              tex.flipY = false; // GLB models need flipY = false
+            });
+
+            // Set color space for accurate color display
+            colorMap.encoding = THREE.sRGBEncoding;
+
+            console.log('📷 Loading avatar textures from:', texturePath);
+
+            // Apply textures and enable shadows
             this.webgl.model.traverse((child) => {
               if (child.isMesh) {
                 child.castShadow = true;
                 child.receiveShadow = true;
 
-                // DEBUG: Log material/texture info
-                console.log('🎨 Mesh:', child.name);
-                console.log('   Material type:', child.material?.type);
-                console.log('   Map (diffuse):', child.material?.map ? 'EXISTS' : 'NONE');
-                console.log('   Normal map:', child.material?.normalMap ? 'EXISTS' : 'NONE');
-                console.log('   Metalness:', child.material?.metalness);
-                console.log('   Roughness:', child.material?.roughness);
+                console.log('🎨 Applying textures to mesh:', child.name);
 
-                // Fix texture encoding for proper color display
-                const mat = child.material;
-                if (mat) {
-                  // Ensure textures use correct color space encoding
-                  if (mat.map) {
-                    mat.map.encoding = THREE.sRGBEncoding;
-                  }
-                  if (mat.emissiveMap) {
-                    mat.emissiveMap.encoding = THREE.sRGBEncoding;
-                  }
+                // Create PBR material with loaded textures
+                const pbrMaterial = new THREE.MeshStandardMaterial({
+                  map: colorMap,
+                  normalMap: normalMap,
+                  roughnessMap: roughnessMap,
+                  aoMap: aoMap,
+                  roughness: 0.8,
+                  metalness: 0.0, // Skin/fabric are non-metallic
+                  envMapIntensity: 0.3,
+                });
 
-                  // For skin/fabric: reduce metalness (should be 0 for non-metal)
-                  // High metalness without environment map = grey appearance
-                  if (mat.metalness !== undefined && mat.metalness > 0.1) {
-                    console.log('   ⚠️ Reducing metalness from', mat.metalness, 'to 0');
-                    mat.metalness = 0;
-                  }
-
-                  // Ensure roughness is reasonable for skin/fabric
-                  if (mat.roughness !== undefined && mat.roughness < 0.3) {
-                    mat.roughness = 0.5; // More diffuse = better without env map
-                  }
-
-                  mat.needsUpdate = true;
+                // Copy UV coordinates to UV2 for ambient occlusion map
+                if (child.geometry && child.geometry.attributes.uv && !child.geometry.attributes.uv2) {
+                  child.geometry.setAttribute('uv2', child.geometry.attributes.uv);
                 }
+
+                // Apply the new material
+                child.material = pbrMaterial;
+                child.material.needsUpdate = true;
               }
             });
+
+            console.log('✅ Avatar textures applied');
 
             // Add to scene
             this.webgl.scene.add(this.webgl.model);
