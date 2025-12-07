@@ -1026,9 +1026,12 @@
      * @returns {Promise<boolean>}
      */
     async loadWebGLAvatar(modelPath = null) {
+      console.log('🎭 loadWebGLAvatar called');
+
       // Use tier model if not specified
       const tierInfo = this.getTierInfo(this.state.currentTier);
       const path = modelPath || tierInfo?.model || TIERS.STANDARD.model;
+      console.log(`🎭 Model path resolved to: ${path}`);
 
       if (!path) {
         console.warn('No model path specified for WebGL avatar');
@@ -1040,6 +1043,7 @@
         console.error('Three.js not loaded. Cannot render WebGL avatar.');
         return false;
       }
+      console.log('✅ Three.js is available');
 
       // Don't reload same model
       if (this.webgl.loadedModel === path && this.webgl.renderer) {
@@ -1221,20 +1225,17 @@
      * @returns {Promise<void>}
      */
     async loadGLBModel(path) {
+      console.log(`🔄 loadGLBModel called with path: ${path}`);
+
       return new Promise((resolve, reject) => {
         // Check for GLTFLoader
         if (typeof THREE.GLTFLoader === 'undefined') {
-          // Try to use ES module loader if available
-          console.log('Loading GLTFLoader dynamically...');
-
-          // Fallback: create basic loader
-          const loader = new THREE.GLTFLoader ? new THREE.GLTFLoader() : null;
-          if (!loader) {
-            reject(new Error('GLTFLoader not available'));
-            return;
-          }
+          console.error('❌ THREE.GLTFLoader is undefined!');
+          reject(new Error('GLTFLoader not available'));
+          return;
         }
 
+        console.log('✅ GLTFLoader is available');
         const loader = new THREE.GLTFLoader();
 
         // Add loading progress
