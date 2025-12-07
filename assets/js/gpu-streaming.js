@@ -90,6 +90,7 @@
       this.state = {
         currentTier: 'free',
         isConnected: false,
+        isStreaming: false,
         dropletId: null,
         dropletIp: null,
         streamUrl: null,
@@ -397,6 +398,59 @@
       this.emitTierChange(newTier, previousTier);
 
       return true;
+    }
+
+    /**
+     * Start streaming - loads the avatar based on current/recommended tier
+     * This is the main entry point to begin avatar rendering
+     * @returns {Promise<boolean>}
+     */
+    async startStreaming() {
+      console.log('🎬 Starting avatar streaming...');
+
+      // Use the detected tier or default to standard
+      const targetTier = this.state.currentTier || 'standard';
+
+      try {
+        // Switch to the target tier, which will load the appropriate avatar
+        const success = await this.switchTier(targetTier);
+
+        if (success) {
+          this.state.isStreaming = true;
+          console.log(`✅ Avatar streaming started (${targetTier} tier)`);
+        } else {
+          // Tier switch failed, try fallback to WebGL standard
+          console.warn('Tier switch failed, attempting WebGL fallback...');
+          await this.fallbackToWebGL();
+          this.state.isStreaming = true;
+        }
+
+        return true;
+      } catch (error) {
+        console.error('Failed to start streaming:', error);
+        // Last resort: try cartoon fallback
+        this.fallbackToCartoon();
+        return false;
+      }
+    }
+
+    /**
+     * Stop streaming - disposes WebGL resources and stops rendering
+     */
+    stopStreaming() {
+      console.log('🛑 Stopping avatar streaming...');
+
+      this.state.isStreaming = false;
+
+      // Dispose WebGL resources
+      this.disposeWebGL();
+
+      // If we have a premium session, end it
+      if (this.state.currentTier === 'premium' && this.state.sessionActive) {
+        this.endSession();
+      }
+
+      console.log('✅ Avatar streaming stopped');
     }
 
     /**
