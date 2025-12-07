@@ -28,18 +28,21 @@
   }
 
   // Configuration object
+  const env = detectEnvironment();
+
   const config = {
-    ENV: detectEnvironment(),
+    ENV: env,
 
     // AI Chat URL (current)
     AI_CHAT_URL: 'https://pmerit-ai-chat.openai.azure.com',
 
-    // API Base URL (placeholder for Phase 2)
-    // TODO (Phase 2): Update this with actual backend API URL
-    API_BASE_URL: '/api',
+    // API Base URL - Use actual backend in production
+    API_BASE_URL: env === 'development'
+      ? 'http://localhost:8787'  // Local wrangler dev server
+      : 'https://pmerit-api-worker.peoplemerit.workers.dev',
 
     // App version
-    VERSION: '1.0.0-phase1'
+    VERSION: '2.2.0'
   };
 
   // Make config globally available
