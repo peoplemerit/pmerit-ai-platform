@@ -21,7 +21,7 @@
   'use strict';
 
   /**
-   * Avatar tier definitions
+   * Avatar tier definitions with 3D model paths
    */
   const TIERS = {
     FREE: {
@@ -29,28 +29,32 @@
       minBandwidth: 0,
       avatar: 'cartoon',
       description: 'CSS/SVG Animation',
-      cost: 0
+      cost: 0,
+      model: null // Uses CSS avatar
     },
     STANDARD: {
       name: 'standard',
       minBandwidth: 5, // Mbps
       avatar: 'webgl',
       description: 'WebGL 3D Avatar',
-      cost: 0
+      cost: 0,
+      model: '/assets/models/avatars/Ty.glb' // 4.3 MB standard avatar
     },
     PREMIUM: {
       name: 'premium',
       minBandwidth: 25, // Mbps for smooth 1080p streaming
       avatar: 'unreal',
       description: 'Unreal MetaHuman',
-      cost: 2.68 // $/hr for H100
+      cost: 2.68, // $/hr for H100
+      model: '/assets/models/avatars/humano_professional.glb' // 5.8 MB premium fallback
     },
     FALLBACK: {
       name: 'fallback',
       minBandwidth: 0,
       avatar: 'static',
       description: 'Static Image',
-      cost: 0
+      cost: 0,
+      model: null
     }
   };
 
@@ -99,6 +103,19 @@
         lastActivity: Date.now(),
         isProvisioning: false,
         provisioningProgress: 0
+      };
+
+      // WebGL state for 3D avatar rendering
+      this.webgl = {
+        scene: null,
+        camera: null,
+        renderer: null,
+        model: null,
+        mixer: null,
+        clock: null,
+        animationId: null,
+        isLoading: false,
+        loadedModel: null
       };
 
       // Callbacks
@@ -333,18 +350,35 @@
 
       const previousTier = this.state.currentTier;
 
-      // Handle premium tier connection/disconnection
+      // Handle tier-specific transitions
       if (newTier === 'premium' && previousTier !== 'premium') {
         // Upgrade to premium - provision GPU
+        this.disposeWebGL(); // Clean up WebGL first
         const success = await this.startSession();
         if (!success) {
           console.warn('Failed to provision GPU, falling back');
-          this.fallbackToWebGL();
+          await this.fallbackToWebGL();
           return false;
         }
       } else if (previousTier === 'premium' && newTier !== 'premium') {
         // Downgrade from premium - destroy GPU
         await this.endSession();
+      }
+
+      // Handle WebGL avatar for standard tier
+      if (newTier === 'standard') {
+        // Load 3D WebGL avatar
+        const webglSuccess = await this.loadWebGLAvatar(tierInfo.model);
+        if (!webglSuccess) {
+          console.warn('WebGL avatar failed, falling back to CSS');
+          this.state.currentTier = 'free';
+          this.updateAvatarFrameTier('free');
+          this.emitTierChange('free', previousTier);
+          return false;
+        }
+      } else if (newTier === 'free' && previousTier === 'standard') {
+        // Downgrading from standard to free - dispose WebGL
+        this.disposeWebGL();
       }
 
       this.state.currentTier = newTier;
@@ -888,12 +922,21 @@
     }
 
     /**
-     * Fallback to WebGL
+     * Fallback to WebGL (loads 3D avatar)
      */
-    fallbackToWebGL() {
+    async fallbackToWebGL() {
       console.log('📉 Falling back to WebGL avatar');
       this.state.currentTier = 'standard';
       this.updateAvatarFrameTier('standard');
+
+      // Load the 3D WebGL avatar
+      const success = await this.loadWebGLAvatar(TIERS.STANDARD.model);
+      if (!success) {
+        console.warn('WebGL fallback failed, using CSS avatar');
+        this.fallbackToCartoon();
+        return;
+      }
+
       this.emitTierChange('standard', 'premium');
     }
 
@@ -902,9 +945,361 @@
      */
     fallbackToCartoon() {
       console.log('📉 Falling back to cartoon avatar');
+      this.disposeWebGL();
       this.state.currentTier = 'free';
       this.updateAvatarFrameTier('free');
       this.emitTierChange('free', this.state.currentTier);
+    }
+
+    // =========================================================================
+    // WebGL 3D Avatar Rendering
+    // =========================================================================
+
+    /**
+     * Load and render WebGL 3D avatar
+     * @param {string} modelPath - Path to GLB model file
+     * @returns {Promise<boolean>}
+     */
+    async loadWebGLAvatar(modelPath = null) {
+      // Use tier model if not specified
+      const tierInfo = this.getTierInfo(this.state.currentTier);
+      const path = modelPath || tierInfo?.model || TIERS.STANDARD.model;
+
+      if (!path) {
+        console.warn('No model path specified for WebGL avatar');
+        return false;
+      }
+
+      // Check if Three.js is available
+      if (typeof THREE === 'undefined') {
+        console.error('Three.js not loaded. Cannot render WebGL avatar.');
+        return false;
+      }
+
+      // Don't reload same model
+      if (this.webgl.loadedModel === path && this.webgl.renderer) {
+        console.log('🎭 WebGL avatar already loaded:', path);
+        return true;
+      }
+
+      console.log('🎭 Loading WebGL 3D avatar:', path);
+      this.webgl.isLoading = true;
+
+      try {
+        // Dispose previous WebGL resources
+        this.disposeWebGL();
+
+        // Get container dimensions
+        const container = this.avatarFrame;
+        if (!container) {
+          throw new Error('Avatar frame container not found');
+        }
+
+        const width = container.clientWidth || 300;
+        const height = container.clientHeight || 400;
+
+        // Create scene
+        this.webgl.scene = new THREE.Scene();
+        this.webgl.scene.background = new THREE.Color(0x1a1a2e); // Dark purple-ish
+
+        // Create camera
+        this.webgl.camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
+        this.webgl.camera.position.set(0, 1.4, 2.5);
+        this.webgl.camera.lookAt(0, 1.2, 0);
+
+        // Create renderer
+        this.webgl.renderer = new THREE.WebGLRenderer({
+          antialias: true,
+          alpha: true,
+          powerPreference: 'high-performance'
+        });
+        this.webgl.renderer.setSize(width, height);
+        this.webgl.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        this.webgl.renderer.outputEncoding = THREE.sRGBEncoding;
+        this.webgl.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        this.webgl.renderer.toneMappingExposure = 1.0;
+        this.webgl.renderer.shadowMap.enabled = true;
+        this.webgl.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+        // Style the canvas
+        this.webgl.renderer.domElement.style.cssText = `
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          border-radius: 18px;
+        `;
+
+        // Add to container
+        container.appendChild(this.webgl.renderer.domElement);
+
+        // Add lighting
+        this.setupLighting();
+
+        // Load the model
+        await this.loadGLBModel(path);
+
+        // Create animation clock
+        this.webgl.clock = new THREE.Clock();
+
+        // Start animation loop
+        this.startWebGLAnimation();
+
+        // Handle resize
+        this.setupResizeHandler();
+
+        this.webgl.isLoading = false;
+        this.webgl.loadedModel = path;
+
+        console.log('✅ WebGL 3D avatar loaded successfully');
+        return true;
+
+      } catch (error) {
+        console.error('Failed to load WebGL avatar:', error);
+        this.webgl.isLoading = false;
+        this.disposeWebGL();
+        return false;
+      }
+    }
+
+    /**
+     * Set up scene lighting
+     */
+    setupLighting() {
+      if (!this.webgl.scene) return;
+
+      // Ambient light for overall illumination
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+      this.webgl.scene.add(ambientLight);
+
+      // Key light (main light from front-right)
+      const keyLight = new THREE.DirectionalLight(0xffffff, 0.8);
+      keyLight.position.set(2, 3, 2);
+      keyLight.castShadow = true;
+      keyLight.shadow.mapSize.width = 1024;
+      keyLight.shadow.mapSize.height = 1024;
+      this.webgl.scene.add(keyLight);
+
+      // Fill light (softer, from front-left)
+      const fillLight = new THREE.DirectionalLight(0x9bb5ff, 0.3);
+      fillLight.position.set(-2, 2, 2);
+      this.webgl.scene.add(fillLight);
+
+      // Rim light (from behind for edge definition)
+      const rimLight = new THREE.DirectionalLight(0x4aa4b9, 0.4);
+      rimLight.position.set(0, 2, -3);
+      this.webgl.scene.add(rimLight);
+
+      // Ground plane for shadows (invisible)
+      const groundGeometry = new THREE.PlaneGeometry(10, 10);
+      const groundMaterial = new THREE.ShadowMaterial({ opacity: 0.3 });
+      const ground = new THREE.Mesh(groundGeometry, groundMaterial);
+      ground.rotation.x = -Math.PI / 2;
+      ground.position.y = 0;
+      ground.receiveShadow = true;
+      this.webgl.scene.add(ground);
+    }
+
+    /**
+     * Load GLB model using GLTFLoader
+     * @param {string} path - Model path
+     * @returns {Promise<void>}
+     */
+    async loadGLBModel(path) {
+      return new Promise((resolve, reject) => {
+        // Check for GLTFLoader
+        if (typeof THREE.GLTFLoader === 'undefined') {
+          // Try to use ES module loader if available
+          console.log('Loading GLTFLoader dynamically...');
+
+          // Fallback: create basic loader
+          const loader = new THREE.GLTFLoader ? new THREE.GLTFLoader() : null;
+          if (!loader) {
+            reject(new Error('GLTFLoader not available'));
+            return;
+          }
+        }
+
+        const loader = new THREE.GLTFLoader();
+
+        // Add loading progress
+        loader.load(
+          path,
+          (gltf) => {
+            this.webgl.model = gltf.scene;
+
+            // Center and scale the model
+            const box = new THREE.Box3().setFromObject(this.webgl.model);
+            const center = box.getCenter(new THREE.Vector3());
+            const size = box.getSize(new THREE.Vector3());
+
+            // Scale to fit ~1.8m height
+            const targetHeight = 1.8;
+            const scale = targetHeight / size.y;
+            this.webgl.model.scale.setScalar(scale);
+
+            // Center horizontally, place feet at y=0
+            this.webgl.model.position.x = -center.x * scale;
+            this.webgl.model.position.y = -box.min.y * scale;
+            this.webgl.model.position.z = -center.z * scale;
+
+            // Enable shadows
+            this.webgl.model.traverse((child) => {
+              if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+              }
+            });
+
+            // Add to scene
+            this.webgl.scene.add(this.webgl.model);
+
+            // Set up animations if present
+            if (gltf.animations && gltf.animations.length > 0) {
+              this.webgl.mixer = new THREE.AnimationMixer(this.webgl.model);
+              const action = this.webgl.mixer.clipAction(gltf.animations[0]);
+              action.play();
+            }
+
+            console.log(`✅ Model loaded: ${path}`);
+            resolve();
+          },
+          (progress) => {
+            const percent = (progress.loaded / progress.total * 100).toFixed(0);
+            console.log(`📦 Loading model: ${percent}%`);
+          },
+          (error) => {
+            console.error('Model load error:', error);
+            reject(error);
+          }
+        );
+      });
+    }
+
+    /**
+     * Start WebGL animation loop
+     */
+    startWebGLAnimation() {
+      if (this.webgl.animationId) {
+        cancelAnimationFrame(this.webgl.animationId);
+      }
+
+      const animate = () => {
+        this.webgl.animationId = requestAnimationFrame(animate);
+
+        if (!this.webgl.renderer || !this.webgl.scene || !this.webgl.camera) {
+          return;
+        }
+
+        // Update animation mixer
+        if (this.webgl.mixer && this.webgl.clock) {
+          const delta = this.webgl.clock.getDelta();
+          this.webgl.mixer.update(delta);
+        }
+
+        // Gentle idle animation (subtle breathing/swaying)
+        if (this.webgl.model) {
+          const time = Date.now() * 0.001;
+          // Subtle vertical movement (breathing)
+          this.webgl.model.position.y += Math.sin(time * 2) * 0.0003;
+          // Very subtle rotation
+          this.webgl.model.rotation.y = Math.sin(time * 0.5) * 0.02;
+        }
+
+        // Render
+        this.webgl.renderer.render(this.webgl.scene, this.webgl.camera);
+      };
+
+      animate();
+    }
+
+    /**
+     * Set up window resize handler
+     */
+    setupResizeHandler() {
+      this._resizeHandler = () => {
+        if (!this.avatarFrame || !this.webgl.renderer || !this.webgl.camera) return;
+
+        const width = this.avatarFrame.clientWidth;
+        const height = this.avatarFrame.clientHeight;
+
+        this.webgl.camera.aspect = width / height;
+        this.webgl.camera.updateProjectionMatrix();
+        this.webgl.renderer.setSize(width, height);
+      };
+
+      window.addEventListener('resize', this._resizeHandler);
+    }
+
+    /**
+     * Dispose WebGL resources
+     */
+    disposeWebGL() {
+      console.log('🧹 Disposing WebGL resources...');
+
+      // Stop animation
+      if (this.webgl.animationId) {
+        cancelAnimationFrame(this.webgl.animationId);
+        this.webgl.animationId = null;
+      }
+
+      // Remove resize handler
+      if (this._resizeHandler) {
+        window.removeEventListener('resize', this._resizeHandler);
+        this._resizeHandler = null;
+      }
+
+      // Dispose mixer
+      if (this.webgl.mixer) {
+        this.webgl.mixer.stopAllAction();
+        this.webgl.mixer = null;
+      }
+
+      // Dispose model
+      if (this.webgl.model) {
+        this.webgl.model.traverse((child) => {
+          if (child.isMesh) {
+            if (child.geometry) child.geometry.dispose();
+            if (child.material) {
+              if (Array.isArray(child.material)) {
+                child.material.forEach(m => m.dispose());
+              } else {
+                child.material.dispose();
+              }
+            }
+          }
+        });
+        if (this.webgl.scene) {
+          this.webgl.scene.remove(this.webgl.model);
+        }
+        this.webgl.model = null;
+      }
+
+      // Dispose scene objects
+      if (this.webgl.scene) {
+        while (this.webgl.scene.children.length > 0) {
+          const child = this.webgl.scene.children[0];
+          this.webgl.scene.remove(child);
+        }
+        this.webgl.scene = null;
+      }
+
+      // Dispose renderer
+      if (this.webgl.renderer) {
+        this.webgl.renderer.dispose();
+        if (this.webgl.renderer.domElement && this.webgl.renderer.domElement.parentNode) {
+          this.webgl.renderer.domElement.parentNode.removeChild(this.webgl.renderer.domElement);
+        }
+        this.webgl.renderer = null;
+      }
+
+      // Reset state
+      this.webgl.camera = null;
+      this.webgl.clock = null;
+      this.webgl.loadedModel = null;
+
+      console.log('✅ WebGL resources disposed');
     }
 
     /**
@@ -1016,6 +1411,9 @@
       // Stop timers
       this.stopIdleTimer();
       this.stopSessionTimer();
+
+      // Dispose WebGL resources
+      this.disposeWebGL();
 
       // Remove stream container
       if (this.streamContainer && this.streamContainer.parentNode) {
