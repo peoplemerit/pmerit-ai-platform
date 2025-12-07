@@ -48,12 +48,10 @@
     
     <!-- Virtual Human API (MUST load before controller) -->
     <script src="../assets/js/virtual-human-api.js"></script>
-    
-    <!-- Virtual Human Controller (NEW: Overlay mode) -->
-  
-  
-  <!-- Virtual Human Controller (NEW: Overlay mode) -->
-  <script src="../assets/js/virtual-human-controller.js"></script>
+
+    <!-- NOTE: virtual-human-controller.js is NOT loaded here because
+         classroom.html has its own VH system in #vh-root with GPUStreaming.
+         Loading it would create duplicate overlays and toggle conflicts. -->
   
   <!-- TTS module -->
   <script src="../assets/js/tts.js"></script>
@@ -357,7 +355,7 @@
 
           <!-- Avatar Stage (Canvas/Image renders here) -->
           <div class="avatar-stage">
-            <canvas id="vh-canvas"></canvas>
+            <canvas id="vh-canvas" style="width: 100%; height: 100%; display: block;"></canvas>
             <!-- Fallback static avatar -->
             <div class="avatar-static" id="avatar-fallback" style="display: none;">
               <i class="fas fa-user-graduate"></i>
