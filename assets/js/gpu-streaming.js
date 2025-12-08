@@ -1145,7 +1145,7 @@
         this.webgl.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         this.webgl.renderer.outputEncoding = THREE.sRGBEncoding;
         this.webgl.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        this.webgl.renderer.toneMappingExposure = 1.2; // Brighter for better skin tones
+        this.webgl.renderer.toneMappingExposure = 1.4; // Brighter for better skin tones
         this.webgl.renderer.shadowMap.enabled = true;
         this.webgl.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
@@ -1187,12 +1187,12 @@
       // === PROFESSIONAL 3-POINT STUDIO LIGHTING ===
       // Optimized for Humano3D PBR skin rendering
 
-      // Ambient light - low to preserve contrast
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+      // Ambient light - brighter for skin visibility
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
       this.webgl.scene.add(ambientLight);
 
       // Hemisphere light for natural sky/ground gradient
-      const hemiLight = new THREE.HemisphereLight(0xffeedd, 0x444444, 0.5);
+      const hemiLight = new THREE.HemisphereLight(0xffeedd, 0x444444, 0.6);
       hemiLight.position.set(0, 10, 0);
       this.webgl.scene.add(hemiLight);
 
