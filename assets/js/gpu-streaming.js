@@ -1145,7 +1145,7 @@
         this.webgl.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         this.webgl.renderer.outputEncoding = THREE.sRGBEncoding;
         this.webgl.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        this.webgl.renderer.toneMappingExposure = 1.0;
+        this.webgl.renderer.toneMappingExposure = 1.2; // Brighter for better skin tones
         this.webgl.renderer.shadowMap.enabled = true;
         this.webgl.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
@@ -1184,42 +1184,54 @@
     setupLighting() {
       if (!this.webgl.scene) return;
 
-      // Ambient light for overall illumination (increased for better visibility)
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+      // === PROFESSIONAL 3-POINT STUDIO LIGHTING ===
+      // Optimized for Humano3D PBR skin rendering
+
+      // Ambient light - low to preserve contrast
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
       this.webgl.scene.add(ambientLight);
 
-      // Hemisphere light for natural sky/ground gradient lighting
-      // This helps PBR materials look good without full environment map
-      const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.6);
+      // Hemisphere light for natural sky/ground gradient
+      const hemiLight = new THREE.HemisphereLight(0xffeedd, 0x444444, 0.5);
       hemiLight.position.set(0, 10, 0);
       this.webgl.scene.add(hemiLight);
 
-      // Key light (main light from front-right)
-      const keyLight = new THREE.DirectionalLight(0xffffff, 1.0);
-      keyLight.position.set(2, 3, 2);
+      // KEY LIGHT - Main light, warm white, front-right
+      const keyLight = new THREE.DirectionalLight(0xfff5e6, 1.4);
+      keyLight.position.set(3, 4, 3);
       keyLight.castShadow = true;
-      keyLight.shadow.mapSize.width = 1024;
-      keyLight.shadow.mapSize.height = 1024;
+      keyLight.shadow.mapSize.width = 2048;
+      keyLight.shadow.mapSize.height = 2048;
+      keyLight.shadow.camera.near = 0.1;
+      keyLight.shadow.camera.far = 20;
+      keyLight.shadow.bias = -0.001;
       this.webgl.scene.add(keyLight);
 
-      // Fill light (softer, from front-left)
-      const fillLight = new THREE.DirectionalLight(0x9bb5ff, 0.4);
-      fillLight.position.set(-2, 2, 2);
+      // FILL LIGHT - Softer, warm tone, front-left
+      const fillLight = new THREE.DirectionalLight(0xffeedd, 0.5);
+      fillLight.position.set(-3, 3, 2);
       this.webgl.scene.add(fillLight);
 
-      // Rim light (from behind for edge definition)
-      const rimLight = new THREE.DirectionalLight(0x4aa4b9, 0.5);
-      rimLight.position.set(0, 2, -3);
+      // RIM LIGHT - Strong edge definition, behind model
+      const rimLight = new THREE.DirectionalLight(0xffffff, 0.7);
+      rimLight.position.set(0, 3, -4);
       this.webgl.scene.add(rimLight);
+
+      // FACE LIGHT - Soft frontal fill for skin glow
+      const faceLight = new THREE.PointLight(0xffffff, 0.3, 10);
+      faceLight.position.set(0, 1.5, 2);
+      this.webgl.scene.add(faceLight);
 
       // Ground plane for shadows (invisible)
       const groundGeometry = new THREE.PlaneGeometry(10, 10);
-      const groundMaterial = new THREE.ShadowMaterial({ opacity: 0.3 });
+      const groundMaterial = new THREE.ShadowMaterial({ opacity: 0.2 });
       const ground = new THREE.Mesh(groundGeometry, groundMaterial);
       ground.rotation.x = -Math.PI / 2;
       ground.position.y = 0;
       ground.receiveShadow = true;
       this.webgl.scene.add(ground);
+
+      console.log('💡 Professional studio lighting configured');
     }
 
     /**
@@ -1352,15 +1364,15 @@
             // Add to scene
             this.webgl.scene.add(this.webgl.model);
 
-            // Position camera for waist-up "video call" framing
-            // Camera looks at upper body (chest/face area)
-            const waistY = size.y * 0.55; // Waist level
-            const headY = size.y * 0.9;   // Head level
-            const lookAtY = (waistY + headY) / 2; // Look at chest/neck area
-            const cameraDistance = size.y * 0.9; // Closer for waist-up view
+            // Position camera for tight portrait framing (head/shoulders)
+            // Optimized for professional "video call" appearance
+            const lookAtY = size.y * 0.82;        // Focus on face/upper chest
+            const cameraDistance = size.y * 0.55; // Closer for portrait framing
 
             this.webgl.camera.position.set(0, lookAtY, cameraDistance);
-            this.webgl.camera.lookAt(0, lookAtY, 0);
+            this.webgl.camera.lookAt(0, lookAtY * 0.95, 0); // Slight downward angle
+
+            console.log(`📷 Camera: portrait framing at distance ${cameraDistance.toFixed(2)}`);
 
             // Set up animations if present
             if (gltf.animations && gltf.animations.length > 0) {
