@@ -88,7 +88,7 @@
 
       // State
       this.state = {
-        currentTier: 'free',
+        currentTier: 'standard', // Default to standard for reliable WebGL avatar
         isConnected: false,
         isStreaming: false,
         dropletId: null,
@@ -219,14 +219,15 @@
      * @returns {string} Selected tier name
      */
     async selectTierForBandwidth(mbps) {
-      let selectedTier = 'free';
+      // Force standard as minimum tier - free tier doesn't load WebGL avatar
+      let selectedTier = 'standard';
 
       if (mbps >= TIERS.PREMIUM.minBandwidth) {
         selectedTier = 'premium';
-      } else if (mbps >= TIERS.STANDARD.minBandwidth) {
-        selectedTier = 'standard';
       } else {
-        selectedTier = 'free';
+        // Always use standard tier minimum for reliable avatar loading
+        selectedTier = 'standard';
+        console.log('🎯 Forcing standard tier (minimum) for reliable avatar loading');
       }
 
       const previousTier = this.state.currentTier;
