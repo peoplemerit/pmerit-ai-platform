@@ -1267,7 +1267,11 @@
 
             // Load and apply external textures for photorealistic rendering
             const textureLoader = new THREE.TextureLoader();
-            const texturePath = '/assets/avatars/';
+            textureLoader.crossOrigin = 'anonymous'; // Enable CORS for cross-origin textures
+
+            // Use absolute URL for textures (ensures correct loading from CDN/production)
+            const baseUrl = window.location.origin || 'https://pmerit.com';
+            const texturePath = baseUrl + '/assets/avatars/';
 
             // Helper to load texture with promise and logging
             const loadTexture = (filename) => new Promise((resolve) => {
