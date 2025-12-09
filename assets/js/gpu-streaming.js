@@ -38,7 +38,7 @@
       avatar: 'webgl',
       description: 'WebGL 3D Avatar',
       cost: 0,
-      model: '/assets/models/avatars/humano_professional.glb' // Use same model for debugging
+      model: '/assets/models/avatars/Ty.glb' // Placeholder - needs properly textured model
     },
     PREMIUM: {
       name: 'premium',
@@ -46,7 +46,7 @@
       avatar: 'unreal',
       description: 'Unreal MetaHuman',
       cost: 2.68, // $/hr for H100
-      model: '/assets/models/avatars/humano_professional.glb' // 5.8 MB premium fallback
+      model: '/assets/models/avatars/Ty.glb' // Placeholder - needs properly textured model
     },
     FALLBACK: {
       name: 'fallback',
