@@ -1278,88 +1278,17 @@
             this.webgl.model.position.y = -box.min.y;
             this.webgl.model.position.z = -center.z;
 
-            // Load and apply external textures for photorealistic rendering
-            const textureLoader = new THREE.TextureLoader();
-            textureLoader.crossOrigin = 'anonymous'; // Enable CORS for cross-origin textures
-
-            // Use absolute URL for textures (ensures correct loading from CDN/production)
-            const baseUrl = window.location.origin || 'https://pmerit.com';
-            const texturePath = baseUrl + '/assets/avatars/';
-
-            // Helper to load texture with promise and logging
-            const loadTexture = (filename) => new Promise((resolve) => {
-              const url = texturePath + filename;
-              textureLoader.load(
-                url,
-                (tex) => {
-                  console.log('✅ Texture loaded:', filename, tex.image?.width + 'x' + tex.image?.height);
-                  resolve(tex);
-                },
-                undefined,
-                (err) => {
-                  console.warn('⚠️ Texture failed to load:', filename, err?.message || err);
-                  resolve(null); // Continue without this texture
-                }
-              );
-            });
-
-            console.log('📷 Loading avatar textures from:', texturePath);
-
-            // Load all textures in parallel (wait for them to actually load)
-            const [colorMap, normalMap, roughnessMap, aoMap] = await Promise.all([
-              loadTexture('Humano_Rig_064-4893_Color01_1K.jpg'),
-              loadTexture('Humano_Rig_064-4893_Normal-LOD3_1K.jpg'),
-              loadTexture('Humano_Rig_064-4893_Roughness_1K.jpg'),
-              loadTexture('Humano_Rig_064-4893_AO_1K.jpg'),
-            ]);
-
-            // Configure textures for GLB/glTF compatibility
-            [colorMap, normalMap, roughnessMap, aoMap].filter(Boolean).forEach(tex => {
-              tex.flipY = false; // GLB models need flipY = false
-            });
-
-            // Set color space for accurate color display
-            if (colorMap) {
-              colorMap.encoding = THREE.sRGBEncoding;
-            }
-
-            console.log('🖼️ Texture load results:', {
-              color: colorMap ? 'OK' : 'FAILED',
-              normal: normalMap ? 'OK' : 'FAILED',
-              roughness: roughnessMap ? 'OK' : 'FAILED',
-              ao: aoMap ? 'OK' : 'FAILED'
-            });
-
-            // Apply textures and enable shadows (preserve existing material properties)
+            // GLB has embedded textures - just enable shadows on meshes
+            // (External texture loading removed - was overwriting embedded textures)
             this.webgl.model.traverse((child) => {
               if (child.isMesh) {
                 child.castShadow = true;
                 child.receiveShadow = true;
-
-                const isSkinnedMesh = child.isSkinnedMesh;
-                console.log('🎨 Applying textures to mesh:', child.name, isSkinnedMesh ? '(skinned)' : '');
-
-                // Update existing material's texture maps (preserves skinning/morphing)
-                if (child.material) {
-                  // Only apply textures that successfully loaded
-                  if (colorMap) child.material.map = colorMap;
-                  if (normalMap) child.material.normalMap = normalMap;
-                  if (roughnessMap) child.material.roughnessMap = roughnessMap;
-                  if (aoMap) child.material.aoMap = aoMap;
-                  child.material.roughness = 0.8;
-                  child.material.metalness = 0.0; // Skin/fabric are non-metallic
-                  child.material.envMapIntensity = 0.3;
-                  child.material.needsUpdate = true;
-                }
-
-                // Copy UV coordinates to UV2 for ambient occlusion map
-                if (child.geometry && child.geometry.attributes.uv && !child.geometry.attributes.uv2) {
-                  child.geometry.setAttribute('uv2', child.geometry.attributes.uv);
-                }
+                console.log('🎨 Mesh with embedded textures:', child.name, child.isSkinnedMesh ? '(skinned)' : '');
               }
             });
 
-            console.log('✅ Avatar textures applied (skinning preserved)');
+            console.log('✅ Using GLB embedded textures');
 
             // Add to scene
             this.webgl.scene.add(this.webgl.model);
