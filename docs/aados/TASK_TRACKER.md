@@ -1,7 +1,7 @@
 # PMERIT Platform — Task Tracker
 
-**Last Updated:** 2025-12-08
-**Current Session:** 42
+**Last Updated:** 2025-12-09
+**Current Session:** 43
 **Governance Version:** V5 FINAL
 **Workflow Mode:** Direct Execution (Claude Code Desktop)
 
@@ -624,60 +624,90 @@ Login/Signup → /account.html → "Enter Dashboard" → /dashboard.html
 **When "PMERIT CONTINUE" is triggered:**
 
 ```
-📍 Phase: PHASE 6 — Progress & Assessment Integration (UNLOCKED)
-📊 Gate Status: Conditionally Complete (9/10 verified)
-🎯 Next: Fix Avatar UX issues, then Phase 6 requirements
+📍 Phase: PHASE 5 COMPLETE — Awaiting Avatar Architecture Fix
+📊 Gate Status: Requires browser verification (homepage gate score unknown)
+🎯 Next: Fix avatar model path mismatch before Phase 6
 ✅ Phase 0 COMPLETE: 6 requirements verified (Session 31)
 ✅ Phase 1 COMPLETE: 5 requirements verified (Session 31)
 ✅ Phase 2 COMPLETE: 8 requirements verified (Session 31)
 ✅ Phase 3 COMPLETE: 8 requirements verified (Session 34)
 ✅ Phase 4 COMPLETE: 8 requirements verified (Session 35)
 ✅ Phase 5 COMPLETE: 8 requirements verified (Session 36)
-🩺 Production Health: All systems healthy (TTS confirmed working)
+⚠️ BLOCKER: Avatar model paths don't match deployed assets
+🩺 Production Health: Backend healthy, Digital Desk needs investigation
 ⚡ Workflow: Direct Execution
 ```
 
-**Last Audit:** 2025-12-08 (Session 42) - Full production verification
-**Session 42 Actions:**
-- **Production Audit:** All systems healthy (Frontend, Backend v2.2.0, AI Chat, APIs)
-- **Data Verified:** 14 pathways, 42 courses, 40 API endpoints
-- **Ready for:** Phase 6 implementation or browser avatar testing
+**Last Audit:** 2025-12-09 (Session 43) - Comprehensive Platform Audit
+**Session 43 Key Findings (100% Verified Facts):**
+- **Backend API:** v2.2.0 healthy with 40 endpoints
+- **Database:** 82 tables confirmed
+- **TTS:** Working — returns audio/mpeg (104KB for "Hello world")
+- **Pathways:** 14 items returned
+- **Courses:** 42 items returned
+- **GPU Tiers:** 3 tiers, 4 regions
+
+**IDENTIFIED ARCHITECTURAL ISSUE:**
+
+| Component | Model Path in Code | Actually Deployed |
+|-----------|-------------------|-------------------|
+| AvatarManager.js (Line 22) | `pm_classic.glb` | N/A |
+| GPUStreaming.js (Line 42) | `Ty.glb` | N/A |
+| Production Assets | — | `humano_professional.glb` (67MB) |
+
+**Resolution Required:** Update model paths to point to `humano_professional.glb`
 
 **Active Handoffs:**
-- `PMERIT_HANDOFF_SESSION_36_FINAL.md`
-- `PMERIT_HANDOFF_SESSION_37.md`
-- `PMERIT_HANDOFF_SESSION_38_39_UPDATED.md`
-- `PMERIT_HANDOFF_SESSION_39.md` (to be consolidated)
+- `PMERIT_HANDOFF_SESSION_40.md`
+- `PMERIT_HANDOFF_SESSION_41.md`
+- `PMERIT_HANDOFF_SESSION_42.md` (IN PROGRESS)
 
-**Session 37-39 Milestones:**
-- **DIGITAL DESK COMPLETE** (Frontend + Backend)
-- Session 37: Proctor Controller, Vision AI, GPU Streaming (Frontend)
-- Session 38: Exam API (6 endpoints), GPU API (7 endpoints) (Backend)
-- Session 39: Three.js r128 fix, VH container visibility
-- Database: 82 tables (exam_sessions, proctoring_violations, gpu_sessions)
-- **Total: 43 requirements verified (P0-P5 complete!) + Digital Desk**
-- **Total API Endpoints: 40** (Backend v2.2.0)
+**Verified Production Data:**
+- Database: 82 tables
+- API Endpoints: 40 (Backend v2.2.0)
+- Pathways: 14 | Courses: 42
+- Avatar Textures: 15 JPG files (all accessible)
+- GLB Model: humano_professional.glb (HTTP 200)
 
 ---
 
-## ✅ SESSION 41 COMPLETED TASKS
+## ⚠️ SESSION 43 — BLOCKER IDENTIFIED
 
-| Priority | Task | Status | Resolution |
-|----------|------|--------|------------|
-| **HIGH** | Fix AvatarManager.js TTS path | ✅ DONE | Changed to use `window.CONFIG?.API_BASE_URL + /api/v1/tts` |
-| **HIGH** | Unify Avatar Systems | ✅ DONE | Systems already properly unified: AvatarManager=TTS only, GPUStreaming=rendering |
-| **HIGH** | Implement Graceful Fallback | ✅ DONE | Already uses toast notifications + static fallback (no red overlays) |
+| Component | Issue | Location |
+|-----------|-------|----------|
+| AvatarManager | Default model: `pm_classic.glb` | Line 22 |
+| GPUStreaming | STANDARD tier model: `Ty.glb` | Line 42 |
+| Production | Deployed model: `humano_professional.glb` | assets/models/avatars/ |
+
+**Status:** Model paths in JavaScript don't match the deployed asset.
 
 ---
 
-## 🎯 NEXT TASKS (Phase 6 Ready)
+## ✅ SESSION 43 COMPLETED TASKS
+
+| Task | Status | Details |
+|------|--------|---------|
+| Comprehensive API audit | ✅ DONE | All 40 endpoints verified |
+| Database audit | ✅ DONE | 82 tables documented |
+| Frontend pages audit | ✅ DONE | 25 HTML pages identified |
+| JavaScript files audit | ✅ DONE | 42 JS files documented |
+| Avatar architecture analysis | ✅ DONE | Model path mismatch identified |
+| Create new audit report | ✅ DONE | PRODUCTION_AUDIT_2025-12-09.md |
+| Archive old audits | ✅ DONE | 2025-12-05, 06, 07 moved to archive/ |
+| Update STATE.json | ✅ DONE | Session 43, new blocker |
+| Update TASK_TRACKER.md | ✅ DONE | This update |
+
+---
+
+## 🎯 NEXT TASKS (Before Phase 6)
 
 | Priority | Task | Notes |
 |----------|------|-------|
+| **CRITICAL** | Fix avatar model paths | Update AvatarManager.js and gpu-streaming.js to use humano_professional.glb |
+| **HIGH** | Browser test avatar | Verify 3D model actually renders in browser |
 | **MEDIUM** | Fix Language Modal (H7) | Debug "No languages found" issue |
-| **MEDIUM** | Browser Test Avatar | Verify 3D model renders in actual browser |
 | **LOW** | Configure TTS Quota | Enable usage tracking |
-| **NEXT** | Phase 6: Progress & Assessment | Progress tracking, certificates, assessments |
+| **NEXT** | Phase 6: Progress & Assessment | After avatar fix is verified |
 
 ---
 
@@ -687,8 +717,9 @@ Login/Signup → /account.html → "Enter Dashboard" → /dashboard.html
 |----------|---------|
 | docs/aados/GOVERNANCE.md | Rules, workflows, commands |
 | docs/aados/ENVIRONMENTS.md | Environment definitions |
-| docs/aados/PRODUCTION_AUDIT_2025-12-07.md | Latest audit report |
+| docs/aados/PRODUCTION_AUDIT_2025-12-09.md | Latest audit report |
 | docs/aados/STATE.json | Machine-readable state |
+| docs/aados/archive/ | Archived audits (2025-12-05, 06, 07) |
 
 ---
 

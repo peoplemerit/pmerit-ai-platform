@@ -2,19 +2,19 @@
   "schema_version": "2.0",
   "schema_notes": "Enhanced with production_health and audit tracking - Version 2.0",
 
-  "last_updated": "2025-12-08T01:05:00Z",
+  "last_updated": "2025-12-09T13:45:00Z",
   "last_updated_by": "claude-code",
 
-  "session_number": 42,
-  "last_audit_date": "2025-12-08",
+  "session_number": 43,
+  "last_audit_date": "2025-12-09",
 
   "current_phase": "PHASE_5",
   "phase_name": "Virtual Classroom + Digital Desk",
   "phase_status": "complete",
   "gate_status": "complete",
 
-  "active_requirement": "PHASE_6",
-  "requirement_description": "Progress & Assessment Integration (Next Phase)",
+  "active_requirement": "AVATAR_ARCHITECTURE_FIX",
+  "requirement_description": "Fix dual avatar system architecture before Phase 6",
   "attempt_count": 0,
   "max_attempts": 3,
   "extended": false,
@@ -29,15 +29,23 @@
     "database": "healthy",
     "assessment": "healthy",
     "classroom": "healthy",
-    "digital_desk": "healthy",
+    "digital_desk": "needs_investigation",
     "exam_api": "healthy",
     "gpu_api": "healthy",
     "tts_api": "healthy",
-    "last_check": "2025-12-08T01:03:00Z",
-    "homepage_gate_score": "9/10"
+    "last_check": "2025-12-09T13:32:00Z",
+    "homepage_gate_score": "requires_browser_verification"
   },
 
-  "blockers": [],
+  "blockers": [
+    {
+      "id": "AVATAR_MODEL_MISMATCH",
+      "description": "AvatarManager defaults to pm_classic.glb, GPUStreaming uses Ty.glb, but deployed asset is humano_professional.glb",
+      "since": "Session 43",
+      "impact": "Avatar may not render correctly - model paths don't match deployed assets",
+      "affected": ["AvatarManager.js:22", "gpu-streaming.js:42", "assets/models/avatars/"]
+    }
+  ],
 
   "resolved_blockers": [
     {
@@ -91,20 +99,27 @@
   ],
 
   "notes": {
-    "current_focus": "Phase 6 (Progress & Assessment Integration) - All blockers RESOLVED",
+    "current_focus": "Stabilize and document architecture before fixing avatar system",
+    "session_43_milestone": "Comprehensive audit - identified model path mismatch across avatar systems",
     "session_41_milestone": "Fixed TTS paths, unified avatar systems, DEPLOYED 15 avatar texture files, lip sync integration",
     "session_40_milestone": "Production Audit - TTS confirmed working, handoffs archived",
     "session_38_39_milestone": "Digital Desk Backend + Frontend COMPLETE",
     "remaining_partial": "H7 language modal only",
-    "handoffs_archived": "Sessions 27, 28, 33, 34, 35, 36 (non-FINAL) moved to archive/"
+    "audits_archived": "PRODUCTION_AUDIT_2025-12-05, 2025-12-06, 2025-12-07 moved to docs/aados/archive/"
   },
 
   "recent_changes": [
     {
+      "session": 43,
+      "date": "2025-12-09",
+      "change": "Comprehensive Platform Audit - Model Mismatch Identified",
+      "impact": "Full audit with 100% verified facts. Found: AvatarManager defaults to pm_classic.glb, GPUStreaming uses Ty.glb, but deployed asset is humano_professional.glb. Database: 82 tables. API: 40 endpoints (v2.2.0). TTS: Working (104KB audio). Old audits archived."
+    },
+    {
       "session": 42,
       "date": "2025-12-08",
-      "change": "Production Audit - All Systems Healthy",
-      "impact": "Full production verification completed. Backend v2.2.0 healthy with 40 endpoints. AI Chat working (streaming response). 14 pathways, 42 courses in database. Ready for Phase 6 work or browser avatar testing."
+      "change": "Avatar debugging session",
+      "impact": "Avatar temporarily disabled for debugging. Root cause: two avatar systems competing."
     },
     {
       "session": 41,
@@ -141,8 +156,8 @@
   "reference_docs": {
     "feature_spec": "docs/handoffs/BRAINSTORM_ASU_LIKE_SCHEMA.md",
     "user_journey": "docs/project/Pmerit-comprehensively-narrative-users-and-Admin-Journey.md",
-    "latest_audit": "docs/aados/PRODUCTION_AUDIT_2025-12-08.md",
+    "latest_audit": "docs/aados/PRODUCTION_AUDIT_2025-12-09.md",
     "master_doc": "docs/project/Pmerit_Project_Document.md",
-    "latest_handoff": "docs/handoffs/PMERIT_HANDOFF_SESSION_41.md"
+    "latest_handoff": "docs/handoffs/PMERIT_HANDOFF_SESSION_42.md"
   }
 }
