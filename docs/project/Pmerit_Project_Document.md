@@ -1,9 +1,10 @@
 # PMERIT Project Document
 
-**Version:** 2.2
-**Last Updated:** December 7, 2025
-**Status:** Active Development
+**Version:** 3.0
+**Last Updated:** December 9, 2025
+**Status:** Architecture Implementation Phase
 **Document Purpose:** Master source of truth for PMERIT platform — roadmap, decisions, and task tracking
+**Architecture Spec:** [PMERIT_ARCHITECTURE_FINAL.md](./PMERIT_ARCHITECTURE_FINAL.md) — APPROVED v1.1
 
 ---
 
@@ -15,6 +16,7 @@ This is the **MASTER DOCUMENT** for the PMERIT project. It serves as:
 2. **Decision Registry** — Implementation decisions made during development
 3. **Task Carryforward** — Incomplete tasks carried between sessions
 4. **Session History** — Record of development sessions
+5. **Architecture Reference** — Links to approved architecture specification
 
 ### Document Workflow
 
@@ -85,6 +87,13 @@ PMERIT DOCUMENTATION HIERARCHY
 │       ├── Task carryforward (WHAT's next)
 │       └── Session history (WHEN)
 │
+├── 📄 PMERIT_ARCHITECTURE_FINAL.md — **ARCHITECTURE SPECIFICATION** ⭐
+│       ├── Three-Track Model (Global Remote, Local Education, Local Career)
+│       ├── Blockchain Credentialing (5-level hierarchy)
+│       ├── AI Tutor Personas (6 personas by track/age)
+│       ├── Parent Portal Requirements
+│       └── Database Schema Requirements
+│
 ├── 📁 docs/handoffs/
 │   └── 📄 BRAINSTORM_ASU_LIKE_SCHEMA.md — FEATURE SPECIFICATIONS
 │       ├── PART 0: Front Page Shell (Header, CTAs, Auth)
@@ -102,9 +111,8 @@ PMERIT DOCUMENTATION HIERARCHY
 │   ├── 📄 GOVERNANCE.md — Rules, phases, workflows
 │   ├── 📄 TASK_TRACKER.md — Living status tracker
 │   ├── 📄 STATE.json — Machine-readable state pointer
-│   ├── 📄 PMERIT_MASTER_INSTRUCTIONS.md — Claude coordination
-│   ├── 📄 PMERIT_OPERATIONAL_CHEAT_SHEET.md — Quick reference
-│   └── 📄 ENVIRONMENTS.md — Environment definitions
+│   ├── 📄 PRODUCTION_AUDIT_[DATE].md — Latest audit report
+│   └── 📄 archive/ — Archived audits
 │
 ├── 📁 docs/tech/ — TECHNICAL DOCUMENTATION
 │   ├── 📄 API_DOCUMENTATION.md
@@ -115,11 +123,12 @@ PMERIT DOCUMENTATION HIERARCHY
     └── 📄 Original_Ongoing-Plan_vs2.md — Legacy infrastructure plans
 ```
 
-### Three Primary Documents
+### Four Primary Documents
 
 | Document | Role | Update Frequency |
 |----------|------|------------------|
 | **This Document** | Master roadmap, decisions, carryforward | Every session |
+| **Architecture Spec** | Three-track model, credentials, AI personas | When architecture changes |
 | **Brainstorm Schema** | Feature specifications (PARTs 0-10) | When features change |
 | **User Journey** | User/Admin narrative flows | When UX changes |
 
@@ -127,26 +136,107 @@ PMERIT DOCUMENTATION HIERARCHY
 
 ## Three Track Types
 
+**Full Specification:** See [PMERIT_ARCHITECTURE_FINAL.md](./PMERIT_ARCHITECTURE_FINAL.md) for complete details.
+
 PMERIT serves three distinct learner populations:
 
-### 1. Global Remote (6 Pathways)
+### Track 1: Global Remote (6 Pathways)
 
 **Target**: Adults worldwide seeking remote-work-ready skills
 **AI Tutor Persona**: Professor Ada (professional, mentor-like)
+**Structure**: Pathway → Course → Module → Lesson
 
-| Pathway | Duration | Courses | Outcome |
-|---------|----------|---------|---------|
-| Web Development | 32 weeks | 12 | Remote web developer |
-| Data Analytics | 32 weeks | 12 | Remote data analyst |
-| UX Design | 28 weeks | 12 | Remote UX designer |
-| Digital Marketing | 24 weeks | 10 | Remote marketer |
-| Project Management | 20 weeks | 8 | Remote PM |
-| Technical Writing | 20 weeks | 8 | Remote tech writer |
+| Pathway | Target Outcome | Course Count |
+|---------|----------------|--------------|
+| Web Development | Full-Stack Developer | 7 |
+| Data Analytics | Data Analyst | 7 |
+| UX Design | UX/UI Designer | 7 |
+| Digital Marketing | Marketing Specialist | 7 |
+| Project Management | Project Manager | 7 |
+| Business Analysis | Business Analyst | 7 |
 
-### 2. Local Education (4 Pathways)
+**Career Relevance Filter (REQUIRED):** Every course must pass at least ONE:
+- Does this skill appear in job postings?
+- Will employers test for this in interviews?
+- Is this required for industry certification?
+- Does this build portfolio-worthy projects?
 
-**Target**: K-12 students (initially Maine Learning Results aligned)
-**AI Tutor Persona**: Ms. Sunshine (patient, encouraging)
+### Track 2: Local Education (Maine K-12)
+
+**Target**: K-12 students (Maine Learning Results aligned)
+**Structure**: Grade Span → Grade → Subject → Unit → Lesson
+**Grade Spans**: Childhood (K-5), Early Adolescence (6-8), Adolescence (9-Diploma)
+
+**AI Tutor Personas (Age-Appropriate):**
+| Grade Span | Persona | Tone |
+|------------|---------|------|
+| K-2 | Ms. Sunshine | Playful, encouraging |
+| 3-5 | Mr. Explorer | Curious, supportive |
+| 6-8 | Coach Jordan | Relatable, guiding |
+| 9-12 | Mentor Alex | Academic, preparing |
+
+**Career-Focused Subjects Only:**
+| Subject | Code | Career Foundation |
+|---------|------|-------------------|
+| English Language Arts | ELA | Communication, technical writing |
+| Mathematics | MATH | Logic, problem-solving, data literacy |
+| Science & Engineering | SCI | Computational thinking, inquiry |
+| Life & Career Readiness | LCR | Direct career skills, financial literacy |
+
+### Track 3: Local Career (CTE/Vocational)
+
+**Target**: Job seekers in vocational trades (Maine CTE aligned)
+**AI Tutor Persona**: Coach Mike (practical, hands-on, safety-focused)
+**Structure**: Cluster → Pathway → Certification → Module → Lesson
+
+| Cluster | Pathways | Example Certifications |
+|---------|----------|----------------------|
+| Construction Trades | Electrical, Plumbing, HVAC | OSHA 10, Pre-Apprenticeship |
+| Healthcare | CNA, Medical Admin, EMT Prep | First Aid/CPR, Medical Terminology |
+| Manufacturing | Welding, CNC, Quality Control | Safety Certs, Blueprint Reading |
+| Transportation | CDL Prep, Auto Tech, Logistics | DOT Compliance, Vehicle Systems |
+
+**Legal Positioning (CRITICAL):**
+| ❌ DO NOT CLAIM | ✅ DO CLAIM |
+|-----------------|-------------|
+| "Earn certification" | "Prepare for certification exams" |
+| "Complete required hours" | "Pre-apprenticeship preparation" |
+| "Become licensed" | "Master concepts tested in licensing" |
+
+---
+
+## Key Architecture Decisions (CONFIRMED)
+
+Per [PMERIT_ARCHITECTURE_FINAL.md](./PMERIT_ARCHITECTURE_FINAL.md):
+
+| Decision | Choice | Status |
+|----------|--------|--------|
+| AI Tutor Access | Enrolled students only (not public catalog) | ✅ CONFIRMED |
+| Grade Spans | Maine exact (K-5, 6-8, 9-Diploma) | ✅ CONFIRMED |
+| Subjects | Career-focused (ELA, Math, Science, LCR) | ✅ CONFIRMED |
+| Credentials | 5-level hierarchy with Polygon blockchain | ✅ CONFIRMED |
+| Parent Portal | Required for minors from start | ✅ CONFIRMED |
+| Content Sources | Curator model (MOOSE, freeCodeCamp, OSHA) | ✅ CONFIRMED |
+| Credential Sharing | Private by default | ✅ CONFIRMED |
+| Integrity Display | Full transparency (score + proctoring level) | ✅ CONFIRMED |
+
+---
+
+## Credential Hierarchy (5 Levels)
+
+| Level | Type | Blockchain? | Description |
+|-------|------|-------------|-------------|
+| 1 | Micro-Credential | ❌ No | Lesson/skill completion (database only) |
+| 2 | Module Badge | ⚡ Batched | Module completion (weekly batches) |
+| 3 | Course Certificate | ✅ Yes | Course completion with assessment |
+| 4 | Career-Ready Credential | ✅ Yes | Pathway completion |
+| 5 | PMERIT Diploma | ✅ Yes | Track completion |
+
+**Blockchain**: Polygon (Layer-2 Ethereum) — ~$0.001 per transaction
+
+---
+
+## Legacy: Local Education (Previous Structure)
 
 | Pathway | Grade Range | Subjects | Outcome |
 |---------|-------------|----------|---------|
