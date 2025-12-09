@@ -2,8 +2,9 @@
 
 **Last Updated:** 2025-12-09
 **Current Session:** 43
-**Governance Version:** V5 FINAL
+**Governance Version:** V6 (Architecture Spec Integrated)
 **Workflow Mode:** Direct Execution (Claude Code Desktop)
+**Architecture Spec:** [PMERIT_ARCHITECTURE_FINAL.md](../project/PMERIT_ARCHITECTURE_FINAL.md) — APPROVED
 
 ---
 
@@ -17,7 +18,40 @@ Say "PMERIT QUICK FIX: [description]" for minor fixes.
 
 ---
 
-## 📊 PHASE STATUS SUMMARY
+## 🏗️ ARCHITECTURE IMPLEMENTATION STATUS
+
+**Source:** `docs/project/PMERIT_ARCHITECTURE_FINAL.md` (v1.1 — APPROVED)
+
+### Three-Track Educational Model
+
+| Track | Name | Target | Status |
+|-------|------|--------|--------|
+| **Track 1** | Global Remote | Adults seeking remote careers | 🟡 Existing (needs update to 6 pathways) |
+| **Track 2** | Local Education | K-12 (Maine-aligned) | 🔴 New — Requires tables |
+| **Track 3** | Local Career | CTE/Vocational | 🔴 New — Requires tables |
+
+### Architecture Implementation Phases
+
+| Phase | Name | Status | Tasks |
+|-------|------|--------|-------|
+| **ARCH-1** | Foundation | 🟡 IN PROGRESS | Fix avatar paths, create credential/K-12/parent tables |
+| **ARCH-2** | Core Features | 🔒 Blocked | Credential issuance, blockchain hash, AI persona selection |
+| **ARCH-3** | Integration | 🔒 Blocked | Polygon blockchain, credential sharing UI, parent dashboard |
+
+### Key Decisions (CONFIRMED)
+
+| Decision | Choice |
+|----------|--------|
+| AI Tutor Access | Enrolled students only (not public catalog) |
+| Grade Spans | Maine exact (K-5, 6-8, 9-Diploma) |
+| Subjects | Career-focused (ELA, Math, Science, LCR) |
+| Credentials | 5-level hierarchy with Polygon blockchain |
+| Parent Portal | Required for minors from start |
+| Content Sources | Curator model (MOOSE, freeCodeCamp, OSHA) |
+
+---
+
+## 📊 LEGACY PHASE STATUS SUMMARY
 
 | Phase | Name | Status | Attempts | Extended? |
 |-------|------|--------|----------|-----------|
@@ -28,7 +62,7 @@ Say "PMERIT QUICK FIX: [description]" for minor fixes.
 | 3 | Sign-Up & Onboarding | ✅ COMPLETE (Session 34) | — | — |
 | 4 | Dashboard & Courses | ✅ COMPLETE (Session 35) | — | — |
 | 5 | Virtual Classroom | ✅ COMPLETE (Session 36) | — | — |
-| 6 | Progress & Assessment | 🔓 **UNLOCKED** | — | — |
+| 6 | Progress & Assessment | ⏸️ PAUSED (Architecture First) | — | — |
 | 7 | Tier 1 Admin Portal | 🔒 Locked | — | — |
 | 8 | Tier 2 Accounts | 🔒 Locked | — | — |
 | 9 | Curriculum Management | 🔒 Locked | — | — |
@@ -624,19 +658,17 @@ Login/Signup → /account.html → "Enter Dashboard" → /dashboard.html
 **When "PMERIT CONTINUE" is triggered:**
 
 ```
-📍 Phase: PHASE 5 COMPLETE — Awaiting Avatar Architecture Fix
-📊 Gate Status: Requires browser verification (homepage gate score unknown)
-🎯 Next: Fix avatar model path mismatch before Phase 6
-✅ Phase 0 COMPLETE: 6 requirements verified (Session 31)
-✅ Phase 1 COMPLETE: 5 requirements verified (Session 31)
-✅ Phase 2 COMPLETE: 8 requirements verified (Session 31)
-✅ Phase 3 COMPLETE: 8 requirements verified (Session 34)
-✅ Phase 4 COMPLETE: 8 requirements verified (Session 35)
-✅ Phase 5 COMPLETE: 8 requirements verified (Session 36)
-⚠️ BLOCKER: Avatar model paths don't match deployed assets
-🩺 Production Health: Backend healthy, Digital Desk needs investigation
+📍 Phase: ARCHITECTURE IMPLEMENTATION (PMERIT_ARCHITECTURE_FINAL.md)
+📊 Phase Status: ARCH-1 Foundation (In Progress)
+🎯 Next: Create new database tables for credentials, K-12, parent portal
+✅ Legacy Phases 0-5: COMPLETE
+✅ Architecture Spec: APPROVED (v1.1)
+⚠️ BLOCKER: Avatar model paths mismatch (ARCH-1 Task #1)
+🩺 Production Health: Backend v2.2.0 healthy, 82 tables, 40 endpoints
 ⚡ Workflow: Direct Execution
 ```
+
+**Architecture Document:** `docs/project/PMERIT_ARCHITECTURE_FINAL.md` (v1.1 — APPROVED)
 
 **Last Audit:** 2025-12-09 (Session 43) - Comprehensive Platform Audit
 **Session 43 Key Findings (100% Verified Facts):**
@@ -647,20 +679,10 @@ Login/Signup → /account.html → "Enter Dashboard" → /dashboard.html
 - **Courses:** 42 items returned
 - **GPU Tiers:** 3 tiers, 4 regions
 
-**IDENTIFIED ARCHITECTURAL ISSUE:**
-
-| Component | Model Path in Code | Actually Deployed |
-|-----------|-------------------|-------------------|
-| AvatarManager.js (Line 22) | `pm_classic.glb` | N/A |
-| GPUStreaming.js (Line 42) | `Ty.glb` | N/A |
-| Production Assets | — | `humano_professional.glb` (67MB) |
-
-**Resolution Required:** Update model paths to point to `humano_professional.glb`
-
 **Active Handoffs:**
 - `PMERIT_HANDOFF_SESSION_40.md`
 - `PMERIT_HANDOFF_SESSION_41.md`
-- `PMERIT_HANDOFF_SESSION_42.md` (IN PROGRESS)
+- `PMERIT_HANDOFF_SESSION_42.md`
 
 **Verified Production Data:**
 - Database: 82 tables
@@ -668,18 +690,6 @@ Login/Signup → /account.html → "Enter Dashboard" → /dashboard.html
 - Pathways: 14 | Courses: 42
 - Avatar Textures: 15 JPG files (all accessible)
 - GLB Model: humano_professional.glb (HTTP 200)
-
----
-
-## ⚠️ SESSION 43 — BLOCKER IDENTIFIED
-
-| Component | Issue | Location |
-|-----------|-------|----------|
-| AvatarManager | Default model: `pm_classic.glb` | Line 22 |
-| GPUStreaming | STANDARD tier model: `Ty.glb` | Line 42 |
-| Production | Deployed model: `humano_professional.glb` | assets/models/avatars/ |
-
-**Status:** Model paths in JavaScript don't match the deployed asset.
 
 ---
 
@@ -694,20 +704,22 @@ Login/Signup → /account.html → "Enter Dashboard" → /dashboard.html
 | Avatar architecture analysis | ✅ DONE | Model path mismatch identified |
 | Create new audit report | ✅ DONE | PRODUCTION_AUDIT_2025-12-09.md |
 | Archive old audits | ✅ DONE | 2025-12-05, 06, 07 moved to archive/ |
-| Update STATE.json | ✅ DONE | Session 43, new blocker |
-| Update TASK_TRACKER.md | ✅ DONE | This update |
+| Integrate ARCHITECTURE_FINAL | ✅ DONE | Updated STATE.json, TASK_TRACKER.md |
 
 ---
 
-## 🎯 NEXT TASKS (Before Phase 6)
+## 🎯 ARCH-1 FOUNDATION TASKS (Per Architecture Spec Section 11)
 
-| Priority | Task | Notes |
-|----------|------|-------|
-| **CRITICAL** | Fix avatar model paths | Update AvatarManager.js and gpu-streaming.js to use humano_professional.glb |
-| **HIGH** | Browser test avatar | Verify 3D model actually renders in browser |
-| **MEDIUM** | Fix Language Modal (H7) | Debug "No languages found" issue |
-| **LOW** | Configure TTS Quota | Enable usage tracking |
-| **NEXT** | Phase 6: Progress & Assessment | After avatar fix is verified |
+| # | Task | Status | Notes |
+|---|------|--------|-------|
+| 1 | Fix avatar model paths | 🔴 TODO | Update AvatarManager.js:22 and gpu-streaming.js:42 to use humano_professional.glb |
+| 2 | Create credential tables | 🔴 TODO | credential_types, issued_credentials, blockchain_batches, credential_shares, credential_verifications |
+| 3 | Create K-12 tables | 🔴 TODO | grade_levels, subjects, grade_subjects, subject_units |
+| 4 | Create parent portal tables | 🔴 TODO | student_guardians, student_grades |
+| 5 | Create AI persona table | 🔴 TODO | ai_tutor_personas |
+| 6 | Create course syllabus tables | 🔴 TODO | course_syllabi, course_career_mapping |
+| 7 | Update pathways for 3-track | 🔴 TODO | Add track_type column, reorganize 14→6 Global Remote pathways |
+| 8 | Seed reference data | 🔴 TODO | Credential types, grade levels, subjects, AI personas |
 
 ---
 
@@ -715,6 +727,7 @@ Login/Signup → /account.html → "Enter Dashboard" → /dashboard.html
 
 | Document | Purpose |
 |----------|---------|
+| docs/project/PMERIT_ARCHITECTURE_FINAL.md | **Master architecture spec** |
 | docs/aados/GOVERNANCE.md | Rules, workflows, commands |
 | docs/aados/ENVIRONMENTS.md | Environment definitions |
 | docs/aados/PRODUCTION_AUDIT_2025-12-09.md | Latest audit report |

@@ -1,26 +1,45 @@
 {
-  "schema_version": "2.0",
-  "schema_notes": "Enhanced with production_health and audit tracking - Version 2.0",
+  "schema_version": "2.1",
+  "schema_notes": "Enhanced with architecture spec and three-track model - Version 2.1",
 
-  "last_updated": "2025-12-09T13:45:00Z",
+  "last_updated": "2025-12-09T14:30:00Z",
   "last_updated_by": "claude-code",
 
   "session_number": 43,
   "last_audit_date": "2025-12-09",
 
-  "current_phase": "PHASE_5",
-  "phase_name": "Virtual Classroom + Digital Desk",
-  "phase_status": "complete",
-  "gate_status": "complete",
+  "current_phase": "ARCHITECTURE_IMPLEMENTATION",
+  "phase_name": "Architecture Implementation (per PMERIT_ARCHITECTURE_FINAL.md)",
+  "phase_status": "in_progress",
+  "gate_status": "pending",
 
-  "active_requirement": "AVATAR_ARCHITECTURE_FIX",
-  "requirement_description": "Fix dual avatar system architecture before Phase 6",
+  "active_requirement": "ARCH_PHASE_1",
+  "requirement_description": "Foundation: Fix avatar paths, create credential/K-12/parent tables, update pathways for 3-track model",
   "attempt_count": 0,
   "max_attempts": 3,
   "extended": false,
 
   "active_environment": "FE",
   "workflow_mode": "direct_execution",
+
+  "architecture_spec": {
+    "document": "docs/project/PMERIT_ARCHITECTURE_FINAL.md",
+    "version": "1.1",
+    "status": "APPROVED",
+    "tracks": {
+      "global_remote": "Adult career training (6 pathways)",
+      "local_education": "Maine K-12 aligned (K-5, 6-8, 9-Diploma)",
+      "local_career": "CTE/Vocational (4 clusters)"
+    },
+    "key_decisions": {
+      "ai_tutor_access": "Enrolled students only (not public catalog)",
+      "grade_spans": "Maine exact (Childhood K-5, Early Adolescence 6-8, Adolescence 9-Diploma)",
+      "subjects": "Career-focused (ELA, Math, Science, Life & Career Readiness)",
+      "credentials": "5-level hierarchy with blockchain (Polygon)",
+      "parent_portal": "Required for minors from start",
+      "content_sources": "Curator model (MOOSE, freeCodeCamp, OSHA)"
+    }
+  },
 
   "production_health": {
     "frontend": "healthy",
@@ -99,8 +118,8 @@
   ],
 
   "notes": {
-    "current_focus": "Stabilize and document architecture before fixing avatar system",
-    "session_43_milestone": "Comprehensive audit - identified model path mismatch across avatar systems",
+    "current_focus": "Implement PMERIT_ARCHITECTURE_FINAL.md - Three-track model with blockchain credentials",
+    "session_43_milestone": "Architecture spec integrated + comprehensive audit completed",
     "session_41_milestone": "Fixed TTS paths, unified avatar systems, DEPLOYED 15 avatar texture files, lip sync integration",
     "session_40_milestone": "Production Audit - TTS confirmed working, handoffs archived",
     "session_38_39_milestone": "Digital Desk Backend + Frontend COMPLETE",
@@ -112,8 +131,8 @@
     {
       "session": 43,
       "date": "2025-12-09",
-      "change": "Comprehensive Platform Audit - Model Mismatch Identified",
-      "impact": "Full audit with 100% verified facts. Found: AvatarManager defaults to pm_classic.glb, GPUStreaming uses Ty.glb, but deployed asset is humano_professional.glb. Database: 82 tables. API: 40 endpoints (v2.2.0). TTS: Working (104KB audio). Old audits archived."
+      "change": "Architecture Spec Integration + Comprehensive Audit",
+      "impact": "Integrated PMERIT_ARCHITECTURE_FINAL.md defining three-track model (Global Remote, Local Education, Local Career), blockchain credentials (5 levels), parent portal, and AI tutor personas. Comprehensive audit identified avatar model path mismatch. 82 database tables, 40 API endpoints confirmed."
     },
     {
       "session": 42,
@@ -154,6 +173,7 @@
   ],
 
   "reference_docs": {
+    "architecture_spec": "docs/project/PMERIT_ARCHITECTURE_FINAL.md",
     "feature_spec": "docs/handoffs/BRAINSTORM_ASU_LIKE_SCHEMA.md",
     "user_journey": "docs/project/Pmerit-comprehensively-narrative-users-and-Admin-Journey.md",
     "latest_audit": "docs/aados/PRODUCTION_AUDIT_2025-12-09.md",

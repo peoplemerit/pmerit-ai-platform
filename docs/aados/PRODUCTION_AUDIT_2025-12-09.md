@@ -2,9 +2,10 @@
 
 **Date:** 2025-12-09
 **Audited By:** Claude Code Desktop (Session 43)
-**Audit Type:** Comprehensive Platform Audit (Pre-Architecture Fix)
+**Audit Type:** Comprehensive Platform Audit + Architecture Integration
 **Production URL:** https://pmerit.com
 **Backend URL:** https://pmerit-api-worker.peoplemerit.workers.dev
+**Architecture Spec:** [PMERIT_ARCHITECTURE_FINAL.md](../project/PMERIT_ARCHITECTURE_FINAL.md) — v1.1 APPROVED
 
 ---
 
@@ -20,6 +21,7 @@ This comprehensive audit documents the verified state of the PMERIT platform on 
 | **AI Services** | All 5 personas returning streaming responses |
 | **TTS** | Working — returns audio/mpeg (104,806 bytes for "Hello world") |
 | **Avatar System** | Technical debt: dual systems documented |
+| **Architecture** | PMERIT_ARCHITECTURE_FINAL.md integrated (3-track model, credentials, parent portal) |
 
 ---
 
