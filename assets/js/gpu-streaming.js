@@ -1,6 +1,7 @@
 /**
  * GPU Streaming - Just-In-Time Cloud GPU for Premium Avatars
  * Phase 4: Digital Desk Classroom Redesign
+ * @version 1.1.0 - Camera fix
  *
  * Manages tiered virtual human rendering:
  * - Free: CSS/SVG animations (client-side)
