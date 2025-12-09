@@ -1027,6 +1027,10 @@
      * @returns {Promise<boolean>}
      */
     async loadWebGLAvatar(modelPath = null) {
+      // TEMPORARY: Disable avatar while fixing texture issues
+      console.log('🎭 Avatar temporarily disabled for testing');
+      return false;
+
       console.log('🎭 loadWebGLAvatar called');
 
       // Use tier model if not specified
