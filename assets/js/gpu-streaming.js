@@ -1028,6 +1028,9 @@
      */
     async loadWebGLAvatar(modelPath = null) {
       console.log('🎭 loadWebGLAvatar called');
+      console.log('🎭 avatarFrame element:', this.avatarFrame);
+      console.log('🎭 avatarFrame dimensions:', this.avatarFrame?.clientWidth, 'x', this.avatarFrame?.clientHeight);
+      console.log('🎭 avatarFrame visible:', this.avatarFrame?.offsetParent !== null);
 
       // Use tier model if not specified
       const tierInfo = this.getTierInfo(this.state.currentTier);
@@ -1240,13 +1243,16 @@
      * @returns {Promise<void>}
      */
     async loadGLBModel(path) {
+      console.log('🎭 loadGLBModel called with path:', path);
 
       return new Promise((resolve, reject) => {
         // Check for GLTFLoader
         if (typeof THREE.GLTFLoader === 'undefined') {
+          console.error('🎭 THREE.GLTFLoader is undefined!');
           reject(new Error('GLTFLoader not available'));
           return;
         }
+        console.log('🎭 THREE.GLTFLoader available');
 
         const loader = new THREE.GLTFLoader();
 
