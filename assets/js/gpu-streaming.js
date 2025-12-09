@@ -1316,15 +1316,19 @@
             // Add to scene
             this.webgl.scene.add(this.webgl.model);
 
+            // Debug: Log bounding box info
+            console.log(`📐 Model bounds: size=${size.x.toFixed(2)}x${size.y.toFixed(2)}x${size.z.toFixed(2)}`);
+
             // Position camera for tight portrait framing (head/shoulders)
             // Optimized for professional "video call" appearance
-            const lookAtY = size.y * 0.82;        // Focus on face/upper chest
-            const cameraDistance = size.y * 0.55; // Closer for portrait framing
+            // Use minimum values to ensure avatar is visible even if bounds are wrong
+            const lookAtY = Math.max(size.y * 0.82, 1.2);        // Focus on face/upper chest, min 1.2
+            const cameraDistance = Math.max(size.y * 0.55, 2.0); // Closer for portrait framing, min 2.0
 
             this.webgl.camera.position.set(0, lookAtY, cameraDistance);
             this.webgl.camera.lookAt(0, lookAtY * 0.95, 0); // Slight downward angle
 
-            console.log(`📷 Camera: portrait framing at distance ${cameraDistance.toFixed(2)}`);
+            console.log(`📷 Camera: lookAtY=${lookAtY.toFixed(2)}, distance=${cameraDistance.toFixed(2)}`);
 
             // Set up animations if present
             if (gltf.animations && gltf.animations.length > 0) {
