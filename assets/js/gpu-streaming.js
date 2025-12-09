@@ -1278,13 +1278,30 @@
             this.webgl.model.position.y = -box.min.y;
             this.webgl.model.position.z = -center.z;
 
-            // GLB has embedded textures - just enable shadows on meshes
-            // (External texture loading removed - was overwriting embedded textures)
+            // GLB has embedded textures - configure materials for proper rendering
             this.webgl.model.traverse((child) => {
               if (child.isMesh) {
                 child.castShadow = true;
                 child.receiveShadow = true;
-                console.log('🎨 Mesh with embedded textures:', child.name, child.isSkinnedMesh ? '(skinned)' : '');
+
+                // Debug: Log material info
+                const mat = child.material;
+                console.log('🎨 Mesh:', child.name, {
+                  skinned: child.isSkinnedMesh,
+                  hasMap: !!mat?.map,
+                  hasNormal: !!mat?.normalMap,
+                  color: mat?.color?.getHexString(),
+                  type: mat?.type
+                });
+
+                // Ensure material renders correctly with scene lighting
+                if (mat) {
+                  mat.needsUpdate = true;
+                  // If no color map, ensure base color is visible
+                  if (!mat.map && mat.color) {
+                    mat.vertexColors = false;
+                  }
+                }
               }
             });
 
