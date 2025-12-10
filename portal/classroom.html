@@ -30,10 +30,9 @@
   <link rel="stylesheet" href="../assets/css/avatar-frame.css">
   <link rel="stylesheet" href="../assets/css/proctor-mode.css">
 
-  <!-- Three.js r152 (LTS) with native meshopt support -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.152.0/build/three.min.js"></script>
-  <!-- GLTFLoader as ES module converted to UMD -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.152.0/examples/js/loaders/GLTFLoader.js"></script>
+  <!-- Three.js r137 (last version with global THREE.GLTFLoader in examples/js/) -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.137.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.137.0/examples/js/loaders/GLTFLoader.js"></script>
   <!-- Meshopt decoder for compressed GLB models -->
   <script src="https://cdn.jsdelivr.net/npm/meshoptimizer@0.20.0/meshopt_decoder.js"></script>
   <script>
@@ -43,6 +42,12 @@
         await MeshoptDecoder.ready;
         window.MeshoptDecoderReady = true;
         console.log('✅ MeshoptDecoder ready');
+      }
+      // Verify GLTFLoader is available
+      if (typeof THREE !== 'undefined' && typeof THREE.GLTFLoader !== 'undefined') {
+        console.log('✅ THREE.GLTFLoader available (r137)');
+      } else {
+        console.error('❌ THREE.GLTFLoader not found!');
       }
     })();
   </script>
