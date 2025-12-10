@@ -1379,19 +1379,16 @@
             // Debug: Log bounding box info
             console.log(`📐 Model bounds: size=${size.x.toFixed(2)}x${size.y.toFixed(2)}x${size.z.toFixed(2)}`);
 
-            // Position camera for HEAD/FACE view (video call style)
-            const modelHeight = size.y; // ~1.8m after scaling
-
-            // Focus on the face - which is near the TOP of the model
-            const faceY = modelHeight * 0.92;     // Face at ~92% of height (~1.66m)
-            const cameraY = faceY;                 // Camera at face level
-            const cameraZ = 0.6;                   // Close for portrait framing
+            // Focus on FACE - go even higher
+            const modelHeight = size.y;
+            const faceY = modelHeight * 0.85;     // Try 85% - face is usually around here
+            const cameraY = faceY + 0.1;          // Slightly above face
+            const cameraZ = 0.7;                  // Step back slightly for head room
 
             this.webgl.camera.position.set(0, cameraY, cameraZ);
-            this.webgl.camera.lookAt(0, faceY, 0);
+            this.webgl.camera.lookAt(0, faceY - 0.05, 0);  // Look slightly below camera
 
-            // Debug log to verify
-            console.log(`📷 Camera positioned at Y: ${cameraY.toFixed(2)}, Z: ${cameraZ}, looking at Y: ${faceY.toFixed(2)}, modelHeight: ${modelHeight.toFixed(2)}`);
+            console.log(`📷 Camera Y: ${cameraY.toFixed(2)}, Focus Y: ${faceY.toFixed(2)}, Model height: ${modelHeight.toFixed(2)}`);
 
             // Set up animations if present
             if (gltf.animations && gltf.animations.length > 0) {
