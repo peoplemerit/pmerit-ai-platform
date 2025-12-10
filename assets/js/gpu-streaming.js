@@ -1379,16 +1379,20 @@
             // Debug: Log bounding box info
             console.log(`📐 Model bounds: size=${size.x.toFixed(2)}x${size.y.toFixed(2)}x${size.z.toFixed(2)}`);
 
-            // Focus on FACE - go even higher
+            // FACE FRAMING - Model is 1.8m, face should be around 1.6-1.7m
+            // The bounding box center seems off - use absolute values based on human proportions
             const modelHeight = size.y;
-            const faceY = modelHeight * 0.85;     // Try 85% - face is usually around here
-            const cameraY = faceY + 0.1;          // Slightly above face
-            const cameraZ = 0.7;                  // Step back slightly for head room
+
+            // Human face is typically at 90-95% of standing height
+            // For 1.8m model: face ~1.62-1.71m from ground
+            const faceY = 1.65;                   // Absolute face height for 1.8m human
+            const cameraY = 1.7;                  // Camera slightly above face level
+            const cameraZ = 0.8;                  // Distance for head+shoulders framing
 
             this.webgl.camera.position.set(0, cameraY, cameraZ);
-            this.webgl.camera.lookAt(0, faceY - 0.05, 0);  // Look slightly below camera
+            this.webgl.camera.lookAt(0, faceY, 0);
 
-            console.log(`📷 Camera Y: ${cameraY.toFixed(2)}, Focus Y: ${faceY.toFixed(2)}, Model height: ${modelHeight.toFixed(2)}`);
+            console.log(`📷 Camera: Y=${cameraY}, Z=${cameraZ}, lookAt Y=${faceY}, modelHeight=${modelHeight.toFixed(2)}`);
 
             // Set up animations if present
             if (gltf.animations && gltf.animations.length > 0) {
