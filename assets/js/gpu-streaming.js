@@ -1379,22 +1379,19 @@
             // Debug: Log bounding box info
             console.log(`📐 Model bounds: size=${size.x.toFixed(2)}x${size.y.toFixed(2)}x${size.z.toFixed(2)}`);
 
-            // Position camera for tight portrait framing (head/shoulders)
-            // Model is scaled to ~1.8m with feet at y=0
-            // For a "video call" style framing, focus on upper body (chest to head)
-            const modelHeight = size.y; // Should be ~1.8m after scaling
-            const headY = modelHeight * 0.9;      // Head is at ~90% of height (~1.62m)
-            const chestY = modelHeight * 0.7;     // Chest is at ~70% of height (~1.26m)
-            const focusY = (headY + chestY) / 2;  // Focus between chest and head (~1.44m)
+            // Position camera for HEAD/FACE view (video call style)
+            const modelHeight = size.y; // ~1.8m after scaling
 
-            // Camera position: slightly above focus point, looking slightly down
-            const cameraY = focusY + 0.15;        // Camera slightly above focus (~1.59m)
-            const cameraZ = 1.2;                  // Distance from model (closer = tighter framing)
+            // Focus on the face - which is near the TOP of the model
+            const faceY = modelHeight * 0.92;     // Face at ~92% of height (~1.66m)
+            const cameraY = faceY;                 // Camera at face level
+            const cameraZ = 0.6;                   // Close for portrait framing
 
             this.webgl.camera.position.set(0, cameraY, cameraZ);
-            this.webgl.camera.lookAt(0, focusY, 0);
+            this.webgl.camera.lookAt(0, faceY, 0);
 
-            console.log(`📷 Camera: pos=(0, ${cameraY.toFixed(2)}, ${cameraZ}), lookAt=(0, ${focusY.toFixed(2)}, 0), modelHeight=${modelHeight.toFixed(2)}`);
+            // Debug log to verify
+            console.log(`📷 Camera positioned at Y: ${cameraY.toFixed(2)}, Z: ${cameraZ}, looking at Y: ${faceY.toFixed(2)}, modelHeight: ${modelHeight.toFixed(2)}`);
 
             // Set up animations if present
             if (gltf.animations && gltf.animations.length > 0) {
