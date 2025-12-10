@@ -1309,6 +1309,18 @@
             this.webgl.model.position.y = -box.min.y;
             this.webgl.model.position.z = -center.z;
 
+            // DEBUG: Log actual model bounds to understand coordinate system
+            console.log('🔍 MODEL DEBUG:');
+            console.log('  Raw box min:', rawBox.min.x.toFixed(2), rawBox.min.y.toFixed(2), rawBox.min.z.toFixed(2));
+            console.log('  Raw box max:', rawBox.max.x.toFixed(2), rawBox.max.y.toFixed(2), rawBox.max.z.toFixed(2));
+            console.log('  Raw size:', rawSize.x.toFixed(2), rawSize.y.toFixed(2), rawSize.z.toFixed(2));
+            console.log('  Scale applied:', scale.toFixed(4));
+            console.log('  Scaled box min:', box.min.x.toFixed(2), box.min.y.toFixed(2), box.min.z.toFixed(2));
+            console.log('  Scaled box max:', box.max.x.toFixed(2), box.max.y.toFixed(2), box.max.z.toFixed(2));
+            console.log('  Scaled center:', center.x.toFixed(2), center.y.toFixed(2), center.z.toFixed(2));
+            console.log('  Scaled size:', size.x.toFixed(2), size.y.toFixed(2), size.z.toFixed(2));
+            console.log('  Model position after centering:', this.webgl.model.position.x.toFixed(2), this.webgl.model.position.y.toFixed(2), this.webgl.model.position.z.toFixed(2));
+
             // GLB has embedded textures - configure materials for proper rendering
             this.webgl.model.traverse((child) => {
               if (child.isMesh) {
