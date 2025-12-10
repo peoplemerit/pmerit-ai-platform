@@ -33,6 +33,22 @@
   <!-- Three.js r128 for WebGL avatar (last version with global THREE.GLTFLoader) -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+  <!-- Meshopt decoder for compressed GLB models -->
+  <script src="https://cdn.jsdelivr.net/npm/meshoptimizer@0.18.1/meshopt_decoder.js"></script>
+  <script>
+    // Configure GLTFLoader with meshopt decoder after both are loaded
+    if (typeof THREE !== 'undefined' && typeof MeshoptDecoder !== 'undefined') {
+      MeshoptDecoder.ready.then(() => {
+        if (THREE.GLTFLoader) {
+          THREE.GLTFLoader.prototype.setMeshoptDecoder = function(decoder) {
+            this.meshoptDecoder = decoder;
+            return this;
+          };
+          console.log('✅ MeshoptDecoder ready for GLTFLoader');
+        }
+      });
+    }
+  </script>
   
   <!-- Auth protection -->
   <script src="../assets/js/config.js"></script>
