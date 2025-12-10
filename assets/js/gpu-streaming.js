@@ -1,7 +1,7 @@
 /**
  * GPU Streaming - Just-In-Time Cloud GPU for Premium Avatars
  * Phase 4: Digital Desk Classroom Redesign
- * @version 1.2.0 - Fixed texture encoding (sRGB) for proper color rendering
+ * @version 1.3.0 - Fixed meshopt decoder for compressed GLB models
  *
  * Manages tiered virtual human rendering:
  * - Free: CSS/SVG animations (client-side)
@@ -1258,13 +1258,24 @@
         const loader = new THREE.GLTFLoader();
 
         // Configure meshopt decoder if available (required for compressed GLB models)
-        if (typeof MeshoptDecoder !== 'undefined') {
+        // Three.js r152+ has native setMeshoptDecoder support
+        if (typeof MeshoptDecoder !== 'undefined' && typeof loader.setMeshoptDecoder === 'function') {
           try {
+            // Wait for WASM to be ready
             await MeshoptDecoder.ready;
             loader.setMeshoptDecoder(MeshoptDecoder);
             console.log('✅ MeshoptDecoder configured for GLTFLoader');
           } catch (e) {
             console.warn('⚠️ MeshoptDecoder setup failed:', e.message);
+          }
+        } else if (typeof MeshoptDecoder !== 'undefined') {
+          // Fallback: Try to wait for decoder to be ready
+          try {
+            await MeshoptDecoder.ready;
+            // For older Three.js versions without native support, the decoder won't work
+            console.warn('⚠️ MeshoptDecoder available but GLTFLoader.setMeshoptDecoder not found - upgrade Three.js to r152+');
+          } catch (e) {
+            console.warn('⚠️ MeshoptDecoder not ready:', e.message);
           }
         } else {
           console.warn('⚠️ MeshoptDecoder not available - compressed GLB models may fail to load');
@@ -1814,6 +1825,6 @@
     return gpuStreaming;
   };
 
-  console.log('✅ GPUStreaming module loaded (v1.2.0 - sRGB texture fix)');
+  console.log('✅ GPUStreaming module loaded (v1.3.0 - meshopt decoder fix)');
 
 })(window);
