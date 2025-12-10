@@ -1,7 +1,7 @@
 /**
  * GPU Streaming - Just-In-Time Cloud GPU for Premium Avatars
  * Phase 4: Digital Desk Classroom Redesign
- * @version 1.1.0 - Camera fix
+ * @version 1.2.0 - Fixed texture encoding (sRGB) for proper color rendering
  *
  * Manages tiered virtual human rendering:
  * - Free: CSS/SVG animations (client-side)
@@ -1246,7 +1246,7 @@
     async loadGLBModel(path) {
       console.log('🎭 loadGLBModel called with path:', path);
 
-      return new Promise((resolve, reject) => {
+      return new Promise(async (resolve, reject) => {
         // Check for GLTFLoader
         if (typeof THREE.GLTFLoader === 'undefined') {
           console.error('🎭 THREE.GLTFLoader is undefined!');
@@ -1256,6 +1256,19 @@
         console.log('🎭 THREE.GLTFLoader available');
 
         const loader = new THREE.GLTFLoader();
+
+        // Configure meshopt decoder if available (required for compressed GLB models)
+        if (typeof MeshoptDecoder !== 'undefined') {
+          try {
+            await MeshoptDecoder.ready;
+            loader.setMeshoptDecoder(MeshoptDecoder);
+            console.log('✅ MeshoptDecoder configured for GLTFLoader');
+          } catch (e) {
+            console.warn('⚠️ MeshoptDecoder setup failed:', e.message);
+          }
+        } else {
+          console.warn('⚠️ MeshoptDecoder not available - compressed GLB models may fail to load');
+        }
 
         // Add loading progress
         loader.load(
@@ -1291,28 +1304,63 @@
                 child.castShadow = true;
                 child.receiveShadow = true;
 
-                // Debug: Log material info
-                const mat = child.material;
-                console.log('🎨 Mesh:', child.name, {
-                  skinned: child.isSkinnedMesh,
-                  hasMap: !!mat?.map,
-                  hasNormal: !!mat?.normalMap,
-                  color: mat?.color?.getHexString(),
-                  type: mat?.type
-                });
+                // Process materials (handle arrays for multi-material meshes)
+                const materials = Array.isArray(child.material) ? child.material : [child.material];
 
-                // Ensure material renders correctly with scene lighting
-                if (mat) {
-                  mat.needsUpdate = true;
-                  // If no color map, ensure base color is visible
-                  if (!mat.map && mat.color) {
-                    mat.vertexColors = false;
+                materials.forEach((mat) => {
+                  if (!mat) return;
+
+                  // Debug: Log material info
+                  console.log('🎨 Mesh:', child.name, {
+                    skinned: child.isSkinnedMesh,
+                    hasMap: !!mat.map,
+                    hasNormal: !!mat.normalMap,
+                    hasMetalRough: !!mat.metalnessMap || !!mat.roughnessMap,
+                    hasEmissive: !!mat.emissiveMap,
+                    color: mat.color?.getHexString(),
+                    type: mat.type
+                  });
+
+                  // === CRITICAL: Set sRGB encoding on all color textures ===
+                  // Without this, textures appear washed out or white
+                  if (mat.map) {
+                    mat.map.encoding = THREE.sRGBEncoding;
+                    mat.map.needsUpdate = true;
                   }
-                }
+                  if (mat.emissiveMap) {
+                    mat.emissiveMap.encoding = THREE.sRGBEncoding;
+                    mat.emissiveMap.needsUpdate = true;
+                  }
+                  // Note: Normal, metalness, roughness maps should stay LinearEncoding
+
+                  // Ensure material is double-sided for hair/cloth that may be single-sided
+                  // mat.side = THREE.DoubleSide; // Uncomment if backfaces are missing
+
+                  // For PBR materials, ensure proper settings
+                  if (mat.isMeshStandardMaterial || mat.isMeshPhysicalMaterial) {
+                    // If metalness is too high with no metalness map, reduce it
+                    if (!mat.metalnessMap && mat.metalness > 0.5) {
+                      mat.metalness = 0.1;
+                    }
+                    // Ensure roughness isn't too extreme
+                    if (!mat.roughnessMap) {
+                      mat.roughness = Math.max(0.3, Math.min(0.9, mat.roughness || 0.5));
+                    }
+                  }
+
+                  // If material has no textures and no color, give it a default skin tone
+                  if (!mat.map && (!mat.color || mat.color.getHex() === 0xffffff)) {
+                    // Default to a neutral skin-ish tone rather than pure white
+                    mat.color = new THREE.Color(0xe0c8b8);
+                    console.log('⚠️ Applied fallback skin color to material with no texture');
+                  }
+
+                  mat.needsUpdate = true;
+                });
               }
             });
 
-            console.log('✅ Using GLB embedded textures');
+            console.log('✅ GLB textures configured with sRGB encoding');
 
             // Add to scene
             this.webgl.scene.add(this.webgl.model);
@@ -1321,15 +1369,21 @@
             console.log(`📐 Model bounds: size=${size.x.toFixed(2)}x${size.y.toFixed(2)}x${size.z.toFixed(2)}`);
 
             // Position camera for tight portrait framing (head/shoulders)
-            // Optimized for professional "video call" appearance
-            // Use minimum values to ensure avatar is visible even if bounds are wrong
-            const lookAtY = Math.max(size.y * 0.82, 1.2);        // Focus on face/upper chest, min 1.2
-            const cameraDistance = Math.max(size.y * 0.55, 2.0); // Closer for portrait framing, min 2.0
+            // Model is scaled to ~1.8m with feet at y=0
+            // For a "video call" style framing, focus on upper body (chest to head)
+            const modelHeight = size.y; // Should be ~1.8m after scaling
+            const headY = modelHeight * 0.9;      // Head is at ~90% of height (~1.62m)
+            const chestY = modelHeight * 0.7;     // Chest is at ~70% of height (~1.26m)
+            const focusY = (headY + chestY) / 2;  // Focus between chest and head (~1.44m)
 
-            this.webgl.camera.position.set(0, lookAtY, cameraDistance);
-            this.webgl.camera.lookAt(0, lookAtY * 0.95, 0); // Slight downward angle
+            // Camera position: slightly above focus point, looking slightly down
+            const cameraY = focusY + 0.15;        // Camera slightly above focus (~1.59m)
+            const cameraZ = 1.2;                  // Distance from model (closer = tighter framing)
 
-            console.log(`📷 Camera: lookAtY=${lookAtY.toFixed(2)}, distance=${cameraDistance.toFixed(2)}`);
+            this.webgl.camera.position.set(0, cameraY, cameraZ);
+            this.webgl.camera.lookAt(0, focusY, 0);
+
+            console.log(`📷 Camera: pos=(0, ${cameraY.toFixed(2)}, ${cameraZ}), lookAt=(0, ${focusY.toFixed(2)}, 0), modelHeight=${modelHeight.toFixed(2)}`);
 
             // Set up animations if present
             if (gltf.animations && gltf.animations.length > 0) {
@@ -1760,6 +1814,6 @@
     return gpuStreaming;
   };
 
-  console.log('✅ GPUStreaming module loaded (v1.0 - Digital Desk)');
+  console.log('✅ GPUStreaming module loaded (v1.2.0 - sRGB texture fix)');
 
 })(window);
