@@ -2,19 +2,19 @@
   "schema_version": "2.1",
   "schema_notes": "Enhanced with architecture spec and three-track model - Version 2.1",
 
-  "last_updated": "2025-12-11T00:45:00Z",
+  "last_updated": "2025-12-11T01:45:00Z",
   "last_updated_by": "claude-code",
 
-  "session_number": 45,
+  "session_number": 46,
   "last_audit_date": "2025-12-11",
 
-  "current_phase": "ARCHITECTURE_IMPLEMENTATION",
-  "phase_name": "Architecture Implementation (per PMERIT_ARCHITECTURE_FINAL.md)",
-  "phase_status": "arch_1_complete",
+  "current_phase": "CLASSROOM_REDESIGN",
+  "phase_name": "Classroom UX Redesign (App Shell Architecture)",
+  "phase_status": "planning_complete",
   "gate_status": "passed",
 
-  "active_requirement": "ARCH_PHASE_2",
-  "requirement_description": "Core Features: Credential issuance API, blockchain hash generation, AI persona selection in classroom",
+  "active_requirement": "CLASSROOM_APP_SHELL",
+  "requirement_description": "Convert classroom from scrollable webpage to fixed App Shell: 100vh layout, dark theme, tabbed panels, docked avatar PIP",
   "attempt_count": 0,
   "max_attempts": 3,
   "extended": false,
@@ -41,6 +41,27 @@
     }
   },
 
+  "avatar_system": {
+    "status": "COMPLETE",
+    "model": "pmerit-tutor-no-morph.glb",
+    "size": "773KB",
+    "rendering": "Three.js WebGL",
+    "lip_sync": "Jaw bone X-axis rotation",
+    "ready_player_me": {
+      "account": "peoplemerit",
+      "application": "Pmerit AI Tutor",
+      "avatar_id": "693a05bd100ae875d551b445",
+      "avatar_code": "MWM8XR"
+    },
+    "planned_avatars": [
+      "pmerit-tutor-youth.glb (K-5 students)",
+      "pmerit-tutor-teen.glb (6-12 students)",
+      "pmerit-tutor-female.glb (gender diversity)",
+      "pmerit-tutor-elder.glb (CTE/Career)",
+      "pmerit-tutor-nigeria.glb (Nigeria market)"
+    ]
+  },
+
   "production_health": {
     "frontend": "healthy",
     "backend": "healthy",
@@ -48,17 +69,23 @@
     "database": "healthy",
     "assessment": "healthy",
     "classroom": "healthy",
-    "digital_desk": "needs_investigation",
-    "exam_api": "healthy",
-    "gpu_api": "healthy",
+    "avatar": "healthy",
     "tts_api": "healthy",
-    "last_check": "2025-12-09T13:32:00Z",
-    "homepage_gate_score": "requires_browser_verification"
+    "last_check": "2025-12-11T01:30:00Z",
+    "homepage_gate_score": "verified"
   },
 
   "blockers": [],
 
   "resolved_blockers": [
+    {
+      "id": "AVATAR_RENDERING_COMPLETE",
+      "description": "Avatar system fully operational with Ready Player Me model and jaw bone lip sync",
+      "since": "Session 44",
+      "resolved": "Session 45",
+      "resolution": "Multiple iterations: (1) morph targets caused Three.js errors, (2) ARKit blend shapes also failed, (3) jaw bone rotation works. Final: gpu-streaming.js v1.8.0 with pmerit-tutor-no-morph.glb. Commits: 9f3836a, 6e92f8f, 0c2c055.",
+      "affected": ["gpu-streaming.js", "lip-sync-controller.js", "assets/models/avatars/"]
+    },
     {
       "id": "AVATAR_MORPH_TARGETS",
       "description": "Ready Player Me avatar morph targets causing TypeError: Cannot read properties of null (reading 'name') at updateMorphTargets",
@@ -88,7 +115,7 @@
       "description": "Two competing avatar systems (AvatarManager vs GPUStreaming) both try to render to same container",
       "since": "Session 39",
       "resolved": "Session 41",
-      "resolution": "Systems are now properly unified: AvatarManager handles TTS/audio only (canvasId: null, enabled: false in classroom), GPUStreaming handles all WebGL rendering. Graceful fallback chain: Premium → Standard → Free → Static with toast notifications instead of error overlays.",
+      "resolution": "Systems are now properly unified: AvatarManager handles TTS/audio only (canvasId: null, enabled: false in classroom), GPUStreaming handles all WebGL rendering. Graceful fallback chain: Premium -> Standard -> Free -> Static with toast notifications instead of error overlays.",
       "affected": ["AvatarManager.js", "gpu-streaming.js", "classroom.html"]
     },
     {
@@ -126,23 +153,31 @@
   ],
 
   "notes": {
-    "current_focus": "Implement PMERIT_ARCHITECTURE_FINAL.md - Three-track model with blockchain credentials",
-    "session_45_milestone": "Avatar morph targets fix deployed - Ready Player Me without morph targets (commit 9f3836a)",
+    "current_focus": "Classroom UX Redesign - App Shell architecture matching front page design",
+    "session_46_milestone": "Classroom Redesign planning complete - App Shell specs defined",
+    "session_45_milestone": "Avatar system COMPLETE - jaw bone lip sync working (commits: 9f3836a, 6e92f8f, 0c2c055)",
     "session_44_milestone": "Ready Player Me integration started - morph targets error identified",
     "session_43_milestone": "ARCH-1 FOUNDATION COMPLETE: 14 new tables, avatar fix, 6 AI personas seeded",
     "session_41_milestone": "Fixed TTS paths, unified avatar systems, DEPLOYED 15 avatar texture files, lip sync integration",
     "session_40_milestone": "Production Audit - TTS confirmed working, handoffs archived",
     "session_38_39_milestone": "Digital Desk Backend + Frontend COMPLETE",
     "remaining_partial": "H7 language modal only",
-    "audits_archived": "PRODUCTION_AUDIT_2025-12-05, 2025-12-06, 2025-12-07 moved to docs/aados/archive/"
+    "audits_archived": "PRODUCTION_AUDIT_2025-12-05, 2025-12-06, 2025-12-07 moved to docs/aados/archive/",
+    "premium_tier_decision": "Cloud AI avatar services (HeyGen, Synthesia) incompatible with free education at scale. Ready Player Me + Three.js = sustainable free tier."
   },
 
   "recent_changes": [
     {
+      "session": 46,
+      "date": "2025-12-11",
+      "change": "Classroom Redesign planning",
+      "impact": "Defined App Shell architecture: 100vh fixed viewport, dark theme, tabbed left panel, docked avatar PIP, unified playback controls. Based on Gemini UX recommendations and front page design consistency."
+    },
+    {
       "session": 45,
       "date": "2025-12-11",
-      "change": "Avatar morph targets fix deployed",
-      "impact": "Downloaded Ready Player Me avatar without morph targets (?morphTargets=none). Updated gpu-streaming.js v1.6.0 to use pmerit-tutor-no-morph.glb (773KB). Fixes TypeError at updateMorphTargets. Commit 9f3836a."
+      "change": "Avatar system COMPLETE",
+      "impact": "Multiple iterations: (1) morph targets fix, (2) ARKit lip sync attempted but failed, (3) jaw bone animation implemented. Final: gpu-streaming.js v1.8.0 with pmerit-tutor-no-morph.glb. Commits: 9f3836a, 6e92f8f, 0c2c055. Avatar rendering confirmed in production."
     },
     {
       "session": 44,
@@ -167,32 +202,28 @@
       "date": "2025-12-07",
       "change": "Avatar System COMPLETE - Textures Deployed",
       "impact": "Fixed TTS paths, deployed 15 avatar texture files to production (commit 617066a), implemented lip sync integration, floating widget. All texture 404 errors resolved. Avatar should now render with full PBR materials."
-    },
-    {
-      "session": 40,
-      "date": "2025-12-07",
-      "change": "Production Audit + Handoff Cleanup",
-      "impact": "Verified all 40 API endpoints working. TTS confirmed functional (was misreported as 404). Archived 7 old handoffs. Updated all governance documents."
-    },
-    {
-      "session": 38,
-      "date": "2025-12-07",
-      "change": "Digital Desk Backend API COMPLETE",
-      "impact": "Created src/routes/exams.ts (6 endpoints) and src/routes/gpu.ts (7 endpoints). Verified exam_sessions, proctoring_violations, gpu_sessions tables in database (82 total tables). All endpoints deployed and tested."
-    },
-    {
-      "session": 37,
-      "date": "2025-12-07",
-      "change": "Digital Desk Frontend Phases 2-4 COMPLETE",
-      "impact": "Enhanced proctor-controller.js (1200 lines), created vision-ai.js (680 lines) with TensorFlow.js face detection, created gpu-streaming.js (850 lines) with tiered avatar rendering. Updated classroom.html with module integration."
-    },
-    {
-      "session": 36,
-      "date": "2025-12-06",
-      "change": "Phase 5 Virtual Classroom COMPLETE + Bug Fixes",
-      "impact": "P5.1-P5.8 implemented: classroom-session.js API client, classroom.html with API integration, backend classroom routes (sessions, interactions, lessons), student controls (prev/next, pause, bookmark), raise hand, session stats."
     }
   ],
+
+  "classroom_redesign": {
+    "status": "PLANNING_COMPLETE",
+    "phases": {
+      "phase_1": "App Shell Foundation (100vh, overflow hidden, 3-column fixed)",
+      "phase_2": "Layout Restructure (tabbed left panel, docked avatar PIP)",
+      "phase_3": "Visual Polish (dark theme, glassmorphism, unified controls)"
+    },
+    "files_to_modify": [
+      "portal/classroom.html",
+      "assets/css/classroom.css (new)",
+      "assets/js/classroom.js",
+      "assets/js/gpu-streaming.js"
+    ],
+    "design_references": [
+      "Front page dark theme (#0f1419)",
+      "Support Assistant chat styling",
+      "Quick Actions tabbed interface"
+    ]
+  },
 
   "reference_docs": {
     "architecture_spec": "docs/project/PMERIT_ARCHITECTURE_FINAL.md",
@@ -200,6 +231,6 @@
     "user_journey": "docs/project/Pmerit-comprehensively-narrative-users-and-Admin-Journey.md",
     "latest_audit": "docs/aados/PRODUCTION_AUDIT_2025-12-09.md",
     "master_doc": "docs/project/Pmerit_Project_Document.md",
-    "latest_handoff": "docs/handoffs/PMERIT_HANDOFF_SESSION_45.md"
+    "latest_handoff": "docs/handoffs/PMERIT_HANDOFF_SESSION_46.md"
   }
 }
