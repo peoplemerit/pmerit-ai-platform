@@ -287,6 +287,14 @@
 
     </div><!-- /.classroom-main -->
 
+    <!-- Mobile Menu Toggle Button -->
+    <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle course outline">
+      <i class="fas fa-list"></i>
+    </button>
+
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="mobile-overlay"></div>
+
   </div><!-- /.classroom-app -->
 
   <!-- AVATAR PIP (Picture-in-Picture Widget) -->
@@ -853,6 +861,89 @@
 
         // Widget controls
         setupWidgetControls();
+
+        // Mobile panel controls
+        setupMobilePanels();
+      }
+
+      // =========================================
+      // MOBILE PANEL CONTROLS
+      // =========================================
+      function setupMobilePanels() {
+        const leftPanel = document.querySelector('.classroom-panel--left');
+        const rightPanel = document.querySelector('.classroom-panel--right');
+        const mobileToggle = document.getElementById('mobile-menu-toggle');
+        const mobileOverlay = document.getElementById('mobile-overlay');
+        const chatHeader = document.querySelector('.chat-header');
+
+        if (!leftPanel || !mobileToggle) return;
+
+        // Toggle left panel (course outline)
+        mobileToggle.addEventListener('click', () => {
+          const isOpen = leftPanel.classList.toggle('open');
+          mobileOverlay.classList.toggle('active', isOpen);
+          mobileToggle.innerHTML = isOpen
+            ? '<i class="fas fa-times"></i>'
+            : '<i class="fas fa-list"></i>';
+        });
+
+        // Close left panel when clicking overlay
+        mobileOverlay.addEventListener('click', () => {
+          leftPanel.classList.remove('open');
+          mobileOverlay.classList.remove('active');
+          mobileToggle.innerHTML = '<i class="fas fa-list"></i>';
+        });
+
+        // Close left panel when selecting a lesson on mobile
+        leftPanel.addEventListener('click', (e) => {
+          if (e.target.closest('.outline-lesson') && window.innerWidth <= 768) {
+            setTimeout(() => {
+              leftPanel.classList.remove('open');
+              mobileOverlay.classList.remove('active');
+              mobileToggle.innerHTML = '<i class="fas fa-list"></i>';
+            }, 100);
+          }
+        });
+
+        // Chat panel expand/collapse on mobile
+        if (chatHeader && rightPanel) {
+          chatHeader.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) {
+              rightPanel.classList.toggle('expanded');
+            }
+          });
+
+          // Swipe gesture support for chat panel
+          let touchStartY = 0;
+          let touchEndY = 0;
+
+          rightPanel.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+          }, { passive: true });
+
+          rightPanel.addEventListener('touchend', (e) => {
+            touchEndY = e.changedTouches[0].clientY;
+            const diff = touchStartY - touchEndY;
+
+            // Swipe up to expand (diff > 50), swipe down to collapse (diff < -50)
+            if (Math.abs(diff) > 50 && window.innerWidth <= 768) {
+              if (diff > 50) {
+                rightPanel.classList.add('expanded');
+              } else {
+                rightPanel.classList.remove('expanded');
+              }
+            }
+          }, { passive: true });
+        }
+
+        // Handle resize - reset panel states when going back to desktop
+        window.addEventListener('resize', () => {
+          if (window.innerWidth > 768) {
+            leftPanel.classList.remove('open');
+            rightPanel?.classList.remove('expanded');
+            mobileOverlay.classList.remove('active');
+          }
+        });
       }
 
       // =========================================
