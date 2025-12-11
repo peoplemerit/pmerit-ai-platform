@@ -109,12 +109,14 @@ body.classroom-body {
   display: flex;
   align-items: center;
   gap: 6px;
-  text-decoration: none;
+  text-decoration: none !important;
+  border-bottom: none;
   transition: opacity 0.2s ease;
 }
 
 .classroom-header__logo:hover {
   opacity: 0.8;
+  text-decoration: none !important;
 }
 
 .classroom-header__logo i {
@@ -677,6 +679,36 @@ body.classroom-body {
   padding: 2px 8px;
   border-radius: 4px;
   z-index: 10;
+}
+
+.sidebar-avatar__raise-hand {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #4AA4B9, #3d8a9c);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 20;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-avatar__raise-hand:hover {
+  background: linear-gradient(135deg, #5ab5ca, #4AA4B9);
+  transform: translateX(-50%) scale(1.05);
+}
+
+.sidebar-avatar__raise-hand i {
+  font-size: 0.875rem;
 }
 
 /* Chat header */

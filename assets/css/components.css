@@ -1226,7 +1226,7 @@
 
 .auth-modal-link:hover {
   color: var(--interactive-primary-hover, #1f4567);
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .auth-modal-link:focus {
@@ -1244,7 +1244,7 @@
 
 .auth-modal-link-small:hover {
   color: var(--interactive-primary-hover, #1f4567);
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 /* Footer Text */
@@ -1497,7 +1497,7 @@
 .btn-tertiary:hover,
 .btn.tertiary:hover {
   background-color: var(--bg-secondary);
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 /* Ghost Button - Transparent */

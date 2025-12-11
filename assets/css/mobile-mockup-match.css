@@ -388,7 +388,7 @@
   .footer-link-mobile:hover,
   .footer-link:hover {
     color: var(--primary);
-    text-decoration: underline;
+    text-decoration: none;
   }
   
   /* Footer Separator */
