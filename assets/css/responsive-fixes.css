@@ -393,3 +393,183 @@
   opacity: 1 !important;
   visibility: visible !important;
 }
+
+/* ==========================================
+   FIX #12: HAMBURGER MENU DARK MODE
+   ========================================== */
+
+/* Dark Mode - Hamburger Menu Styling */
+[data-theme="dark"] #hamburger-menu {
+  background: #1a1a1a;
+  border-right: 1px solid #333;
+}
+
+[data-theme="dark"] .menu-header {
+  background: #1a1a1a;
+  border-bottom-color: #333;
+}
+
+[data-theme="dark"] .menu-brand {
+  color: var(--color-primary);
+}
+
+[data-theme="dark"] #menu-close-btn {
+  color: #b0b0b0;
+}
+
+[data-theme="dark"] #menu-close-btn:hover {
+  background: #2a2a2a;
+  color: #fff;
+}
+
+[data-theme="dark"] .menu-section {
+  border-bottom-color: #333;
+}
+
+[data-theme="dark"] .section-title {
+  color: #888;
+}
+
+[data-theme="dark"] .user-section {
+  background: #222;
+}
+
+[data-theme="dark"] .user-status {
+  color: #999;
+}
+
+[data-theme="dark"] .menu-item {
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .menu-item:hover {
+  background: #2a2a2a;
+}
+
+[data-theme="dark"] .menu-icon {
+  opacity: 0.9;
+}
+
+[data-theme="dark"] .menu-arrow {
+  color: #666;
+}
+
+/* ==========================================
+   FIX #13: TOGGLE SWITCHES - DARK MODE FIX
+   Toggle knob must ALWAYS be white/light
+   ========================================== */
+
+/* Toggle slider track - unchecked state */
+.toggle-slider {
+  background-color: #555 !important; /* Visible track in both modes */
+}
+
+/* Toggle slider knob - ALWAYS white */
+.toggle-slider::before {
+  background-color: #ffffff !important; /* Always white knob */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Checked state - primary color background */
+.toggle-switch input:checked + .toggle-slider,
+.toggle-switch input[type="checkbox"]:checked + .toggle-slider {
+  background-color: var(--primary) !important;
+}
+
+/* Dark mode specific adjustments */
+[data-theme="dark"] .toggle-slider {
+  background-color: #444 !important;
+}
+
+[data-theme="dark"] .toggle-slider::before {
+  background-color: #ffffff !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .toggle-switch input:checked + .toggle-slider,
+[data-theme="dark"] .toggle-switch input[type="checkbox"]:checked + .toggle-slider {
+  background-color: #4AA4B9 !important; /* Teal for better visibility */
+}
+
+/* Hover states */
+.toggle-slider:hover {
+  background-color: #666 !important;
+}
+
+.toggle-switch input:checked + .toggle-slider:hover {
+  background-color: var(--interactive-primary-hover) !important;
+}
+
+[data-theme="dark"] .toggle-slider:hover {
+  background-color: #555 !important;
+}
+
+[data-theme="dark"] .toggle-switch input:checked + .toggle-slider:hover {
+  background-color: #5cc4d9 !important;
+}
+
+/* ==========================================
+   FIX #14: MENU OVERLAY DARK MODE
+   ========================================== */
+
+[data-theme="dark"] #menu-overlay {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/* ==========================================
+   FIX #15: ASSESSMENT PAGE MOBILE FIXES
+   ========================================== */
+
+@media (max-width: 1023px) {
+  /* Progress container z-index - below menu overlay */
+  .progress-container {
+    z-index: 90; /* Below menu overlay (1000) */
+  }
+
+  /* Assessment container padding for mobile */
+  .assessment-container {
+    padding: var(--space-4) var(--space-3);
+  }
+
+  /* Question card mobile sizing */
+  .question-card {
+    margin: var(--space-4) auto;
+    padding: var(--space-4);
+    max-width: 100%;
+  }
+
+  /* Answer options - stack vertically on mobile */
+  .answer-options {
+    flex-direction: column !important;
+    gap: var(--space-3);
+  }
+
+  .radio-option {
+    flex-direction: row !important;
+    text-align: left !important;
+    padding: var(--space-3);
+  }
+
+  .radio-option input[type="radio"] {
+    margin-right: var(--space-3) !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Navigation buttons */
+  .navigation-buttons {
+    flex-direction: row;
+    gap: var(--space-3);
+  }
+
+  .navigation-buttons .btn {
+    flex: 1;
+    padding: var(--space-3);
+    min-width: auto;
+  }
+
+  /* Question text size */
+  .question-text {
+    font-size: var(--text-lg);
+    text-align: left;
+  }
+}
