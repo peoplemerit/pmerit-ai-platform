@@ -445,10 +445,10 @@ body.classroom-body {
 .content-stage__viewport {
   flex: 1;
   overflow-y: auto;
-  padding: 20px;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 0;
 }
 
 /* Video/Content player area */
@@ -574,7 +574,7 @@ body.classroom-body {
 .sidebar-avatar {
   flex-shrink: 0;
   height: 180px;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  background: var(--classroom-surface);
   position: relative;
   border-bottom: 1px solid var(--classroom-border);
   overflow: hidden;
