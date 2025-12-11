@@ -86,9 +86,9 @@
     <!-- HEADER - Fixed top bar -->
     <header class="classroom-header">
       <div class="classroom-header__brand">
-        <span class="classroom-header__logo">
-          <i class="fas fa-chalkboard-teacher"></i> PMERIT
-        </span>
+        <a href="../index.html" class="classroom-header__logo" title="Back to Homepage">
+          <i class="fas fa-graduation-cap"></i> PMERIT
+        </a>
         <span class="classroom-header__title" id="lesson-title">Loading course...</span>
       </div>
 
@@ -227,7 +227,7 @@
       <aside class="classroom-panel--right">
         <!-- CLASSROOM-2B: Docked Avatar -->
         <div class="sidebar-avatar" id="sidebar-avatar">
-          <canvas class="sidebar-avatar__canvas" id="sidebar-avatar-canvas"></canvas>
+          <!-- Canvas created dynamically by GPUStreaming -->
           <div class="sidebar-avatar__fallback" id="sidebar-avatar-fallback">
             <i class="fas fa-user-graduate"></i>
           </div>
@@ -372,15 +372,14 @@
         progressPercent: document.getElementById('progress-percent'),
         statHandRaises: document.getElementById('stat-hand-raises'),
         statQuestions: document.getElementById('stat-questions'),
-        // Avatar frame elements (Digital Desk)
-        avatarFrame: document.getElementById('avatar-frame'),
-        avatarDropZone: document.getElementById('avatar-drop-zone'),
-        avatarLiveBadge: document.getElementById('avatar-live-badge'),
-        avatarFallback: document.getElementById('avatar-fallback'),
-        bandwidthToggle: document.getElementById('bandwidth-toggle'),
-        qaRaiseHand: document.getElementById('qa-raise-hand'),
-        qaSubmitWork: document.getElementById('qa-submit-work'),
-        qaAskHint: document.getElementById('qa-ask-hint'),
+        // Avatar frame elements - CLASSROOM-2B: Now targets sidebar avatar
+        avatarFrame: document.getElementById('sidebar-avatar'),
+        avatarCanvas: document.getElementById('sidebar-avatar-canvas'),
+        avatarLiveBadge: document.getElementById('sidebar-avatar-live'),
+        avatarFallback: document.getElementById('sidebar-avatar-fallback'),
+        avatarCaptions: document.getElementById('sidebar-avatar-captions'),
+        avatarStatus: document.getElementById('sidebar-avatar-status'),
+        // Proctor
         proctorStatus: document.getElementById('proctor-status')
       };
 
