@@ -1,7 +1,7 @@
-# PMERIT SESSION 45 HANDOFF
+# PMERIT SESSION 45 HANDOFF — FINAL
 
 **Date:** December 10-11, 2025
-**Status:** AVATAR MORPH TARGETS FIX DEPLOYED
+**Status:** AVATAR SYSTEM COMPLETE
 
 ---
 
@@ -86,34 +86,41 @@ assets/models/avatars/
 
 ---
 
-## Next Steps
+## Additional Session 45 Work
 
-### Awaiting Browser Testing
-The avatar fix has been deployed. Browser testing is required to verify:
-1. Avatar loads without console errors
-2. Avatar renders correctly (professional Black man with glasses)
-3. Avatar appears in classroom AI Tutor widget
+### TTS Lip Sync Implementation
 
-### If Avatar Still Has Issues
+**Attempted ARKit Morph Targets:**
+- Downloaded pmerit-tutor-arkit.glb (2.1MB with 52 ARKit blend shapes)
+- Created lip-sync-controller.js with Web Audio API analysis
+- Updated gpu-streaming.js v1.7.0 with ARKit viseme mapping
+- RESULT: Three.js parsing errors persisted
 
-**Option 1:** Check Three.js loading logs in console
-**Option 2:** Verify the GLB file in gltf-viewer.donmccurdy.com
-**Option 3:** Check camera positioning if avatar loads but isn't visible
+**Final Solution - Jaw Bone Animation:**
+- Reverted to pmerit-tutor-no-morph.glb (stable)
+- Implemented jaw bone X-axis rotation for lip sync
+- Updated gpu-streaming.js v1.8.0
+- Added bone discovery logging
+- Commit: 0c2c055
 
-### After Avatar is Working
-
-1. **ARCH-2 Core Features**
-   - Credential issuance API
-   - AI persona selection in classroom
-   - Parent portal foundation
+### All Session 45 Commits
+| Commit | Description |
+|--------|-------------|
+| 9f3836a | fix: Use Ready Player Me avatar without morph targets |
+| c7e4d4a | docs: Session 45 handoff |
+| 6e92f8f | feat: TTS lip sync with ARKit blend shapes (failed) |
+| 0c2c055 | fix: Use jaw bone animation for lip sync (v1.8.0) |
 
 ---
 
 ## Files Modified This Session
 
 **Frontend (pmerit-ai-platform):**
-- assets/js/gpu-streaming.js (v1.6.0 - updated avatar path)
+- assets/js/gpu-streaming.js (v1.8.0 - jaw bone lip sync)
+- assets/js/lip-sync-controller.js (NEW)
 - assets/models/avatars/pmerit-tutor-no-morph.glb (NEW)
+- assets/models/avatars/pmerit-tutor-arkit.glb (NEW - not used)
+- portal/classroom.html (added lip-sync-controller.js)
 
 ---
 

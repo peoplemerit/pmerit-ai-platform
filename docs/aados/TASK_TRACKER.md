@@ -1,10 +1,11 @@
 # PMERIT Platform — Task Tracker
 
-**Last Updated:** 2025-12-09
-**Current Session:** 43
+**Last Updated:** 2025-12-11
+**Current Session:** 46
 **Governance Version:** V6 (Architecture Spec Integrated)
 **Workflow Mode:** Direct Execution (Claude Code Desktop)
 **Architecture Spec:** [PMERIT_ARCHITECTURE_FINAL.md](../project/PMERIT_ARCHITECTURE_FINAL.md) — APPROVED
+**Current Focus:** Classroom UX Redesign (App Shell Architecture)
 
 ---
 
@@ -34,9 +35,10 @@ Say "PMERIT QUICK FIX: [description]" for minor fixes.
 
 | Phase | Name | Status | Tasks |
 |-------|------|--------|-------|
-| **ARCH-1** | Foundation | 🟡 IN PROGRESS | Fix avatar paths, create credential/K-12/parent tables |
-| **ARCH-2** | Core Features | 🔒 Blocked | Credential issuance, blockchain hash, AI persona selection |
+| **ARCH-1** | Foundation | ✅ COMPLETE | Avatar system, credential tables, K-12 tables, parent portal tables |
+| **ARCH-2** | Core Features | 🟡 NEXT | Credential issuance, blockchain hash, AI persona selection |
 | **ARCH-3** | Integration | 🔒 Blocked | Polygon blockchain, credential sharing UI, parent dashboard |
+| **CLASSROOM** | UX Redesign | 🟢 IN PROGRESS | App Shell architecture, dark theme, tabbed panels |
 
 ### Key Decisions (CONFIRMED)
 
@@ -376,20 +378,83 @@ Register → Verification email sent → User enters 6-digit code → Account ve
 
 ## 📊 SESSION HISTORY
 
-### Session 42 — 2025-12-08 (Current)
+### Session 46 — 2025-12-11 (Current)
+
+**Focus:** Classroom UX Redesign Planning
+**Workflow:** Direct Execution (Claude Code Desktop)
+**Environment:** FE
+
+**Completed:**
+- Avatar system COMPLETE (Session 45)
+- Classroom redesign specifications defined
+- App Shell architecture planned
+
+**Next Tasks:**
+- [ ] CLASSROOM-1: App Shell foundation (100vh, overflow hidden)
+- [ ] CLASSROOM-2: Dark theme implementation (#0f1419)
+- [ ] CLASSROOM-3: Tabbed left panel (Outline | Notes | Resources)
+- [ ] CLASSROOM-4: Docked avatar PIP
+- [ ] CLASSROOM-5: Unified playback controls
+- [ ] AVATAR-1: Avatar selection system (multiple tutors)
+
+---
+
+### Session 45 — 2025-12-11
+
+**Focus:** Avatar System + TTS Lip Sync
+**Workflow:** Direct Execution (Claude Code Desktop)
+**Environment:** FE
+
+**Completed:**
+- ✅ Avatar morph targets fix (commit 9f3836a)
+- ✅ ARKit lip sync attempted but failed (commit 6e92f8f)
+- ✅ Jaw bone animation implemented (commit 0c2c055)
+- ✅ Avatar system COMPLETE (pmerit-tutor-no-morph.glb)
+- ✅ lip-sync-controller.js created
+- ✅ gpu-streaming.js v1.8.0
+
+**Key Technical Decisions:**
+- ARKit morph targets cause Three.js parsing errors
+- Use jaw bone rotation for lip sync instead
+- pmerit-tutor-no-morph.glb (773KB) is the stable avatar
+
+---
+
+### Session 44 — 2025-12-10
+
+**Focus:** Ready Player Me Integration
+**Workflow:** Direct Execution (Claude Code Desktop)
+**Environment:** FE
+
+**Completed:**
+- Created Ready Player Me account (peoplemerit)
+- Created application (Pmerit AI Tutor)
+- Selected professional avatar (ID: 693a05bd100ae875d551b445)
+- Downloaded avatar files
+- Identified morph targets error
+
+---
+
+### Session 43 — 2025-12-09
+
+**Focus:** ARCH-1 Foundation + Comprehensive Audit
+**Workflow:** Direct Execution (Claude Code Desktop)
+**Environment:** FE + BE
+
+**Major Milestone:**
+- ✅ ARCH-1 FOUNDATION COMPLETE
+- 14 new database tables created
+- 7 indexes created
+- Seed data: 5 credential types, 13 grades, 4 subjects, 6 AI personas
+- Database now 96 tables
+
+---
+
+### Session 42 — 2025-12-08
 
 **Focus:** Production Audit + Session Continuity
 **Workflow:** Direct Execution (Claude Code Desktop)
 **Environment:** FE
-
-**Audit Results:**
-| Component | Status |
-|-----------|--------|
-| Frontend (pmerit.com) | Healthy |
-| Backend API v2.2.0 | Healthy - 40 endpoints |
-| AI Chat | Healthy - Streaming response working |
-| Pathways API | Healthy - 14 pathways |
-| Courses API | Healthy - 42 courses |
 
 **Session Summary:**
 - Full production audit completed
@@ -658,40 +723,44 @@ Login/Signup → /account.html → "Enter Dashboard" → /dashboard.html
 **When "PMERIT CONTINUE" is triggered:**
 
 ```
-📍 Phase: ARCHITECTURE IMPLEMENTATION (PMERIT_ARCHITECTURE_FINAL.md)
-📊 Phase Status: ARCH-1 Foundation COMPLETE
-🎯 Next: ARCH-2 Core Features (Credential issuance, AI persona selection)
+📍 Phase: CLASSROOM UX REDESIGN
+📊 Phase Status: Planning Complete
+🎯 Next: CLASSROOM-1 (App Shell foundation)
+✅ Avatar System: COMPLETE (pmerit-tutor-no-morph.glb, jaw bone lip sync)
+✅ ARCH-1 Foundation: COMPLETE (14 tables, 96 total)
 ✅ Legacy Phases 0-5: COMPLETE
-✅ Architecture Spec: APPROVED (v1.1)
-✅ Avatar Paths: FIXED (humano_professional.glb - commit 0bdf6a3)
-✅ Database Migration: 14 new tables + indexes + seed data
-🩺 Production Health: Backend v2.2.0 healthy, 96 tables, 40 endpoints
+🩺 Production Health: All systems healthy
 ⚡ Workflow: Direct Execution
 🚫 BLOCKERS: None
 ```
 
-**Architecture Document:** `docs/project/PMERIT_ARCHITECTURE_FINAL.md` (v1.1 — APPROVED)
+**Current Focus:** Classroom App Shell Architecture
+- Convert to 100vh fixed viewport
+- Dark theme matching front page (#0f1419)
+- Tabbed left panel (Outline | Notes | Resources)
+- Docked avatar PIP
+- Unified playback controls
 
-**Last Audit:** 2025-12-09 (Session 43) - Comprehensive Platform Audit
-**Session 43 Key Findings (100% Verified Facts):**
-- **Backend API:** v2.2.0 healthy with 40 endpoints
-- **Database:** 82 tables confirmed
-- **TTS:** Working — returns audio/mpeg (104KB for "Hello world")
-- **Pathways:** 14 items returned
-- **Courses:** 42 items returned
-- **GPU Tiers:** 3 tiers, 4 regions
+**Files to Modify:**
+- portal/classroom.html
+- assets/css/classroom.css (new)
+- assets/js/classroom.js
+- assets/js/gpu-streaming.js
 
 **Active Handoffs:**
-- `PMERIT_HANDOFF_SESSION_40.md`
-- `PMERIT_HANDOFF_SESSION_41.md`
-- `PMERIT_HANDOFF_SESSION_42.md`
+- `PMERIT_HANDOFF_SESSION_45.md` (FINAL)
+- `PMERIT_HANDOFF_SESSION_46.md`
 
-**Verified Production Data:**
-- Database: 82 tables
-- API Endpoints: 40 (Backend v2.2.0)
-- Pathways: 14 | Courses: 42
-- Avatar Textures: 15 JPG files (all accessible)
-- GLB Model: humano_professional.glb (HTTP 200)
+**Avatar System Status:**
+- Model: pmerit-tutor-no-morph.glb (773KB)
+- Rendering: Three.js WebGL
+- Lip Sync: Jaw bone X-axis rotation
+- Status: COMPLETE
+
+**Ready Player Me Account:**
+- Username: peoplemerit
+- Application: Pmerit AI Tutor
+- Avatar ID: 693a05bd100ae875d551b445
 
 ---
 
