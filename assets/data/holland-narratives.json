@@ -1,0 +1,147 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2025-12-11",
+  "description": "Holland Code (RIASEC) narratives for PMERIT career assessment",
+
+  "codes": {
+    "R": {
+      "name": "Realistic",
+      "shortDescription": "practical and hands-on",
+      "fullDescription": "You prefer working with things - tools, machines, plants, or animals. You enjoy physical activity, solving concrete problems, and seeing tangible results from your work.",
+      "workStyle": "Hands-on, practical, mechanical, physical",
+      "valueAt": "Concrete results, working with objects, outdoor activities",
+      "exampleCareers": ["Engineer", "Mechanic", "Electrician", "Farmer", "Construction Manager", "Chef"],
+      "skills": ["Manual dexterity", "Technical aptitude", "Physical coordination", "Tool proficiency"]
+    },
+    "I": {
+      "name": "Investigative",
+      "shortDescription": "analytical and curious",
+      "fullDescription": "You enjoy thinking, researching, and solving complex problems. You're drawn to understanding how things work and prefer intellectual challenges over routine tasks.",
+      "workStyle": "Analytical, intellectual, scientific, curious",
+      "valueAt": "Research, problem-solving, independent work, learning",
+      "exampleCareers": ["Data Scientist", "Researcher", "Doctor", "Software Developer", "Economist", "Psychologist"],
+      "skills": ["Critical thinking", "Data analysis", "Research methodology", "Scientific reasoning"]
+    },
+    "A": {
+      "name": "Artistic",
+      "shortDescription": "creative and expressive",
+      "fullDescription": "You value creativity, originality, and self-expression. You thrive in unstructured environments where you can innovate, design, and express ideas in unique ways.",
+      "workStyle": "Creative, innovative, expressive, unconventional",
+      "valueAt": "Artistic freedom, originality, aesthetics, innovation",
+      "exampleCareers": ["Designer", "Writer", "Musician", "Architect", "Art Director", "Content Creator"],
+      "skills": ["Creative thinking", "Visual design", "Writing", "Artistic expression"]
+    },
+    "S": {
+      "name": "Social",
+      "shortDescription": "helpful and people-oriented",
+      "fullDescription": "You enjoy helping, teaching, and supporting others. You're drawn to roles that involve interpersonal connection, counseling, and making a positive impact on people's lives.",
+      "workStyle": "Collaborative, empathetic, communicative, supportive",
+      "valueAt": "Helping others, teamwork, teaching, community",
+      "exampleCareers": ["Teacher", "Counselor", "Nurse", "Social Worker", "HR Manager", "Coach"],
+      "skills": ["Communication", "Empathy", "Teaching", "Conflict resolution"]
+    },
+    "E": {
+      "name": "Enterprising",
+      "shortDescription": "ambitious and persuasive",
+      "fullDescription": "You enjoy leading, persuading, and managing others. You're motivated by goals, status, and influence, thriving in competitive environments where you can drive results.",
+      "workStyle": "Leadership-oriented, persuasive, competitive, goal-driven",
+      "valueAt": "Achievement, leadership, influence, business success",
+      "exampleCareers": ["Manager", "Entrepreneur", "Sales Director", "Lawyer", "Executive", "Real Estate Agent"],
+      "skills": ["Leadership", "Persuasion", "Negotiation", "Strategic planning"]
+    },
+    "C": {
+      "name": "Conventional",
+      "shortDescription": "organized and detail-oriented",
+      "fullDescription": "You prefer structured work with clear rules and procedures. You excel at organizing information, following systems, and ensuring accuracy in data-driven environments.",
+      "workStyle": "Organized, methodical, detail-focused, systematic",
+      "valueAt": "Order, accuracy, clear procedures, stability",
+      "exampleCareers": ["Accountant", "Administrator", "Financial Analyst", "Actuary", "Database Manager", "Auditor"],
+      "skills": ["Organization", "Attention to detail", "Data management", "Process compliance"]
+    }
+  },
+
+  "combinations": {
+    "RIA": {
+      "narrative": "You combine practical skills (Realistic) with analytical thinking (Investigative) and creative expression (Artistic). This unique blend suits technical roles that allow for innovation and hands-on problem-solving.",
+      "suggestedCareers": ["Product Designer", "Mechanical Engineer", "Industrial Designer", "Game Developer"]
+    },
+    "RIS": {
+      "narrative": "You blend hands-on skills (Realistic) with analytical thinking (Investigative) and a desire to help others (Social). You're suited for technical roles with a human impact.",
+      "suggestedCareers": ["Physical Therapist", "Biomedical Engineer", "Occupational Therapist", "Medical Technician"]
+    },
+    "RIC": {
+      "narrative": "You combine practical ability (Realistic) with analytical skills (Investigative) and attention to detail (Conventional). You excel in technical roles requiring precision.",
+      "suggestedCareers": ["Civil Engineer", "Quality Control Specialist", "Surveyor", "Lab Technician"]
+    },
+    "RIE": {
+      "narrative": "You blend hands-on skills (Realistic) with analytical thinking (Investigative) and leadership drive (Enterprising). You're suited for technical management roles.",
+      "suggestedCareers": ["Engineering Manager", "Construction Manager", "Technical Director", "Operations Manager"]
+    },
+    "IAS": {
+      "narrative": "You're analytical and curious (Investigative), with creative expression (Artistic) and a desire to help others (Social). This suits research or design roles with human impact.",
+      "suggestedCareers": ["UX Researcher", "Clinical Psychologist", "Medical Writer", "Educational Designer"]
+    },
+    "IAE": {
+      "narrative": "You combine analytical thinking (Investigative) with creativity (Artistic) and ambition (Enterprising). You're suited for strategic creative roles.",
+      "suggestedCareers": ["Product Manager", "Creative Director", "Marketing Strategist", "Innovation Consultant"]
+    },
+    "IAC": {
+      "narrative": "You're analytical (Investigative) with creative interests (Artistic) and organizational skills (Conventional). You excel at structured creative or research work.",
+      "suggestedCareers": ["Technical Writer", "Research Analyst", "Information Architect", "Data Visualization Specialist"]
+    },
+    "ISA": {
+      "narrative": "You're analytical and curious (Investigative), motivated by helping and connecting with others (Social), and inspired by creativity and design (Artistic). This blend points to careers where problem-solving, collaboration, and creativity intersect.",
+      "suggestedCareers": ["UX Designer", "Clinical Researcher", "Educational Psychologist", "Health Communications Specialist"]
+    },
+    "ISE": {
+      "narrative": "You combine analytical skills (Investigative) with social orientation (Social) and leadership drive (Enterprising). You're suited for roles leading people-focused initiatives.",
+      "suggestedCareers": ["Healthcare Administrator", "Research Director", "Program Manager", "Academic Dean"]
+    },
+    "ISC": {
+      "narrative": "You're analytical (Investigative) with social skills (Social) and organizational ability (Conventional). You excel in structured helping roles.",
+      "suggestedCareers": ["Medical Records Administrator", "Research Coordinator", "Public Health Analyst", "Librarian"]
+    },
+    "ASE": {
+      "narrative": "You're creative (Artistic), people-oriented (Social), and ambitious (Enterprising). You thrive in leadership roles within creative industries.",
+      "suggestedCareers": ["Art Director", "Creative Agency Owner", "Event Planner", "Media Producer"]
+    },
+    "ASC": {
+      "narrative": "You combine creativity (Artistic) with social skills (Social) and organizational ability (Conventional). You excel at organizing creative or educational initiatives.",
+      "suggestedCareers": ["Museum Curator", "Art Teacher", "Editorial Manager", "Instructional Designer"]
+    },
+    "SEC": {
+      "narrative": "You balance people skills (Social) with leadership drive (Enterprising) and organizational ability (Conventional). You're well-suited for management and coordination roles.",
+      "suggestedCareers": ["HR Director", "Office Manager", "School Principal", "Healthcare Administrator"]
+    },
+    "SER": {
+      "narrative": "You're people-oriented (Social), ambitious (Enterprising), and practical (Realistic). You excel in hands-on leadership roles.",
+      "suggestedCareers": ["Athletic Director", "Restaurant Manager", "Physical Education Teacher", "Recreation Director"]
+    },
+    "SEA": {
+      "narrative": "You combine social skills (Social) with leadership (Enterprising) and creativity (Artistic). You thrive in creative leadership or people-focused design roles.",
+      "suggestedCareers": ["Marketing Manager", "Brand Strategist", "Public Relations Director", "Community Organizer"]
+    },
+    "ECS": {
+      "narrative": "You're ambitious (Enterprising), organized (Conventional), and people-oriented (Social). You excel in structured business roles involving team leadership.",
+      "suggestedCareers": ["Business Manager", "Sales Manager", "Branch Manager", "Customer Success Director"]
+    },
+    "ECA": {
+      "narrative": "You combine ambition (Enterprising) with organization (Conventional) and creativity (Artistic). You're suited for creative business management.",
+      "suggestedCareers": ["Advertising Executive", "Fashion Merchandiser", "Media Business Manager", "Entertainment Producer"]
+    },
+    "CRI": {
+      "narrative": "You're organized (Conventional), practical (Realistic), and analytical (Investigative). You excel in technical roles requiring precision and analysis.",
+      "suggestedCareers": ["Quality Assurance Engineer", "Compliance Officer", "Systems Administrator", "Technical Analyst"]
+    },
+    "CRS": {
+      "narrative": "You combine organization (Conventional) with practical skills (Realistic) and social orientation (Social). You're suited for administrative roles supporting teams.",
+      "suggestedCareers": ["Office Manager", "Administrative Coordinator", "Facilities Manager", "Medical Office Administrator"]
+    },
+    "_default": {
+      "narrative": "Your Holland Code reflects a unique blend of interests that point to careers matching your combined strengths. Consider roles that allow you to leverage multiple aspects of your personality.",
+      "suggestedCareers": []
+    }
+  },
+
+  "codeDescriptionTemplate": "Your career type is {code}, indicating you are {adj1} ({code1}), {adj2} ({code2}), and {adj3} ({code3})."
+}

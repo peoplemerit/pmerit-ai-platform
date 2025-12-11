@@ -347,7 +347,99 @@
       color: var(--text-secondary);
       line-height: 1.5;
     }
-    
+
+    /* Enhanced Trait Details */
+    .trait-details {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-color, #e5e7eb);
+    }
+
+    .trait-details h4 {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .trait-strengths,
+    .trait-growth {
+      margin-bottom: 0.75rem;
+    }
+
+    .tag-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.375rem;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 0.25rem 0.625rem;
+      font-size: 0.75rem;
+      border-radius: 9999px;
+      font-weight: 500;
+    }
+
+    .tag-strength {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .tag-growth {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .tag-career {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .career-fit-text {
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      font-style: italic;
+      margin: 0;
+    }
+
+    /* Holland Code Enhanced */
+    .holland-narrative {
+      margin-top: 1rem;
+    }
+
+    .holland-narrative-text {
+      font-size: 0.9375rem;
+      color: var(--text-primary);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .holland-suggested-careers {
+      margin-top: 1.25rem;
+    }
+
+    .holland-suggested-careers h4 {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .career-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.375rem;
+    }
+
+    .code-letter {
+      cursor: help;
+    }
+
     /* Career Matches Section */
     .career-matches-section {
       padding: 3rem 1.5rem;
@@ -774,6 +866,11 @@
             <p class="code-description" id="hollandDescription">
               Investigative, Social, Artistic
             </p>
+            <div id="hollandNarrative" class="holland-narrative"></div>
+            <div class="holland-suggested-careers">
+              <h4>Suggested Career Types</h4>
+              <div id="hollandSuggestedCareers" class="career-tags"></div>
+            </div>
           </div>
           
           <div class="top-traits">
@@ -809,6 +906,20 @@
           <p class="trait-description" id="descO">
             You are imaginative, creative, and appreciate art and novel experiences.
           </p>
+          <div class="trait-details">
+            <div class="trait-strengths">
+              <h4>Strengths</h4>
+              <div id="strengthsO" class="tag-container"></div>
+            </div>
+            <div class="trait-growth">
+              <h4>Growth Areas</h4>
+              <div id="growthO" class="tag-container"></div>
+            </div>
+            <div class="trait-career-fit">
+              <h4>Career Fit</h4>
+              <p id="careerFitO" class="career-fit-text"></p>
+            </div>
+          </div>
         </div>
         
         <!-- Conscientiousness Card -->
@@ -825,6 +936,20 @@
           <p class="trait-description" id="descC">
             You are organized, reliable, and persistent in achieving goals.
           </p>
+          <div class="trait-details">
+            <div class="trait-strengths">
+              <h4>Strengths</h4>
+              <div id="strengthsC" class="tag-container"></div>
+            </div>
+            <div class="trait-growth">
+              <h4>Growth Areas</h4>
+              <div id="growthC" class="tag-container"></div>
+            </div>
+            <div class="trait-career-fit">
+              <h4>Career Fit</h4>
+              <p id="careerFitC" class="career-fit-text"></p>
+            </div>
+          </div>
         </div>
         
         <!-- Extraversion Card -->
@@ -841,6 +966,20 @@
           <p class="trait-description" id="descE">
             You balance social interaction with time alone, adapting as needed.
           </p>
+          <div class="trait-details">
+            <div class="trait-strengths">
+              <h4>Strengths</h4>
+              <div id="strengthsE" class="tag-container"></div>
+            </div>
+            <div class="trait-growth">
+              <h4>Growth Areas</h4>
+              <div id="growthE" class="tag-container"></div>
+            </div>
+            <div class="trait-career-fit">
+              <h4>Career Fit</h4>
+              <p id="careerFitE" class="career-fit-text"></p>
+            </div>
+          </div>
         </div>
         
         <!-- Agreeableness Card -->
@@ -857,6 +996,20 @@
           <p class="trait-description" id="descA">
             You are compassionate, cooperative, and value harmony in relationships.
           </p>
+          <div class="trait-details">
+            <div class="trait-strengths">
+              <h4>Strengths</h4>
+              <div id="strengthsA" class="tag-container"></div>
+            </div>
+            <div class="trait-growth">
+              <h4>Growth Areas</h4>
+              <div id="growthA" class="tag-container"></div>
+            </div>
+            <div class="trait-career-fit">
+              <h4>Career Fit</h4>
+              <p id="careerFitA" class="career-fit-text"></p>
+            </div>
+          </div>
         </div>
         
         <!-- Neuroticism Card -->
@@ -873,6 +1026,20 @@
           <p class="trait-description" id="descN">
             You are calm, emotionally stable, and resilient under stress.
           </p>
+          <div class="trait-details">
+            <div class="trait-strengths">
+              <h4>Strengths</h4>
+              <div id="strengthsN" class="tag-container"></div>
+            </div>
+            <div class="trait-growth">
+              <h4>Growth Areas</h4>
+              <div id="growthN" class="tag-container"></div>
+            </div>
+            <div class="trait-career-fit">
+              <h4>Career Fit</h4>
+              <p id="careerFitN" class="career-fit-text"></p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

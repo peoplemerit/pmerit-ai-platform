@@ -1,0 +1,136 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2025-12-11",
+  "description": "Big Five personality trait narratives for PMERIT assessment results",
+
+  "openness": {
+    "name": "Openness to Experience",
+    "abbreviation": "O",
+    "high": {
+      "range": [70, 100],
+      "narrative": "You're curious and imaginative, drawn to new ideas and creative problem-solving. You thrive in environments that encourage innovation, exploration, and unconventional thinking.",
+      "strengths": ["Creative thinking", "Adaptability to change", "Intellectual curiosity", "Appreciation for diversity"],
+      "growthAreas": ["May need structure for follow-through", "Can become restless with routine", "May overcommit to new ideas"],
+      "careerFit": "Roles requiring innovation, research, design, or strategic thinking"
+    },
+    "moderate": {
+      "range": [40, 69],
+      "narrative": "You balance practical thinking with openness to new ideas. You appreciate innovation but also value proven approaches, making you effective in roles requiring both creativity and consistency.",
+      "strengths": ["Balanced perspective", "Flexible yet grounded", "Practical creativity"],
+      "growthAreas": ["May hesitate on unconventional solutions", "Could benefit from more creative exploration"],
+      "careerFit": "Roles blending established methods with opportunities for improvement"
+    },
+    "low": {
+      "range": [0, 39],
+      "narrative": "You prefer practical, tried-and-true approaches over abstract theories. You excel in roles with clear procedures and established methods, bringing consistency and reliability to your work.",
+      "strengths": ["Practical focus", "Consistent execution", "Detail-oriented", "Reliable outcomes"],
+      "growthAreas": ["May resist change initially", "Could benefit from exploring new approaches"],
+      "careerFit": "Roles with clear processes, quality control, or operational excellence"
+    }
+  },
+
+  "conscientiousness": {
+    "name": "Conscientiousness",
+    "abbreviation": "C",
+    "high": {
+      "range": [70, 100],
+      "narrative": "You're organized and dependable, with a strong sense of responsibility. You thrive in structured environments where planning, attention to detail, and follow-through matter.",
+      "strengths": ["Reliable", "Detail-oriented", "Goal-focused", "Strong work ethic"],
+      "growthAreas": ["May struggle with ambiguity", "Can be perfectionist", "May overwork"],
+      "careerFit": "Roles requiring project management, compliance, quality assurance, or leadership"
+    },
+    "moderate": {
+      "range": [40, 69],
+      "narrative": "You balance organization with flexibility. You can plan ahead while adapting to changing circumstances, making you effective in dynamic environments.",
+      "strengths": ["Adaptable planning", "Reasonable attention to detail", "Balanced priorities"],
+      "growthAreas": ["May occasionally procrastinate", "Could strengthen time management"],
+      "careerFit": "Roles requiring both structure and adaptability"
+    },
+    "low": {
+      "range": [0, 39],
+      "narrative": "You prefer flexibility over rigid structure. You work well in dynamic environments where adaptability matters more than detailed planning, bringing spontaneity and agility to your work.",
+      "strengths": ["Spontaneous", "Adaptable", "Creative problem-solver", "Comfortable with change"],
+      "growthAreas": ["May benefit from organizational tools", "Could strengthen deadline management"],
+      "careerFit": "Roles in fast-paced, creative, or entrepreneurial environments"
+    }
+  },
+
+  "extraversion": {
+    "name": "Extraversion",
+    "abbreviation": "E",
+    "high": {
+      "range": [70, 100],
+      "narrative": "You're energized by social interaction and enjoy being around others. You thrive in collaborative, people-oriented environments where communication and networking are valued.",
+      "strengths": ["Networking ability", "Team leadership", "Communication skills", "Enthusiasm"],
+      "growthAreas": ["May need to develop independent work skills", "Can dominate conversations"],
+      "careerFit": "Roles in sales, marketing, leadership, or client-facing positions"
+    },
+    "moderate": {
+      "range": [40, 69],
+      "narrative": "You balance social engagement with independent focus. You're comfortable collaborating with teams yet equally effective working alone, adapting your energy to the situation.",
+      "strengths": ["Versatile", "Balanced social energy", "Adaptable communication style"],
+      "growthAreas": ["May need to push for visibility in groups", "Could strengthen networking"],
+      "careerFit": "Roles requiring both teamwork and individual contribution"
+    },
+    "low": {
+      "range": [0, 39],
+      "narrative": "You prefer focused, independent work and meaningful one-on-one connections over large group settings. You excel in roles requiring deep concentration and thoughtful analysis.",
+      "strengths": ["Deep focus", "Independent work", "Thoughtful communication", "Reflective thinking"],
+      "growthAreas": ["May need to build networking comfort", "Could benefit from more visibility"],
+      "careerFit": "Roles in research, writing, analysis, or technical specialization"
+    }
+  },
+
+  "agreeableness": {
+    "name": "Agreeableness",
+    "abbreviation": "A",
+    "high": {
+      "range": [70, 100],
+      "narrative": "You're cooperative and empathetic, often seeking harmony in relationships. This helps you build trust and work effectively in team-oriented settings where collaboration matters.",
+      "strengths": ["Team player", "Conflict resolution", "Empathy", "Building rapport"],
+      "growthAreas": ["May avoid necessary confrontation", "Can prioritize others over self"],
+      "careerFit": "Roles in counseling, teaching, healthcare, HR, or team coordination"
+    },
+    "moderate": {
+      "range": [40, 69],
+      "narrative": "You balance cooperation with healthy assertiveness. You value team harmony while advocating for your own perspective when needed, making you effective in negotiation.",
+      "strengths": ["Balanced advocacy", "Fair negotiation", "Pragmatic collaboration"],
+      "growthAreas": ["May occasionally defer too much", "Could strengthen boundary-setting"],
+      "careerFit": "Roles requiring both teamwork and individual advocacy"
+    },
+    "low": {
+      "range": [0, 39],
+      "narrative": "You're direct and prioritize results over social harmony. You excel in roles requiring tough decisions, objective analysis, and willingness to challenge the status quo.",
+      "strengths": ["Direct communication", "Objective decision-making", "Comfortable with conflict", "Results-focused"],
+      "growthAreas": ["May need to soften delivery in team settings", "Could build more rapport"],
+      "careerFit": "Roles in management, law, analysis, or competitive environments"
+    }
+  },
+
+  "emotionalStability": {
+    "name": "Emotional Stability",
+    "abbreviation": "N",
+    "note": "Displayed as inverse of Neuroticism (high stability = low neuroticism)",
+    "high": {
+      "range": [70, 100],
+      "narrative": "You handle stress well and maintain composure under pressure. Your emotional resilience makes you effective in high-stakes environments where calm leadership matters.",
+      "strengths": ["Calm under pressure", "Resilient", "Steady leadership", "Consistent performance"],
+      "growthAreas": ["May underestimate others' stress levels", "Could show more emotional range"],
+      "careerFit": "Roles in leadership, crisis management, healthcare, or high-pressure environments"
+    },
+    "moderate": {
+      "range": [40, 69],
+      "narrative": "You handle stress reasonably well, though occasional ups and downs are part of your rhythm. Your self-awareness helps you recognize when to step back and recharge.",
+      "strengths": ["Realistic self-awareness", "Adaptable", "Emotionally responsive"],
+      "growthAreas": ["May benefit from stress management techniques", "Could develop more coping strategies"],
+      "careerFit": "Most roles with reasonable stress levels"
+    },
+    "low": {
+      "range": [0, 39],
+      "narrative": "You experience emotions intensely, which can fuel passion and creativity. Developing coping strategies can help channel this sensitivity productively into your work.",
+      "strengths": ["Emotional awareness", "Passionate engagement", "Sensitivity to others", "Creative expression"],
+      "growthAreas": ["May benefit from mindfulness practices", "Could develop stress resilience"],
+      "careerFit": "Roles allowing emotional expression, creativity, or helping others"
+    }
+  }
+}
