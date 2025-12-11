@@ -1,7 +1,7 @@
 /**
  * GPU Streaming - Just-In-Time Cloud GPU for Premium Avatars
  * Phase 4: Digital Desk Classroom Redesign
- * @version 1.5.0 - Ready Player Me tutor avatar (pmerit-tutor.glb)
+ * @version 1.6.0 - Ready Player Me tutor avatar (morph targets removed)
  *
  * Manages tiered virtual human rendering:
  * - Free: CSS/SVG animations (client-side)
@@ -39,7 +39,7 @@
       avatar: 'webgl',
       description: 'WebGL 3D Avatar',
       cost: 0,
-      model: '/assets/models/avatars/pmerit-tutor.glb' // Ready Player Me avatar (832KB)
+      model: '/assets/models/avatars/pmerit-tutor-no-morph.glb' // Ready Player Me avatar without morph targets (773KB)
     },
     PREMIUM: {
       name: 'premium',
@@ -47,7 +47,7 @@
       avatar: 'unreal',
       description: 'Unreal MetaHuman',
       cost: 2.68, // $/hr for H100
-      model: '/assets/models/avatars/pmerit-tutor.glb' // Fallback to WebGL model
+      model: '/assets/models/avatars/pmerit-tutor-no-morph.glb' // Fallback to WebGL model
     },
     FALLBACK: {
       name: 'fallback',
