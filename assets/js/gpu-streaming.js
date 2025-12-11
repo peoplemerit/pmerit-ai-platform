@@ -1,7 +1,7 @@
 /**
  * GPU Streaming - Just-In-Time Cloud GPU for Premium Avatars
  * Phase 4: Digital Desk Classroom Redesign
- * @version 1.7.0 - Ready Player Me tutor avatar with ARKit lip sync
+ * @version 1.8.0 - Ready Player Me tutor avatar with jaw bone lip sync
  *
  * Manages tiered virtual human rendering:
  * - Free: CSS/SVG animations (client-side)
@@ -39,7 +39,7 @@
       avatar: 'webgl',
       description: 'WebGL 3D Avatar',
       cost: 0,
-      model: '/assets/models/avatars/pmerit-tutor-arkit.glb' // Ready Player Me avatar with ARKit blend shapes (2.1MB)
+      model: '/assets/models/avatars/pmerit-tutor-no-morph.glb' // Ready Player Me avatar (773KB) - jaw bone animation
     },
     PREMIUM: {
       name: 'premium',
@@ -47,7 +47,7 @@
       avatar: 'unreal',
       description: 'Unreal MetaHuman',
       cost: 2.68, // $/hr for H100
-      model: '/assets/models/avatars/pmerit-tutor-arkit.glb' // Fallback to WebGL model with lip sync
+      model: '/assets/models/avatars/pmerit-tutor-no-morph.glb' // Fallback to WebGL model - jaw bone animation
     },
     FALLBACK: {
       name: 'fallback',
@@ -1707,75 +1707,61 @@
 
     /**
      * Apply mouth movement to avatar model based on audio intensity
-     * Supports ARKit blend shapes from Ready Player Me avatars
+     * Uses jaw bone rotation (works with no-morph avatar)
      * @param {number} intensity - Audio intensity [0..1]
-     * @param {string} viseme - Optional specific viseme to apply (aa, ee, ih, oh, ou)
      */
-    applyMouthMovement(intensity, viseme = null) {
+    applyMouthMovement(intensity) {
       if (!this.webgl?.model) return;
 
       // Clamp the intensity
       const mouthOpen = Math.min(Math.max(intensity, 0), 1);
 
-      // Track if we found any morph targets
-      let foundMorph = false;
+      // Track if we found the jaw bone
+      let foundJaw = false;
 
       this.webgl.model.traverse((child) => {
-        // Only process meshes with morph targets
-        if (!child.isMesh || !child.morphTargetInfluences || !child.morphTargetDictionary) {
-          return;
-        }
+        // Jaw bone rotation (works without morph targets)
+        if (child.isBone) {
+          const boneName = child.name || '';
+          const boneNameLower = boneName.toLowerCase();
 
-        // Log available morph targets once for debugging
-        if (!this._morphTargetsLogged) {
-          console.log('🎭 Available morph targets:', Object.keys(child.morphTargetDictionary));
-          this._morphTargetsLogged = true;
-        }
-
-        const dict = child.morphTargetDictionary;
-        const influences = child.morphTargetInfluences;
-
-        // Apply ARKit blend shapes for natural speech
-        // jawOpen is the primary driver for mouth opening
-        if (dict.jawOpen !== undefined) {
-          influences[dict.jawOpen] = mouthOpen * 0.7;
-          foundMorph = true;
-        }
-
-        // Add secondary mouth shapes for more natural movement
-        if (dict.mouthOpen !== undefined) {
-          influences[dict.mouthOpen] = mouthOpen * 0.5;
-          foundMorph = true;
-        }
-
-        // Viseme-specific shapes for better lip sync
-        if (viseme) {
-          this.applyViseme(dict, influences, viseme, mouthOpen);
-        } else {
-          // Default vowel-like shape when no specific viseme
-          if (dict.mouthFunnel !== undefined) {
-            influences[dict.mouthFunnel] = mouthOpen * 0.2;
+          // Log all bones once for debugging
+          if (!this._bonesLogged) {
+            if (!this._boneNames) this._boneNames = [];
+            this._boneNames.push(boneName);
           }
-        }
 
-        // Subtle lip movement for realism
-        if (dict.mouthStretchLeft !== undefined && dict.mouthStretchRight !== undefined) {
-          const stretch = mouthOpen * 0.15;
-          influences[dict.mouthStretchLeft] = stretch;
-          influences[dict.mouthStretchRight] = stretch;
+          // Find jaw bone - Ready Player Me uses "Jaw" or similar
+          if (boneNameLower === 'jaw' ||
+              boneNameLower.includes('jaw') ||
+              boneNameLower === 'head_jaw' ||
+              boneNameLower === 'cc_base_jaw') {
+            // Rotate jaw on X-axis: 0 = closed, ~0.3 rad = open
+            // Negative X rotation opens the jaw (rotates down)
+            child.rotation.x = -mouthOpen * 0.25;
+            foundJaw = true;
+
+            // Log jaw movement periodically (not every frame)
+            if (!this._lastJawLog || Date.now() - this._lastJawLog > 500) {
+              if (mouthOpen > 0.05) {
+                console.log(`🦴 Jaw "${boneName}" rotation: ${child.rotation.x.toFixed(3)} (intensity: ${mouthOpen.toFixed(2)})`);
+              }
+              this._lastJawLog = Date.now();
+            }
+          }
         }
       });
 
-      // Fallback: Try jaw bone rotation if no morph targets found
-      if (!foundMorph) {
-        this.webgl.model.traverse((child) => {
-          if (child.isBone) {
-            const boneName = child.name?.toLowerCase() || '';
-            if (boneName.includes('jaw') || boneName.includes('chin') || boneName.includes('mouth')) {
-              child.rotation.x = mouthOpen * 0.18;
-            }
-          }
-        });
+      // Log all bone names once
+      if (!this._bonesLogged && this._boneNames && this._boneNames.length > 0) {
+        console.log('🦴 Avatar bones found:', this._boneNames.join(', '));
+        this._bonesLogged = true;
+      }
+
+      // If no jaw bone found, log warning once
+      if (!foundJaw && !this._noJawWarned) {
+        console.warn('⚠️ No jaw bone found in avatar. Lip sync will not work.');
+        this._noJawWarned = true;
       }
     }
 
