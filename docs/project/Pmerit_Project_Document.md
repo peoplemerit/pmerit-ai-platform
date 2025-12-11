@@ -1,3 +1,5 @@
+**There's patch at the end of this document; the patch will need to be integrated into this document on the next update ***.
+
 # PMERIT Project Document
 
 **Version:** 3.0
@@ -866,3 +868,21 @@ This legacy document contains:
 *Incomplete tasks are carried forward between sessions.*
 *For detailed feature specifications, see `docs/handoffs/BRAINSTORM_ASU_LIKE_SCHEMA.md`.*
 *For workflow governance, see `docs/aados/`.*
+
+
+
+## Patch
+
+## Content Sustainability Philosophy
+
+### Current Strategy: Curator Model
+PMERIT wraps existing OER (primarily Maine MOOSE) with AI tutoring, 
+progress tracking, and credentialing.
+
+### Risk Acknowledgment
+- MOOSE backed by Maine state law (Title 20-A, §19301)
+- Government-funded content more stable than nonprofit OER
+- Platform URLs may change; content substance unlikely to disappear
+
+### Core Truth
+"As long as people are being educated, alternatives will exist."
