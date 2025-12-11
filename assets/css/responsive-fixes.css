@@ -526,28 +526,45 @@
     z-index: 90; /* Below menu overlay (1000) */
   }
 
-  /* Assessment container padding for mobile */
+  /* Assessment container - make it a flex container */
   .assessment-container {
-    padding: var(--space-4) var(--space-3);
+    padding: var(--space-3) var(--space-3) 100px var(--space-3); /* Bottom padding for sticky nav */
+    min-height: calc(100vh - 60px); /* Account for header */
   }
 
   /* Question card mobile sizing */
   .question-card {
-    margin: var(--space-4) auto;
-    padding: var(--space-4);
+    margin: var(--space-3) auto;
+    padding: var(--space-3);
     max-width: 100%;
+    padding-bottom: var(--space-2); /* Reduced bottom padding */
+  }
+
+  /* Question header - compact for mobile */
+  .question-header {
+    margin-bottom: var(--space-3);
+    padding-bottom: var(--space-2);
+  }
+
+  /* Question text - smaller spacing */
+  .question-text {
+    font-size: var(--text-lg);
+    text-align: left;
+    margin-bottom: var(--space-4);
   }
 
   /* Answer options - stack vertically on mobile */
   .answer-options {
     flex-direction: column !important;
-    gap: var(--space-3);
+    gap: var(--space-2); /* Reduced gap */
+    margin-bottom: var(--space-4); /* Reduced margin */
   }
 
   .radio-option {
     flex-direction: row !important;
     text-align: left !important;
-    padding: var(--space-3);
+    padding: var(--space-2) var(--space-3); /* Reduced padding */
+    min-height: 44px; /* Maintain touch target */
   }
 
   .radio-option input[type="radio"] {
@@ -555,21 +572,74 @@
     margin-bottom: 0 !important;
   }
 
-  /* Navigation buttons */
+  /* STICKY Navigation buttons at bottom of screen */
   .navigation-buttons {
-    flex-direction: row;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-primary);
+    padding: var(--space-3) var(--space-4);
+    padding-bottom: max(var(--space-3), env(safe-area-inset-bottom));
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 80;
     gap: var(--space-3);
+    margin: 0 !important;
+    border-top: 1px solid var(--border-color);
   }
 
   .navigation-buttons .btn {
     flex: 1;
     padding: var(--space-3);
     min-width: auto;
+    min-height: 48px;
   }
 
-  /* Question text size */
+  /* Autosave indicator - position above nav */
+  .autosave-indicator {
+    position: fixed;
+    bottom: 70px; /* Above nav buttons */
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-card);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--border-radius-full);
+    box-shadow: var(--shadow-sm);
+    z-index: 79;
+  }
+}
+
+/* Dark mode sticky nav */
+[data-theme="dark"] .navigation-buttons {
+  background: var(--bg-primary);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+  border-top-color: #333;
+}
+
+/* Very small screens (320px-375px) - extra compact */
+@media (max-width: 375px) {
+  .assessment-container {
+    padding: var(--space-2) var(--space-2) 90px var(--space-2);
+  }
+
+  .question-card {
+    padding: var(--space-2);
+  }
+
   .question-text {
-    font-size: var(--text-lg);
-    text-align: left;
+    font-size: var(--text-base);
+    margin-bottom: var(--space-3);
+  }
+
+  .radio-option {
+    padding: var(--space-2);
+  }
+
+  .radio-label {
+    font-size: var(--text-sm);
+  }
+
+  .navigation-buttons {
+    padding: var(--space-2) var(--space-3);
   }
 }
