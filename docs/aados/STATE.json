@@ -171,7 +171,7 @@
       "session": 49,
       "date": "2025-12-11",
       "change": "Mobile responsiveness & dark mode fixes",
-      "impact": "Fixed hamburger menu JS (added .active class toggle), dark mode styling for menu/toggles, assessment page mobile layout, added responsive.css to key pages. Made navigation buttons sticky at bottom on mobile assessment page. Commits: 9d1d718, 68d52a4."
+      "impact": "Fixed hamburger menu JS (added .active class toggle), dark mode styling for menu/toggles, assessment page mobile layout with sticky nav buttons, comprehensive classroom page mobile redesign (slide-out outline drawer, slide-up chat panel, swipe gestures, sticky playback controls). Commits: 9d1d718, 68d52a4, 1fe2fc5."
     },
     {
       "session": 46,
