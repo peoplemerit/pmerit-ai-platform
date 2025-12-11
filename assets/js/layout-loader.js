@@ -433,7 +433,9 @@ if (typeof window.logger === 'undefined') {
 
       // Open menu
       const openMenu = () => {
+        hamburgerMenu.classList.add('active');
         hamburgerMenu.setAttribute('aria-hidden', 'false');
+        menuOverlay?.classList.add('active');
         menuOverlay?.setAttribute('aria-hidden', 'false');
         hamburgerToggle.setAttribute('aria-expanded', 'true');
         document.body.style.overflow = 'hidden';
@@ -444,7 +446,9 @@ if (typeof window.logger === 'undefined') {
 
       // Close menu
       const closeMenu = () => {
+        hamburgerMenu.classList.remove('active');
         hamburgerMenu.setAttribute('aria-hidden', 'true');
+        menuOverlay?.classList.remove('active');
         menuOverlay?.setAttribute('aria-hidden', 'true');
         hamburgerToggle.setAttribute('aria-expanded', 'false');
         document.body.style.overflow = '';
@@ -460,7 +464,7 @@ if (typeof window.logger === 'undefined') {
 
       // Escape key to close
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && hamburgerMenu.getAttribute('aria-hidden') === 'false') {
+        if (e.key === 'Escape' && hamburgerMenu.classList.contains('active')) {
           closeMenu();
         }
       });
