@@ -1,7 +1,7 @@
 /**
  * GPU Streaming - Just-In-Time Cloud GPU for Premium Avatars
  * Phase 4: Digital Desk Classroom Redesign
- * @version 1.4.0 - Dynamic camera positioning using actual model bounds
+ * @version 1.5.0 - Ready Player Me tutor avatar (pmerit-tutor.glb)
  *
  * Manages tiered virtual human rendering:
  * - Free: CSS/SVG animations (client-side)
@@ -39,7 +39,7 @@
       avatar: 'webgl',
       description: 'WebGL 3D Avatar',
       cost: 0,
-      model: '/assets/models/avatars/humano_professional.glb' // 67MB textured professional avatar
+      model: '/assets/models/avatars/pmerit-tutor.glb' // Ready Player Me avatar (832KB)
     },
     PREMIUM: {
       name: 'premium',
@@ -47,7 +47,7 @@
       avatar: 'unreal',
       description: 'Unreal MetaHuman',
       cost: 2.68, // $/hr for H100
-      model: '/assets/models/avatars/humano_professional.glb' // Fallback to WebGL model
+      model: '/assets/models/avatars/pmerit-tutor.glb' // Fallback to WebGL model
     },
     FALLBACK: {
       name: 'fallback',
@@ -1853,6 +1853,6 @@
     return gpuStreaming;
   };
 
-  console.log('✅ GPUStreaming module loaded (v1.4.0 - dynamic camera positioning)');
+  console.log('✅ GPUStreaming module loaded (v1.5.0 - Ready Player Me tutor avatar)');
 
 })(window);
