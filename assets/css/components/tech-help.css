@@ -593,7 +593,7 @@ mark {
 }
 
 .faq-detail-link:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .faq-detail-actions {

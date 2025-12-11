@@ -193,7 +193,7 @@ a, .link {
 
 a:hover, .link:hover {
     color: var(--text-link-hover);
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 a:active, .link:active {
@@ -208,7 +208,7 @@ a:active, .link:active {
 
 .link-subtle:hover {
     color: var(--text-link);
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 

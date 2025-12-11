@@ -418,7 +418,7 @@
 
 .auth-link:hover {
   color: var(--interactive-primary-hover, #1f4567);
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .auth-link:focus {
