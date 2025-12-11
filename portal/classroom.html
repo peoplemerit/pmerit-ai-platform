@@ -5,29 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Classroom | PMERIT Learner Portal</title>
   <meta name="description" content="Interactive classroom with AI Tutor and Virtual Human">
-  
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
+
   <!-- Font Awesome -->
-  <link 
-    rel="stylesheet" 
+  <link
+    rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
     crossorigin="anonymous"
     referrerpolicy="no-referrer">
-  
-  <!-- PMERIT Unified Design System -->
-  <link rel="stylesheet" href="../assets/css/theme-variables.css">
-  <link rel="stylesheet" href="../assets/css/typography.css">
-  <link rel="stylesheet" href="../assets/css/base.css">
-  <link rel="stylesheet" href="../assets/css/components.css">
+
+  <!-- CLASSROOM APP SHELL CSS (v1.0 - Session 47) -->
+  <link rel="stylesheet" href="../assets/css/classroom.css">
+
+  <!-- Legacy CSS for components not yet migrated -->
   <link rel="stylesheet" href="../assets/css/avatar.css">
-  <link rel="stylesheet" href="../assets/css/virtual-human-overlay.css">
-  <!-- Digital Desk Redesign -->
-  <link rel="stylesheet" href="../assets/css/avatar-frame.css">
   <link rel="stylesheet" href="../assets/css/proctor-mode.css">
 
   <!-- Three.js r137 (last version with global THREE.GLTFLoader in examples/js/) -->
@@ -82,698 +78,219 @@
   <script src="../assets/js/vision-ai.js"></script>
   <script src="../assets/js/gpu-streaming.js"></script>
   <script src="../assets/js/lip-sync-controller.js"></script>
-
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { 
-      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-      background-color: var(--bg-primary, #F8F9FA); 
-      color: var(--text-primary, #2C2C2C); 
-      line-height: 1.6; 
-      overflow-x: hidden; 
-    }
-    
-    .portal-header {
-      background: linear-gradient(135deg, var(--color-primary, #2A5B8C), #1E4567);
-      padding: 1rem 2rem;
-      border-bottom: 2px solid var(--color-secondary, #4AA4B9);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .portal-header h1 {
-      color: var(--text-inverse, #FFFFFF);
-      font-size: 1.5rem;
-      font-weight: 600;
-    }
-    
-    .portal-nav {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-    }
-    
-    .portal-nav a {
-      color: var(--text-inverse, #FFFFFF);
-      text-decoration: none;
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      transition: background-color 0.2s;
-    }
-    
-    .portal-nav a:hover {
-      background-color: rgba(255, 255, 255, 0.15);
-    }
-
-    /* User display in header - FIX visibility */
-    #user-display {
-      color: #E0F7FA;
-      font-weight: 500;
-      padding: 0.5rem 1rem;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      font-size: 0.9rem;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    #user-display::before {
-      content: '\f007'; /* Font Awesome user icon */
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-      font-size: 0.8rem;
-    }
-
-    .app-container { 
-      display: grid; 
-      grid-template-columns: 280px 1fr 320px; 
-      height: calc(100vh - 80px); 
-      gap: 1px; 
-      background-color: var(--border-color, #E9ECEF); 
-    }
-    
-    .panel { 
-      background-color: var(--bg-card, #FFFFFF); 
-      padding: 15px; 
-      overflow-y: auto; 
-    }
-    
-    .panel-title { 
-      font-weight: bold; 
-      margin-bottom: 15px; 
-      padding-bottom: 8px; 
-      border-bottom: 1px solid var(--color-secondary, #4AA4B9); 
-      color: var(--color-primary, #2A5B8C); 
-    }
-    
-    .outline-item { 
-      padding: 10px; 
-      border-left: 3px solid transparent; 
-      cursor: pointer; 
-      transition: all 0.2s; 
-    }
-    
-    .outline-item:hover { 
-      background-color: var(--bg-primary, #F8F9FA); 
-      border-left-color: var(--color-secondary, #4AA4B9); 
-    }
-    
-    .outline-item.active {
-      background-color: var(--bg-primary, #F8F9FA);
-      border-left-color: var(--color-primary, #2A5B8C);
-      font-weight: bold;
-    }
-
-    .outline-item.completed {
-      color: var(--text-secondary, #666);
-    }
-
-    .outline-item.lesson.completed:not(.active) {
-      opacity: 0.85;
-    }
-
-    .outline-item.module.completed {
-      background-color: rgba(58, 127, 92, 0.08);
-      border-left-color: var(--color-success, #3A7F5C);
-    }
-    
-    textarea { 
-      width: 100%; 
-      min-height: 120px; 
-      background-color: var(--bg-card, #FFFFFF); 
-      color: var(--text-primary, #2C2C2C); 
-      border: 1px solid var(--border-color, #E9ECEF); 
-      border-radius: 4px; 
-      padding: 10px; 
-      margin-bottom: 10px; 
-      resize: vertical; 
-    }
-    
-    button { 
-      background-color: var(--color-primary, #2A5B8C); 
-      color: var(--text-inverse, #FFFFFF); 
-      border: none; 
-      padding: 8px 15px; 
-      border-radius: 4px; 
-      cursor: pointer; 
-      font-weight: bold; 
-      transition: background-color 0.2s; 
-    }
-    
-    button:hover { 
-      background-color: #1E4567; 
-    }
-    
-    .topbar { 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-      margin-bottom: 15px; 
-      padding-bottom: 10px; 
-      border-bottom: 1px solid var(--border-color, #E9ECEF); 
-    }
-    
-    .player-area { 
-      background-color: var(--bg-elevated, #FAFBFC); 
-      border-radius: 8px; 
-      padding: 15px; 
-      margin-bottom: 15px; 
-    }
-    
-    .messages-container { 
-      height: calc(100vh - 280px); 
-      overflow-y: auto; 
-      margin-bottom: 15px; 
-      padding: 10px; 
-      background-color: var(--bg-elevated, #FAFBFC); 
-      border-radius: 8px; 
-    }
-    
-    .message { 
-      padding: 10px; 
-      border-radius: 8px; 
-      margin-bottom: 10px; 
-      max-width: 90%; 
-    }
-    
-    .message.user { 
-      background-color: var(--color-primary, #2A5B8C); 
-      color: var(--text-inverse, #FFFFFF);
-      margin-left: auto; 
-    }
-    
-    .message.ai { 
-      background-color: var(--bg-secondary, #FFFFFF); 
-      border: 1px solid var(--border-color, #E9ECEF);
-    }
-    
-    .chat-form {
-      display: flex;
-      gap: 8px;
-      padding: 12px;
-      background: rgba(248, 249, 250, 0.5);
-      border-top: 1px solid var(--border-color, #E9ECEF);
-      border-radius: 0 0 8px 8px;
-      margin: 0 -15px -15px -15px; /* Extend to panel edges */
-    }
-
-    .chat-form input {
-      flex: 1;
-      min-width: 0; /* Allow shrinking */
-      padding: 10px 16px;
-      background-color: var(--bg-card, #FFFFFF);
-      color: var(--text-primary, #2C2C2C);
-      border: 1px solid var(--border-color, #E9ECEF);
-      border-radius: 20px;
-      font-size: 0.9rem;
-    }
-
-    .chat-form input:focus {
-      outline: none;
-      border-color: var(--color-secondary, #4AA4B9);
-      box-shadow: 0 0 0 2px rgba(74, 164, 185, 0.2);
-    }
-
-    .chat-form button[type="submit"] {
-      padding: 10px 20px;
-      border-radius: 20px;
-      background: var(--color-secondary, #4AA4B9);
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      white-space: nowrap;
-      flex-shrink: 0;
-      transition: background-color 0.2s, transform 0.1s;
-    }
-
-    .chat-form button[type="submit"]:hover {
-      background: #3d8fa0;
-    }
-
-    .chat-form button[type="submit"]:active {
-      transform: scale(0.97);
-    }
-
-    /* ========================================
-       AI TUTOR CHAT PANEL - Improved Layout
-       ======================================== */
-    .chat-panel {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-
-    .chat-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-      flex-shrink: 0;
-    }
-
-    .chat-header .panel-title {
-      margin: 0;
-      padding: 0;
-    }
-
-    .chat-stats {
-      display: flex;
-      gap: 8px;
-    }
-
-    .stat-badge {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      padding: 4px 8px;
-      background: var(--bg-elevated, #F8F9FA);
-      border-radius: 12px;
-      font-size: 0.75rem;
-      color: var(--text-secondary, #6C757D);
-      border: 1px solid var(--border-color, #E9ECEF);
-    }
-
-    .stat-badge i {
-      font-size: 0.7rem;
-      color: var(--color-secondary, #4AA4B9);
-    }
-
-    .raise-hand-btn {
-      width: 100%;
-      background: var(--color-secondary, #4AA4B9);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 10px 16px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 12px;
-      flex-shrink: 0;
-      transition: background-color 0.2s, transform 0.1s;
-    }
-
-    .raise-hand-btn:hover {
-      background: #3d8fa0;
-    }
-
-    .raise-hand-btn:active {
-      transform: scale(0.98);
-    }
-
-    .chat-panel .messages-container {
-      flex: 1;
-      min-height: 0;
-      overflow-y: auto;
-      margin-bottom: 0;
-      padding: 12px;
-      background: var(--bg-elevated, #F8F9FA);
-      border-radius: 8px;
-      border: 1px solid var(--border-color, #E9ECEF);
-    }
-
-    .chat-panel .chat-form {
-      margin: 12px 0 0 0;
-      padding: 0;
-      background: transparent;
-      border: none;
-      border-radius: 0;
-      flex-shrink: 0;
-    }
-
-    @media (max-width: 1024px) { 
-      .app-container { 
-        grid-template-columns: 220px 1fr 280px; 
-      } 
-    }
-    
-    @media (max-width: 768px) {
-      .app-container {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr auto;
-        height: auto;
-      }
-      .panel {
-        max-height: 400px;
-      }
-    }
-
-    /* Toast animations */
-    @keyframes toastSlideUp {
-      from { transform: translateX(-50%) translateY(100px); opacity: 0; }
-      to { transform: translateX(-50%) translateY(0); opacity: 1; }
-    }
-    @keyframes toastSlideDown {
-      from { transform: translateX(-50%) translateY(0); opacity: 1; }
-      to { transform: translateX(-50%) translateY(100px); opacity: 0; }
-    }
-
-    /* Fallback avatar styling */
-    .avatar-static {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-radius: 18px;
-      color: white;
-      font-size: 64px;
-    }
-
-    /* Audio-only mode indicator */
-    .vh-root.audio-only .avatar-frame {
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    }
-    .vh-root.audio-only .vh-status-badge {
-      background: var(--color-secondary, #4AA4B9);
-    }
-
-    /* ========================================
-       FLOATING AVATAR WIDGET (Picture-in-Picture)
-       ======================================== */
-    .vh-widget {
-      position: fixed;
-      top: 100px;
-      right: 340px; /* Don't overlap AI Chat sidebar (320px + margin) */
-      width: 260px;
-      height: auto;
-      z-index: 1000;
-      border-radius: 12px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 2px 8px rgba(0,0,0,0.2);
-      background: linear-gradient(135deg, rgba(30,30,50,0.95), rgba(20,20,40,0.98));
-      overflow: hidden;
-      transition: opacity 0.3s, transform 0.3s;
-      border: 1px solid rgba(74, 164, 185, 0.3);
-    }
-    .vh-widget.is-hidden {
-      opacity: 0;
-      pointer-events: none;
-      transform: scale(0.9);
-    }
-    .vh-widget:not(.is-hidden) {
-      opacity: 1;
-      transform: scale(1);
-    }
-    .vh-widget.minimized {
-      height: auto !important;
-    }
-    .vh-widget.minimized .avatar-frame,
-    .vh-widget.minimized .widget-footer {
-      display: none;
-    }
-
-    /* Widget Header (Drag Handle) */
-    .widget-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 12px;
-      background: linear-gradient(90deg, var(--color-primary, #2A5B8C), #1E4567);
-      cursor: move;
-      user-select: none;
-    }
-    .widget-title {
-      color: white;
-      font-size: 0.85rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .widget-controls {
-      display: flex;
-      gap: 4px;
-    }
-    .widget-btn {
-      width: 24px;
-      height: 24px;
-      border: none;
-      background: rgba(255,255,255,0.15);
-      color: white;
-      border-radius: 4px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.75rem;
-      transition: background 0.2s;
-    }
-    .widget-btn:hover {
-      background: rgba(255,255,255,0.25);
-    }
-
-    /* Widget Avatar Frame */
-    .vh-widget .avatar-frame {
-      width: 100%;
-      height: 200px;
-      position: relative;
-      background: transparent;
-      border-radius: 0;
-    }
-    .vh-widget .avatar-stage {
-      width: 100%;
-      height: 100%;
-      position: relative;
-    }
-    .vh-widget #vh-canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-    .vh-widget .avatar-captions {
-      position: absolute;
-      bottom: 8px;
-      left: 8px;
-      right: 8px;
-      background: rgba(0,0,0,0.7);
-      color: white;
-      padding: 6px 10px;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      text-align: center;
-      display: none;
-    }
-    .vh-widget .avatar-captions:not(:empty) {
-      display: block;
-    }
-    .vh-widget .avatar-live-badge {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      background: #e53935;
-      color: white;
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-size: 0.65rem;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      z-index: 10;
-    }
-    .vh-widget .live-dot {
-      width: 6px;
-      height: 6px;
-      background: white;
-      border-radius: 50%;
-      animation: pulse 1.5s infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-
-    /* Widget Footer */
-    .widget-footer {
-      padding: 6px 12px;
-      background: rgba(0,0,0,0.3);
-      text-align: center;
-    }
-    .widget-footer #vh-status-text {
-      color: var(--color-secondary, #4AA4B9);
-      font-size: 0.75rem;
-    }
-
-    /* Fallback in widget */
-    .vh-widget .avatar-static {
-      width: 100%;
-      height: 200px;
-      border-radius: 0;
-      font-size: 48px;
-    }
-
-    /* Dragging state */
-    .vh-widget.dragging {
-      opacity: 0.9;
-      cursor: grabbing;
-    }
-
-    /* Mobile: Bottom-right, smaller */
-    @media (max-width: 768px) {
-      .vh-widget {
-        right: 10px;
-        top: auto;
-        bottom: 80px;
-        width: 180px;
-      }
-      .vh-widget .avatar-frame {
-        height: 140px;
-      }
-    }
-  </style>
 </head>
-<body>
-  <!-- Portal Header -->
-  <header class="portal-header">
-    <h1><i class="fas fa-chalkboard-teacher"></i> PMERIT Classroom</h1>
+<body class="classroom-body">
+  <!-- APP SHELL CONTAINER -->
+  <div class="classroom-app">
 
-    <!-- Proctor Status Indicator (Center) -->
-    <div class="proctor-status off" id="proctor-status">
-      <span class="status-dot"></span>
-      <span class="status-text">Proctor: Off</span>
-    </div>
-
-    <nav class="portal-nav">
-      <a href="../dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
-      <a href="../courses.html"><i class="fas fa-book"></i> Courses</a>
-      <span id="user-display">User</span>
-    </nav>
-  </header>
-
-  <div class="app-container">
-    <!-- Left Panel: Outline & Notes -->
-    <aside class="panel left-panel">
-      <div class="panel-title">Class Outline</div>
-      <div id="outline-container"></div>
-      
-      <div class="panel-title">Notes</div>
-      <textarea id="notes-text" placeholder="Write your notes here..."></textarea>
-      <button id="save-notes">Save Notes</button>
-      
-      <div class="panel-title">Resources</div>
-      <input type="file" id="file-upload" accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg" multiple style="margin-top: 10px;">
-      <div id="resources-container"></div>
-    </aside>
-
-    <!-- Center Panel: Content & Avatar with Grid Layout -->
-    <main class="panel center-panel">
-      <div class="topbar">
-        <h2 id="lesson-title">Loading course...</h2>
-        <button id="end-class">End Class</button>
+    <!-- HEADER - Fixed top bar -->
+    <header class="classroom-header">
+      <div class="classroom-header__brand">
+        <span class="classroom-header__logo">
+          <i class="fas fa-chalkboard-teacher"></i> PMERIT
+        </span>
+        <span class="classroom-header__title" id="lesson-title">Loading course...</span>
       </div>
 
-      <!-- Virtual Human Toggle -->
-      <div class="vh-toggle-container">
-        <button class="vh-toggle" id="vh-toggle" aria-label="Toggle Virtual Human">
-          <span class="sr-only">Virtual Human Mode</span>
-        </button>
-        <label for="vh-toggle" class="vh-toggle-label">
-          <i class="fas fa-robot"></i> Virtual Human Mode
-        </label>
+      <!-- Proctor Status (Center) -->
+      <div class="classroom-header__center">
+        <div class="proctor-status off" id="proctor-status">
+          <span class="status-dot"></span>
+          <span class="status-text">Proctor: Off</span>
+        </div>
       </div>
 
-      <!-- Content Area (lesson content scrolls here) - NOW PRIMARY -->
-      <div class="content-area">
-        <div class="player-area" id="player-area">
-          <!-- Lesson content goes here -->
+      <nav class="classroom-header__nav">
+        <a href="../dashboard.html" class="classroom-header__nav-link">
+          <i class="fas fa-home"></i> <span>Dashboard</span>
+        </a>
+        <a href="../courses.html" class="classroom-header__nav-link">
+          <i class="fas fa-book"></i> <span>Courses</span>
+        </a>
+        <span class="classroom-header__user" id="user-display">
+          <i class="fas fa-user"></i> User
+        </span>
+      </nav>
+    </header>
+
+    <!-- MAIN CONTENT - 3 Column Layout -->
+    <div class="classroom-main">
+
+      <!-- LEFT PANEL: Tabbed (Outline | Notes | Resources) -->
+      <aside class="classroom-panel--left">
+        <div class="panel-tabs">
+          <button class="panel-tab active" data-tab="outline">
+            <i class="fas fa-list"></i> Outline
+          </button>
+          <button class="panel-tab" data-tab="notes">
+            <i class="fas fa-sticky-note"></i> Notes
+          </button>
+          <button class="panel-tab" data-tab="resources">
+            <i class="fas fa-folder-open"></i> Resources
+          </button>
         </div>
 
-        <!-- Student Controls -->
-        <div class="student-controls" style="display: flex; justify-content: center; gap: 10px; margin-top: 15px; flex-wrap: wrap;">
-          <button id="prev-lesson-btn" class="control-btn" style="background: var(--bg-elevated); color: var(--text-primary); border: 1px solid var(--border-color);" disabled>
+        <div class="panel-content">
+          <!-- Outline Tab -->
+          <div class="tab-pane active" id="tab-outline">
+            <div id="outline-container">
+              <!-- Course modules and lessons rendered here -->
+            </div>
+          </div>
+
+          <!-- Notes Tab -->
+          <div class="tab-pane" id="tab-notes">
+            <textarea
+              id="notes-text"
+              class="notes-textarea"
+              placeholder="Write your notes here..."
+            ></textarea>
+            <button id="save-notes" class="btn btn--secondary" style="width: 100%; margin-top: 12px;">
+              <i class="fas fa-save"></i> Save Notes
+            </button>
+          </div>
+
+          <!-- Resources Tab -->
+          <div class="tab-pane" id="tab-resources">
+            <input
+              type="file"
+              id="file-upload"
+              accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg"
+              multiple
+              style="display: none;"
+            >
+            <button class="btn btn--secondary" style="width: 100%; margin-bottom: 12px;" onclick="document.getElementById('file-upload').click()">
+              <i class="fas fa-upload"></i> Upload File
+            </button>
+            <div id="resources-container" class="resources-list">
+              <!-- Uploaded resources appear here -->
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- CENTER PANEL: Content Stage -->
+      <main class="classroom-panel--center">
+        <!-- Content Header -->
+        <div class="content-stage__header">
+          <div class="content-stage__lesson-title" id="current-lesson-title">Select a lesson to begin</div>
+          <div class="content-stage__actions">
+            <button class="btn btn--secondary" id="vh-toggle" title="Toggle Virtual Human">
+              <i class="fas fa-robot"></i>
+            </button>
+            <button class="btn btn--danger" id="end-class">
+              <i class="fas fa-door-open"></i> End Class
+            </button>
+          </div>
+        </div>
+
+        <!-- Scrollable Content Viewport -->
+        <div class="content-stage__viewport">
+          <div class="content-player" id="player-area">
+            <!-- Lesson content rendered here -->
+            <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--classroom-text-muted);">
+              <div style="text-align: center;">
+                <i class="fas fa-play-circle" style="font-size: 64px; margin-bottom: 16px; opacity: 0.5;"></i>
+                <p>Select a lesson from the outline to begin</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Playback Controls Bar -->
+        <div class="playback-controls">
+          <button id="prev-lesson-btn" class="playback-btn" disabled>
             <i class="fas fa-step-backward"></i> Previous
           </button>
-          <button id="pause-lesson-btn" class="control-btn" style="background: var(--bg-elevated); color: var(--text-primary); border: 1px solid var(--border-color);">
+          <button id="pause-lesson-btn" class="playback-btn">
             <i class="fas fa-pause"></i> Pause
           </button>
-          <button id="bookmark-btn" class="control-btn" style="background: var(--bg-elevated); color: var(--text-primary); border: 1px solid var(--border-color);">
+          <div class="progress-bar-container">
+            <div class="progress-bar-label">
+              <span>Progress</span>
+              <span id="progress-percent">0%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-bar__fill" id="progress-bar" style="width: 0%;"></div>
+            </div>
+          </div>
+          <button id="bookmark-btn" class="playback-btn">
             <i class="fas fa-bookmark"></i> Bookmark
           </button>
-          <button id="next-lesson-btn" class="control-btn" style="background: var(--bg-elevated); color: var(--text-primary); border: 1px solid var(--border-color);" disabled>
-            <i class="fas fa-step-forward"></i> Next
+          <button id="next-lesson-btn" class="playback-btn playback-btn--primary" disabled>
+            Next <i class="fas fa-step-forward"></i>
           </button>
         </div>
+      </main>
 
-        <!-- Progress Bar -->
-        <div class="lesson-progress" style="margin-top: 15px;">
-          <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 5px;">
-            <span>Lesson Progress</span>
-            <span id="progress-percent">0%</span>
-          </div>
-          <div style="height: 8px; background: var(--bg-elevated); border-radius: 4px; overflow: hidden;">
-            <div id="progress-bar" style="height: 100%; width: 0%; background: var(--color-secondary); transition: width 0.3s;"></div>
+      <!-- RIGHT PANEL: AI Tutor Chat -->
+      <aside class="classroom-panel--right">
+        <div class="chat-header">
+          <span class="chat-header__title">
+            <i class="fas fa-robot"></i> AI Tutor
+          </span>
+          <div class="chat-stats">
+            <span class="chat-stat" title="Hand Raises">
+              <i class="fas fa-hand-paper"></i>
+              <span id="stat-hand-raises">0</span>
+            </span>
+            <span class="chat-stat" title="Questions">
+              <i class="fas fa-question-circle"></i>
+              <span id="stat-questions">0</span>
+            </span>
           </div>
         </div>
-      </div>
-    </main>
 
-    <!-- Right Panel: AI Tutor Chat -->
-    <aside class="panel right-panel chat-panel">
-      <!-- Header with title and stats badges -->
-      <div class="chat-header">
-        <div class="panel-title">AI Tutor Chat</div>
-        <div class="chat-stats">
-          <span class="stat-badge" title="Hand Raises">
-            <i class="fas fa-hand-paper"></i>
-            <span id="stat-hand-raises">0</span>
-          </span>
-          <span class="stat-badge" title="Questions Asked">
-            <i class="fas fa-question-circle"></i>
-            <span id="stat-questions">0</span>
-          </span>
+        <button id="raise-hand-btn" class="raise-hand-btn">
+          <i class="fas fa-hand-paper"></i> Raise Hand
+        </button>
+
+        <div class="chat-messages" id="chat-messages">
+          <!-- Chat messages appear here -->
         </div>
-      </div>
 
-      <!-- Raise Hand Button -->
-      <button id="raise-hand-btn" class="raise-hand-btn">
-        <i class="fas fa-hand-paper"></i> Raise Hand
-      </button>
+        <form class="chat-form" id="chat-form">
+          <input
+            type="text"
+            id="chat-input"
+            class="chat-input"
+            placeholder="Ask your AI tutor..."
+            required
+          >
+          <button type="submit" class="chat-submit-btn">Send</button>
+        </form>
+      </aside>
 
-      <!-- Chat Messages Container -->
-      <div class="messages-container" id="chat-messages"></div>
+    </div><!-- /.classroom-main -->
 
-      <!-- Chat Input Form -->
-      <form class="chat-form" id="chat-form">
-        <input type="text" id="chat-input" placeholder="Ask your AI tutor..." required>
-        <button type="submit">Send</button>
-      </form>
-    </aside>
-  </div>
+  </div><!-- /.classroom-app -->
 
-  <!-- FLOATING AVATAR WIDGET (Draggable, Picture-in-Picture style) -->
-  <div id="vh-root" class="vh-root vh-widget is-hidden" hidden aria-hidden="true">
-    <div class="widget-header" id="widget-drag-handle">
-      <span class="widget-title"><i class="fas fa-robot"></i> AI Tutor</span>
-      <div class="widget-controls">
-        <button class="widget-btn" id="widget-minimize" title="Minimize">
+  <!-- AVATAR PIP (Picture-in-Picture Widget) -->
+  <div id="vh-root" class="avatar-pip hidden" aria-hidden="true">
+    <div class="avatar-pip__header" id="widget-drag-handle">
+      <span class="avatar-pip__title"><i class="fas fa-robot"></i> AI Tutor</span>
+      <div class="avatar-pip__controls">
+        <button class="avatar-pip__btn" id="widget-minimize" title="Minimize">
           <i class="fas fa-minus"></i>
         </button>
-        <button class="widget-btn" id="widget-close" title="Hide">
+        <button class="avatar-pip__btn" id="widget-close" title="Hide">
           <i class="fas fa-times"></i>
         </button>
       </div>
     </div>
-    <div class="avatar-frame tier-standard" id="avatar-frame">
-      <div class="avatar-live-badge" id="avatar-live-badge" style="display: none;">
-        <span class="live-dot"></span>
+    <div class="avatar-pip__stage" id="avatar-frame">
+      <div class="avatar-pip__live-badge" id="avatar-live-badge" style="display: none;">
+        <span class="avatar-pip__live-dot"></span>
         <span>LIVE</span>
       </div>
-      <div class="avatar-stage">
-        <canvas id="vh-canvas"></canvas>
-        <div class="avatar-static" id="avatar-fallback" style="display: none;">
-          <i class="fas fa-user-graduate"></i>
-        </div>
+      <canvas class="avatar-pip__canvas" id="vh-canvas"></canvas>
+      <div class="avatar-pip__fallback" id="avatar-fallback">
+        <i class="fas fa-user-graduate"></i>
       </div>
-      <div class="avatar-captions" id="vh-captions" aria-live="polite"></div>
+      <div class="avatar-pip__captions" id="vh-captions" aria-live="polite"></div>
     </div>
-    <div class="widget-footer">
-      <span id="vh-status-text">Ready</span>
+    <div class="avatar-pip__footer">
+      <span class="avatar-pip__status" id="vh-status-text">Ready</span>
     </div>
   </div>
 
@@ -1308,8 +825,37 @@
         dom.pauseBtn.addEventListener('click', handlePauseResume);
         dom.bookmarkBtn.addEventListener('click', handleBookmark);
 
+        // Tab switching for left panel
+        setupTabSwitching();
+
         // Widget controls
         setupWidgetControls();
+      }
+
+      // =========================================
+      // TAB SWITCHING (Left Panel)
+      // =========================================
+      function setupTabSwitching() {
+        const tabs = document.querySelectorAll('.panel-tab');
+        const panes = document.querySelectorAll('.tab-pane');
+
+        tabs.forEach(tab => {
+          tab.addEventListener('click', () => {
+            const tabId = tab.getAttribute('data-tab');
+
+            // Update tab active states
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            // Update pane visibility
+            panes.forEach(pane => {
+              pane.classList.remove('active');
+              if (pane.id === `tab-${tabId}`) {
+                pane.classList.add('active');
+              }
+            });
+          });
+        });
       }
 
       // =========================================
@@ -1611,15 +1157,13 @@
       function updateVHToggle(enabled) {
         if (enabled) {
           dom.vhToggle.classList.remove('off');
-          // Show vh-root container
-          dom.vhContainer.classList.remove('is-hidden');
-          dom.vhContainer.removeAttribute('hidden');
+          // Show vh-root container (avatar-pip)
+          dom.vhContainer.classList.remove('hidden');
           dom.vhContainer.setAttribute('aria-hidden', 'false');
         } else {
           dom.vhToggle.classList.add('off');
-          // Hide vh-root container
-          dom.vhContainer.classList.add('is-hidden');
-          dom.vhContainer.setAttribute('hidden', '');
+          // Hide vh-root container (avatar-pip)
+          dom.vhContainer.classList.add('hidden');
           dom.vhContainer.setAttribute('aria-hidden', 'true');
         }
       }
@@ -1637,7 +1181,7 @@
       // Render course outline with completion indicators
       function renderOutline() {
         if (!state.modules || state.modules.length === 0) {
-          dom.outlineContainer.innerHTML = '<p style="color: var(--text-secondary);">No modules available.</p>';
+          dom.outlineContainer.innerHTML = '<p style="color: var(--classroom-text-muted);">No modules available.</p>';
           return;
         }
 
@@ -1653,10 +1197,13 @@
           const moduleProgress = moduleLessons.length > 0 ? Math.round((completedInModule / moduleLessons.length) * 100) : 0;
 
           outlineHTML += `
-            <div class="outline-item module ${moduleComplete ? 'completed' : ''}" style="display: flex; align-items: center; justify-content: space-between;">
-              <span><i class="fas ${moduleComplete ? 'fa-folder-open' : 'fa-folder'}"></i> ${module.title}</span>
-              ${moduleProgress > 0 ? `<span class="module-progress" style="font-size: 0.75rem; color: var(--color-secondary); margin-left: 8px;">${moduleProgress}%</span>` : ''}
-            </div>`;
+            <div class="outline-module">
+              <div class="outline-module__header ${moduleComplete ? 'completed' : ''}">
+                <i class="fas ${moduleComplete ? 'fa-folder-open' : 'fa-folder'}"></i>
+                <span>${module.title}</span>
+                ${moduleProgress > 0 ? `<span class="outline-module__progress">${moduleProgress}%</span>` : ''}
+              </div>`;
+
           if (module.lessons && module.lessons.length > 0) {
             module.lessons.forEach((lesson) => {
               const isActive = state.lessonId === lesson.lesson_id;
@@ -1664,20 +1211,20 @@
               const icon = isCompleted ? 'fa-check-circle' :
                           lesson.lesson_type === 'video' ? 'fa-play-circle' :
                           lesson.lesson_type === 'reading' ? 'fa-book' : 'fa-file';
-              const iconColor = isCompleted ? 'color: var(--color-success, #3A7F5C);' : '';
               const duration = lesson.estimated_duration_minutes ? `${lesson.estimated_duration_minutes}m` : '';
+
               outlineHTML += `
-                <div class="outline-item lesson ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}"
-                     style="padding-left: 25px; display: flex; align-items: center; gap: 8px;"
+                <div class="outline-lesson ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}"
                      data-lesson-id="${lesson.lesson_id}"
                      onclick="window.loadLesson('${lesson.lesson_id}')">
-                  <i class="fas ${icon}" style="${iconColor}"></i>
-                  <span style="flex: 1;">${lesson.title || lesson.lesson_title}</span>
-                  ${duration ? `<small style="color: var(--text-secondary);">(${duration})</small>` : ''}
+                  <span class="outline-lesson__icon"><i class="fas ${icon}"></i></span>
+                  <span class="outline-lesson__title">${lesson.title || lesson.lesson_title}</span>
+                  ${duration ? `<span class="outline-lesson__duration">${duration}</span>` : ''}
                 </div>
               `;
             });
           }
+          outlineHTML += '</div>'; // Close outline-module
         });
         dom.outlineContainer.innerHTML = outlineHTML;
       }
@@ -1834,7 +1381,7 @@
       // Add chat message
       function addChatMessage(sender, message) {
         const messageDiv = document.createElement('div');
-        messageDiv.classList.add('message', sender);
+        messageDiv.classList.add('chat-message', `chat-message--${sender}`);
         messageDiv.textContent = message;
         dom.chatMessages.appendChild(messageDiv);
         dom.chatMessages.scrollTop = dom.chatMessages.scrollHeight;
@@ -1844,19 +1391,10 @@
       function showAvatarError(error) {
         console.warn('Avatar fallback triggered:', error?.message || error);
 
-        // Don't destroy the container - just switch to fallback mode
-        // Show static fallback avatar instead of error
-        if (dom.avatarFallback) {
-          dom.avatarFallback.style.display = 'flex';
-        }
+        // Switch to fallback mode
+        dom.vhContainer.classList.add('fallback');
 
-        // Hide the canvas (if it exists)
-        const canvas = document.getElementById('vh-canvas');
-        if (canvas) {
-          canvas.style.display = 'none';
-        }
-
-        // Update status text with friendly message (not scary error)
+        // Update status text with friendly message
         const statusText = document.getElementById('vh-status-text');
         if (statusText) {
           statusText.textContent = 'Audio-only mode active';
@@ -1865,9 +1403,6 @@
         // Set fallback tier
         setAvatarTier('fallback');
 
-        // Add audio-only class but keep container visible
-        dom.vhContainer.classList.add('audio-only');
-
         // Show non-intrusive toast notification instead of blocking error
         showToast('Low bandwidth detected. Using audio-only mode.', 'info');
       }
@@ -1875,33 +1410,19 @@
       // Toast notification helper
       function showToast(message, type = 'info') {
         // Remove existing toast if any
-        const existingToast = document.querySelector('.pmerit-toast');
+        const existingToast = document.querySelector('.classroom-toast');
         if (existingToast) {
           existingToast.remove();
         }
 
         const toast = document.createElement('div');
-        toast.className = `pmerit-toast pmerit-toast-${type}`;
-        toast.style.cssText = `
-          position: fixed;
-          bottom: 20px;
-          left: 50%;
-          transform: translateX(-50%);
-          background: ${type === 'info' ? 'var(--color-secondary, #4AA4B9)' : 'var(--color-warning, #E5A139)'};
-          color: white;
-          padding: 12px 24px;
-          border-radius: 8px;
-          font-size: 0.9rem;
-          z-index: 10000;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-          animation: toastSlideUp 0.3s ease-out;
-        `;
+        toast.className = `classroom-toast classroom-toast--${type}`;
         toast.innerHTML = `<i class="fas fa-info-circle"></i> ${message}`;
         document.body.appendChild(toast);
 
         // Auto-remove after 4 seconds
         setTimeout(() => {
-          toast.style.animation = 'toastSlideDown 0.3s ease-in forwards';
+          toast.style.animation = 'toast-out 0.3s ease-in forwards';
           setTimeout(() => toast.remove(), 300);
         }, 4000);
       }
