@@ -1,7 +1,7 @@
 /**
  * GPU Streaming - Just-In-Time Cloud GPU for Premium Avatars
  * Phase 4: Digital Desk Classroom Redesign
- * @version 1.6.0 - Ready Player Me tutor avatar (morph targets removed)
+ * @version 1.7.0 - Ready Player Me tutor avatar with ARKit lip sync
  *
  * Manages tiered virtual human rendering:
  * - Free: CSS/SVG animations (client-side)
@@ -39,7 +39,7 @@
       avatar: 'webgl',
       description: 'WebGL 3D Avatar',
       cost: 0,
-      model: '/assets/models/avatars/pmerit-tutor-no-morph.glb' // Ready Player Me avatar without morph targets (773KB)
+      model: '/assets/models/avatars/pmerit-tutor-arkit.glb' // Ready Player Me avatar with ARKit blend shapes (2.1MB)
     },
     PREMIUM: {
       name: 'premium',
@@ -47,7 +47,7 @@
       avatar: 'unreal',
       description: 'Unreal MetaHuman',
       cost: 2.68, // $/hr for H100
-      model: '/assets/models/avatars/pmerit-tutor-no-morph.glb' // Fallback to WebGL model
+      model: '/assets/models/avatars/pmerit-tutor-arkit.glb' // Fallback to WebGL model with lip sync
     },
     FALLBACK: {
       name: 'fallback',
@@ -1648,54 +1648,230 @@
       document.addEventListener('tts:start', () => {
         this._isSpeaking = true;
         console.log('🎤 TTS started - lip sync active');
+        // Start random blinks while speaking
+        this.addSpeechBlink();
       });
 
       document.addEventListener('tts:end', () => {
         this._isSpeaking = false;
         // Reset mouth to closed position
         this.applyMouthMovement(0);
+        // Clear blink timeout
+        if (this._blinkTimeout) {
+          clearTimeout(this._blinkTimeout);
+          this._blinkTimeout = null;
+        }
         console.log('🎤 TTS ended - lip sync stopped');
       });
 
-      console.log('👄 Lip sync listener initialized');
+      console.log('👄 Lip sync listener initialized (ARKit blend shapes)');
     }
 
     /**
-     * Apply mouth movement to avatar model based on audio intensity
-     * @param {number} intensity - Audio intensity [0..1]
+     * ARKit blend shape names for lip sync
+     * Ready Player Me exports with these 52 ARKit morph targets
      */
-    applyMouthMovement(intensity) {
+    static ARKIT_VISEMES = {
+      // Mouth shapes for speech
+      jawOpen: 'jawOpen',
+      jawForward: 'jawForward',
+      jawLeft: 'jawLeft',
+      jawRight: 'jawRight',
+      mouthClose: 'mouthClose',
+      mouthFunnel: 'mouthFunnel',
+      mouthPucker: 'mouthPucker',
+      mouthLeft: 'mouthLeft',
+      mouthRight: 'mouthRight',
+      mouthSmileLeft: 'mouthSmileLeft',
+      mouthSmileRight: 'mouthSmileRight',
+      mouthFrownLeft: 'mouthFrownLeft',
+      mouthFrownRight: 'mouthFrownRight',
+      mouthDimpleLeft: 'mouthDimpleLeft',
+      mouthDimpleRight: 'mouthDimpleRight',
+      mouthStretchLeft: 'mouthStretchLeft',
+      mouthStretchRight: 'mouthStretchRight',
+      mouthRollLower: 'mouthRollLower',
+      mouthRollUpper: 'mouthRollUpper',
+      mouthShrugLower: 'mouthShrugLower',
+      mouthShrugUpper: 'mouthShrugUpper',
+      mouthPressLeft: 'mouthPressLeft',
+      mouthPressRight: 'mouthPressRight',
+      mouthLowerDownLeft: 'mouthLowerDownLeft',
+      mouthLowerDownRight: 'mouthLowerDownRight',
+      mouthUpperUpLeft: 'mouthUpperUpLeft',
+      mouthUpperUpRight: 'mouthUpperUpRight',
+      // Eye shapes (for blink during speech)
+      eyeBlinkLeft: 'eyeBlinkLeft',
+      eyeBlinkRight: 'eyeBlinkRight'
+    };
+
+    /**
+     * Apply mouth movement to avatar model based on audio intensity
+     * Supports ARKit blend shapes from Ready Player Me avatars
+     * @param {number} intensity - Audio intensity [0..1]
+     * @param {string} viseme - Optional specific viseme to apply (aa, ee, ih, oh, ou)
+     */
+    applyMouthMovement(intensity, viseme = null) {
       if (!this.webgl?.model) return;
 
-      // Clamp and smooth the intensity
+      // Clamp the intensity
       const mouthOpen = Math.min(Math.max(intensity, 0), 1);
 
-      this.webgl.model.traverse((child) => {
-        // Method 1: Morph targets (blend shapes)
-        if (child.isMesh && child.morphTargetInfluences && child.morphTargetDictionary) {
-          // Try common mouth morph target names
-          const morphNames = [
-            'mouthOpen', 'jawOpen', 'viseme_aa', 'viseme_O',
-            'mouth_open', 'Jaw_Open', 'MouthOpen', 'A'
-          ];
+      // Track if we found any morph targets
+      let foundMorph = false;
 
-          for (const name of morphNames) {
-            const idx = child.morphTargetDictionary[name];
-            if (idx !== undefined) {
-              child.morphTargetInfluences[idx] = mouthOpen;
-              return; // Found one, done for this mesh
-            }
+      this.webgl.model.traverse((child) => {
+        // Only process meshes with morph targets
+        if (!child.isMesh || !child.morphTargetInfluences || !child.morphTargetDictionary) {
+          return;
+        }
+
+        // Log available morph targets once for debugging
+        if (!this._morphTargetsLogged) {
+          console.log('🎭 Available morph targets:', Object.keys(child.morphTargetDictionary));
+          this._morphTargetsLogged = true;
+        }
+
+        const dict = child.morphTargetDictionary;
+        const influences = child.morphTargetInfluences;
+
+        // Apply ARKit blend shapes for natural speech
+        // jawOpen is the primary driver for mouth opening
+        if (dict.jawOpen !== undefined) {
+          influences[dict.jawOpen] = mouthOpen * 0.7;
+          foundMorph = true;
+        }
+
+        // Add secondary mouth shapes for more natural movement
+        if (dict.mouthOpen !== undefined) {
+          influences[dict.mouthOpen] = mouthOpen * 0.5;
+          foundMorph = true;
+        }
+
+        // Viseme-specific shapes for better lip sync
+        if (viseme) {
+          this.applyViseme(dict, influences, viseme, mouthOpen);
+        } else {
+          // Default vowel-like shape when no specific viseme
+          if (dict.mouthFunnel !== undefined) {
+            influences[dict.mouthFunnel] = mouthOpen * 0.2;
           }
         }
 
-        // Method 2: Jaw bone rotation (fallback)
-        if (child.isBone) {
-          const boneName = child.name?.toLowerCase() || '';
-          if (boneName.includes('jaw') || boneName.includes('chin') || boneName.includes('mouth')) {
-            // Rotate jaw down based on intensity (around X axis)
-            // Typical range is 0 to 0.2 radians for natural mouth opening
-            child.rotation.x = mouthOpen * 0.18;
+        // Subtle lip movement for realism
+        if (dict.mouthStretchLeft !== undefined && dict.mouthStretchRight !== undefined) {
+          const stretch = mouthOpen * 0.15;
+          influences[dict.mouthStretchLeft] = stretch;
+          influences[dict.mouthStretchRight] = stretch;
+        }
+      });
+
+      // Fallback: Try jaw bone rotation if no morph targets found
+      if (!foundMorph) {
+        this.webgl.model.traverse((child) => {
+          if (child.isBone) {
+            const boneName = child.name?.toLowerCase() || '';
+            if (boneName.includes('jaw') || boneName.includes('chin') || boneName.includes('mouth')) {
+              child.rotation.x = mouthOpen * 0.18;
+            }
           }
+        });
+      }
+    }
+
+    /**
+     * Apply specific viseme shape
+     * @param {Object} dict - Morph target dictionary
+     * @param {Float32Array} influences - Morph target influences
+     * @param {string} viseme - Viseme name (aa, ee, ih, oh, ou, etc.)
+     * @param {number} intensity - Intensity [0..1]
+     */
+    applyViseme(dict, influences, viseme, intensity) {
+      // Map phonemes to ARKit blend shape combinations
+      const visemeMap = {
+        // Open vowels (A, ah)
+        'aa': { jawOpen: 0.8, mouthFunnel: 0.1 },
+        'ah': { jawOpen: 0.7, mouthFunnel: 0.2 },
+        // E vowels
+        'ee': { jawOpen: 0.3, mouthSmileLeft: 0.4, mouthSmileRight: 0.4 },
+        'eh': { jawOpen: 0.4, mouthStretchLeft: 0.3, mouthStretchRight: 0.3 },
+        // I vowels
+        'ih': { jawOpen: 0.25, mouthSmileLeft: 0.3, mouthSmileRight: 0.3 },
+        // O vowels
+        'oh': { jawOpen: 0.5, mouthFunnel: 0.5, mouthPucker: 0.3 },
+        'oo': { jawOpen: 0.3, mouthPucker: 0.6, mouthFunnel: 0.4 },
+        // U vowels
+        'ou': { jawOpen: 0.4, mouthPucker: 0.5 },
+        // Consonants
+        'p': { mouthClose: 0.8, mouthPressLeft: 0.5, mouthPressRight: 0.5 },
+        'b': { mouthClose: 0.7, mouthPressLeft: 0.4, mouthPressRight: 0.4 },
+        'f': { mouthClose: 0.3, mouthRollLower: 0.5 },
+        'v': { mouthClose: 0.2, mouthRollLower: 0.4 },
+        'th': { jawOpen: 0.2, mouthShrugLower: 0.3 },
+        's': { jawOpen: 0.15, mouthStretchLeft: 0.2, mouthStretchRight: 0.2 },
+        'sh': { jawOpen: 0.2, mouthPucker: 0.3 },
+        'k': { jawOpen: 0.3, mouthShrugUpper: 0.2 },
+        'r': { jawOpen: 0.25, mouthPucker: 0.2 },
+        'l': { jawOpen: 0.3, mouthShrugLower: 0.2 },
+        'n': { jawOpen: 0.2 },
+        'm': { mouthClose: 0.9 },
+        // Default/neutral
+        'sil': { jawOpen: 0, mouthClose: 0 }
+      };
+
+      const shapes = visemeMap[viseme] || visemeMap['aa'];
+
+      for (const [shapeName, weight] of Object.entries(shapes)) {
+        if (dict[shapeName] !== undefined) {
+          influences[dict[shapeName]] = weight * intensity;
+        }
+      }
+    }
+
+    /**
+     * Add random blink during speech for realism
+     */
+    addSpeechBlink() {
+      if (!this.webgl?.model || !this._isSpeaking) return;
+
+      // Random blink every 3-6 seconds while speaking
+      const blinkDelay = 3000 + Math.random() * 3000;
+
+      this._blinkTimeout = setTimeout(() => {
+        this.performBlink();
+        if (this._isSpeaking) {
+          this.addSpeechBlink();
+        }
+      }, blinkDelay);
+    }
+
+    /**
+     * Perform a single blink animation
+     */
+    performBlink() {
+      if (!this.webgl?.model) return;
+
+      this.webgl.model.traverse((child) => {
+        if (!child.isMesh || !child.morphTargetInfluences || !child.morphTargetDictionary) {
+          return;
+        }
+
+        const dict = child.morphTargetDictionary;
+        const influences = child.morphTargetInfluences;
+
+        // Quick blink animation (150ms close, 150ms open)
+        if (dict.eyeBlinkLeft !== undefined && dict.eyeBlinkRight !== undefined) {
+          // Close eyes
+          influences[dict.eyeBlinkLeft] = 1;
+          influences[dict.eyeBlinkRight] = 1;
+
+          // Open eyes after 150ms
+          setTimeout(() => {
+            if (influences) {
+              influences[dict.eyeBlinkLeft] = 0;
+              influences[dict.eyeBlinkRight] = 0;
+            }
+          }, 150);
         }
       });
     }
