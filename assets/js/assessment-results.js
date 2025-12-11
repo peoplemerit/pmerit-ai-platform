@@ -23,12 +23,18 @@
       primary: 'rgba(42, 91, 140, 0.2)',
       border: 'rgba(42, 91, 140, 1)',
       point: 'rgba(42, 91, 140, 1)'
+    },
+    NARRATIVE_PATHS: {
+      personality: '/assets/data/personality-narratives.json',
+      holland: '/assets/data/holland-narratives.json'
     }
   };
 
   // State
   let assessmentData = null;
   let bigFiveChart = null;
+  let personalityNarratives = null;
+  let hollandNarratives = null;
 
   // Initialize on page load
   document.addEventListener('DOMContentLoaded', init);
@@ -40,15 +46,20 @@
     try {
       showLoadingState();
 
-      // Load assessment data
-      assessmentData = await loadAssessmentData();
+      // Load narrative data and assessment data in parallel
+      const [narrativesLoaded, assessmentLoaded] = await Promise.all([
+        loadNarrativeData(),
+        loadAssessmentData()
+      ]);
+
+      assessmentData = assessmentLoaded;
 
       if (!assessmentData) {
         showErrorState('No assessment data found');
         return;
       }
 
-      // Render all components
+      // Render all components with enhanced narratives
       renderBigFiveChart(assessmentData.big_five);
       renderTraitCards(assessmentData.big_five);
       renderHollandCode(assessmentData.holland_code);
@@ -66,6 +77,31 @@
     } catch (error) {
       console.error('Failed to initialize results page:', error);
       showErrorState('Failed to load results');
+    }
+  }
+
+  /**
+   * Load narrative JSON files for enhanced descriptions
+   * @returns {Promise<boolean>} Success status
+   */
+  async function loadNarrativeData() {
+    try {
+      const [personalityRes, hollandRes] = await Promise.all([
+        fetch(CONFIG.NARRATIVE_PATHS.personality),
+        fetch(CONFIG.NARRATIVE_PATHS.holland)
+      ]);
+
+      if (personalityRes.ok) {
+        personalityNarratives = await personalityRes.json();
+      }
+      if (hollandRes.ok) {
+        hollandNarratives = await hollandRes.json();
+      }
+
+      return true;
+    } catch (error) {
+      console.warn('Could not load narrative data, using defaults:', error);
+      return false;
     }
   }
 
@@ -356,13 +392,23 @@
   }
 
   /**
-   * Render Big Five trait cards with scores
+   * Render Big Five trait cards with scores and enhanced narratives
    * @param {Object} bigFive - Big Five scores object
    */
   function renderTraitCards(bigFive) {
     const traits = ['O', 'C', 'E', 'A', 'N'];
 
-    const descriptions = {
+    // Mapping from trait codes to narrative keys
+    const traitToNarrativeKey = {
+      O: 'openness',
+      C: 'conscientiousness',
+      E: 'extraversion',
+      A: 'agreeableness',
+      N: 'emotionalStability'
+    };
+
+    // Default descriptions (fallback if JSON not loaded)
+    const defaultDescriptions = {
       O: {
         high: 'You are imaginative, creative, and appreciate art and novel experiences.',
         moderate: 'You balance practical thinking with openness to new ideas.',
@@ -402,13 +448,18 @@
       }
 
       const level = getTraitLevel(score);
-      const description = descriptions[trait][level];
+
+      // Get enhanced narrative from JSON or use default
+      const narrativeData = getEnhancedNarrative(trait, level, traitToNarrativeKey, defaultDescriptions);
 
       // Update DOM elements
       const scoreEl = document.getElementById(`score${trait}`);
       const percentileEl = document.getElementById(`percentile${trait}`);
       const levelEl = document.getElementById(`level${trait}`);
       const descEl = document.getElementById(`desc${trait}`);
+      const strengthsEl = document.getElementById(`strengths${trait}`);
+      const growthEl = document.getElementById(`growth${trait}`);
+      const careerFitEl = document.getElementById(`careerFit${trait}`);
 
       if (scoreEl) {
         scoreEl.textContent = Math.round(score);
@@ -421,9 +472,51 @@
         levelEl.className = `trait-level ${level}`;
       }
       if (descEl) {
-        descEl.textContent = description;
+        descEl.textContent = narrativeData.narrative;
+      }
+
+      // Render enhanced sections if elements exist
+      if (strengthsEl && narrativeData.strengths) {
+        strengthsEl.innerHTML = narrativeData.strengths.map(s => `<span class="tag tag-strength">${s}</span>`).join('');
+      }
+      if (growthEl && narrativeData.growthAreas) {
+        growthEl.innerHTML = narrativeData.growthAreas.map(g => `<span class="tag tag-growth">${g}</span>`).join('');
+      }
+      if (careerFitEl && narrativeData.careerFit) {
+        careerFitEl.textContent = narrativeData.careerFit;
       }
     });
+  }
+
+  /**
+   * Get enhanced narrative from JSON data or fallback to default
+   * @param {string} trait - Trait code (O, C, E, A, N)
+   * @param {string} level - Level (high, moderate, low)
+   * @param {Object} traitToNarrativeKey - Mapping object
+   * @param {Object} defaultDescriptions - Fallback descriptions
+   * @returns {Object} Narrative data with narrative, strengths, growthAreas, careerFit
+   */
+  function getEnhancedNarrative(trait, level, traitToNarrativeKey, defaultDescriptions) {
+    const narrativeKey = traitToNarrativeKey[trait];
+
+    // Try to get from loaded JSON
+    if (personalityNarratives && personalityNarratives[narrativeKey] && personalityNarratives[narrativeKey][level]) {
+      const data = personalityNarratives[narrativeKey][level];
+      return {
+        narrative: data.narrative,
+        strengths: data.strengths || [],
+        growthAreas: data.growthAreas || [],
+        careerFit: data.careerFit || ''
+      };
+    }
+
+    // Fallback to default
+    return {
+      narrative: defaultDescriptions[trait][level],
+      strengths: [],
+      growthAreas: [],
+      careerFit: ''
+    };
   }
 
   /**
@@ -442,24 +535,49 @@
   }
 
   /**
-   * Render Holland Code (RIASEC)
+   * Render Holland Code (RIASEC) with enhanced narratives
    * @param {Object} hollandCode - Holland code object
    */
   function renderHollandCode(hollandCode) {
     const codeLetters = hollandCode.code.split('');
 
-    // Update code letters
+    // Update code letters with tooltips
     codeLetters.forEach((letter, index) => {
       const element = document.getElementById(`hollandCode${index + 1}`);
       if (element) {
         element.textContent = letter;
+
+        // Add tooltip with code description from narratives
+        if (hollandNarratives && hollandNarratives.codes && hollandNarratives.codes[letter]) {
+          const codeData = hollandNarratives.codes[letter];
+          element.title = `${codeData.name}: ${codeData.shortDescription}`;
+        }
       }
     });
 
-    // Update description
+    // Update description - use enhanced narrative if available
     const descElement = document.getElementById('hollandDescription');
     if (descElement) {
-      descElement.textContent = hollandCode.full_name;
+      const enhancedDesc = getHollandEnhancedDescription(hollandCode.code, codeLetters);
+      descElement.textContent = enhancedDesc || hollandCode.full_name;
+    }
+
+    // Render Holland narrative section if element exists
+    const hollandNarrativeEl = document.getElementById('hollandNarrative');
+    if (hollandNarrativeEl) {
+      const narrative = getHollandCombinationNarrative(hollandCode.code);
+      if (narrative) {
+        hollandNarrativeEl.innerHTML = `<p class="holland-narrative-text">${narrative}</p>`;
+      }
+    }
+
+    // Render suggested careers from Holland code if element exists
+    const hollandCareersEl = document.getElementById('hollandSuggestedCareers');
+    if (hollandCareersEl) {
+      const suggestedCareers = getHollandSuggestedCareers(hollandCode.code);
+      if (suggestedCareers && suggestedCareers.length > 0) {
+        hollandCareersEl.innerHTML = suggestedCareers.map(c => `<span class="tag tag-career">${c}</span>`).join('');
+      }
     }
 
     // Update top traits list
@@ -470,6 +588,76 @@
         `<li><strong>${trait.name}:</strong> ${trait.description}</li>`
       ).join('');
     }
+  }
+
+  /**
+   * Get enhanced Holland code description using narrative data
+   * @param {string} code - Holland code (e.g., "ISA")
+   * @param {Array} codeLetters - Array of code letters
+   * @returns {string} Enhanced description
+   */
+  function getHollandEnhancedDescription(code, codeLetters) {
+    if (!hollandNarratives || !hollandNarratives.codes) {
+      return null;
+    }
+
+    // Build description from individual codes
+    const descriptions = codeLetters.map(letter => {
+      const codeData = hollandNarratives.codes[letter];
+      return codeData ? `${codeData.name} (${codeData.shortDescription})` : letter;
+    });
+
+    return descriptions.join(', ');
+  }
+
+  /**
+   * Get Holland combination narrative
+   * @param {string} code - Holland code (e.g., "ISA")
+   * @returns {string|null} Combination narrative
+   */
+  function getHollandCombinationNarrative(code) {
+    if (!hollandNarratives || !hollandNarratives.combinations) {
+      return null;
+    }
+
+    // Try exact match first
+    if (hollandNarratives.combinations[code]) {
+      return hollandNarratives.combinations[code].narrative;
+    }
+
+    // Try default
+    if (hollandNarratives.combinations._default) {
+      return hollandNarratives.combinations._default.narrative;
+    }
+
+    return null;
+  }
+
+  /**
+   * Get suggested careers from Holland code combination
+   * @param {string} code - Holland code (e.g., "ISA")
+   * @returns {Array} Suggested careers
+   */
+  function getHollandSuggestedCareers(code) {
+    if (!hollandNarratives || !hollandNarratives.combinations) {
+      return [];
+    }
+
+    // Try exact match first
+    if (hollandNarratives.combinations[code] && hollandNarratives.combinations[code].suggestedCareers) {
+      return hollandNarratives.combinations[code].suggestedCareers;
+    }
+
+    // Fallback: get example careers from individual codes
+    const careers = [];
+    const codeLetters = code.split('');
+    codeLetters.forEach(letter => {
+      if (hollandNarratives.codes[letter] && hollandNarratives.codes[letter].exampleCareers) {
+        careers.push(...hollandNarratives.codes[letter].exampleCareers.slice(0, 2));
+      }
+    });
+
+    return [...new Set(careers)].slice(0, 6); // Remove duplicates, limit to 6
   }
 
   /**
