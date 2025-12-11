@@ -225,9 +225,23 @@
 
       <!-- RIGHT PANEL: AI Tutor Chat -->
       <aside class="classroom-panel--right">
+        <!-- CLASSROOM-2B: Docked Avatar -->
+        <div class="sidebar-avatar" id="sidebar-avatar">
+          <canvas class="sidebar-avatar__canvas" id="sidebar-avatar-canvas"></canvas>
+          <div class="sidebar-avatar__fallback" id="sidebar-avatar-fallback">
+            <i class="fas fa-user-graduate"></i>
+          </div>
+          <div class="sidebar-avatar__live-badge" id="sidebar-avatar-live" style="display: none;">
+            <span class="sidebar-avatar__live-dot"></span>
+            <span>LIVE</span>
+          </div>
+          <div class="sidebar-avatar__captions" id="sidebar-avatar-captions" aria-live="polite"></div>
+          <span class="sidebar-avatar__status" id="sidebar-avatar-status">Ready</span>
+        </div>
+
         <div class="chat-header">
           <span class="chat-header__title">
-            <i class="fas fa-robot"></i> AI Tutor
+            <i class="fas fa-comments"></i> Chat
           </span>
           <div class="chat-stats">
             <span class="chat-stat" title="Hand Raises">
@@ -250,14 +264,24 @@
         </div>
 
         <form class="chat-form" id="chat-form">
-          <input
-            type="text"
-            id="chat-input"
-            class="chat-input"
-            placeholder="Ask your AI tutor..."
-            required
-          >
-          <button type="submit" class="chat-submit-btn">Send</button>
+          <div class="chat-input-wrapper">
+            <button type="button" class="chat-input-icon" id="chat-attach-btn" title="Attach file">
+              <i class="fas fa-paperclip"></i>
+            </button>
+            <input
+              type="text"
+              id="chat-input"
+              class="chat-input"
+              placeholder="Ask your AI tutor..."
+              required
+            >
+            <button type="button" class="chat-input-icon" id="chat-voice-btn" title="Voice input">
+              <i class="fas fa-microphone"></i>
+            </button>
+            <button type="submit" class="chat-submit-btn" title="Send">
+              <i class="fas fa-arrow-up"></i>
+            </button>
+          </div>
         </form>
       </aside>
 

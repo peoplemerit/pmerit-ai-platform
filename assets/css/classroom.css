@@ -31,8 +31,8 @@
   --classroom-warning: #ffad1f;
   --classroom-error: #f4212e;
 
-  /* Panel dimensions */
-  --header-height: 56px;
+  /* Panel dimensions - CLASSROOM-2C: Slim header */
+  --header-height: 44px;
   --left-panel-width: 280px;
   --right-panel-width: 340px;
 
@@ -82,7 +82,7 @@ body.classroom-body {
 }
 
 /* ============================================
-   HEADER - Fixed top bar
+   HEADER - Fixed top bar (CLASSROOM-2C: Slim 44px)
    ============================================ */
 .classroom-header {
   flex-shrink: 0;
@@ -92,34 +92,34 @@ body.classroom-body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 16px;
   z-index: 100;
 }
 
 .classroom-header__brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .classroom-header__logo {
   color: var(--classroom-accent);
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 700;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .classroom-header__logo i {
-  font-size: 1.1rem;
+  font-size: 0.9rem;
 }
 
 .classroom-header__title {
-  color: var(--classroom-text-primary);
-  font-size: 0.95rem;
+  color: var(--classroom-text-secondary);
+  font-size: 0.85rem;
   font-weight: 500;
-  max-width: 300px;
+  max-width: 250px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -134,20 +134,25 @@ body.classroom-body {
 .classroom-header__nav {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
+/* CLASSROOM-2C: Icon-only nav buttons */
 .classroom-header__nav-link {
   color: var(--classroom-text-secondary);
   text-decoration: none;
-  padding: 8px 12px;
-  border-radius: var(--border-radius-sm);
-  font-size: 0.875rem;
-  font-weight: 500;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  font-size: 0.9rem;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+}
+
+.classroom-header__nav-link span {
+  display: none; /* Hide text labels */
 }
 
 .classroom-header__nav-link:hover {
@@ -158,16 +163,18 @@ body.classroom-body {
 .classroom-header__user {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   color: var(--classroom-text-secondary);
-  font-size: 0.875rem;
-  padding: 6px 12px;
+  font-size: 0.8rem;
+  padding: 4px 10px;
   background: var(--classroom-surface-elevated);
-  border-radius: 20px;
+  border-radius: 16px;
+  margin-left: 4px;
 }
 
 .classroom-header__user i {
   color: var(--classroom-accent);
+  font-size: 0.75rem;
 }
 
 /* ============================================
@@ -555,10 +562,96 @@ body.classroom-body {
   overflow: hidden;
 }
 
+/* CLASSROOM-2B: Docked Avatar in Sidebar */
+.sidebar-avatar {
+  flex-shrink: 0;
+  height: 180px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  position: relative;
+  border-bottom: 1px solid var(--classroom-border);
+}
+
+.sidebar-avatar__canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.sidebar-avatar__fallback {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 48px;
+}
+
+.sidebar-avatar.fallback .sidebar-avatar__canvas {
+  display: none;
+}
+
+.sidebar-avatar.fallback .sidebar-avatar__fallback {
+  display: flex;
+}
+
+.sidebar-avatar__live-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 3px 8px;
+  background: #e53935;
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sidebar-avatar__live-dot {
+  width: 6px;
+  height: 6px;
+  background: white;
+  border-radius: 50%;
+  animation: pip-pulse 1.5s infinite;
+}
+
+.sidebar-avatar__captions {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  right: 8px;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  font-size: 0.75rem;
+  border-radius: 6px;
+  text-align: center;
+  display: none;
+}
+
+.sidebar-avatar__captions:not(:empty) {
+  display: block;
+}
+
+.sidebar-avatar__status {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  font-size: 0.7rem;
+  color: var(--classroom-accent);
+  background: rgba(0, 0, 0, 0.6);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
 /* Chat header */
 .chat-header {
   flex-shrink: 0;
-  padding: 12px 16px;
+  padding: 10px 16px;
   border-bottom: 1px solid var(--classroom-border);
   display: flex;
   align-items: center;
@@ -658,57 +751,103 @@ body.classroom-body {
   border-bottom-left-radius: 4px;
 }
 
-/* Chat input form */
+/* CLASSROOM-2D: Chat input form - Front page style */
 .chat-form {
   flex-shrink: 0;
   padding: 12px 16px;
   border-top: 1px solid var(--classroom-border);
+}
+
+.chat-input-wrapper {
   display: flex;
+  align-items: center;
   gap: 8px;
+  background: var(--classroom-surface-elevated);
+  border: 1px solid var(--classroom-border);
+  border-radius: 24px;
+  padding: 6px 8px;
+  transition: all 0.2s ease;
+}
+
+.chat-input-wrapper:focus-within {
+  border-color: var(--classroom-accent);
+  box-shadow: 0 0 0 2px rgba(74, 164, 185, 0.15);
+}
+
+/* Icon buttons inside input */
+.chat-input-icon {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: var(--classroom-text-muted);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.chat-input-icon:hover {
+  color: var(--classroom-accent);
+  background: rgba(74, 164, 185, 0.1);
 }
 
 .chat-input {
   flex: 1;
-  padding: 10px 16px;
-  background: var(--classroom-surface-elevated);
-  border: 1px solid var(--classroom-border);
-  border-radius: 20px;
+  padding: 8px 4px;
+  background: transparent;
+  border: none;
   color: var(--classroom-text-primary);
   font-size: 0.875rem;
-  transition: border-color 0.2s ease;
+  min-width: 0;
 }
 
 .chat-input:focus {
   outline: none;
-  border-color: var(--classroom-accent);
 }
 
 .chat-input::placeholder {
   color: var(--classroom-text-muted);
 }
 
+/* Send button */
 .chat-submit-btn {
-  padding: 10px 18px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
   background: var(--classroom-accent);
   border: none;
-  border-radius: 20px;
+  border-radius: 50%;
   color: white;
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: 0.9rem;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: all 0.2s ease;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .chat-submit-btn:hover {
   background: var(--classroom-accent-hover);
+  transform: scale(1.05);
+}
+
+.chat-submit-btn:active {
+  transform: scale(0.95);
 }
 
 /* ============================================
    AVATAR PIP (Picture-in-Picture Widget)
-   Docked in bottom-right of center panel
+   CLASSROOM-2B: Avatar PIP hidden by default (avatar now docked in sidebar)
+   Keep styles for potential future floating mode toggle
    ============================================ */
 .avatar-pip {
+  display: none !important; /* CLASSROOM-2B: Hidden - avatar now in sidebar */
   position: fixed;
   bottom: 80px;
   right: calc(var(--right-panel-width) + 20px);
