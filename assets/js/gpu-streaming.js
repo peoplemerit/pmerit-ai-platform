@@ -1082,8 +1082,9 @@
         }
 
         // Ensure minimum dimensions for WebGL
-        width = Math.max(width, 300);
-        height = Math.max(height, 350);
+        // Note: Sidebar avatar uses 180px height, so allow smaller dimensions
+        width = Math.max(width, 150);
+        height = Math.max(height, 150);
 
         // Canvas dimensions set
 
