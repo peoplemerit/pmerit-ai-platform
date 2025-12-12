@@ -366,18 +366,20 @@ window.ClassroomSession = (function () {
         throw new Error(data.error || 'Failed to get modules');
       }
 
-      // Fetch lessons for each module
+      // Fetch lessons for each module (use module_id from API response)
       const modulesWithLessons = await Promise.all(
         data.modules.map(async (module) => {
           try {
-            const lessonsResp = await fetch(`${API_BASE_URL}/api/v1/modules/${module.id}/lessons`);
+            const moduleId = module.module_id || module.id;
+            const lessonsResp = await fetch(`${API_BASE_URL}/api/v1/modules/${moduleId}/lessons`);
             const lessonsData = await lessonsResp.json();
             return {
               ...module,
+              id: moduleId, // Normalize to 'id' for backward compatibility
               lessons: lessonsData.success ? lessonsData.lessons : []
             };
           } catch (e) {
-            return { ...module, lessons: [] };
+            return { ...module, id: module.module_id || module.id, lessons: [] };
           }
         })
       );

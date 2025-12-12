@@ -785,20 +785,21 @@
         return;
       }
 
+      // Use module_id (from API) not module.id
       container.innerHTML = modules.map((module, index) => `
-        <div class="module-card" data-module-id="${module.id}">
-          <div class="module-header" onclick="toggleModule('${module.id}')">
+        <div class="module-card" data-module-id="${module.module_id}">
+          <div class="module-header" onclick="toggleModule('${module.module_id}')">
             <div class="module-info">
-              <div class="module-number">${index + 1}</div>
+              <div class="module-number">${module.module_number || index + 1}</div>
               <div>
                 <div class="module-title">${escapeHtml(module.title)}</div>
-                <div class="module-meta">${module.lesson_count || 0} lessons</div>
+                <div class="module-meta">${module.lesson_count || 5} lessons • ${module.estimated_duration_hours || '--'} hours</div>
               </div>
             </div>
             <i class="fas fa-chevron-down module-toggle"></i>
           </div>
           <div class="module-content">
-            <div class="lesson-list" id="lessons-${module.id}">
+            <div class="lesson-list" id="lessons-${module.module_id}">
               <div class="loading-state" style="padding: var(--space-4);">
                 <i class="fas fa-spinner"></i> Loading lessons...
               </div>
