@@ -161,6 +161,48 @@
         box-shadow: var(--shadow-lg);
       }
 
+      /* Nav Link (plain text link like Pricing) */
+      .nav-link {
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: var(--transition);
+        color: var(--text-primary);
+        text-decoration: none;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+      }
+
+      .nav-link:hover {
+        color: var(--primary);
+      }
+
+      /* Nav Button Outline (Donate) */
+      .nav-btn-outline {
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-weight: 500;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: var(--transition);
+        border: 2px solid var(--primary);
+        background-color: transparent;
+        color: var(--primary);
+        text-decoration: none;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+      }
+
+      .nav-btn-outline:hover {
+        background-color: var(--primary);
+        color: white;
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+      }
+
       /* Sidebars */
       .desktop-layout .left-sidebar,
       .desktop-layout .right-sidebar {
