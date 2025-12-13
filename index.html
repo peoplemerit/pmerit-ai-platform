@@ -85,6 +85,7 @@
         </button>
         <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">☰</button>
         <button class="sign-in-btn" id="signInBtn" data-i18n="common.signIn">Sign In</button>
+        <button class="start-learning-btn-mobile" id="startLearningBtnMobile" data-i18n="header.startLearning">Start</button>
       </div>
     </header>
 
@@ -222,9 +223,10 @@
         <button class="nav-btn language-btn-desktop" id="language-btn-desktop" data-action="open-language-modal" aria-label="Change language" title="Select Language">
           <i class="fas fa-globe"></i> <span class="language-name">Language</span>
         </button>
-        <a href="pricing.html" class="nav-btn">Pricing</a>
+        <a href="pricing.html" class="nav-link" data-i18n="header.pricing">Pricing</a>
+        <a href="donate.html" class="nav-btn nav-btn-outline" data-i18n="header.donate">Donate</a>
         <button class="nav-btn" id="desktopSignInBtn" data-i18n="common.signIn">Sign In</button>
-        <button class="nav-btn primary" data-i18n="header.startLearning">Start Learning</button>
+        <button class="nav-btn primary" id="startLearningBtn" data-i18n="header.startLearning">Start Learning</button>
       </nav>
     </header>
 
@@ -512,13 +514,35 @@
           document.getElementById('signInBtn'),
           document.getElementById('desktopSignInBtn')
         ];
-        
+
         signInButtons.forEach(function (btn) {
           if (btn) {
             btn.addEventListener('click', function (e) {
               if (window.AUTH && window.AuthModal) {
                 e.preventDefault();
                 window.AuthModal.open('signin');
+              } else {
+                window.location.href = '/signin.html';
+              }
+            });
+          }
+        });
+
+        // Wire Start Learning buttons (desktop and mobile) to signup modal
+        const startLearningBtns = [
+          document.getElementById('startLearningBtn'),
+          document.getElementById('startLearningBtnMobile')
+        ];
+
+        startLearningBtns.forEach(function (btn) {
+          if (btn) {
+            btn.addEventListener('click', function (e) {
+              e.preventDefault();
+              console.log('📊 Analytics: start_learning_clicked');
+              if (window.AUTH && window.AUTH.isAuthenticated()) {
+                window.location.href = '/dashboard.html';
+              } else if (window.AuthModal) {
+                window.AuthModal.open('signup');
               } else {
                 window.location.href = '/signin.html';
               }
@@ -588,18 +612,89 @@
         });
       }
       
+      // Update header based on auth state (G5 fix)
+      function updateHeaderAuthState() {
+        const isAuth = window.AUTH && window.AUTH.isAuthenticated();
+
+        // Desktop buttons
+        const desktopSignInBtn = document.getElementById('desktopSignInBtn');
+        const startLearningBtn = document.getElementById('startLearningBtn');
+
+        // Mobile buttons
+        const mobileSignInBtn = document.getElementById('signInBtn');
+        const mobileStartLearningBtn = document.getElementById('startLearningBtnMobile');
+
+        if (isAuth) {
+          // User is logged in - show Sign Out and Dashboard
+          if (desktopSignInBtn) {
+            desktopSignInBtn.textContent = 'Sign Out';
+            desktopSignInBtn.onclick = function(e) {
+              e.preventDefault();
+              if (window.AUTH) {
+                window.AUTH.logout();
+                window.location.reload();
+              }
+            };
+          }
+          if (startLearningBtn) {
+            startLearningBtn.textContent = 'Dashboard';
+            startLearningBtn.onclick = function(e) {
+              e.preventDefault();
+              window.location.href = '/dashboard.html';
+            };
+          }
+          if (mobileSignInBtn) {
+            mobileSignInBtn.textContent = 'Sign Out';
+            mobileSignInBtn.onclick = function(e) {
+              e.preventDefault();
+              if (window.AUTH) {
+                window.AUTH.logout();
+                window.location.reload();
+              }
+            };
+          }
+          if (mobileStartLearningBtn) {
+            mobileStartLearningBtn.textContent = 'Go';
+            mobileStartLearningBtn.onclick = function(e) {
+              e.preventDefault();
+              window.location.href = '/dashboard.html';
+            };
+          }
+        } else {
+          // User is logged out - show Sign In and Start Learning (default state)
+          if (desktopSignInBtn) {
+            desktopSignInBtn.textContent = 'Sign In';
+          }
+          if (startLearningBtn) {
+            startLearningBtn.textContent = 'Start Learning';
+          }
+          if (mobileSignInBtn) {
+            mobileSignInBtn.textContent = 'Sign In';
+          }
+          if (mobileStartLearningBtn) {
+            mobileStartLearningBtn.textContent = 'Start';
+          }
+        }
+      }
+
       // Initialize when DOM is ready
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() {
           initAuthButtons();
           initDashboardButtons();
           initCustomerServiceButtons();
+          // Delay auth state check to ensure AUTH module is loaded
+          setTimeout(updateHeaderAuthState, 100);
         });
       } else {
         initAuthButtons();
         initDashboardButtons();
         initCustomerServiceButtons();
+        setTimeout(updateHeaderAuthState, 100);
       }
+
+      // Listen for auth state changes
+      window.addEventListener('auth-state-changed', updateHeaderAuthState);
     })();
   </script>
 

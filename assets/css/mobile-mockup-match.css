@@ -101,11 +101,36 @@
   }
   
   .sign-in-btn {
-    background: var(--primary);
-    color: var(--text-inverse);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+  }
+
+  .sign-in-btn:hover {
     border-color: var(--primary);
   }
-  
+
+  /* Mobile Start Learning Button (Primary CTA) */
+  .start-learning-btn-mobile {
+    min-width: 44px;
+    min-height: 44px;
+    padding: var(--space-sm) var(--space-md);
+    border: 1px solid var(--primary);
+    border-radius: var(--radius-full);
+    background: var(--primary);
+    color: var(--text-inverse);
+    font-size: var(--text-small);
+    font-weight: var(--weight-semibold);
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .start-learning-btn-mobile:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+
   /* === CHAT MESSAGES AREA === */
   .chat-messages {
     flex: 1;
