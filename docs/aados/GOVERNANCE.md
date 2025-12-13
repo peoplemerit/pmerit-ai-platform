@@ -1,4 +1,78 @@
-# 📑 PMERIT Platform — Canonical Audit & Handoff Governance V5 (FINAL)
+# 📑 PMERIT Platform — Canonical Audit & Handoff Governance V6
+
+**Version:** 6.0
+**Updated:** 2025-12-12
+**New:** Scope Order System for focused context management
+
+---
+
+## 📂 SCOPE ORDER SYSTEM (NEW)
+
+### What is Scope Order?
+
+A hierarchical documentation system that enables focused context loading:
+
+```
+.claude/scopes/
+├── MASTER_SCOPE.md          ← Full project vision (consolidated)
+├── SCOPE_HOMEPAGE.md        ← Homepage gate (H1-H10)
+├── SCOPE_ASSESSMENT.md      ← Assessment flow (P1-P2)
+├── SCOPE_DASHBOARD.md       ← Dashboard & auth (P3-P4)
+├── SCOPE_CLASSROOM.md       ← Virtual classroom (P5)
+├── SCOPE_AVATAR.md          ← Avatar system
+├── SCOPE_ENROLLMENT.md      ← Course enrollment
+├── SCOPE_ADMIN.md           ← Admin portal (P7-P10)
+└── SCOPE_CREDENTIALS.md     ← Blockchain credentials (ARCH-2/3)
+```
+
+### Sub-Scope Structure
+
+Each scope file contains:
+
+| Section | Purpose |
+|---------|---------|
+| **SCOPE IDENTITY** | Files, APIs, tables for this feature |
+| **ARCHITECTURAL DECISIONS (LOCKED)** | Final decisions — no changes without approval |
+| **HANDOFF_DOCUMENT** | Complete feature specification |
+| **RESEARCH_FINDINGS** | Implementation notes, session history |
+| **DEPENDENCIES** | What this scope requires/enables |
+| **VERIFICATION CHECKLIST** | Acceptance criteria |
+
+### Scope Commands
+
+| Command | Effect |
+|---------|--------|
+| **SCOPE: CLASSROOM** | Load classroom scope context |
+| **SCOPE: ASSESSMENT** | Load assessment scope context |
+| **SCOPE: [name]** | Load specified scope |
+| **SCOPE: MASTER** | Load full project vision |
+
+### Three-Way Workflow
+
+```
+┌─────────────┐      ┌─────────────┐      ┌─────────────┐
+│ CLAUDE WEB  │◄────►│     YOU     │◄────►│ CLAUDE CODE │
+│ (Architect) │      │ (Director)  │      │(Implementer)│
+└─────────────┘      └─────────────┘      └─────────────┘
+     │                     │                     │
+     │ Strategy, prompts   │ Decisions, git      │ Code execution
+     │ Brainstorming       │ Coordination        │ Quality review
+     │ Documentation       │ Approvals           │ Scope updates
+     │                     │                     │
+     └─────────────────────┴─────────────────────┘
+                         │
+                         ▼
+              Scope files maintain context
+```
+
+### When to Use Scopes
+
+| Scenario | Action |
+|----------|--------|
+| Starting work on a feature | `SCOPE: [feature]` to load context |
+| After implementation | Update scope's RESEARCH_FINDINGS |
+| Changing features | Switch scopes to load new context |
+| Need full picture | `SCOPE: MASTER` for project vision |
 
 ---
 
@@ -13,6 +87,7 @@
 | **PMERIT QUICK FIX: [description]** | Light mode — skip full protocol for minor fixes |
 | **PMERIT PHASES** | Show phase progression map |
 | **PMERIT ESCALATED** | Show all escalated issues needing alternatives |
+| **SCOPE: [name]** | Load specific scope context (NEW) |
 
 ### Auto-Continuity Behavior
 
@@ -832,6 +907,6 @@ Purpose: [Brief explanation]
 
 ---
 
-*Production: https://pmerit.com*  
+*Production: https://pmerit.com*
 *Repository: github.com/peoplemerit/pmerit-ai-platform*
-*Version: V5 FINAL — 2024-11-29*
+*Version: V6 — 2025-12-12 — Scope Order System Added*
