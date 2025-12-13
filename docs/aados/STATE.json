@@ -2,11 +2,11 @@
   "schema_version": "2.3",
   "schema_notes": "Session 50 - Scope Order System implemented",
 
-  "last_updated": "2025-12-12T00:00:00Z",
+  "last_updated": "2025-12-13T00:00:00Z",
   "last_updated_by": "claude-code",
 
-  "session_number": 50,
-  "last_audit_date": "2025-12-12",
+  "session_number": 51,
+  "last_audit_date": "2025-12-13",
 
   "current_phase": "POST_CLASSROOM",
   "phase_name": "Content Testing / ARCH-2 / Assessment Enhancements",
@@ -35,7 +35,8 @@
       "SCOPE_AVATAR": { "status": "complete", "file": ".claude/scopes/SCOPE_AVATAR.md" },
       "SCOPE_ENROLLMENT": { "status": "complete", "file": ".claude/scopes/SCOPE_ENROLLMENT.md" },
       "SCOPE_ADMIN": { "status": "not_started", "file": ".claude/scopes/SCOPE_ADMIN.md" },
-      "SCOPE_CREDENTIALS": { "status": "not_started", "file": ".claude/scopes/SCOPE_CREDENTIALS.md" }
+      "SCOPE_CREDENTIALS": { "status": "not_started", "file": ".claude/scopes/SCOPE_CREDENTIALS.md" },
+      "SCOPE_TTS": { "status": "complete", "file": ".claude/scopes/SCOPE_TTS.md" }
     }
   },
 
@@ -184,6 +185,12 @@
   },
 
   "recent_changes": [
+    {
+      "session": 51,
+      "date": "2025-12-13",
+      "change": "SCOPE_TTS.md created",
+      "impact": "Comprehensive TTS scope documentation based on implementation reality. Documents backend (tts.ts), frontend (tts.js, tts-client.js, lip-sync-controller.js), API endpoints, voice options, fallback hierarchy, and integration with Avatar system. Identified gap: TTS_QUOTA_KV binding not configured in wrangler.toml."
+    },
     {
       "session": 50,
       "date": "2025-12-12",
