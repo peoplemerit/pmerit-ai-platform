@@ -24,6 +24,7 @@
 
   "scope_order": {
     "version": "1.0",
+    "location": "pmerit-ai-platform/.claude/scopes/",
     "master_scope": ".claude/scopes/MASTER_SCOPE.md",
     "active_scope": null,
     "scopes": {
