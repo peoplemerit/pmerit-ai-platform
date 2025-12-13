@@ -44,7 +44,7 @@
 |------|-----------|-------------|------|
 | Free | CSS/SVG Animation | 0 Mbps | $0 |
 | Standard | WebGL 3D (Three.js) | 5 Mbps | $0 |
-| Premium | Unreal MetaHuman (GPU) | 25 Mbps | $2.68/hr |
+| Premium | Unreal MetaHuman (RunPod GPU) | 25 Mbps | $0.44/hr (RTX 4090) |
 | Fallback | Static Image | 0 Mbps | $0 |
 
 ### Ready Player Me Account
@@ -152,13 +152,26 @@
 
 | Method | Endpoint | Purpose |
 |--------|----------|---------|
-| POST | `/api/v1/gpu/provision` | Provision GPU droplet |
-| GET | `/api/v1/gpu/sessions/:id` | Get session status |
-| DELETE | `/api/v1/gpu/sessions/:id` | Destroy session |
-| POST | `/api/v1/gpu/sessions/:id/log` | Log activity |
+| POST | `/api/v1/gpu/provision` | Provision GPU pod (RunPod) |
+| GET | `/api/v1/gpu/status/:id` | Get session status |
+| POST | `/api/v1/gpu/destroy` | Destroy session |
+| POST | `/api/v1/gpu/log-session` | Log activity |
 | GET | `/api/v1/gpu/tiers` | Get available tiers |
-| POST | `/api/v1/gpu/bandwidth-test` | Test bandwidth |
+| GET | `/api/v1/bandwidth-test` | Test bandwidth |
 
 ---
 
-*Last Updated: 2025-12-12 by Claude Code (Session 50)*
+## 8. GPU PROVIDER
+
+| Attribute | Value |
+|-----------|-------|
+| Provider | RunPod (runpod.io) |
+| GPU Type | RTX 4090 (24GB VRAM) |
+| Cost | $0.44/hour |
+| Regions | US East, US West, EU West, Asia Pacific |
+| Scale to Zero | Yes (no idle costs) |
+
+---
+
+*Last Updated: 2025-12-13 by Claude Code (Session 52)*
+*DigitalOcean → RunPod migration complete*
