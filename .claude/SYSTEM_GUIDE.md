@@ -1,7 +1,8 @@
 # PMERIT Development System — Quick Reference Guide
 
-**Version:** 1.0
+**Version:** 2.0
 **Created:** 2025-12-12
+**Updated:** 2025-12-13
 **Purpose:** Complete operational guide for the three-way workflow and Scope Order system
 
 ---
@@ -10,8 +11,8 @@
 
 1. [Team Structure](#1-team-structure)
 2. [Directory Layout](#2-directory-layout)
-3. [Scope Order System](#3-scope-order-system)
-4. [Three-Way Workflow](#4-three-way-workflow)
+3. [Scope Order System v2](#3-scope-order-system-v2)
+4. [Efficient Three-Way Workflow](#4-efficient-three-way-workflow)
 5. [Commands Reference](#5-commands-reference)
 6. [File Sync Protocol](#6-file-sync-protocol)
 7. [Session Lifecycle](#7-session-lifecycle)
@@ -32,9 +33,9 @@
 │  └──────────────┘      └──────────────┘      └──────────────┘              │
 │                                                                              │
 │  Responsibilities:                                                           │
-│  ├── Claude Web: Strategy, prompts, brainstorming, documentation            │
+│  ├── Claude Web: Strategy, specs, brainstorming, requirements               │
 │  ├── You: Decisions, coordination, approvals, git operations                │
-│  └── Claude Code: Code execution, quality review, implementation            │
+│  └── Claude Code: Audit reality, quality review, implementation             │
 │                                                                              │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -43,9 +44,9 @@
 
 | Role | Tool | Capabilities | Responsibilities |
 |------|------|--------------|------------------|
-| **Architect** | Claude Web | Web access, Project Knowledge | Strategy, specs, follow-up prompts |
+| **Architect** | Claude Web | Web access, Project Knowledge | Strategy, specs, requirements writing |
 | **Director** | You | Full system access | Decisions, approvals, coordination |
-| **Implementer** | Claude Code | File system, code execution | Implementation, quality review |
+| **Implementer** | Claude Code | File system, code execution | Reality audit, implementation, quality review |
 
 ---
 
@@ -54,7 +55,7 @@
 ```
 E:\pmerit\                                    ← WORKSPACE ROOT
 │
-├── CLAUDE.md                                 ← Claude Code instructions (v3.0)
+├── CLAUDE.md                                 ← Claude Code instructions (v3.1)
 ├── .claude\
 │   └── CLAUDE.md                             ← Backup of instructions
 │
@@ -70,6 +71,7 @@ E:\pmerit\                                    ← WORKSPACE ROOT
 │   │       ├── SCOPE_CLASSROOM.md            ← P5
 │   │       ├── SCOPE_AVATAR.md               ← Avatar system
 │   │       ├── SCOPE_ENROLLMENT.md           ← Enrollment
+│   │       ├── SCOPE_TTS.md                  ← TTS system
 │   │       ├── SCOPE_ADMIN.md                ← P7-P10
 │   │       └── SCOPE_CREDENTIALS.md          ← ARCH-2/3
 │   │
@@ -97,181 +99,216 @@ E:\pmerit\                                    ← WORKSPACE ROOT
 
 ---
 
-## 3. Scope Order System
+## 3. Scope Order System v2
 
-### What It Is
+### Key Improvement: Reality-First Approach
 
-A hierarchical documentation system that provides focused context for each feature area.
+The v2 workflow is **pull-based** — Claude Code audits production reality first, then Claude Web writes specs based on facts.
 
-### Scope Structure
+### Old vs New Workflow
 
-Each scope file contains:
+| Aspect | v1 (Push-Based) | v2 (Pull-Based) |
+|--------|-----------------|-----------------|
+| **Starts with** | Claude Web writes spec | You create empty scope file |
+| **Reality check** | After implementation | Before spec writing |
+| **Risk** | Specs may be outdated | Specs based on current reality |
+| **Efficiency** | May duplicate work | Avoids rework |
+
+### Scope File States
+
+| State | Contents | Created By |
+|-------|----------|------------|
+| **Empty** | Just the file name | You (Director) |
+| **Audited** | Implementation reality report | Claude Code |
+| **Specified** | Requirements + instructions | Claude Web |
+| **Implemented** | Completed with RESEARCH_FINDINGS | Claude Code |
+
+### Scope Structure (After Full Cycle)
 
 ```markdown
 # PMERIT SUB-SCOPE: [Feature Name]
 
 ## 1. SCOPE IDENTITY
-- Files, APIs, database tables for this feature
+- Files, APIs, database tables
 
 ## 2. ARCHITECTURAL DECISIONS (LOCKED)
-- Final decisions that cannot change without approval
+- Final decisions from implementation
 
-## 3. FEATURE SPECIFICATION
+## 3. CURRENT IMPLEMENTATION STATUS
+<AUDIT_REPORT>
+- What Claude Code found during reality audit
+- Existing code, endpoints, files
+- Gaps identified
+</AUDIT_REPORT>
+
+## 4. FEATURE SPECIFICATION
 <HANDOFF_DOCUMENT>
-- Complete requirements and acceptance criteria
+- Requirements written by Claude Web
+- Based on audit report + brainstorming
 </HANDOFF_DOCUMENT>
 
-## 4. IMPLEMENTATION STATUS
+## 5. IMPLEMENTATION STATUS
 <RESEARCH_FINDINGS>
-- What's been built, session-by-session notes
-- Updated after each implementation session
+- What Claude Code implemented
+- Session-by-session notes
 </RESEARCH_FINDINGS>
 
-## 5. DEPENDENCIES
-- What this scope requires and enables
+## 6. DEPENDENCIES
+- What this scope requires/enables
 
-## 6. VERIFICATION CHECKLIST
+## 7. VERIFICATION CHECKLIST
 - Acceptance criteria with status
 ```
 
-### Current Scopes
-
-| Scope | Status | Phase |
-|-------|--------|-------|
-| SCOPE_HOMEPAGE | Complete | Gate (H1-H10) |
-| SCOPE_ASSESSMENT | Complete | P1-P2 |
-| SCOPE_DASHBOARD | Complete | P3-P4 |
-| SCOPE_CLASSROOM | Complete | P5 |
-| SCOPE_AVATAR | Complete | Integrated |
-| SCOPE_ENROLLMENT | Complete | Integrated |
-| SCOPE_ADMIN | Not Started | P7-P10 |
-| SCOPE_CREDENTIALS | Not Started | ARCH-2/3 |
-
-### Scope Commands
-
-| Command | Effect |
-|---------|--------|
-| `SCOPE: CLASSROOM` | Claude Code loads classroom context |
-| `SCOPE: ASSESSMENT` | Claude Code loads assessment context |
-| `SCOPE: MASTER` | Claude Code loads full project vision |
-| `SCOPE: [name]` | Claude Code loads specified scope |
-
 ---
 
-## 4. Three-Way Workflow
+## 4. Efficient Three-Way Workflow
 
-### Complete Cycle
+### The v2 Workflow Cycle
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                         WORKFLOW CYCLE                                       │
+│                    EFFICIENT THREE-WAY WORKFLOW (v2)                         │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │                                                                              │
-│  PHASE 1: PLANNING                                                           │
+│  STEP 1: INITIATE (You)                                                      │
 │  ┌──────────────────────────────────────────────────────────────────────┐   │
-│  │ Claude Web + You                                                      │   │
-│  │ • Brainstorm feature requirements                                     │   │
-│  │ • Define specifications                                               │   │
-│  │ • Create implementation prompt                                        │   │
-│  │ OUTPUT: Feature spec with acceptance criteria                         │   │
+│  │ • Decide what feature/area to work on                                 │   │
+│  │ • Create empty scope file: SCOPE_[NAME].md                            │   │
+│  │ • Commit to repo (so Claude Web can see it exists)                    │   │
+│  │                                                                       │   │
+│  │ Example: Create .claude/scopes/SCOPE_TTS.md (empty)                   │   │
 │  └──────────────────────────────────────────────────────────────────────┘   │
 │                                     │                                        │
 │                                     ▼                                        │
-│  PHASE 2: HANDOFF                                                            │
+│  STEP 2: REALITY AUDIT (Claude Code)                                         │
 │  ┌──────────────────────────────────────────────────────────────────────┐   │
-│  │ You → Claude Code                                                     │   │
-│  │ • "SCOPE: [feature]" to load context                                  │   │
-│  │ • Paste specification from Claude Web                                 │   │
-│  │ • Request implementation                                              │   │
+│  │ Prompt: "Audit SCOPE_TTS - report implementation reality"             │   │
+│  │                                                                       │   │
+│  │ Claude Code:                                                          │   │
+│  │ • Searches codebase for related files                                 │   │
+│  │ • Tests production endpoints                                          │   │
+│  │ • Documents what exists vs what's missing                             │   │
+│  │ • Updates scope file with AUDIT_REPORT section                        │   │
+│  │ • Identifies gaps and issues                                          │   │
+│  │                                                                       │   │
+│  │ OUTPUT: Factual reality report in scope file                          │   │
 │  └──────────────────────────────────────────────────────────────────────┘   │
 │                                     │                                        │
 │                                     ▼                                        │
-│  PHASE 3: REVIEW                                                             │
+│  STEP 3: SHARE REPORT (You → Claude Web)                                     │
 │  ┌──────────────────────────────────────────────────────────────────────┐   │
-│  │ Claude Code                                                           │   │
-│  │ • Reads scope file for context                                        │   │
-│  │ • Reviews spec against existing architecture                          │   │
-│  │ • Identifies better alternatives (if any)                             │   │
-│  │ • Presents recommendations                                            │   │
-│  │ OUTPUT: "Proceed with spec" or "Recommend alternative: [reason]"      │   │
+│  │ • Copy Claude Code's audit report                                     │   │
+│  │ • Paste to Claude Web                                                 │   │
+│  │ • "Here's the current reality for TTS. Let's plan improvements."      │   │
 │  └──────────────────────────────────────────────────────────────────────┘   │
 │                                     │                                        │
 │                                     ▼                                        │
-│  PHASE 4: APPROVAL                                                           │
+│  STEP 4: BRAINSTORM & SPECIFY (Claude Web + You)                             │
 │  ┌──────────────────────────────────────────────────────────────────────┐   │
-│  │ You                                                                   │   │
-│  │ • "Use your recommendations, proceed" OR                              │   │
-│  │ • "Let me check with Claude Web first" OR                             │   │
-│  │ • "Stick with original spec"                                          │   │
+│  │ Based on reality report:                                              │   │
+│  │ • Discuss what to build/fix                                           │   │
+│  │ • Research best approaches                                            │   │
+│  │ • Write requirements and instructions                                 │   │
+│  │                                                                       │   │
+│  │ Claude Web updates SCOPE_[NAME].md with:                              │   │
+│  │ • HANDOFF_DOCUMENT section (requirements)                             │   │
+│  │ • Implementation instructions                                         │   │
+│  │ • Acceptance criteria                                                 │   │
+│  │                                                                       │   │
+│  │ OUTPUT: Complete spec based on facts                                  │   │
 │  └──────────────────────────────────────────────────────────────────────┘   │
 │                                     │                                        │
 │                                     ▼                                        │
-│  PHASE 5: IMPLEMENTATION                                                     │
+│  STEP 5: NOTIFY (You → Claude Code)                                          │
 │  ┌──────────────────────────────────────────────────────────────────────┐   │
-│  │ Claude Code                                                           │   │
+│  │ "SCOPE_TTS.md has been updated with requirements. Please review."     │   │
+│  └──────────────────────────────────────────────────────────────────────┘   │
+│                                     │                                        │
+│                                     ▼                                        │
+│  STEP 6: REVIEW & IMPLEMENT (Claude Code)                                    │
+│  ┌──────────────────────────────────────────────────────────────────────┐   │
+│  │ Claude Code:                                                          │   │
+│  │ • Reads updated scope file                                            │   │
+│  │ • Reviews requirements against architecture                           │   │
+│  │ • Recommends better alternatives if found                             │   │
+│  │ • Gets approval if recommending changes                               │   │
 │  │ • Implements approved solution                                        │   │
-│  │ • Updates scope's RESEARCH_FINDINGS                                   │   │
-│  │ • Commits changes (if requested)                                      │   │
-│  │ OUTPUT: Implementation summary with files changed                     │   │
+│  │ • Updates RESEARCH_FINDINGS section                                   │   │
+│  │                                                                       │   │
+│  │ OUTPUT: Implementation complete, scope file updated                   │   │
 │  └──────────────────────────────────────────────────────────────────────┘   │
 │                                     │                                        │
 │                                     ▼                                        │
-│  PHASE 6: FEEDBACK                                                           │
+│  STEP 7: FEEDBACK LOOP (You → Claude Web)                                    │
 │  ┌──────────────────────────────────────────────────────────────────────┐   │
-│  │ You → Claude Web                                                      │   │
-│  │ • Share Claude Code's implementation summary                          │   │
-│  │ • Claude Web reviews and provides follow-up                           │   │
-│  │ OUTPUT: Next iteration prompt or approval                             │   │
+│  │ • Share implementation results                                        │   │
+│  │ • Claude Web reviews and provides follow-up if needed                 │   │
+│  │ • Iterate until feature complete                                      │   │
 │  └──────────────────────────────────────────────────────────────────────┘   │
-│                                     │                                        │
-│                                     ▼                                        │
-│  REPEAT until feature complete                                               │
 │                                                                              │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### Example Interaction
+### Example: TTS Scope Workflow
 
 ```
-YOU → CLAUDE WEB:
-"I want to add a bookmark feature to the classroom."
-
-CLAUDE WEB:
-"Here's the specification:
-- Store bookmarks in localStorage
-- Sync to API when online
-- Show bookmark icon on lessons
-- [acceptance criteria]
-
-Send this to Claude Code: [prompt]"
+YOU:
+1. Create empty file: .claude/scopes/SCOPE_TTS.md
+2. Commit and push
 
 YOU → CLAUDE CODE:
-"SCOPE: CLASSROOM
-Here's the bookmark feature spec: [paste]"
+"Audit SCOPE_TTS - what's the implementation reality for TTS?"
 
 CLAUDE CODE:
-"I've reviewed the spec. Recommendation:
-Use IndexedDB instead of localStorage for better
-offline support. Proceed with this change?"
-
-YOU:
-"Good idea. Proceed."
-
-CLAUDE CODE:
-[Implements feature]
-[Updates SCOPE_CLASSROOM.md RESEARCH_FINDINGS]
-"Complete. Summary: [details]"
+• Searches for tts.ts, tts.js, etc.
+• Tests /api/v1/tts endpoint
+• Documents: "TTS endpoint exists, returns WAV audio,
+  but TTS_QUOTA_KV binding not configured"
+• Updates SCOPE_TTS.md with audit report
 
 YOU → CLAUDE WEB:
-"Bookmark feature done. Here's the output: [paste]"
+"Here's Claude Code's TTS audit: [paste report]
+The quota system isn't working. What should we do?"
 
-CLAUDE WEB:
-"Looks good. Next: Add bookmark sync indicator..."
+CLAUDE WEB + YOU:
+• Discuss options
+• Decide to implement usage tracking
+• Write requirements for quota management
+• Update SCOPE_TTS.md with HANDOFF_DOCUMENT
+
+YOU → CLAUDE CODE:
+"SCOPE_TTS.md updated with quota requirements. Please review and implement."
+
+CLAUDE CODE:
+• Reads new requirements
+• "I recommend using Cloudflare KV with per-user daily limits.
+  Proceed with this approach?"
+• After approval, implements
+• Updates RESEARCH_FINDINGS
 ```
+
+### Benefits of v2 Workflow
+
+| Benefit | Description |
+|---------|-------------|
+| **No outdated specs** | Requirements based on current reality |
+| **No duplicate work** | Audit reveals what already exists |
+| **Faster iterations** | Facts before planning |
+| **Better decisions** | Claude Web has accurate context |
+| **Gap identification** | Issues found before implementation |
 
 ---
 
 ## 5. Commands Reference
+
+### Scope Audit Commands (NEW)
+
+| Command | Effect |
+|---------|--------|
+| `AUDIT SCOPE: [name]` | Claude Code audits reality for this scope |
+| `SCOPE UPDATED: [name]` | Notify Claude Code that Claude Web updated scope |
+| `SCOPE: [name]` | Load scope context (unchanged) |
 
 ### Session Commands
 
@@ -281,7 +318,6 @@ CLAUDE WEB:
 | `PMERIT STATUS` | Quick check | Show state without working |
 | `PMERIT QUICK FIX: [desc]` | Minor fixes | Skip audit, fast mode |
 | `PMERIT SYNC CONFIRMED` | After git pull | Confirm repos synced |
-| `PMERIT CLEANUP HANDOFFS` | Maintenance | Archive old handoffs |
 
 ### Scope Commands
 
@@ -289,13 +325,10 @@ CLAUDE WEB:
 |---------|--------|
 | `SCOPE: CLASSROOM` | Load classroom context |
 | `SCOPE: ASSESSMENT` | Load assessment context |
-| `SCOPE: DASHBOARD` | Load dashboard context |
-| `SCOPE: AVATAR` | Load avatar context |
-| `SCOPE: HOMEPAGE` | Load homepage context |
-| `SCOPE: ENROLLMENT` | Load enrollment context |
-| `SCOPE: ADMIN` | Load admin context |
-| `SCOPE: CREDENTIALS` | Load credentials context |
+| `SCOPE: TTS` | Load TTS context |
 | `SCOPE: MASTER` | Load full project vision |
+| `AUDIT SCOPE: [name]` | Audit and report reality |
+| `SCOPE UPDATED: [name]` | Review updated scope and implement |
 
 ### Environment Commands
 
@@ -305,46 +338,75 @@ CLAUDE WEB:
 | `ENV: BE` | Switch to Backend repo |
 | `ENV: BOTH` | Coordinate both repos |
 
-### Workflow Commands
-
-| Command | Effect |
-|---------|--------|
-| `DONE` | Confirm step complete |
-| `EXTEND: [ID]` | Grant 2 more attempts (3→5) |
-| `ESCALATE` | Force escalation |
-
 ---
 
 ## 6. File Sync Protocol
 
-### Claude Web → Claude Code Sync
-
-When Claude Web's project instructions change:
+### Creating New Scope (You)
 
 ```bash
-# 1. Copy content from Claude Web project settings
-# 2. Paste into this file:
-pmerit-ai-platform/.claude/CLAUDE_WEB_SYNC.md
-
-# 3. Update "Last Synced" date at top of file
-
-# 4. Commit
+# 1. Create empty scope file
 cd E:\pmerit\pmerit-ai-platform
-git add .claude/CLAUDE_WEB_SYNC.md
-git commit -m "docs: Sync Claude Web instructions"
+echo "# PMERIT SUB-SCOPE: [Feature Name]" > .claude/scopes/SCOPE_[NAME].md
+
+# 2. Commit
+git add .claude/scopes/SCOPE_[NAME].md
+git commit -m "docs: Create empty SCOPE_[NAME].md for audit"
 git push origin main
 ```
 
-### Scope Updates After Implementation
+### After Claude Code Audit
 
-After Claude Code implements a feature:
-
+The scope file will contain:
 ```markdown
-# In the relevant SCOPE_*.md file, update:
+# PMERIT SUB-SCOPE: [Feature Name]
 
-## 4. IMPLEMENTATION STATUS
+## AUDIT_REPORT (by Claude Code)
 
-<RESEARCH_FINDINGS>
+**Audit Date:** YYYY-MM-DD
+**Audited By:** Claude Code (Session #)
+
+### Existing Implementation
+- [What exists]
+
+### Files Found
+- [List of files]
+
+### Endpoints
+- [API endpoints if applicable]
+
+### Gaps Identified
+- [What's missing or broken]
+
+### Recommendations
+- [Suggested improvements]
+```
+
+### After Claude Web Updates
+
+Claude Web adds:
+```markdown
+## HANDOFF_DOCUMENT (Requirements)
+
+### Objectives
+- [What to achieve]
+
+### Requirements
+- [Specific requirements]
+
+### Implementation Instructions
+- [How to implement]
+
+### Acceptance Criteria
+- [ ] [Criterion 1]
+- [ ] [Criterion 2]
+```
+
+### After Claude Code Implements
+
+Claude Code adds:
+```markdown
+## RESEARCH_FINDINGS (Implementation)
 
 ### Session [#] (YYYY-MM-DD)
 
@@ -354,162 +416,114 @@ After Claude Code implements a feature:
 **Files Modified:**
 - [List of files]
 
-**Commits:** [commit hashes]
+**Commits:** [hashes]
 
 **Notes:**
-- [Any important findings]
-
-</RESEARCH_FINDINGS>
-```
-
-### STATE.json Updates
-
-Claude Code updates after each session:
-
-```json
-{
-  "session_number": [INCREMENT],
-  "last_updated": "[ISO TIMESTAMP]",
-  "scope_order": {
-    "active_scope": "[Current scope or null]"
-  }
-}
+- [Important findings]
 ```
 
 ---
 
 ## 7. Session Lifecycle
 
-### Starting a Session
+### Starting a New Feature
 
 ```
-1. Say "PMERIT CONTINUE"
+1. YOU: Decide feature area (e.g., TTS quota management)
 
-2. Claude Code reads:
-   ├── docs/aados/STATE.json
-   ├── docs/aados/TASK_TRACKER.md
-   ├── docs/aados/GOVERNANCE.md
-   ├── .claude/scopes/[active_scope].md (if set)
-   └── Latest handoff
+2. YOU: Create empty scope file
+   → .claude/scopes/SCOPE_TTS_QUOTA.md
+   → Commit and push
 
-3. Claude Code runs production audit:
-   ├── Homepage check
-   ├── API health check
-   ├── Key endpoints test
-   └── Reports findings
+3. YOU → CLAUDE CODE: "AUDIT SCOPE: TTS_QUOTA"
 
-4. Claude Code outputs Auto-Continuity response
+4. CLAUDE CODE: Audits and reports reality
 
-5. Work begins
+5. YOU → CLAUDE WEB: Share audit report
+
+6. CLAUDE WEB + YOU: Brainstorm, write requirements
+
+7. CLAUDE WEB: Updates scope file with HANDOFF_DOCUMENT
+
+8. YOU → CLAUDE CODE: "SCOPE UPDATED: TTS_QUOTA"
+
+9. CLAUDE CODE: Reviews, recommends, implements
+
+10. REPEAT until complete
 ```
 
-### During a Session
+### Continuing Existing Feature
 
 ```
-For each task:
-1. Load relevant scope: "SCOPE: [name]"
-2. Review spec from Claude Web
-3. Recommend alternatives if better
-4. Get approval
-5. Implement
-6. Update scope's RESEARCH_FINDINGS
-7. Report output
+1. YOU → CLAUDE CODE: "SCOPE: [name]"
+
+2. CLAUDE CODE: Loads scope, reviews status
+
+3. Continue from current state
 ```
 
-### Ending a Session
+### Session Handoff
 
-```
-1. Ensure all scope files updated
-2. Commit changes:
-   git add .
-   git commit -m "[type]: [summary]"
-   git push origin main
-
-3. Create handoff if needed:
-   docs/handoffs/PMERIT_HANDOFF_SESSION_[#].md
-
-4. Update STATE.json with session number
-```
+When creating handoff, include:
+- Current scope being worked on
+- State of scope (audited/specified/implementing)
+- Next steps
 
 ---
 
 ## 8. Troubleshooting
 
-### "Context not loaded correctly"
+### "Claude Web doesn't have current reality"
 
-**Solution:** Explicitly load scope
+**Cause:** Audit wasn't done first
+**Solution:** Run `AUDIT SCOPE: [name]` before brainstorming
+
+### "Requirements don't match what exists"
+
+**Cause:** Spec written without reality check
+**Solution:** Re-audit, update requirements based on facts
+
+### "Scope file is confusing"
+
+**Solution:** Ensure clear sections:
+1. AUDIT_REPORT (Claude Code's findings)
+2. HANDOFF_DOCUMENT (Claude Web's requirements)
+3. RESEARCH_FINDINGS (Claude Code's implementation notes)
+
+### "Which scope am I working on?"
+
+**Check:** STATE.json → `scope_order.active_scope`
+
+### "Need to audit multiple areas"
+
+**Solution:** Create multiple empty scope files, audit each:
 ```
-SCOPE: [feature name]
-```
-
-### "Claude Code doesn't know about recent changes"
-
-**Solution:** Sync was missed
-```bash
-cd E:\pmerit\pmerit-ai-platform
-git pull origin main
-```
-Then say `PMERIT SYNC CONFIRMED`
-
-### "Scope file outdated"
-
-**Solution:** Update RESEARCH_FINDINGS after implementation
-
-### "Claude Web and Claude Code have different understanding"
-
-**Solution:** Update CLAUDE_WEB_SYNC.md
-1. Copy Claude Web project instructions
-2. Paste into `.claude/CLAUDE_WEB_SYNC.md`
-3. Commit and push
-
-### "Don't know which scope to use"
-
-**Reference:**
-
-| Feature Area | Scope |
-|--------------|-------|
-| Homepage, chatbox, AI receptionist | SCOPE_HOMEPAGE |
-| Career assessment, Big Five, RIASEC | SCOPE_ASSESSMENT |
-| Login, signup, account, dashboard | SCOPE_DASHBOARD |
-| Classroom, lessons, AI tutor | SCOPE_CLASSROOM |
-| Avatar, lip sync, 3D rendering | SCOPE_AVATAR |
-| Courses, pathways, enrollment | SCOPE_ENROLLMENT |
-| Admin portal, user management | SCOPE_ADMIN |
-| Blockchain, credentials, wallet | SCOPE_CREDENTIALS |
-
-### "Need full project context"
-
-**Solution:** Load master scope
-```
-SCOPE: MASTER
+AUDIT SCOPE: TTS
+AUDIT SCOPE: AVATAR
+AUDIT SCOPE: CLASSROOM
 ```
 
 ---
 
 ## Quick Start Checklist
 
-### New Session
-- [ ] Say `PMERIT CONTINUE`
-- [ ] Wait for Auto-Continuity response
-- [ ] Confirm git sync if prompted
-- [ ] Load relevant scope: `SCOPE: [name]`
+### Starting New Feature (v2 Workflow)
+- [ ] Create empty `SCOPE_[NAME].md`
+- [ ] Commit and push
+- [ ] Tell Claude Code: `AUDIT SCOPE: [NAME]`
+- [ ] Share audit with Claude Web
+- [ ] Brainstorm and write requirements
+- [ ] Tell Claude Code: `SCOPE UPDATED: [NAME]`
+- [ ] Review Claude Code's recommendations
+- [ ] Approve and implement
 
-### Implementation Task
-- [ ] Load scope context
-- [ ] Review Claude Web spec
-- [ ] Get approval for approach
-- [ ] Implement
-- [ ] Update scope RESEARCH_FINDINGS
-- [ ] Commit changes
-
-### End of Session
-- [ ] All changes committed
-- [ ] Scope files updated
-- [ ] Handoff created (if major work)
-- [ ] STATE.json updated
+### Continuing Existing Feature
+- [ ] `SCOPE: [NAME]` to load context
+- [ ] Check current state (audited/specified/implementing)
+- [ ] Continue from where left off
 
 ---
 
-*Quick Reference Guide v1.0*
-*Created: 2025-12-12*
+*Quick Reference Guide v2.0*
+*Updated: 2025-12-13*
 *For: PMERIT Three-Way Development Workflow*

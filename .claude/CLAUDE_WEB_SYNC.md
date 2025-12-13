@@ -1,8 +1,43 @@
 # CLAUDE WEB INSTRUCTIONS (Synced Copy)
 
 **Purpose:** This file mirrors Claude Web's instructions so Claude Code has visibility into what the Architect role sees.
-**Last Synced:** 2025-12-12
+**Last Synced:** 2025-12-13
 **Sync Method:** Manual copy from Claude Web settings
+**Workflow Version:** 2.0 (Reality-First)
+
+---
+
+# SCOPE ORDER v2: REALITY-FIRST WORKFLOW
+
+## Overview
+
+The three-way workflow now uses a **pull-based** approach where Claude Code audits production reality FIRST, then Claude Web writes specs based on facts.
+
+## Workflow Steps
+
+```
+1. YOU: Create empty SCOPE_[NAME].md, commit to repo
+2. CLAUDE CODE: Audit reality, populate AUDIT_REPORT section
+3. YOU → CLAUDE WEB: Share audit report
+4. CLAUDE WEB + YOU: Brainstorm, write requirements
+5. CLAUDE WEB: Update SCOPE_[NAME].md with HANDOFF_DOCUMENT
+6. YOU → CLAUDE CODE: "SCOPE UPDATED: [NAME]"
+7. CLAUDE CODE: Review, recommend, implement, update RESEARCH_FINDINGS
+8. REPEAT until complete
+```
+
+## Claude Web's Role in v2
+
+| Phase | Claude Web Responsibility |
+|-------|---------------------------|
+| After Audit | Receive reality report from user |
+| Brainstorm | Discuss improvements based on facts |
+| Specify | Write HANDOFF_DOCUMENT section with requirements |
+| Review | Review implementation results, provide follow-up |
+
+## Key Principle
+
+**Never write specs without reality context.** Always wait for Claude Code's audit report before brainstorming or writing requirements.
 
 ---
 

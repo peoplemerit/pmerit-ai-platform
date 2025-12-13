@@ -1,16 +1,31 @@
-# 📑 PMERIT Platform — Canonical Audit & Handoff Governance V6
+# 📑 PMERIT Platform — Canonical Audit & Handoff Governance V7
 
-**Version:** 6.0
-**Updated:** 2025-12-12
-**New:** Scope Order System for focused context management
+**Version:** 7.0
+**Updated:** 2025-12-13
+**New:** Scope Order v2 — Reality-First Workflow
 
 ---
 
-## 📂 SCOPE ORDER SYSTEM (NEW)
+## 📂 SCOPE ORDER v2: REALITY-FIRST WORKFLOW
 
-### What is Scope Order?
+### Key Improvement
 
-A hierarchical documentation system that enables focused context loading:
+Claude Code audits production reality FIRST, then Claude Web writes specs based on facts. This prevents outdated specs and avoids rework.
+
+### Workflow Steps
+
+```
+1. YOU: Create empty SCOPE_[NAME].md, commit to repo
+2. CLAUDE CODE: Audit reality → populate AUDIT_REPORT section
+3. YOU → CLAUDE WEB: Share audit report
+4. CLAUDE WEB + YOU: Brainstorm, write requirements
+5. CLAUDE WEB: Update SCOPE_[NAME].md with HANDOFF_DOCUMENT
+6. YOU → CLAUDE CODE: "SCOPE UPDATED: [NAME]"
+7. CLAUDE CODE: Review, recommend, implement → update RESEARCH_FINDINGS
+8. REPEAT until complete
+```
+
+### Scope Files Location
 
 ```
 .claude/scopes/
@@ -21,19 +36,28 @@ A hierarchical documentation system that enables focused context loading:
 ├── SCOPE_CLASSROOM.md       ← Virtual classroom (P5)
 ├── SCOPE_AVATAR.md          ← Avatar system
 ├── SCOPE_ENROLLMENT.md      ← Course enrollment
+├── SCOPE_TTS.md             ← TTS system
 ├── SCOPE_ADMIN.md           ← Admin portal (P7-P10)
 └── SCOPE_CREDENTIALS.md     ← Blockchain credentials (ARCH-2/3)
 ```
 
-### Sub-Scope Structure
+### Scope File States
 
-Each scope file contains:
+| State | Contents | Created By |
+|-------|----------|------------|
+| **Empty** | Just the file name | You (Director) |
+| **Audited** | AUDIT_REPORT section | Claude Code |
+| **Specified** | HANDOFF_DOCUMENT section | Claude Web |
+| **Implemented** | RESEARCH_FINDINGS section | Claude Code |
+
+### Sub-Scope Structure (After Full Cycle)
 
 | Section | Purpose |
 |---------|---------|
 | **SCOPE IDENTITY** | Files, APIs, tables for this feature |
 | **ARCHITECTURAL DECISIONS (LOCKED)** | Final decisions — no changes without approval |
-| **HANDOFF_DOCUMENT** | Complete feature specification |
+| **AUDIT_REPORT** | What Claude Code found (reality check) |
+| **HANDOFF_DOCUMENT** | Requirements from Claude Web |
 | **RESEARCH_FINDINGS** | Implementation notes, session history |
 | **DEPENDENCIES** | What this scope requires/enables |
 | **VERIFICATION CHECKLIST** | Acceptance criteria |
@@ -42,9 +66,9 @@ Each scope file contains:
 
 | Command | Effect |
 |---------|--------|
-| **SCOPE: CLASSROOM** | Load classroom scope context |
-| **SCOPE: ASSESSMENT** | Load assessment scope context |
-| **SCOPE: [name]** | Load specified scope |
+| **AUDIT SCOPE: [name]** | Claude Code audits reality, populates AUDIT_REPORT |
+| **SCOPE UPDATED: [name]** | Claude Code reads updated scope, reviews & implements |
+| **SCOPE: [name]** | Load specified scope context |
 | **SCOPE: MASTER** | Load full project vision |
 
 ### Three-Way Workflow
@@ -55,9 +79,9 @@ Each scope file contains:
 │ (Architect) │      │ (Director)  │      │(Implementer)│
 └─────────────┘      └─────────────┘      └─────────────┘
      │                     │                     │
-     │ Strategy, prompts   │ Decisions, git      │ Code execution
+     │ Strategy, specs     │ Decisions, git      │ Reality audit
      │ Brainstorming       │ Coordination        │ Quality review
-     │ Documentation       │ Approvals           │ Scope updates
+     │ Requirements        │ Approvals           │ Implementation
      │                     │                     │
      └─────────────────────┴─────────────────────┘
                          │
@@ -69,9 +93,10 @@ Each scope file contains:
 
 | Scenario | Action |
 |----------|--------|
-| Starting work on a feature | `SCOPE: [feature]` to load context |
-| After implementation | Update scope's RESEARCH_FINDINGS |
-| Changing features | Switch scopes to load new context |
+| New feature | Create empty scope, `AUDIT SCOPE: [name]` |
+| After audit | Share report with Claude Web |
+| After Claude Web updates | `SCOPE UPDATED: [name]` |
+| After implementation | Update RESEARCH_FINDINGS |
 | Need full picture | `SCOPE: MASTER` for project vision |
 
 ---
@@ -909,4 +934,4 @@ Purpose: [Brief explanation]
 
 *Production: https://pmerit.com*
 *Repository: github.com/peoplemerit/pmerit-ai-platform*
-*Version: V6 — 2025-12-12 — Scope Order System Added*
+*Version: V7 — 2025-12-13 — Scope Order v2: Reality-First Workflow*
