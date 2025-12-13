@@ -152,17 +152,11 @@
       <h3 class="menu-title" data-i18n="sidebar.quickActions">Quick Actions</h3>
       
       <!-- Dashboard (Primary Item) -->
-      <div class="menu-item menu-item-primary" data-route="/">
-        <span><i class="fas fa-tachometer-alt"></i> Dashboard</span>
-        <i class="fas fa-chevron-right"></i>
-      </div>
-      
-      <!-- Customer Service Mode -->
-      <button class="menu-item menu-item-customer-service" id="mobile-customer-service-btn">
-        <span><i class="fas fa-headset"></i> <span data-i18n="sidebar.customerServiceMode">Customer Service Mode</span></span>
+      <button class="menu-item menu-item-primary" id="mobile-dashboard-btn">
+        <span><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></span>
         <i class="fas fa-chevron-right"></i>
       </button>
-      
+
       <!-- Career Track -->
       <div class="menu-item" data-route="/pathways">
         <span><i class="fas fa-route"></i> <span data-i18n="sidebar.learningPathways">Learning Pathways</span></span>
@@ -235,17 +229,11 @@
       <h3 class="pane-title" data-i18n="sidebar.quickActions">Quick Actions</h3>
       
       <!-- Dashboard (Primary Button) -->
-      <button class="dashboard-btn dashboard-btn-primary">
-        <i class="fas fa-tachometer-alt"></i> 
+      <button class="dashboard-btn dashboard-btn-primary" id="desktop-dashboard-btn">
+        <i class="fas fa-tachometer-alt"></i>
         <span>Dashboard</span>
       </button>
-      
-      <!-- Customer Service Mode -->
-      <button class="dashboard-btn dashboard-btn-customer-service" id="desktop-customer-service-btn">
-        <i class="fas fa-headset"></i>
-        <span data-i18n="sidebar.customerServiceMode">Customer Service Mode</span>
-      </button>
-      
+
       <!-- Learning Pathways -->
       <div class="action">
         <span><i class="fas fa-route icon"></i><span data-i18n="sidebar.learningPathways">Learning Pathways</span></span>
@@ -551,36 +539,50 @@
         });
       }
       
-      // Wire Dashboard buttons
+      // Wire Dashboard buttons and update text based on auth state
       function initDashboardButtons() {
         const dashboardButtons = [
-          document.querySelector('.menu-item-primary'),
-          document.querySelector('.dashboard-btn-primary')
+          document.getElementById('mobile-dashboard-btn'),
+          document.getElementById('desktop-dashboard-btn')
         ];
-        
+
         dashboardButtons.forEach(function (btn) {
           if (btn) {
             btn.addEventListener('click', function (e) {
               e.preventDefault();
-              
+
               const isAuth = window.AUTH && window.AUTH.isAuthenticated();
               const eventName = isAuth ? 'dashboard_click_auth' : 'dashboard_click_guest';
               console.log('📊 Analytics:', eventName);
-              window.dispatchEvent(new CustomEvent('pmerit-analytics', {
-                detail: { event: eventName }
-              }));
-              
+
               if (isAuth) {
-                window.location.href = '/dashboard.html';
+                window.location.href = '/portal/dashboard.html';
               } else {
                 if (window.AuthModal) {
-                  window.AuthModal.open('signup');
+                  window.AuthModal.open('signin');
                 } else {
-                  console.warn('AuthModal not loaded, redirecting to signin page');
                   window.location.href = '/signin.html';
                 }
               }
             });
+          }
+        });
+      }
+
+      // Update Dashboard button text based on auth state
+      function updateDashboardButtons() {
+        const isAuth = window.AUTH && window.AUTH.isAuthenticated();
+        const dashboardButtons = [
+          document.getElementById('mobile-dashboard-btn'),
+          document.getElementById('desktop-dashboard-btn')
+        ];
+
+        dashboardButtons.forEach(function (btn) {
+          if (btn) {
+            const span = btn.querySelector('span span') || btn.querySelector('span:last-of-type');
+            if (span) {
+              span.textContent = isAuth ? 'Dashboard' : 'Sign In to Dashboard';
+            }
           }
         });
       }
@@ -684,17 +686,26 @@
           initDashboardButtons();
           initCustomerServiceButtons();
           // Delay auth state check to ensure AUTH module is loaded
-          setTimeout(updateHeaderAuthState, 100);
+          setTimeout(function() {
+            updateHeaderAuthState();
+            updateDashboardButtons();
+          }, 100);
         });
       } else {
         initAuthButtons();
         initDashboardButtons();
         initCustomerServiceButtons();
-        setTimeout(updateHeaderAuthState, 100);
+        setTimeout(function() {
+          updateHeaderAuthState();
+          updateDashboardButtons();
+        }, 100);
       }
 
       // Listen for auth state changes
-      window.addEventListener('auth-state-changed', updateHeaderAuthState);
+      window.addEventListener('auth-state-changed', function() {
+        updateHeaderAuthState();
+        updateDashboardButtons();
+      });
     })();
   </script>
 
