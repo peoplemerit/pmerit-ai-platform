@@ -161,7 +161,7 @@
         box-shadow: var(--shadow-lg);
       }
 
-      /* Nav Link (plain text link like Pricing) */
+      /* Nav Link - Text button style (Pricing, etc.) */
       .nav-link {
         padding: 0.5rem 1rem;
         font-weight: 500;
@@ -173,34 +173,36 @@
         min-height: 44px;
         display: flex;
         align-items: center;
+        border-radius: 6px;
+        background: transparent;
       }
 
       .nav-link:hover {
-        color: var(--primary);
+        background: rgba(0, 0, 0, 0.05);
+        color: var(--text-primary);
       }
 
-      /* Nav Button Outline (Donate) */
+      /* Nav Button Outline - Donate (warm accent) */
       .nav-btn-outline {
         padding: 0.5rem 1rem;
-        border-radius: 50px;
         font-weight: 500;
         font-size: 0.9rem;
         cursor: pointer;
         transition: var(--transition);
-        border: 2px solid var(--primary);
-        background-color: transparent;
-        color: var(--primary);
+        color: #F59E0B;
         text-decoration: none;
         min-height: 44px;
         display: flex;
         align-items: center;
+        border: 1.5px solid #F59E0B;
+        border-radius: 6px;
+        background: transparent;
       }
 
       .nav-btn-outline:hover {
-        background-color: var(--primary);
-        color: white;
-        transform: translateY(-1px);
-        box-shadow: var(--shadow-md);
+        background: rgba(245, 158, 11, 0.15);
+        color: #FBBF24;
+        border-color: #FBBF24;
       }
 
       /* Sidebars */
