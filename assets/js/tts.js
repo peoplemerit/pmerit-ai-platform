@@ -56,34 +56,75 @@ if (typeof window.logger === 'undefined') {
   // TTS Settings - Voice Selection
   const SETTINGS_KEY = 'pmerit_tts_settings';
 
-  // Voice options - simplified to 2 clear tiers
+  // Voice options - Free voices with variety + Premium options
   const VOICE_OPTIONS = {
-    'standard': {
-      name: 'Standard Voice',
-      description: 'AI-generated voice (MeloTTS)',
+    // FREE VOICES - Edge TTS (genuine variety)
+    'standard-male': {
+      name: 'Standard Male',
+      description: 'Clear male voice (Edge TTS)',
       tier: 'free',
-      apiVoice: 'alloy'  // Backend maps to MeloTTS
+      apiVoice: 'standard-male'
     },
+    'standard-female': {
+      name: 'Standard Female',
+      description: 'Clear female voice (Edge TTS)',
+      tier: 'free',
+      apiVoice: 'standard-female'
+    },
+    'standard-young': {
+      name: 'Young Voice',
+      description: 'Friendly young voice (Edge TTS)',
+      tier: 'free',
+      apiVoice: 'standard-young'
+    },
+    // PREMIUM VOICES - Piper TTS (subscription required)
     'primo': {
       name: 'Primo Voice',
       description: 'Natural human voice (Piper TTS)',
       tier: 'premium',
-      apiVoice: 'primo'  // Backend routes to RunPod
+      apiVoice: 'primo',
+      requiresSubscription: true
     },
+    'primo-female': {
+      name: 'Primo Female',
+      description: 'Natural female voice (Piper TTS)',
+      tier: 'premium',
+      apiVoice: 'primo-female',
+      requiresSubscription: true
+    },
+    // BROWSER FALLBACK
     'browser': {
       name: 'Browser Voice',
       description: 'Web Speech API fallback',
       tier: 'free',
       apiVoice: null  // Uses browser
+    },
+    // LEGACY MAPPINGS (backward compatibility)
+    'standard': {
+      name: 'Standard Voice',
+      description: 'Default voice (legacy)',
+      tier: 'free',
+      apiVoice: 'standard-male'  // Maps to new default
+    },
+    'alloy': {
+      name: 'Alloy',
+      description: 'Default voice (legacy)',
+      tier: 'free',
+      apiVoice: 'standard-male'  // Maps to new default
     }
   };
 
   // Legacy engine mappings for backward compatibility
   const AVAILABLE_ENGINES = {
-    'standard': 'Standard Voice (MeloTTS)',
+    // New voices
+    'standard-male': 'Standard Male (Edge TTS)',
+    'standard-female': 'Standard Female (Edge TTS)',
+    'standard-young': 'Young Voice (Edge TTS)',
     'primo': 'Primo Voice (Premium)',
+    'primo-female': 'Primo Female (Premium)',
     'browser': 'Browser (Web Speech API)',
-    // Legacy mappings - all route to standard
+    // Legacy mappings - all route to standard-male
+    'standard': 'Standard Voice',
     'aura-2-en': 'Standard Voice',
     'aura-1': 'Standard Voice',
     'melotts': 'Standard Voice',
@@ -102,13 +143,14 @@ if (typeof window.logger === 'undefined') {
         const settings = JSON.parse(stored);
 
         // Migrate legacy voice engines to new voice system
-        if (settings.voiceEngine && !VOICE_OPTIONS[settings.voiceEngine]) {
-          // Map old engines to 'standard'
-          const legacyEngines = ['aura-2-en', 'aura-1', 'melotts', 'aura-2-es', 'alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'];
+        const validVoices = ['standard-male', 'standard-female', 'standard-young', 'primo', 'primo-female', 'browser'];
+        if (settings.voiceEngine && !validVoices.includes(settings.voiceEngine)) {
+          // Map old engines to 'standard-male'
+          const legacyEngines = ['standard', 'aura-2-en', 'aura-1', 'melotts', 'aura-2-es', 'alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'];
           if (legacyEngines.includes(settings.voiceEngine)) {
-            settings.voiceEngine = 'standard';
+            settings.voiceEngine = 'standard-male';
             saveSettings(settings);
-            logger.debug('Migrated legacy voice engine to standard');
+            logger.debug('Migrated legacy voice engine to standard-male');
           }
         }
 
@@ -117,9 +159,9 @@ if (typeof window.logger === 'undefined') {
     } catch (e) {
       console.warn('Failed to load TTS settings:', e);
     }
-    // Default settings - use standard voice
+    // Default settings - use standard-male voice
     return {
-      voiceEngine: 'standard',
+      voiceEngine: 'standard-male',
       useServer: true
     };
   }
