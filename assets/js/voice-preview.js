@@ -1,51 +1,45 @@
 /**
  * PMERIT Voice Preview Modal
- * Allows users to preview and select from 6 TTS voices
+ * Allows users to preview and select TTS voices
  * Features: Voice preview, selection persistence, quota display
+ *
+ * Voice Tiers:
+ * - Standard: AI-generated voice (MeloTTS via Cloudflare)
+ * - Primo: Premium natural human voice (Piper TTS via RunPod)
+ *
+ * @version 2.0.0
+ * @updated December 13, 2025 - Simplified to Standard + Primo voices
  */
 
 class VoicePreviewModal {
   constructor() {
     this.modal = null;
-    this.selectedVoice = localStorage.getItem('tts_voice') || 'alloy';
-    
-    // Available voices with descriptions
+    // Migrate old voice selections to new system
+    const oldVoice = localStorage.getItem('tts_voice');
+    if (oldVoice && !['standard', 'primo'].includes(oldVoice)) {
+      // Migrate from old voice IDs (alloy, echo, etc.) to 'standard'
+      localStorage.setItem('tts_voice', 'standard');
+    }
+    this.selectedVoice = localStorage.getItem('tts_voice') || 'standard';
+
+    // Available voices - simplified to 2 clear options
     this.voices = [
-      { 
-        id: 'alloy', 
-        name: 'Alloy', 
-        description: 'Neutral and balanced voice',
-        icon: '🎯'
+      {
+        id: 'standard',
+        name: 'Standard Voice',
+        description: 'AI-generated voice, clear and consistent',
+        icon: '🔊',
+        tier: 'free',
+        provider: 'cloudflare-melotts'
       },
-      { 
-        id: 'echo', 
-        name: 'Echo', 
-        description: 'Clear and articulate',
-        icon: '🗣️'
-      },
-      { 
-        id: 'fable', 
-        name: 'Fable', 
-        description: 'Warm storytelling voice',
-        icon: '📚'
-      },
-      { 
-        id: 'onyx', 
-        name: 'Onyx', 
-        description: 'Deep and authoritative',
-        icon: '💎'
-      },
-      { 
-        id: 'nova', 
-        name: 'Nova', 
-        description: 'Bright and energetic',
-        icon: '✨'
-      },
-      { 
-        id: 'shimmer', 
-        name: 'Shimmer', 
-        description: 'Smooth and warm',
-        icon: '🌟'
+      {
+        id: 'primo',
+        name: 'Primo Voice',
+        description: 'Natural human voice with realistic speech',
+        icon: '✨',
+        tier: 'premium',
+        provider: 'piper-runpod',
+        badge: 'PREMIUM'
       }
     ];
     
@@ -148,26 +142,31 @@ class VoicePreviewModal {
   renderVoiceItem(voice) {
     const isSelected = this.selectedVoice === voice.id;
     const isPreviewing = this.isPlaying && this.currentPreviewVoice === voice.id;
-    
+    const isPremium = voice.tier === 'premium';
+
     return `
-      <div class="voice-item ${isSelected ? 'selected' : ''}" data-voice="${voice.id}">
+      <div class="voice-item ${isSelected ? 'selected' : ''} ${isPremium ? 'voice-premium' : ''}" data-voice="${voice.id}">
         <div class="voice-icon">${voice.icon}</div>
         <div class="voice-info">
-          <h4 class="voice-name">${voice.name}</h4>
+          <h4 class="voice-name">
+            ${voice.name}
+            ${voice.badge ? `<span class="premium-badge">${voice.badge}</span>` : ''}
+          </h4>
           <p class="voice-description">${voice.description}</p>
+          ${isPremium ? '<p class="voice-tier-note">Powered by Piper TTS</p>' : ''}
         </div>
         <div class="voice-actions">
-          <button 
-            class="preview-btn ${isPreviewing ? 'playing' : ''}" 
+          <button
+            class="preview-btn ${isPreviewing ? 'playing' : ''}"
             data-voice="${voice.id}"
-            aria-label="Preview ${voice.name} voice"
+            aria-label="Preview ${voice.name}"
           >
             ${isPreviewing ? '⏸️ Playing...' : '▶️ Preview'}
           </button>
-          <button 
-            class="select-btn ${isSelected ? 'selected' : ''}" 
+          <button
+            class="select-btn ${isSelected ? 'selected' : ''}"
             data-voice="${voice.id}"
-            aria-label="Select ${voice.name} voice"
+            aria-label="Select ${voice.name}"
           >
             ${isSelected ? '✓ Selected' : 'Select'}
           </button>

@@ -429,3 +429,113 @@
   }
 
   .voice-item {
+    flex-wrap: wrap;
+    padding: 16px;
+  }
+
+  .voice-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 26px;
+  }
+
+  .voice-actions {
+    width: 100%;
+    margin-top: 12px;
+    justify-content: flex-end;
+  }
+
+  .preview-btn,
+  .select-btn {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  .modal-footer {
+    padding: 16px 20px;
+  }
+
+  .quota-info {
+    font-size: 14px;
+  }
+
+  .voice-toast {
+    width: 90%;
+    text-align: center;
+  }
+}
+
+/* ========================================
+   PREMIUM VOICE STYLING
+   ======================================== */
+
+/* Premium voice item */
+.voice-item.voice-premium {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, rgba(245, 158, 11, 0.1) 100%);
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.voice-item.voice-premium:hover {
+  border-color: #f59e0b;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(245, 158, 11, 0.15) 100%);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+}
+
+.voice-item.voice-premium.selected {
+  border-color: #f59e0b;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.2) 100%);
+  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.25);
+}
+
+.voice-item.voice-premium.selected::before {
+  background: linear-gradient(180deg, #f59e0b, #d97706);
+}
+
+.voice-item.voice-premium .voice-icon {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+}
+
+.voice-item.voice-premium.selected .voice-icon {
+  background: linear-gradient(135deg, #fde68a 0%, #fcd34d 100%);
+}
+
+/* Premium badge */
+.premium-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  margin-left: 8px;
+  letter-spacing: 0.05em;
+  vertical-align: middle;
+  box-shadow: 0 1px 3px rgba(245, 158, 11, 0.3);
+}
+
+/* Premium tier note */
+.voice-tier-note {
+  margin: 4px 0 0 0;
+  font-size: 11px;
+  color: #b45309;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+/* Premium select button */
+.voice-item.voice-premium .select-btn {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  border-color: #f59e0b;
+}
+
+.voice-item.voice-premium .select-btn:hover {
+  background: linear-gradient(135deg, #d97706, #b45309);
+  border-color: #d97706;
+}
+
+.voice-item.voice-premium .select-btn.selected {
+  background: #10b981;
+  border-color: #10b981;
+}

@@ -16,7 +16,15 @@ if (typeof window.logger === 'undefined') {
  *
  * Provides browser-based TTS with Web Speech API fallback,
  * Cloudflare Workers AI integration, WebAudio analysis for viseme hints,
- * and optional server-side TTS proxy with voice engine selection.
+ * and optional server-side TTS proxy with voice selection.
+ *
+ * Voice Tiers:
+ * - Standard: AI-generated voice via MeloTTS (free, unlimited)
+ * - Primo: Natural human voice via Piper TTS on RunPod (premium)
+ * - Browser: Web Speech API fallback (free, offline-capable)
+ *
+ * @version 2.0.0
+ * @updated December 13, 2025 - Added Primo Voice premium TTS
  */
 
 (function (window) {
@@ -45,32 +53,73 @@ if (typeof window.logger === 'undefined') {
   const SERVER_TTS_TIMEOUT = 30000; // 30 seconds timeout for server TTS requests
   const MAX_TEXT_LENGTH = 5000; // Maximum text length for TTS
 
-  // TTS Settings - Voice Engine Selection
+  // TTS Settings - Voice Selection
   const SETTINGS_KEY = 'pmerit_tts_settings';
+
+  // Voice options - simplified to 2 clear tiers
+  const VOICE_OPTIONS = {
+    'standard': {
+      name: 'Standard Voice',
+      description: 'AI-generated voice (MeloTTS)',
+      tier: 'free',
+      apiVoice: 'alloy'  // Backend maps to MeloTTS
+    },
+    'primo': {
+      name: 'Primo Voice',
+      description: 'Natural human voice (Piper TTS)',
+      tier: 'premium',
+      apiVoice: 'primo'  // Backend routes to RunPod
+    },
+    'browser': {
+      name: 'Browser Voice',
+      description: 'Web Speech API fallback',
+      tier: 'free',
+      apiVoice: null  // Uses browser
+    }
+  };
+
+  // Legacy engine mappings for backward compatibility
   const AVAILABLE_ENGINES = {
-    'aura-2-en': 'Deepgram Aura 2 (English)',
-    'aura-1': 'Deepgram Aura 1',
-    'melotts': 'MeloTTS',
-    'aura-2-es': 'Deepgram Aura 2 (Spanish)',
-    'browser': 'Browser (Web Speech API)'
+    'standard': 'Standard Voice (MeloTTS)',
+    'primo': 'Primo Voice (Premium)',
+    'browser': 'Browser (Web Speech API)',
+    // Legacy mappings - all route to standard
+    'aura-2-en': 'Standard Voice',
+    'aura-1': 'Standard Voice',
+    'melotts': 'Standard Voice',
+    'alloy': 'Standard Voice'
   };
 
   /**
    * Get TTS settings from localStorage
+   * Migrates legacy voice engine settings to new voice system
    * @returns {Object} settings object
    */
   function getSettings() {
     try {
       const stored = localStorage.getItem(SETTINGS_KEY);
       if (stored) {
-        return JSON.parse(stored);
+        const settings = JSON.parse(stored);
+
+        // Migrate legacy voice engines to new voice system
+        if (settings.voiceEngine && !VOICE_OPTIONS[settings.voiceEngine]) {
+          // Map old engines to 'standard'
+          const legacyEngines = ['aura-2-en', 'aura-1', 'melotts', 'aura-2-es', 'alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'];
+          if (legacyEngines.includes(settings.voiceEngine)) {
+            settings.voiceEngine = 'standard';
+            saveSettings(settings);
+            logger.debug('Migrated legacy voice engine to standard');
+          }
+        }
+
+        return settings;
       }
     } catch (e) {
       console.warn('Failed to load TTS settings:', e);
     }
-    // Default settings
+    // Default settings - use standard voice
     return {
-      voiceEngine: 'aura-2-en',
+      voiceEngine: 'standard',
       useServer: true
     };
   }
@@ -285,10 +334,10 @@ if (typeof window.logger === 'undefined') {
   /**
    * Speak text via server-side TTS
    * @param {string} text - Text to speak
-   * @param {string} voiceEngine - Voice engine identifier
+   * @param {string} voiceEngine - Voice engine identifier ('standard', 'primo', or legacy)
    * @returns {Promise<void>}
    */
-  async function speakViaServer(text, voiceEngine = 'aura-2-en') {
+  async function speakViaServer(text, voiceEngine = 'standard') {
     // Prevent multiple simultaneous TTS sessions (atomic check-and-set)
     if (isSpeaking) {
       throw new Error('TTS already in progress');
@@ -296,6 +345,15 @@ if (typeof window.logger === 'undefined') {
     isSpeaking = true;
 
     const startTime = Date.now();
+
+    // Map voice engine to API voice parameter
+    let apiVoice = voiceEngine;
+    if (VOICE_OPTIONS[voiceEngine]) {
+      apiVoice = VOICE_OPTIONS[voiceEngine].apiVoice || voiceEngine;
+    } else {
+      // Legacy engine - map to standard
+      apiVoice = 'alloy';
+    }
 
     return new Promise((resolve, reject) => {
       // Timeout mechanism to prevent hung requests
@@ -313,6 +371,7 @@ if (typeof window.logger === 'undefined') {
             ts: startTime,
             textChars: text.length,
             engine: voiceEngine,
+            apiVoice: apiVoice,
             source: 'server'
           });
 
@@ -323,7 +382,7 @@ if (typeof window.logger === 'undefined') {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               text,
-              voice: voiceEngine || 'alloy'
+              voice: apiVoice  // 'primo' for premium, 'alloy' for standard
             })
           });
 
@@ -344,8 +403,16 @@ if (typeof window.logger === 'undefined') {
           const url = URL.createObjectURL(blob);
           const audio = new Audio(url);
 
+          // Log provider info from response headers
+          const provider = res.headers.get('X-TTS-Provider') || 'unknown';
+          const isPremium = res.headers.get('X-Premium') === 'true';
           const latency = Date.now() - startTime;
-          logger.debug('TTS audio received:', { latency, engine: voiceEngine });
+          logger.debug('TTS audio received:', {
+            latency,
+            engine: voiceEngine,
+            provider: provider,
+            premium: isPremium
+          });
 
           // Wait for audio to finish
           const handlePlay = () => {
@@ -544,6 +611,14 @@ if (typeof window.logger === 'undefined') {
     return speechSynthesis.getVoices();
   }
 
+  /**
+   * Get available voice options with details
+   * @returns {Object} Voice options mapping
+   */
+  function getVoiceOptions() {
+    return { ...VOICE_OPTIONS };
+  }
+
   // Export public API
   window.TTS = {
     speak,
@@ -553,6 +628,7 @@ if (typeof window.logger === 'undefined') {
     setVoiceEngine,
     getVoiceEngine,
     getAvailableEngines,
+    getVoiceOptions,
     getSettings,
     // Event names for convenience
     events: {
@@ -560,6 +636,11 @@ if (typeof window.logger === 'undefined') {
       END: 'tts:end',
       VISEME: 'tts:viseme',
       FALLBACK: 'tts:fallback'
+    },
+    // Voice tier constants
+    TIERS: {
+      FREE: 'free',
+      PREMIUM: 'premium'
     }
   };
 
