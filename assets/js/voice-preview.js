@@ -16,32 +16,71 @@ class VoicePreviewModal {
     this.modal = null;
     // Migrate old voice selections to new system
     const oldVoice = localStorage.getItem('tts_voice');
-    if (oldVoice && !['standard', 'primo'].includes(oldVoice)) {
-      // Migrate from old voice IDs (alloy, echo, etc.) to 'standard'
-      localStorage.setItem('tts_voice', 'standard');
+    const validVoices = ['standard-male', 'standard-female', 'standard-young', 'primo', 'primo-female'];
+    if (oldVoice && !validVoices.includes(oldVoice)) {
+      // Migrate from old voice IDs (alloy, echo, standard, etc.) to 'standard-male'
+      localStorage.setItem('tts_voice', 'standard-male');
     }
-    this.selectedVoice = localStorage.getItem('tts_voice') || 'standard';
+    this.selectedVoice = localStorage.getItem('tts_voice') || 'standard-male';
 
-    // Available voices - simplified to 2 clear options
+    // Available voices - Free voices with variety + Premium options
     this.voices = [
+      // FREE VOICES - Edge TTS (genuine variety)
       {
-        id: 'standard',
-        name: 'Standard Voice',
-        description: 'AI-generated voice, clear and consistent',
-        icon: '🔊',
+        id: 'standard-male',
+        name: 'Standard Male',
+        description: 'Clear male voice',
+        icon: '🎤',
         tier: 'free',
-        provider: 'cloudflare-melotts'
+        provider: 'edge-tts',
+        badge: 'FREE'
       },
+      {
+        id: 'standard-female',
+        name: 'Standard Female',
+        description: 'Clear female voice',
+        icon: '🎤',
+        tier: 'free',
+        provider: 'edge-tts',
+        badge: 'FREE'
+      },
+      {
+        id: 'standard-young',
+        name: 'Young Voice',
+        description: 'Friendly young voice (great for kids)',
+        icon: '🧒',
+        tier: 'free',
+        provider: 'edge-tts',
+        badge: 'FREE'
+      },
+      // PREMIUM VOICES - Piper TTS (subscription required)
       {
         id: 'primo',
         name: 'Primo Voice',
         description: 'Natural human voice with realistic speech',
         icon: '✨',
         tier: 'premium',
-        provider: 'piper-runpod',
-        badge: 'PREMIUM'
+        provider: 'piper-tts',
+        badge: 'PREMIUM',
+        requiresSubscription: true
+      },
+      {
+        id: 'primo-female',
+        name: 'Primo Female',
+        description: 'Natural female voice with realistic speech',
+        icon: '✨',
+        tier: 'premium',
+        provider: 'piper-tts',
+        badge: 'PREMIUM',
+        requiresSubscription: true
       }
     ];
+
+    // User subscription status (loaded from API/localStorage)
+    this.userSubscription = {
+      isPremium: false,
+      tier: 'free'
+    };
     
     // Sample text for voice preview
     this.sampleText = "Hello! I'm here to help you learn and grow. This is what my voice sounds like.";
@@ -104,9 +143,17 @@ class VoicePreviewModal {
           <!-- Body -->
           <div class="modal-body">
             <p class="modal-intro">Choose the voice you'd like to hear when I respond. Click Preview to hear each voice.</p>
-            
+
+            <!-- Free Voices Section -->
+            <div class="voice-section-header">Free Voices</div>
             <div class="voice-list">
-              ${this.voices.map(voice => this.renderVoiceItem(voice)).join('')}
+              ${this.voices.filter(v => v.tier === 'free').map(voice => this.renderVoiceItem(voice)).join('')}
+            </div>
+
+            <!-- Premium Voices Section -->
+            <div class="voice-section-header voice-section-premium">Premium Voices</div>
+            <div class="voice-list">
+              ${this.voices.filter(v => v.tier === 'premium').map(voice => this.renderVoiceItem(voice)).join('')}
             </div>
           </div>
           
@@ -143,14 +190,22 @@ class VoicePreviewModal {
     const isSelected = this.selectedVoice === voice.id;
     const isPreviewing = this.isPlaying && this.currentPreviewVoice === voice.id;
     const isPremium = voice.tier === 'premium';
+    const isFree = voice.tier === 'free';
+    const isLocked = isPremium && voice.requiresSubscription && !this.userSubscription.isPremium;
+
+    // Determine badge class
+    const badgeClass = isFree ? 'free-badge' : 'premium-badge';
 
     return `
-      <div class="voice-item ${isSelected ? 'selected' : ''} ${isPremium ? 'voice-premium' : ''}" data-voice="${voice.id}">
+      <div class="voice-item ${isSelected ? 'selected' : ''} ${isPremium ? 'voice-premium' : 'voice-free'} ${isLocked ? 'voice-locked' : ''}"
+           data-voice="${voice.id}"
+           data-tier="${voice.tier}"
+           ${isLocked ? 'data-locked="true"' : ''}>
         <div class="voice-icon">${voice.icon}</div>
         <div class="voice-info">
           <h4 class="voice-name">
             ${voice.name}
-            ${voice.badge ? `<span class="premium-badge">${voice.badge}</span>` : ''}
+            ${voice.badge ? `<span class="${badgeClass}">${voice.badge}</span>` : ''}
           </h4>
           <p class="voice-description">${voice.description}</p>
           ${isPremium ? '<p class="voice-tier-note">Powered by Piper TTS</p>' : ''}
@@ -163,13 +218,14 @@ class VoicePreviewModal {
           >
             ${isPreviewing ? '⏸️ Playing...' : '▶️ Preview'}
           </button>
-          <button
-            class="select-btn ${isSelected ? 'selected' : ''}"
-            data-voice="${voice.id}"
-            aria-label="Select ${voice.name}"
-          >
-            ${isSelected ? '✓ Selected' : 'Select'}
-          </button>
+          ${isLocked
+            ? `<button class="upgrade-btn" data-voice="${voice.id}" aria-label="Upgrade to use ${voice.name}">
+                 🔒 Upgrade
+               </button>`
+            : `<button class="select-btn ${isSelected ? 'selected' : ''}" data-voice="${voice.id}" aria-label="Select ${voice.name}">
+                 ${isSelected ? '✓ Selected' : 'Select'}
+               </button>`
+          }
         </div>
       </div>
     `;
@@ -218,13 +274,68 @@ class VoicePreviewModal {
       });
     });
 
-    // Voice item click (select on click)
+    // Upgrade buttons (for locked premium voices)
+    const upgradeButtons = this.modal.querySelectorAll('.upgrade-btn');
+    upgradeButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.showUpgradeModal();
+      });
+    });
+
+    // Voice item click (select on click, unless locked)
     const voiceItems = this.modal.querySelectorAll('.voice-item');
     voiceItems.forEach(item => {
       item.addEventListener('click', () => {
+        const isLocked = item.getAttribute('data-locked') === 'true';
+        if (isLocked) {
+          this.showUpgradeModal();
+          return;
+        }
         const voiceId = item.getAttribute('data-voice');
         this.select(voiceId);
       });
+    });
+  }
+
+  /**
+   * Show upgrade modal for premium voices
+   */
+  showUpgradeModal() {
+    // Create and show upgrade prompt
+    const upgradeHTML = `
+      <div class="upgrade-modal-overlay" id="upgradeModalOverlay">
+        <div class="upgrade-modal-content">
+          <button class="upgrade-close-btn" aria-label="Close">×</button>
+          <div class="upgrade-icon">✨</div>
+          <h3>Upgrade to Premium</h3>
+          <p>Unlock natural human voices powered by advanced AI speech synthesis.</p>
+          <ul class="upgrade-features">
+            <li>✓ Natural, human-like speech</li>
+            <li>✓ Multiple premium voice options</li>
+            <li>✓ Unlimited usage</li>
+          </ul>
+          <a href="/pricing" class="upgrade-cta-btn">View Plans</a>
+          <button class="upgrade-later-btn">Maybe Later</button>
+        </div>
+      </div>
+    `;
+
+    // Add to DOM
+    document.body.insertAdjacentHTML('beforeend', upgradeHTML);
+
+    const overlay = document.getElementById('upgradeModalOverlay');
+    const closeBtn = overlay.querySelector('.upgrade-close-btn');
+    const laterBtn = overlay.querySelector('.upgrade-later-btn');
+
+    const closeUpgrade = () => {
+      overlay.remove();
+    };
+
+    closeBtn.addEventListener('click', closeUpgrade);
+    laterBtn.addEventListener('click', closeUpgrade);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeUpgrade();
     });
   }
 
