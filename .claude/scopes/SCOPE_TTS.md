@@ -1,11 +1,11 @@
 # PMERIT SUB-SCOPE: Text-to-Speech (TTS) System
 
-**Version:** 2.1
+**Version:** 2.2
 **Created:** 2025-12-13
 **Last Updated:** 2025-12-13
-**Status:** OPERATIONAL (Premium Tier Pending)
+**Status:** OPERATIONAL (Primo Voice Backend Ready - Pod Server Start Required)
 **Phase:** Integrated with Avatar System (P5 Classroom)
-**Session:** 52
+**Session:** 53
 
 ---
 
@@ -48,16 +48,37 @@
 |------|--------|--------|-------|
 | Task 1: TTS_QUOTA_KV Binding | ✅ COMPLETE | `1251b1b` | Quota tracking working |
 | Task 2: Voice Testing | ✅ COMPLETE | `b73b58b` | MeloTTS ignores voice param |
+| Task 3a: Backend Primo Voice | ✅ COMPLETE | `0002ee9` | RunPod routing in tts.ts |
+| Task 3b: Frontend Voice UI | ✅ COMPLETE | `72dfc7b` | Simplified to Standard + Primo |
+| Task 3c: Premium CSS Styling | ✅ COMPLETE | `72dfc7b` | Gold/amber premium theme |
+| Task 3d: RunPod Secrets | ✅ COMPLETE | - | RUNPOD_API_KEY, RUNPOD_TTS_URL set |
 
-### ⚠️ Gaps Identified
+### ⚠️ Current Status
 
-| Gap | Priority | Impact | Status |
-|-----|----------|--------|--------|
-| ~~TTS_QUOTA_KV not configured~~ | ~~High~~ | ~~No usage tracking~~ | ✅ FIXED |
-| Voice selection is fake | 🟡 Medium | All 6 voices sound identical | Documented |
-| No premium voice option | 🟡 Medium | No differentiation for paying users | **TASK 3** |
-| No premium avatar (GPU) | 🟡 Medium | WebGL only, no photorealistic | **TASK 3** |
-| Theme inconsistency | 🟢 Low | Modal doesn't match platform CSS | **TASK 4** |
+| Item | Status | Notes |
+|------|--------|-------|
+| ~~TTS_QUOTA_KV not configured~~ | ✅ FIXED | Quota tracking working |
+| ~~Voice selection is fake~~ | ✅ FIXED | Simplified to 2 real options |
+| ~~No premium voice option~~ | ✅ FIXED | Primo Voice implemented |
+| RunPod pod running | ✅ YES | Pod `xfdsuii2ig7rsl` active |
+| TTS server on pod | ⚠️ NEEDS START | Server not auto-starting on pod |
+| Theme consistency | ✅ DONE | Premium gold/amber styling added |
+
+### 🔧 Action Required: Start TTS Server on RunPod
+
+The RunPod pod `xfdsuii2ig7rsl` is running but the TTS server needs to be manually started:
+
+```bash
+# SSH into pod via RunPod console or:
+ssh root@xfdsuii2ig7rsl.runpod.net
+
+# Start TTS server
+curl -s https://raw.githubusercontent.com/peoplemerit/pmerit-ai-platform/main/scripts/runpod-tts-server.py > /workspace/tts_server.py
+pip install fastapi uvicorn piper-tts
+python3 /workspace/tts_server.py
+```
+
+Or configure RunPod to auto-start the server on pod boot.
 
 ---
 
@@ -1151,25 +1172,28 @@ curl https://YOUR_RUNPOD_ENDPOINT/health
 - [x] Document voice comparison results
 - [x] Confirm MeloTTS ignores voice parameter
 
-### Phase 3: RunPod Premium Integration ⏳ IN PROGRESS
-- [ ] Create RunPod account
-- [ ] Add payment method
-- [ ] Generate API key
-- [ ] Create serverless endpoint with Piper TTS
-- [ ] Add RUNPOD_API_KEY secret to backend
-- [ ] Add RUNPOD_ENDPOINT_ID secret to backend
-- [ ] Update backend routes for Primo voice
-- [ ] Update frontend voice modal
-- [ ] Test premium voice end-to-end
-- [ ] Implement subscription check
+### Phase 3: RunPod Premium Integration ✅ MOSTLY COMPLETE
+- [x] Create RunPod account
+- [x] Add payment method ($70 credit loaded)
+- [x] Generate API key (`rpa_66FMXVRK9...`)
+- [x] Create pod (pmerit-tts-v2, ID: `xfdsuii2ig7rsl`)
+- [x] Add RUNPOD_API_KEY secret to backend
+- [x] Add RUNPOD_TTS_URL secret to backend
+- [x] Update backend routes for Primo voice (`tts.ts`)
+- [x] Update frontend voice modal (`voice-preview.js`)
+- [x] Simplify to 2 voices (Standard + Primo)
+- [x] Add voice migration for legacy engines
+- [ ] **Start TTS server on RunPod pod** ⚠️ MANUAL ACTION
+- [ ] Test Primo voice end-to-end
+- [ ] Implement subscription check (future)
 
-### Phase 4: Theme Alignment ⏳ PENDING
-- [ ] Create voice-modal.css
-- [ ] Apply platform CSS variables
-- [ ] Add premium voice styling
-- [ ] Add locked voice styling
-- [ ] Test dark mode
-- [ ] Test light mode
+### Phase 4: Theme Alignment ✅ COMPLETE
+- [x] Update voice-preview.css
+- [x] Add premium voice styling (gold/amber gradient)
+- [x] Add premium badge styling
+- [x] Add tier note styling
+- [x] Fix mobile responsive media query
+- [x] Test on platform
 
 ### Phase 5: GPU Avatar (Future)
 - [ ] Add MetaHuman to RunPod pod
@@ -1190,6 +1214,10 @@ curl https://YOUR_RUNPOD_ENDPOINT/health
 | 52 | 2025-12-13 | Task 1 COMPLETE: TTS_QUOTA_KV binding |
 | 52 | 2025-12-13 | Task 2 COMPLETE: Voice testing documented |
 | 52 | 2025-12-13 | Updated to v2.1: RunPod premium architecture |
+| 53 | 2025-12-13 | Backend Primo Voice routing added (`0002ee9`) |
+| 53 | 2025-12-13 | Frontend simplified to 2 voices (`72dfc7b`) |
+| 53 | 2025-12-13 | Premium CSS styling added |
+| 53 | 2025-12-13 | Updated to v2.2: Implementation complete (pending pod server start) |
 
 ---
 
@@ -1227,5 +1255,45 @@ const response = await ai.run(TTS_CONFIG.CF_TTS_MODEL, {
 
 ---
 
-*Last Updated: 2025-12-13 by Claude Web (Session 52)*
-*Version: 2.1 - RunPod Premium Architecture Added*
+---
+
+## 14. IMPLEMENTATION SUMMARY (Session 53)
+
+### What Was Implemented
+
+1. **Backend (pmerit-api-worker):**
+   - `src/routes/tts.ts`: Added `generatePrimoTTS()` function and `isPrimoVoice()` check
+   - Routes `voice: "primo"` to RunPod Piper TTS endpoint
+   - Falls back to MeloTTS if RunPod unavailable
+   - Secrets configured: `RUNPOD_API_KEY`, `RUNPOD_TTS_URL`
+
+2. **Frontend (pmerit-ai-platform):**
+   - `assets/js/voice-preview.js`: Simplified from 6 fake voices to 2 real options
+   - `assets/js/tts.js`: Added `VOICE_OPTIONS` mapping and API voice routing
+   - `assets/css/voice-preview.css`: Added premium gold/amber styling
+
+3. **Voice Options:**
+   | Voice | API Value | Provider | Tier |
+   |-------|-----------|----------|------|
+   | Standard | `alloy` | MeloTTS (Cloudflare) | Free |
+   | Primo | `primo` | Piper TTS (RunPod) | Premium |
+
+4. **RunPod Infrastructure:**
+   - Pod: `xfdsuii2ig7rsl` (pmerit-tts-v2)
+   - GPU: RTX 4090 ($0.44/hr)
+   - Status: Running but TTS server not started
+   - Script: `scripts/runpod-tts-server.py`
+
+### What's Working
+- Standard Voice: ✅ MeloTTS generating audio correctly
+- Voice modal: ✅ Shows 2 options with premium styling
+- Voice migration: ✅ Legacy voice IDs map to "standard"
+- Backend routing: ✅ Detects "primo" and routes to RunPod
+
+### What's Pending
+- **Start TTS server on RunPod pod** - Manual action required
+- Test Primo voice end-to-end after server starts
+- Consider pod auto-start script for production
+
+*Last Updated: 2025-12-13 by Claude Code (Session 53)*
+*Version: 2.2 - Primo Voice Implementation Complete (Pending Pod Server Start)*
