@@ -59,7 +59,7 @@ PIPER_VOICES = {
 }
 
 # Piper executable path
-PIPER_PATH = '/workspace/piper/piper'
+PIPER_PATH = '/workspace/piper/piper/piper'
 
 # ===== MODELS =====
 
