@@ -1,11 +1,11 @@
 # PMERIT SUB-SCOPE: Text-to-Speech (TTS) System
 
-**Version:** 2.2
+**Version:** 2.3
 **Created:** 2025-12-13
-**Last Updated:** 2025-12-13
-**Status:** OPERATIONAL (Primo Voice Backend Ready - Pod Server Start Required)
+**Last Updated:** 2025-12-14
+**Status:** OPERATIONAL (All 5 Voices Working - RunPod Pod On-Demand)
 **Phase:** Integrated with Avatar System (P5 Classroom)
-**Session:** 53
+**Session:** 56
 
 ---
 
@@ -1295,5 +1295,107 @@ const response = await ai.run(TTS_CONFIG.CF_TTS_MODEL, {
 - Test Primo voice end-to-end after server starts
 - Consider pod auto-start script for production
 
-*Last Updated: 2025-12-13 by Claude Code (Session 53)*
-*Version: 2.2 - Primo Voice Implementation Complete (Pending Pod Server Start)*
+*Last Updated: 2025-12-14 by Claude Code (Session 56)*
+*Version: 2.3 - All 5 Voices Working, Dark Theme Complete*
+
+---
+
+## 15. SESSION 55-56 UPDATE: VOICE SYSTEM FULLY OPERATIONAL
+
+### What Was Completed (Session 55-56)
+
+1. **RunPod Deployment:**
+   - Deployed `tts_server.py` via GitHub clone method
+   - Fixed Piper path: `/workspace/piper/piper/piper` (not `/workspace/piper/piper`)
+   - Set executable permissions: `chmod +x /workspace/piper/piper/piper`
+   - All 5 voices tested and working
+
+2. **Backend Fixes:**
+   - Added `RUNPOD_TTS_URL` to `wrangler.toml`
+   - Fixed `checkPremiumSubscription()` - moved `TESTING_MODE` check to top
+   - Deployed to Cloudflare Workers
+
+3. **Frontend Fixes:**
+   - Fixed `tts-client.js` `setVoice()` validation to accept new voice IDs
+   - Added voice migration for legacy voices → `standard-male`
+   - Updated browser voice fallback mapping
+
+4. **Dark Theme Support:**
+   - Added comprehensive dark mode CSS to `voice-preview.css`
+   - Modal container, body, footer themed
+   - Voice items, buttons, premium styling themed
+   - Header changed to subtle dark gradient (not bright blue)
+
+### Current Voice Configuration
+
+| Voice | Backend Value | Engine | Provider | Tier |
+|-------|---------------|--------|----------|------|
+| Standard Male | `standard-male` | Edge TTS | RunPod | Free |
+| Standard Female | `standard-female` | Edge TTS | RunPod | Free |
+| Young Voice | `standard-young` | Edge TTS | RunPod | Free |
+| Primo Voice | `primo` | Piper TTS | RunPod | Premium |
+| Primo Female | `primo-female` | Piper TTS | RunPod | Premium |
+
+### RunPod Pod Status
+
+| Item | Value |
+|------|-------|
+| Pod ID | `xfdsuii2ig7rsl` |
+| Pod Name | `pmerit-tts-v2` |
+| GPU | RTX 4090 |
+| Cost | $0.26/hr |
+| Status | **OFF** (start on-demand) |
+| Proxy URL | `https://xfdsuii2ig7rsl-8000.proxy.runpod.net` |
+
+### Startup Commands for RunPod
+
+When pod is started:
+```bash
+cd /workspace
+git clone https://github.com/peoplemerit/pmerit-ai-platform.git repo
+cp repo/scripts/runpod/tts_server.py .
+pip install edge-tts
+python3 tts_server.py
+```
+
+---
+
+## 16. REMAINING WORK (Future Sessions)
+
+### Priority 1: Premium Subscription Wiring
+
+Currently `TESTING_MODE = true` allows all users to access premium voices. When subscription system is ready:
+
+1. Set `TESTING_MODE = false` in `tts.ts`
+2. Implement actual `checkPremiumSubscription()`:
+   - Verify JWT token from auth header
+   - Check user's `subscription_tier` in database
+   - Return `isPremium: true/false` based on tier
+
+**Location:** `pmerit-api-worker/src/routes/tts.ts:173-220`
+
+### Priority 2: Classroom/Human Avatar Integration
+
+TTS voices need wiring into:
+
+1. **Classroom Tutor Avatar (`portal/classroom.html`):**
+   - `AvatarManager.js` lip-sync with TTS audio
+   - Voice selection should persist per user
+   - Premium voices for premium users in classroom
+
+2. **Human Avatar (Future):**
+   - MetaHuman avatar on RunPod with Pixel Streaming
+   - Lip sync with Piper TTS audio
+   - Real-time WebRTC streaming
+
+**Key Files:**
+- `assets/js/AvatarManager.js`
+- `assets/js/lip-sync-controller.js`
+- `portal/classroom.html`
+
+### Priority 3: Auto-Start TTS Server
+
+Currently requires manual server start when pod boots. Options:
+1. Add startup script to RunPod pod configuration
+2. Use RunPod Serverless instead of Pods
+3. Create GitHub webhook to auto-deploy on push
