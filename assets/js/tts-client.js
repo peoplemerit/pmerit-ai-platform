@@ -14,7 +14,14 @@ class TTSClient {
     this.cache = new Map();
     
     // Voice preference (persisted to localStorage)
-    this.currentVoice = localStorage.getItem('tts_voice') || 'alloy';
+    // Migrate legacy voices to new default
+    let savedVoice = localStorage.getItem('tts_voice');
+    const legacyVoices = ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'];
+    if (!savedVoice || legacyVoices.includes(savedVoice)) {
+      savedVoice = 'standard-male';
+      localStorage.setItem('tts_voice', savedVoice);
+    }
+    this.currentVoice = savedVoice;
     
     // Fallback mode tracking
     this.fallbackMode = false;
@@ -251,6 +258,13 @@ class TTSClient {
 
     // Map TTS voice names to browser voice preferences
     const voiceMap = {
+      // New voices
+      'standard-male': ['Google US English', 'Microsoft David', 'Alex'],
+      'standard-female': ['Google US English Female', 'Microsoft Zira', 'Samantha'],
+      'standard-young': ['Google US English Female', 'Microsoft Zira', 'Samantha'],
+      'primo': ['Google US English', 'Microsoft David', 'Alex'],
+      'primo-female': ['Google US English Female', 'Microsoft Zira', 'Samantha'],
+      // Legacy voices (backward compatibility)
       'alloy': ['Google US English', 'Microsoft David', 'Alex'],
       'echo': ['Google UK English Male', 'Microsoft Mark', 'Daniel'],
       'fable': ['Google US English', 'Microsoft David', 'Alex'],
@@ -341,14 +355,21 @@ class TTSClient {
 
   /**
    * Change voice preference
-   * @param {string} voice - Voice ID (alloy, echo, fable, onyx, nova, shimmer)
+   * @param {string} voice - Voice ID (standard-male, standard-female, standard-young, primo, primo-female, or legacy)
    */
   setVoice(voice) {
-    const validVoices = ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'];
-    
+    // New voices + legacy voices for backward compatibility
+    const validVoices = [
+      // New voices (Session 54+)
+      'standard-male', 'standard-female', 'standard-young',
+      'primo', 'primo-female',
+      // Legacy voices (map to standard-male on backend)
+      'alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer', 'standard'
+    ];
+
     if (!validVoices.includes(voice)) {
-      console.error('[TTS Client] Invalid voice:', voice);
-      return;
+      console.warn('[TTS Client] Unknown voice:', voice, '- using standard-male');
+      voice = 'standard-male';
     }
 
     this.currentVoice = voice;
