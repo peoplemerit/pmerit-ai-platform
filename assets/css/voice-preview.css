@@ -812,6 +812,12 @@
   color: var(--text-secondary, #B0B0B0);
 }
 
+/* Modal header - subtle dark gradient instead of bright blue */
+[data-theme="dark"] .voice-preview-modal .modal-header {
+  background: linear-gradient(135deg, #2a3a4a 0%, #1e2a3a 100%);
+  border-bottom: 1px solid var(--border-color, #333333);
+}
+
 /* Voice items */
 [data-theme="dark"] .voice-item {
   background: var(--bg-secondary, #1E1E1E);
