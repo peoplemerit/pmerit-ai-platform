@@ -414,7 +414,7 @@
 }
 
 [data-theme="dark"] .language-modal-header {
-  background: linear-gradient(135deg, #1a2332 0%, #0f1419 100%);
+  background: #1a2332;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 

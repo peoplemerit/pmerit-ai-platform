@@ -41,7 +41,8 @@
     </div>
   `;
 
-  // CSS styles for the modal
+  // CSS styles for the modal - Matches PMERIT platform theme
+  // Version: 2.1 - Platform Theme Alignment (Session 56)
   const modalCSS = `
     .language-modal-overlay {
       position: fixed;
@@ -49,76 +50,89 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.6);
       z-index: 10000;
       display: flex;
       align-items: center;
       justify-content: center;
     }
+
+    /* === LIGHT MODE (Default) === */
     .language-modal {
-      background: #1a1a2e;
+      background: #FFFFFF;
       border-radius: 12px;
       width: 90%;
       max-width: 600px;
       max-height: 80vh;
       display: flex;
       flex-direction: column;
-      border: 1px solid #3a3a5a;
+      border: 1px solid #E5E7EB;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     }
     .language-modal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 16px 20px;
-      border-bottom: 1px solid #3a3a5a;
+      border-bottom: 1px solid #E5E7EB;
+      background: linear-gradient(135deg, #375b8d 0%, #4AA4B9 100%);
+      border-radius: 12px 12px 0 0;
     }
     .language-modal-header h3 {
       margin: 0;
-      color: #ffffff;
+      color: #FFFFFF;
       font-size: 18px;
+      font-weight: 600;
     }
     .language-modal-close {
-      background: none;
+      background: rgba(255, 255, 255, 0.2);
       border: none;
-      color: #ffffff;
-      font-size: 28px;
+      color: #FFFFFF;
+      font-size: 24px;
       cursor: pointer;
-      padding: 0;
+      padding: 4px 10px;
       line-height: 1;
+      border-radius: 50%;
+      transition: background 0.2s;
     }
     .language-modal-close:hover {
-      color: #4a9eff;
+      background: rgba(255, 255, 255, 0.3);
     }
     .language-modal-search {
       padding: 16px 20px;
-      border-bottom: 1px solid #3a3a5a;
+      border-bottom: 1px solid #E5E7EB;
+      background: #F8F9FA;
     }
     .language-modal-search input {
       width: 100%;
       padding: 12px 16px;
-      border: 1px solid #3a3a5a;
-      border-radius: 8px;
-      background: #0d0d1a;
-      color: #ffffff;
+      border: 1px solid #E5E7EB;
+      border-radius: 24px;
+      background: #FFFFFF;
+      color: #2C2C2C;
       font-size: 16px;
     }
     .language-modal-search input:focus {
       outline: none;
-      border-color: #4a9eff;
+      border-color: #4AA4B9;
+      box-shadow: 0 0 0 3px rgba(74, 164, 185, 0.2);
     }
     .language-modal-search input::placeholder {
-      color: #888;
+      color: #9CA3AF;
     }
     .language-modal-content {
       padding: 16px 20px;
       overflow-y: auto;
       flex: 1;
+      background: #FFFFFF;
     }
     .language-section h4 {
-      color: #4a9eff;
+      color: #2A5B8C;
       margin: 0 0 12px 0;
-      font-size: 14px;
+      font-size: 12px;
+      font-weight: 600;
       text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
     .language-section {
       margin-bottom: 24px;
@@ -133,21 +147,23 @@
       align-items: center;
       gap: 8px;
       padding: 10px 12px;
-      background: #252540;
+      background: #F8F9FA;
       border-radius: 8px;
       cursor: pointer;
-      transition: background 0.2s;
-      color: #ffffff;
-      border: 1px solid transparent;
+      transition: all 0.2s;
+      color: #2C2C2C;
+      border: 1px solid #E5E7EB;
     }
     .language-item:hover {
-      background: #3a3a5a;
-      border-color: #4a9eff;
+      background: #F0F9FA;
+      border-color: #4AA4B9;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }
     .language-item.active {
-      background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
-      border-color: #14b8a6;
-      color: #ffffff;
+      background: rgba(74, 164, 185, 0.15);
+      border-color: #4AA4B9;
+      color: #2C2C2C;
       position: relative;
     }
     .language-item.active::before {
@@ -157,11 +173,10 @@
       right: 6px;
       font-size: 12px;
       font-weight: bold;
-      color: #ffffff;
+      color: #4AA4B9;
     }
     .language-item.active:hover {
-      background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
-      border-color: #0d9488;
+      background: rgba(74, 164, 185, 0.25);
     }
     .language-item .region {
       font-size: 18px;
@@ -174,14 +189,70 @@
     }
     .language-item.offline::after {
       content: '★';
-      color: #ffd700;
+      color: #D4A853;
       margin-left: auto;
     }
     .no-results {
-      color: #888;
+      color: #6B7280;
       text-align: center;
       padding: 20px;
     }
+
+    /* === DARK MODE === */
+    [data-theme="dark"] .language-modal {
+      background: #141820;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    [data-theme="dark"] .language-modal-header {
+      background: #1a2332;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    [data-theme="dark"] .language-modal-search {
+      background: #141820;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    [data-theme="dark"] .language-modal-search input {
+      background: #1a2332;
+      border-color: rgba(255, 255, 255, 0.15);
+      color: #FFFFFF;
+    }
+    [data-theme="dark"] .language-modal-search input:focus {
+      border-color: #4AA4B9;
+      box-shadow: 0 0 0 3px rgba(74, 164, 185, 0.2);
+    }
+    [data-theme="dark"] .language-modal-search input::placeholder {
+      color: #6B7280;
+    }
+    [data-theme="dark"] .language-modal-content {
+      background: #141820;
+    }
+    [data-theme="dark"] .language-section h4 {
+      color: #D4A853;
+    }
+    [data-theme="dark"] .language-item {
+      background: #1a2332;
+      border-color: rgba(255, 255, 255, 0.1);
+      color: #E5E7EB;
+    }
+    [data-theme="dark"] .language-item:hover {
+      background: #242d3d;
+      border-color: #4AA4B9;
+    }
+    [data-theme="dark"] .language-item.active {
+      background: #1e4a5c;
+      border-color: #4AA4B9;
+      color: #FFFFFF;
+    }
+    [data-theme="dark"] .language-item.active::before {
+      color: #4AA4B9;
+    }
+    [data-theme="dark"] .language-item.offline::after {
+      color: #D4A853;
+    }
+    [data-theme="dark"] .no-results {
+      color: #6B7280;
+    }
+
     /* Loading overlay styles */
     .language-loading-overlay {
       position: absolute;
@@ -189,7 +260,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(13, 13, 26, 0.95);
+      background: rgba(255, 255, 255, 0.95);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -197,35 +268,52 @@
       border-radius: 12px;
       z-index: 10;
     }
+    [data-theme="dark"] .language-loading-overlay {
+      background: rgba(20, 24, 32, 0.95);
+    }
     .language-loading-spinner {
       width: 48px;
       height: 48px;
-      border: 4px solid #3a3a5a;
-      border-top-color: #4a9eff;
+      border: 4px solid #E5E7EB;
+      border-top-color: #4AA4B9;
       border-radius: 50%;
       animation: spin 1s linear infinite;
+    }
+    [data-theme="dark"] .language-loading-spinner {
+      border-color: rgba(255, 255, 255, 0.2);
+      border-top-color: #4AA4B9;
     }
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
     .language-loading-text {
-      color: #ffffff;
+      color: #2C2C2C;
       margin-top: 16px;
       font-size: 14px;
     }
+    [data-theme="dark"] .language-loading-text {
+      color: #FFFFFF;
+    }
+
     /* Error message styles */
     .language-error-message {
       position: absolute;
       bottom: 16px;
       left: 16px;
       right: 16px;
-      background: #7f1d1d;
-      color: #fca5a5;
+      background: #FEE2E2;
+      color: #DC2626;
       padding: 12px 16px;
       border-radius: 8px;
       font-size: 14px;
       text-align: center;
       z-index: 11;
+      border: 1px solid #FECACA;
+    }
+    [data-theme="dark"] .language-error-message {
+      background: #7f1d1d;
+      color: #fca5a5;
+      border-color: #991b1b;
     }
     .language-error-message p {
       margin: 0;
