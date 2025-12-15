@@ -778,3 +778,224 @@
     font-size: 20px;
   }
 }
+
+/* ========================================
+   DARK MODE OVERRIDES
+   ======================================== */
+
+/* Modal container */
+[data-theme="dark"] .voice-preview-modal .modal-content {
+  background: var(--bg-elevated, #252525);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Modal body */
+[data-theme="dark"] .voice-preview-modal .modal-body {
+  background: var(--bg-elevated, #252525);
+}
+
+/* Scrollbar in dark mode */
+[data-theme="dark"] .voice-preview-modal .modal-body::-webkit-scrollbar-track {
+  background: var(--bg-secondary, #1E1E1E);
+}
+
+[data-theme="dark"] .voice-preview-modal .modal-body::-webkit-scrollbar-thumb {
+  background: var(--border-color-medium, #404040);
+}
+
+[data-theme="dark"] .voice-preview-modal .modal-body::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted, #8A8A8A);
+}
+
+/* Modal intro text */
+[data-theme="dark"] .voice-preview-modal .modal-intro {
+  color: var(--text-secondary, #B0B0B0);
+}
+
+/* Voice items */
+[data-theme="dark"] .voice-item {
+  background: var(--bg-secondary, #1E1E1E);
+  border-color: var(--border-color, #333333);
+}
+
+[data-theme="dark"] .voice-item:hover {
+  background: var(--bg-elevated, #252525);
+  border-color: var(--interactive-primary, #598bca);
+  box-shadow: 0 4px 12px rgba(89, 139, 202, 0.2);
+}
+
+[data-theme="dark"] .voice-item.selected {
+  background: rgba(89, 139, 202, 0.15);
+  border-color: var(--interactive-primary, #598bca);
+  box-shadow: 0 4px 12px rgba(89, 139, 202, 0.25);
+}
+
+[data-theme="dark"] .voice-item.selected::before {
+  background: var(--interactive-primary, #598bca);
+}
+
+/* Voice icon */
+[data-theme="dark"] .voice-icon {
+  background: linear-gradient(135deg, var(--bg-secondary, #1E1E1E) 0%, var(--border-color, #333333) 100%);
+}
+
+[data-theme="dark"] .voice-item.selected .voice-icon {
+  background: linear-gradient(135deg, rgba(89, 139, 202, 0.2) 0%, rgba(89, 139, 202, 0.3) 100%);
+}
+
+/* Voice name and description */
+[data-theme="dark"] .voice-name {
+  color: var(--text-primary, #E9E9E9);
+}
+
+[data-theme="dark"] .voice-description {
+  color: var(--text-secondary, #B0B0B0);
+}
+
+[data-theme="dark"] .voice-item.selected .voice-name {
+  color: var(--interactive-primary, #598bca);
+}
+
+/* Action buttons */
+[data-theme="dark"] .preview-btn {
+  background: var(--bg-secondary, #1E1E1E);
+  border-color: var(--border-color, #333333);
+  color: var(--text-primary, #E9E9E9);
+}
+
+[data-theme="dark"] .preview-btn:hover {
+  background: var(--border-color, #333333);
+  border-color: var(--border-color-medium, #404040);
+}
+
+[data-theme="dark"] .preview-btn.playing {
+  background: rgba(251, 191, 36, 0.15);
+  border-color: #fbbf24;
+  color: #fbbf24;
+}
+
+[data-theme="dark"] .select-btn {
+  background: var(--interactive-primary, #598bca);
+  border-color: var(--interactive-primary, #598bca);
+  color: white;
+}
+
+[data-theme="dark"] .select-btn:hover {
+  background: var(--interactive-primary-hover, #6a9bd8);
+  border-color: var(--interactive-primary-hover, #6a9bd8);
+}
+
+/* Modal footer */
+[data-theme="dark"] .voice-preview-modal .modal-footer {
+  background: var(--bg-secondary, #1E1E1E);
+  border-color: var(--border-color, #333333);
+}
+
+[data-theme="dark"] .quota-info {
+  color: var(--text-primary, #E9E9E9);
+}
+
+[data-theme="dark"] .quota-value {
+  color: var(--interactive-primary, #598bca);
+}
+
+[data-theme="dark"] .quota-note {
+  color: var(--text-secondary, #B0B0B0);
+}
+
+/* Toast notifications */
+[data-theme="dark"] .voice-toast {
+  background: var(--bg-elevated, #252525);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .voice-toast-success {
+  color: var(--color-success, #4CAF7A);
+}
+
+[data-theme="dark"] .voice-toast-error {
+  color: var(--color-error, #FF5252);
+}
+
+/* Section headers */
+[data-theme="dark"] .voice-section-header {
+  color: var(--text-muted, #8A8A8A);
+  border-color: var(--border-color-light, #2A2A2A);
+}
+
+/* Premium voice styling in dark mode */
+[data-theme="dark"] .voice-item.voice-premium {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(245, 158, 11, 0.12) 100%);
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+[data-theme="dark"] .voice-item.voice-premium:hover {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0%, rgba(245, 158, 11, 0.18) 100%);
+  border-color: #f59e0b;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
+}
+
+[data-theme="dark"] .voice-item.voice-premium.selected {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(245, 158, 11, 0.22) 100%);
+  border-color: #f59e0b;
+}
+
+[data-theme="dark"] .voice-item.voice-premium .voice-icon {
+  background: linear-gradient(135deg, rgba(254, 243, 199, 0.15) 0%, rgba(253, 230, 138, 0.2) 100%);
+}
+
+[data-theme="dark"] .voice-item.voice-premium.selected .voice-icon {
+  background: linear-gradient(135deg, rgba(253, 230, 138, 0.2) 0%, rgba(252, 211, 77, 0.25) 100%);
+}
+
+[data-theme="dark"] .voice-item.voice-premium .voice-name {
+  color: #fbbf24;
+}
+
+[data-theme="dark"] .voice-item.voice-premium.selected .voice-name {
+  color: #fcd34d;
+}
+
+/* Premium badge */
+[data-theme="dark"] .premium-badge {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
+}
+
+/* Upgrade button */
+[data-theme="dark"] .upgrade-btn {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.25));
+  border-color: rgba(245, 158, 11, 0.5);
+  color: #fbbf24;
+}
+
+[data-theme="dark"] .upgrade-btn:hover {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(217, 119, 6, 0.35));
+  border-color: #f59e0b;
+}
+
+/* Upgrade modal */
+[data-theme="dark"] .upgrade-modal-content {
+  background: var(--bg-elevated, #252525);
+}
+
+[data-theme="dark"] .upgrade-modal-content h3 {
+  color: var(--text-primary, #E9E9E9);
+}
+
+[data-theme="dark"] .upgrade-modal-content p {
+  color: var(--text-secondary, #B0B0B0);
+}
+
+[data-theme="dark"] .upgrade-features li {
+  color: var(--text-primary, #E9E9E9);
+  border-color: var(--border-color-light, #2A2A2A);
+}
+
+[data-theme="dark"] .upgrade-later-btn {
+  color: var(--text-secondary, #B0B0B0);
+}
+
+[data-theme="dark"] .upgrade-later-btn:hover {
+  color: var(--text-primary, #E9E9E9);
+}
