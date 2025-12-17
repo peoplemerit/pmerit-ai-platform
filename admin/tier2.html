@@ -618,6 +618,17 @@
       min-width: auto;
     }
 
+    .provider-badge {
+      background: var(--color-secondary);
+      color: white;
+      padding: 2px 8px;
+      border-radius: var(--border-radius-sm);
+      font-size: var(--text-xs);
+      font-weight: var(--font-semibold);
+      margin-left: var(--space-2);
+      text-transform: capitalize;
+    }
+
     @media (max-width: 1024px) {
       body {
         flex-direction: column;
@@ -1214,6 +1225,119 @@
     </div>
   </div>
 
+  <!-- Lessons Panel Modal (shows all lessons for a module) -->
+  <div class="modal-overlay" id="lessons-panel-modal">
+    <div class="modal" style="max-width: 800px;">
+      <div class="modal-header">
+        <h2 class="modal-title">
+          <span id="lessons-panel-module-name">Module</span> - Lessons
+        </h2>
+        <button class="modal-close" onclick="AdminLessons.closePanel()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modules-header">
+          <span id="lessons-count">0 lessons</span>
+          <button class="btn btn-primary btn-sm" onclick="AdminLessons.openCreateModal()">
+            <i class="fas fa-plus"></i>
+            Add Lesson
+          </button>
+        </div>
+        <div id="lessons-list-container">
+          <div class="empty-state">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading lessons...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lesson Editor Modal -->
+  <div class="modal-overlay" id="lesson-modal">
+    <div class="modal" style="max-width: 600px;">
+      <div class="modal-header">
+        <h2 class="modal-title" id="lesson-modal-title">Create New Lesson</h2>
+        <button class="modal-close" onclick="AdminLessons.closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="lesson-form">
+          <input type="hidden" id="lesson-id">
+          <input type="hidden" id="lesson-module-id">
+
+          <div class="form-group">
+            <label class="form-label">Lesson Title *</label>
+            <input type="text" class="form-input" id="lesson-title" required placeholder="e.g., Introduction to Variables">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">URL Slug</label>
+            <input type="text" class="form-input" id="lesson-slug" placeholder="Auto-generated from title">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <textarea class="form-textarea" id="lesson-description" placeholder="Brief description of the lesson..."></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Content Type *</label>
+              <select class="form-select" id="lesson-content-type" required>
+                <option value="video">Video</option>
+                <option value="article">Article</option>
+                <option value="quiz">Quiz</option>
+                <option value="assignment">Assignment</option>
+                <option value="external">External Resource</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Duration (minutes)</label>
+              <input type="number" class="form-input" id="lesson-duration" placeholder="e.g., 15" min="1">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Content URL</label>
+            <input type="url" class="form-input" id="lesson-content-url" placeholder="https://freecodecamp.org/... or video URL">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">External Provider</label>
+            <select class="form-select" id="lesson-external-provider">
+              <option value="">None (Internal)</option>
+              <option value="freecodecamp">freeCodeCamp</option>
+              <option value="coursera">Coursera</option>
+              <option value="youtube">YouTube</option>
+              <option value="udemy">Udemy</option>
+              <option value="edx">edX</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Sequence Order</label>
+              <input type="number" class="form-input" id="lesson-order" placeholder="Auto" min="1">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Options</label>
+              <div style="display: flex; flex-direction: column; gap: var(--space-2); padding-top: var(--space-2);">
+                <label><input type="checkbox" id="lesson-preview"> Free Preview</label>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="AdminLessons.closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="AdminLessons.saveLesson()" id="save-lesson-btn">
+          <i class="fas fa-save"></i>
+          Save Lesson
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script src="../assets/js/main.js"></script>
   <script>
     // Tab switching functionality
@@ -1600,6 +1724,9 @@
                     ${!mod.is_required ? ' • Optional' : ''}
                   </div>
                 </div>
+                <button class="btn btn-primary btn-sm btn-icon" onclick="AdminLessons.openPanel('${mod.module_id}', '${this.escapeHtml(mod.title)}')" title="Manage Lessons">
+                  <i class="fas fa-list-ol"></i>
+                </button>
                 <button class="btn btn-secondary btn-sm btn-icon" onclick="AdminModules.editModule('${mod.module_id}')" title="Edit">
                   <i class="fas fa-edit"></i>
                 </button>
@@ -1734,6 +1861,235 @@
       }
     };
 
+    // Admin Lessons Management
+    const AdminLessons = {
+      API_BASE: 'https://pmerit-api-worker.peoplemerit.workers.dev/api/v1',
+      lessons: [],
+      currentModuleId: null,
+      currentModuleName: null,
+      editingLessonId: null,
+
+      getAuthHeaders() {
+        const token = localStorage.getItem('pmerit_auth_token');
+        return {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        };
+      },
+
+      async openPanel(moduleId, moduleName) {
+        this.currentModuleId = moduleId;
+        this.currentModuleName = moduleName;
+        document.getElementById('lessons-panel-module-name').textContent = moduleName;
+        document.getElementById('lessons-panel-modal').classList.add('active');
+        await this.loadLessons();
+      },
+
+      closePanel() {
+        document.getElementById('lessons-panel-modal').classList.remove('active');
+        this.currentModuleId = null;
+        this.currentModuleName = null;
+      },
+
+      async loadLessons() {
+        const container = document.getElementById('lessons-list-container');
+        container.innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-spin"></i><p>Loading lessons...</p></div>';
+
+        try {
+          const response = await fetch(`${this.API_BASE}/admin/lessons?moduleId=${this.currentModuleId}`, {
+            headers: this.getAuthHeaders()
+          });
+          const data = await response.json();
+          this.lessons = data.lessons || [];
+
+          document.getElementById('lessons-count').textContent = `${this.lessons.length} lesson${this.lessons.length !== 1 ? 's' : ''}`;
+
+          if (this.lessons.length === 0) {
+            container.innerHTML = `
+              <div class="empty-state">
+                <i class="fas fa-list-ol"></i>
+                <p>No lessons yet. Add your first lesson!</p>
+              </div>`;
+            return;
+          }
+
+          container.innerHTML = '<ul class="modules-list" id="lessons-list"></ul>';
+          const list = document.getElementById('lessons-list');
+          this.lessons.forEach((lesson, index) => {
+            const typeIcon = this.getContentTypeIcon(lesson.content_type);
+            const providerBadge = lesson.external_provider
+              ? `<span class="provider-badge">${lesson.external_provider}</span>`
+              : '';
+            list.innerHTML += `
+              <li class="module-item">
+                <div class="module-number">${lesson.sequence_order || index + 1}</div>
+                <div class="module-info">
+                  <div class="module-title">
+                    <i class="${typeIcon}" style="margin-right: var(--space-2); color: var(--text-secondary);"></i>
+                    ${this.escapeHtml(lesson.title)}
+                    ${providerBadge}
+                  </div>
+                  <div class="module-meta">
+                    ${lesson.content_type}
+                    ${lesson.duration_minutes ? ` • ${lesson.duration_minutes} min` : ''}
+                    ${lesson.is_preview ? ' • Free preview' : ''}
+                  </div>
+                </div>
+                <button class="btn btn-secondary btn-sm btn-icon" onclick="AdminLessons.editLesson('${lesson.id}')" title="Edit">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-danger btn-sm btn-icon" onclick="AdminLessons.deleteLesson('${lesson.id}', '${this.escapeHtml(lesson.title)}')" title="Delete">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </li>`;
+          });
+        } catch (error) {
+          console.error('Failed to load lessons:', error);
+          container.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-exclamation-triangle"></i>
+              <p>Failed to load lessons. Please try again.</p>
+            </div>`;
+        }
+      },
+
+      getContentTypeIcon(type) {
+        const icons = {
+          video: 'fas fa-video',
+          article: 'fas fa-file-alt',
+          quiz: 'fas fa-question-circle',
+          assignment: 'fas fa-tasks',
+          external: 'fas fa-external-link-alt'
+        };
+        return icons[type] || 'fas fa-file';
+      },
+
+      openCreateModal() {
+        this.editingLessonId = null;
+        document.getElementById('lesson-modal-title').textContent = 'Create New Lesson';
+        document.getElementById('lesson-form').reset();
+        document.getElementById('lesson-id').value = '';
+        document.getElementById('lesson-module-id').value = this.currentModuleId;
+        document.getElementById('lesson-content-type').value = 'video';
+        document.getElementById('lesson-modal').classList.add('active');
+      },
+
+      editLesson(lessonId) {
+        const lesson = this.lessons.find(l => l.id === lessonId);
+        if (!lesson) return;
+
+        this.editingLessonId = lessonId;
+        document.getElementById('lesson-modal-title').textContent = 'Edit Lesson';
+        document.getElementById('lesson-id').value = lessonId;
+        document.getElementById('lesson-module-id').value = this.currentModuleId;
+        document.getElementById('lesson-title').value = lesson.title || '';
+        document.getElementById('lesson-slug').value = lesson.slug || '';
+        document.getElementById('lesson-description').value = lesson.description || '';
+        document.getElementById('lesson-content-type').value = lesson.content_type || 'video';
+        document.getElementById('lesson-duration').value = lesson.duration_minutes || '';
+        document.getElementById('lesson-content-url').value = lesson.content_url || '';
+        document.getElementById('lesson-external-provider').value = lesson.external_provider || '';
+        document.getElementById('lesson-order').value = lesson.sequence_order || '';
+        document.getElementById('lesson-preview').checked = lesson.is_preview || false;
+
+        document.getElementById('lesson-modal').classList.add('active');
+      },
+
+      closeModal() {
+        document.getElementById('lesson-modal').classList.remove('active');
+        this.editingLessonId = null;
+      },
+
+      async saveLesson() {
+        const lessonData = {
+          moduleId: document.getElementById('lesson-module-id').value,
+          title: document.getElementById('lesson-title').value.trim(),
+          slug: document.getElementById('lesson-slug').value.trim() || undefined,
+          description: document.getElementById('lesson-description').value.trim() || undefined,
+          contentType: document.getElementById('lesson-content-type').value,
+          durationMinutes: parseInt(document.getElementById('lesson-duration').value) || undefined,
+          contentUrl: document.getElementById('lesson-content-url').value.trim() || undefined,
+          externalProvider: document.getElementById('lesson-external-provider').value || undefined,
+          sequenceOrder: parseInt(document.getElementById('lesson-order').value) || this.lessons.length + 1,
+          isPreview: document.getElementById('lesson-preview').checked
+        };
+
+        if (!lessonData.title || !lessonData.contentType) {
+          AdminCourses.showToast('Title and content type are required', 'error');
+          return;
+        }
+
+        const btn = document.getElementById('save-lesson-btn');
+        btn.innerHTML = '<span class="loading-spinner"></span> Saving...';
+        btn.disabled = true;
+
+        try {
+          const isEdit = !!this.editingLessonId;
+          const url = isEdit
+            ? `${this.API_BASE}/admin/lessons/${this.editingLessonId}`
+            : `${this.API_BASE}/admin/lessons`;
+
+          const response = await fetch(url, {
+            method: isEdit ? 'PUT' : 'POST',
+            headers: this.getAuthHeaders(),
+            body: JSON.stringify(lessonData)
+          });
+
+          const data = await response.json();
+
+          if (response.ok && data.success) {
+            AdminCourses.showToast(isEdit ? 'Lesson updated!' : 'Lesson created!', 'success');
+            this.closeModal();
+            await this.loadLessons();
+            // Also refresh module list to update lesson count
+            await AdminModules.loadModules();
+          } else {
+            AdminCourses.showToast(data.error || 'Failed to save lesson', 'error');
+          }
+        } catch (error) {
+          console.error('Save error:', error);
+          AdminCourses.showToast('Network error. Please try again.', 'error');
+        } finally {
+          btn.innerHTML = '<i class="fas fa-save"></i> Save Lesson';
+          btn.disabled = false;
+        }
+      },
+
+      async deleteLesson(lessonId, lessonName) {
+        if (!confirm(`Delete "${lessonName}"? This cannot be undone.`)) {
+          return;
+        }
+
+        try {
+          const response = await fetch(`${this.API_BASE}/admin/lessons/${lessonId}`, {
+            method: 'DELETE',
+            headers: this.getAuthHeaders()
+          });
+
+          const data = await response.json();
+
+          if (response.ok && data.success) {
+            AdminCourses.showToast('Lesson deleted!', 'success');
+            await this.loadLessons();
+            // Also refresh module list to update lesson count
+            await AdminModules.loadModules();
+          } else {
+            AdminCourses.showToast(data.error || 'Failed to delete lesson', 'error');
+          }
+        } catch (error) {
+          console.error('Delete error:', error);
+          AdminCourses.showToast('Network error. Please try again.', 'error');
+        }
+      },
+
+      escapeHtml(str) {
+        if (!str) return '';
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+    };
+
     // Initialize on load
     document.addEventListener('DOMContentLoaded', () => {
       AdminCourses.init();
@@ -1746,6 +2102,8 @@
         AdminCourses.closeDeleteModal();
         AdminModules.closeModal();
         AdminModules.closePanel();
+        AdminLessons.closeModal();
+        AdminLessons.closePanel();
       }
     });
   </script>
