@@ -224,11 +224,12 @@ curl -s "https://pmerit-api-worker.peoplemerit.workers.dev/api/v1/admin/me"
 ```
 ✅ Proper 401 authentication error — backend is working
 
-### Phase A: Foundation — FRONTEND PENDING
+### Phase A: Foundation — FRONTEND COMPLETE
 
-- [ ] Update `auth-check.js` for role validation
-- [ ] Wire `tier1.html` to admin APIs
-- [ ] Wire `tier2.html` to admin APIs
+- [x] Created `admin-auth-check.js` for role validation
+- [x] Updated `tier1.html` to use admin-auth-check.js
+- [x] Updated `tier2.html` to use admin-auth-check.js
+- [x] Access denied page shows for non-admin users
 
 ### To Promote a User to Admin
 ```sql
@@ -257,8 +258,8 @@ UPDATE users SET role = 'tier2_admin' WHERE email = 'content@example.com';
 ### Phase A: Foundation
 - [x] Users table has `role` column with enum values
 - [x] Backend middleware validates admin role
-- [ ] `auth-check.js` validates admin role before rendering admin pages
-- [ ] Non-admin users see "Access Denied" when visiting admin URLs
+- [x] `admin-auth-check.js` validates admin role before rendering admin pages
+- [x] Non-admin users see "Access Denied" when visiting admin URLs
 
 ### Phase B: Content Management
 - [ ] Admin can create new course via UI
@@ -284,6 +285,7 @@ UPDATE users SET role = 'tier2_admin' WHERE email = 'content@example.com';
 | 58 | 2025-12-17 | Full audit completed, reality documented |
 | 58 | 2025-12-17 | AD-004: Architecture decision locked (Pragmatic Enhancement) |
 | 58 | 2025-12-17 | Phase A Backend: Migration, middleware, routes deployed to production |
+| 58 | 2025-12-17 | Phase A Frontend: admin-auth-check.js deployed, admin pages protected |
 
 ---
 
