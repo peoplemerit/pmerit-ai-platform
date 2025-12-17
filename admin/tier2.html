@@ -541,6 +541,83 @@
       opacity: 0.5;
     }
 
+    /* Module Management */
+    .modules-panel {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-md);
+      padding: var(--space-4);
+      margin-top: var(--space-4);
+    }
+
+    .modules-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-3);
+    }
+
+    .modules-header h3 {
+      font-size: var(--text-lg);
+      font-weight: var(--font-bold);
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .modules-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .module-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3);
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-md);
+      margin-bottom: var(--space-2);
+    }
+
+    .module-item:hover {
+      border-color: var(--color-primary);
+    }
+
+    .module-number {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-sm);
+      font-weight: var(--font-bold);
+      flex-shrink: 0;
+    }
+
+    .module-info {
+      flex: 1;
+    }
+
+    .module-title {
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+    }
+
+    .module-meta {
+      font-size: var(--text-xs);
+      color: var(--text-secondary);
+    }
+
+    .btn-icon {
+      padding: var(--space-2);
+      min-width: auto;
+    }
+
     @media (max-width: 1024px) {
       body {
         flex-direction: column;
@@ -1058,6 +1135,85 @@
     </div>
   </div>
 
+  <!-- Module Editor Modal -->
+  <div class="modal-overlay" id="module-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="module-modal-title">Create New Module</h2>
+        <button class="modal-close" onclick="AdminModules.closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="module-form">
+          <input type="hidden" id="module-id">
+          <input type="hidden" id="module-course-id">
+
+          <div class="form-group">
+            <label class="form-label">Module Title *</label>
+            <input type="text" class="form-input" id="module-title" required placeholder="e.g., Python Basics">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">URL Slug *</label>
+            <input type="text" class="form-input" id="module-slug" required placeholder="e.g., python-basics">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <textarea class="form-textarea" id="module-description" placeholder="Brief description of the module..."></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Sequence Order</label>
+              <input type="number" class="form-input" id="module-order" placeholder="Auto" min="1">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Options</label>
+              <div style="display: flex; flex-direction: column; gap: var(--space-2); padding-top: var(--space-2);">
+                <label><input type="checkbox" id="module-required" checked> Required</label>
+                <label><input type="checkbox" id="module-preview"> Free Preview</label>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="AdminModules.closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="AdminModules.saveModule()" id="save-module-btn">
+          <i class="fas fa-save"></i>
+          Save Module
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modules Panel Modal (shows all modules for a course) -->
+  <div class="modal-overlay" id="modules-panel-modal">
+    <div class="modal" style="max-width: 700px;">
+      <div class="modal-header">
+        <h2 class="modal-title">
+          <span id="modules-panel-course-name">Course</span> - Modules
+        </h2>
+        <button class="modal-close" onclick="AdminModules.closePanel()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modules-header">
+          <span id="modules-count">0 modules</span>
+          <button class="btn btn-primary btn-sm" onclick="AdminModules.openCreateModal()">
+            <i class="fas fa-plus"></i>
+            Add Module
+          </button>
+        </div>
+        <div id="modules-list-container">
+          <div class="empty-state">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading modules...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="../assets/js/main.js"></script>
   <script>
     // Tab switching functionality
@@ -1187,6 +1343,9 @@
                 </td>
                 <td>
                   <div class="action-buttons">
+                    <button class="btn btn-primary btn-sm" onclick="AdminModules.openPanel('${course.course_id}', '${this.escapeHtml(course.title)}')" title="Manage Modules">
+                      <i class="fas fa-layer-group"></i>
+                    </button>
                     <button class="btn btn-secondary btn-sm" onclick="AdminCourses.editCourse('${course.course_id}')" title="Edit">
                       <i class="fas fa-edit"></i>
                     </button>
@@ -1353,7 +1512,7 @@
       }
     };
 
-    // Auto-generate slug from title
+    // Auto-generate slug from title (courses)
     document.getElementById('course-title')?.addEventListener('input', function() {
       if (!AdminCourses.editingCourseId) {
         const slug = this.value.toLowerCase()
@@ -1363,6 +1522,217 @@
         document.getElementById('course-slug').value = slug;
       }
     });
+
+    // Auto-generate slug from title (modules)
+    document.getElementById('module-title')?.addEventListener('input', function() {
+      if (!AdminModules.editingModuleId) {
+        const slug = this.value.toLowerCase()
+          .replace(/[^a-z0-9\s-]/g, '')
+          .replace(/\s+/g, '-')
+          .replace(/-+/g, '-');
+        document.getElementById('module-slug').value = slug;
+      }
+    });
+
+    // Admin Modules Management
+    const AdminModules = {
+      API_BASE: 'https://pmerit-api-worker.peoplemerit.workers.dev/api/v1',
+      modules: [],
+      currentCourseId: null,
+      currentCourseName: null,
+      editingModuleId: null,
+
+      getAuthHeaders() {
+        const token = localStorage.getItem('pmerit_auth_token');
+        return {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        };
+      },
+
+      async openPanel(courseId, courseName) {
+        this.currentCourseId = courseId;
+        this.currentCourseName = courseName;
+        document.getElementById('modules-panel-course-name').textContent = courseName;
+        document.getElementById('modules-panel-modal').classList.add('active');
+        await this.loadModules();
+      },
+
+      closePanel() {
+        document.getElementById('modules-panel-modal').classList.remove('active');
+        this.currentCourseId = null;
+        this.currentCourseName = null;
+      },
+
+      async loadModules() {
+        const container = document.getElementById('modules-list-container');
+        container.innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-spin"></i><p>Loading modules...</p></div>';
+
+        try {
+          const response = await fetch(`${this.API_BASE}/admin/modules?courseId=${this.currentCourseId}`, {
+            headers: this.getAuthHeaders()
+          });
+          const data = await response.json();
+          this.modules = data.modules || [];
+
+          document.getElementById('modules-count').textContent = `${this.modules.length} module${this.modules.length !== 1 ? 's' : ''}`;
+
+          if (this.modules.length === 0) {
+            container.innerHTML = `
+              <div class="empty-state">
+                <i class="fas fa-layer-group"></i>
+                <p>No modules yet. Add your first module!</p>
+              </div>`;
+            return;
+          }
+
+          container.innerHTML = '<ul class="modules-list" id="modules-list"></ul>';
+          const list = document.getElementById('modules-list');
+          this.modules.forEach((mod, index) => {
+            list.innerHTML += `
+              <li class="module-item">
+                <div class="module-number">${mod.sequence_order || index + 1}</div>
+                <div class="module-info">
+                  <div class="module-title">${this.escapeHtml(mod.title)}</div>
+                  <div class="module-meta">
+                    ${mod.lesson_count || 0} lessons
+                    ${mod.is_preview ? ' • Free preview' : ''}
+                    ${!mod.is_required ? ' • Optional' : ''}
+                  </div>
+                </div>
+                <button class="btn btn-secondary btn-sm btn-icon" onclick="AdminModules.editModule('${mod.module_id}')" title="Edit">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-danger btn-sm btn-icon" onclick="AdminModules.deleteModule('${mod.module_id}', '${this.escapeHtml(mod.title)}')" title="Delete">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </li>`;
+          });
+        } catch (error) {
+          console.error('Failed to load modules:', error);
+          container.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-exclamation-triangle"></i>
+              <p>Failed to load modules. Please try again.</p>
+            </div>`;
+        }
+      },
+
+      openCreateModal() {
+        this.editingModuleId = null;
+        document.getElementById('module-modal-title').textContent = 'Create New Module';
+        document.getElementById('module-form').reset();
+        document.getElementById('module-id').value = '';
+        document.getElementById('module-course-id').value = this.currentCourseId;
+        document.getElementById('module-required').checked = true;
+        document.getElementById('module-modal').classList.add('active');
+      },
+
+      editModule(moduleId) {
+        const mod = this.modules.find(m => m.module_id === moduleId);
+        if (!mod) return;
+
+        this.editingModuleId = moduleId;
+        document.getElementById('module-modal-title').textContent = 'Edit Module';
+        document.getElementById('module-id').value = moduleId;
+        document.getElementById('module-course-id').value = this.currentCourseId;
+        document.getElementById('module-title').value = mod.title || '';
+        document.getElementById('module-slug').value = mod.slug || '';
+        document.getElementById('module-description').value = mod.description || '';
+        document.getElementById('module-order').value = mod.sequence_order || '';
+        document.getElementById('module-required').checked = mod.is_required !== false;
+        document.getElementById('module-preview').checked = mod.is_preview || false;
+
+        document.getElementById('module-modal').classList.add('active');
+      },
+
+      closeModal() {
+        document.getElementById('module-modal').classList.remove('active');
+        this.editingModuleId = null;
+      },
+
+      async saveModule() {
+        const moduleData = {
+          courseId: document.getElementById('module-course-id').value,
+          title: document.getElementById('module-title').value.trim(),
+          slug: document.getElementById('module-slug').value.trim(),
+          description: document.getElementById('module-description').value.trim(),
+          sequenceOrder: parseInt(document.getElementById('module-order').value) || undefined,
+          isRequired: document.getElementById('module-required').checked,
+          isPreview: document.getElementById('module-preview').checked
+        };
+
+        if (!moduleData.title || !moduleData.slug) {
+          AdminCourses.showToast('Title and slug are required', 'error');
+          return;
+        }
+
+        const btn = document.getElementById('save-module-btn');
+        btn.innerHTML = '<span class="loading-spinner"></span> Saving...';
+        btn.disabled = true;
+
+        try {
+          const isEdit = !!this.editingModuleId;
+          const url = isEdit
+            ? `${this.API_BASE}/admin/modules/${this.editingModuleId}`
+            : `${this.API_BASE}/admin/modules`;
+
+          const response = await fetch(url, {
+            method: isEdit ? 'PUT' : 'POST',
+            headers: this.getAuthHeaders(),
+            body: JSON.stringify(moduleData)
+          });
+
+          const data = await response.json();
+
+          if (response.ok && data.success) {
+            AdminCourses.showToast(isEdit ? 'Module updated!' : 'Module created!', 'success');
+            this.closeModal();
+            await this.loadModules();
+          } else {
+            AdminCourses.showToast(data.error || 'Failed to save module', 'error');
+          }
+        } catch (error) {
+          console.error('Save error:', error);
+          AdminCourses.showToast('Network error. Please try again.', 'error');
+        } finally {
+          btn.innerHTML = '<i class="fas fa-save"></i> Save Module';
+          btn.disabled = false;
+        }
+      },
+
+      async deleteModule(moduleId, moduleName) {
+        if (!confirm(`Delete "${moduleName}" and all its lessons? This cannot be undone.`)) {
+          return;
+        }
+
+        try {
+          const response = await fetch(`${this.API_BASE}/admin/modules/${moduleId}`, {
+            method: 'DELETE',
+            headers: this.getAuthHeaders()
+          });
+
+          const data = await response.json();
+
+          if (response.ok && data.success) {
+            AdminCourses.showToast('Module deleted!', 'success');
+            await this.loadModules();
+          } else {
+            AdminCourses.showToast(data.error || 'Failed to delete module', 'error');
+          }
+        } catch (error) {
+          console.error('Delete error:', error);
+          AdminCourses.showToast('Network error. Please try again.', 'error');
+        }
+      },
+
+      escapeHtml(str) {
+        if (!str) return '';
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+    };
 
     // Initialize on load
     document.addEventListener('DOMContentLoaded', () => {
@@ -1374,6 +1744,8 @@
       if (e.key === 'Escape') {
         AdminCourses.closeModal();
         AdminCourses.closeDeleteModal();
+        AdminModules.closeModal();
+        AdminModules.closePanel();
       }
     });
   </script>
