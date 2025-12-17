@@ -283,8 +283,58 @@ UPDATE users SET role = 'tier2_admin' WHERE email = 'content@example.com';
 - [x] Admin can delete course with confirmation
 - [x] Admin can assign course to pathway
 - [x] Admin can set published/draft status
-- [ ] Admin can add modules to course (Phase B.2)
-- [ ] Admin can add lessons to module (Phase B.3)
+- [x] Admin can add modules to course (Phase B.2 - COMPLETE)
+- [x] Admin can add lessons to module (Phase B.3 - COMPLETE)
+
+### Phase B.2: Module Management — COMPLETE (Session 59)
+
+#### Backend API Endpoints (admin.ts)
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/api/v1/admin/modules` | POST | Create module for a course |
+| `/api/v1/admin/modules?courseId=xxx` | GET | List modules for a course |
+| `/api/v1/admin/modules/:id` | PUT | Update module |
+| `/api/v1/admin/modules/:id` | DELETE | Delete module (cascades to lessons) |
+
+#### Frontend UI (tier2.html)
+- "Manage Modules" button (layer-group icon) on each course row
+- Modules Panel modal shows all modules for selected course
+- Module list displays: sequence order, title, lesson count, required/optional, free preview
+- Module Editor modal for create/edit
+- Fields: Title, Slug (auto-generated), Description, Sequence Order, Required checkbox, Free Preview checkbox
+- Delete confirmation warns about cascade to lessons
+
+### Phase B.3: Lesson Management — COMPLETE (Session 59)
+
+#### Backend API Endpoints (admin.ts)
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/api/v1/admin/lessons` | POST | Create lesson for a module |
+| `/api/v1/admin/lessons?moduleId=xxx` | GET | List lessons for a module |
+| `/api/v1/admin/lessons/:id` | PUT | Update lesson |
+| `/api/v1/admin/lessons/:id` | DELETE | Delete lesson |
+
+#### Frontend UI (tier2.html)
+- "Manage Lessons" button (list-ol icon) on each module row
+- Lessons Panel modal shows all lessons for selected module
+- Lesson list displays: sequence order, content type icon, title, provider badge, duration, preview status
+- Lesson Editor modal for create/edit
+- Fields: Title, Slug, Description, Content Type dropdown, Duration, Content URL, External Provider dropdown, Sequence Order, Free Preview checkbox
+
+#### Content Types Supported
+- `video` - Video content
+- `article` - Text/article content
+- `quiz` - Quiz/assessment
+- `assignment` - Assignment/project
+- `external` - External resource
+
+#### External Providers Supported
+- freeCodeCamp
+- Coursera
+- YouTube
+- Udemy
+- edX
+- Other
 
 ---
 
@@ -313,9 +363,9 @@ UPDATE users SET role = 'tier2_admin' WHERE email = 'content@example.com';
 - [x] Admin can delete courses with confirmation
 - [x] Admin can assign course to pathway
 - [x] Admin can set course as published/draft
-- [ ] Admin can add modules to course
-- [ ] Admin can add lessons to module
-- [ ] Admin can link external content URLs (freeCodeCamp, Coursera)
+- [x] Admin can add modules to course
+- [x] Admin can add lessons to module
+- [x] Admin can link external content URLs (freeCodeCamp, Coursera)
 - [x] Changes reflect in public course catalog
 
 ### Phase C: User Management
@@ -336,6 +386,8 @@ UPDATE users SET role = 'tier2_admin' WHERE email = 'content@example.com';
 | 58 | 2025-12-17 | Phase A Backend: Migration, middleware, routes deployed to production |
 | 58 | 2025-12-17 | Phase A Frontend: admin-auth-check.js deployed, admin pages protected |
 | 59 | 2025-12-17 | Phase B Frontend: Course Management UI complete (stats, table, modals) |
+| 59 | 2025-12-17 | Phase B.2: Module Management complete (CRUD endpoints + UI) |
+| 59 | 2025-12-17 | Phase B.3: Lesson Management complete (CRUD endpoints + UI) |
 
 ---
 
