@@ -1,12 +1,12 @@
 {
-  "schema_version": "2.4",
-  "schema_notes": "Session 55 - Premium Voice TTS deployed on RunPod",
+  "schema_version": "2.6",
+  "schema_notes": "Session 58 - BLS salary data added to pathways",
 
-  "last_updated": "2025-12-14T21:30:00Z",
+  "last_updated": "2025-12-17T15:10:00Z",
   "last_updated_by": "claude-code",
 
-  "session_number": 57,
-  "last_audit_date": "2025-12-16",
+  "session_number": 58,
+  "last_audit_date": "2025-12-17",
 
   "current_phase": "POST_CLASSROOM",
   "phase_name": "Voice System Complete / ARCH-2 / Assessment Enhancements",
@@ -26,7 +26,7 @@
     "version": "1.0",
     "location": "pmerit-ai-platform/.claude/scopes/",
     "master_scope": ".claude/scopes/MASTER_SCOPE.md",
-    "active_scope": "SCOPE_Select_Language",
+    "active_scope": "SCOPE_courses",
     "scopes": {
       "SCOPE_HOMEPAGE": { "status": "complete", "file": ".claude/scopes/SCOPE_HOMEPAGE.md" },
       "SCOPE_Select_Language": { "status": "audited", "file": ".claude/scopes/SCOPE_Select_Language.md" },
@@ -37,7 +37,9 @@
       "SCOPE_ENROLLMENT": { "status": "complete", "file": ".claude/scopes/SCOPE_ENROLLMENT.md" },
       "SCOPE_ADMIN": { "status": "not_started", "file": ".claude/scopes/SCOPE_ADMIN.md" },
       "SCOPE_CREDENTIALS": { "status": "not_started", "file": ".claude/scopes/SCOPE_CREDENTIALS.md" },
-      "SCOPE_TTS": { "status": "complete", "file": ".claude/scopes/SCOPE_TTS.md" }
+      "SCOPE_TTS": { "status": "complete", "file": ".claude/scopes/SCOPE_TTS.md" },
+      "SCOPE_courses": { "status": "specified", "file": ".claude/scopes/SCOPE_courses.md" },
+      "SCOPE_Learning_Pathways": { "status": "implemented", "file": ".claude/scopes/SCOPE_Learning_Pathways.md" }
     }
   },
 
@@ -203,6 +205,18 @@
   },
 
   "recent_changes": [
+    {
+      "session": 58,
+      "date": "2025-12-17",
+      "change": "BLS salary data and career outcomes added to pathways",
+      "impact": "Migration 004 run: 3 new tables (content_sources, course_external_content, user_external_certifications), 12 new columns on pathways, 3 new columns on courses. 9 content sources seeded. All 6 Global Remote pathways updated with BLS May 2024 salary data. Frontend updated: pathways.html now displays salary ranges ($65K-$112K format), career outcomes, program duration, commitment hours. Database now 93 tables."
+    },
+    {
+      "session": 57,
+      "date": "2025-12-17",
+      "change": "SCOPE_courses.md created and audited",
+      "impact": "Comprehensive courses system audit: 14 pathways (3 tracks), 42 courses, 12 API endpoints. System fully operational: courses.html catalog, dashboard-courses.js module, enrollment/unenroll working. Gaps identified: no module/lesson content, no admin UI for modules/lessons, no rating system."
+    },
     {
       "session": 56,
       "date": "2025-12-14",
