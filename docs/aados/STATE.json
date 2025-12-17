@@ -1,11 +1,11 @@
 {
-  "schema_version": "2.7",
-  "schema_notes": "Session 58 - Admin Portal Phase A complete, BLS salary data added",
+  "schema_version": "2.8",
+  "schema_notes": "Session 59 - SCOPE_Learning_Pathways and SCOPE_courses frontend complete",
 
-  "last_updated": "2025-12-17T18:00:00Z",
+  "last_updated": "2025-12-17T17:40:00Z",
   "last_updated_by": "claude-code",
 
-  "session_number": 58,
+  "session_number": 59,
   "last_audit_date": "2025-12-17",
 
   "current_phase": "POST_CLASSROOM",
@@ -38,8 +38,8 @@
       "SCOPE_ADMIN": { "status": "phase_a_complete", "file": ".claude/scopes/SCOPE_ADMIN.md" },
       "SCOPE_CREDENTIALS": { "status": "not_started", "file": ".claude/scopes/SCOPE_CREDENTIALS.md" },
       "SCOPE_TTS": { "status": "complete", "file": ".claude/scopes/SCOPE_TTS.md" },
-      "SCOPE_courses": { "status": "specified", "file": ".claude/scopes/SCOPE_courses.md" },
-      "SCOPE_Learning_Pathways": { "status": "implemented", "file": ".claude/scopes/SCOPE_Learning_Pathways.md" }
+      "SCOPE_courses": { "status": "implemented", "file": ".claude/scopes/SCOPE_courses.md" },
+      "SCOPE_Learning_Pathways": { "status": "complete", "file": ".claude/scopes/SCOPE_Learning_Pathways.md" }
     }
   },
 
@@ -205,6 +205,12 @@
   },
 
   "recent_changes": [
+    {
+      "session": 59,
+      "date": "2025-12-17",
+      "change": "SCOPE_Learning_Pathways + SCOPE_courses frontend COMPLETE",
+      "impact": "pathways.html: Added Program Finder component (track selector tabs), Syllabus Modal (view course sequence), updated card CTAs. courses.html: Added Learning Pathway filter dropdown (grouped by track type), removed Career Tracks section (moved to pathways), URL query param support (?pathway=data-analytics). All committed and pushed. course.html already existed with full functionality."
+    },
     {
       "session": 58,
       "date": "2025-12-17",
