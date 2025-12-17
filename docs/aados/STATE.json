@@ -1,8 +1,8 @@
 {
-  "schema_version": "2.6",
-  "schema_notes": "Session 58 - BLS salary data added to pathways",
+  "schema_version": "2.7",
+  "schema_notes": "Session 58 - Admin Portal Phase A complete, BLS salary data added",
 
-  "last_updated": "2025-12-17T15:10:00Z",
+  "last_updated": "2025-12-17T18:00:00Z",
   "last_updated_by": "claude-code",
 
   "session_number": 58,
@@ -35,7 +35,7 @@
       "SCOPE_CLASSROOM": { "status": "complete", "file": ".claude/scopes/SCOPE_CLASSROOM.md" },
       "SCOPE_AVATAR": { "status": "complete", "file": ".claude/scopes/SCOPE_AVATAR.md" },
       "SCOPE_ENROLLMENT": { "status": "complete", "file": ".claude/scopes/SCOPE_ENROLLMENT.md" },
-      "SCOPE_ADMIN": { "status": "not_started", "file": ".claude/scopes/SCOPE_ADMIN.md" },
+      "SCOPE_ADMIN": { "status": "phase_a_complete", "file": ".claude/scopes/SCOPE_ADMIN.md" },
       "SCOPE_CREDENTIALS": { "status": "not_started", "file": ".claude/scopes/SCOPE_CREDENTIALS.md" },
       "SCOPE_TTS": { "status": "complete", "file": ".claude/scopes/SCOPE_TTS.md" },
       "SCOPE_courses": { "status": "specified", "file": ".claude/scopes/SCOPE_courses.md" },
@@ -205,6 +205,12 @@
   },
 
   "recent_changes": [
+    {
+      "session": 58,
+      "date": "2025-12-17",
+      "change": "Admin Portal Phase A Foundation COMPLETE",
+      "impact": "Backend: Migration 005 added role column to users table (user/tier2_admin/tier1_admin), created audit_logs table, admin middleware (verifyAdminAuth), 9 admin API endpoints deployed (/api/v1/admin/*). Frontend: admin-auth-check.js created for role validation, tier1.html/tier2.html now protected. Non-admin users see 'Access Denied' page. Ready for Phase B: Content Management."
+    },
     {
       "session": 58,
       "date": "2025-12-17",
