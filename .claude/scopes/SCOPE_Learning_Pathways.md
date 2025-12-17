@@ -1,9 +1,10 @@
 # SCOPE: Learning Pathways
 
 **Created:** 2025-12-16
-**Status:** Audited
+**Status:** Implemented
 **Phase:** Homepage Feature (Left Panel Quick Action)
 **Production URL:** https://pmerit.com/pathways
+**Last Updated:** 2025-12-17 (Session 58)
 
 ---
 
@@ -216,15 +217,35 @@ ALTER TABLE courses ADD sequence_order INT, is_required BOOLEAN;
 
 ### ACCEPTANCE CRITERIA
 
-- [ ] Program Finder component at top
-- [ ] Career outcomes on Global Remote cards
-- [ ] Salary ranges displayed
-- [ ] Syllabus modal with course sequence
-- [ ] `/courses?pathway=slug` links
+- [x] Program Finder component at top (Track selector implemented)
+- [x] Career outcomes on Global Remote cards (Up to 3 per pathway)
+- [x] Salary ranges displayed ($65K-$112K format)
+- [x] Syllabus modal with course sequence (HTML/JS added)
+- [x] `/courses?pathway=slug` links (URL parameter support working)
 
 ---
 
 ## RESEARCH_FINDINGS
+
+### Session 58 Implementation Summary
+
+**Frontend Completed:**
+- pathways.html: Salary ranges, career outcomes, duration/commitment hours displayed
+- Program Finder component: Track selector at top
+- Syllabus Modal: HTML/JS added
+- Accordion CTA buttons: Updated
+
+**Frontend courses.html Completed:**
+- Pathway filter dropdown with optgroups by track type
+- URL parameter support (`?pathway=web-development`)
+- Career Tracks section removed (~110 lines CSS)
+- viewCourse links fixed (now uses `course.html?slug=xxx`)
+
+**Backend Completed:**
+- Migration 004 run: 3 new tables, 12 columns on pathways, 3 columns on courses
+- 9 content sources seeded in database
+- All 6 Global Remote pathways updated with BLS May 2024 salary data
+- Database now 93 tables
 
 ### BLS API Investigation (Session 57)
 
@@ -235,6 +256,15 @@ ALTER TABLE courses ADD sequence_order INT, is_required BOOLEAN;
 **Files Created:**
 - `scripts/migrations/004_pathway_career_data.sql` - Database migration
 - `scripts/bls-api-poc.js` - API proof-of-concept for future use
+- `docs/project/SALARY_CURATION_GUIDE.md` - Annual update process documented
+
+### Still Needed (P1)
+
+| Item | Notes |
+|------|-------|
+| Syllabus API endpoint | `GET /api/v1/pathways/:slug/syllabus` - returns structured course sequence |
+| Module/lesson content | Courses are empty shells (no actual lessons) |
+| Admin UI for content | No way to create/edit modules/lessons (see SCOPE_ADMIN)
 
 ---
 
@@ -274,7 +304,10 @@ ALTER TABLE courses ADD sequence_order INT, is_required BOOLEAN;
 |---------|------|--------|
 | 57 | 2025-12-16 | Initial audit completed |
 | 57-58 | 2025-12-17 | HANDOFF + BLS salary research completed |
+| 58 | 2025-12-17 | Frontend implementation complete (salary, outcomes, Program Finder) |
+| 58 | 2025-12-17 | courses.html pathway filter + URL params implemented |
+| 58 | 2025-12-17 | Migration 004 deployed, 9 content sources seeded |
 
 ---
 
-*Last Updated: 2025-12-17 (Session 57-58)*
+*Last Updated: 2025-12-17 (Session 58)*

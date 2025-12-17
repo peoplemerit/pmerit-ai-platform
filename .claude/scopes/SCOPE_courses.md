@@ -1,7 +1,8 @@
 # SCOPE: Courses System
 
-**Status:** AUDITED
+**Status:** IMPLEMENTED
 **Last Audit:** December 17, 2025 (Session 57)
+**Last Update:** December 17, 2025 (Session 58)
 **Audited By:** Claude Code
 
 ---
@@ -270,11 +271,11 @@ SEPARATE from discovery page (SCOPE_Learning_Pathways.md).
 
 ### ACCEPTANCE CRITERIA
 
-- [ ] courses.html shows ONLY catalog (no pathway discovery)
-- [ ] `/courses?pathway=xxx` filters correctly
-- [ ] `/course/:slug` shows course detail
-- [ ] Enrollment requires auth
-- [ ] Redirect to dashboard after enrollment
+- [x] courses.html shows ONLY catalog (Career Tracks section removed ~110 lines CSS)
+- [x] `/courses?pathway=xxx` filters correctly (URL parameter support working)
+- [x] `/course/:slug` shows course detail (course.html?slug=xxx working)
+- [x] Enrollment requires auth (redirects to auth modal)
+- [x] Redirect to dashboard after enrollment
 
 ---
 
@@ -302,7 +303,11 @@ Adds to courses table:
 |---------|------|--------|
 | 57 | 2025-12-17 | Initial audit completed |
 | 57-58 | 2025-12-17 | HANDOFF + migration created |
+| 58 | 2025-12-17 | Pathway filter dropdown with optgroups implemented |
+| 58 | 2025-12-17 | URL parameter support (`?pathway=slug`) working |
+| 58 | 2025-12-17 | Career Tracks section removed (~110 lines CSS) |
+| 58 | 2025-12-17 | viewCourse links fixed (course.html?slug=xxx) |
 
 ---
 
-*Last Updated: 2025-12-17 (Session 57-58)*
+*Last Updated: 2025-12-17 (Session 58)*
