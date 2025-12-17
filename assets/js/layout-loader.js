@@ -685,6 +685,7 @@ if (typeof window.logger === 'undefined') {
     initAuthButtons() {
       const signInBtn = document.getElementById('sign-in-btn');
       const menuSignInBtn = document.getElementById('menu-sign-in');
+      const startLearningBtn = document.getElementById('start-learning-btn');
 
       // Initialize footer modals first (adds open/close methods to window)
       this.initFooterModals();
@@ -702,8 +703,28 @@ if (typeof window.logger === 'undefined') {
         }
       };
 
+      const handleStartLearning = (e) => {
+        e.preventDefault();
+
+        // If authenticated, go to dashboard
+        if (window.AUTH && window.AUTH.isAuthenticated()) {
+          window.location.href = '/dashboard.html';
+          return;
+        }
+
+        // Not authenticated - open signup modal
+        if (window.openSignUpModal) {
+          window.openSignUpModal();
+        } else if (window.AuthModal) {
+          window.AuthModal.open('signup');
+        } else {
+          window.location.href = '/?auth=signup';
+        }
+      };
+
       signInBtn?.addEventListener('click', handleSignIn);
       menuSignInBtn?.addEventListener('click', handleSignIn);
+      startLearningBtn?.addEventListener('click', handleStartLearning);
 
       // Update UI based on auth state
       this.updateAuthUI();
