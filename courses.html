@@ -165,117 +165,6 @@
       font-size: var(--text-sm);
     }
     
-    .career-tracks {
-      margin-bottom: var(--space-8);
-    }
-    
-    .tracks-title {
-      font-size: var(--text-2xl);
-      font-weight: var(--font-semibold);
-      color: var(--text-primary);
-      margin-bottom: var(--space-6);
-      text-align: center;
-    }
-    
-    .tracks-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: var(--space-6);
-    }
-    
-    .track-card {
-      background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(124, 58, 237, 0.1));
-      border: 1px solid rgba(79, 70, 229, 0.2);
-      border-radius: var(--border-radius-lg);
-      padding: var(--space-6);
-      cursor: pointer;
-      transition: var(--transition);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .track-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 80px;
-      height: 80px;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      border-radius: 50%;
-      transform: translate(30px, -30px);
-      opacity: 0.1;
-    }
-    
-    .track-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-lg);
-      border-color: var(--primary);
-    }
-    
-    .track-icon {
-      width: 60px;
-      height: 60px;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      border-radius: var(--border-radius);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: var(--text-2xl);
-      margin-bottom: var(--space-4);
-    }
-    
-    .track-name {
-      font-size: var(--text-lg);
-      font-weight: var(--font-semibold);
-      color: var(--text-primary);
-      margin-bottom: var(--space-2);
-    }
-    
-    .track-description {
-      color: var(--text-secondary);
-      font-size: var(--text-sm);
-      line-height: var(--leading-relaxed);
-      margin-bottom: var(--space-4);
-    }
-    
-    .track-stats {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: var(--space-4);
-      font-size: var(--text-sm);
-      color: var(--text-secondary);
-    }
-    
-    .track-courses {
-      color: var(--primary);
-      font-weight: var(--font-medium);
-    }
-    
-    .track-duration {
-      display: flex;
-      align-items: center;
-      gap: var(--space-1);
-    }
-    
-    .track-action {
-      width: 100%;
-      padding: var(--space-3);
-      background-color: var(--primary);
-      color: white;
-      border: none;
-      border-radius: var(--border-radius);
-      font-weight: var(--font-medium);
-      cursor: pointer;
-      transition: var(--transition);
-    }
-    
-    .track-action:hover {
-      background-color: var(--primary-dark);
-    }
-    
     .courses-section {
       margin-bottom: var(--space-8);
     }
@@ -561,6 +450,14 @@
         
         <div class="filters-grid">
           <div class="filter-group">
+            <label class="filter-label">Learning Pathway</label>
+            <select class="filter-select" id="pathwayFilter">
+              <option value="">All Pathways</option>
+              <!-- Options populated dynamically from API -->
+            </select>
+          </div>
+
+          <div class="filter-group">
             <label class="filter-label">Category</label>
             <select class="filter-select" id="categoryFilter">
               <option value="">All Categories</option>
@@ -572,7 +469,7 @@
               <option value="languages">Languages</option>
             </select>
           </div>
-          
+
           <div class="filter-group">
             <label class="filter-label">Level</label>
             <select class="filter-select" id="levelFilter">
@@ -600,20 +497,6 @@
               <option value="free">Free</option>
               <option value="paid">Paid</option>
             </select>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Career Tracks -->
-      <div class="career-tracks">
-        <h2 class="tracks-title">Career-Focused Learning Paths</h2>
-        <div class="tracks-grid" id="careerTracks">
-          <!-- Loading state -->
-          <div class="loading-state" id="tracksLoading">
-            <div style="text-align: center; padding: 2rem;">
-              <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary);"></i>
-              <p style="color: var(--text-secondary); margin-top: 1rem;">Loading career tracks...</p>
-            </div>
           </div>
         </div>
       </div>
@@ -654,33 +537,39 @@
     window.PMERIT.Courses = {
       allCourses: [],
       filteredCourses: [],
-      careerTracks: [],
+      pathways: [],
       currentView: 'grid',
       filters: {
         search: '',
+        pathway: '',
         category: '',
         level: '',
         duration: '',
         price: ''
       },
-      
+
       // Initialize courses page
       async init() {
         console.log('🎓 PMERIT Courses - Initializing...');
-        
+
         try {
-          // Load data in parallel
-          await Promise.all([
-            this.loadCareerTracks(),
-            this.loadCourses()
-          ]);
-          
+          // Check for pathway filter in URL
+          const urlParams = new URLSearchParams(window.location.search);
+          const pathwayParam = urlParams.get('pathway');
+          if (pathwayParam) {
+            this.filters.pathway = pathwayParam;
+          }
+
+          // Load pathways first (for dropdown), then courses
+          await this.loadPathways();
+          await this.loadCourses();
+
           // Set up event listeners
           this.bindEvents();
-          
-          // Apply initial filters
+
+          // Apply initial filters (including URL param)
           this.applyFilters();
-          
+
           console.log('✅ Courses page initialized successfully');
         } catch (error) {
           console.error('❌ Courses initialization failed:', error);
@@ -691,8 +580,8 @@
       // API Base URL
       API_BASE: 'https://pmerit-api-worker.peoplemerit.workers.dev/api/v1',
 
-      // Load career tracks from database/API
-      async loadCareerTracks() {
+      // Load pathways from database/API and populate dropdown
+      async loadPathways() {
         try {
           const response = await fetch(`${this.API_BASE}/pathways`, {
             method: 'GET',
@@ -706,21 +595,57 @@
           }
 
           const data = await response.json();
-          // Map pathways to expected track format
-          this.careerTracks = (data.pathways || []).map(p => ({
-            id: p.pathway_slug || p.id,
+          // Store pathways for reference
+          this.pathways = (data.pathways || []).map(p => ({
+            id: p.pathway_id,
+            slug: p.pathway_slug || p.id,
             name: p.pathway_name || p.name,
-            description: p.description || '',
-            icon: p.icon_class || 'fas fa-graduation-cap',
-            courseCount: p.course_count || 0,
-            duration: p.estimated_duration || '3-6 months'
+            trackType: p.track_type
           }));
-          this.displayCareerTracks();
+
+          // Populate the pathway dropdown
+          this.populatePathwayDropdown();
 
         } catch (error) {
-          console.error('Failed to load career tracks:', error);
-          this.loadSampleTracks();
+          console.error('Failed to load pathways:', error);
+          // Continue without pathways - dropdown will remain empty
         }
+      },
+
+      // Populate pathway filter dropdown
+      populatePathwayDropdown() {
+        const dropdown = document.getElementById('pathwayFilter');
+        if (!dropdown) return;
+
+        // Group pathways by track type
+        const trackTypes = {
+          'global_remote': 'Global Remote',
+          'local_education': 'Local Education',
+          'local_career': 'Local Career'
+        };
+
+        // Clear existing options except the first
+        dropdown.innerHTML = '<option value="">All Pathways</option>';
+
+        // Add optgroups for each track type
+        Object.keys(trackTypes).forEach(trackType => {
+          const pathwaysInTrack = this.pathways.filter(p => p.trackType === trackType);
+          if (pathwaysInTrack.length > 0) {
+            const optgroup = document.createElement('optgroup');
+            optgroup.label = trackTypes[trackType];
+            pathwaysInTrack.forEach(p => {
+              const option = document.createElement('option');
+              option.value = p.slug;
+              option.textContent = p.name;
+              // Check if this pathway is selected from URL
+              if (this.filters.pathway === p.slug) {
+                option.selected = true;
+              }
+              optgroup.appendChild(option);
+            });
+            dropdown.appendChild(optgroup);
+          }
+        });
       },
 
       // Load courses from database/API
@@ -741,6 +666,9 @@
           // Map courses to expected format (API returns: course_id, slug, title, etc.)
           this.allCourses = (data.courses || []).map(c => ({
             id: c.slug || c.course_id,
+            pathwayId: c.pathway_id,
+            pathwaySlug: this.getPathwaySlugById(c.pathway_id),
+            pathwayName: c.pathway_name,
             title: c.title,
             instructor: c.instructor_name || 'PMERIT',
             description: c.description || '',
@@ -763,36 +691,12 @@
         }
       },
       
-      // Display career tracks
-      displayCareerTracks() {
-        const container = document.getElementById('careerTracks');
-        const loading = document.getElementById('tracksLoading');
-        
-        if (loading) {
-          loading.style.display = 'none';
-        }
-        
-        if (!container) return;
-        
-        container.innerHTML = this.careerTracks.map(track => `
-          <div class="track-card" onclick="window.PMERIT.Courses.selectTrack('${track.id}')">
-            <div class="track-icon">
-              <i class="${track.icon}"></i>
-            </div>
-            <div class="track-name">${track.name}</div>
-            <div class="track-description">${track.description}</div>
-            <div class="track-stats">
-              <span class="track-courses">${track.courseCount} courses</span>
-              <span class="track-duration">
-                <i class="fas fa-clock"></i>
-                ${track.duration}
-              </span>
-            </div>
-            <button class="track-action">Explore Track</button>
-          </div>
-        `).join('');
+      // Helper to get pathway slug by ID
+      getPathwaySlugById(pathwayId) {
+        const pathway = this.pathways.find(p => p.id === pathwayId);
+        return pathway ? pathway.slug : null;
       },
-      
+
       // Display courses
       displayCourses() {
         const container = document.getElementById('coursesGrid');
@@ -867,6 +771,11 @@
       // Apply filters to courses
       applyFilters() {
         this.filteredCourses = this.allCourses.filter(course => {
+          // Pathway filter (most important - filters by learning pathway)
+          if (this.filters.pathway && course.pathwaySlug !== this.filters.pathway) {
+            return false;
+          }
+
           // Search filter
           if (this.filters.search) {
             const searchTerm = this.filters.search.toLowerCase();
@@ -875,12 +784,12 @@
               return false;
             }
           }
-          
+
           // Category filter
           if (this.filters.category && course.category !== this.filters.category) {
             return false;
           }
-          
+
           // Level filter
           if (this.filters.level && course.level.toLowerCase() !== this.filters.level) {
             return false;
@@ -904,46 +813,6 @@
         });
         
         this.displayCourses();
-      },
-      
-      // Load sample data for demo
-      loadSampleTracks() {
-        this.careerTracks = [
-          {
-            id: 'software-development',
-            name: 'Software Development',
-            description: 'Learn full-stack web development with modern technologies and frameworks',
-            icon: 'fas fa-code',
-            courseCount: 12,
-            duration: '6-8 months'
-          },
-          {
-            id: 'data-science',
-            name: 'Data Science & Analytics',
-            description: 'Master data analysis, machine learning, and statistical modeling',
-            icon: 'fas fa-chart-line',
-            courseCount: 8,
-            duration: '4-6 months'
-          },
-          {
-            id: 'digital-marketing',
-            name: 'Digital Marketing',
-            description: 'Build expertise in SEO, social media, content marketing, and analytics',
-            icon: 'fas fa-bullhorn',
-            courseCount: 6,
-            duration: '3-4 months'
-          },
-          {
-            id: 'ui-ux-design',
-            name: 'UI/UX Design',
-            description: 'Create beautiful, user-centered designs for web and mobile applications',
-            icon: 'fas fa-paint-brush',
-            courseCount: 10,
-            duration: '4-5 months'
-          }
-        ];
-        
-        this.displayCareerTracks();
       },
       
       loadSampleCourses() {
@@ -1088,18 +957,8 @@
       },
       
       // Event handlers
-      selectTrack(trackId) {
-        // Filter courses by track
-        this.filters.category = trackId.replace('-', '_');
-        document.getElementById('categoryFilter').value = this.filters.category;
-        this.applyFilters();
-        
-        // Scroll to courses section
-        document.querySelector('.courses-section').scrollIntoView({ behavior: 'smooth' });
-      },
-      
       viewCourse(courseId) {
-        window.location.href = `/course-detail.html?id=${courseId}`;
+        window.location.href = `course.html?slug=${courseId}`;
       },
       
       async enrollCourse(courseId) {
@@ -1169,14 +1028,26 @@
           });
         }
         
-        // Filter selects
-        const filterElements = ['categoryFilter', 'levelFilter', 'durationFilter', 'priceFilter'];
+        // Filter selects (including pathway filter)
+        const filterElements = ['pathwayFilter', 'categoryFilter', 'levelFilter', 'durationFilter', 'priceFilter'];
         filterElements.forEach(id => {
           const element = document.getElementById(id);
           if (element) {
             element.addEventListener('change', (e) => {
               const filterKey = id.replace('Filter', '');
               this.filters[filterKey] = e.target.value;
+
+              // Update URL when pathway filter changes (for shareability)
+              if (filterKey === 'pathway') {
+                const url = new URL(window.location);
+                if (e.target.value) {
+                  url.searchParams.set('pathway', e.target.value);
+                } else {
+                  url.searchParams.delete('pathway');
+                }
+                window.history.replaceState({}, '', url);
+              }
+
               this.applyFilters();
             });
           }
