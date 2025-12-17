@@ -584,19 +584,24 @@
       // Update Dashboard button text based on auth state
       function updateDashboardButtons() {
         const isAuth = window.AUTH && window.AUTH.isAuthenticated();
-        const dashboardButtons = [
-          document.getElementById('mobile-dashboard-btn'),
-          document.getElementById('desktop-dashboard-btn')
-        ];
 
-        dashboardButtons.forEach(function (btn) {
-          if (btn) {
-            const span = btn.querySelector('span span') || btn.querySelector('span:last-of-type');
-            if (span) {
-              span.textContent = isAuth ? 'Dashboard' : 'Sign In to Dashboard';
-            }
+        // Mobile button: <span><i>...</i> <span>Dashboard</span></span>
+        const mobileBtn = document.getElementById('mobile-dashboard-btn');
+        if (mobileBtn) {
+          const innerSpan = mobileBtn.querySelector('span span');
+          if (innerSpan) {
+            innerSpan.textContent = isAuth ? 'Dashboard' : 'Sign In to Dashboard';
           }
-        });
+        }
+
+        // Desktop button: <i>...</i><span>Dashboard</span>
+        const desktopBtn = document.getElementById('desktop-dashboard-btn');
+        if (desktopBtn) {
+          const span = desktopBtn.querySelector('span');
+          if (span) {
+            span.textContent = isAuth ? 'Dashboard' : 'Sign In to Dashboard';
+          }
+        }
       }
 
       // Wire Customer Service Mode buttons
