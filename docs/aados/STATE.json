@@ -35,7 +35,7 @@
       "SCOPE_CLASSROOM": { "status": "complete", "file": ".claude/scopes/SCOPE_CLASSROOM.md" },
       "SCOPE_AVATAR": { "status": "complete", "file": ".claude/scopes/SCOPE_AVATAR.md" },
       "SCOPE_ENROLLMENT": { "status": "complete", "file": ".claude/scopes/SCOPE_ENROLLMENT.md" },
-      "SCOPE_ADMIN": { "status": "phase_a_complete", "file": ".claude/scopes/SCOPE_ADMIN.md" },
+      "SCOPE_ADMIN": { "status": "phase_b_frontend_complete", "file": ".claude/scopes/SCOPE_ADMIN.md" },
       "SCOPE_CREDENTIALS": { "status": "not_started", "file": ".claude/scopes/SCOPE_CREDENTIALS.md" },
       "SCOPE_TTS": { "status": "complete", "file": ".claude/scopes/SCOPE_TTS.md" },
       "SCOPE_courses": { "status": "implemented", "file": ".claude/scopes/SCOPE_courses.md" },

@@ -240,6 +240,52 @@ UPDATE users SET role = 'tier1_admin' WHERE email = 'admin@example.com';
 UPDATE users SET role = 'tier2_admin' WHERE email = 'content@example.com';
 ```
 
+### Phase B: Content Management — FRONTEND COMPLETE (Session 59)
+
+**Implementation Date:** 2025-12-17 | **Session:** 59
+
+#### Tier 2 Dashboard Updates (admin/tier2.html)
+
+**Stats Row Added:**
+- Total Courses count (from `/admin/stats`)
+- Learning Pathways count
+- Total Enrollments count
+- Registered Users count
+
+**Course Catalog Table:**
+- Displays all courses with title, pathway, level, hours, status
+- Published/Draft status badges
+- Edit and Delete action buttons
+- Loading and empty states
+
+**Course Editor Modal:**
+- Create new course form
+- Edit existing course (pre-populated)
+- Fields: Title, Slug (auto-generated), Description, Pathway (dropdown), Difficulty, Hours, Code, Instructor, Category
+- Published/Featured checkboxes
+- Validation and error handling
+
+**Delete Confirmation Modal:**
+- Confirmation before delete
+- Shows course name
+
+**Features:**
+- Auto-generate slug from title
+- Pathways dropdown populated from API
+- Toast notifications for success/error
+- Loading spinners during API calls
+- Escape key closes modals
+- Responsive design
+
+#### Acceptance Criteria Progress
+- [x] Admin can create new course via UI
+- [x] Admin can edit existing course
+- [x] Admin can delete course with confirmation
+- [x] Admin can assign course to pathway
+- [x] Admin can set published/draft status
+- [ ] Admin can add modules to course (Phase B.2)
+- [ ] Admin can add lessons to module (Phase B.3)
+
 ---
 
 ## 6. DEPENDENCIES
@@ -262,12 +308,15 @@ UPDATE users SET role = 'tier2_admin' WHERE email = 'content@example.com';
 - [x] Non-admin users see "Access Denied" when visiting admin URLs
 
 ### Phase B: Content Management
-- [ ] Admin can create new course via UI
+- [x] Admin can create new course via UI
+- [x] Admin can edit existing courses
+- [x] Admin can delete courses with confirmation
+- [x] Admin can assign course to pathway
+- [x] Admin can set course as published/draft
 - [ ] Admin can add modules to course
 - [ ] Admin can add lessons to module
 - [ ] Admin can link external content URLs (freeCodeCamp, Coursera)
-- [ ] Admin can set course/module/lesson as published/draft
-- [ ] Changes reflect in public course catalog
+- [x] Changes reflect in public course catalog
 
 ### Phase C: User Management
 - [ ] Admin can view all users
@@ -286,7 +335,8 @@ UPDATE users SET role = 'tier2_admin' WHERE email = 'content@example.com';
 | 58 | 2025-12-17 | AD-004: Architecture decision locked (Pragmatic Enhancement) |
 | 58 | 2025-12-17 | Phase A Backend: Migration, middleware, routes deployed to production |
 | 58 | 2025-12-17 | Phase A Frontend: admin-auth-check.js deployed, admin pages protected |
+| 59 | 2025-12-17 | Phase B Frontend: Course Management UI complete (stats, table, modals) |
 
 ---
 
-*Last Updated: 2025-12-17 (Session 58)*
+*Last Updated: 2025-12-17 (Session 59)*
