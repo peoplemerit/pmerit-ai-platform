@@ -222,6 +222,8 @@ if (typeof window.logger === 'undefined') {
   function startMeterFromAudio(audioElement) {
     stopMeter();
 
+    console.log('🎵 Starting audio meter from Audio element');
+
     try {
       audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       source = audioCtx.createMediaElementSource(audioElement);
@@ -234,6 +236,7 @@ if (typeof window.logger === 'undefined') {
       analyser.connect(audioCtx.destination);
 
       const data = new Uint8Array(analyser.frequencyBinCount);
+      let emitCount = 0;
 
       meterInterval = setInterval(() => {
         analyser.getByteFrequencyData(data);
@@ -245,11 +248,19 @@ if (typeof window.logger === 'undefined') {
         }
         const intensity = Math.min(1, (sum / (data.length * 255)) * INTENSITY_AMPLIFIER);
 
+        emitCount++;
+        // Log first few emissions for debugging
+        if (emitCount <= 3) {
+          console.log(`🎵 Emitting tts:viseme #${emitCount}, intensity: ${intensity.toFixed(3)}`);
+        }
+
         // Emit viseme event with intensity
         BUS.dispatchEvent(new CustomEvent('tts:viseme', {
           detail: { intensity }
         }));
       }, VISEME_UPDATE_INTERVAL);
+
+      console.log('✅ Audio meter started, emitting viseme events at', VISEME_UPDATE_INTERVAL, 'ms intervals');
     } catch (error) {
       console.error('Failed to start audio meter:', error);
     }

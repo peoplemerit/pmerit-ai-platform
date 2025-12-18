@@ -1633,28 +1633,43 @@
      * Listens to tts:viseme events emitted by tts.js
      */
     initLipSync() {
+      console.log('👄 Initializing lip sync listener...');
+
       // Remove existing listener if any
       if (this._lipSyncHandler) {
         document.removeEventListener('tts:viseme', this._lipSyncHandler);
       }
 
+      // Track viseme event count for debugging
+      this._visemeCount = 0;
+
       this._lipSyncHandler = (event) => {
         const intensity = event.detail?.intensity || 0;
+        this._visemeCount++;
+
+        // Log first few viseme events for debugging
+        if (this._visemeCount <= 5 || this._visemeCount % 30 === 0) {
+          console.log(`👄 Viseme #${this._visemeCount} intensity: ${intensity.toFixed(3)}`);
+        }
+
         this.applyMouthMovement(intensity);
       };
 
       document.addEventListener('tts:viseme', this._lipSyncHandler);
+      console.log('👄 tts:viseme listener registered on document');
 
       // Also listen for TTS start/end to control animation state
       document.addEventListener('tts:start', () => {
         this._isSpeaking = true;
-        console.log('🎤 TTS started - lip sync active');
+        this._visemeCount = 0; // Reset count for new speech
+        console.log('🎤 TTS started - lip sync active, model loaded:', !!this.webgl?.model);
         // Start random blinks while speaking
         this.addSpeechBlink();
       });
 
       document.addEventListener('tts:end', () => {
         this._isSpeaking = false;
+        console.log(`🎤 TTS ended - received ${this._visemeCount} viseme events`);
         // Reset mouth to closed position
         this.applyMouthMovement(0);
         // Clear blink timeout
@@ -1662,10 +1677,9 @@
           clearTimeout(this._blinkTimeout);
           this._blinkTimeout = null;
         }
-        console.log('🎤 TTS ended - lip sync stopped');
       });
 
-      console.log('👄 Lip sync listener initialized (ARKit blend shapes)');
+      console.log('✅ Lip sync listener initialized (jaw bone rotation)');
     }
 
     /**
@@ -1732,11 +1746,18 @@
             this._boneNames.push(boneName);
           }
 
-          // Find jaw bone - Ready Player Me uses "Jaw" or similar
+          // Find jaw bone - Ready Player Me/Mixamo uses various naming conventions:
+          // "Jaw", "mixamorig:Jaw", "Head_Jaw", "CC_Base_Jaw", "jaw", etc.
+          // Also check for "mandible" (anatomical name for jaw)
           if (boneNameLower === 'jaw' ||
               boneNameLower.includes('jaw') ||
+              boneNameLower.includes(':jaw') ||
               boneNameLower === 'head_jaw' ||
-              boneNameLower === 'cc_base_jaw') {
+              boneNameLower === 'cc_base_jaw' ||
+              boneNameLower.includes('mandible') ||
+              boneNameLower === 'mixamorig:jaw' ||
+              boneName === 'Jaw' ||
+              boneName === 'mixamorig:Jaw') {
             // Rotate jaw on X-axis: 0 = closed, ~0.3 rad = open
             // Negative X rotation opens the jaw (rotates down)
             child.rotation.x = -mouthOpen * 0.25;
@@ -1753,16 +1774,45 @@
         }
       });
 
-      // Log all bone names once
-      if (!this._bonesLogged && this._boneNames && this._boneNames.length > 0) {
-        console.log('🦴 Avatar bones found:', this._boneNames.join(', '));
+      // Log all bone names once - ALWAYS log on first call
+      if (!this._bonesLogged) {
+        if (this._boneNames && this._boneNames.length > 0) {
+          console.log('🦴 Avatar bones found:', this._boneNames.join(', '));
+        } else {
+          console.warn('⚠️ No bones found in avatar model!');
+        }
         this._bonesLogged = true;
       }
 
-      // If no jaw bone found, log warning once
-      if (!foundJaw && !this._noJawWarned) {
-        console.warn('⚠️ No jaw bone found in avatar. Lip sync will not work.');
-        this._noJawWarned = true;
+      // If no jaw bone found, try fallback: animate the entire head slightly
+      // This provides SOME visual feedback even without a jaw bone
+      if (!foundJaw && !this._headFallbackWarned) {
+        console.warn('⚠️ No jaw bone found in avatar. Using head scale fallback for lip sync.');
+        this._headFallbackWarned = true;
+        this._useHeadFallback = true;
+      }
+
+      // Head fallback animation: subtle chin movement via head bone
+      if (!foundJaw && this._useHeadFallback) {
+        this.webgl.model.traverse((child) => {
+          if (child.isBone) {
+            const boneName = child.name || '';
+            const boneNameLower = boneName.toLowerCase();
+
+            // Find head bone
+            if (boneNameLower === 'head' ||
+                boneNameLower.includes(':head') ||
+                boneName === 'Head' ||
+                boneName === 'mixamorig:Head') {
+              // Very subtle head tilt to simulate talking
+              // Use Y scale to create chin movement effect
+              const baseScale = 1.0;
+              const scaleAmount = 1.0 + (mouthOpen * 0.015); // Very subtle
+              child.scale.y = scaleAmount;
+              foundJaw = true; // Treat as found since we have fallback
+            }
+          }
+        });
       }
     }
 
