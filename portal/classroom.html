@@ -1203,16 +1203,16 @@
           if (!hintShown) {
             const dragHint = document.getElementById('avatar-drag-hint');
             if (dragHint) {
-              // Show hint after 2 seconds
+              // Show hint after 1.5 seconds
               setTimeout(() => {
                 dragHint.classList.add('show');
 
-                // Hide hint after 5 seconds
+                // Hide hint after 10 seconds (longer for better readability)
                 setTimeout(() => {
                   dragHint.classList.remove('show');
                   localStorage.setItem('pmerit_avatar_drag_hint_shown', 'true');
-                }, 5000);
-              }, 2000);
+                }, 10000);
+              }, 1500);
 
               // Hide hint immediately if user starts dragging
               widget.addEventListener('touchstart', () => {
