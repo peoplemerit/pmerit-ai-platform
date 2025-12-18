@@ -1,6 +1,6 @@
 # RunPod TTS Server Deployment Instructions
 
-## Session 54: Voice Expansion
+## Session 61: Auto-Start Support
 
 **Pod ID:** `xfdsuii2ig7rsl`
 **Pod Name:** `pmerit-tts-v2`
@@ -8,7 +8,43 @@
 
 ---
 
-## Quick Deploy Steps
+## AUTO-START (Recommended)
+
+### Option 1: One-Line Start Command
+
+After pod boots, run this single command to download and start everything:
+
+```bash
+curl -sL https://raw.githubusercontent.com/peoplemerit/pmerit-ai-platform/main/scripts/runpod/start.sh | bash
+```
+
+This script will:
+1. Install Python dependencies (fastapi, uvicorn, edge-tts, piper-tts)
+2. Download the latest TTS server code from GitHub
+3. Download Piper voice models if not present
+4. Start the server in background mode
+5. Run health check to verify
+
+### Option 2: Configure RunPod Pod for Auto-Start
+
+1. Go to RunPod Console → Pods → `pmerit-tts-v2` → Edit
+2. In "Docker Command" field, enter:
+   ```
+   bash -c "curl -sL https://raw.githubusercontent.com/peoplemerit/pmerit-ai-platform/main/scripts/runpod/start.sh | KEEP_ALIVE=true bash"
+   ```
+3. Save and restart pod
+
+This makes the server start automatically every time the pod boots.
+
+### Option 3: Add to .bashrc (Manual Terminal Start)
+
+```bash
+echo 'curl -sL https://raw.githubusercontent.com/peoplemerit/pmerit-ai-platform/main/scripts/runpod/start.sh | bash' >> ~/.bashrc
+```
+
+---
+
+## Manual Deploy Steps (Alternative)
 
 ### Step 1: Connect to RunPod
 
@@ -118,6 +154,11 @@ Server not running. Start it:
 cd /workspace && python3 tts_server.py
 ```
 
+Or use auto-start:
+```bash
+curl -sL https://raw.githubusercontent.com/peoplemerit/pmerit-ai-platform/main/scripts/runpod/start.sh | bash
+```
+
 ### Edge TTS not working
 Install the package:
 ```bash
@@ -133,4 +174,4 @@ ls -la /workspace/piper/
 
 ---
 
-*Last Updated: December 14, 2025 - Session 54*
+*Last Updated: December 18, 2025 - Session 61*
