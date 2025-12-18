@@ -968,10 +968,20 @@
           // Handle both 'id' (mock/local) and 'userId' (API response) property names
           const userId = user?.id || user?.userId;
 
+          console.log('🔐 Auth check:', { user, userId });
+
           if (!user || !userId) {
             // Not logged in - redirect to sign up
             alert('Please sign in to enroll in courses.');
             window.location.href = '/index.html#sign-up';
+            return;
+          }
+
+          // Check if user has a mock ID (not a valid UUID)
+          const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+          if (!uuidRegex.test(userId)) {
+            console.warn('⚠️ User has mock/demo ID, not a valid UUID:', userId);
+            alert('Your account is in offline/demo mode. Please sign out and create a real account to enroll in courses.');
             return;
           }
 
