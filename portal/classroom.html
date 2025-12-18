@@ -324,6 +324,11 @@
     <div class="avatar-pip__footer">
       <span class="avatar-pip__status" id="vh-status-text">Ready</span>
     </div>
+    <!-- Mobile drag hint tooltip -->
+    <div class="avatar-pip__drag-hint" id="avatar-drag-hint">
+      <i class="fas fa-hand-pointer"></i>
+      <span>Drag me anywhere!</span>
+    </div>
   </div>
 
   <script>
@@ -1190,6 +1195,34 @@
           closeBtn.addEventListener('click', () => {
             toggleVirtualHuman();
           });
+        }
+
+        // Show drag hint on mobile for first-time users
+        if (isMobile()) {
+          const hintShown = localStorage.getItem('pmerit_avatar_drag_hint_shown');
+          if (!hintShown) {
+            const dragHint = document.getElementById('avatar-drag-hint');
+            if (dragHint) {
+              // Show hint after 2 seconds
+              setTimeout(() => {
+                dragHint.classList.add('show');
+
+                // Hide hint after 5 seconds
+                setTimeout(() => {
+                  dragHint.classList.remove('show');
+                  localStorage.setItem('pmerit_avatar_drag_hint_shown', 'true');
+                }, 5000);
+              }, 2000);
+
+              // Hide hint immediately if user starts dragging
+              widget.addEventListener('touchstart', () => {
+                if (dragHint.classList.contains('show')) {
+                  dragHint.classList.remove('show');
+                  localStorage.setItem('pmerit_avatar_drag_hint_shown', 'true');
+                }
+              }, { once: true });
+            }
+          }
         }
       }
 
