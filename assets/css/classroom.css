@@ -1469,10 +1469,10 @@ body.classroom-body {
     height: 100% !important;
     border-radius: 50% !important;
     object-fit: cover !important;
-    z-index: 2;
+    z-index: 1;
   }
 
-  /* Fallback icon - always visible behind canvas */
+  /* Fallback icon - shows ABOVE canvas (canvas is transparent when empty) */
   .avatar-pip__fallback {
     position: absolute !important;
     top: 0 !important;
@@ -1483,8 +1483,9 @@ body.classroom-body {
     width: 100% !important;
     height: 100% !important;
     border-radius: 50% !important;
-    background: transparent !important; /* Stage has the gradient */
-    z-index: 1;
+    background: transparent !important;
+    z-index: 3; /* Above canvas so icon shows through transparent canvas */
+    pointer-events: none; /* Allow clicks to pass through to canvas */
   }
 
   .avatar-pip__fallback i {
