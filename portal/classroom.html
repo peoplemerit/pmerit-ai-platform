@@ -193,6 +193,131 @@
     .avatar-settings-modal__footer .btn:hover {
       background: var(--color-primary-hover, #5a52e0);
     }
+
+    /* Voice selection row with preview button */
+    .setting-voice-row {
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+    }
+    .setting-voice-row select {
+      flex: 1;
+    }
+    .btn-preview {
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.3);
+      color: var(--color-text, #fff);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .btn-preview:hover {
+      background: var(--color-primary, #6C63FF);
+      border-color: var(--color-primary, #6C63FF);
+    }
+    .btn-preview:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .btn-preview.playing i {
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* Premium upsell modal */
+    .premium-upsell-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .premium-upsell-modal__content {
+      background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+      border-radius: 16px;
+      width: 90%;
+      max-width: 420px;
+      text-align: center;
+      padding: 32px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(108, 99, 255, 0.3);
+    }
+    .premium-upsell-modal__icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+    .premium-upsell-modal__title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .premium-upsell-modal__message {
+      color: var(--color-text-muted, #aaa);
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    .premium-upsell-modal__features {
+      text-align: left;
+      margin-bottom: 24px;
+      padding: 16px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+    }
+    .premium-upsell-modal__features li {
+      color: #fff;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .premium-upsell-modal__features li i {
+      color: #FFD700;
+    }
+    .premium-upsell-modal__buttons {
+      display: flex;
+      gap: 12px;
+      flex-direction: column;
+    }
+    .premium-upsell-modal__buttons .btn-upgrade {
+      padding: 14px 24px;
+      background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+      border: none;
+      border-radius: 8px;
+      color: #000;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .premium-upsell-modal__buttons .btn-upgrade:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
+    }
+    .premium-upsell-modal__buttons .btn-cancel {
+      padding: 10px;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      color: var(--color-text-muted, #888);
+      cursor: pointer;
+    }
+    .premium-upsell-modal__buttons .btn-cancel:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
   </style>
 
   <!-- Three.js r137 (last version with global THREE.GLTFLoader in examples/js/) -->
@@ -440,13 +565,26 @@
                 <label for="voice-select">
                   <i class="fas fa-microphone-alt"></i> Voice
                 </label>
-                <select id="voice-select">
-                  <option value="standard-male">Male (Standard)</option>
-                  <option value="standard-female">Female (Standard)</option>
-                  <option value="standard-young">Young Voice</option>
-                  <option value="primo" disabled>Male Premium (Coming Soon)</option>
-                  <option value="primo-female" disabled>Female Premium (Coming Soon)</option>
-                </select>
+                <div class="setting-voice-row">
+                  <select id="voice-select">
+                    <optgroup label="Server Voices">
+                      <option value="standard-male">Professor Merit (Male)</option>
+                      <option value="standard-female">Dr. Ada (Female)</option>
+                      <option value="standard-young">Assistant (Young)</option>
+                    </optgroup>
+                    <optgroup label="Browser Voices (Natural)">
+                      <option value="browser">Browser Voice (Auto-select)</option>
+                    </optgroup>
+                    <optgroup label="Premium Voices">
+                      <option value="primo" data-premium="true">Natural Male</option>
+                      <option value="primo-female" data-premium="true">Natural Female</option>
+                    </optgroup>
+                  </select>
+                  <button type="button" id="preview-voice-btn" class="btn-preview" title="Preview Voice">
+                    <i class="fas fa-play"></i>
+                  </button>
+                </div>
+                <small id="voice-description">Server-generated voice using Edge TTS</small>
               </div>
 
               <!-- Avatar Toggle -->
@@ -471,6 +609,32 @@
             <div class="avatar-settings-modal__footer">
               <button id="avatar-settings-save" class="btn btn--primary">
                 <i class="fas fa-check"></i> Save Settings
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Premium Upsell Modal -->
+        <div id="premium-upsell-modal" class="premium-upsell-modal" style="display: none;">
+          <div class="premium-upsell-modal__content">
+            <div class="premium-upsell-modal__icon">✨</div>
+            <h3 class="premium-upsell-modal__title">Premium Voice Selected</h3>
+            <p class="premium-upsell-modal__message">
+              Unlock ultra-natural AI voices that sound like real human tutors.
+            </p>
+            <ul class="premium-upsell-modal__features">
+              <li><i class="fas fa-check"></i> Natural-sounding AI voices</li>
+              <li><i class="fas fa-check"></i> Multiple voice personalities</li>
+              <li><i class="fas fa-check"></i> Faster audio generation</li>
+              <li><i class="fas fa-check"></i> 50+ language support</li>
+              <li><i class="fas fa-check"></i> Priority support</li>
+            </ul>
+            <div class="premium-upsell-modal__buttons">
+              <button id="premium-upgrade-btn" class="btn-upgrade">
+                <i class="fas fa-crown"></i> Upgrade to Premium
+              </button>
+              <button id="premium-cancel-btn" class="btn-cancel">
+                Maybe Later
               </button>
             </div>
           </div>
@@ -590,7 +754,9 @@
         avatarManager: null,
         gpuStreaming: null,
         sessionStart: Date.now(),
-        chatMessages: []
+        chatMessages: [],
+        userHasInteracted: false,  // Track if user has clicked/typed (for autoplay policy)
+        welcomeSpoken: false       // Track if welcome has been spoken
       };
 
       // Expose state for debugging
@@ -693,23 +859,60 @@
         console.log('✅ Classroom initialized');
         console.log('🎮 Digital Desk modules loaded: ProctorController, VisionAI, GPUStreaming');
 
-        // Speak welcome message with TTS after avatar is ready
-        // Small delay to ensure everything is fully initialized
-        setTimeout(async () => {
-          await speakWelcomeMessage();
-        }, 1500);
+        // Set up user interaction listener for autoplay policy
+        // Browser requires user interaction before playing audio
+        setupUserInteractionListener();
+      }
+
+      /**
+       * Set up listener to detect first user interaction
+       * This enables TTS after user clicks/types (required by browser autoplay policy)
+       */
+      function setupUserInteractionListener() {
+        const interactionHandler = () => {
+          if (!state.userHasInteracted) {
+            state.userHasInteracted = true;
+            console.log('🎤 User interaction detected - TTS enabled');
+
+            // Speak welcome message on first interaction if not already spoken
+            if (!state.welcomeSpoken) {
+              speakWelcomeMessage();
+            }
+          }
+        };
+
+        // Listen for any user interaction
+        document.addEventListener('click', interactionHandler, { once: false });
+        document.addEventListener('keydown', interactionHandler, { once: false });
+        document.addEventListener('touchstart', interactionHandler, { once: false });
+
+        console.log('🎤 Waiting for user interaction to enable TTS (browser autoplay policy)');
       }
 
       /**
        * Speak welcome message with TTS
-       * Called after avatar and TTS are fully initialized
+       * Only called after user has interacted with the page
        */
       async function speakWelcomeMessage() {
+        // Check if already spoken
+        if (state.welcomeSpoken) {
+          return;
+        }
+
+        // Check if user has interacted (required for autoplay)
+        if (!state.userHasInteracted) {
+          console.log('🎤 Welcome speech deferred - waiting for user interaction');
+          return;
+        }
+
         const vhEnabled = localStorage.getItem('pmerit_vh_enabled') !== 'false';
         if (!window.TTS || !vhEnabled) {
           console.log('🎤 Welcome speech skipped - TTS:', !!window.TTS, 'VH:', vhEnabled);
           return;
         }
+
+        // Mark as spoken to prevent repeats
+        state.welcomeSpoken = true;
 
         // Get a short welcome message based on session state
         let welcomeText;
@@ -726,6 +929,8 @@
           console.log('🎤 Welcome speech completed');
         } catch (error) {
           console.warn('🎤 Welcome speech failed:', error.message);
+          // Reset flag so we can try again
+          state.welcomeSpoken = false;
         }
       }
 
@@ -1159,10 +1364,59 @@
         const speechRateInput = document.getElementById('speech-rate');
         const speechRateValue = document.getElementById('speech-rate-value');
         const voiceSelect = document.getElementById('voice-select');
+        const voiceDescription = document.getElementById('voice-description');
+        const previewVoiceBtn = document.getElementById('preview-voice-btn');
         const avatarEnabled = document.getElementById('avatar-enabled');
         const captionsEnabled = document.getElementById('captions-enabled');
+        const premiumModal = document.getElementById('premium-upsell-modal');
+        const premiumUpgradeBtn = document.getElementById('premium-upgrade-btn');
+        const premiumCancelBtn = document.getElementById('premium-cancel-btn');
 
         if (!settingsBtn || !settingsModal) return;
+
+        // Voice descriptions
+        const voiceDescriptions = {
+          'standard-male': 'Professor Merit - Clear male voice (Edge TTS)',
+          'standard-female': 'Dr. Ada - Clear female voice (Edge TTS)',
+          'standard-young': 'Assistant - Friendly young voice (Edge TTS)',
+          'browser': 'Uses your device\'s built-in text-to-speech',
+          'primo': '⭐ Premium - Ultra-natural male voice (Piper TTS)',
+          'primo-female': '⭐ Premium - Ultra-natural female voice (Piper TTS)'
+        };
+
+        // Populate browser voices dynamically
+        function populateBrowserVoices() {
+          const browserOptgroup = voiceSelect.querySelector('optgroup[label="Browser Voices (Natural)"]');
+          if (!browserOptgroup || !window.speechSynthesis) return;
+
+          const voices = speechSynthesis.getVoices();
+          if (voices.length === 0) return;
+
+          // Clear existing options except the auto-select one
+          while (browserOptgroup.children.length > 1) {
+            browserOptgroup.removeChild(browserOptgroup.lastChild);
+          }
+
+          // Add high-quality English voices
+          const englishVoices = voices.filter(v =>
+            v.lang.startsWith('en') &&
+            (v.name.includes('Microsoft') || v.name.includes('Google') || v.localService)
+          ).slice(0, 5); // Limit to 5 best voices
+
+          englishVoices.forEach(voice => {
+            const option = document.createElement('option');
+            option.value = `browser:${voice.name}`;
+            const label = voice.name.replace('Microsoft ', '').replace('Google ', '');
+            option.textContent = label.substring(0, 30);
+            browserOptgroup.appendChild(option);
+          });
+        }
+
+        // Populate voices when available
+        if (window.speechSynthesis) {
+          populateBrowserVoices();
+          speechSynthesis.onvoiceschanged = populateBrowserVoices;
+        }
 
         // Load saved settings
         const settings = window.TTS?.getSettings() || {};
@@ -1172,9 +1426,131 @@
         avatarEnabled.checked = localStorage.getItem('pmerit_vh_enabled') !== 'false';
         captionsEnabled.checked = localStorage.getItem('pmerit_captions_enabled') !== 'false';
 
+        // Update voice description
+        function updateVoiceDescription() {
+          const voice = voiceSelect.value;
+          if (voice.startsWith('browser:')) {
+            voiceDescription.textContent = 'Browser voice: ' + voice.replace('browser:', '');
+          } else {
+            voiceDescription.textContent = voiceDescriptions[voice] || 'Server-generated voice';
+          }
+        }
+        updateVoiceDescription();
+
+        // Update description when voice changes
+        voiceSelect.addEventListener('change', () => {
+          updateVoiceDescription();
+
+          // Check if premium voice selected
+          const selectedOption = voiceSelect.selectedOptions[0];
+          if (selectedOption && selectedOption.dataset.premium === 'true') {
+            // Check if user has premium (for now, assume not - will integrate with subscription system)
+            const hasPremium = localStorage.getItem('pmerit_subscription_tier') === 'premium';
+            if (!hasPremium && premiumModal) {
+              premiumModal.style.display = 'flex';
+            }
+          }
+        });
+
         // Update rate display when slider changes
         speechRateInput.addEventListener('input', () => {
           speechRateValue.textContent = parseFloat(speechRateInput.value).toFixed(2) + 'x';
+        });
+
+        // Voice preview functionality
+        let previewAudio = null;
+        previewVoiceBtn?.addEventListener('click', async () => {
+          const voice = voiceSelect.value;
+          const previewText = 'Hello! I\'m your AI tutor. Let me help you learn today.';
+
+          // Stop any current preview
+          if (previewAudio) {
+            previewAudio.pause();
+            previewAudio = null;
+          }
+          window.TTS?.stop();
+
+          // Update button state
+          previewVoiceBtn.classList.add('playing');
+          previewVoiceBtn.disabled = true;
+          previewVoiceBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+          try {
+            if (voice === 'browser' || voice.startsWith('browser:')) {
+              // Browser voice preview
+              const utter = new SpeechSynthesisUtterance(previewText);
+              utter.rate = parseFloat(speechRateInput.value);
+
+              if (voice.startsWith('browser:')) {
+                const voiceName = voice.replace('browser:', '');
+                const voices = speechSynthesis.getVoices();
+                const selectedVoice = voices.find(v => v.name === voiceName);
+                if (selectedVoice) utter.voice = selectedVoice;
+              }
+
+              utter.onend = () => {
+                previewVoiceBtn.classList.remove('playing');
+                previewVoiceBtn.disabled = false;
+                previewVoiceBtn.innerHTML = '<i class="fas fa-play"></i>';
+              };
+              utter.onerror = utter.onend;
+
+              speechSynthesis.speak(utter);
+            } else {
+              // Server voice preview
+              const apiBase = window.CONFIG?.API_BASE_URL || 'https://pmerit-api-worker.peoplemerit.workers.dev';
+              const res = await fetch(`${apiBase}/api/v1/tts`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: previewText, voice: voice })
+              });
+
+              if (!res.ok) throw new Error('Preview failed');
+
+              const blob = await res.blob();
+              const url = URL.createObjectURL(blob);
+              previewAudio = new Audio(url);
+              previewAudio.playbackRate = parseFloat(speechRateInput.value);
+
+              previewAudio.onended = () => {
+                previewVoiceBtn.classList.remove('playing');
+                previewVoiceBtn.disabled = false;
+                previewVoiceBtn.innerHTML = '<i class="fas fa-play"></i>';
+                URL.revokeObjectURL(url);
+                previewAudio = null;
+              };
+              previewAudio.onerror = previewAudio.onended;
+
+              await previewAudio.play();
+            }
+          } catch (error) {
+            console.error('Voice preview failed:', error);
+            previewVoiceBtn.classList.remove('playing');
+            previewVoiceBtn.disabled = false;
+            previewVoiceBtn.innerHTML = '<i class="fas fa-play"></i>';
+          }
+        });
+
+        // Premium upsell modal handlers
+        premiumUpgradeBtn?.addEventListener('click', () => {
+          // Navigate to subscription page
+          window.location.href = '/portal/subscription.html?upgrade=premium&source=voice';
+        });
+
+        premiumCancelBtn?.addEventListener('click', () => {
+          premiumModal.style.display = 'none';
+          // Reset to default free voice
+          voiceSelect.value = 'standard-male';
+          updateVoiceDescription();
+        });
+
+        // Close premium modal on background click
+        premiumModal?.addEventListener('click', (e) => {
+          if (e.target === premiumModal) {
+            premiumModal.style.display = 'none';
+            voiceSelect.value = 'standard-male';
+            updateVoiceDescription();
+          }
         });
 
         // Open modal

@@ -568,16 +568,23 @@ if (typeof window.logger === 'undefined') {
       voiceEngine = settings.voiceEngine
     } = options;
 
+    // Check if browser voice is selected (either 'browser' or 'browser:VoiceName')
+    const isBrowserVoice = voiceEngine === 'browser' || voiceEngine?.startsWith('browser:');
+    const browserVoiceName = voiceEngine?.startsWith('browser:') ? voiceEngine.replace('browser:', '') : voiceName;
+
     // Emit analytics event for TTS engine selection
     window.analytics?.track('tts_engine', {
       page: aid(),
       ts: Date.now(),
-      engine: useServer && voiceEngine !== 'browser' ? voiceEngine : 'browser',
-      useServer: useServer
+      engine: isBrowserVoice ? 'browser' : voiceEngine,
+      useServer: useServer && !isBrowserVoice
     });
 
     try {
-      if (useServer && voiceEngine !== 'browser') {
+      if (isBrowserVoice) {
+        // Use Web Speech API with specific voice if selected
+        await speakWebSpeech(text, browserVoiceName);
+      } else if (useServer) {
         // Try server-side TTS with selected engine
         await speakViaServer(text, voiceEngine);
       } else {
@@ -588,7 +595,7 @@ if (typeof window.logger === 'undefined') {
       console.error('TTS error:', error);
 
       // Fallback to Web Speech if server fails
-      if (useServer && window.speechSynthesis && error.message === 'TTS_FALLBACK_REQUIRED') {
+      if (useServer && !isBrowserVoice && window.speechSynthesis && error.message === 'TTS_FALLBACK_REQUIRED') {
         console.warn('Server TTS unavailable, falling back to Web Speech API');
 
         // Show user notification
