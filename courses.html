@@ -970,9 +970,13 @@
 
           if (!user || !userId) {
             // Not logged in - redirect to sign up
+            alert('Please sign in to enroll in courses.');
             window.location.href = '/index.html#sign-up';
             return;
           }
+
+          // Show loading state
+          console.log(`📚 Enrolling user ${userId} in course ${courseId}...`);
 
           const response = await fetch(`${this.API_BASE}/courses/${courseId}/enroll`, {
             method: 'POST',
@@ -983,8 +987,14 @@
           });
 
           const data = await response.json();
+          console.log('Enrollment response:', data);
 
           if (!data.success) {
+            // If already enrolled, redirect to classroom
+            if (data.error && data.error.includes('already enrolled')) {
+              window.location.href = `/portal/classroom.html?courseId=${courseId}`;
+              return;
+            }
             throw new Error(data.error || 'Enrollment failed');
           }
 
@@ -993,7 +1003,9 @@
 
         } catch (error) {
           console.error('Failed to enroll in course:', error);
-          alert('Failed to enroll in course. Please try again.');
+          // Show more specific error message
+          const errorMsg = error.message || 'Unknown error';
+          alert(`Failed to enroll in course: ${errorMsg}`);
         }
       },
       
