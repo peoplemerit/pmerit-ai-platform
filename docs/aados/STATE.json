@@ -1,11 +1,11 @@
 {
-  "schema_version": "2.8",
-  "schema_notes": "Session 59 - SCOPE_Learning_Pathways and SCOPE_courses frontend complete",
+  "schema_version": "3.0",
+  "schema_notes": "Session 61 - donate.html created, SCOPE_pricing and SCOPE_donate frontend complete",
 
-  "last_updated": "2025-12-17T17:40:00Z",
+  "last_updated": "2025-12-18T01:30:00Z",
   "last_updated_by": "claude-code",
 
-  "session_number": 59,
+  "session_number": 61,
   "last_audit_date": "2025-12-17",
 
   "current_phase": "POST_CLASSROOM",
@@ -26,7 +26,7 @@
     "version": "1.0",
     "location": "pmerit-ai-platform/.claude/scopes/",
     "master_scope": ".claude/scopes/MASTER_SCOPE.md",
-    "active_scope": "SCOPE_courses",
+    "active_scope": "SCOPE_pricing",
     "scopes": {
       "SCOPE_HOMEPAGE": { "status": "complete", "file": ".claude/scopes/SCOPE_HOMEPAGE.md" },
       "SCOPE_Select_Language": { "status": "audited", "file": ".claude/scopes/SCOPE_Select_Language.md" },
@@ -39,7 +39,9 @@
       "SCOPE_CREDENTIALS": { "status": "not_started", "file": ".claude/scopes/SCOPE_CREDENTIALS.md" },
       "SCOPE_TTS": { "status": "complete", "file": ".claude/scopes/SCOPE_TTS.md" },
       "SCOPE_courses": { "status": "implemented", "file": ".claude/scopes/SCOPE_courses.md" },
-      "SCOPE_Learning_Pathways": { "status": "complete", "file": ".claude/scopes/SCOPE_Learning_Pathways.md" }
+      "SCOPE_Learning_Pathways": { "status": "complete", "file": ".claude/scopes/SCOPE_Learning_Pathways.md" },
+      "SCOPE_pricing": { "status": "frontend_complete", "file": ".claude/scopes/SCOPE_pricing.md" },
+      "SCOPE_donate": { "status": "frontend_complete", "file": ".claude/scopes/SCOPE_donate.md" }
     }
   },
 
@@ -205,6 +207,18 @@
   },
 
   "recent_changes": [
+    {
+      "session": 61,
+      "date": "2025-12-18",
+      "change": "donate.html CREATED, pricing.html CTAs updated",
+      "impact": "Created donate.html (380 lines) with full donation UI: Impact stats ($10-500 levels), One-Time/Monthly/Pay It Forward options, Corporate section, Crypto/Stock/Planned Giving, FAQ, Transparency table, LLC Charter info (#202605331DC). Updated pricing.html: Pay It Forward link now goes to donate.html, Support Our Mission CTA goes to donate.html. Both scopes marked frontend_complete. Backend payment integration pending."
+    },
+    {
+      "session": 60,
+      "date": "2025-12-17",
+      "change": "SCOPE_pricing and SCOPE_donate audited",
+      "impact": "pricing.md: Full audit of pricing.html (422 lines) - 3 tiers (Free/$2.99 Premium/Pay It Forward), Pay-for-Accountability model, FAQ, growth projections. Backend NOT implemented. donate.md: Page DOES NOT EXIST - header.html links to donate.html return 404. Recommended page structure documented. Both scopes ready for Claude Web to write HANDOFF_DOCUMENT requirements."
+    },
     {
       "session": 59,
       "date": "2025-12-17",
