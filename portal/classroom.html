@@ -455,6 +455,41 @@
 
         console.log('✅ Classroom initialized');
         console.log('🎮 Digital Desk modules loaded: ProctorController, VisionAI, GPUStreaming');
+
+        // Speak welcome message with TTS after avatar is ready
+        // Small delay to ensure everything is fully initialized
+        setTimeout(async () => {
+          await speakWelcomeMessage();
+        }, 1500);
+      }
+
+      /**
+       * Speak welcome message with TTS
+       * Called after avatar and TTS are fully initialized
+       */
+      async function speakWelcomeMessage() {
+        const vhEnabled = localStorage.getItem('pmerit_vh_enabled') !== 'false';
+        if (!window.TTS || !vhEnabled) {
+          console.log('🎤 Welcome speech skipped - TTS:', !!window.TTS, 'VH:', vhEnabled);
+          return;
+        }
+
+        // Get a short welcome message based on session state
+        let welcomeText;
+        if (state.courseData?.title) {
+          welcomeText = `Welcome to ${state.courseData.title}. I'm your AI tutor. Ask me anything!`;
+        } else {
+          welcomeText = "Hello! I'm your AI tutor. How can I help you today?";
+        }
+
+        console.log('🎤 Speaking welcome message:', welcomeText);
+
+        try {
+          await window.TTS.speak(welcomeText);
+          console.log('🎤 Welcome speech completed');
+        } catch (error) {
+          console.warn('🎤 Welcome speech failed:', error.message);
+        }
       }
 
       // Show error message
@@ -1612,12 +1647,17 @@
 
           // Speak with TTS - this dispatches tts:viseme events for GPUStreaming lip-sync
           const vhEnabled = localStorage.getItem('pmerit_vh_enabled') !== 'false';
+          console.log('🎤 TTS Check - TTS available:', !!window.TTS, 'VH enabled:', vhEnabled);
           if (window.TTS && vhEnabled) {
             try {
+              console.log('🎤 Starting TTS speech for:', aiResponse.substring(0, 50) + '...');
               await window.TTS.speak(aiResponse);
+              console.log('🎤 TTS speech completed');
             } catch (ttsError) {
               console.warn('TTS speech failed:', ttsError.message);
             }
+          } else {
+            console.log('🎤 TTS skipped - TTS:', !!window.TTS, 'vhEnabled:', vhEnabled);
           }
 
         } catch (error) {

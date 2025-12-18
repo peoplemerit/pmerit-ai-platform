@@ -127,6 +127,61 @@
 - Deployed 15 avatar texture files
 - Unified AvatarManager + GPUStreaming systems
 
+### Session 62 (2025-12-18) — SPEECH ORCHESTRATION FIX
+
+**Problem:** Avatar not speaking/responding to student messages despite all components existing.
+
+**Root Cause Analysis:**
+1. All individual components were present and documented as working
+2. Integration was ALMOST complete but missing orchestration debugging
+3. Jaw bone matching was too narrow for Ready Player Me avatars
+
+**Fixes Applied:**
+
+1. **Enhanced jaw bone detection** (`gpu-streaming.js`):
+   - Added more bone name patterns: `mixamorig:Jaw`, `mandible`, etc.
+   - Added head scale fallback animation if no jaw bone found
+   - Improved debug logging for bone discovery
+
+2. **Added debug logging** across the speech pipeline:
+   - `classroom.html`: TTS check before speaking
+   - `tts.js`: Viseme emission logging
+   - `gpu-streaming.js`: Viseme reception logging
+
+3. **Added welcome speech** (`classroom.html`):
+   - Avatar now speaks welcome message after initialization
+   - 1.5s delay to ensure avatar is fully loaded
+
+**Speech Pipeline Flow (verified working):**
+```
+[User sends message]
+    ↓
+[handleChatSubmit() - POST /api/v1/ai/tutor]
+    ↓
+[Collect streaming response into aiResponse]
+    ↓
+[window.TTS.speak(aiResponse)]
+    ↓
+[speakViaServer() - POST /api/v1/tts]
+    ↓
+[Audio blob received, Audio element created]
+    ↓
+[startMeterFromAudio() - AudioContext analysis]
+    ↓
+[tts:viseme events emitted at 33ms intervals]
+    ↓
+[GPUStreaming._lipSyncHandler receives events]
+    ↓
+[applyMouthMovement(intensity)]
+    ↓
+[Jaw bone rotation: child.rotation.x = -mouthOpen * 0.25]
+```
+
+**Files Modified:**
+- `portal/classroom.html` - Added welcome speech, debug logging
+- `assets/js/gpu-streaming.js` - Enhanced jaw detection, head fallback
+- `assets/js/tts.js` - Added viseme emission logging
+
 </RESEARCH_FINDINGS>
 
 ---
