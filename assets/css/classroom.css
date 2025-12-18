@@ -1458,9 +1458,7 @@ body.classroom-body {
     height: 100% !important;
     border-radius: 50% !important;
     overflow: hidden !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
   }
 
   .avatar-pip__canvas {
@@ -1474,22 +1472,25 @@ body.classroom-body {
     z-index: 2;
   }
 
+  /* Fallback icon - always visible behind canvas */
   .avatar-pip__fallback {
-    position: relative !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     width: 100% !important;
     height: 100% !important;
     border-radius: 50% !important;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    background: transparent !important; /* Stage has the gradient */
     z-index: 1;
   }
 
   .avatar-pip__fallback i {
-    font-size: 40px !important;
+    font-size: 44px !important;
     color: white !important;
-    display: block !important;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
   }
 
   .avatar-pip__live-badge {
