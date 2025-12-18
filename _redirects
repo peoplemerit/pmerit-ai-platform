@@ -28,6 +28,15 @@
 /assessment-results.html /assessment-results.html 200!
 
 # ==============================================================================
+# PORTAL REDIRECTS
+# ==============================================================================
+# Portal pages redirect to their actual locations at root level
+# The dashboard.html exists at root, not in /portal/
+
+/portal/dashboard.html /dashboard.html 301
+/portal/dashboard /dashboard.html 301
+
+# ==============================================================================
 # CAREER TO PATHWAYS REDIRECT (SEO)
 # ==============================================================================
 # The /career page has been renamed to /pathways for accuracy
