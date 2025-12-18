@@ -1516,6 +1516,57 @@ body.classroom-body {
     height: 8px !important;
   }
 
+  /* Drag hint tooltip - shows once on first visit */
+  .avatar-pip__drag-hint {
+    position: absolute;
+    bottom: -45px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 201;
+  }
+
+  .avatar-pip__drag-hint::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid rgba(0, 0, 0, 0.85);
+  }
+
+  .avatar-pip__drag-hint i {
+    font-size: 14px;
+    color: var(--classroom-accent);
+    animation: hint-wiggle 1s ease-in-out infinite;
+  }
+
+  .avatar-pip__drag-hint.show {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  @keyframes hint-wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-15deg); }
+    75% { transform: rotate(15deg); }
+  }
+
   /* Hide the avatar-pip when VH is disabled */
   .avatar-pip.hidden {
     display: none !important;
