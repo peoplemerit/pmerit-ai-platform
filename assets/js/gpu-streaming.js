@@ -1440,6 +1440,9 @@
 
             console.log(`✅ 3D avatar loaded: ${path}`);
 
+            // Debug: Log all bones and morph targets in the model
+            this.debugModelStructure();
+
             // Initialize lip sync after model loads
             this.initLipSync();
 
@@ -1624,6 +1627,75 @@
       console.log('✅ WebGL resources disposed');
     }
 
+    /**
+     * Debug: Log all bones and morph targets in the loaded model
+     * Helps identify what's available for lip sync animation
+     */
+    debugModelStructure() {
+      if (!this.webgl?.model) {
+        console.warn('⚠️ No model loaded for debugging');
+        return;
+      }
+
+      const bones = [];
+      const morphTargets = [];
+      const meshes = [];
+
+      this.webgl.model.traverse((child) => {
+        if (child.isBone) {
+          bones.push({
+            name: child.name,
+            parent: child.parent?.name || 'root'
+          });
+        }
+
+        if (child.isMesh || child.isSkinnedMesh) {
+          meshes.push(child.name || 'unnamed');
+
+          if (child.morphTargetDictionary) {
+            const targets = Object.keys(child.morphTargetDictionary);
+            targets.forEach(t => {
+              if (!morphTargets.includes(t)) {
+                morphTargets.push(t);
+              }
+            });
+          }
+        }
+      });
+
+      console.log('=== AVATAR MODEL STRUCTURE ===');
+      console.log(`📦 Meshes (${meshes.length}):`, meshes.join(', '));
+      console.log(`🦴 Bones (${bones.length}):`, bones.map(b => b.name).join(', '));
+      console.log(`🎭 Morph Targets (${morphTargets.length}):`, morphTargets.join(', '));
+
+      // Check for jaw-related bones
+      const jawBones = bones.filter(b =>
+        b.name.toLowerCase().includes('jaw') ||
+        b.name.toLowerCase().includes('mandible')
+      );
+      if (jawBones.length > 0) {
+        console.log(`✅ Found jaw bones:`, jawBones.map(b => b.name).join(', '));
+      } else {
+        console.warn(`⚠️ No jaw bones found. Available bones for fallback:`, bones.filter(b =>
+          b.name.toLowerCase().includes('head') ||
+          b.name.toLowerCase().includes('neck')
+        ).map(b => b.name).join(', '));
+      }
+
+      // Check for mouth-related morph targets
+      const mouthMorphs = morphTargets.filter(t =>
+        t.toLowerCase().includes('mouth') ||
+        t.toLowerCase().includes('jaw') ||
+        t.toLowerCase().includes('viseme') ||
+        t.toLowerCase().includes('lip')
+      );
+      if (mouthMorphs.length > 0) {
+        console.log(`✅ Found mouth morph targets:`, mouthMorphs.join(', '));
+      }
+
+      console.log('=== END MODEL STRUCTURE ===');
+    }
+
     // =========================================================================
     // Lip Sync - Connect TTS audio to avatar mouth movement
     // =========================================================================
@@ -1792,24 +1864,51 @@
         this._useHeadFallback = true;
       }
 
-      // Head fallback animation: subtle chin movement via head bone
+      // Head fallback animation: use multiple techniques for visible movement
       if (!foundJaw && this._useHeadFallback) {
         this.webgl.model.traverse((child) => {
-          if (child.isBone) {
+          // Try morph targets first (Ready Player Me may have them even in "no-morph" export)
+          if (child.isMesh && child.morphTargetDictionary && child.morphTargetInfluences) {
+            const dict = child.morphTargetDictionary;
+            const influences = child.morphTargetInfluences;
+
+            // Try various mouth-related morph targets
+            const mouthTargets = ['mouthOpen', 'jawOpen', 'viseme_aa', 'viseme_O', 'mouth_open', 'A', 'mouthWide'];
+            for (const target of mouthTargets) {
+              if (dict[target] !== undefined) {
+                influences[dict[target]] = mouthOpen * 0.8;
+                foundJaw = true;
+                if (!this._morphTargetFound) {
+                  console.log(`✅ Found morph target "${target}" for lip sync`);
+                  this._morphTargetFound = true;
+                }
+              }
+            }
+          }
+
+          // Bone-based head animation as secondary fallback
+          if (child.isBone && !foundJaw) {
             const boneName = child.name || '';
             const boneNameLower = boneName.toLowerCase();
 
-            // Find head bone
+            // Find head bone for nod animation
             if (boneNameLower === 'head' ||
                 boneNameLower.includes(':head') ||
                 boneName === 'Head' ||
                 boneName === 'mixamorig:Head') {
-              // Very subtle head tilt to simulate talking
-              // Use Y scale to create chin movement effect
-              const baseScale = 1.0;
-              const scaleAmount = 1.0 + (mouthOpen * 0.015); // Very subtle
-              child.scale.y = scaleAmount;
-              foundJaw = true; // Treat as found since we have fallback
+              // More visible head movement: slight nod while speaking
+              // Use rotation instead of scale for more natural movement
+              child.rotation.x = -mouthOpen * 0.08; // Nod forward when mouth opens
+              child.rotation.z = Math.sin(Date.now() / 300) * mouthOpen * 0.02; // Slight sway
+              foundJaw = true;
+            }
+
+            // Try neck bone too
+            if (boneNameLower === 'neck' ||
+                boneNameLower.includes(':neck') ||
+                boneName === 'Neck' ||
+                boneName === 'mixamorig:Neck') {
+              child.rotation.x = -mouthOpen * 0.03; // Subtle neck movement
             }
           }
         });

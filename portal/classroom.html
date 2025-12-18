@@ -26,6 +26,175 @@
   <link rel="stylesheet" href="../assets/css/avatar.css">
   <link rel="stylesheet" href="../assets/css/proctor-mode.css">
 
+  <!-- Avatar Settings Panel Styles -->
+  <style>
+    /* Settings Button */
+    .avatar-settings-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+    .avatar-settings-btn:hover {
+      background: rgba(0, 0, 0, 0.7);
+      transform: rotate(90deg);
+    }
+
+    /* Settings Modal */
+    .avatar-settings-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .avatar-settings-modal__content {
+      background: var(--color-surface, #1e1e2e);
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+    }
+    .avatar-settings-modal__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .avatar-settings-modal__header h3 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: var(--color-text, #fff);
+    }
+    .avatar-settings-modal__close {
+      background: none;
+      border: none;
+      color: var(--color-text-muted, #888);
+      cursor: pointer;
+      font-size: 1.2rem;
+      padding: 4px 8px;
+    }
+    .avatar-settings-modal__close:hover {
+      color: var(--color-text, #fff);
+    }
+    .avatar-settings-modal__body {
+      padding: 20px;
+    }
+    .setting-group {
+      margin-bottom: 20px;
+    }
+    .setting-group:last-child {
+      margin-bottom: 0;
+    }
+    .setting-group label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--color-text, #fff);
+      margin-bottom: 8px;
+    }
+    .setting-group label i {
+      color: var(--color-primary, #6C63FF);
+    }
+    .setting-group small {
+      display: block;
+      color: var(--color-text-muted, #888);
+      font-size: 0.75rem;
+      margin-top: 4px;
+    }
+    .setting-slider-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .setting-slider-row input[type="range"] {
+      flex: 1;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      appearance: none;
+      cursor: pointer;
+    }
+    .setting-slider-row input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--color-primary, #6C63FF);
+      cursor: pointer;
+    }
+    .setting-slider-row span {
+      min-width: 50px;
+      text-align: right;
+      font-size: 0.9rem;
+      color: var(--color-text, #fff);
+      font-weight: 500;
+    }
+    .setting-group select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.3);
+      color: var(--color-text, #fff);
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .setting-group select:focus {
+      outline: none;
+      border-color: var(--color-primary, #6C63FF);
+    }
+    .setting-group input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-right: 8px;
+      cursor: pointer;
+    }
+    .avatar-settings-modal__footer {
+      padding: 16px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .avatar-settings-modal__footer .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: var(--color-primary, #6C63FF);
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.2s ease;
+    }
+    .avatar-settings-modal__footer .btn:hover {
+      background: var(--color-primary-hover, #5a52e0);
+    }
+  </style>
+
   <!-- Three.js r137 (last version with global THREE.GLTFLoader in examples/js/) -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.137.0/build/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.137.0/examples/js/loaders/GLTFLoader.js"></script>
@@ -237,6 +406,74 @@
           </div>
           <div class="sidebar-avatar__captions" id="sidebar-avatar-captions" aria-live="polite"></div>
           <span class="sidebar-avatar__status" id="sidebar-avatar-status">Ready</span>
+          <!-- Avatar Settings Button -->
+          <button id="avatar-settings-btn" class="avatar-settings-btn" title="AI Tutor Settings">
+            <i class="fas fa-cog"></i>
+          </button>
+        </div>
+
+        <!-- Avatar Settings Modal -->
+        <div id="avatar-settings-modal" class="avatar-settings-modal" style="display: none;">
+          <div class="avatar-settings-modal__content">
+            <div class="avatar-settings-modal__header">
+              <h3><i class="fas fa-sliders-h"></i> AI Tutor Settings</h3>
+              <button id="avatar-settings-close" class="avatar-settings-modal__close">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+
+            <div class="avatar-settings-modal__body">
+              <!-- Speech Speed -->
+              <div class="setting-group">
+                <label for="speech-rate">
+                  <i class="fas fa-tachometer-alt"></i> Speech Speed
+                </label>
+                <div class="setting-slider-row">
+                  <input type="range" id="speech-rate" min="0.5" max="1.5" step="0.05" value="0.85">
+                  <span id="speech-rate-value">0.85x</span>
+                </div>
+                <small>Slower speeds are better for learning</small>
+              </div>
+
+              <!-- Voice Selection -->
+              <div class="setting-group">
+                <label for="voice-select">
+                  <i class="fas fa-microphone-alt"></i> Voice
+                </label>
+                <select id="voice-select">
+                  <option value="standard-male">Male (Standard)</option>
+                  <option value="standard-female">Female (Standard)</option>
+                  <option value="standard-young">Young Voice</option>
+                  <option value="primo" disabled>Male Premium (Coming Soon)</option>
+                  <option value="primo-female" disabled>Female Premium (Coming Soon)</option>
+                </select>
+              </div>
+
+              <!-- Avatar Toggle -->
+              <div class="setting-group">
+                <label>
+                  <input type="checkbox" id="avatar-enabled" checked>
+                  <i class="fas fa-user"></i> Show Avatar
+                </label>
+                <small>Disable for faster loading on slow connections</small>
+              </div>
+
+              <!-- Audio Captions -->
+              <div class="setting-group">
+                <label>
+                  <input type="checkbox" id="captions-enabled" checked>
+                  <i class="fas fa-closed-captioning"></i> Show Captions
+                </label>
+                <small>Display text while avatar speaks</small>
+              </div>
+            </div>
+
+            <div class="avatar-settings-modal__footer">
+              <button id="avatar-settings-save" class="btn btn--primary">
+                <i class="fas fa-check"></i> Save Settings
+              </button>
+            </div>
+          </div>
         </div>
 
         <div class="chat-header">
@@ -906,6 +1143,88 @@
 
         // Mobile panel controls
         setupMobilePanels();
+
+        // Avatar settings panel
+        setupAvatarSettings();
+      }
+
+      // =========================================
+      // AVATAR SETTINGS PANEL
+      // =========================================
+      function setupAvatarSettings() {
+        const settingsBtn = document.getElementById('avatar-settings-btn');
+        const settingsModal = document.getElementById('avatar-settings-modal');
+        const closeBtn = document.getElementById('avatar-settings-close');
+        const saveBtn = document.getElementById('avatar-settings-save');
+        const speechRateInput = document.getElementById('speech-rate');
+        const speechRateValue = document.getElementById('speech-rate-value');
+        const voiceSelect = document.getElementById('voice-select');
+        const avatarEnabled = document.getElementById('avatar-enabled');
+        const captionsEnabled = document.getElementById('captions-enabled');
+
+        if (!settingsBtn || !settingsModal) return;
+
+        // Load saved settings
+        const settings = window.TTS?.getSettings() || {};
+        speechRateInput.value = settings.speechRate || 0.85;
+        speechRateValue.textContent = (settings.speechRate || 0.85).toFixed(2) + 'x';
+        voiceSelect.value = settings.voiceEngine || 'standard-male';
+        avatarEnabled.checked = localStorage.getItem('pmerit_vh_enabled') !== 'false';
+        captionsEnabled.checked = localStorage.getItem('pmerit_captions_enabled') !== 'false';
+
+        // Update rate display when slider changes
+        speechRateInput.addEventListener('input', () => {
+          speechRateValue.textContent = parseFloat(speechRateInput.value).toFixed(2) + 'x';
+        });
+
+        // Open modal
+        settingsBtn.addEventListener('click', () => {
+          settingsModal.style.display = 'flex';
+        });
+
+        // Close modal
+        closeBtn.addEventListener('click', () => {
+          settingsModal.style.display = 'none';
+        });
+
+        // Close on background click
+        settingsModal.addEventListener('click', (e) => {
+          if (e.target === settingsModal) {
+            settingsModal.style.display = 'none';
+          }
+        });
+
+        // Save settings
+        saveBtn.addEventListener('click', () => {
+          // Save TTS settings
+          if (window.TTS) {
+            window.TTS.setSpeechRate(parseFloat(speechRateInput.value));
+            window.TTS.setVoiceEngine(voiceSelect.value);
+          }
+
+          // Save avatar/captions preferences
+          localStorage.setItem('pmerit_vh_enabled', avatarEnabled.checked);
+          localStorage.setItem('pmerit_captions_enabled', captionsEnabled.checked);
+
+          // Apply avatar visibility immediately
+          const avatarContainer = document.getElementById('sidebar-avatar');
+          if (avatarContainer) {
+            avatarContainer.style.display = avatarEnabled.checked ? 'block' : 'none';
+          }
+
+          // Update VH toggle state
+          updateVHToggle(avatarEnabled.checked);
+
+          // Close modal
+          settingsModal.style.display = 'none';
+
+          console.log('✅ Avatar settings saved:', {
+            speechRate: speechRateInput.value,
+            voice: voiceSelect.value,
+            avatarEnabled: avatarEnabled.checked,
+            captionsEnabled: captionsEnabled.checked
+          });
+        });
       }
 
       // =========================================

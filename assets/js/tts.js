@@ -159,10 +159,12 @@ if (typeof window.logger === 'undefined') {
     } catch (e) {
       console.warn('Failed to load TTS settings:', e);
     }
-    // Default settings - use standard-male voice
+    // Default settings - use standard-male voice with slower rate for teaching
     return {
       voiceEngine: 'standard-male',
-      useServer: true
+      useServer: true,
+      speechRate: 0.85,  // Slower for educational content
+      speechPitch: 1.0
     };
   }
 
@@ -518,6 +520,11 @@ if (typeof window.logger === 'undefined') {
           audio.addEventListener('ended', handleEnd);
           audio.addEventListener('error', handleError);
 
+          // Apply speech rate from settings (slower = more teacherly)
+          const settings = getSettings();
+          audio.playbackRate = settings.speechRate || 0.85;
+          console.log(`🎵 TTS playback rate: ${audio.playbackRate}x`);
+
           // Play audio
           await audio.play();
         } catch (error) {
@@ -672,6 +679,46 @@ if (typeof window.logger === 'undefined') {
     return { ...VOICE_OPTIONS };
   }
 
+  /**
+   * Set speech rate (playback speed)
+   * @param {number} rate - Speech rate (0.5 = half speed, 1.0 = normal, 1.5 = 1.5x speed)
+   */
+  function setSpeechRate(rate) {
+    const settings = getSettings();
+    settings.speechRate = Math.max(0.5, Math.min(1.5, rate));
+    saveSettings(settings);
+    console.log(`🎵 Speech rate set to: ${settings.speechRate}x`);
+  }
+
+  /**
+   * Get current speech rate
+   * @returns {number} Current speech rate
+   */
+  function getSpeechRate() {
+    const settings = getSettings();
+    return settings.speechRate || 0.85;
+  }
+
+  /**
+   * Set speech pitch
+   * @param {number} pitch - Speech pitch (0.5 = lower, 1.0 = normal, 1.5 = higher)
+   */
+  function setSpeechPitch(pitch) {
+    const settings = getSettings();
+    settings.speechPitch = Math.max(0.5, Math.min(1.5, pitch));
+    saveSettings(settings);
+    console.log(`🎵 Speech pitch set to: ${settings.speechPitch}`);
+  }
+
+  /**
+   * Get current speech pitch
+   * @returns {number} Current speech pitch
+   */
+  function getSpeechPitch() {
+    const settings = getSettings();
+    return settings.speechPitch || 1.0;
+  }
+
   // Export public API
   window.TTS = {
     speak,
@@ -680,6 +727,10 @@ if (typeof window.logger === 'undefined') {
     getVoices,
     setVoiceEngine,
     getVoiceEngine,
+    setSpeechRate,
+    getSpeechRate,
+    setSpeechPitch,
+    getSpeechPitch,
     getAvailableEngines,
     getVoiceOptions,
     getSettings,
