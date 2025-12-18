@@ -983,73 +983,87 @@
         const minimizeBtn = document.getElementById('widget-minimize');
         const closeBtn = document.getElementById('widget-close');
 
-        if (!widget || !dragHandle) return;
+        if (!widget) return;
 
         // Make widget draggable
         let isDragging = false;
+        let hasMoved = false;
         let startX, startY, startLeft, startTop;
+        const isMobile = () => window.innerWidth <= 768;
 
-        dragHandle.addEventListener('mousedown', (e) => {
-          if (e.target.closest('.widget-btn')) return; // Don't drag when clicking buttons
-          isDragging = true;
-          widget.classList.add('dragging');
-          startX = e.clientX;
-          startY = e.clientY;
+        // Snap to nearest corner on mobile
+        function snapToCorner() {
+          if (!isMobile()) return;
+
           const rect = widget.getBoundingClientRect();
-          startLeft = rect.left;
-          startTop = rect.top;
-          e.preventDefault();
-        });
+          const centerX = rect.left + rect.width / 2;
+          const centerY = rect.top + rect.height / 2;
+          const screenCenterX = window.innerWidth / 2;
+          const screenCenterY = window.innerHeight / 2;
+
+          // Determine which corner/edge to snap to
+          const padding = 12;
+          const bottomSafe = 70; // Above playback controls
+
+          let targetLeft, targetTop;
+
+          // Horizontal: left or right edge
+          if (centerX < screenCenterX) {
+            targetLeft = padding;
+          } else {
+            targetLeft = window.innerWidth - rect.width - padding;
+          }
+
+          // Vertical: top third, middle, or bottom third
+          if (centerY < window.innerHeight * 0.33) {
+            targetTop = padding + 50; // Below header
+          } else if (centerY > window.innerHeight * 0.66) {
+            targetTop = window.innerHeight - rect.height - bottomSafe;
+          } else {
+            // Middle - keep vertical position but snap horizontal
+            targetTop = Math.max(50, Math.min(rect.top, window.innerHeight - rect.height - bottomSafe));
+          }
+
+          // Animate to corner
+          widget.style.transition = 'left 0.3s ease, top 0.3s ease';
+          widget.style.left = targetLeft + 'px';
+          widget.style.top = targetTop + 'px';
+          widget.style.bottom = 'auto';
+          widget.style.right = 'auto';
+
+          // Remove transition after animation
+          setTimeout(() => {
+            widget.style.transition = '';
+          }, 300);
+
+          // Save position
+          localStorage.setItem('pmerit_mobile_avatar_pos', JSON.stringify({
+            left: targetLeft,
+            top: targetTop
+          }));
+        }
+
+        // Desktop: drag by header only
+        if (dragHandle) {
+          dragHandle.addEventListener('mousedown', (e) => {
+            if (e.target.closest('.avatar-pip__btn')) return;
+            isDragging = true;
+            hasMoved = false;
+            widget.classList.add('dragging');
+            startX = e.clientX;
+            startY = e.clientY;
+            const rect = widget.getBoundingClientRect();
+            startLeft = rect.left;
+            startTop = rect.top;
+            e.preventDefault();
+          });
+        }
 
         document.addEventListener('mousemove', (e) => {
           if (!isDragging) return;
+          hasMoved = true;
           const dx = e.clientX - startX;
           const dy = e.clientY - startY;
-
-          // Calculate new position
-          let newLeft = startLeft + dx;
-          let newTop = startTop + dy;
-
-          // Keep within viewport
-          const maxLeft = window.innerWidth - widget.offsetWidth - 10;
-          const maxTop = window.innerHeight - widget.offsetHeight - 10;
-          newLeft = Math.max(10, Math.min(newLeft, maxLeft));
-          newTop = Math.max(10, Math.min(newTop, maxTop));
-
-          widget.style.left = newLeft + 'px';
-          widget.style.top = newTop + 'px';
-          widget.style.right = 'auto'; // Override CSS right positioning
-        });
-
-        document.addEventListener('mouseup', () => {
-          if (isDragging) {
-            isDragging = false;
-            widget.classList.remove('dragging');
-            // Save position to localStorage
-            localStorage.setItem('pmerit_widget_pos', JSON.stringify({
-              left: widget.style.left,
-              top: widget.style.top
-            }));
-          }
-        });
-
-        // Touch support for mobile
-        dragHandle.addEventListener('touchstart', (e) => {
-          if (e.target.closest('.widget-btn')) return;
-          const touch = e.touches[0];
-          isDragging = true;
-          startX = touch.clientX;
-          startY = touch.clientY;
-          const rect = widget.getBoundingClientRect();
-          startLeft = rect.left;
-          startTop = rect.top;
-        }, { passive: true });
-
-        document.addEventListener('touchmove', (e) => {
-          if (!isDragging) return;
-          const touch = e.touches[0];
-          const dx = touch.clientX - startX;
-          const dy = touch.clientY - startY;
           let newLeft = startLeft + dx;
           let newTop = startTop + dy;
           const maxLeft = window.innerWidth - widget.offsetWidth - 10;
@@ -1059,24 +1073,104 @@
           widget.style.left = newLeft + 'px';
           widget.style.top = newTop + 'px';
           widget.style.right = 'auto';
+          widget.style.bottom = 'auto';
+        });
+
+        document.addEventListener('mouseup', () => {
+          if (isDragging) {
+            isDragging = false;
+            widget.classList.remove('dragging');
+            if (hasMoved) {
+              if (isMobile()) {
+                snapToCorner();
+              } else {
+                localStorage.setItem('pmerit_widget_pos', JSON.stringify({
+                  left: widget.style.left,
+                  top: widget.style.top
+                }));
+              }
+            }
+          }
+        });
+
+        // MOBILE: Touch support - drag entire widget
+        widget.addEventListener('touchstart', (e) => {
+          if (!isMobile()) return;
+          if (e.target.closest('.avatar-pip__btn') || e.target.closest('.chat-input')) return;
+
+          const touch = e.touches[0];
+          isDragging = true;
+          hasMoved = false;
+          widget.classList.add('dragging');
+          startX = touch.clientX;
+          startY = touch.clientY;
+          const rect = widget.getBoundingClientRect();
+          startLeft = rect.left;
+          startTop = rect.top;
+        }, { passive: true });
+
+        document.addEventListener('touchmove', (e) => {
+          if (!isDragging || !isMobile()) return;
+
+          const touch = e.touches[0];
+          const dx = touch.clientX - startX;
+          const dy = touch.clientY - startY;
+
+          // Only count as moved if dragged more than 10px
+          if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
+            hasMoved = true;
+          }
+
+          if (!hasMoved) return;
+
+          let newLeft = startLeft + dx;
+          let newTop = startTop + dy;
+          const maxLeft = window.innerWidth - widget.offsetWidth - 10;
+          const maxTop = window.innerHeight - widget.offsetHeight - 70; // Above playback
+          newLeft = Math.max(10, Math.min(newLeft, maxLeft));
+          newTop = Math.max(50, Math.min(newTop, maxTop));
+
+          widget.style.left = newLeft + 'px';
+          widget.style.top = newTop + 'px';
+          widget.style.right = 'auto';
+          widget.style.bottom = 'auto';
         }, { passive: true });
 
         document.addEventListener('touchend', () => {
-          isDragging = false;
+          if (isDragging && isMobile()) {
+            isDragging = false;
+            widget.classList.remove('dragging');
+            if (hasMoved) {
+              snapToCorner();
+            }
+          }
         });
 
-        // Restore saved position
-        const savedPos = localStorage.getItem('pmerit_widget_pos');
-        if (savedPos) {
-          try {
-            const pos = JSON.parse(savedPos);
-            widget.style.left = pos.left;
-            widget.style.top = pos.top;
-            widget.style.right = 'auto';
-          } catch (e) { /* ignore */ }
+        // Restore saved position on load
+        if (isMobile()) {
+          const savedPos = localStorage.getItem('pmerit_mobile_avatar_pos');
+          if (savedPos) {
+            try {
+              const pos = JSON.parse(savedPos);
+              widget.style.left = pos.left + 'px';
+              widget.style.top = pos.top + 'px';
+              widget.style.right = 'auto';
+              widget.style.bottom = 'auto';
+            } catch (e) { /* ignore */ }
+          }
+        } else {
+          const savedPos = localStorage.getItem('pmerit_widget_pos');
+          if (savedPos) {
+            try {
+              const pos = JSON.parse(savedPos);
+              widget.style.left = pos.left;
+              widget.style.top = pos.top;
+              widget.style.right = 'auto';
+            } catch (e) { /* ignore */ }
+          }
         }
 
-        // Minimize button
+        // Minimize button (desktop only)
         if (minimizeBtn) {
           minimizeBtn.addEventListener('click', () => {
             widget.classList.toggle('minimized');
@@ -1094,7 +1188,7 @@
         // Close button (hides widget, toggles VH off)
         if (closeBtn) {
           closeBtn.addEventListener('click', () => {
-            toggleVirtualHuman(); // This will hide the widget
+            toggleVirtualHuman();
           });
         }
       }
