@@ -501,10 +501,12 @@
           // Update navigation buttons
           updateNavigation(data.navigation);
 
-          // Update session with current lesson
-          await window.ClassroomSession.updateProgress({
-            lesson_id: lessonId
-          });
+          // Update session with current lesson (only if session exists)
+          if (window.ClassroomSession?.hasActiveSession?.()) {
+            await window.ClassroomSession.updateProgress({
+              lesson_id: lessonId
+            });
+          }
 
           // Reset progress bar for new lesson
           updateProgressBar(0);

@@ -1394,21 +1394,27 @@ body.classroom-body {
   .avatar-pip {
     display: flex !important; /* Override desktop hide */
     position: fixed !important;
-    bottom: 124px !important; /* Above playback (56px) + chat peek (60px) + spacing */
+    bottom: 70px !important; /* Just above playback controls - moves up when chat expands */
     left: 16px !important;
     right: auto !important;
-    width: 64px !important;
-    height: 64px !important;
+    width: 56px !important;
+    height: 56px !important;
     border-radius: 50% !important;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-    border: 3px solid var(--classroom-accent) !important;
+    border: 2px solid var(--classroom-accent) !important;
     box-shadow:
-      0 4px 20px rgba(0, 0, 0, 0.4),
+      0 4px 12px rgba(0, 0, 0, 0.4),
       0 0 0 2px rgba(74, 164, 185, 0.3) !important;
     overflow: hidden !important;
     z-index: 200 !important;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, bottom 0.3s ease !important;
+  }
+
+  /* Move avatar up when chat panel is expanded */
+  .classroom-panel--right.expanded ~ .avatar-pip,
+  .classroom-app:has(.classroom-panel--right.expanded) .avatar-pip {
+    bottom: calc(70vh - 56px + 70px) !important; /* Above expanded chat panel */
   }
 
   .avatar-pip:active {
@@ -1546,21 +1552,21 @@ body.classroom-body {
   .mobile-menu-toggle {
     display: flex !important;
     position: fixed;
-    bottom: 124px; /* Same level as floating avatar */
-    left: 92px; /* To the right of 64px avatar + 16px left margin + 12px gap */
-    width: 40px;
-    height: 40px;
+    bottom: 74px; /* Same level as floating avatar */
+    left: 82px; /* To the right of 56px avatar + 16px left margin + 10px gap */
+    width: 36px;
+    height: 36px;
     background: var(--classroom-surface-elevated);
     border: 1px solid var(--classroom-border);
     border-radius: 50%;
     color: var(--classroom-text-secondary);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     z-index: 200;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.2s ease, bottom 0.3s ease;
   }
 
   .mobile-menu-toggle:hover,

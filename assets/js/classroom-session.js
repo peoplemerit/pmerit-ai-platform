@@ -440,7 +440,10 @@ window.ClassroomSession = (function () {
    * @returns {boolean}
    */
   function hasActiveSession() {
-    return !!sessionState.sessionId;
+    // Check if sessionId exists and is a valid UUID format
+    if (!sessionState.sessionId) return false;
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    return uuidRegex.test(sessionState.sessionId);
   }
 
   /**
