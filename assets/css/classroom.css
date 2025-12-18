@@ -1399,14 +1399,14 @@ body.classroom-body {
     top: auto;
     left: 12px;
     right: auto;
-    width: 56px !important;
-    height: 56px !important;
+    width: 80px !important;
+    height: 80px !important;
     border-radius: 50% !important;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-    border: 2px solid var(--classroom-accent) !important;
+    border: 3px solid var(--classroom-accent) !important;
     box-shadow:
-      0 4px 12px rgba(0, 0, 0, 0.4),
-      0 0 0 2px rgba(74, 164, 185, 0.3) !important;
+      0 6px 20px rgba(0, 0, 0, 0.5),
+      0 0 0 3px rgba(74, 164, 185, 0.4) !important;
     overflow: hidden !important;
     z-index: 200 !important;
     cursor: grab;
@@ -1417,7 +1417,7 @@ body.classroom-body {
 
   /* Default position when no JS position saved */
   .avatar-pip:not([style*="top"]):not([style*="left"]) {
-    bottom: 130px; /* Above playback + some space */
+    bottom: 140px; /* Above playback + some space */
     left: 12px;
   }
 
@@ -1481,14 +1481,14 @@ body.classroom-body {
     width: 100% !important;
     height: 100% !important;
     border-radius: 50% !important;
-    font-size: 24px !important;
+    font-size: 32px !important;
     color: white !important;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
     z-index: 1;
   }
 
   .avatar-pip__fallback i {
-    font-size: 24px !important;
+    font-size: 32px !important;
     color: white !important;
   }
 
