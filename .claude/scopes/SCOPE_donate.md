@@ -1,7 +1,7 @@
 # SCOPE: Donation System
 
-**Status:** IMPLEMENTED (Frontend)
-**Last Updated:** December 17, 2025 (Session 61)
+**Status:** IMPLEMENTED (Frontend MVP)
+**Last Updated:** December 17, 2025 (Session 60)
 **Updated By:** Claude Code
 
 ---
@@ -13,7 +13,8 @@
 **Frontend (pmerit-ai-platform)**
 | File | Purpose | Lines | Status |
 |------|---------|-------|--------|
-| `donate.html` | Donation page with giving options | ~380 | CREATED Session 61 |
+| `donate.html` | Donation page with giving options | ~420 | UPDATED Session 60 |
+| `assets/css/donate.css` | Donate-specific styles | ~130 | CREATED Session 60 |
 | `assets/css/about-pricing.css` | Shared styles for About/Pricing/Donate | 933 | Existing |
 | `partials/header.html` | Header with donate link | 155 | Existing (link at line 25, 83) |
 
@@ -150,23 +151,31 @@ Awaiting Claude Web requirements for:
 
 ## RESEARCH_FINDINGS
 
-### Session 61 Implementation Notes
+### Session 60 Implementation Notes
+
+**Legal Entity Information Added:**
+- PMERIT Foundation (501(c)(3) pending)
+- EIN: 77242457136 (from Form 1023-EZ)
+- Mailing Address: 32 Thomas Ave, Caribou, ME 04736
+- PMERIT (PEOPLE MERIT) LLC - Charter #202605331DC (for Tech operations)
 
 **Design Decisions:**
-1. Used same CSS as pricing.html (`about-pricing.css`) for consistency
-2. CTAs route to contact.html with subject parameters for manual processing
-3. Included LLC Charter number for legitimacy
-4. Impact amounts chosen: $10, $50, $100, $500 (accessible to various donors)
-5. Allocation transparency: 60/25/10/5 split shown publicly
+1. Added Tax Status Banner - "Federal determination is pending" notice
+2. Updated hero to match pricing.html ("Invest in Someone's Future" + Hosea 4:6 quote)
+3. Added Check/Money Order section with mailing address (zero fees option)
+4. Updated crypto messaging to "Coming soon via Every.org (after 501(c)(3) approval)"
+5. CTAs route to contact.html with subject parameters for manual processing
+6. Created dedicated donate.css for page-specific styles
 
-**File Created:**
-- `donate.html` - 380 lines, matches site design system
+**Files Updated/Created:**
+- `donate.html` - Updated with tax status banner, correct addresses, entity info
+- `assets/css/donate.css` - NEW - Tax banner styles, impact card styles
 
-**Existing Infrastructure Used:**
-- `partials/header.html` - Already had donate link (no changes needed)
-- `assets/css/about-pricing.css` - Shared styling
-- `assets/js/layout-loader.js` - Header/footer injection
-- `assets/js/settings-manager.js` - Theme management
+**Key Business Context (from Claude Web brainstorm):**
+- No Nigerian entity exists - Cannot use local Paystack
+- PPP Pricing decided: US $2.99/mo, Nigeria ₦2,500/mo
+- Tech LLC exists (Charter #202605331DC, filed 12/03/2025)
+- Foundation 501(c)(3) submitted 12/17/2025 - pending approval
 
 ---
 
@@ -175,8 +184,9 @@ Awaiting Claude Web requirements for:
 | Session | Date | Action |
 |---------|------|--------|
 | 60 | 2025-12-17 | Audit: Page did NOT exist, returned homepage via SPA fallback |
-| 61 | 2025-12-17 | Created donate.html frontend |
+| 60 | 2025-12-17 | Updated donate.html with tax status, mailing address, entity info |
+| 60 | 2025-12-17 | Created donate.css for page-specific styles |
 
 ---
 
-*Last Updated: 2025-12-17 (Session 61)*
+*Last Updated: 2025-12-17 (Session 60)*
