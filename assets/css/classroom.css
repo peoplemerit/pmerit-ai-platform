@@ -1623,3 +1623,65 @@ body.classroom-body {
     height: 80px;
   }
 }
+
+/* ============================================
+   MOBILE AVATAR POSITIONING
+   Shows avatar as fixed element above playback controls
+   ============================================ */
+@media (max-width: 768px) {
+  /* Extract avatar from chat panel on mobile */
+  .sidebar-avatar {
+    position: fixed !important;
+    bottom: 70px; /* Above playback controls */
+    right: 12px;
+    left: auto;
+    width: 100px;
+    height: 120px;
+    z-index: 110; /* Above playback controls (100) but below chat panel (150) */
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    border: 2px solid var(--classroom-accent, #4AA4B9);
+    background: var(--classroom-surface);
+  }
+
+  .sidebar-avatar__fallback {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  }
+
+  .sidebar-avatar__fallback i {
+    font-size: 40px !important;
+    color: var(--classroom-accent, #4AA4B9);
+  }
+
+  .sidebar-avatar__status {
+    display: none; /* Hide status text on mobile to save space */
+  }
+
+  .sidebar-avatar__live-badge {
+    top: 4px;
+    left: 4px;
+    padding: 2px 6px;
+    font-size: 0.6rem;
+  }
+
+  .sidebar-avatar__captions {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 4px 6px;
+    font-size: 0.7rem;
+    border-radius: 0 0 10px 10px;
+  }
+
+  /* Ensure canvas fills the mobile avatar container */
+  .sidebar-avatar canvas,
+  .sidebar-avatar #vh-canvas {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+  }
+}
