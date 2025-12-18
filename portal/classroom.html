@@ -1481,9 +1481,14 @@
 
           addChatMessage('ai', aiResponse);
 
-          // Speak with avatar if enabled
-          if (state.avatarManager?.isEnabled()) {
-            await state.avatarManager.speak(aiResponse);
+          // Speak with TTS - this dispatches tts:viseme events for GPUStreaming lip-sync
+          const vhEnabled = localStorage.getItem('pmerit_vh_enabled') !== 'false';
+          if (window.TTS && vhEnabled) {
+            try {
+              await window.TTS.speak(aiResponse);
+            } catch (ttsError) {
+              console.warn('TTS speech failed:', ttsError.message);
+            }
           }
 
         } catch (error) {
