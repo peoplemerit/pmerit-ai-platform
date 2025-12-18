@@ -1,0 +1,148 @@
+/**
+ * PMERIT Donate Page Styles
+ * Version: 1.0
+ * Last Updated: December 2025
+ *
+ * Styles specific to donate.html
+ * Extends about-pricing.css with donation-specific components
+ */
+
+/* ========================================
+   TAX STATUS BANNER
+   ======================================== */
+
+.tax-status-banner {
+    background: linear-gradient(135deg, #f0f7ff 0%, #e6f0fa 100%);
+    border-bottom: 2px solid var(--color-primary);
+    padding: var(--space-4) var(--space-4);
+}
+
+[data-theme="dark"] .tax-status-banner {
+    background: linear-gradient(135deg, #1a2a3a 0%, #0d1a2a 100%);
+    border-bottom-color: var(--color-secondary);
+}
+
+.tax-status-banner p {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--text-primary);
+    text-align: center;
+    line-height: var(--leading-relaxed);
+}
+
+.tax-status-banner i {
+    color: var(--color-primary);
+    margin-right: var(--space-2);
+}
+
+/* ========================================
+   DONATE HERO ENHANCEMENTS
+   ======================================== */
+
+.donate-hero {
+    background: linear-gradient(135deg, var(--color-primary) 0%, #1a4a6e 50%, var(--color-secondary) 100%);
+}
+
+/* ========================================
+   IMPACT CARDS
+   ======================================== */
+
+.impact-section {
+    padding: var(--space-16) var(--space-4);
+    background: var(--bg-secondary);
+}
+
+.impact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--space-6);
+    margin-top: var(--space-8);
+}
+
+.impact-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: var(--space-6);
+    text-align: center;
+    transition: var(--transition-base);
+}
+
+.impact-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-primary);
+}
+
+.impact-number {
+    font-size: var(--text-3xl);
+    font-weight: var(--weight-bold);
+    color: var(--color-primary);
+    margin-bottom: var(--space-3);
+}
+
+.impact-description {
+    font-size: var(--text-base);
+    color: var(--text-secondary);
+    line-height: var(--leading-relaxed);
+    margin: 0;
+}
+
+/* ========================================
+   CTA NOTE (Footer Info)
+   ======================================== */
+
+.cta-note {
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: var(--text-sm);
+    opacity: 0.9;
+    line-height: var(--leading-relaxed);
+}
+
+.cta-note a {
+    color: inherit;
+    text-decoration: underline;
+}
+
+.cta-note a:hover {
+    opacity: 0.8;
+}
+
+/* ========================================
+   SECTION CTA (Centered Button)
+   ======================================== */
+
+.section-cta {
+    text-align: center;
+    margin-top: var(--space-8);
+}
+
+/* ========================================
+   RESPONSIVE ADJUSTMENTS
+   ======================================== */
+
+@media (max-width: 480px) {
+    .tax-status-banner {
+        padding: var(--space-3);
+    }
+
+    .tax-status-banner p {
+        font-size: var(--text-xs);
+    }
+
+    .impact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .impact-number {
+        font-size: var(--text-2xl);
+    }
+}
+
+@media (min-width: 769px) {
+    .impact-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
