@@ -101,6 +101,100 @@ Claude Code audits production reality FIRST, then Claude Web writes specs based 
 
 ---
 
+## 🔒 SCOPE LOCK PROTOCOL (Regression Prevention)
+
+### Purpose
+
+Protect completed, working features from accidental regression. Once a scope is marked COMPLETE and LOCKED, its files require explicit unlock before modification.
+
+### Scope Status Levels
+
+| Status | Meaning | File Modifications |
+|--------|---------|-------------------|
+| `draft` | Work in progress | Free to modify |
+| `complete` | Working, tested | Requires review before changes |
+| `locked` | Production critical | **NO changes without explicit UNLOCK command** |
+
+### LOCKED FILES Registry
+
+Each completed scope document contains a `## LOCKED FILES` section:
+
+```markdown
+## LOCKED FILES
+
+These files are protected. DO NOT MODIFY without explicit UNLOCK command.
+
+| File | Last Working Commit | Lock Date | Verified By |
+|------|---------------------|-----------|-------------|
+| assets/js/tts.js | 8807f4a | 2025-12-18 | Session 63 |
+| portal/classroom.html | 8807f4a | 2025-12-18 | Session 63 |
+```
+
+### Pre-Modification Check (MANDATORY)
+
+**Before modifying ANY file, Claude Code MUST:**
+
+1. **Check if file appears in ANY scope's LOCKED FILES section**
+2. **If locked → STOP and ask:** `"This file is locked by SCOPE_[NAME]. Unlock required."`
+3. **If user grants UNLOCK → proceed with caution**
+4. **After changes → verify original functionality still works**
+5. **Re-lock file after changes verified**
+
+### LOCK Commands
+
+| Command | Effect |
+|---------|--------|
+| `LOCK SCOPE: [name]` | Lock all files in specified scope |
+| `UNLOCK: [filename]` | Temporary unlock for single file |
+| `UNLOCK SCOPE: [name]` | Unlock all files in scope |
+| `RELOCK: [filename]` | Re-lock file after changes verified |
+| `RELOCK SCOPE: [name]` | Re-lock all files in scope |
+
+### Regression Test Requirement
+
+**Before committing changes to locked files:**
+
+1. Test original functionality still works
+2. Document what was tested in commit message
+3. If regression detected → **ROLLBACK before push**
+4. Update scope's RESEARCH_FINDINGS with change notes
+
+### UNLOCK History
+
+Each scope tracks unlock history:
+
+```markdown
+## UNLOCK HISTORY
+
+| Date | File | Reason | Outcome | Session |
+|------|------|--------|---------|---------|
+| 2025-12-19 | tts.js | Session 64 voice selection | ❌ REGRESSION - voices broken | 64 |
+| 2025-12-20 | tts.js | Fix voice regression | ✅ Restored | 65 |
+```
+
+### Rules for Claude Code
+
+1. **Always check LOCKED FILES** before editing any JS, HTML, or API file
+2. **Never modify locked files without explicit UNLOCK**
+3. **Run regression tests** before committing changes to unlocked files
+4. **Document the unlock reason** and outcome
+5. **Re-lock immediately** after successful verification
+
+### Scope Lock Verification Checklist
+
+Before marking a scope as LOCKED:
+
+```
+□ All features working in production
+□ No console errors related to this scope
+□ Tested on desktop and mobile
+□ User verified functionality
+□ LOCKED FILES list populated with all critical files
+□ Last working commit hash recorded
+```
+
+---
+
 ## 🔑 AUTO-CONTINUITY SYSTEM
 
 ### Magic Keywords

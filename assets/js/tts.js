@@ -47,6 +47,10 @@ if (typeof window.logger === 'undefined') {
   // TTS state management (module-level)
   let isSpeaking = false;
 
+  // Voice cache - populated asynchronously
+  let cachedVoices = [];
+  let voicesLoaded = false;
+
   // Constants
   const INTENSITY_AMPLIFIER = 2; // Amplify intensity for more visible mouth movement
   const VISEME_UPDATE_INTERVAL = 33; // ~30 FPS
@@ -56,61 +60,77 @@ if (typeof window.logger === 'undefined') {
   // TTS Settings - Voice Selection
   const SETTINGS_KEY = 'pmerit_tts_settings';
 
-  // Voice options - Free voices with variety + Premium options
+  // Voice options - Free voices use Browser Web Speech API, Premium uses RunPod
+  // ARCHITECTURE FIX (Session 65): Free voices must NOT depend on RunPod
   const VOICE_OPTIONS = {
-    // FREE VOICES - Edge TTS (genuine variety)
+    // FREE VOICES - Browser Web Speech API (always available, genuine variety)
+    // These use client-side speech synthesis - no server dependency
     'standard-male': {
       name: 'Standard Male',
-      description: 'Clear male voice (Edge TTS)',
+      description: 'Clear male voice',
       tier: 'free',
-      apiVoice: 'standard-male'
+      apiVoice: null,  // Uses browser
+      browserVoice: 'male',  // Preference hint for browser voice selection
+      useServer: false
     },
     'standard-female': {
       name: 'Standard Female',
-      description: 'Clear female voice (Edge TTS)',
+      description: 'Clear female voice',
       tier: 'free',
-      apiVoice: 'standard-female'
+      apiVoice: null,  // Uses browser
+      browserVoice: 'female',  // Preference hint for browser voice selection
+      useServer: false
     },
     'standard-young': {
       name: 'Young Voice',
-      description: 'Friendly young voice (Edge TTS)',
+      description: 'Friendly young voice',
       tier: 'free',
-      apiVoice: 'standard-young'
+      apiVoice: null,  // Uses browser
+      browserVoice: 'young',  // Preference hint for browser voice selection
+      useServer: false
     },
-    // PREMIUM VOICES - Piper TTS (subscription required)
+    // PREMIUM VOICES - RunPod Piper/Edge TTS (subscription required)
+    // These require RunPod pod to be running
     'primo': {
       name: 'Primo Voice',
       description: 'Natural human voice (Piper TTS)',
       tier: 'premium',
       apiVoice: 'primo',
-      requiresSubscription: true
+      requiresSubscription: true,
+      useServer: true
     },
     'primo-female': {
       name: 'Primo Female',
       description: 'Natural female voice (Piper TTS)',
       tier: 'premium',
       apiVoice: 'primo-female',
-      requiresSubscription: true
+      requiresSubscription: true,
+      useServer: true
     },
-    // BROWSER FALLBACK
+    // BROWSER FALLBACK (explicit)
     'browser': {
       name: 'Browser Voice',
-      description: 'Web Speech API fallback',
+      description: 'Web Speech API (auto-select)',
       tier: 'free',
-      apiVoice: null  // Uses browser
+      apiVoice: null,
+      useServer: false
     },
     // LEGACY MAPPINGS (backward compatibility)
     'standard': {
       name: 'Standard Voice',
       description: 'Default voice (legacy)',
       tier: 'free',
-      apiVoice: 'standard-male'  // Maps to new default
+      apiVoice: null,
+      browserVoice: 'male',
+      useServer: false
     },
     'alloy': {
       name: 'Alloy',
       description: 'Default voice (legacy)',
       tier: 'free',
-      apiVoice: 'standard-male'  // Maps to new default
+      apiVoice: null,
+      browserVoice: 'male',
+      useServer: false
     }
   };
 
@@ -130,6 +150,41 @@ if (typeof window.logger === 'undefined') {
     'melotts': 'Standard Voice',
     'alloy': 'Standard Voice'
   };
+
+  /**
+   * Initialize voice cache - called on module load
+   * Web Speech API loads voices asynchronously, so we need to wait for them
+   */
+  function initVoiceCache() {
+    if (!window.speechSynthesis) {
+      logger.warn('speechSynthesis not supported - voice selection disabled');
+      return;
+    }
+
+    // Try to get voices immediately (works in some browsers)
+    cachedVoices = speechSynthesis.getVoices();
+    if (cachedVoices.length > 0) {
+      voicesLoaded = true;
+      logger.debug(`✅ Loaded ${cachedVoices.length} browser voices immediately`);
+      logAvailableVoices();
+    }
+
+    // Also listen for voiceschanged event (required for Chrome, Edge, etc.)
+    speechSynthesis.onvoiceschanged = () => {
+      cachedVoices = speechSynthesis.getVoices();
+      voicesLoaded = true;
+      logger.debug(`✅ Loaded ${cachedVoices.length} browser voices via voiceschanged event`);
+      logAvailableVoices();
+    };
+  }
+
+  /**
+   * Log available voices for debugging
+   */
+  function logAvailableVoices() {
+    const englishVoices = cachedVoices.filter(v => v.lang.startsWith('en'));
+    logger.debug('Available English voices:', englishVoices.map(v => `${v.name} (${v.lang})`));
+  }
 
   /**
    * Get TTS settings from localStorage
@@ -302,10 +357,10 @@ if (typeof window.logger === 'undefined') {
   /**
    * Speak text using Web Speech API
    * @param {string} text - Text to speak
-   * @param {string} voiceName - Optional voice name
+   * @param {Object|string} voiceSettings - Voice settings object { voiceName, pitch, rate } or just voice name string
    * @returns {Promise<void>}
    */
-  function speakWebSpeech(text, voiceName) {
+  function speakWebSpeech(text, voiceSettings) {
     return new Promise((resolve, reject) => {
       // Validate input
       if (!text || typeof text !== 'string' || text.trim().length === 0) {
@@ -322,14 +377,34 @@ if (typeof window.logger === 'undefined') {
 
       const utter = new SpeechSynthesisUtterance(text);
 
+      // Handle both object and string formats for backward compatibility
+      let voiceName, pitch, rate;
+      if (typeof voiceSettings === 'object' && voiceSettings !== null) {
+        voiceName = voiceSettings.voiceName;
+        pitch = voiceSettings.pitch || 1.0;
+        rate = voiceSettings.rate || 1.0;
+      } else {
+        voiceName = voiceSettings;
+        pitch = 1.0;
+        rate = 1.0;
+      }
+
       // Set voice if specified
       if (voiceName) {
-        const voices = speechSynthesis.getVoices();
+        const voices = cachedVoices.length ? cachedVoices : speechSynthesis.getVoices();
         const voice = voices.find(v => v.name === voiceName);
         if (voice) {
           utter.voice = voice;
+          console.log(`🎤 Set utterance voice to: ${voice.name}`);
+        } else {
+          console.warn(`🎤 Voice "${voiceName}" not found, using default`);
         }
       }
+
+      // Apply pitch and rate for voice differentiation
+      utter.pitch = pitch;
+      utter.rate = rate;
+      console.log(`🎤 Utterance settings: pitch=${pitch}, rate=${rate}`);
 
       const startTime = Date.now();
 
@@ -548,7 +623,9 @@ if (typeof window.logger === 'undefined') {
 
   /**
    * Public API: Speak text
-   * Tries server-side TTS first, falls back to Web Speech API
+   * Routes based on VOICE_OPTIONS config:
+   * - Free voices (standard-*) → Browser Web Speech API (no server dependency)
+   * - Premium voices (primo-*) → Server TTS via RunPod
    * @param {string} text - Text to speak
    * @param {Object} options - Options { voiceName?: string, useServer?: boolean, voiceEngine?: string }
    * @returns {Promise<void>}
@@ -564,49 +641,62 @@ if (typeof window.logger === 'undefined') {
     // Merge options with settings
     const {
       voiceName,
-      useServer = settings.useServer,
       voiceEngine = settings.voiceEngine
     } = options;
 
-    // Check if browser voice is selected (either 'browser' or 'browser:VoiceName')
-    const isBrowserVoice = voiceEngine === 'browser' || voiceEngine?.startsWith('browser:');
-    const browserVoiceName = voiceEngine?.startsWith('browser:') ? voiceEngine.replace('browser:', '') : voiceName;
+    // Get voice configuration - determines whether to use server or browser
+    const voiceConfig = VOICE_OPTIONS[voiceEngine] || VOICE_OPTIONS['standard-male'];
+
+    // ARCHITECTURE FIX (Session 65): Use voiceConfig.useServer instead of settings.useServer
+    // This ensures free voices ALWAYS use browser, regardless of user settings
+    const shouldUseServer = voiceConfig.useServer === true;
+
+    // Check if browser voice is explicitly selected (either 'browser' or 'browser:VoiceName')
+    const isExplicitBrowserVoice = voiceEngine === 'browser' || voiceEngine?.startsWith('browser:');
+
+    // Get voice settings (now returns object with voiceName, pitch, rate)
+    let browserVoiceSettings;
+    if (voiceEngine?.startsWith('browser:')) {
+      browserVoiceSettings = { voiceName: voiceEngine.replace('browser:', ''), pitch: 1.0, rate: 1.0 };
+    } else {
+      browserVoiceSettings = getBrowserVoiceForPreference(voiceConfig.browserVoice);
+    }
 
     // Emit analytics event for TTS engine selection
     window.analytics?.track('tts_engine', {
       page: aid(),
       ts: Date.now(),
-      engine: isBrowserVoice ? 'browser' : voiceEngine,
-      useServer: useServer && !isBrowserVoice
+      engine: shouldUseServer ? voiceEngine : 'browser',
+      useServer: shouldUseServer,
+      voiceTier: voiceConfig.tier
     });
 
     try {
-      if (isBrowserVoice) {
-        // Use Web Speech API with specific voice if selected
-        await speakWebSpeech(text, browserVoiceName);
-      } else if (useServer) {
-        // Try server-side TTS with selected engine
+      if (shouldUseServer && voiceConfig.apiVoice) {
+        // Premium voices: Use server-side TTS via RunPod
+        console.log(`🎤 Using server TTS for premium voice: ${voiceEngine}`);
         await speakViaServer(text, voiceEngine);
       } else {
-        // Use Web Speech API
-        await speakWebSpeech(text, voiceName);
+        // Free voices: Use Browser Web Speech API (always available)
+        console.log(`🎤 Using browser TTS for free voice: ${voiceEngine}, preference: ${voiceConfig.browserVoice}, voice: ${browserVoiceSettings.voiceName || 'default'}, pitch: ${browserVoiceSettings.pitch}, rate: ${browserVoiceSettings.rate}`);
+        await speakWebSpeech(text, browserVoiceSettings);
       }
     } catch (error) {
       console.error('TTS error:', error);
 
-      // Fallback to Web Speech if server fails
-      if (useServer && !isBrowserVoice && window.speechSynthesis && error.message === 'TTS_FALLBACK_REQUIRED') {
+      // Fallback to Web Speech if server fails (for premium voices)
+      if (shouldUseServer && window.speechSynthesis && error.message === 'TTS_FALLBACK_REQUIRED') {
         console.warn('Server TTS unavailable, falling back to Web Speech API');
 
         // Show user notification
         BUS.dispatchEvent(new CustomEvent('tts:fallback', {
           detail: {
-            message: 'Server TTS unavailable, using browser speech',
+            message: 'Premium voice server unavailable, using browser speech',
             engine: 'browser'
           }
         }));
 
-        await speakWebSpeech(text, voiceName);
+        await speakWebSpeech(text, browserVoiceSettings);
       } else {
         throw error;
       }
@@ -614,13 +704,161 @@ if (typeof window.logger === 'undefined') {
   }
 
   /**
+   * Get best browser voice based on preference hint
+   * Uses cached voices (populated by initVoiceCache)
+   * @param {string} preference - 'male', 'female', or 'young'
+   * @returns {Object} { voiceName: string|null, pitch: number, rate: number }
+   */
+  function getBrowserVoiceForPreference(preference) {
+    // Default settings - will be adjusted based on preference
+    const result = { voiceName: null, pitch: 1.0, rate: 1.0 };
+
+    if (!preference || !window.speechSynthesis) {
+      return result;
+    }
+
+    // Use cached voices, or try to get them if cache is empty
+    let voices = cachedVoices;
+    if (!voices.length) {
+      voices = speechSynthesis.getVoices();
+      if (voices.length) {
+        cachedVoices = voices;
+        voicesLoaded = true;
+      }
+    }
+
+    if (!voices.length) {
+      console.warn('🎤 No voices available yet - using DRAMATIC pitch/rate differentiation');
+      // Even without voices, we can differentiate using pitch - VERY DRAMATIC differences
+      if (preference === 'male') {
+        result.pitch = 0.6;  // VERY low pitch for male (deep voice)
+        result.rate = 0.95;  // Slightly slower (more deliberate)
+      } else if (preference === 'female') {
+        result.pitch = 1.4;  // HIGH pitch for female (clearly different)
+        result.rate = 1.05;  // Slightly faster
+      } else if (preference === 'young') {
+        result.pitch = 1.6;  // VERY HIGH pitch for young (childlike)
+        result.rate = 1.15;  // Faster (energetic)
+      }
+      console.log(`🎤 No-voice mode: preference='${preference}', pitch=${result.pitch}, rate=${result.rate}`);
+      return result;
+    }
+
+    // Filter to English voices
+    const englishVoices = voices.filter(v => v.lang.startsWith('en'));
+
+    // Log all available voices for debugging
+    console.log('🎤 Available English voices:', englishVoices.map(v => v.name));
+
+    if (!englishVoices.length) {
+      console.warn('🎤 No English voices found - using DRAMATIC pitch/rate differentiation');
+      if (preference === 'male') {
+        result.pitch = 0.6;  // VERY low pitch
+        result.rate = 0.95;
+      } else if (preference === 'female') {
+        result.pitch = 1.4;  // HIGH pitch
+        result.rate = 1.05;
+      } else if (preference === 'young') {
+        result.pitch = 1.6;  // VERY HIGH pitch
+        result.rate = 1.15;
+      }
+      console.log(`🎤 No-English-voices mode: preference='${preference}', pitch=${result.pitch}, rate=${result.rate}`);
+      return result;
+    }
+
+    // Find best match based on preference
+    let targetVoice = null;
+
+    if (preference === 'male') {
+      // Look for male voices - expanded pattern matching
+      // Windows: Microsoft David, Microsoft Mark, Microsoft Guy
+      // macOS: Daniel, Alex | Chrome: Google US English Male
+      targetVoice = englishVoices.find(v =>
+        /\b(guy|david|james|mark|daniel|george|alex|ryan|christopher|richard|william|michael|john|paul|andrew)\b|male/i.test(v.name)
+      );
+      // Secondary: find any voice that's NOT clearly female
+      if (!targetVoice) {
+        targetVoice = englishVoices.find(v =>
+          !/\b(jenny|zira|samantha|karen|susan|hazel|fiona|moira|tessa|victoria|allison|siri|catherine|emily|emma|sarah|lisa|nicole|linda|jenny|natasha|ava|joanna)\b|female|woman/i.test(v.name)
+        );
+      }
+      // Apply DRAMATIC pitch adjustment even if voice found
+      result.pitch = 0.7;   // Low pitch for male
+      result.rate = 0.95;
+    } else if (preference === 'female') {
+      // Look for female voices - expanded pattern matching
+      // Windows: Microsoft Zira, Microsoft Jenny
+      // macOS: Samantha, Karen | Chrome: Google US English Female
+      targetVoice = englishVoices.find(v =>
+        /\b(jenny|zira|samantha|karen|susan|hazel|fiona|moira|tessa|victoria|allison|siri|catherine|emily|emma|sarah|lisa|nicole|linda|natasha|ava|joanna|amy|ivy|kendra|kimberly|sally|olivia)\b|female|woman/i.test(v.name)
+      );
+      // Secondary: find any voice that's NOT clearly male
+      if (!targetVoice) {
+        targetVoice = englishVoices.find(v =>
+          !/\b(guy|david|james|mark|daniel|george|alex|ryan|christopher|richard|william|michael|john|paul|andrew)\b|male|\bman\b/i.test(v.name)
+        );
+      }
+      result.pitch = 1.3;  // High pitch for female
+      result.rate = 1.05;
+    } else if (preference === 'young') {
+      // Look for younger/friendly voices
+      targetVoice = englishVoices.find(v =>
+        /\b(ana|amy|aria|ivy|young|junior|child|kid)\b/i.test(v.name)
+      );
+      // Fallback: use a female voice with higher pitch (sounds younger)
+      if (!targetVoice) {
+        targetVoice = englishVoices.find(v =>
+          /\b(jenny|zira|samantha|karen|amy|ivy|ava|joanna)\b|female/i.test(v.name)
+        );
+      }
+      // If still no voice, use first English voice
+      if (!targetVoice && englishVoices.length > 0) {
+        targetVoice = englishVoices[0];
+      }
+      result.pitch = 1.5;  // VERY high pitch for young (childlike)
+      result.rate = 1.15;  // Faster (energetic)
+    }
+
+    // If we couldn't find distinct voices, ensure we DRAMATICALLY differentiate with pitch
+    if (!targetVoice && englishVoices.length > 0) {
+      // Just use the first voice but differentiate with EXTREME pitch
+      targetVoice = englishVoices[0];
+      if (preference === 'male') {
+        result.pitch = 0.6;   // VERY LOW pitch (deep voice)
+        result.rate = 0.95;
+      } else if (preference === 'female') {
+        result.pitch = 1.4;   // HIGH pitch
+        result.rate = 1.05;
+      } else if (preference === 'young') {
+        result.pitch = 1.6;   // VERY HIGH pitch (childlike)
+        result.rate = 1.15;
+      }
+    }
+
+    result.voiceName = targetVoice ? targetVoice.name : null;
+
+    if (result.voiceName) {
+      console.log(`🎤 Selected voice for '${preference}': ${result.voiceName} (pitch: ${result.pitch}, rate: ${result.rate})`);
+    } else {
+      console.log(`🎤 No voice found for '${preference}', using pitch=${result.pitch}, rate=${result.rate}`);
+    }
+
+    return result;
+  }
+
+  /**
    * Set voice engine preference
-   * @param {string} engine - Engine identifier (e.g., 'aura-2-en', 'melotts', 'browser')
+   * @param {string} engine - Engine identifier (e.g., 'standard-male', 'primo', 'browser')
    */
   function setVoiceEngine(engine) {
     const settings = getSettings();
     settings.voiceEngine = engine;
-    settings.useServer = engine !== 'browser';
+
+    // ARCHITECTURE FIX (Session 65): useServer is determined by VOICE_OPTIONS
+    // Free voices (standard-*) always use browser, premium (primo-*) use server
+    const voiceConfig = VOICE_OPTIONS[engine] || VOICE_OPTIONS['standard-male'];
+    settings.useServer = voiceConfig.useServer === true;
+
     saveSettings(settings);
 
     // Emit analytics event
@@ -783,6 +1021,10 @@ if (typeof window.logger === 'undefined') {
       engine: e.detail?.engine
     });
   });
+
+  // Initialize voice cache on module load
+  // This ensures voices are ready when speak() is called
+  initVoiceCache();
 
   logger.debug('✅ TTS module loaded');
 

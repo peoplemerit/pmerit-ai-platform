@@ -3,12 +3,12 @@
  * Allows users to preview and select TTS voices
  * Features: Voice preview, selection persistence, quota display
  *
- * Voice Tiers:
- * - Standard: AI-generated voice (MeloTTS via Cloudflare)
- * - Primo: Premium natural human voice (Piper TTS via RunPod)
+ * Voice Tiers (Session 65 Architecture Fix):
+ * - Free Voices: Browser Web Speech API (always available, no server dependency)
+ * - Premium Voices: Piper TTS via RunPod (requires subscription + RunPod pod running)
  *
- * @version 2.0.0
- * @updated December 13, 2025 - Simplified to Standard + Primo voices
+ * @version 2.1.0
+ * @updated December 19, 2025 - Session 65: Free voices now use Browser TTS (no RunPod dependency)
  */
 
 class VoicePreviewModal {
@@ -23,16 +23,17 @@ class VoicePreviewModal {
     }
     this.selectedVoice = localStorage.getItem('tts_voice') || 'standard-male';
 
-    // Available voices - Free voices with variety + Premium options
+    // Available voices - Free voices use Browser TTS, Premium uses RunPod
+    // ARCHITECTURE FIX (Session 65): Free voices no longer depend on RunPod
     this.voices = [
-      // FREE VOICES - Edge TTS (genuine variety)
+      // FREE VOICES - Browser Web Speech API (always available, genuine variety)
       {
         id: 'standard-male',
         name: 'Standard Male',
         description: 'Clear male voice',
         icon: '🎤',
         tier: 'free',
-        provider: 'edge-tts',
+        provider: 'browser-tts',  // Changed from edge-tts
         badge: 'FREE'
       },
       {
@@ -41,7 +42,7 @@ class VoicePreviewModal {
         description: 'Clear female voice',
         icon: '🎤',
         tier: 'free',
-        provider: 'edge-tts',
+        provider: 'browser-tts',  // Changed from edge-tts
         badge: 'FREE'
       },
       {
@@ -50,10 +51,10 @@ class VoicePreviewModal {
         description: 'Friendly young voice (great for kids)',
         icon: '🧒',
         tier: 'free',
-        provider: 'edge-tts',
+        provider: 'browser-tts',  // Changed from edge-tts
         badge: 'FREE'
       },
-      // PREMIUM VOICES - Piper TTS (subscription required)
+      // PREMIUM VOICES - Piper TTS on RunPod (subscription required)
       {
         id: 'primo',
         name: 'Primo Voice',

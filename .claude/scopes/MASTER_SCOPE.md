@@ -1,7 +1,8 @@
 # PMERIT MASTER SCOPE
 
-**Version:** 1.0
+**Version:** 2.0
 **Created:** 2025-12-12
+**Last Updated:** 2025-12-19 (Session 64)
 **Status:** ACTIVE
 **Purpose:** Consolidated project vision — single source of truth for all sub-scopes
 
@@ -15,7 +16,8 @@
 | **Mission** | Free AI-powered education to liberate people from poverty |
 | **Target Users** | 3+ billion potential learners globally |
 | **Core Model** | AI tutors (no human instructors) |
-| **Business Model** | Free tier (full content) + Premium tier (enhanced experience) |
+| **Business Model** | Free tier (full content) + Premium tiers (enhanced experience) |
+| **Infrastructure** | Hybrid cloud + self-hosted for premium services |
 
 ---
 
@@ -68,8 +70,12 @@ These decisions are FINAL. Changes require explicit approval.
 | ARCH-003 | Credential System | 5-level with Polygon blockchain | Student ownership | 2025-12-09 |
 | ARCH-004 | Parent Portal | Required for minors | Legal compliance | 2025-12-09 |
 | ARCH-005 | Content Model | Curator (MOOSE, freeCodeCamp, OSHA) | Scale + quality | 2025-12-09 |
-| ARCH-006 | Avatar Rendering | Three.js WebGL + jaw bone lip sync | Free tier sustainability | 2025-12-11 |
-| ARCH-007 | Avatar Model | Ready Player Me (pmerit-tutor-no-morph.glb) | Professional appearance | 2025-12-11 |
+| ARCH-006 | Avatar Rendering (Free) | Three.js WebGL + jaw bone lip sync | Free tier sustainability | 2025-12-11 |
+| ARCH-007 | Avatar Model (Free) | Ready Player Me (pmerit-tutor-no-morph.glb) | Professional appearance | 2025-12-11 |
+| ARCH-008 | Self-Hosted Infrastructure | Dell R740 + 2x RTX 4090 | Premium services at scale | 2025-12-19 |
+| ARCH-009 | Self-Hosted Avatar | Unreal MetaHuman + Audio2Face + Pixel Streaming | Photorealistic experience | 2025-12-19 |
+| ARCH-010 | Self-Hosted TTS | Coqui XTTS v2 | Voice cloning, natural speech | 2025-12-19 |
+| ARCH-011 | Self-Hosted LLM | Llama 3 70B | Zero API costs, fine-tunable | 2025-12-19 |
 
 ---
 
@@ -88,6 +94,27 @@ AUTHENTICATED LAYER (Login Required)
 ├── Virtual Classroom + AI Tutor
 ├── Progress tracking & assessments
 └── Credential wallet
+
+PREMIUM LAYERS
+├── Free Tier ($0)
+│   ├── All courses and content
+│   ├── Basic AI tutor (Cloudflare Workers AI)
+│   ├── WebGL 3D avatar (Three.js)
+│   └── Robotic TTS voice
+│
+├── Cloud Premium ($2.99/month)
+│   ├── Everything in Free
+│   ├── Natural TTS voices (Piper)
+│   ├── Priority support
+│   └── Verified certificates
+│
+└── Self-Hosted Premium ($10-20/month)
+    ├── Everything in Cloud Premium
+    ├── Photorealistic MetaHuman avatar
+    ├── Voice cloning (XTTS)
+    ├── Perfect lip sync (Audio2Face)
+    ├── Local LLM (Llama 3 70B)
+    └── 100% on-premise data processing
 ```
 
 ---
@@ -114,7 +141,7 @@ AUTHENTICATED LAYER (Login Required)
 | Auth | JWT + PBKDF2 |
 | Email | Resend (DKIM/SPF verified) |
 
-### Infrastructure
+### Infrastructure (Cloud)
 
 | Component | Technology |
 |-----------|------------|
@@ -122,6 +149,22 @@ AUTHENTICATED LAYER (Login Required)
 | DNS | Cloudflare |
 | SSL | Cloudflare Universal |
 | Monitoring | Cloudflare Analytics |
+| Premium GPU | RunPod (on-demand) |
+
+### Infrastructure (Self-Hosted Premium)
+
+| Component | Technology |
+|-----------|------------|
+| Server | Dell PowerEdge R740 |
+| GPUs | 2x NVIDIA RTX 4090 (24GB each) |
+| CPU | Dual Xeon Scalable (up to 56 cores) |
+| RAM | Up to 3TB DDR4 |
+| Connection | Cloudflare Tunnel |
+| TTS | Coqui XTTS v2 |
+| Avatar | Unreal Engine 5 MetaHuman |
+| Lip Sync | NVIDIA Audio2Face |
+| LLM | Llama 3 70B (local) |
+| Streaming | Pixel Streaming (WebRTC) |
 
 ---
 
@@ -148,8 +191,11 @@ AUTHENTICATED LAYER (Login Required)
 | SCOPE_ASSESSMENT.md | Assessment flow (P1-P2) | Complete | P1 |
 | SCOPE_DASHBOARD.md | Student dashboard (P3-P4) | Complete | P2 |
 | SCOPE_CLASSROOM.md | Virtual classroom (P5) | Complete | P3 |
-| SCOPE_AVATAR.md | Avatar system | Complete | P3 |
+| SCOPE_AVATAR.md | Avatar system (Free + Self-Hosted) | Complete | P3 |
 | SCOPE_ENROLLMENT.md | Course enrollment | Complete | P2 |
+| SCOPE_TTS.md | Text-to-Speech (Free + Premium + Self-Hosted) | Complete | P3 |
+| SCOPE_pricing.md | Pricing tiers (Free/Premium/Self-Hosted) | Audited | P2 |
+| **SCOPE_SELF_HOSTED_PREMIUM.md** | **Dell R740 infrastructure** | **Planned** | **P3** |
 | SCOPE_ADMIN.md | Admin portal (P7-P10) | Not Started | P4 |
 | SCOPE_CREDENTIALS.md | Blockchain credentials | Not Started | P5 |
 

@@ -1,12 +1,12 @@
 {
-  "schema_version": "3.0",
-  "schema_notes": "Session 62 - Production audit complete, all systems healthy",
+  "schema_version": "3.1",
+  "schema_notes": "Session 64 - Self-Hosted Premium infrastructure scopes created (Dell R740)",
 
-  "last_updated": "2025-12-18T11:45:00Z",
+  "last_updated": "2025-12-19T12:00:00Z",
   "last_updated_by": "claude-code",
 
-  "session_number": 62,
-  "last_audit_date": "2025-12-18",
+  "session_number": 64,
+  "last_audit_date": "2025-12-19",
 
   "current_phase": "POST_CLASSROOM",
   "phase_name": "Voice System Complete / ARCH-2 / Assessment Enhancements",
@@ -41,7 +41,9 @@
       "SCOPE_courses": { "status": "implemented", "file": ".claude/scopes/SCOPE_courses.md" },
       "SCOPE_Learning_Pathways": { "status": "complete", "file": ".claude/scopes/SCOPE_Learning_Pathways.md" },
       "SCOPE_pricing": { "status": "frontend_complete", "file": ".claude/scopes/SCOPE_pricing.md" },
-      "SCOPE_donate": { "status": "frontend_complete", "file": ".claude/scopes/SCOPE_donate.md" }
+      "SCOPE_donate": { "status": "frontend_complete", "file": ".claude/scopes/SCOPE_donate.md" },
+      "SCOPE_EMAIL_SYSTEM": { "status": "in_progress", "file": ".claude/scopes/SCOPE_EMAIL_SYSTEM.md" },
+      "SCOPE_SELF_HOSTED_PREMIUM": { "status": "planned", "file": ".claude/scopes/SCOPE_SELF_HOSTED_PREMIUM.md" }
     }
   },
 
@@ -95,7 +97,7 @@
     "avatar": "healthy",
     "tts_api": "healthy",
     "tts_runpod": "healthy",
-    "last_check": "2025-12-14T21:30:00Z",
+    "last_check": "2025-12-19T00:03:00Z",
     "homepage_gate_score": "verified"
   },
 
@@ -105,14 +107,46 @@
     "runpod_url": "https://xfdsuii2ig7rsl-8000.proxy.runpod.net",
     "voices": {
       "free": ["standard-male", "standard-female", "standard-young"],
-      "premium": ["primo", "primo-female"]
+      "premium": ["primo", "primo-female"],
+      "self_hosted": ["lessac-natural", "amy-natural", "cloned-teacher", "cloned-custom"]
     },
     "engines": {
       "edge_tts": "Microsoft Neural Voices (free)",
-      "piper_tts": "Local ONNX models (premium)"
+      "piper_tts": "Local ONNX models (premium)",
+      "coqui_xtts": "Voice cloning, 17 languages (self-hosted premium)"
     },
     "cost_per_hour": "$0.26",
     "note": "STOP pod when not in use to save costs"
+  },
+
+  "self_hosted_infrastructure": {
+    "status": "PLANNED",
+    "server": "Dell PowerEdge R740",
+    "gpus_planned": "2x RTX 4090 (24GB each)",
+    "components": {
+      "tts": "Coqui XTTS v2",
+      "avatar": "Unreal Engine 5 MetaHuman",
+      "lip_sync": "NVIDIA Audio2Face",
+      "llm": "Llama 3 70B (local)",
+      "streaming": "Pixel Streaming (WebRTC)"
+    },
+    "connection": "Cloudflare Tunnel",
+    "deployment": "Colocation datacenter (recommended)",
+    "estimated_monthly_cost": "$250-550",
+    "pricing_tier": "$10-20/month per user",
+    "break_even_users": "22-44 subscribers",
+    "scope_file": ".claude/scopes/SCOPE_SELF_HOSTED_PREMIUM.md",
+    "implementation_phases": [
+      "Phase 1: Server Foundation (1-2 weeks)",
+      "Phase 2: Avatar System (2-4 weeks)",
+      "Phase 3: Frontend Integration (1-2 weeks)",
+      "Phase 4: Optimization & Scale (ongoing)"
+    ],
+    "questions_for_director": [
+      "What are the current specs of your R740? (CPU, RAM, storage, network)",
+      "Where will the R740 be hosted? (home, colo, cloud)",
+      "Which GPU option? (RTX 3090, 2x RTX 4090, or A100)"
+    ]
   },
 
   "blockers": [],
@@ -207,6 +241,12 @@
   },
 
   "recent_changes": [
+    {
+      "session": 64,
+      "date": "2025-12-19",
+      "change": "Self-Hosted Premium infrastructure scopes created",
+      "impact": "Created SCOPE_SELF_HOSTED_PREMIUM.md documenting Dell R740 infrastructure for premium tier: Coqui XTTS v2 (voice cloning), Unreal MetaHuman + Audio2Face (photorealistic avatar), Llama 3 70B (local LLM). Updated SCOPE_TTS.md with 3-tier architecture. Updated SCOPE_AVATAR.md with self-hosted rendering. Updated SCOPE_pricing.md with $10-20/mo Self-Hosted Premium tier. Updated MASTER_SCOPE.md with ARCH-008 through ARCH-011 decisions. ROI: 2-4 month payback vs cloud costs."
+    },
     {
       "session": 61,
       "date": "2025-12-18",
