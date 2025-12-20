@@ -1,11 +1,115 @@
 # PMERIT SUB-SCOPE: Text-to-Speech (TTS) System
 
-**Version:** 2.3
+**Version:** 3.1
 **Created:** 2025-12-13
-**Last Updated:** 2025-12-14
-**Status:** OPERATIONAL (All 5 Voices Working - RunPod Pod On-Demand)
+**Last Updated:** 2025-12-19
+**Status:** LOCKED (Critical Regression Identified - Session 65)
 **Phase:** Integrated with Avatar System (P5 Classroom)
-**Session:** 56
+**Session:** 65
+**Related Scopes:** SCOPE_SELF_HOSTED_PREMIUM.md
+
+---
+
+## LOCKED FILES
+
+**Status:** LOCKED
+**Lock Date:** 2025-12-19
+**Last Verified Working Commit:** Session 65 fix (post-architecture fix)
+
+These files are protected. DO NOT MODIFY without explicit UNLOCK command.
+
+| File | Purpose | Last Working Commit | Lock Date |
+|------|---------|---------------------|-----------|
+| `assets/js/tts.js` | TTS orchestration (frontend) | Session 65 | 2025-12-19 |
+| `pmerit-api-worker/src/routes/tts.ts` | TTS API (backend) | Session 65 | 2025-12-19 |
+| `assets/js/voice-preview.js` | Voice selection UI | Session 65 | 2025-12-19 |
+| `assets/css/voice-preview.css` | Voice modal styling | Session 65 | 2025-12-19 |
+
+### UNLOCK HISTORY
+
+| Date | File | Reason | Outcome | Session |
+|------|------|--------|---------|---------|
+| 2025-12-18 | tts.js | Session 64 voice selection UI | REGRESSION - all voices sound same | 64 |
+| 2025-12-19 | tts.js, voice-preview.js | Session 65 architecture fix | SUCCESS - Free voices now use Browser TTS | 65 |
+
+### ARCHITECTURE FIX APPLIED (Session 65)
+
+**Problem:** All free voices sounded identical because they were routing through RunPod.
+
+**Solution:** Free voices now use Browser Web Speech API (client-side):
+- `standard-male`: Browser TTS (male voice preference)
+- `standard-female`: Browser TTS (female voice preference)
+- `standard-young`: Browser TTS (young voice preference)
+- `primo`, `primo-female`: Still use RunPod server (premium only)
+
+**Key Changes:**
+1. `tts.js`: Added `useServer: false` for free voices in VOICE_OPTIONS
+2. `tts.js`: Added `getBrowserVoiceForPreference()` function
+3. `voice-preview.js`: Changed provider from 'edge-tts' to 'browser-tts' for free voices
+
+### REGRESSION TEST CHECKLIST
+
+Before deploying changes to these files:
+
+- [ ] Free voices work WITHOUT RunPod running
+- [ ] Standard Male and Standard Female sound DIFFERENT
+- [ ] Premium voices show "upgrade" prompt for free users
+- [ ] TTS plays audio when AI responds in classroom
+- [ ] Speech rate slider affects playback speed
+- [ ] Avatar head moves when speaking
+- [ ] No console errors related to TTS
+- [ ] Welcome message appears (not spoken until user interaction)
+
+---
+
+## CRITICAL ISSUE: TTS Architecture Regression (Session 65)
+
+### Problem
+
+Session 64 broke free voice differentiation. All voices now sound identical because:
+
+1. **Free voices routed through Edge TTS on RunPod** - When pod is off, falls back to MeloTTS
+2. **MeloTTS ignores voice parameter** - Documented in Session 52 testing
+3. **Result**: All voices sound the same robotic voice
+
+### Root Cause
+
+The architecture was incorrectly modified to route free voices through RunPod Edge TTS instead of using Cloudflare MeloTTS (which was the original free tier provider).
+
+### Correct Architecture (To Be Restored)
+
+```
+FREE TIER (No RunPod dependency):
+┌────────────────────────────────────────────┐
+│ Option A: Browser Web Speech API           │
+│ - Different voices available               │
+│ - Always works (offline capable)           │
+│ - True variety between male/female/young   │
+└────────────────────────────────────────────┘
+        │ Fallback
+        ▼
+┌────────────────────────────────────────────┐
+│ Option B: Cloudflare MeloTTS               │
+│ - Server-side backup                       │
+│ - Single voice (no variety)                │
+│ - Always available                         │
+└────────────────────────────────────────────┘
+
+PREMIUM TIER (Requires RunPod):
+┌────────────────────────────────────────────┐
+│ Piper TTS / Edge TTS on RunPod            │
+│ - Natural human voices                     │
+│ - Voice cloning capability                 │
+│ - Premium subscription required            │
+└────────────────────────────────────────────┘
+```
+
+### Fix Required
+
+Update `tts.ts` backend to:
+1. Route `standard-male/female/young` to Browser Web Speech API (client-side) as primary
+2. Keep MeloTTS as server-side fallback only
+3. Only use RunPod for `primo` and `primo-female` voices
 
 ---
 
@@ -37,6 +141,8 @@
 | TTS-008 | Premium Provider | **RunPod GPU Cloud** | True pay-per-use, GPU for avatar + TTS | 52 |
 | TTS-009 | Premium TTS Engine | Piper TTS on RunPod | Natural human voice, open-source | 52 |
 | TTS-010 | Premium Avatar | Unreal MetaHuman + Pixel Streaming | Photorealistic, GPU-rendered | 52 |
+| TTS-011 | Self-Hosted Premium | **Coqui XTTS v2 on Dell R740** | Voice cloning, 6-sec samples, natural | 64 |
+| TTS-012 | Self-Hosted LLM | Llama 3 70B Local | Zero API costs, fine-tunable | 64 |
 
 ---
 
@@ -82,7 +188,64 @@ Or configure RunPod to auto-start the server on pod boot.
 
 ---
 
-## 4. PREMIUM TIER ARCHITECTURE (RunPod)
+## 4. THREE-TIER TTS ARCHITECTURE
+
+### Tier Overview
+
+| Tier | Provider | Engine | Quality | Cost | Use Case |
+|------|----------|--------|---------|------|----------|
+| **Free** | Cloudflare | MeloTTS | Robotic AI voice | $0 | All users |
+| **Premium (Cloud)** | RunPod | Piper TTS + Edge TTS | Natural voice | $2.99/mo | Paying subscribers |
+| **Self-Hosted Premium** | Dell R740 | Coqui XTTS v2 | Voice cloning, ultra-natural | $10-20/mo | Enterprise/Ultra subscribers |
+
+### Self-Hosted TTS (Dell R740)
+
+**Hardware Requirements:**
+- Server: Dell PowerEdge R740
+- GPU: RTX 4090 (recommended) or RTX 3090
+- VRAM: 8GB minimum for XTTS
+- RAM: 16GB minimum
+- Storage: 10GB for models
+
+**Coqui XTTS v2 Capabilities:**
+- 17 languages supported
+- Voice cloning from 6-second samples
+- Emotional expression (happy, sad, excited)
+- Real-time generation on GPU
+- Open source (Apache 2.0)
+
+**API Endpoint (Self-Hosted):**
+```http
+POST /api/premium/self-hosted/tts
+Content-Type: application/json
+Authorization: Bearer <premium_jwt>
+
+{
+    "text": "Let me explain how functions work...",
+    "voice": "cloned-teacher",
+    "speaker_wav": "base64_encoded_6sec_sample",
+    "language": "en",
+    "emotion": "friendly"
+}
+
+Response: audio/wav
+Headers:
+  X-TTS-Provider: coqui-xtts
+  X-Render-Time-Ms: 450
+  X-Premium-Tier: self-hosted
+```
+
+**Voice Options (Self-Hosted):**
+| Voice | Description | Requires Sample? |
+|-------|-------------|------------------|
+| `lessac-natural` | Pre-trained male voice | No |
+| `amy-natural` | Pre-trained female voice | No |
+| `cloned-teacher` | Cloned from teacher sample | Yes (6 sec) |
+| `cloned-custom` | User-provided voice clone | Yes (6 sec) |
+
+---
+
+## 5. PREMIUM TIER ARCHITECTURE (RunPod)
 
 ### 4.1 Unified Premium Infrastructure
 
@@ -996,7 +1159,22 @@ Voice selection modal uses inline styles that don't match platform design system
 ## 7. FALLBACK HIERARCHY
 
 ```
-Premium User Request:
+Self-Hosted Premium User Request:
+1. Coqui XTTS (Dell R740 Self-Hosted)
+   │   └── On server unavailable
+   ▼
+2. Primo Voice (RunPod Piper TTS) - Cloud fallback
+   │   └── On pod starting/unavailable
+   ▼
+3. Cloudflare Workers AI (MeloTTS) + Apology message
+   │   └── On quota exceeded or error
+   ▼
+4. Browser Web Speech API (speechSynthesis)
+   │   └── On browser not supported
+   ▼
+5. Silent mode (text-only, no speech)
+
+Cloud Premium User Request:
 1. Primo Voice (RunPod Piper TTS)
    │   └── On pod starting/unavailable
    ▼

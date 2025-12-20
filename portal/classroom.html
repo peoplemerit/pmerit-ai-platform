@@ -28,7 +28,38 @@
 
   <!-- Avatar Settings Panel Styles -->
   <style>
-    /* Settings Button */
+    /* Chat Header Actions */
+    .chat-header__actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Voice Settings Button in Chat Header - Always Visible */
+    .chat-header__settings-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      border: none;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+    }
+    .chat-header__settings-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+    }
+    .chat-header__settings-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Settings Button on Avatar (secondary, less prominent) */
     .avatar-settings-btn {
       position: absolute;
       top: 8px;
@@ -644,15 +675,21 @@
           <span class="chat-header__title">
             <i class="fas fa-comments"></i> Chat
           </span>
-          <div class="chat-stats">
-            <span class="chat-stat" title="Hand Raises">
-              <i class="fas fa-hand-paper"></i>
-              <span id="stat-hand-raises">0</span>
-            </span>
-            <span class="chat-stat" title="Questions">
-              <i class="fas fa-question-circle"></i>
-              <span id="stat-questions">0</span>
-            </span>
+          <div class="chat-header__actions">
+            <!-- Voice/TTS Settings Button - Always Visible -->
+            <button id="chat-voice-settings-btn" class="chat-header__settings-btn" title="Voice & TTS Settings">
+              <i class="fas fa-volume-up"></i>
+            </button>
+            <div class="chat-stats">
+              <span class="chat-stat" title="Hand Raises">
+                <i class="fas fa-hand-paper"></i>
+                <span id="stat-hand-raises">0</span>
+              </span>
+              <span class="chat-stat" title="Questions">
+                <i class="fas fa-question-circle"></i>
+                <span id="stat-questions">0</span>
+              </span>
+            </div>
           </div>
         </div>
 
@@ -1358,6 +1395,7 @@
       // =========================================
       function setupAvatarSettings() {
         const settingsBtn = document.getElementById('avatar-settings-btn');
+        const chatVoiceSettingsBtn = document.getElementById('chat-voice-settings-btn'); // New visible button
         const settingsModal = document.getElementById('avatar-settings-modal');
         const closeBtn = document.getElementById('avatar-settings-close');
         const saveBtn = document.getElementById('avatar-settings-save');
@@ -1372,13 +1410,13 @@
         const premiumUpgradeBtn = document.getElementById('premium-upgrade-btn');
         const premiumCancelBtn = document.getElementById('premium-cancel-btn');
 
-        if (!settingsBtn || !settingsModal) return;
+        if (!settingsModal) return;
 
-        // Voice descriptions
+        // Voice descriptions (Session 65: Updated for Browser TTS architecture)
         const voiceDescriptions = {
-          'standard-male': 'Professor Merit - Clear male voice (Edge TTS)',
-          'standard-female': 'Dr. Ada - Clear female voice (Edge TTS)',
-          'standard-young': 'Assistant - Friendly young voice (Edge TTS)',
+          'standard-male': 'Professor Merit - Clear male voice (Browser TTS)',
+          'standard-female': 'Dr. Ada - Clear female voice (Browser TTS)',
+          'standard-young': 'Assistant - Friendly young voice (Browser TTS)',
           'browser': 'Uses your device\'s built-in text-to-speech',
           'primo': '⭐ Premium - Ultra-natural male voice (Piper TTS)',
           'primo-female': '⭐ Premium - Ultra-natural female voice (Piper TTS)'
@@ -1458,6 +1496,7 @@
         });
 
         // Voice preview functionality
+        // FIX (Session 65): Use TTS.speak() to ensure voice differentiation is applied
         let previewAudio = null;
         previewVoiceBtn?.addEventListener('click', async () => {
           const voice = voiceSelect.value;
@@ -1475,29 +1514,25 @@
           previewVoiceBtn.disabled = true;
           previewVoiceBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
 
+          const resetButton = () => {
+            previewVoiceBtn.classList.remove('playing');
+            previewVoiceBtn.disabled = false;
+            previewVoiceBtn.innerHTML = '<i class="fas fa-play"></i>';
+          };
+
           try {
-            if (voice === 'browser' || voice.startsWith('browser:')) {
-              // Browser voice preview
-              const utter = new SpeechSynthesisUtterance(previewText);
-              utter.rate = parseFloat(speechRateInput.value);
+            // IMPORTANT: First save the voice selection so TTS.speak uses it
+            if (window.TTS) {
+              window.TTS.setVoiceEngine(voice);
+              window.TTS.setSpeechRate(parseFloat(speechRateInput.value));
+            }
 
-              if (voice.startsWith('browser:')) {
-                const voiceName = voice.replace('browser:', '');
-                const voices = speechSynthesis.getVoices();
-                const selectedVoice = voices.find(v => v.name === voiceName);
-                if (selectedVoice) utter.voice = selectedVoice;
-              }
+            // Check if this is a premium voice that requires server
+            const voiceConfig = window.TTS?.getVoiceOptions()?.[voice];
+            const isPremiumVoice = voiceConfig?.tier === 'premium';
 
-              utter.onend = () => {
-                previewVoiceBtn.classList.remove('playing');
-                previewVoiceBtn.disabled = false;
-                previewVoiceBtn.innerHTML = '<i class="fas fa-play"></i>';
-              };
-              utter.onerror = utter.onend;
-
-              speechSynthesis.speak(utter);
-            } else {
-              // Server voice preview
+            if (isPremiumVoice) {
+              // Server voice preview (premium voices via RunPod)
               const apiBase = window.CONFIG?.API_BASE_URL || 'https://pmerit-api-worker.peoplemerit.workers.dev';
               const res = await fetch(`${apiBase}/api/v1/tts`, {
                 method: 'POST',
@@ -1513,21 +1548,31 @@
               previewAudio.playbackRate = parseFloat(speechRateInput.value);
 
               previewAudio.onended = () => {
-                previewVoiceBtn.classList.remove('playing');
-                previewVoiceBtn.disabled = false;
-                previewVoiceBtn.innerHTML = '<i class="fas fa-play"></i>';
+                resetButton();
                 URL.revokeObjectURL(url);
                 previewAudio = null;
               };
               previewAudio.onerror = previewAudio.onended;
 
               await previewAudio.play();
+            } else {
+              // FREE VOICES: Use TTS.speak() which applies pitch/rate differentiation
+              // This is the FIX for Session 65 - ensures male/female/young sound different
+              console.log(`🎤 Preview: Using TTS.speak() for free voice: ${voice}`);
+
+              // Listen for TTS end event to reset button
+              const handleTTSEnd = () => {
+                resetButton();
+                document.removeEventListener('tts:end', handleTTSEnd);
+              };
+              document.addEventListener('tts:end', handleTTSEnd);
+
+              // Use TTS module which applies voice differentiation (pitch/rate)
+              await window.TTS.speak(previewText);
             }
           } catch (error) {
             console.error('Voice preview failed:', error);
-            previewVoiceBtn.classList.remove('playing');
-            previewVoiceBtn.disabled = false;
-            previewVoiceBtn.innerHTML = '<i class="fas fa-play"></i>';
+            resetButton();
           }
         });
 
@@ -1553,10 +1598,19 @@
           }
         });
 
-        // Open modal
-        settingsBtn.addEventListener('click', () => {
-          settingsModal.style.display = 'flex';
-        });
+        // Open modal - Avatar gear button (if exists)
+        if (settingsBtn) {
+          settingsBtn.addEventListener('click', () => {
+            settingsModal.style.display = 'flex';
+          });
+        }
+
+        // Open modal - Chat header voice settings button (always visible)
+        if (chatVoiceSettingsBtn) {
+          chatVoiceSettingsBtn.addEventListener('click', () => {
+            settingsModal.style.display = 'flex';
+          });
+        }
 
         // Close modal
         closeBtn.addEventListener('click', () => {

@@ -1,10 +1,48 @@
 # PMERIT SUB-SCOPE: Avatar System
 
-**Version:** 1.0
+**Version:** 2.1
 **Created:** 2025-12-12
-**Last Updated:** 2025-12-12
-**Status:** COMPLETE
+**Last Updated:** 2025-12-19
+**Status:** LOCKED (TTS Regression in Session 64)
 **Phase:** Integrated with P5 (Classroom)
+**Session:** 65
+**Related Scopes:** SCOPE_SELF_HOSTED_PREMIUM.md, SCOPE_TTS.md
+
+---
+
+## LOCKED FILES
+
+**Status:** LOCKED
+**Lock Date:** 2025-12-19
+**Last Verified Working Commit:** `8807f4a` (before Session 64)
+
+These files are protected. DO NOT MODIFY without explicit UNLOCK command.
+
+| File | Purpose | Last Working Commit | Lock Date |
+|------|---------|---------------------|-----------|
+| `assets/js/gpu-streaming.js` | GPU avatar streaming | `8807f4a` | 2025-12-19 |
+| `assets/js/lip-sync-controller.js` | Lip sync coordination | `8807f4a` | 2025-12-19 |
+| `assets/js/AvatarManager.js` | Avatar rendering | `8807f4a` | 2025-12-19 |
+| `portal/classroom.html` | Classroom UI | `8807f4a` | 2025-12-19 |
+| `assets/css/avatar.css` | Avatar styling | `8807f4a` | 2025-12-19 |
+
+### UNLOCK HISTORY
+
+| Date | File | Reason | Outcome | Session |
+|------|------|--------|---------|---------|
+| 2025-12-18 | classroom.html | Session 64 voice selection UI | Related to TTS regression | 64 |
+
+### REGRESSION TEST CHECKLIST
+
+Before deploying changes to these files:
+
+- [ ] Avatar renders in classroom (3D model visible)
+- [ ] Avatar head/jaw moves when TTS speaks
+- [ ] No console errors related to avatar/Three.js
+- [ ] Avatar fallback icon shows on mobile
+- [ ] Settings modal opens and closes correctly
+- [ ] Avatar toggle (on/off) works
+- [ ] Lip sync responds to TTS audio intensity
 
 ---
 
@@ -25,12 +63,16 @@
 
 | ID | Decision | Choice | Rationale | Session |
 |----|----------|--------|-----------|---------|
-| AV-001 | Rendering Engine | Three.js WebGL | Client-side, no GPU costs | 45 |
-| AV-002 | Avatar Source | Ready Player Me | Professional, customizable | 44 |
-| AV-003 | Model File | pmerit-tutor-no-morph.glb | No morph targets = no errors | 45 |
-| AV-004 | Lip Sync Method | Jaw bone X-axis rotation | ARKit morph targets fail in Three.js | 45 |
-| AV-005 | TTS Provider | Cloudflare Workers AI | Integrated, WAV output | 40 |
-| AV-006 | Tier System | Free/Standard/Premium | Graceful degradation | 37 |
+| AV-001 | Rendering Engine (Free) | Three.js WebGL | Client-side, no GPU costs | 45 |
+| AV-002 | Avatar Source (Free) | Ready Player Me | Professional, customizable | 44 |
+| AV-003 | Model File (Free) | pmerit-tutor-no-morph.glb | No morph targets = no errors | 45 |
+| AV-004 | Lip Sync Method (Free) | Jaw bone X-axis rotation | ARKit morph targets fail in Three.js | 45 |
+| AV-005 | TTS Provider (Free) | Cloudflare Workers AI | Integrated, WAV output | 40 |
+| AV-006 | Tier System | Free/Standard/Premium/Self-Hosted | Graceful degradation | 64 |
+| AV-007 | Self-Hosted Rendering | Unreal Engine 5 MetaHuman | Photorealistic, GPU-rendered | 64 |
+| AV-008 | Self-Hosted Lip Sync | NVIDIA Audio2Face | Perfect sync from audio | 64 |
+| AV-009 | Self-Hosted Streaming | Pixel Streaming (WebRTC) | Low latency browser playback | 64 |
+| AV-010 | Self-Hosted TTS | Coqui XTTS v2 | Voice cloning, natural output | 64 |
 
 ---
 
@@ -40,12 +82,62 @@
 
 ### Avatar Tiers
 
-| Tier | Rendering | Requirement | Cost |
-|------|-----------|-------------|------|
-| Free | CSS/SVG Animation | 0 Mbps | $0 |
-| Standard | WebGL 3D (Three.js) | 5 Mbps | $0 |
-| Premium | Unreal MetaHuman (RunPod GPU) | 25 Mbps | $0.44/hr (RTX 4090) |
-| Fallback | Static Image | 0 Mbps | $0 |
+| Tier | Rendering | Requirement | Cost | Quality |
+|------|-----------|-------------|------|---------|
+| Free | CSS/SVG Animation | 0 Mbps | $0 | Basic |
+| Standard | WebGL 3D (Three.js) | 5 Mbps | $0 | Good |
+| Cloud Premium | Unreal MetaHuman (RunPod GPU) | 25 Mbps | $0.44/hr | Great |
+| **Self-Hosted Premium** | **Unreal MetaHuman (Dell R740)** | **25 Mbps** | **Included in subscription** | **Photorealistic** |
+| Fallback | Static Image | 0 Mbps | $0 | Minimal |
+
+### Self-Hosted Premium Avatar System
+
+**Hardware:**
+- Server: Dell PowerEdge R740
+- GPU: 2x RTX 4090 (one for avatar, one for AI/TTS)
+- Connection: Cloudflare Tunnel to datacenter
+
+**Components:**
+1. **Unreal Engine 5 MetaHuman** - Photorealistic digital human
+2. **NVIDIA Audio2Face** - Real-time lip sync from TTS audio
+3. **Pixel Streaming** - WebRTC stream to browser
+4. **Coqui XTTS v2** - Voice cloning for natural speech
+
+**Quality Comparison:**
+
+| Feature | Free (WebGL) | Self-Hosted Premium |
+|---------|--------------|---------------------|
+| Avatar Quality | 3D cartoon | Photorealistic human |
+| Lip Sync | Jaw bone rotation | Perfect blendshapes |
+| Voice | Robotic AI | Cloned natural voice |
+| Expressions | Limited | Full emotion range |
+| Gestures | None | Hand/body animation |
+| Resolution | 720p | 1080p @ 30fps |
+
+**Self-Hosted Avatar Flow:**
+```
+User in Browser
+      |
+      v
+Cloudflare Tunnel (secure)
+      |
+      v
+Dell R740 Server
+      |
+      +---> Coqui XTTS v2: Generate speech audio
+      |           |
+      |           v
+      +---> NVIDIA Audio2Face: Audio --> Blendshapes
+      |           |
+      |           v
+      +---> Unreal Engine 5: MetaHuman rendering
+                  |
+                  v
+            Pixel Streaming (WebRTC)
+                  |
+                  v
+            Browser displays photorealistic avatar
+```
 
 ### Ready Player Me Account
 
