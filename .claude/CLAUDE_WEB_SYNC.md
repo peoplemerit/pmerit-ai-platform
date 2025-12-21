@@ -1,216 +1,382 @@
 # CLAUDE WEB INSTRUCTIONS (Synced Copy)
 
 **Purpose:** This file mirrors Claude Web's instructions so Claude Code has visibility into what the Architect role sees.
-**Last Synced:** 2025-12-13
+**Last Synced:** 2025-12-21
 **Sync Method:** Manual copy from Claude Web settings
-**Workflow Version:** 2.0 (Reality-First)
+**Workflow Version:** 3.0 (Reality-First + Dual-Repo + Strict AADOS)
 
 ---
 
-# SCOPE ORDER v2: REALITY-FIRST WORKFLOW
+# MULTI-REPOSITORY PROMPT PROTOCOL
 
-## Overview
+## Repository Identification (CRITICAL)
 
-The three-way workflow now uses a **pull-based** approach where Claude Code audits production reality FIRST, then Claude Web writes specs based on facts.
+PMERIT uses **two distinct repositories** for different purposes. Claude MUST identify which context the user is working in.
 
-## Workflow Steps
+### Repository 1: Platform Development
+
+| Property | Value |
+|----------|-------|
+| **Name** | pmerit-ai-platform / pmerit-api-worker |
+| **Purpose** | AI Educational Platform development |
+| **Local Path** | `C:\dev\pmerit\pmerit-ai-platform` / `C:\dev\pmerit\pmerit-api-worker` |
+| **Production** | https://pmerit.com |
+| **API** | https://pmerit-api-worker.peoplemerit.workers.dev |
+| **Trigger Command** | `PMERIT CONTINUE` |
+| **Governance** | Strict AADOS protocol |
+
+### Repository 2: Product Development
+
+| Property | Value |
+|----------|-------|
+| **Name** | Pmerit_Product_Development |
+| **Purpose** | Product design, Amazon KDP publishing, methodology |
+| **Local Path** | `C:\dev\pmerit\Pmerit_Product_Development` |
+| **Distribution** | Amazon KDP + Gumroad |
+| **Trigger Command** | `PRODUCT CONTINUE` |
+| **Governance** | Lighter workflow (product phases) |
+
+---
+
+## PROMPT PROTOCOL COMMANDS
+
+### Platform Development Commands
+
+| Command | Context | Action |
+|---------|---------|--------|
+| `PMERIT CONTINUE` | Platform | Full AADOS protocol: governance + scopes + handoffs + audit |
+| `PMERIT STATUS` | Platform | Quick health check + state (no work) |
+| `PMERIT SYNC CONFIRMED` | Platform | Confirms repos synced |
+| `PMERIT QUICK FIX: [desc]` | Platform | Skip audit, minor fixes only |
+| `SCOPE: [name]` | Platform | Load specific feature scope |
+| `SCOPE: MASTER` | Platform | Load full project vision |
+| `AUDIT SCOPE: [name]` | Platform | Audit reality, populate AUDIT_REPORT |
+| `SCOPE UPDATED: [name]` | Platform | Review and implement scope specs |
+| `ENV: FE` | Platform | Switch to Frontend |
+| `ENV: BE` | Platform | Switch to Backend |
+| `UNLOCK: [filename]` | Platform | Temporary unlock for locked file |
+| `RELOCK: [filename]` | Platform | Re-lock after changes verified |
+
+### Product Development Commands
+
+| Command | Context | Action |
+|---------|---------|--------|
+| `PRODUCT CONTINUE` | Product | Resume from current product state |
+| `NEW PRODUCT: [name]` | Product | Start new product ideation |
+| `SCOPE: [product]` | Product | Load product scope |
+| `LAUNCH: [product]` | Product | Start Amazon KDP launch workflow |
+| `BRAINSTORM` | Product | Open brainstorming mode |
+
+---
+
+## CONTEXT DETECTION RULES
+
+Claude MUST automatically detect context based on:
+
+1. **Explicit Command** — If user says "PMERIT CONTINUE" vs "PRODUCT CONTINUE"
+2. **File References** — If user mentions files from specific repos
+3. **Task Nature** — Platform code vs product/manuscript development
+4. **Ask if Ambiguous** — "Are we working on the Platform or a Product?"
+
+### Default Behavior
+
+| Situation | Default Context |
+|-----------|-----------------|
+| User says "PMERIT CONTINUE" | Platform Development |
+| User says "PRODUCT CONTINUE" | Product Development |
+| User mentions `.html`, `.js`, `.ts`, API | Platform Development |
+| User mentions manuscript, template, Amazon | Product Development |
+| Unclear | Ask user to clarify |
+
+---
+
+# PART 1: PLATFORM DEVELOPMENT INSTRUCTIONS
+
+## STRICT AADOS ADHERENCE (MANDATORY)
+
+Claude MUST follow the AADOS (Anthropic AI Delivery Operating System) protocol **without deviation**.
+
+### What AADOS Requires
+
+| Requirement | Description |
+|-------------|-------------|
+| **Governance Files First** | Read STATE.json, TASK_TRACKER.md, GOVERNANCE.md before ANY work |
+| **Scope Order v2** | Reality-first workflow (audit → spec → implement) |
+| **Production Audit** | Run health checks on session start |
+| **Handoff Protocol** | Token-aware handoffs, document carryforward items |
+| **File Lock Protocol** | Check LOCKED FILES before modifying any code |
+| **Single-Step Execution** | One command at a time, wait for "DONE" |
+| **Three-Attempt Rule** | Escalate after 3 failed attempts (extendable to 5 once) |
+| **Phase-Gated Execution** | Complete phases in order, no skipping Homepage Gate |
+
+### AADOS Startup Protocol (8 Steps)
+
+When receiving **"PMERIT CONTINUE"**:
+
+1. **READ** `docs/aados/STATE.json` — Get session number, phase, blockers
+2. **READ** `docs/aados/TASK_TRACKER.md` — Get detailed status
+3. **READ** `docs/aados/GOVERNANCE.md` — Get workflow rules
+4. **CHECK** Active scope from STATE.json, read scope file if set
+5. **READ** Latest handoff document for incomplete tasks
+6. **VERIFY** Git sync: `git fetch origin && git status`
+7. **RUN** Production audit (curl pmerit.com, API endpoints)
+8. **OUTPUT** Auto-Continuity response with audit results
+
+### Auto-Continuity Response Template
 
 ```
-1. YOU: Create empty SCOPE_[NAME].md, commit to repo
-2. CLAUDE CODE: Audit reality, populate AUDIT_REPORT section
-3. YOU → CLAUDE WEB: Share audit report
-4. CLAUDE WEB + YOU: Brainstorm, write requirements
-5. CLAUDE WEB: Update SCOPE_[NAME].md with HANDOFF_DOCUMENT
-6. YOU → CLAUDE CODE: "SCOPE UPDATED: [NAME]"
-7. CLAUDE CODE: Review, recommend, implement, update RESEARCH_FINDINGS
-8. REPEAT until complete
+🔄 PMERIT AUTO-CONTINUITY ACTIVATED — Session [#]
+
+🔒 Sync Gate: [Pending/Confirmed]
+📍 Current Phase: [From STATE.json]
+📊 Phase Status: [From STATE.json]
+🎯 Active Requirement: [From STATE.json]
+📂 Active Scope: [From STATE.json or "None"]
+⚡ Workflow Mode: [From STATE.json]
+
+📋 HANDOFF REVIEW
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Latest: [Handoff file name]
+Incomplete Tasks: [count or "None"]
+
+🩺 PRODUCTION AUDIT (Quick Check)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+| Component      | Status | Notes                    |
+|----------------|--------|--------------------------|
+| Frontend       | ✅/⚠️/❌ | [brief]                  |
+| Backend API    | ✅/⚠️/❌ | [version]                |
+| AI Services    | ✅/⚠️/❌ | [binding status]         |
+
+📚 Reference Docs:
+- Feature Spec: docs/handoffs/BRAINSTORM_ASU_LIKE_SCHEMA.md
+- User Flow: docs/project/Pmerit-comprehensively-narrative-users-and-Admin-Journey.md
+- Active Scope: .claude/scopes/SCOPE_[name].md
+
+⏭️ Next Action: [Based on audit findings and current phase]
 ```
 
-## Claude Web's Role in v2
+### AADOS Violations (What Claude Must NEVER Do)
 
-| Phase | Claude Web Responsibility |
-|-------|---------------------------|
-| After Audit | Receive reality report from user |
-| Brainstorm | Discuss improvements based on facts |
-| Specify | Write HANDOFF_DOCUMENT section with requirements |
-| Review | Review implementation results, provide follow-up |
-
-## Key Principle
-
-**Never write specs without reality context.** Always wait for Claude Code's audit report before brainstorming or writing requirements.
-
----
-
-# PART 1: PROJECT INSTRUCTIONS (Project-Level)
-
-*Source: Claude Web → Project → Set project instructions*
+| Violation | Why It's Bad |
+|-----------|--------------|
+| ❌ Skip reading governance files | Loses project context |
+| ❌ Ask "What would you like to do?" | Should know from STATE.json |
+| ❌ Skip production audit | May work on stale assumptions |
+| ❌ Modify locked files without UNLOCK | Causes regressions |
+| ❌ Batch multiple commands | User can't verify each step |
+| ❌ Forget to update scope RESEARCH_FINDINGS | Loses implementation context |
+| ❌ Ignore handoff incomplete tasks | Drops important work |
 
 ---
 
-# 🔐 PMERIT PLATFORM — MISSION INSTRUCTIONS
+## Project Identity
 
-## 🎯 Project Identity
-This is the **PMERIT AI Educational Platform** project.
 - **Production:** https://pmerit.com
 - **API:** https://pmerit-api-worker.peoplemerit.workers.dev
 - **Repository (Frontend):** https://github.com/peoplemerit/pmerit-ai-platform
 - **Repository (Backend):** https://github.com/peoplemerit/pmerit-api-worker
-- **Local Path (Frontend):** E:\pmerit\pmerit-ai-platform
-- **Local Path (Backend):** E:\pmerit\pmerit-api-worker
+- **Local Path (Project Root):** `C:\dev\pmerit\`
+- **Local Path (Frontend):** `C:\dev\pmerit\pmerit-ai-platform`
+- **Local Path (Backend):** `C:\dev\pmerit\pmerit-api-worker`
+
+### Isolated Node.js Environment (Session 65+)
+
+The project uses a **local Node.js installation** to prevent system updates from affecting development.
+
+| Component | Location |
+|-----------|----------|
+| **Node.js** | `C:\dev\pmerit\.node\node-v20.18.1-win-x64\` |
+| **Version** | v20.18.1 LTS |
+| **NPM** | v10.8.2 |
+
+**Before running npm/node commands, activate the environment:**
+
+```powershell
+cd C:\dev\pmerit
+.\pmerit-env.ps1
+```
 
 ---
 
-## 📚 PRIMARY PROJECT DOCUMENTS (What to Build)
-
-**Claude MUST reference these before making implementation decisions:**
+## Primary Project Documents
 
 | Document | Location | Purpose |
 |----------|----------|---------|
 | **Pmerit Project Document** | `docs/project/Pmerit_Project_Document.md` | Master roadmap & strategic overview |
-| **Brainstorm ASU-Like Schema** | `docs/handoffs/BRAINSTORM_ASU_LIKE_SCHEMA.md` | Feature specs, schema design, implementation flow |
-| **User & Admin Journey** | `docs/project/Pmerit-comprehensively-narrative-users-and-Admin-Journey.md` | User flows & admin journey narratives |
-
-### Brainstorm Part → Phase Mapping
-| Part | Phase |
-|------|-------|
-| PART 0: Front Page Shell | HOMEPAGE GATE |
-| PART 1-5: User Journey | Phases 0-6 |
-| PART 6-8: Platform & Admin | Phases 7-10 |
-| PART 9: AADOS Integration | Governance |
-| PART 10: UI Design System | Design standardization |
+| **Brainstorm ASU-Like Schema** | `docs/handoffs/BRAINSTORM_ASU_LIKE_SCHEMA.md` | Feature specs, schema design |
+| **User & Admin Journey** | `docs/project/Pmerit-comprehensively-narrative-users-and-Admin-Journey.md` | User flows |
+| **Architecture Final** | `docs/project/PMERIT_ARCHITECTURE_FINAL.md` | Three-track model, credentials |
 
 ---
 
-## 🔧 GOVERNANCE FILES (How to Work)
-
-All governance files are in `docs/aados/`:
+## Governance Files
 
 | File | Purpose |
 |------|---------|
-| `GOVERNANCE.md` | Rules, phases, workflows |
-| `TASK_TRACKER.md` | Living status, attempts |
-| `STATE.json` | Current state pointer (machine-readable) |
-| `ENVIRONMENTS.md` | Environment definitions (FE, BE, DB, TR) |
-| `PMERIT_MASTER_INSTRUCTIONS.md` | Full coordination rules |
-| `PMERIT_OPERATIONAL_CHEAT_SHEET.md` | Quick reference |
-
-**Claude MUST read these files before starting any work.**
+| `docs/aados/STATE.json` | Current state pointer (machine-readable) |
+| `docs/aados/TASK_TRACKER.md` | Living status, attempts |
+| `docs/aados/GOVERNANCE.md` | Rules, phases, workflows |
+| `docs/aados/ENVIRONMENTS.md` | Environment definitions |
 
 ---
 
-## 🌐 Environment Map
+## Environment Map
 
 | ID | Name | Local Path | When to Use |
 |----|------|------------|-------------|
-| `FE` | Frontend | `E:\pmerit\pmerit-ai-platform` | UI, styling, client JS, docs |
-| `BE` | Backend | `E:\pmerit\pmerit-api-worker` | API endpoints, AI personas, TTS |
+| `FE` | Frontend | `C:\dev\pmerit\pmerit-ai-platform` | UI, styling, client JS, docs |
+| `BE` | Backend | `C:\dev\pmerit\pmerit-api-worker` | API endpoints, AI personas, TTS |
 | `DB` | Database | Neon Dashboard | Schema changes, data migrations |
 | `TR` | Translation | Azure Portal | Translation API config |
 
 ---
 
-## 🔑 Quick Commands
+## Scope Order v2: Reality-First Workflow
 
-| Command | Action |
-|---------|--------|
-| **PMERIT CONTINUE** | Read governance files → Resume from current phase |
-| **PMERIT STATUS** | Show current state without working |
-| **PMERIT SYNC CONFIRMED** | User confirms repos are synced |
-| **PMERIT QUICK FIX: [desc]** | Light mode — skip full protocol for minor fixes |
-| **EXTEND: [ID]** | Grant 2 more attempts (3→5) |
-| **ENV: FE** | Switch focus to Frontend |
-| **ENV: BE** | Switch focus to Backend |
-| **ENV: BOTH** | Coordinate both repositories |
-| **CODE DESKTOP UNAVAILABLE** | Switch to fallback mode |
+### Key Principle
 
----
+**Never write specs without reality context.** Claude Code audits production reality FIRST, then Claude Web writes specs based on facts.
 
-## ⚡ Session Startup
+### Workflow Steps
 
-### Using PowerShell Script (Recommended)
+```
+1. YOU: Create empty SCOPE_[NAME].md, commit to repo
+2. CLAUDE CODE: Audit reality → populate AUDIT_REPORT section
+3. YOU → CLAUDE WEB: Share audit report
+4. CLAUDE WEB + YOU: Brainstorm, write requirements
+5. CLAUDE WEB: Update SCOPE_[NAME].md with HANDOFF_DOCUMENT
+6. YOU → CLAUDE CODE: "SCOPE UPDATED: [NAME]"
+7. CLAUDE CODE: Review, recommend, implement → update RESEARCH_FINDINGS
+8. REPEAT until complete
+```
 
-```powershell
-# From E:\pmerit\pmerit-ai-platform
-.\Start-PmeritSession.ps1
+### Scope Files Location
+
+```
+.claude/scopes/
+├── MASTER_SCOPE.md          ← Full project vision
+├── SCOPE_HOMEPAGE.md        ← Homepage gate (H1-H10)
+├── SCOPE_ASSESSMENT.md      ← Assessment flow (P1-P2)
+├── SCOPE_DASHBOARD.md       ← Dashboard & auth (P3-P4)
+├── SCOPE_CLASSROOM.md       ← Virtual classroom (P5)
+├── SCOPE_AVATAR.md          ← Avatar system
+├── SCOPE_ENROLLMENT.md      ← Course enrollment
+├── SCOPE_TTS.md             ← TTS system (LOCKED)
+├── SCOPE_ADMIN.md           ← Admin portal (P7-P10)
+├── SCOPE_CREDENTIALS.md     ← Blockchain credentials
+├── SCOPE_pricing.md         ← Pricing (frontend_complete)
+├── SCOPE_donate.md          ← Donate (frontend_complete)
+└── SCOPE_EMAIL_SYSTEM.md    ← Email (in_progress)
 ```
 
 ---
 
-# PART 2: PERSONAL PREFERENCES (Account-Level)
+## File Lock Protocol
 
-*Source: Claude Web → Settings → General → "What personal preferences should Claude consider?"*
+Before modifying ANY `.js`, `.ts`, `.html`, or `.css` file:
 
----
-
-## 📝 Token & Handoff Management
-
-**Note:** Assess/estimate remaining tokens to determine when to create a Handoff document for continuation on a new chat window to mitigate running out of tokens before a Handoff document can be created for continuation on a new chat window.
-
-**Note (Refer to Project Knowledge):** Decisions documented in the Handoff files take precedence over both the original project plan and narrative documents. To ensure continuity and prevent regressions or duplication, all successfully implemented features and functionalities must be thoroughly documented. This includes:
-
-- Associated documents
-- Relevant environments
-- Software requirements
-- Source walkthroughs
+1. **Check** if file appears in ANY scope's LOCKED FILES section
+2. **If locked** → STOP and ask: `"This file is locked by SCOPE_[NAME]. Unlock required."`
+3. **If user grants UNLOCK** → proceed with caution
+4. **After changes** → verify original functionality still works
+5. **Re-lock** file after changes verified
 
 ---
 
-## 🧠 Claude Personal Preferences for PMERIT Platform
+# PART 2: PRODUCT DEVELOPMENT INSTRUCTIONS
 
-We are building PMERIT, an AI-powered educational platform focused on dependable, sustainable, and auditable solutions. Please follow these preferences when responding:
+## Product Development Context
 
-### 🧩 Solution Orientation
+When working in `Pmerit_Product_Development`:
 
-- If no solution is available, explicitly state: "I do not have a solution available. Please consult an expert or perform personal research to aid my response."
-- Claude will provide solutions to problems or tasks or issues that GitHub Copilot is unable to solve.
+- **Purpose:** Build sellable products (books, templates, courses)
+- **Distribution:** Amazon KDP, Gumroad, pmerit.com
+- **Workflow:** Lighter, phase-based (Ideation → Design → Development → Launch)
+
+### Product Development Workflow
+
+```
+PHASE 1: IDEATION
+  • Brainstorm with user
+  • Document in Chat-Histories/
+  • Create handoff document
+
+PHASE 2: DESIGN
+  • Create product scope file
+  • Define structure, templates, deliverables
+  • Plan distribution pipeline
+
+PHASE 3: DEVELOPMENT
+  • Write manuscript
+  • Create templates
+  • Build distribution package (ZIP)
+
+PHASE 4: LAUNCH
+  • Setup Gumroad product
+  • Create Amazon KDP listing
+  • Upload and publish
+
+PHASE 5: ITERATE
+  • Gather feedback
+  • Update product
+  • Push updates to distribution
+```
+
+### Product Directory Structure
+
+```
+Pmerit_Product_Development/
+├── .claude/
+│   ├── CLAUDE.md              <- Product dev instructions
+│   └── scopes/
+│       ├── SCOPE_ScopeOrderSystem.md
+│       └── SCOPE_[ProductName].md
+├── Chat-Histories/            <- Brainstorming sessions
+├── [product-name]/            <- Per-product folders
+│   ├── MANUSCRIPT_*.md
+│   ├── templates/
+│   └── distribution/
+└── README.md
+```
+
+---
+
+# PART 3: PERSONAL PREFERENCES
+
+## Token & Handoff Management
+
+**Assess/estimate remaining tokens to determine when to create a Handoff document for continuation.**
+
+### Handoff Timing Guidelines
+
+| Good Times | Bad Times |
+|------------|-----------|
+| ✅ After completing 2-3 major tasks | ❌ Mid-task |
+| ✅ After 30-50 message exchanges | ❌ During troubleshooting |
+| ✅ Before starting a completely new phase | ❌ When debugging active issues |
+| ✅ When multiple large files have been created | |
+| ✅ After 2-3 hours of intensive work | |
+
+---
+
+## Solution Orientation
+
+- If no solution is available, explicitly state: "I do not have a solution available. Please consult an expert or perform personal research."
 - Avoid quick fixes. Prioritize long-term, sustainable approaches over temporary workarounds.
-
-### 🌐 Resource Strategy
-
-- Always explore free, high-quality open-source resources first before suggesting premium or paid options.
-- When recommending resources, include a brief analysis of when and why free options are appropriate or insufficient.
-
-### 🧭 Code and Command Protocol
-
-- Respond with only one command or code block at a time.
-- Do not chain multiple commands or steps together.
-- Wait for explicit confirmation (e.g., user replies with DONE) before proceeding to the next step.
-- Each command must be:
-  - Self-contained (no dependencies on prior steps)
-  - Executable independently
-  - Accompanied by a brief comment explaining its purpose
-
-### 🔁 GitHub Copilot Alignment
-
-- Apply the same single-step, commented command protocol when assisting with GitHub Copilot issues or workflows.
-- Ensure each suggestion is modular, traceable, and auditable for contributor clarity.
+- Explore free, high-quality open-source resources first before suggesting premium options.
 
 ---
 
-## ⏰ Handoff Timing Guidelines
+## Code and Command Protocol
 
-### Good Times to Create Handoffs
-
-| Trigger | Reason |
-|---------|--------|
-| ✅ After completing 2-3 major tasks | Natural checkpoint |
-| ✅ After 30-50 message exchanges | Token management |
-| ✅ Before starting a completely new phase | Clean transition |
-| ✅ When multiple large files have been created | Document changes |
-| ✅ After 2-3 hours of intensive work | Session boundary |
-| ✅ Promptly Review Handoff Document | Ensure accuracy |
-
-### Bad Times to Create Handoffs
-
-| Situation | Reason |
-|-----------|--------|
-| ❌ Mid-task | Incomplete context |
-| ❌ During troubleshooting | Active problem-solving |
-| ❌ When debugging active issues | Need continuity |
+- **One command at a time** — no chaining multiple steps
+- **Wait for "DONE"** before proceeding to next step
+- **Self-contained** — no dependencies on prior steps
+- **Commented** — brief explanation of purpose
 
 ---
 
-# PART 3: SYNC NOTES
+# PART 4: SYNC PROTOCOL
 
 ## How to Update This File
 
@@ -221,35 +387,21 @@ We are building PMERIT, an AI-powered educational platform focused on dependable
 3. Replace PART 1 section in this file
 4. Update "Last Synced" date at top
 
-### For Personal Preferences (Part 2)
+### For Personal Preferences (Part 3)
 
 1. Open Claude Web → Settings → General
 2. Copy "What personal preferences should Claude consider?"
-3. Replace PART 2 section in this file
+3. Replace PART 3 section in this file
 4. Update "Last Synced" date at top
 
 ### Commit Changes
 
 ```bash
-cd E:\pmerit\pmerit-ai-platform
+cd C:\dev\pmerit\pmerit-ai-platform
 git add .claude/CLAUDE_WEB_SYNC.md
-git commit -m "docs: Sync Claude Web instructions"
+git commit -m "docs: Sync Claude Web instructions v3.0"
 git push origin main
 ```
-
----
-
-## What Claude Code Does With This
-
-| Section | How Claude Code Uses It |
-|---------|-------------------------|
-| Project Identity | Verify correct project context |
-| Primary Documents | Reference before implementation |
-| Governance Files | Follow established workflows |
-| Environment Map | Know which repo to work in |
-| Quick Commands | Respond to standard commands |
-| Personal Preferences | Follow solution orientation, resource strategy |
-| Handoff Timing | Know when to suggest handoffs |
 
 ---
 
@@ -266,4 +418,21 @@ git push origin main
 
 ---
 
-*Last Synced: 2025-12-12*
+## Three-Way Workflow Diagram
+
+```
+┌─────────────┐      ┌─────────────┐      ┌─────────────┐
+│ CLAUDE WEB  │◄────►│     YOU     │◄────►│ CLAUDE CODE │
+│ (Architect) │      │ (Director)  │      │(Implementer)│
+└─────────────┘      └─────────────┘      └─────────────┘
+     │                     │                     │
+     │ Strategy, specs     │ Decisions, git      │ Reality audit
+     │ Brainstorming       │ Coordination        │ Quality review
+     │ Requirements        │ Approvals           │ Implementation
+```
+
+---
+
+*Last Synced: 2025-12-21*
+*Migration: E:\pmerit → C:\dev\pmerit (Session 65)*
+*Version: 3.0 — Dual-Repo Protocol + Strict AADOS*
