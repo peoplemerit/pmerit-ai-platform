@@ -1,8 +1,28 @@
-# 📑 PMERIT Platform — Canonical Audit & Handoff Governance V7
+# 📑 PMERIT Platform — Canonical Audit & Handoff Governance V8
 
-**Version:** 7.0
-**Updated:** 2025-12-13
-**New:** Scope Order v2 — Reality-First Workflow
+**Version:** 8.0
+**Updated:** 2025-12-21
+**New:** Migrated to C:\dev\pmerit + Isolated Node.js v20.18.1
+
+---
+
+## 🖥️ LOCAL ENVIRONMENT
+
+**Project Location:** `C:\dev\pmerit\` (migrated from E:\pmerit on 2025-12-21)
+
+### Isolated Node.js
+
+| Component | Path |
+|-----------|------|
+| **Node.js** | `C:\dev\pmerit\.node\node-v20.18.1-win-x64\` |
+| **Version** | v20.18.1 LTS |
+
+### Activation (Required before development)
+
+```powershell
+cd C:\dev\pmerit
+.\pmerit-env.ps1
+```
 
 ---
 
@@ -414,8 +434,8 @@ See `docs/aados/ENVIRONMENTS.md` for full environment details.
 
 | ID | Name | Local Path | When to Use |
 |----|------|------------|-------------|
-| `FE` | Frontend | `E:\pmerit\pmerit-ai-platform` | UI, styling, client JS, docs |
-| `BE` | Backend | `E:\pmerit\pmerit-api-worker` | API endpoints, AI personas, TTS |
+| `FE` | Frontend | `C:\dev\pmerit\pmerit-ai-platform` | UI, styling, client JS, docs |
+| `BE` | Backend | `C:\dev\pmerit\pmerit-api-worker` | API endpoints, AI personas, TTS |
 | `DB` | Database | Neon Dashboard | Schema changes, data migrations |
 | `TR` | Translation | Azure Portal | Translation API config |
 
@@ -449,11 +469,11 @@ Environment: FE + BE (Full-stack task)
 Please verify sync for BOTH repositories:
 
 FRONTEND:
-  cd E:\pmerit\pmerit-ai-platform
+  cd C:\dev\pmerit\pmerit-ai-platform
   git fetch origin && git status
 
 BACKEND:
-  cd E:\pmerit\pmerit-api-worker
+  cd C:\dev\pmerit\pmerit-api-worker
   git fetch origin && git status
 
 ⛔ Cannot proceed until both repos are verified in sync.

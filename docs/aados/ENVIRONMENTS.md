@@ -1,8 +1,35 @@
 # 🌐 PMERIT Platform — Environments
 
-**Purpose:** Define all development environments for AADOS coordination  
-**Version:** 1.0  
-**Last Updated:** 2024-11-30
+**Purpose:** Define all development environments for AADOS coordination
+**Version:** 2.0
+**Last Updated:** 2025-12-21
+
+---
+
+## 🖥️ Local Development Environment
+
+**Project Root:** `C:\dev\pmerit\` (migrated from E:\pmerit on 2025-12-21)
+
+### Isolated Node.js Setup
+
+The project uses a **local Node.js installation** to prevent system updates from affecting development.
+
+| Component | Value |
+|-----------|-------|
+| **Node.js Path** | `C:\dev\pmerit\.node\node-v20.18.1-win-x64\` |
+| **Node Version** | v20.18.1 LTS |
+| **NPM Version** | v10.8.2 |
+| **Activation (PS)** | `.\pmerit-env.ps1` |
+| **Activation (CMD)** | `pmerit-env.cmd` |
+
+### Before Any Development
+
+```powershell
+cd C:\dev\pmerit
+.\pmerit-env.ps1
+```
+
+This sets up the PATH to use the local Node.js instead of any system-installed version.
 
 ---
 
@@ -26,7 +53,7 @@
 | Property | Value |
 |----------|-------|
 | **Repository** | `peoplemerit/pmerit-ai-platform` |
-| **Local Path** | `E:\pmerit\pmerit-ai-platform` |
+| **Local Path** | `C:\dev\pmerit\pmerit-ai-platform` |
 | **Production URL** | https://pmerit.com |
 | **Pages URL** | https://pmerit-ai-platform.pages.dev |
 | **Branch** | `main` |
@@ -55,7 +82,7 @@
 | Property | Value |
 |----------|-------|
 | **Repository** | `peoplemerit/pmerit-api-worker` |
-| **Local Path** | `E:\pmerit\pmerit-api-worker` |
+| **Local Path** | `C:\dev\pmerit\pmerit-api-worker` |
 | **Production URL** | https://pmerit-api-worker.peoplemerit.workers.dev |
 | **Branch** | `main` |
 | **Language** | TypeScript 5.5.2 |
@@ -79,7 +106,7 @@
 
 ### Deploy Command
 ```bash
-cd E:\pmerit\pmerit-api-worker
+cd C:\dev\pmerit\pmerit-api-worker
 npx wrangler deploy
 ```
 
@@ -197,8 +224,10 @@ When a task requires multiple environments:
 
 ### Local Paths
 ```
-Frontend: E:\pmerit\pmerit-ai-platform
-Backend:  E:\pmerit\pmerit-api-worker
+Project Root: C:\dev\pmerit
+Frontend:     C:\dev\pmerit\pmerit-ai-platform
+Backend:      C:\dev\pmerit\pmerit-api-worker
+Node.js:      C:\dev\pmerit\.node\node-v20.18.1-win-x64
 ```
 
 ### Production URLs

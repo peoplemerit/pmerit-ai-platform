@@ -1,12 +1,25 @@
 {
-  "schema_version": "3.1",
-  "schema_notes": "Session 64 - Self-Hosted Premium infrastructure scopes created (Dell R740)",
+  "schema_version": "3.2",
+  "schema_notes": "Session 65 - Migrated from E:\\pmerit to C:\\dev\\pmerit + Isolated Node.js v20.18.1",
 
-  "last_updated": "2025-12-19T12:00:00Z",
+  "last_updated": "2025-12-21T21:15:00Z",
   "last_updated_by": "claude-code",
 
-  "session_number": 64,
-  "last_audit_date": "2025-12-19",
+  "session_number": 65,
+  "last_audit_date": "2025-12-21",
+
+  "local_environment": {
+    "project_root": "C:\\dev\\pmerit",
+    "frontend_path": "C:\\dev\\pmerit\\pmerit-ai-platform",
+    "backend_path": "C:\\dev\\pmerit\\pmerit-api-worker",
+    "node_path": "C:\\dev\\pmerit\\.node\\node-v20.18.1-win-x64",
+    "node_version": "20.18.1",
+    "npm_version": "10.8.2",
+    "migration_date": "2025-12-21",
+    "migration_reason": "Portable E: drive connection instability",
+    "activation_script_ps1": "pmerit-env.ps1",
+    "activation_script_cmd": "pmerit-env.cmd"
+  },
 
   "current_phase": "POST_CLASSROOM",
   "phase_name": "Voice System Complete / ARCH-2 / Assessment Enhancements",
@@ -97,7 +110,7 @@
     "avatar": "healthy",
     "tts_api": "healthy",
     "tts_runpod": "healthy",
-    "last_check": "2025-12-19T00:03:00Z",
+    "last_check": "2025-12-21T20:33:00Z",
     "homepage_gate_score": "verified"
   },
 
