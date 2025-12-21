@@ -1,0 +1,113 @@
+PMERIT Platform - Copyright Notice
+
+================================================================================
+                              COPYRIGHT NOTICE
+================================================================================
+
+Copyright (c) 2024-2025 PMERIT Holdings LLC
+All Rights Reserved.
+
+================================================================================
+                              COVERED WORKS
+================================================================================
+
+This copyright notice covers the following works:
+
+1. PMERIT Platform Frontend (pmerit-ai-platform repository)
+   - All HTML, CSS, and JavaScript source code
+   - User interface designs and layouts
+   - Graphics, icons, and visual assets
+   - Documentation and written content
+
+2. PMERIT Platform Backend (pmerit-api-worker repository)
+   - All TypeScript/JavaScript source code
+   - API implementations and endpoints
+   - Database schemas and migrations
+   - Algorithm implementations
+
+3. PMERIT Content
+   - Educational course content and curricula
+   - Assessment questions and scoring algorithms
+   - Career database and matching systems
+   - AI persona prompts and configurations
+
+4. PMERIT Brand Assets
+   - PMERIT name and wordmark
+   - Logo and visual identity elements
+   - Marketing materials and copy
+
+================================================================================
+                           INTELLECTUAL PROPERTY
+================================================================================
+
+Proprietary Systems (Trade Secrets):
+
+1. Avatar Lip-Sync Engine
+   - Real-time viseme calculation algorithm
+   - Audio-to-mouth synchronization system
+
+2. Assessment Pipeline
+   - IPIP-NEO scoring implementation
+   - Holland Code career matching algorithm
+   - Career recommendation engine
+
+3. AI Routing Architecture
+   - Multi-persona AI system
+   - Complexity-based model selection
+   - Cost optimization routing
+
+4. Multi-Language Infrastructure
+   - Dynamic translation system
+   - Locale-specific content delivery
+
+5. Curriculum Architecture
+   - Pathway-Course-Module-Lesson hierarchy
+   - Progress tracking and completion system
+
+================================================================================
+                            REGISTRATION STATUS
+================================================================================
+
+Copyright Registration: Pending (recommended for key works)
+Trademark Status: Common law rights established; Federal registration pending
+
+First Use in Commerce: 2024
+First Public Availability: 2024
+
+================================================================================
+                              THIRD-PARTY CODE
+================================================================================
+
+This software includes open-source components under the following licenses:
+
+MIT License:
+- Hono (backend routing)
+- Zod (validation)
+- Three.js (3D rendering)
+- Various npm packages
+
+Apache 2.0 License:
+- Drizzle ORM (database)
+
+All third-party components are used in accordance with their respective licenses.
+Third-party licenses do not extend to PMERIT proprietary code.
+
+================================================================================
+                              CONTACT
+================================================================================
+
+PMERIT Holdings LLC
+Email: legal@pmerit.com
+Web: https://pmerit.com
+
+For licensing inquiries or to report infringement, contact the above.
+
+================================================================================
+                              NOTICE
+================================================================================
+
+Unauthorized reproduction, distribution, or use of any copyrighted materials
+is strictly prohibited and may result in civil and criminal penalties.
+
+17 U.S.C. Section 504(c)(2): Statutory damages for willful infringement
+may be as high as $150,000 per work infringed.
