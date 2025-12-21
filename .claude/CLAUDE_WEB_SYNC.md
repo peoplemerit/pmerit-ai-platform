@@ -240,7 +240,7 @@ cd C:\dev\pmerit
 ### Workflow Steps
 
 ```
-1. YOU: Create empty SCOPE_[NAME].md, commit to repo
+1. YOU: Create empty SCOPE_[NAME].md, commit to repo, Or prompt CLAUDE CODE for Step "2" - skipping Step "1".
 2. CLAUDE CODE: Audit reality → populate AUDIT_REPORT section
 3. YOU → CLAUDE WEB: Share audit report
 4. CLAUDE WEB + YOU: Brainstorm, write requirements
