@@ -1,9 +1,9 @@
 # PMERIT SUB-SCOPE: Admin Portal
 
-**Version:** 2.0
+**Version:** 3.0
 **Created:** 2025-12-12
-**Last Updated:** 2025-12-17
-**Status:** AUDITED
+**Last Updated:** 2025-12-22
+**Status:** AUDITED + SECURITY GAPS DOCUMENTED
 **Phase:** P7-P10 (Admin Journey)
 
 ---
@@ -338,7 +338,167 @@ UPDATE users SET role = 'tier2_admin' WHERE email = 'content@example.com';
 
 ---
 
-## 6. DEPENDENCIES
+## 6. SECURITY BEST PRACTICES GAP ANALYSIS
+
+**Analysis Date:** 2025-12-22 | **Session:** 65 | **Standards:** NIST SP 800-53, RBAC Best Practices 2025
+
+### Executive Summary
+
+Current admin tier system has **functional gaps** when compared to industry security standards. While basic role separation exists, several critical controls are missing.
+
+### Gap Assessment vs. Industry Standards
+
+| Area | Best Practice | PMERIT Status | Risk | Priority |
+|------|---------------|---------------|------|----------|
+| **Separation of Duties** | Distinct admin/auditor roles | ❌ Combined (Tier 1 can manage AND audit) | HIGH | P0 |
+| **2FA for Admins** | Mandatory MFA | ❌ Not built | CRITICAL | P0 |
+| **Audit Immutability** | Tamper-proof logs | ⚠️ Modifiable by Tier 1 | HIGH | P0 |
+| **Role Granularity** | Function-based roles | ⚠️ Only 2 tiers (too broad) | MEDIUM | P1 |
+| **Least Privilege** | Minimal permissions | ⚠️ Tier 2 can delete ANY content | HIGH | P1 |
+| **Approval Workflows** | Review for destructive actions | ❌ None | HIGH | P1 |
+| **Track Scoping** | Domain-isolated permissions | ❌ Global roles | MEDIUM | P2 |
+| **Time-Limited Access** | JIT, expiring privileges | ❌ Permanent access | MEDIUM | P2 |
+| **Access Reviews** | Quarterly minimum | ❌ None | MEDIUM | P2 |
+| **Break-Glass Protocol** | Emergency access procedure | ❌ None | LOW | P3 |
+
+### NIST SP 800-53 Compliance Status
+
+| Control | Description | Status |
+|---------|-------------|--------|
+| **AC-5** | Separation of Duties | ⚠️ PARTIAL - Admin can modify own audit logs |
+| **AC-6** | Least Privilege | ⚠️ PARTIAL - Tier 2 over-permissioned |
+| **AC-2(4)** | Automated Audit Actions | ❌ NOT IMPLEMENTED |
+| **AC-6(5)** | Privileged Accounts | ⚠️ PARTIAL - No time-limited access |
+| **AU-9** | Audit Log Protection | ❌ NOT IMPLEMENTED - Logs modifiable |
+
+### Critical Violations
+
+#### 1. Separation of Duties Violation (NIST AC-5)
+```
+CURRENT: Tier 1 Admin can:
+✓ Grant/revoke admin roles
+✓ View audit logs
+✓ Modify/delete audit logs (via DB access)
+✓ Approve own actions
+
+REQUIRED: Separate roles:
+- System Admin: User management, settings (NO audit access)
+- Security Auditor: View logs, security reports (NO user management)
+- Super Admin: Break-glass emergency only
+```
+
+#### 2. Missing MFA for Privileged Accounts
+```
+INDUSTRY STANDARD: "Enforce MFA for admin roles, with NO exceptions"
+PMERIT STATUS: Single-factor password authentication only
+RISK: Account takeover leads to full platform compromise
+```
+
+#### 3. Least Privilege Violation
+```
+CURRENT Tier 2 Permissions:
+- DELETE any course (not just own) ❌
+- DELETE any module (not just own) ❌
+- View ALL student data ❌
+
+SHOULD BE:
+- DELETE own content only
+- Delete others' content requires approval
+- Student data scoped to assigned tracks
+```
+
+---
+
+## 7. RECOMMENDED SECURITY IMPROVEMENTS
+
+### Phase S1: Critical Security (P0)
+
+| Item | Description | Effort | Impact |
+|------|-------------|--------|--------|
+| **2FA for Admins** | TOTP mandatory for Tier 1/2 | 2-3 days | Prevents account takeover |
+| **Audit Immutability** | Append-only logs, external SIEM | 1-2 days | Forensic integrity |
+| **Auditor Role** | Separate from System Admin | 1-2 days | Separation of duties |
+
+### Phase S2: High Priority (P1)
+
+| Item | Description | Effort | Impact |
+|------|-------------|--------|--------|
+| **Delete Approval Workflow** | Tier 1 must approve course deletions | 2-3 days | Prevents data loss |
+| **Content Ownership** | Track who created what | 1 day | Enable ownership-based permissions |
+| **Granular Tier 2 Roles** | Content Manager, Publisher, Support | 3-4 days | Least privilege |
+
+### Phase S3: Medium Priority (P2)
+
+| Item | Description | Effort | Impact |
+|------|-------------|--------|--------|
+| **Track-Scoped Permissions** | Assign admins to specific tracks | 3-5 days | Domain isolation |
+| **Quarterly Access Reviews** | Auto-email with user lists | 2 days | Prevent authorization creep |
+| **Access Expiry** | Tier 2 roles expire after 90 days | 2 days | Time-limited access |
+
+### Phase S4: Enhancements (P3)
+
+| Item | Description | Effort | Impact |
+|------|-------------|--------|--------|
+| **JIT Elevation** | Tier 2 can request Tier 1 for 4 hours | 3-5 days | Just-in-time access |
+| **Break-Glass Protocol** | Emergency admin with full logging | 2 days | Emergency access |
+| **Activity-Based Alerts** | Unusual admin behavior detection | 3-4 days | Threat detection |
+
+### Recommended Role Restructure
+
+```
+PROPOSED ADMIN HIERARCHY:
+
+Tier 0: Super Admin (Emergency Only)
+├── Break-glass access (disabled by default)
+├── Requires justification + time limit
+├── All actions highlighted in audit
+└── Post-incident review required
+
+Tier 1A: System Admin
+├── User management
+├── System settings
+├── Feature flags
+└── CANNOT: View/modify audit logs
+
+Tier 1B: Security Auditor
+├── View audit logs
+├── Security reports
+├── Compliance dashboards
+└── CANNOT: Modify users or settings
+
+Tier 2A: Content Manager
+├── Create/edit own content
+├── View student progress (assigned tracks)
+└── CANNOT: Delete content, publish
+
+Tier 2B: Content Publisher
+├── Approve content for publication
+├── Publish/unpublish courses
+└── CANNOT: Delete content
+
+Tier 2C: Student Support
+├── View student data (assigned tracks)
+├── Manage enrollments
+└── CANNOT: Modify content
+```
+
+### Implementation Dependencies
+
+```
+DEPENDENCY GRAPH:
+
+[2FA for Admins] ──────────────────────────────┐
+                                               ▼
+[Audit Immutability] ──────► [Auditor Role] ──► [Access Reviews]
+                                               │
+[Content Ownership] ──► [Delete Approval] ─────┤
+                                               ▼
+[Track Scoping] ──────► [Granular Roles] ─────► [JIT Elevation]
+```
+
+---
+
+## 8. DEPENDENCIES
 
 | Direction | Scope | Reason |
 |-----------|-------|--------|
@@ -349,7 +509,7 @@ UPDATE users SET role = 'tier2_admin' WHERE email = 'content@example.com';
 
 ---
 
-## 7. ACCEPTANCE CRITERIA (Draft)
+## 9. ACCEPTANCE CRITERIA (Draft)
 
 ### Phase A: Foundation
 - [x] Users table has `role` column with enum values
@@ -376,7 +536,7 @@ UPDATE users SET role = 'tier2_admin' WHERE email = 'content@example.com';
 
 ---
 
-## 8. SESSION HISTORY
+## 10. SESSION HISTORY
 
 | Session | Date | Action |
 |---------|------|--------|
@@ -388,7 +548,10 @@ UPDATE users SET role = 'tier2_admin' WHERE email = 'content@example.com';
 | 59 | 2025-12-17 | Phase B Frontend: Course Management UI complete (stats, table, modals) |
 | 59 | 2025-12-17 | Phase B.2: Module Management complete (CRUD endpoints + UI) |
 | 59 | 2025-12-17 | Phase B.3: Lesson Management complete (CRUD endpoints + UI) |
+| 65 | 2025-12-22 | Security Best Practices Gap Analysis added (NIST SP 800-53, RBAC) |
+| 65 | 2025-12-22 | Recommended Security Improvements documented (Phases S1-S4) |
+| 65 | 2025-12-22 | Proposed role restructure documented (Tier 0, 1A/1B, 2A/2B/2C) |
 
 ---
 
-*Last Updated: 2025-12-17 (Session 59)*
+*Last Updated: 2025-12-22 (Session 65)*
