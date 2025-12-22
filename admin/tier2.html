@@ -1368,7 +1368,8 @@
       },
 
       getAuthHeaders() {
-        const token = localStorage.getItem('pmerit_auth_token');
+        const user = window.AUTH?.getCurrentUser?.();
+        const token = user?.token || localStorage.getItem('pmerit_token');
         return {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
@@ -1667,7 +1668,8 @@
       editingModuleId: null,
 
       getAuthHeaders() {
-        const token = localStorage.getItem('pmerit_auth_token');
+        const user = window.AUTH?.getCurrentUser?.();
+        const token = user?.token || localStorage.getItem('pmerit_token');
         return {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
@@ -1870,7 +1872,8 @@
       editingLessonId: null,
 
       getAuthHeaders() {
-        const token = localStorage.getItem('pmerit_auth_token');
+        const user = window.AUTH?.getCurrentUser?.();
+        const token = user?.token || localStorage.getItem('pmerit_token');
         return {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`

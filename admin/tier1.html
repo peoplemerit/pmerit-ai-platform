@@ -1030,7 +1030,7 @@
 
       getAuthToken() {
         const user = window.AUTH?.getCurrentUser?.();
-        return user?.token || localStorage.getItem('auth_token');
+        return user?.token || localStorage.getItem('pmerit_token');
       },
 
       async loadUsers() {
