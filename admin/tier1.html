@@ -1304,13 +1304,17 @@
         tbody.innerHTML = logs.map(log => {
           const timestamp = new Date(log.created_at).toLocaleString();
           const details = log.details ? JSON.stringify(log.details).slice(0, 50) + '...' : '-';
+          // Map backend field names: user_email, resource_type, resource_id
+          const userEmail = log.user_email || log.admin_email || log.user_id || 'System';
+          const resourceType = log.resource_type || log.target_type || '-';
+          const resourceId = log.resource_id || log.target_id;
 
           return `
             <tr>
               <td>${timestamp}</td>
-              <td>${log.admin_email || log.user_id}</td>
+              <td>${userEmail}</td>
               <td><code>${log.action}</code></td>
-              <td>${log.target_type}${log.target_id ? `: ${log.target_id.slice(0, 8)}...` : ''}</td>
+              <td>${resourceType}${resourceId ? `: ${String(resourceId).slice(0, 8)}...` : ''}</td>
               <td title="${log.details ? JSON.stringify(log.details) : ''}">${details}</td>
             </tr>
           `;
