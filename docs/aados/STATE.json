@@ -2,11 +2,11 @@
   "schema_version": "3.2",
   "schema_notes": "Session 67 - Dual-Repo Prompt Protocol + Strict AADOS",
 
-  "last_updated": "2025-12-21T22:15:00Z",
+  "last_updated": "2025-12-22T23:15:00Z",
   "last_updated_by": "claude-code",
 
-  "session_number": 67,
-  "last_audit_date": "2025-12-21",
+  "session_number": 69,
+  "last_audit_date": "2025-12-22",
 
   "local_environment": {
     "project_root": "C:\\dev\\pmerit",
@@ -48,7 +48,7 @@
       "SCOPE_CLASSROOM": { "status": "complete", "file": ".claude/scopes/SCOPE_CLASSROOM.md" },
       "SCOPE_AVATAR": { "status": "complete", "file": ".claude/scopes/SCOPE_AVATAR.md" },
       "SCOPE_ENROLLMENT": { "status": "complete", "file": ".claude/scopes/SCOPE_ENROLLMENT.md" },
-      "SCOPE_ADMIN": { "status": "phase_b_frontend_complete", "file": ".claude/scopes/SCOPE_ADMIN.md" },
+      "SCOPE_ADMIN": { "status": "phase_b_complete", "file": ".claude/scopes/SCOPE_ADMIN.md" },
       "SCOPE_CREDENTIALS": { "status": "not_started", "file": ".claude/scopes/SCOPE_CREDENTIALS.md" },
       "SCOPE_TTS": { "status": "complete", "file": ".claude/scopes/SCOPE_TTS.md" },
       "SCOPE_courses": { "status": "implemented", "file": ".claude/scopes/SCOPE_courses.md" },
@@ -254,6 +254,12 @@
   },
 
   "recent_changes": [
+    {
+      "session": 69,
+      "date": "2025-12-22",
+      "change": "Admin Portal Improvements - Security & UX",
+      "impact": "Session 68-69 comprehensive admin fixes: (1) Fixed CONFIG.API_BASE undefined causing HTML parsing error, (2) Fixed localStorage token key mismatch (auth_token -> pmerit_token), (3) Implemented NIST/RBAC security: audit log immutability with SHA-256 checksums, content ownership (created_by/updated_by), soft delete with 30-day retention, (4) Fixed audit logs field name mapping in frontend, (5) Added admin portal link to dashboard sidebar (visible only for tier1_admin/tier2_admin), (6) Backend now returns role on login for admin access control."
+    },
     {
       "session": 64,
       "date": "2025-12-19",
