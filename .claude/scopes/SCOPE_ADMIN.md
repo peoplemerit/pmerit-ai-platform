@@ -1,9 +1,9 @@
 # PMERIT SUB-SCOPE: Admin Portal
 
-**Version:** 2.0
+**Version:** 2.1
 **Created:** 2025-12-12
-**Last Updated:** 2025-12-17
-**Status:** AUDITED
+**Last Updated:** 2025-12-22
+**Status:** PHASE_B_COMPLETE
 **Phase:** P7-P10 (Admin Journey)
 
 ---
@@ -388,7 +388,84 @@ UPDATE users SET role = 'tier2_admin' WHERE email = 'content@example.com';
 | 59 | 2025-12-17 | Phase B Frontend: Course Management UI complete (stats, table, modals) |
 | 59 | 2025-12-17 | Phase B.2: Module Management complete (CRUD endpoints + UI) |
 | 59 | 2025-12-17 | Phase B.3: Lesson Management complete (CRUD endpoints + UI) |
+| 68-69 | 2025-12-22 | Phase B Complete: Security enhancements, bug fixes, dashboard link |
 
 ---
 
-*Last Updated: 2025-12-17 (Session 59)*
+## 9. LOCKED FILES
+
+These files are stable and should not be modified without explicit UNLOCK command:
+
+| File | Reason | Lock Date |
+|------|--------|-----------|
+| `assets/js/config.js` | API_BASE fix complete | 2025-12-22 |
+| `assets/js/auth.js` | Role storage complete | 2025-12-22 |
+| `admin/tier1.html` | User management + audit logs working | 2025-12-22 |
+| `admin/tier2.html` | Token fix complete | 2025-12-22 |
+| `src/routes/admin.ts` | Security enhancements complete | 2025-12-22 |
+| `src/routes/auth.ts` | Role in login response | 2025-12-22 |
+
+---
+
+## 10. SESSION 68-69 RESEARCH_FINDINGS
+
+**Implementation Date:** 2025-12-22 | **Sessions:** 68-69
+
+### Issues Fixed
+
+| Issue | Root Cause | Fix | Commit |
+|-------|------------|-----|--------|
+| "Unexpected token '<'" | `CONFIG.API_BASE` undefined | Added API_BASE to config.js | d784a97 |
+| "Invalid or expired token" | Token key mismatch (`auth_token` vs `pmerit_token`) | Standardized to `pmerit_token` | ceba171 |
+| Audit logs field mismatch | Backend returns `user_email`, frontend expected `admin_email` | Updated tier1.html field mapping | 92812aa |
+| Audit logs query error | LIMIT/OFFSET with `::int` cast failed | Changed to `sql.raw()` | 7a90a6d |
+| Admin link not visible | Existing sessions lacked role in localStorage | Added API fallback | 85ea77e |
+
+### Security Enhancements (NIST/RBAC)
+
+**Database Migrations Applied:**
+| Migration | Feature |
+|-----------|---------|
+| 008_audit_immutability | SHA-256 checksums, DELETE/UPDATE triggers |
+| 009_content_ownership | `created_by`, `updated_by` columns on courses, modules, lessons |
+| 010_soft_delete | `deleted_at`, `deleted_by` columns, archive views |
+
+**New API Endpoints:**
+| Endpoint | Method | Purpose | Access |
+|----------|--------|---------|--------|
+| `/admin/courses/archived` | GET | List soft-deleted courses | Tier 1 |
+| `/admin/courses/:id/restore` | POST | Restore deleted course | Tier 1 |
+| `/admin/courses/:id/purge` | DELETE | Hard delete (30-day retention) | Tier 1 |
+| `/admin/audit-logs/verify/:id` | GET | Verify audit log integrity | Tier 1 |
+
+### Admin Link in Dashboard
+
+- Shield icon added to sidebar footer (hidden by default)
+- Shows only for `tier1_admin` or `tier2_admin` users
+- API fallback for existing sessions without role in localStorage
+- Updates localStorage with role on successful admin check
+
+### Backend Changes
+
+- `auth.ts`: Login now returns `role` from users table
+- `admin.ts`: Audit logs query uses `sql.raw()` for LIMIT/OFFSET
+- `admin.ts`: Content ownership validation for Tier 2 (can only edit own content)
+- `admin.ts`: DELETE operations now soft delete (set `deleted_at`)
+
+### Verified Working (2025-12-22)
+
+- [x] User Management loads 47 users with pagination
+- [x] Admin link appears in dashboard for admin users
+- [x] Tier 1 dashboard loads without errors
+- [x] Login stores role in localStorage for new sessions
+
+### Pending User Verification
+
+- [ ] Audit Logs section loads without query error
+- [ ] Role change (promote/demote) functionality
+- [ ] Course soft delete working
+- [ ] Ownership validation blocks Tier 2 from editing others' content
+
+---
+
+*Last Updated: 2025-12-22 (Session 69)*
