@@ -75,7 +75,9 @@
             email: userData.email || email,
             firstName: userData.firstName || data.firstName || email.split('@')[0],
             lastName: userData.lastName || data.lastName || 'User',
-            emailVerified: userData.emailVerified || data.emailVerified || false
+            emailVerified: userData.emailVerified || data.emailVerified || false,
+            role: userData.role || 'user',  // Admin role: tier1_admin, tier2_admin, or user
+            subscriptionTier: userData.subscriptionTier || 'basic'
           };
           TokenManager.setUser(user);
 
