@@ -1007,6 +1007,41 @@
           if (adminLink) {
             adminLink.style.display = 'flex';
           }
+        } else {
+          // Fallback: check via API for users who logged in before role was stored
+          // This covers existing sessions that don't have role in localStorage
+          checkAdminAccessViaAPI();
+        }
+      }
+
+      // Fallback admin check via API (for existing sessions without role in localStorage)
+      async function checkAdminAccessViaAPI() {
+        try {
+          const token = localStorage.getItem('pmerit_token');
+          if (!token) return;
+
+          const response = await fetch(`${window.CONFIG?.API_BASE || window.CONFIG?.API_BASE_URL + '/api/v1'}/admin/me`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            if (data.success && data.user) {
+              // User is admin - show the link and update stored user data
+              const adminLink = document.getElementById('admin-portal-link');
+              if (adminLink) {
+                adminLink.style.display = 'flex';
+              }
+              // Also update the stored user with role for future visits
+              const storedUser = JSON.parse(localStorage.getItem('pmerit_user') || '{}');
+              storedUser.role = data.user.role;
+              localStorage.setItem('pmerit_user', JSON.stringify(storedUser));
+            }
+          }
+          // If 401/403, user is not admin - link stays hidden (expected)
+        } catch (e) {
+          // Network error or not admin - link stays hidden
+          console.log('Admin check:', e.message);
         }
       }
 
