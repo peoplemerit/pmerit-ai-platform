@@ -429,6 +429,10 @@
       </button>
     </nav>
     <div class="icon-sidebar-footer">
+      <!-- Admin Portal Link - Hidden by default, shown only for admin users -->
+      <a href="/admin/" class="icon-sidebar-item" id="admin-portal-link" aria-label="Admin Portal" style="display: none; text-decoration: none;">
+        <i class="fas fa-shield-alt"></i>
+      </a>
       <button class="icon-sidebar-item" data-section="settings" aria-label="Settings" aria-pressed="false">
         <i class="fas fa-cog"></i>
       </button>
@@ -994,6 +998,16 @@
         document.getElementById('user-name-display').textContent = displayName;
         document.getElementById('user-name').textContent = displayName;
         document.getElementById('user-avatar-initial').textContent = initial;
+
+        // Check if user is an admin (tier1_admin or tier2_admin)
+        // Show admin portal link if they have admin role
+        const userRole = user.role;
+        if (userRole === 'tier1_admin' || userRole === 'tier2_admin') {
+          const adminLink = document.getElementById('admin-portal-link');
+          if (adminLink) {
+            adminLink.style.display = 'flex';
+          }
+        }
       }
 
       // Handle logout button
