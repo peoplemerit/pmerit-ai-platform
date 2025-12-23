@@ -5,7 +5,7 @@
 **Last Updated:** 2025-12-22 (Session 70)
 **Status:** ACTIVE
 **Purpose:** Consolidated project vision — single source of truth for all sub-scopes
-**Scope Count:** 24 active scopes (reconciled from 33 files)
+**Scope Count:** 25 active scopes (24 + 1 launch cleanup)
 
 ---
 
@@ -253,7 +253,13 @@ PREMIUM LAYERS
 | SCOPE_ADMIN.md | Admin portal (P7-P10) | Phase B Complete | P4 |
 | SCOPE_CREDENTIALS.md | Blockchain credentials (ARCH-2/3) | Not Started | P5 |
 
-### 7.9 NON-SCOPE FILES (To Be Archived)
+### 7.9 LAUNCH
+
+| Scope File | Feature | Status | Trigger |
+|------------|---------|--------|---------|
+| SCOPE_LAUNCH_CLEANUP.md | Banner removal, final cleanup | Not Started | Feb 2026 |
+
+### 7.10 NON-SCOPE FILES (Archived)
 
 These files exist in `/scopes/` but are **not formal scopes**:
 
