@@ -63,6 +63,145 @@
     }
   },
 
+  "scope_dependencies": {
+    "version": "1.0",
+    "created": "2025-12-22",
+    "session": 70,
+    "critical_path": ["SECURITY", "PARENT_PORTAL", "K12_EDUCATION", "LAUNCH_CLEANUP"],
+    "tiers": {
+      "tier_0_foundation": {
+        "scopes": ["HOMEPAGE", "ASSESSMENT", "DASHBOARD", "CLASSROOM", "ENROLLMENT", "Select_Language", "AVATAR", "TTS", "courses", "Learning_Pathways", "ADMIN"],
+        "status": "complete",
+        "depends_on": []
+      },
+      "tier_1_platform": {
+        "scopes": ["SECURITY", "PROGRESS", "EMAIL_SYSTEM"],
+        "status": "in_progress",
+        "depends_on": ["tier_0_foundation"],
+        "parallel": true
+      },
+      "tier_2_legal": {
+        "scopes": ["PARENT_PORTAL", "AI_PERSONAS"],
+        "status": "not_started",
+        "depends_on": ["SECURITY"]
+      },
+      "tier_3_three_track": {
+        "scopes": ["K12_EDUCATION", "CTE_VOCATIONAL", "CONTENT_SOURCES"],
+        "status": "not_started",
+        "depends_on": ["PARENT_PORTAL", "AI_PERSONAS"]
+      },
+      "tier_4_monetization": {
+        "scopes": ["PAYMENTS", "pricing", "donate"],
+        "status": "partial",
+        "depends_on": ["EMAIL_SYSTEM"],
+        "parallel_with": ["tier_3_three_track"]
+      },
+      "tier_5_enhancements": {
+        "scopes": ["NOTIFICATIONS", "OFFLINE_PWA", "THEME"],
+        "status": "not_started",
+        "depends_on": ["EMAIL_SYSTEM"],
+        "parallel_with": ["tier_4_monetization"]
+      },
+      "tier_6_infrastructure": {
+        "scopes": ["SELF_HOSTED_PREMIUM"],
+        "status": "planned",
+        "depends_on": ["PAYMENTS"]
+      },
+      "tier_7_credentials": {
+        "scopes": ["CREDENTIALS"],
+        "status": "not_started",
+        "depends_on": ["K12_EDUCATION", "CTE_VOCATIONAL", "PROGRESS"]
+      },
+      "tier_8_launch": {
+        "scopes": ["LAUNCH_CLEANUP"],
+        "status": "not_started",
+        "depends_on": ["ALL_P0_P1"],
+        "trigger": "2026-02"
+      }
+    },
+    "individual_scopes": {
+      "SCOPE_SECURITY": {
+        "tier": 1, "priority": "P0", "depends_on": [], "blocks": ["PARENT_PORTAL", "AI_PERSONAS"],
+        "parallel_with": ["PROGRESS", "EMAIL_SYSTEM"], "status": "partial", "critical_path": true
+      },
+      "SCOPE_PROGRESS": {
+        "tier": 1, "priority": "P0", "depends_on": [], "blocks": ["CREDENTIALS"],
+        "parallel_with": ["SECURITY", "EMAIL_SYSTEM"], "status": "partial"
+      },
+      "SCOPE_EMAIL_SYSTEM": {
+        "tier": 1, "priority": "P2", "depends_on": [], "blocks": ["NOTIFICATIONS", "PAYMENTS"],
+        "parallel_with": ["SECURITY", "PROGRESS"], "status": "in_progress"
+      },
+      "SCOPE_PARENT_PORTAL": {
+        "tier": 2, "priority": "P0", "depends_on": ["SECURITY"], "blocks": ["K12_EDUCATION", "CTE_VOCATIONAL"],
+        "parallel_with": ["AI_PERSONAS"], "status": "not_started", "critical_path": true, "legal_requirement": "COPPA"
+      },
+      "SCOPE_AI_PERSONAS": {
+        "tier": 2, "priority": "P1", "depends_on": ["SECURITY"], "blocks": ["K12_EDUCATION", "CTE_VOCATIONAL"],
+        "parallel_with": ["PARENT_PORTAL"], "status": "partial"
+      },
+      "SCOPE_K12_EDUCATION": {
+        "tier": 3, "priority": "P1", "depends_on": ["PARENT_PORTAL", "AI_PERSONAS"], "blocks": ["CREDENTIALS", "LAUNCH_CLEANUP"],
+        "parallel_with": ["CTE_VOCATIONAL"], "status": "not_started", "critical_path": true
+      },
+      "SCOPE_CTE_VOCATIONAL": {
+        "tier": 3, "priority": "P1", "depends_on": ["PARENT_PORTAL", "AI_PERSONAS"], "blocks": ["CREDENTIALS", "LAUNCH_CLEANUP"],
+        "parallel_with": ["K12_EDUCATION"], "status": "not_started"
+      },
+      "SCOPE_CONTENT_SOURCES": {
+        "tier": 3, "priority": "P2", "depends_on": ["K12_EDUCATION", "CTE_VOCATIONAL"], "blocks": [],
+        "parallel_with": [], "status": "partial"
+      },
+      "SCOPE_PAYMENTS": {
+        "tier": 4, "priority": "P2", "depends_on": ["EMAIL_SYSTEM"], "blocks": ["SELF_HOSTED_PREMIUM"],
+        "parallel_with": ["pricing", "donate"], "status": "partial"
+      },
+      "SCOPE_pricing": {
+        "tier": 4, "priority": "P2", "depends_on": ["PAYMENTS"], "blocks": [],
+        "parallel_with": ["donate"], "status": "frontend_complete"
+      },
+      "SCOPE_donate": {
+        "tier": 4, "priority": "P2", "depends_on": ["PAYMENTS"], "blocks": [],
+        "parallel_with": ["pricing"], "status": "frontend_complete"
+      },
+      "SCOPE_NOTIFICATIONS": {
+        "tier": 5, "priority": "P2", "depends_on": ["EMAIL_SYSTEM"], "blocks": [],
+        "parallel_with": ["OFFLINE_PWA", "THEME"], "status": "not_started"
+      },
+      "SCOPE_OFFLINE_PWA": {
+        "tier": 5, "priority": "P2", "depends_on": [], "blocks": [],
+        "parallel_with": ["NOTIFICATIONS", "THEME"], "status": "not_started"
+      },
+      "SCOPE_THEME": {
+        "tier": 5, "priority": "P2", "depends_on": [], "blocks": [],
+        "parallel_with": ["NOTIFICATIONS", "OFFLINE_PWA"], "status": "draft"
+      },
+      "SCOPE_SELF_HOSTED_PREMIUM": {
+        "tier": 6, "priority": "P3", "depends_on": ["PAYMENTS"], "blocks": [],
+        "parallel_with": [], "status": "planned"
+      },
+      "SCOPE_CREDENTIALS": {
+        "tier": 7, "priority": "P5", "depends_on": ["K12_EDUCATION", "CTE_VOCATIONAL", "PROGRESS"], "blocks": [],
+        "parallel_with": [], "status": "not_started"
+      },
+      "SCOPE_LAUNCH_CLEANUP": {
+        "tier": 8, "priority": "P-FINAL", "depends_on": ["SECURITY", "PARENT_PORTAL", "K12_EDUCATION", "CTE_VOCATIONAL", "AI_PERSONAS", "PROGRESS"],
+        "blocks": [], "parallel_with": [], "status": "not_started", "trigger": "2026-02", "critical_path": true
+      }
+    },
+    "recommended_order": [
+      { "session": "Next", "scopes": ["SECURITY"], "reason": "Blocks PARENT_PORTAL + AI_PERSONAS" },
+      { "session": "+1", "scopes": ["EMAIL_SYSTEM"], "reason": "Blocks PAYMENTS, NOTIFICATIONS" },
+      { "session": "+2", "scopes": ["PROGRESS"], "reason": "Blocks CREDENTIALS" },
+      { "session": "+3", "scopes": ["PARENT_PORTAL"], "reason": "Unblocks Track 2/3 (critical path)" },
+      { "session": "+4", "scopes": ["AI_PERSONAS"], "reason": "Parallel with PARENT_PORTAL" },
+      { "session": "+5", "scopes": ["PAYMENTS"], "reason": "Unblocks monetization" },
+      { "session": "+6-7", "scopes": ["K12_EDUCATION", "CTE_VOCATIONAL"], "reason": "Parallel, core product" },
+      { "session": "+8", "scopes": ["CREDENTIALS"], "reason": "After tracks complete" },
+      { "session": "Final", "scopes": ["LAUNCH_CLEANUP"], "reason": "February 2026" }
+    ]
+  },
+
   "scope_order": {
     "version": "2.0",
     "location": "pmerit-ai-platform/.claude/scopes/",

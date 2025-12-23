@@ -21,6 +21,79 @@ Overall Progress: ████████████░░░░░░░░ 5
 
 ---
 
+## Dependency Chain (Gantt-Style)
+
+```
+Legend: ✅ Complete  ⚠️ Partial  ⬜ Not Started  ◆ Critical Path
+        ━━ Dependency (must complete before)  ── Parallel
+
+═══════════════════════════════════════════════════════════════════════════════
+TIER 0: FOUNDATION (Complete)
+├── ✅ HOMEPAGE ── ✅ ASSESSMENT ── ✅ DASHBOARD ── ✅ CLASSROOM ── ✅ ENROLLMENT
+├── ✅ Select_Language ── ✅ AVATAR ── ✅ TTS
+├── ✅ courses ── ✅ Learning_Pathways ── ✅ ADMIN
+└───────────────────────────────────────────────────────────────────┬──────────
+                                                                    ▼
+TIER 1: PLATFORM FOUNDATION (P0 - In Progress)
+├── ⚠️ ◆ SECURITY ─────────────┬─── Blocks: PARENT_PORTAL, AI_PERSONAS
+├── ⚠️ PROGRESS ───────────────┼─── Blocks: CREDENTIALS
+├── ⬜ EMAIL_SYSTEM ───────────┼─── Blocks: PAYMENTS, NOTIFICATIONS
+└── (All 3 can run parallel) ──┴───────────────────────────────────┬──────────
+                                                                    ▼
+TIER 2: LEGAL COMPLIANCE (P0)
+├── ⬜ ◆ PARENT_PORTAL ◄━━━━━━━ SECURITY ─── COPPA compliance
+├── ⚠️ AI_PERSONAS ◄━━━━━━━━━━ SECURITY ─── Age-appropriate moderation
+└── (Both can run parallel) ───────────────────────────────────────┬──────────
+                                                                    ▼
+TIER 3: THREE-TRACK ARCHITECTURE (P1)
+├── ⬜ ◆ K12_EDUCATION ◄━━━━━━━ PARENT_PORTAL + AI_PERSONAS
+├── ⬜ CTE_VOCATIONAL ◄━━━━━━━━ PARENT_PORTAL + AI_PERSONAS
+├── (Both can run parallel) ───────────────────────────────────────┬──────────
+│                                                                   │
+TIER 4: MONETIZATION (P2 - Parallel with Tier 3)                    │
+├── ⚠️ PAYMENTS ◄━━━━━━━━━━━━━ EMAIL_SYSTEM                         │
+├── ⚠️ pricing ◄━━━━━━━━━━━━━━ PAYMENTS                             │
+├── ⚠️ donate ◄━━━━━━━━━━━━━━━ PAYMENTS                             │
+└───────────────────────────────────────────────────────────────────┼──────────
+                                                                    ▼
+TIER 5: ENHANCEMENTS (P2 - Parallel)
+├── ⬜ NOTIFICATIONS ◄━━━━━━━━━ EMAIL_SYSTEM
+├── ⬜ OFFLINE_PWA ──────────── (Independent)
+├── ⚠️ THEME ───────────────── (Independent)
+└───────────────────────────────────────────────────────────────────┬──────────
+                                                                    ▼
+TIER 6: INFRASTRUCTURE (P3)
+└── ⬜ SELF_HOSTED_PREMIUM ◄━━━ PAYMENTS
+                                                                    │
+TIER 7: CREDENTIALS (P5)                                            │
+└── ⬜ CREDENTIALS ◄━━━━━━━━━━━ K12_EDUCATION + CTE_VOCATIONAL + PROGRESS
+                                                                    │
+TIER 8: LAUNCH (February 2026)                                      │
+└── ⬜ ◆ LAUNCH_CLEANUP ◄━━━━━━ ALL P0/P1 SCOPES ◄──────────────────┘
+
+═══════════════════════════════════════════════════════════════════════════════
+CRITICAL PATH: SECURITY ━━► PARENT_PORTAL ━━► K12_EDUCATION ━━► LAUNCH_CLEANUP
+═══════════════════════════════════════════════════════════════════════════════
+```
+
+---
+
+## Recommended Session Order
+
+| Priority | Scope(s) | Reason |
+|----------|----------|--------|
+| **Next** | SECURITY | Blocks PARENT_PORTAL + AI_PERSONAS |
+| +1 | EMAIL_SYSTEM | Blocks PAYMENTS, NOTIFICATIONS |
+| +2 | PROGRESS | Blocks CREDENTIALS |
+| +3 | PARENT_PORTAL | Unblocks Track 2/3 (critical path) |
+| +4 | AI_PERSONAS | Parallel with PARENT_PORTAL |
+| +5 | PAYMENTS | Unblocks monetization |
+| +6-7 | K12_EDUCATION + CTE_VOCATIONAL | Parallel, core product |
+| +8 | CREDENTIALS | After tracks complete |
+| Final | LAUNCH_CLEANUP | February 2026 |
+
+---
+
 ## Category Breakdown
 
 | Category | Complete | Total | Progress |
@@ -126,6 +199,7 @@ Result: PASSING (55% implemented, 45% pending)
 
 | Session | Date | Change | Impact |
 |---------|------|--------|--------|
+| 70 | 2025-12-22 | Gantt-style dependency chain | 8-tier structure, critical path identified |
 | 70 | 2025-12-22 | Scope Reconciliation | +13 scopes indexed, equation validated |
 | 58 | 2025-12-17 | Admin Phase B | SCOPE_ADMIN complete |
 | 57 | 2025-12-17 | Courses Audit | SCOPE_courses documented |
