@@ -1,6 +1,55 @@
+# PMERIT Security Headers (SCOPE_SECURITY Phase 2)
+# Cloudflare Pages - applies to all pages
+# Updated: 2025-12-24
+
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; connect-src 'self' https://pmerit-api.idowuolalekan1.workers.dev; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; frame-src 'self';
-  X-Frame-Options: SAMEORIGIN
+  # HTTP Strict Transport Security - enforce HTTPS for 1 year
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+
+  # Prevent MIME type sniffing
   X-Content-Type-Options: nosniff
+
+  # Prevent clickjacking
+  X-Frame-Options: SAMEORIGIN
+
+  # Control referrer information
   Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: geolocation=(), microphone=(), camera=()
+
+  # Prevent XSS in older browsers
+  X-XSS-Protection: 1; mode=block
+
+  # Permissions Policy - restrict browser features
+  Permissions-Policy: camera=(self), microphone=(self), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()
+
+  # Cross-Origin policies
+  Cross-Origin-Opener-Policy: same-origin-allow-popups
+  Cross-Origin-Resource-Policy: same-site
+
+  # Content Security Policy
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://pmerit-api-worker.peoplemerit.workers.dev https://api.pmerit.com https://*.runpod.net wss://*.runpod.net https://challenges.cloudflare.com; media-src 'self' blob: https://*.runpod.net; object-src 'none'; frame-src 'self' https://challenges.cloudflare.com; frame-ancestors 'self'; form-action 'self'; base-uri 'self'; upgrade-insecure-requests
+
+# API proxy routes - let backend handle headers
+/api/*
+  ! Content-Security-Policy
+  ! Permissions-Policy
+
+# Static assets - allow caching
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# HTML pages - no cache for dynamic content
+/*.html
+  Cache-Control: no-cache, no-store, must-revalidate
+
+# Service Worker
+/sw.js
+  Cache-Control: no-cache, no-store, must-revalidate
+
+# Portal pages - ensure security headers apply
+/portal/*
+  X-Frame-Options: DENY
+
+# Admin pages - extra security
+/admin/*
+  X-Frame-Options: DENY
+  Cache-Control: no-store, no-cache, must-revalidate, proxy-revalidate
