@@ -1,9 +1,9 @@
 # PMERIT SUB-SCOPE: Virtual Classroom
 
-**Version:** 1.0
+**Version:** 2.0
 **Created:** 2025-12-12
-**Last Updated:** 2025-12-12
-**Status:** COMPLETE
+**Last Updated:** 2025-12-22
+**Status:** COMPLETE (Core) / ENHANCEMENT NEEDED (Unified Streaming)
 **Phase:** P5 (Virtual Classroom)
 
 ---
@@ -241,4 +241,201 @@ Avatar: PIP (draggable)
 
 ---
 
-*Last Updated: 2025-12-12 by Claude Code (Session 50)*
+## 9. UNIFIED STREAMING ARCHITECTURE (From Session 70 Research)
+
+### 9.1 Current Problem: "Reading a Script" Feel
+
+The current architecture processes components sequentially, causing:
+- AI generates FULL response → TTS converts FULL text → Audio plays → Avatar animates
+- Result: Robotic "reading" feel rather than natural teaching
+
+```
+CURRENT (Modular/Sequential)
+─────────────────────────────
+User Question
+    ↓
+LLM generates FULL response (waits 2-5s)
+    ↓
+TTS converts FULL text to audio (waits 1-3s)
+    ↓
+Audio plays + jaw animation starts
+    ↓
+Total latency: 3-8 seconds, unnatural cadence
+```
+
+### 9.2 Recommended Architecture: Unified Streaming
+
+```
+RECOMMENDED (Unified/Streaming)
+───────────────────────────────
+User Question
+    ↓
+LLM streams tokens via SSE
+    ↓ (parallel)
+TTS processes sentence chunks in real-time
+    ↓ (parallel)
+Audio streams + lip sync data streams
+    ↓
+Avatar animates in sync with audio
+    ↓
+Perceived latency: <500ms, natural speech flow
+```
+
+### 9.3 Implementation Phases
+
+#### Phase 1: SSE Token Streaming (Backend)
+
+**Current:** `/api/v1/ai/tutor` returns full response
+**Target:** Stream tokens via Server-Sent Events
+
+```javascript
+// Backend: Stream LLM tokens
+app.post('/api/v1/ai/tutor/stream', async (c) => {
+    const stream = new ReadableStream({
+        async start(controller) {
+            for await (const chunk of llmStream) {
+                controller.enqueue(`data: ${JSON.stringify({ token: chunk })}\n\n`);
+            }
+            controller.close();
+        }
+    });
+    return new Response(stream, {
+        headers: { 'Content-Type': 'text/event-stream' }
+    });
+});
+```
+
+#### Phase 2: Sentence-Chunked TTS (Frontend)
+
+**Current:** Wait for full response, then TTS entire text
+**Target:** Buffer tokens until sentence complete, TTS each sentence
+
+```javascript
+// Frontend: Process sentences as they arrive
+let buffer = '';
+eventSource.onmessage = (event) => {
+    buffer += JSON.parse(event.data).token;
+
+    // Check for sentence boundary
+    const sentences = buffer.match(/[^.!?]*[.!?]/g);
+    if (sentences) {
+        for (const sentence of sentences) {
+            ttsQueue.push(sentence);
+            buffer = buffer.replace(sentence, '');
+        }
+    }
+};
+
+// TTS queue processor
+async function processTTSQueue() {
+    while (ttsQueue.length > 0) {
+        const sentence = ttsQueue.shift();
+        const audio = await fetchTTS(sentence);
+        await playWithLipSync(audio);
+    }
+}
+```
+
+#### Phase 3: Interleaved Audio + Lip Sync
+
+**Current:** Audio amplitude → jaw rotation (reactive)
+**Target:** Audio + blendshape data stream together (predictive)
+
+| Tier | Sync Method | Latency | Quality |
+|------|-------------|---------|---------|
+| Free | Audio amplitude → jaw | ~100ms | Basic |
+| Premium | Viseme timing data | ~50ms | Good |
+| Self-Hosted | Live Link Face | <20ms | Perfect |
+
+### 9.4 Immediate Configuration Fixes
+
+These require NO architectural changes, just prompt/config updates:
+
+#### Fix 1: Instructional System Prompt
+
+```javascript
+// BEFORE (current ai.ts)
+"You are an AI tutor for PMERIT..."
+
+// AFTER (natural teaching style)
+`You are an expert human teacher with natural speech patterns.
+
+SPEECH STYLE:
+- Use conversational fillers: "hmm", "let's see", "now..."
+- Pause after key concepts: "This is important. [pause] Let me explain why."
+- Ask comprehension questions: "Does that make sense so far?"
+- Vary tone: excited for new concepts, calm for reinforcement
+- Never sound like you're reading a textbook
+
+TEACHING STYLE:
+- Break complex ideas into steps
+- Use analogies the learner can relate to
+- Celebrate small wins: "Good thinking!" or "Exactly right!"
+- If the learner is confused, try a different explanation`
+```
+
+#### Fix 2: TTS Prosody Hints (If Supported)
+
+```javascript
+// Add SSML-like markers for TTS emphasis
+const enhancedText = response
+    .replace(/\*\*(.*?)\*\*/g, '<emphasis>$1</emphasis>')
+    .replace(/\[pause\]/g, '<break time="500ms"/>')
+    .replace(/\?/g, '?<break time="300ms"/>');
+```
+
+### 9.5 Technology Comparison
+
+| Feature | Current (Modular) | Recommended (Unified) |
+|---------|-------------------|----------------------|
+| Logic | Text-based LLM | Multimodal LLM (future) |
+| Voice | Standard TTS (Monotone) | Prosodic TTS (Emotional) |
+| Visuals | Static between speech | Micro-expressions always |
+| Sync | Sequential (wait for full) | Interleaved (streaming) |
+| Feel | "Reading a textbook" | "Active coaching" |
+
+### 9.6 Service Providers to Evaluate
+
+| Service | Type | Cost | Best For |
+|---------|------|------|----------|
+| **Hume AI EVI** | Emotive TTS | Pay-per-use | Emotional prosody |
+| **Cartesia** | Prosodic TTS | Pay-per-use | Natural speech |
+| **HeyGen Interactive** | Streaming avatar | $49+/mo | Real-time lip sync |
+| **Tavus** | Streaming avatar | Enterprise | Low-latency sync |
+| **OpenAI Realtime API** | Audio LLM | Pay-per-use | Native audio output |
+
+### 9.7 Implementation Checklist
+
+**Phase A: Quick Wins (No Code Changes)**
+- [ ] Update AI persona prompts with conversational style
+- [ ] Add instructional cues to system prompts
+- [ ] Test with "teaching" language vs "reading" language
+
+**Phase B: Streaming Infrastructure**
+- [ ] Implement SSE endpoint for LLM streaming
+- [ ] Create sentence-chunking buffer in frontend
+- [ ] Queue-based TTS processing
+- [ ] Test latency improvements
+
+**Phase C: Advanced Sync (Premium/Self-Hosted)**
+- [ ] Evaluate HeyGen/Tavus for streaming avatar
+- [ ] Implement viseme-based lip sync
+- [ ] Add micro-expressions (blinking, breathing)
+- [ ] Live Link Face for MetaHuman (self-hosted)
+
+---
+
+## 10. SESSION HISTORY
+
+| Session | Date | Action |
+|---------|------|--------|
+| 36 | 2025-12-06 | P5.1-P5.8 initial implementation |
+| 45 | 2025-12-11 | Avatar system with jaw bone lip sync |
+| 47 | 2025-12-11 | App Shell architecture |
+| 49 | 2025-12-11 | Mobile responsiveness complete |
+| 50 | 2025-12-12 | Scope document created |
+| 70 | 2025-12-22 | Added Unified Streaming Architecture recommendations |
+
+---
+
+*Last Updated: 2025-12-22 by Claude Code (Session 70)*
