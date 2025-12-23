@@ -770,10 +770,43 @@ Respond with JSON: { "threat_level": "low|medium|high|critical", "threats": [...
 | INJ-016 to INJ-017 | Context manipulation | Warn |
 
 **Next Steps:**
-- [ ] Run database migration on Neon (user action)
-- [ ] Deploy backend to production (user action)
+- [x] Run database migration on Neon ✅ (Session 71)
+- [x] Deploy backend to production ✅ (Session 71)
 - [ ] Enable database logging (uncomment TODO in index.ts)
 - [ ] Monitor production logs for first week
+
+### Session 71 — 2025-12-24 (Phase 2 Implementation)
+
+**Completed:**
+- [x] Created `src/security/headers.ts` with comprehensive security headers module
+- [x] Configured Content Security Policy (CSP) for PMERIT resources
+- [x] Added HSTS with 1-year max-age, includeSubDomains, preload
+- [x] Added X-Content-Type-Options, X-Frame-Options, Referrer-Policy
+- [x] Added Permissions-Policy restricting browser features
+- [x] Added Cross-Origin-Opener-Policy and Cross-Origin-Resource-Policy
+- [x] Integrated SECURE_CORS_HEADERS into all API responses
+- [x] Updated frontend `_headers` file for Cloudflare Pages
+- [x] Backend updated to v2.3.0
+
+**Files Created/Modified:**
+- `src/security/headers.ts` — Security headers module (~200 lines)
+- `src/security/index.ts` — Added headers exports
+- `src/index.ts` — Integrated SECURE_CORS_HEADERS
+- `_headers` — Frontend Cloudflare Pages headers
+
+**Security Headers Applied:**
+| Header | Value | Purpose |
+|--------|-------|---------|
+| Strict-Transport-Security | max-age=31536000; includeSubDomains; preload | Enforce HTTPS |
+| X-Content-Type-Options | nosniff | Prevent MIME sniffing |
+| X-Frame-Options | SAMEORIGIN | Prevent clickjacking |
+| Referrer-Policy | strict-origin-when-cross-origin | Control referrer |
+| Content-Security-Policy | (comprehensive) | Control resource loading |
+| Permissions-Policy | camera=(self), microphone=(self), ... | Restrict features |
+| Cross-Origin-Opener-Policy | same-origin | Isolate browsing context |
+
+**Build Status:** ✅ Successful (643 KB)
+**Commits:** Backend: 0c32eb0, Frontend: 697d9a0
 
 ### Security Tools to Evaluate
 
@@ -787,8 +820,8 @@ Respond with JSON: { "threat_level": "low|medium|high|critical", "threats": [...
 
 ### Implementation Order (Updated)
 
-1. **Phase 1 (Critical)**: AI Police input/output filtering ✅ **DONE**
-2. **Phase 2 (Critical)**: Security headers + CSP
+1. **Phase 1 (Critical)**: AI Police input/output filtering ✅ **DONE** (Session 71)
+2. **Phase 2 (Critical)**: Security headers + CSP ✅ **DONE** (Session 71)
 3. **Phase 3 (High)**: Rate limiting enhancement
 4. **Phase 4 (High)**: Audit logging system (tables ready, need endpoints)
 5. **Phase 5 (Medium)**: 2FA for admins
@@ -1138,8 +1171,9 @@ curl -X GET "https://pmerit-api-worker.peoplemerit.workers.dev/api/v1/admin/secu
 | 70 | 2025-12-22 | Added AI-based security monitoring strategy (from brainstorm) | Claude Code |
 | 71 | 2025-12-22 | Restructured to Scope Template v2, added FEATURE_GUIDE section | Claude Code |
 | 71 | 2025-12-22 | Implemented Phase 1 (AI Police) - 17 injection patterns, PII detection, age-tier filtering | Claude Code |
+| 71 | 2025-12-24 | Implemented Phase 2 (Security Headers + CSP) - HSTS, CSP, Permissions-Policy | Claude Code |
 
 ---
 
-*Last Updated: 2025-12-22 (Session 71)*
+*Last Updated: 2025-12-24 (Session 71)*
 *Template Version: SCOPE_TEMPLATE_V2*
