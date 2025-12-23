@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parent Settings | PMERIT</title>
+  <meta name="description" content="PMERIT Parent Settings - Manage parental controls and notifications">
+
+  <!-- Theme Init -->
+  <script>
+  (function() {
+    var theme = localStorage.getItem('theme');
+    if (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      theme = 'dark';
+    }
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+
+  <link rel="stylesheet" href="../assets/css/theme-variables.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/brand.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+  <style>
+    body {
+      min-height: 100vh;
+      background: var(--bg-primary);
+    }
+
+    /* Header */
+    .settings-header {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark, #5b54d4));
+      color: white;
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .settings-header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+
+    .back-btn:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    /* Container */
+    .settings-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Child Selector */
+    .child-selector {
+      margin-bottom: 2rem;
+    }
+
+    .child-selector label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--color-text);
+    }
+
+    .child-select {
+      width: 100%;
+      max-width: 400px;
+      padding: 0.875rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background: var(--bg-card);
+      color: var(--color-text);
+      font-size: 1rem;
+    }
+
+    /* Settings Section */
+    .settings-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+
+    .section-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-header i {
+      color: var(--color-primary);
+      font-size: 1.25rem;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: var(--color-text);
+    }
+
+    .section-body {
+      padding: 1.5rem;
+    }
+
+    /* Form Groups */
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--color-text);
+    }
+
+    .form-group small {
+      display: block;
+      margin-top: 0.25rem;
+      color: var(--color-text-muted);
+      font-size: 0.8rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background: var(--bg-primary);
+      color: var(--color-text);
+      font-size: 1rem;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    @media (max-width: 640px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Toggle Switch */
+    .toggle-group {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem;
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+    }
+
+    .toggle-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .toggle-label {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .toggle-label span {
+      color: var(--color-text);
+      font-weight: 500;
+    }
+
+    .toggle-label small {
+      color: var(--color-text-muted);
+      font-size: 0.8rem;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 48px;
+      height: 26px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--border-color);
+      transition: 0.3s;
+      border-radius: 26px;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.3s;
+      border-radius: 50%;
+    }
+
+    .toggle-switch input:checked + .toggle-slider {
+      background-color: var(--color-primary);
+    }
+
+    .toggle-switch input:checked + .toggle-slider:before {
+      transform: translateX(22px);
+    }
+
+    /* Days Selector */
+    .days-selector {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .day-btn {
+      width: 40px;
+      height: 40px;
+      border: 2px solid var(--border-color);
+      border-radius: 50%;
+      background: var(--bg-primary);
+      color: var(--color-text);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .day-btn:hover {
+      border-color: var(--color-primary);
+    }
+
+    .day-btn.active {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: white;
+    }
+
+    /* Danger Zone */
+    .danger-zone {
+      border-color: #fecaca;
+    }
+
+    .danger-zone .section-header {
+      background: #fef2f2;
+      border-bottom-color: #fecaca;
+    }
+
+    .danger-zone .section-header i {
+      color: #dc2626;
+    }
+
+    .danger-zone .section-header h2 {
+      color: #dc2626;
+    }
+
+    .btn-danger {
+      padding: 0.75rem 1.5rem;
+      background: #dc2626;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-danger:hover {
+      background: #b91c1c;
+    }
+
+    /* Save Button */
+    .save-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-color);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+      transform: translateY(100%);
+      transition: transform 0.3s;
+    }
+
+    .save-bar.visible {
+      transform: translateY(0);
+    }
+
+    .btn-save {
+      padding: 0.875rem 2rem;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark, #5b54d4));
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-save:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn-save:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-cancel {
+      padding: 0.875rem 2rem;
+      background: var(--bg-secondary);
+      color: var(--color-text);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .btn-cancel:hover {
+      background: var(--bg-primary);
+    }
+
+    /* Loading */
+    .loading-state {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .loading-spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid var(--border-color);
+      border-top-color: var(--color-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Add bottom padding for save bar */
+    .settings-container {
+      padding-bottom: 100px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="settings-header">
+    <h1><i class="fas fa-cog"></i> Parent Settings</h1>
+    <a href="/portal/parent-dashboard.html" class="back-btn">
+      <i class="fas fa-arrow-left"></i>
+      Back to Dashboard
+    </a>
+  </header>
+
+  <div class="settings-container">
+    <!-- Loading -->
+    <div id="loadingState" class="loading-state">
+      <div class="loading-spinner"></div>
+      <p>Loading settings...</p>
+    </div>
+
+    <!-- Settings Form -->
+    <div id="settingsContent" class="hidden">
+      <!-- Child Selector -->
+      <div class="child-selector">
+        <label for="childSelect">Select Child</label>
+        <select id="childSelect" class="child-select">
+          <option value="">Loading...</option>
+        </select>
+      </div>
+
+      <!-- Time Controls -->
+      <div class="settings-section">
+        <div class="section-header">
+          <i class="fas fa-clock"></i>
+          <h2>Time Controls</h2>
+        </div>
+        <div class="section-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="dailyLimit">Daily Time Limit (minutes)</label>
+              <input type="number" id="dailyLimit" class="form-input" min="0" max="480" placeholder="No limit">
+              <small>Leave empty for unlimited</small>
+            </div>
+            <div class="form-group">
+              <label for="weeklyLimit">Weekly Time Limit (minutes)</label>
+              <input type="number" id="weeklyLimit" class="form-input" min="0" max="2400" placeholder="No limit">
+              <small>Leave empty for unlimited</small>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="startTime">Allowed Start Time</label>
+              <input type="time" id="startTime" class="form-input">
+              <small>When learning can begin each day</small>
+            </div>
+            <div class="form-group">
+              <label for="endTime">Allowed End Time</label>
+              <input type="time" id="endTime" class="form-input">
+              <small>When learning must stop</small>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Allowed Days</label>
+            <div id="daysSelector" class="days-selector">
+              <button type="button" class="day-btn active" data-day="monday">M</button>
+              <button type="button" class="day-btn active" data-day="tuesday">T</button>
+              <button type="button" class="day-btn active" data-day="wednesday">W</button>
+              <button type="button" class="day-btn active" data-day="thursday">T</button>
+              <button type="button" class="day-btn active" data-day="friday">F</button>
+              <button type="button" class="day-btn active" data-day="saturday">S</button>
+              <button type="button" class="day-btn active" data-day="sunday">S</button>
+            </div>
+            <small style="margin-top: 0.5rem; display: block;">Click to toggle which days learning is allowed</small>
+          </div>
+
+          <div class="form-group">
+            <label for="contentAgeLimit">Content Age Limit</label>
+            <select id="contentAgeLimit" class="form-input" style="max-width: 200px;">
+              <option value="">Auto (based on grade)</option>
+              <option value="K-2">K-2 (Ages 5-7)</option>
+              <option value="K-5">K-5 (Ages 5-10)</option>
+              <option value="6-8">6-8 (Ages 11-13)</option>
+              <option value="9-12">9-12 (Ages 14-18)</option>
+            </select>
+          </div>
+
+          <div class="toggle-group">
+            <div class="toggle-label">
+              <span>Enable Time Controls</span>
+              <small>Turn on to enforce the limits above</small>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="controlsActive">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notification Settings -->
+      <div class="settings-section">
+        <div class="section-header">
+          <i class="fas fa-bell"></i>
+          <h2>Email Notifications</h2>
+        </div>
+        <div class="section-body">
+          <div class="toggle-group">
+            <div class="toggle-label">
+              <span>Weekly Summary</span>
+              <small>Get a weekly report of your child's progress</small>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="weeklySummary" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-group">
+            <div class="toggle-label">
+              <span>Course Completion</span>
+              <small>Notified when your child completes a course</small>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="courseCompletion" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-group">
+            <div class="toggle-label">
+              <span>Assessment Results</span>
+              <small>Get notified of quiz and test scores</small>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="assessmentResult" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-group">
+            <div class="toggle-label">
+              <span>Inactivity Alert</span>
+              <small>Notified if your child hasn't logged in recently</small>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="inactivityAlert" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="toggle-group">
+            <div class="toggle-label">
+              <span>Achievements</span>
+              <small>Celebrate when your child earns badges</small>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="achievement" checked>
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+
+          <div class="form-group" style="margin-top: 1rem;">
+            <label for="summaryFrequency">Summary Frequency</label>
+            <select id="summaryFrequency" class="form-input" style="max-width: 200px;">
+              <option value="daily">Daily</option>
+              <option value="weekly" selected>Weekly</option>
+              <option value="monthly">Monthly</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="inactivityDays">Inactivity Alert After (days)</label>
+            <input type="number" id="inactivityDays" class="form-input" style="max-width: 100px;" value="7" min="1" max="30">
+          </div>
+        </div>
+      </div>
+
+      <!-- Consent Status -->
+      <div class="settings-section">
+        <div class="section-header">
+          <i class="fas fa-shield-alt"></i>
+          <h2>Consent Status</h2>
+        </div>
+        <div class="section-body">
+          <div id="consentInfo">
+            <p style="color: var(--color-text-muted);">Loading consent information...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Danger Zone -->
+      <div class="settings-section danger-zone">
+        <div class="section-header">
+          <i class="fas fa-exclamation-triangle"></i>
+          <h2>Danger Zone</h2>
+        </div>
+        <div class="section-body">
+          <p style="margin-bottom: 1rem; color: var(--color-text-muted);">
+            Revoking consent will deactivate your child's account and schedule their data for deletion within 48 hours. This action cannot be undone.
+          </p>
+          <button id="revokeConsentBtn" class="btn-danger">
+            <i class="fas fa-ban"></i> Revoke Consent
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Save Bar -->
+  <div id="saveBar" class="save-bar">
+    <button id="cancelBtn" class="btn-cancel">Cancel</button>
+    <button id="saveBtn" class="btn-save">
+      <i class="fas fa-save"></i>
+      Save Changes
+    </button>
+  </div>
+
+  <script>
+    const API_BASE = 'https://pmerit-api-worker.peoplemerit.workers.dev';
+
+    // DOM Elements
+    const loadingState = document.getElementById('loadingState');
+    const settingsContent = document.getElementById('settingsContent');
+    const childSelect = document.getElementById('childSelect');
+    const saveBar = document.getElementById('saveBar');
+    const saveBtn = document.getElementById('saveBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
+
+    // State
+    let children = [];
+    let currentChildId = null;
+    let originalSettings = {};
+    let hasChanges = false;
+
+    // Get JWT from storage
+    function getToken() {
+      return localStorage.getItem('jwt') || sessionStorage.getItem('jwt');
+    }
+
+    // Check if logged in
+    function isLoggedIn() {
+      const token = getToken();
+      if (!token) return false;
+      try {
+        const parts = token.split('.');
+        if (parts.length !== 3) return false;
+        const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+        return !(payload.exp && payload.exp < Math.floor(Date.now() / 1000));
+      } catch {
+        return false;
+      }
+    }
+
+    // Load children
+    async function loadChildren() {
+      if (!isLoggedIn()) {
+        window.location.href = '/signin.html?redirect=/portal/parent-settings.html';
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE}/api/v1/parent/children`, {
+          headers: { 'Authorization': `Bearer ${getToken()}` }
+        });
+
+        if (response.status === 401) {
+          window.location.href = '/signin.html?redirect=/portal/parent-settings.html';
+          return;
+        }
+
+        const data = await response.json();
+        children = data.data?.children || [];
+
+        if (children.length === 0) {
+          alert('No children linked to your account.');
+          window.location.href = '/portal/parent-dashboard.html';
+          return;
+        }
+
+        // Populate child selector
+        childSelect.innerHTML = children.map(c =>
+          `<option value="${c.id}">${escapeHtml(c.name)}</option>`
+        ).join('');
+
+        // Check for child param in URL
+        const params = new URLSearchParams(window.location.search);
+        const childParam = params.get('child');
+        if (childParam && children.find(c => c.id === childParam)) {
+          childSelect.value = childParam;
+        }
+
+        currentChildId = childSelect.value;
+        await loadSettings(currentChildId);
+
+        loadingState.classList.add('hidden');
+        settingsContent.classList.remove('hidden');
+
+      } catch (error) {
+        console.error('Load children error:', error);
+        alert('Failed to load children');
+      }
+    }
+
+    // Load settings for a child
+    async function loadSettings(childId) {
+      try {
+        // Load controls
+        const controlsResponse = await fetch(`${API_BASE}/api/v1/parent/children/${childId}/controls`, {
+          headers: { 'Authorization': `Bearer ${getToken()}` }
+        });
+        const controlsData = await controlsResponse.json();
+        const controls = controlsData.data?.controls || {};
+
+        // Load notifications
+        const notifResponse = await fetch(`${API_BASE}/api/v1/parent/notifications`, {
+          headers: { 'Authorization': `Bearer ${getToken()}` }
+        });
+        const notifData = await notifResponse.json();
+        const settings = notifData.data?.settings || [];
+        const childSettings = settings.find(s => s.childId === childId) || settings.find(s => !s.childId) || {};
+
+        // Load consent status
+        const consentResponse = await fetch(`${API_BASE}/api/v1/parent/consent/status/${childId}`, {
+          headers: { 'Authorization': `Bearer ${getToken()}` }
+        });
+        const consentData = await consentResponse.json();
+
+        // Populate form
+        populateControls(controls);
+        populateNotifications(childSettings);
+        populateConsentInfo(consentData.data);
+
+        // Store original settings
+        originalSettings = {
+          controls: { ...controls },
+          notifications: { ...childSettings.notifications || {} }
+        };
+        hasChanges = false;
+        saveBar.classList.remove('visible');
+
+      } catch (error) {
+        console.error('Load settings error:', error);
+      }
+    }
+
+    // Populate controls form
+    function populateControls(controls) {
+      document.getElementById('dailyLimit').value = controls.dailyTimeLimitMinutes || '';
+      document.getElementById('weeklyLimit').value = controls.weeklyTimeLimitMinutes || '';
+      document.getElementById('startTime').value = controls.allowedStartTime || '';
+      document.getElementById('endTime').value = controls.allowedEndTime || '';
+      document.getElementById('contentAgeLimit').value = controls.contentAgeLimit || '';
+      document.getElementById('controlsActive').checked = controls.isActive || false;
+
+      // Days
+      const allowedDays = controls.allowedDays || ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+      document.querySelectorAll('.day-btn').forEach(btn => {
+        if (allowedDays.includes(btn.dataset.day)) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    }
+
+    // Populate notifications form
+    function populateNotifications(settings) {
+      const notif = settings.notifications || {};
+      document.getElementById('weeklySummary').checked = notif.weeklySummary !== false;
+      document.getElementById('courseCompletion').checked = notif.courseCompletion !== false;
+      document.getElementById('assessmentResult').checked = notif.assessmentResult !== false;
+      document.getElementById('inactivityAlert').checked = notif.inactivityAlert !== false;
+      document.getElementById('achievement').checked = notif.achievement !== false;
+      document.getElementById('summaryFrequency').value = settings.summaryFrequency || 'weekly';
+      document.getElementById('inactivityDays').value = settings.inactivityDays || 7;
+    }
+
+    // Populate consent info
+    function populateConsentInfo(consent) {
+      const consentInfo = document.getElementById('consentInfo');
+      if (!consent) {
+        consentInfo.innerHTML = '<p style="color: var(--color-text-muted);">Unable to load consent information.</p>';
+        return;
+      }
+
+      const statusColor = consent.status === 'active' ? '#059669' : '#d97706';
+      const consentDate = consent.consent?.givenAt ? new Date(consent.consent.givenAt).toLocaleDateString() : 'Unknown';
+
+      consentInfo.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+          <span style="color: ${statusColor}; font-weight: 600;">
+            <i class="fas fa-circle" style="font-size: 0.6rem;"></i>
+            ${consent.status === 'active' ? 'Active' : 'Pending'}
+          </span>
+        </div>
+        <p style="color: var(--color-text-muted); margin: 0;">
+          Consent provided on: ${consentDate}<br>
+          Version: ${consent.consent?.version || '1.0'}
+        </p>
+      `;
+    }
+
+    // Get current form values
+    function getCurrentValues() {
+      const allowedDays = [];
+      document.querySelectorAll('.day-btn.active').forEach(btn => {
+        allowedDays.push(btn.dataset.day);
+      });
+
+      return {
+        controls: {
+          dailyTimeLimitMinutes: parseInt(document.getElementById('dailyLimit').value) || null,
+          weeklyTimeLimitMinutes: parseInt(document.getElementById('weeklyLimit').value) || null,
+          allowedStartTime: document.getElementById('startTime').value || null,
+          allowedEndTime: document.getElementById('endTime').value || null,
+          allowedDays: allowedDays.length < 7 ? allowedDays : null,
+          contentAgeLimit: document.getElementById('contentAgeLimit').value || null,
+          isActive: document.getElementById('controlsActive').checked
+        },
+        notifications: {
+          weeklySummary: document.getElementById('weeklySummary').checked,
+          courseCompletion: document.getElementById('courseCompletion').checked,
+          assessmentResult: document.getElementById('assessmentResult').checked,
+          inactivityAlert: document.getElementById('inactivityAlert').checked,
+          achievement: document.getElementById('achievement').checked,
+          summaryFrequency: document.getElementById('summaryFrequency').value,
+          inactivityDays: parseInt(document.getElementById('inactivityDays').value) || 7
+        }
+      };
+    }
+
+    // Check for changes
+    function checkForChanges() {
+      const current = JSON.stringify(getCurrentValues());
+      const original = JSON.stringify({
+        controls: originalSettings.controls,
+        notifications: originalSettings.notifications
+      });
+      hasChanges = current !== original;
+      saveBar.classList.toggle('visible', hasChanges);
+    }
+
+    // Save settings
+    async function saveSettings() {
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = '<div class="loading-spinner" style="width: 20px; height: 20px; border-width: 2px;"></div> Saving...';
+
+      const values = getCurrentValues();
+
+      try {
+        // Save controls
+        await fetch(`${API_BASE}/api/v1/parent/children/${currentChildId}/controls`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${getToken()}`
+          },
+          body: JSON.stringify(values.controls)
+        });
+
+        // Save notifications
+        await fetch(`${API_BASE}/api/v1/parent/notifications`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${getToken()}`
+          },
+          body: JSON.stringify({
+            childUserId: currentChildId,
+            ...values.notifications
+          })
+        });
+
+        originalSettings = values;
+        hasChanges = false;
+        saveBar.classList.remove('visible');
+        alert('Settings saved successfully!');
+
+      } catch (error) {
+        console.error('Save error:', error);
+        alert('Failed to save settings');
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+      }
+    }
+
+    // Revoke consent
+    async function revokeConsent() {
+      const child = children.find(c => c.id === currentChildId);
+      const confirmText = prompt(`To revoke consent and delete ${child?.name || 'this child'}'s account, type REVOKE:`);
+
+      if (confirmText !== 'REVOKE') {
+        alert('Consent was not revoked.');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE}/api/v1/parent/consent/revoke`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${getToken()}`
+          },
+          body: JSON.stringify({
+            childUserId: currentChildId,
+            confirmText: 'REVOKE',
+            reason: 'Parent requested via settings page'
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to revoke consent');
+        }
+
+        alert('Consent revoked. The account has been deactivated and data will be deleted within 48 hours.');
+        window.location.href = '/portal/parent-dashboard.html';
+
+      } catch (error) {
+        alert('Failed to revoke consent: ' + error.message);
+      }
+    }
+
+    // Escape HTML
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      })[m]);
+    }
+
+    // Event listeners
+    childSelect.addEventListener('change', () => {
+      currentChildId = childSelect.value;
+      loadSettings(currentChildId);
+    });
+
+    // Day buttons
+    document.querySelectorAll('.day-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.classList.toggle('active');
+        checkForChanges();
+      });
+    });
+
+    // Form changes
+    document.querySelectorAll('input, select').forEach(el => {
+      el.addEventListener('change', checkForChanges);
+      el.addEventListener('input', checkForChanges);
+    });
+
+    saveBtn.addEventListener('click', saveSettings);
+    cancelBtn.addEventListener('click', () => {
+      loadSettings(currentChildId);
+    });
+
+    document.getElementById('revokeConsentBtn').addEventListener('click', revokeConsent);
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', loadChildren);
+  </script>
+</body>
+</html>

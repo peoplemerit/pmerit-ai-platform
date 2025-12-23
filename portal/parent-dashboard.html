@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parent Dashboard | PMERIT</title>
+  <meta name="description" content="PMERIT Parent Dashboard - Monitor your child's learning progress">
+
+  <!-- Theme Init - Prevent FOUC -->
+  <script>
+  (function() {
+    var theme = localStorage.getItem('theme');
+    if (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      theme = 'dark';
+    }
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+
+  <link rel="stylesheet" href="../assets/css/theme-variables.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/brand.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+  <style>
+    body {
+      min-height: 100vh;
+      background: var(--bg-primary);
+    }
+
+    /* Header */
+    .dashboard-header {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark, #5b54d4));
+      color: white;
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .dashboard-header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .header-btn {
+      padding: 0.5rem 1rem;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      text-decoration: none;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background 0.2s;
+    }
+
+    .header-btn:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .header-btn.logout {
+      background: rgba(220,38,38,0.2);
+      border-color: rgba(220,38,38,0.5);
+    }
+
+    /* Main Container */
+    .dashboard-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Auth Required */
+    .auth-required {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .auth-required h2 {
+      color: var(--color-text);
+      margin-bottom: 1rem;
+    }
+
+    .auth-required p {
+      color: var(--color-text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.875rem 1.5rem;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark, #5b54d4));
+      color: white;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+    }
+
+    /* Loading */
+    .loading-state {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .loading-spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid var(--border-color);
+      border-top-color: var(--color-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Children Grid */
+    .children-section h2 {
+      color: var(--color-text);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .children-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .child-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .child-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .child-card-header {
+      padding: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .child-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark, #5b54d4));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .child-info h3 {
+      margin: 0 0 0.25rem;
+      color: var(--color-text);
+      font-size: 1.1rem;
+    }
+
+    .child-info p {
+      margin: 0;
+      color: var(--color-text-muted);
+      font-size: 0.85rem;
+    }
+
+    .child-status {
+      margin-left: auto;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .child-status.active {
+      background: #d1fae5;
+      color: #059669;
+    }
+
+    .child-status.pending {
+      background: #fef3c7;
+      color: #d97706;
+    }
+
+    .child-card-body {
+      padding: 1.25rem;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .child-grade {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--color-text);
+      margin-bottom: 1rem;
+    }
+
+    .child-card-actions {
+      display: flex;
+      gap: 0.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .card-action-btn {
+      flex: 1;
+      padding: 0.625rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background: var(--bg-primary);
+      color: var(--color-text);
+      text-decoration: none;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      transition: background 0.2s, border-color 0.2s;
+      cursor: pointer;
+    }
+
+    .card-action-btn:hover {
+      background: var(--bg-secondary);
+      border-color: var(--color-primary);
+    }
+
+    .card-action-btn.primary {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: white;
+    }
+
+    .card-action-btn.primary:hover {
+      background: var(--color-primary-dark, #5b54d4);
+    }
+
+    /* No Children */
+    .no-children {
+      text-align: center;
+      padding: 4rem 2rem;
+      background: var(--bg-card);
+      border: 2px dashed var(--border-color);
+      border-radius: 16px;
+    }
+
+    .no-children i {
+      font-size: 4rem;
+      color: var(--color-text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .no-children h3 {
+      color: var(--color-text);
+      margin-bottom: 0.5rem;
+    }
+
+    .no-children p {
+      color: var(--color-text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    /* Child Detail Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-content {
+      background: var(--bg-card);
+      border-radius: 16px;
+      max-width: 700px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .modal-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      color: var(--color-text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      padding: 0.25rem;
+    }
+
+    .modal-close:hover {
+      color: var(--color-text);
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+    }
+
+    /* Progress Section in Modal */
+    .progress-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .progress-section h3 {
+      color: var(--color-text);
+      margin: 0 0 1rem;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .course-progress-item {
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .course-progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .course-progress-name {
+      font-weight: 500;
+      color: var(--color-text);
+    }
+
+    .course-progress-percent {
+      font-weight: 600;
+      color: var(--color-primary);
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: var(--border-color);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--color-primary), #8b5cf6);
+      border-radius: 4px;
+      transition: width 0.3s;
+    }
+
+    /* Learning Time Chart */
+    .learning-time-chart {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.5rem;
+      padding: 1rem;
+      background: var(--bg-secondary);
+      border-radius: 12px;
+    }
+
+    .day-bar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .day-bar-fill {
+      width: 100%;
+      max-width: 40px;
+      background: var(--border-color);
+      border-radius: 4px;
+      height: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .day-bar-inner {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, var(--color-primary), #8b5cf6);
+      border-radius: 4px;
+      transition: height 0.3s;
+    }
+
+    .day-label {
+      font-size: 0.7rem;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+    }
+
+    .day-minutes {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    /* Assessments */
+    .assessment-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem;
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+    }
+
+    .assessment-score {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .assessment-score.excellent {
+      background: #d1fae5;
+      color: #059669;
+    }
+
+    .assessment-score.good {
+      background: #dbeafe;
+      color: #2563eb;
+    }
+
+    .assessment-score.needs-work {
+      background: #fef3c7;
+      color: #d97706;
+    }
+
+    .assessment-info {
+      flex: 1;
+    }
+
+    .assessment-course {
+      font-weight: 500;
+      color: var(--color-text);
+    }
+
+    .assessment-date {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 640px) {
+      .dashboard-header {
+        padding: 1rem;
+      }
+
+      .dashboard-header h1 {
+        font-size: 1.25rem;
+      }
+
+      .dashboard-container {
+        padding: 1rem;
+      }
+
+      .children-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-row {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="dashboard-header">
+    <h1><i class="fas fa-users"></i> Parent Dashboard</h1>
+    <div class="header-actions">
+      <a href="/portal/parent-settings.html" class="header-btn">
+        <i class="fas fa-cog"></i>
+        <span>Settings</span>
+      </a>
+      <button id="logoutBtn" class="header-btn logout">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="dashboard-container">
+    <!-- Auth Required State -->
+    <div id="authRequired" class="auth-required hidden">
+      <h2>Sign In Required</h2>
+      <p>Please sign in to access your parent dashboard.</p>
+      <a href="/signin.html?redirect=/portal/parent-dashboard.html" class="btn-primary">
+        <i class="fas fa-sign-in-alt"></i>
+        Sign In
+      </a>
+    </div>
+
+    <!-- Loading State -->
+    <div id="loadingState" class="loading-state">
+      <div class="loading-spinner"></div>
+      <p>Loading your children's data...</p>
+    </div>
+
+    <!-- Children Section -->
+    <div id="childrenSection" class="children-section hidden">
+      <h2><i class="fas fa-child"></i> Your Children</h2>
+      <div id="childrenGrid" class="children-grid">
+        <!-- Children cards will be inserted here -->
+      </div>
+    </div>
+
+    <!-- No Children State -->
+    <div id="noChildren" class="no-children hidden">
+      <i class="fas fa-user-plus"></i>
+      <h3>No Children Linked</h3>
+      <p>You don't have any children linked to your account yet.</p>
+      <button class="btn-primary" onclick="showLinkChildModal()">
+        <i class="fas fa-link"></i>
+        Link a Child
+      </button>
+    </div>
+  </div>
+
+  <!-- Child Detail Modal -->
+  <div id="childDetailModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2><i class="fas fa-chart-line"></i> <span id="modalChildName">Child Progress</span></h2>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Summary Stats -->
+        <div class="progress-section">
+          <h3><i class="fas fa-trophy"></i> Summary</h3>
+          <div class="stats-row" style="margin-bottom: 0;">
+            <div class="stat-item">
+              <div class="stat-value" id="modalCompletedCourses">0</div>
+              <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="modalActiveCourses">0</div>
+              <div class="stat-label">In Progress</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value" id="modalAvgScore">0%</div>
+              <div class="stat-label">Avg Score</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Learning Time -->
+        <div class="progress-section">
+          <h3><i class="fas fa-clock"></i> Learning Time (Last 7 Days)</h3>
+          <div id="learningTimeChart" class="learning-time-chart">
+            <!-- Chart will be inserted here -->
+          </div>
+        </div>
+
+        <!-- Course Progress -->
+        <div class="progress-section">
+          <h3><i class="fas fa-book"></i> Course Progress</h3>
+          <div id="courseProgressList">
+            <!-- Course progress items will be inserted here -->
+          </div>
+        </div>
+
+        <!-- Recent Assessments -->
+        <div class="progress-section">
+          <h3><i class="fas fa-clipboard-check"></i> Recent Assessments</h3>
+          <div id="assessmentsList">
+            <!-- Assessment items will be inserted here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = 'https://pmerit-api-worker.peoplemerit.workers.dev';
+
+    // DOM Elements
+    const authRequired = document.getElementById('authRequired');
+    const loadingState = document.getElementById('loadingState');
+    const childrenSection = document.getElementById('childrenSection');
+    const noChildren = document.getElementById('noChildren');
+    const childrenGrid = document.getElementById('childrenGrid');
+    const childDetailModal = document.getElementById('childDetailModal');
+
+    // Get JWT from storage
+    function getToken() {
+      return localStorage.getItem('jwt') || sessionStorage.getItem('jwt');
+    }
+
+    // Check if logged in
+    function isLoggedIn() {
+      const token = getToken();
+      if (!token) return false;
+
+      try {
+        const parts = token.split('.');
+        if (parts.length !== 3) return false;
+        const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+        if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
+          return false;
+        }
+        return true;
+      } catch {
+        return false;
+      }
+    }
+
+    // Show state
+    function showState(element) {
+      [authRequired, loadingState, childrenSection, noChildren].forEach(el => {
+        el.classList.add('hidden');
+      });
+      element.classList.remove('hidden');
+    }
+
+    // Load children
+    async function loadChildren() {
+      if (!isLoggedIn()) {
+        showState(authRequired);
+        return;
+      }
+
+      showState(loadingState);
+
+      try {
+        const response = await fetch(`${API_BASE}/api/v1/parent/children`, {
+          headers: {
+            'Authorization': `Bearer ${getToken()}`
+          }
+        });
+
+        if (response.status === 401) {
+          showState(authRequired);
+          return;
+        }
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to load children');
+        }
+
+        const children = data.data?.children || [];
+
+        if (children.length === 0) {
+          showState(noChildren);
+          return;
+        }
+
+        renderChildren(children);
+        showState(childrenSection);
+
+      } catch (error) {
+        console.error('Load children error:', error);
+        showState(noChildren);
+      }
+    }
+
+    // Render children cards
+    function renderChildren(children) {
+      childrenGrid.innerHTML = '';
+
+      children.forEach(child => {
+        const initials = (child.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+        const statusClass = child.linkStatus === 'active' ? 'active' : 'pending';
+        const statusText = child.linkStatus === 'active' ? 'Active' : 'Pending';
+
+        const card = document.createElement('div');
+        card.className = 'child-card';
+        card.innerHTML = `
+          <div class="child-card-header">
+            <div class="child-avatar">${initials}</div>
+            <div class="child-info">
+              <h3>${escapeHtml(child.name || 'Unknown')}</h3>
+              <p>${escapeHtml(child.email || '')}</p>
+            </div>
+            <span class="child-status ${statusClass}">${statusText}</span>
+          </div>
+          <div class="child-card-body">
+            ${child.grade ? `
+              <div class="child-grade">
+                <i class="fas fa-graduation-cap"></i>
+                ${escapeHtml(child.grade.name)} (${escapeHtml(child.grade.span)})
+              </div>
+            ` : ''}
+            <div class="stats-row">
+              <div class="stat-item">
+                <div class="stat-value">${child.stats?.enrolledCourses || 0}</div>
+                <div class="stat-label">Courses</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value">${child.stats?.todayMinutes || 0}m</div>
+                <div class="stat-label">Today</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value">${Math.round((child.stats?.weekMinutes || 0) / 60 * 10) / 10}h</div>
+                <div class="stat-label">This Week</div>
+              </div>
+            </div>
+            <div class="child-card-actions">
+              <button class="card-action-btn primary" onclick="viewProgress('${child.id}', '${escapeHtml(child.name)}')">
+                <i class="fas fa-chart-line"></i> Progress
+              </button>
+              <a href="/portal/parent-settings.html?child=${child.id}" class="card-action-btn">
+                <i class="fas fa-cog"></i> Controls
+              </a>
+            </div>
+          </div>
+        `;
+        childrenGrid.appendChild(card);
+      });
+    }
+
+    // View progress modal
+    async function viewProgress(childId, childName) {
+      document.getElementById('modalChildName').textContent = childName + "'s Progress";
+      childDetailModal.classList.remove('hidden');
+
+      // Clear previous data
+      document.getElementById('modalCompletedCourses').textContent = '...';
+      document.getElementById('modalActiveCourses').textContent = '...';
+      document.getElementById('modalAvgScore').textContent = '...';
+      document.getElementById('learningTimeChart').innerHTML = '<p style="text-align: center; color: var(--color-text-muted);">Loading...</p>';
+      document.getElementById('courseProgressList').innerHTML = '<p style="text-align: center; color: var(--color-text-muted);">Loading...</p>';
+      document.getElementById('assessmentsList').innerHTML = '<p style="text-align: center; color: var(--color-text-muted);">Loading...</p>';
+
+      try {
+        // Fetch child details
+        const detailResponse = await fetch(`${API_BASE}/api/v1/parent/children/${childId}`, {
+          headers: { 'Authorization': `Bearer ${getToken()}` }
+        });
+        const detailData = await detailResponse.json();
+
+        // Fetch progress
+        const progressResponse = await fetch(`${API_BASE}/api/v1/parent/children/${childId}/progress`, {
+          headers: { 'Authorization': `Bearer ${getToken()}` }
+        });
+        const progressData = await progressResponse.json();
+
+        if (detailResponse.ok && progressResponse.ok) {
+          renderProgressModal(detailData.data, progressData.data);
+        }
+
+      } catch (error) {
+        console.error('Load progress error:', error);
+      }
+    }
+
+    // Render progress modal
+    function renderProgressModal(details, progress) {
+      // Summary stats
+      document.getElementById('modalCompletedCourses').textContent = progress.summary?.completedCourses || 0;
+      document.getElementById('modalActiveCourses').textContent = progress.summary?.activeCourses || 0;
+      document.getElementById('modalAvgScore').textContent = (progress.summary?.averageScore || 0) + '%';
+
+      // Learning time chart
+      const learningTime = details.learningTime || [];
+      const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      const today = new Date();
+      const chartHtml = [];
+
+      for (let i = 6; i >= 0; i--) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - i);
+        const dayName = days[date.getDay()];
+        const dayData = learningTime.find(d => {
+          const dDate = new Date(d.date);
+          return dDate.toDateString() === date.toDateString();
+        });
+        const minutes = dayData?.totalMinutes || 0;
+        const maxMinutes = 120; // Max for scaling
+        const height = Math.min((minutes / maxMinutes) * 100, 100);
+
+        chartHtml.push(`
+          <div class="day-bar">
+            <div class="day-bar-fill">
+              <div class="day-bar-inner" style="height: ${height}%"></div>
+            </div>
+            <div class="day-label">${dayName}</div>
+            <div class="day-minutes">${minutes}m</div>
+          </div>
+        `);
+      }
+      document.getElementById('learningTimeChart').innerHTML = chartHtml.join('');
+
+      // Course progress
+      const courses = progress.courses || [];
+      if (courses.length === 0) {
+        document.getElementById('courseProgressList').innerHTML = '<p style="color: var(--color-text-muted);">No courses enrolled yet.</p>';
+      } else {
+        const coursesHtml = courses.map(course => `
+          <div class="course-progress-item">
+            <div class="course-progress-header">
+              <span class="course-progress-name">${escapeHtml(course.name)}</span>
+              <span class="course-progress-percent">${course.progress || 0}%</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-bar-fill" style="width: ${course.progress || 0}%"></div>
+            </div>
+          </div>
+        `).join('');
+        document.getElementById('courseProgressList').innerHTML = coursesHtml;
+      }
+
+      // Assessments
+      const assessments = details.recentAssessments || [];
+      if (assessments.length === 0) {
+        document.getElementById('assessmentsList').innerHTML = '<p style="color: var(--color-text-muted);">No assessments completed yet.</p>';
+      } else {
+        const assessmentsHtml = assessments.map(a => {
+          const scoreClass = a.score >= 90 ? 'excellent' : a.score >= 70 ? 'good' : 'needs-work';
+          const date = new Date(a.completedAt).toLocaleDateString();
+          return `
+            <div class="assessment-item">
+              <div class="assessment-score ${scoreClass}">${a.score}%</div>
+              <div class="assessment-info">
+                <div class="assessment-course">${escapeHtml(a.courseName)}</div>
+                <div class="assessment-date">${date}</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+        document.getElementById('assessmentsList').innerHTML = assessmentsHtml;
+      }
+    }
+
+    // Close modal
+    function closeModal() {
+      childDetailModal.classList.add('hidden');
+    }
+
+    // Close modal on overlay click
+    childDetailModal.addEventListener('click', (e) => {
+      if (e.target === childDetailModal) {
+        closeModal();
+      }
+    });
+
+    // Escape HTML
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      })[m]);
+    }
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('jwt');
+      sessionStorage.removeItem('jwt');
+      window.location.href = '/signin.html';
+    });
+
+    // Link child modal (placeholder)
+    function showLinkChildModal() {
+      const code = prompt('Enter the invite code from your child:');
+      if (code) {
+        linkChildByCode(code);
+      }
+    }
+
+    async function linkChildByCode(code) {
+      try {
+        const response = await fetch(`${API_BASE}/api/v1/parent/link/code`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${getToken()}`
+          },
+          body: JSON.stringify({ inviteCode: code })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          alert(data.error || 'Failed to link child');
+          return;
+        }
+
+        alert('Child linked successfully! Please complete the consent process.');
+        loadChildren();
+
+      } catch (error) {
+        alert('Failed to link child: ' + error.message);
+      }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', loadChildren);
+  </script>
+</body>
+</html>

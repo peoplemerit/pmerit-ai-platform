@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parental Consent | PMERIT</title>
+  <meta name="description" content="COPPA-compliant parental consent form for PMERIT educational platform">
+
+  <!-- Theme Init - Prevent FOUC -->
+  <script>
+  (function() {
+    var theme = localStorage.getItem('theme');
+    if (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      theme = 'dark';
+    }
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+
+  <link rel="stylesheet" href="../assets/css/theme-variables.css">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/brand.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/responsive.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-primary);
+    }
+
+    .consent-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .consent-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      box-shadow: var(--shadow-lg);
+      max-width: 600px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .consent-header {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark, #5b54d4));
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .consent-header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .consent-header p {
+      margin: 0.5rem 0 0;
+      opacity: 0.9;
+      font-size: 0.95rem;
+    }
+
+    .consent-body {
+      padding: 2rem;
+    }
+
+    /* Loading State */
+    .loading-state {
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+
+    .loading-spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid var(--border-color);
+      border-top-color: var(--color-primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Error State */
+    .error-state {
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+
+    .error-icon {
+      width: 64px;
+      height: 64px;
+      background: #fee2e2;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+    }
+
+    .error-icon i {
+      font-size: 28px;
+      color: #dc2626;
+    }
+
+    .error-state h2 {
+      color: #dc2626;
+      margin: 0 0 0.5rem;
+    }
+
+    .error-state p {
+      color: var(--color-text-muted);
+      margin: 0;
+    }
+
+    /* Success State */
+    .success-state {
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      background: #d1fae5;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+
+    .success-icon i {
+      font-size: 36px;
+      color: #059669;
+    }
+
+    .success-state h2 {
+      color: #059669;
+      margin: 0 0 0.5rem;
+    }
+
+    /* Child Info Box */
+    .child-info-box {
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border-color);
+    }
+
+    .child-info-box h3 {
+      margin: 0 0 0.75rem;
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .child-info-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .child-info-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .child-info-item i {
+      color: var(--color-primary);
+      width: 20px;
+      text-align: center;
+    }
+
+    .child-info-item span {
+      color: var(--color-text);
+    }
+
+    /* Disclosure Section */
+    .disclosure-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .disclosure-section h3 {
+      margin: 0 0 0.75rem;
+      font-size: 1rem;
+      color: var(--color-text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .disclosure-section h3 i {
+      color: var(--color-primary);
+    }
+
+    .disclosure-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .disclosure-list li {
+      position: relative;
+      padding-left: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--color-text-muted);
+      font-size: 0.9rem;
+    }
+
+    .disclosure-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.5em;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-primary);
+    }
+
+    .disclosure-list.not-collected li::before {
+      background: #059669;
+    }
+
+    /* Rights Box */
+    .rights-box {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .rights-box h3 {
+      margin: 0 0 0.75rem;
+      font-size: 1rem;
+      color: var(--color-primary);
+    }
+
+    .rights-box ul {
+      margin: 0;
+      padding-left: 1.25rem;
+    }
+
+    .rights-box li {
+      margin-bottom: 0.4rem;
+      font-size: 0.9rem;
+      color: var(--color-text);
+    }
+
+    /* Consent Form */
+    .consent-form {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--color-text);
+    }
+
+    .form-group label .required {
+      color: #dc2626;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 1rem;
+      background: var(--bg-primary);
+      color: var(--color-text);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    .form-input::placeholder {
+      color: var(--color-text-muted);
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin-top: 2px;
+      accent-color: var(--color-primary);
+    }
+
+    .checkbox-group label {
+      font-size: 0.9rem;
+      color: var(--color-text);
+      line-height: 1.5;
+    }
+
+    .btn-consent {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark, #5b54d4));
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .btn-consent:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn-consent:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-consent .spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    /* Contact Info */
+    .contact-info {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--color-text-muted);
+    }
+
+    .contact-info a {
+      color: var(--color-primary);
+      text-decoration: none;
+    }
+
+    .contact-info a:hover {
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    .consent-footer {
+      padding: 1rem 2rem;
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+    }
+
+    .consent-footer a {
+      color: var(--color-primary);
+      text-decoration: none;
+    }
+
+    /* Hidden by default */
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 640px) {
+      .consent-header {
+        padding: 1.5rem;
+      }
+
+      .consent-body {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="consent-container">
+    <div class="consent-card">
+      <div class="consent-header">
+        <h1><i class="fas fa-shield-alt"></i> Parental Consent Required</h1>
+        <p>COPPA-Compliant Verification for PMERIT Learning Platform</p>
+      </div>
+
+      <!-- Loading State -->
+      <div id="loadingState" class="consent-body">
+        <div class="loading-state">
+          <div class="loading-spinner"></div>
+          <p>Verifying consent request...</p>
+        </div>
+      </div>
+
+      <!-- Error State -->
+      <div id="errorState" class="consent-body hidden">
+        <div class="error-state">
+          <div class="error-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <h2 id="errorTitle">Link Invalid</h2>
+          <p id="errorMessage">This consent link is invalid or has expired.</p>
+          <div style="margin-top: 1.5rem;">
+            <a href="/" class="btn-consent" style="text-decoration: none; display: inline-flex; max-width: 200px; margin: 0 auto;">
+              <i class="fas fa-home"></i> Go to Homepage
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Already Consented State -->
+      <div id="alreadyConsentedState" class="consent-body hidden">
+        <div class="success-state">
+          <div class="success-icon">
+            <i class="fas fa-check"></i>
+          </div>
+          <h2>Already Consented</h2>
+          <p>You have already provided consent for this child's account.</p>
+          <div style="margin-top: 1.5rem;">
+            <a href="/portal/parent-dashboard.html" class="btn-consent" style="text-decoration: none; display: inline-flex; max-width: 250px; margin: 0 auto;">
+              <i class="fas fa-tachometer-alt"></i> Go to Parent Dashboard
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Success State -->
+      <div id="successState" class="consent-body hidden">
+        <div class="success-state">
+          <div class="success-icon">
+            <i class="fas fa-check"></i>
+          </div>
+          <h2>Consent Provided Successfully!</h2>
+          <p id="successChildName">Your child's account is now active.</p>
+          <div style="margin-top: 1.5rem;">
+            <a href="/portal/parent-dashboard.html" class="btn-consent" style="text-decoration: none; display: inline-flex; max-width: 250px; margin: 0 auto;">
+              <i class="fas fa-tachometer-alt"></i> Go to Parent Dashboard
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Consent Form -->
+      <div id="consentForm" class="consent-body hidden">
+        <!-- Child Info -->
+        <div class="child-info-box">
+          <h3>Child Account Information</h3>
+          <div class="child-info-item">
+            <i class="fas fa-user"></i>
+            <span id="childName">Loading...</span>
+          </div>
+          <div class="child-info-item">
+            <i class="fas fa-envelope"></i>
+            <span id="childEmail">Loading...</span>
+          </div>
+        </div>
+
+        <!-- Data We Collect -->
+        <div class="disclosure-section">
+          <h3><i class="fas fa-database"></i> Information We Collect</h3>
+          <ul id="dataCollectedList" class="disclosure-list">
+            <!-- Populated by JS -->
+          </ul>
+        </div>
+
+        <!-- Data We Don't Collect -->
+        <div class="disclosure-section">
+          <h3><i class="fas fa-shield-alt"></i> Information We Do NOT Collect</h3>
+          <ul id="dataNotCollectedList" class="disclosure-list not-collected">
+            <!-- Populated by JS -->
+          </ul>
+        </div>
+
+        <!-- Parent Rights -->
+        <div class="rights-box">
+          <h3><i class="fas fa-gavel"></i> Your Rights as a Parent</h3>
+          <ul id="parentRightsList">
+            <!-- Populated by JS -->
+          </ul>
+        </div>
+
+        <!-- Consent Form -->
+        <form id="consentFormElement" class="consent-form">
+          <div class="form-group">
+            <label for="electronicSignature">
+              Electronic Signature <span class="required">*</span>
+            </label>
+            <input
+              type="text"
+              id="electronicSignature"
+              class="form-input"
+              placeholder="Type your full legal name to sign"
+              required
+              minlength="3"
+            >
+            <small style="color: var(--color-text-muted); font-size: 0.8rem; margin-top: 0.25rem; display: block;">
+              By typing your name, you are providing a legally binding electronic signature.
+            </small>
+          </div>
+
+          <div class="form-group">
+            <div class="checkbox-group">
+              <input type="checkbox" id="agreeTerms" required>
+              <label for="agreeTerms">
+                I am the parent or legal guardian of this child. I have read and understand the information above, and I consent to PMERIT collecting and using my child's educational data as described.
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="checkbox-group">
+              <input type="checkbox" id="agreeAge" required>
+              <label for="agreeAge">
+                I confirm that I am at least 18 years of age and legally able to provide consent.
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" id="submitBtn" class="btn-consent">
+            <i class="fas fa-signature"></i>
+            <span>Provide Consent</span>
+          </button>
+        </form>
+
+        <!-- Contact Info -->
+        <div class="contact-info">
+          <p>Questions about privacy? Contact us at <a href="mailto:privacy@pmerit.com">privacy@pmerit.com</a></p>
+        </div>
+      </div>
+
+      <div class="consent-footer">
+        <p>
+          PMERIT Learning Platform &bull;
+          <a href="/privacy.html">Privacy Policy</a> &bull;
+          COPPA Consent v<span id="consentVersion">1.0</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = 'https://pmerit-api-worker.peoplemerit.workers.dev';
+
+    // DOM Elements
+    const loadingState = document.getElementById('loadingState');
+    const errorState = document.getElementById('errorState');
+    const alreadyConsentedState = document.getElementById('alreadyConsentedState');
+    const successState = document.getElementById('successState');
+    const consentForm = document.getElementById('consentForm');
+    const consentFormElement = document.getElementById('consentFormElement');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // State
+    let consentData = null;
+    let token = null;
+
+    // Get token from URL
+    function getTokenFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('token');
+    }
+
+    // Show a specific state
+    function showState(stateElement) {
+      [loadingState, errorState, alreadyConsentedState, successState, consentForm].forEach(el => {
+        el.classList.add('hidden');
+      });
+      stateElement.classList.remove('hidden');
+    }
+
+    // Show error
+    function showError(title, message) {
+      document.getElementById('errorTitle').textContent = title;
+      document.getElementById('errorMessage').textContent = message;
+      showState(errorState);
+    }
+
+    // Verify token and load consent data
+    async function verifyToken() {
+      token = getTokenFromURL();
+
+      if (!token) {
+        showError('Missing Token', 'No consent token provided. Please use the link from your email.');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE}/api/v1/parent/consent/verify/${token}`);
+        const data = await response.json();
+
+        if (!response.ok) {
+          if (response.status === 409) {
+            showState(alreadyConsentedState);
+          } else if (response.status === 410) {
+            showError('Link Expired', 'This consent link has expired. Please request a new one.');
+          } else {
+            showError('Invalid Link', data.error || 'This consent link is invalid or has expired.');
+          }
+          return;
+        }
+
+        consentData = data.data;
+        populateConsentForm();
+        showState(consentForm);
+
+      } catch (error) {
+        console.error('Verify token error:', error);
+        showError('Connection Error', 'Unable to verify consent link. Please try again later.');
+      }
+    }
+
+    // Populate form with consent data
+    function populateConsentForm() {
+      if (!consentData) return;
+
+      // Child info
+      document.getElementById('childName').textContent = consentData.child?.name || 'Unknown';
+      document.getElementById('childEmail').textContent = consentData.child?.email || 'Unknown';
+
+      // Data collected
+      const dataCollectedList = document.getElementById('dataCollectedList');
+      dataCollectedList.innerHTML = '';
+      (consentData.dataCollected || []).forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        dataCollectedList.appendChild(li);
+      });
+
+      // Data not collected
+      const dataNotCollectedList = document.getElementById('dataNotCollectedList');
+      dataNotCollectedList.innerHTML = '';
+      (consentData.dataNotCollected || []).forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        dataNotCollectedList.appendChild(li);
+      });
+
+      // Parent rights
+      const parentRightsList = document.getElementById('parentRightsList');
+      parentRightsList.innerHTML = '';
+      (consentData.parentRights || []).forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        parentRightsList.appendChild(li);
+      });
+
+      // Consent version
+      document.getElementById('consentVersion').textContent = consentData.consentVersion || '1.0';
+    }
+
+    // Submit consent form
+    async function submitConsent(e) {
+      e.preventDefault();
+
+      const electronicSignature = document.getElementById('electronicSignature').value.trim();
+      const agreeTerms = document.getElementById('agreeTerms').checked;
+      const agreeAge = document.getElementById('agreeAge').checked;
+
+      if (!electronicSignature || electronicSignature.length < 3) {
+        alert('Please enter your full legal name as your electronic signature.');
+        return;
+      }
+
+      if (!agreeTerms || !agreeAge) {
+        alert('Please check all required boxes to provide consent.');
+        return;
+      }
+
+      // Disable button and show loading
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<div class="spinner"></div><span>Processing...</span>';
+
+      try {
+        const response = await fetch(`${API_BASE}/api/v1/parent/consent/give`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            token: token,
+            electronicSignature: electronicSignature
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to submit consent');
+        }
+
+        // Success!
+        document.getElementById('successChildName').textContent =
+          `${consentData.child?.name || 'Your child'}'s account is now active and ready to use.`;
+        showState(successState);
+
+      } catch (error) {
+        console.error('Submit consent error:', error);
+        alert('Failed to submit consent: ' + error.message);
+
+        // Re-enable button
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-signature"></i><span>Provide Consent</span>';
+      }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      verifyToken();
+      consentFormElement.addEventListener('submit', submitConsent);
+    });
+  </script>
+</body>
+</html>
