@@ -5,7 +5,7 @@
   "last_updated": "2025-12-22T23:15:00Z",
   "last_updated_by": "claude-code",
 
-  "session_number": 69,
+  "session_number": 70,
   "last_audit_date": "2025-12-22",
 
   "local_environment": {
@@ -36,28 +36,49 @@
   "workflow_mode": "direct_execution",
 
   "scope_order": {
-    "version": "1.0",
+    "version": "2.0",
     "location": "pmerit-ai-platform/.claude/scopes/",
     "master_scope": ".claude/scopes/MASTER_SCOPE.md",
     "active_scope": "SCOPE_pricing",
+    "total_scopes": 24,
+    "reconciliation_date": "2025-12-22",
+    "reconciliation_session": 70,
     "scopes": {
-      "SCOPE_HOMEPAGE": { "status": "complete", "file": ".claude/scopes/SCOPE_HOMEPAGE.md" },
-      "SCOPE_Select_Language": { "status": "audited", "file": ".claude/scopes/SCOPE_Select_Language.md" },
-      "SCOPE_ASSESSMENT": { "status": "complete", "file": ".claude/scopes/SCOPE_ASSESSMENT.md" },
-      "SCOPE_DASHBOARD": { "status": "complete", "file": ".claude/scopes/SCOPE_DASHBOARD.md" },
-      "SCOPE_CLASSROOM": { "status": "complete", "file": ".claude/scopes/SCOPE_CLASSROOM.md" },
-      "SCOPE_AVATAR": { "status": "complete", "file": ".claude/scopes/SCOPE_AVATAR.md" },
-      "SCOPE_ENROLLMENT": { "status": "complete", "file": ".claude/scopes/SCOPE_ENROLLMENT.md" },
-      "SCOPE_ADMIN": { "status": "phase_b_complete", "file": ".claude/scopes/SCOPE_ADMIN.md" },
-      "SCOPE_CREDENTIALS": { "status": "not_started", "file": ".claude/scopes/SCOPE_CREDENTIALS.md" },
-      "SCOPE_TTS": { "status": "complete", "file": ".claude/scopes/SCOPE_TTS.md" },
-      "SCOPE_courses": { "status": "implemented", "file": ".claude/scopes/SCOPE_courses.md" },
-      "SCOPE_Learning_Pathways": { "status": "complete", "file": ".claude/scopes/SCOPE_Learning_Pathways.md" },
-      "SCOPE_pricing": { "status": "frontend_complete", "file": ".claude/scopes/SCOPE_pricing.md" },
-      "SCOPE_donate": { "status": "frontend_complete", "file": ".claude/scopes/SCOPE_donate.md" },
-      "SCOPE_EMAIL_SYSTEM": { "status": "in_progress", "file": ".claude/scopes/SCOPE_EMAIL_SYSTEM.md" },
-      "SCOPE_SELF_HOSTED_PREMIUM": { "status": "planned", "file": ".claude/scopes/SCOPE_SELF_HOSTED_PREMIUM.md" }
-    }
+      "SCOPE_HOMEPAGE": { "status": "complete", "file": ".claude/scopes/SCOPE_HOMEPAGE.md", "category": "gate_core" },
+      "SCOPE_Select_Language": { "status": "audited", "file": ".claude/scopes/SCOPE_Select_Language.md", "category": "gate_core" },
+      "SCOPE_ASSESSMENT": { "status": "complete", "file": ".claude/scopes/SCOPE_ASSESSMENT.md", "category": "gate_core" },
+      "SCOPE_DASHBOARD": { "status": "complete", "file": ".claude/scopes/SCOPE_DASHBOARD.md", "category": "gate_core" },
+      "SCOPE_CLASSROOM": { "status": "complete", "file": ".claude/scopes/SCOPE_CLASSROOM.md", "category": "gate_core" },
+      "SCOPE_ENROLLMENT": { "status": "complete", "file": ".claude/scopes/SCOPE_ENROLLMENT.md", "category": "gate_core" },
+      "SCOPE_courses": { "status": "implemented", "file": ".claude/scopes/SCOPE_courses.md", "category": "content_catalog" },
+      "SCOPE_Learning_Pathways": { "status": "complete", "file": ".claude/scopes/SCOPE_Learning_Pathways.md", "category": "content_catalog" },
+      "SCOPE_CONTENT_SOURCES": { "status": "partial", "file": ".claude/scopes/SCOPE_CONTENT_SOURCES.md", "category": "content_catalog" },
+      "SCOPE_AVATAR": { "status": "complete", "file": ".claude/scopes/SCOPE_AVATAR.md", "category": "ai_avatar" },
+      "SCOPE_TTS": { "status": "complete", "file": ".claude/scopes/SCOPE_TTS.md", "category": "ai_avatar" },
+      "SCOPE_AI_PERSONAS": { "status": "partial", "file": ".claude/scopes/SCOPE_AI_PERSONAS.md", "category": "ai_avatar" },
+      "SCOPE_K12_EDUCATION": { "status": "not_started", "file": ".claude/scopes/SCOPE_K12_EDUCATION.md", "category": "three_track" },
+      "SCOPE_CTE_VOCATIONAL": { "status": "not_started", "file": ".claude/scopes/SCOPE_CTE_VOCATIONAL.md", "category": "three_track" },
+      "SCOPE_PARENT_PORTAL": { "status": "not_started", "file": ".claude/scopes/SCOPE_PARENT_PORTAL.md", "category": "three_track" },
+      "SCOPE_pricing": { "status": "frontend_complete", "file": ".claude/scopes/SCOPE_pricing.md", "category": "monetization" },
+      "SCOPE_donate": { "status": "frontend_complete", "file": ".claude/scopes/SCOPE_donate.md", "category": "monetization" },
+      "SCOPE_PAYMENTS": { "status": "partial_db_only", "file": ".claude/scopes/SCOPE_PAYMENTS.md", "category": "monetization" },
+      "SCOPE_SELF_HOSTED_PREMIUM": { "status": "planned", "file": ".claude/scopes/SCOPE_SELF_HOSTED_PREMIUM.md", "category": "infrastructure" },
+      "SCOPE_EMAIL_SYSTEM": { "status": "in_progress", "file": ".claude/scopes/SCOPE_EMAIL_SYSTEM.md", "category": "infrastructure" },
+      "SCOPE_PROGRESS": { "status": "partial", "file": ".claude/scopes/SCOPE_PROGRESS.md", "category": "platform_foundation" },
+      "SCOPE_SECURITY": { "status": "partial", "file": ".claude/scopes/SCOPE_SECURITY.md", "category": "platform_foundation" },
+      "SCOPE_THEME": { "status": "draft", "file": ".claude/scopes/SCOPE_THEME.md", "category": "platform_foundation" },
+      "SCOPE_NOTIFICATIONS": { "status": "not_started", "file": ".claude/scopes/SCOPE_NOTIFICATIONS.md", "category": "platform_foundation" },
+      "SCOPE_OFFLINE_PWA": { "status": "not_started", "file": ".claude/scopes/SCOPE_OFFLINE_PWA.md", "category": "platform_foundation" },
+      "SCOPE_ADMIN": { "status": "phase_b_complete", "file": ".claude/scopes/SCOPE_ADMIN.md", "category": "admin_credentials" },
+      "SCOPE_CREDENTIALS": { "status": "not_started", "file": ".claude/scopes/SCOPE_CREDENTIALS.md", "category": "admin_credentials" }
+    },
+    "non_scope_files": [
+      "Start_Learning.md (empty stub - archive)",
+      "Sign_In_Sign_Up.md (documentation - move to docs/)",
+      "Research_with_Copilot.md (notes - move to docs/)",
+      "SCOPE_TEMPLATE.md (keep as reference)",
+      "SCOPE_courses_backup.md (delete)"
+    ]
   },
 
   "architecture_spec": {
@@ -386,7 +407,7 @@
 
   "reference_docs": {
     "architecture_spec": "docs/project/PMERIT_ARCHITECTURE_FINAL.md",
-    "feature_spec": "docs/handoffs/BRAINSTORM_ASU_LIKE_SCHEMA.md",
+    "feature_spec": "docs/project/PMERIT_FEATURE_SPEC.md",
     "user_journey": "docs/project/Pmerit-comprehensively-narrative-users-and-Admin-Journey.md",
     "latest_audit": "docs/aados/PRODUCTION_AUDIT_2025-12-09.md",
     "master_doc": "docs/project/Pmerit_Project_Document.md",
