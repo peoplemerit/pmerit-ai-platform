@@ -98,7 +98,8 @@
       "SCOPE_NOTIFICATIONS": { "status": "not_started", "file": ".claude/scopes/SCOPE_NOTIFICATIONS.md", "category": "platform_foundation" },
       "SCOPE_OFFLINE_PWA": { "status": "not_started", "file": ".claude/scopes/SCOPE_OFFLINE_PWA.md", "category": "platform_foundation" },
       "SCOPE_ADMIN": { "status": "phase_b_complete", "file": ".claude/scopes/SCOPE_ADMIN.md", "category": "admin_credentials" },
-      "SCOPE_CREDENTIALS": { "status": "not_started", "file": ".claude/scopes/SCOPE_CREDENTIALS.md", "category": "admin_credentials" }
+      "SCOPE_CREDENTIALS": { "status": "not_started", "file": ".claude/scopes/SCOPE_CREDENTIALS.md", "category": "admin_credentials" },
+      "SCOPE_LAUNCH_CLEANUP": { "status": "not_started", "file": ".claude/scopes/SCOPE_LAUNCH_CLEANUP.md", "category": "launch", "trigger": "Feb 2026" }
     },
     "non_scope_files": [
       "Start_Learning.md (empty stub - archive)",
