@@ -808,6 +808,30 @@ Respond with JSON: { "threat_level": "low|medium|high|critical", "threats": [...
 **Build Status:** ✅ Successful (643 KB)
 **Commits:** Backend: 0c32eb0, Frontend: 697d9a0
 
+### Session 71 — 2025-12-23 (Phase 2 Bug Fix)
+
+**Issue Found:** Security headers were only appearing on some endpoints (index.ts) but NOT on route-specific responses (curriculum.ts, auth.ts, etc.)
+
+**Root Cause:** 7 route files had their own local `corsResponse()` function that didn't include security headers.
+
+**Fix Applied:**
+- [x] Created `src/utils/response.ts` — shared CORS + Security headers utility
+- [x] Updated all 8 route files to use shared utility:
+  - `routes/curriculum.ts`
+  - `routes/curriculum-crud.ts`
+  - `routes/assessment.ts`
+  - `routes/exams.ts`
+  - `routes/classroom.ts`
+  - `routes/auth.ts`
+  - `routes/gpu.ts`
+  - `routes/tts.ts`
+
+**Verification:**
+- SecurityHeaders.com Grade: **A** ✅
+- All 9 security headers present on `/api/v1/pathways` endpoint
+
+**Commit:** `a536720` — fix: Apply security headers to all route files
+
 ### Security Tools to Evaluate
 
 | Tool | Purpose | Cost |
@@ -827,6 +851,124 @@ Respond with JSON: { "threat_level": "low|medium|high|critical", "threats": [...
 5. **Phase 5 (Medium)**: 2FA for admins
 6. **Phase 6 (Medium)**: Session management
 7. **Phase 7 (Ongoing)**: Penetration testing
+
+---
+
+## 5.1 ADMIN SECURITY DASHBOARD REQUIREMENTS
+
+### Overview
+
+The Admin Security Dashboard will be a dedicated section in the Tier 1 Admin portal for monitoring and managing security features implemented in Phases 1-7.
+
+### Location
+
+```
+/admin/tier1.html → Security Section (existing nav item)
+  OR
+/admin/security.html → Dedicated page (recommended for complexity)
+```
+
+### Dashboard Components
+
+#### 1. Security Overview Panel
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│  🔒 SECURITY STATUS                                 Last scan: 2 min ago │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│  OVERALL: 🟢 SECURE          SecurityHeaders.com: Grade A               │
+│                                                                         │
+│  ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌────────────┐        │
+│  │ AI Police  │  │  Headers   │  │Rate Limits │  │  Sessions  │        │
+│  │   ✅ ON    │  │   ✅ A     │  │  ✅ Active │  │  127 Active│        │
+│  └────────────┘  └────────────┘  └────────────┘  └────────────┘        │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+#### 2. AI Police Moderation Log
+
+| Column | Source | Filter |
+|--------|--------|--------|
+| Timestamp | `ai_moderation_log.timestamp` | Date range |
+| User | `ai_moderation_log.user_id` → `users.email` | Search |
+| Input (truncated) | `ai_moderation_log.input_text` | - |
+| Result | `ai_moderation_log.moderation_result` | Dropdown: all/blocked/sanitized/flagged |
+| Triggered Rules | `ai_moderation_log.triggered_rules` | - |
+| Age Tier | `ai_moderation_log.age_tier` | Dropdown |
+
+**Actions:**
+- View full input text (modal)
+- Mark as false positive
+- Add pattern to allowlist
+
+#### 3. Security Audit Log
+
+| Column | Source | Filter |
+|--------|--------|--------|
+| Timestamp | `security_audit_log.timestamp` | Date range |
+| Event Type | `security_audit_log.event_type` | Dropdown |
+| User | `security_audit_log.user_id` | Search |
+| IP Address | `security_audit_log.ip_address` | Search |
+| Status | `security_audit_log.status` | success/failure/blocked |
+| Risk Score | `security_audit_log.risk_score` | Range slider |
+
+#### 4. Block Management
+
+**View/Manage Blocked Entities:**
+- IP addresses (with expiry)
+- User accounts (with reason)
+- Patterns (regex for input blocking)
+
+**Add New Block:**
+- Entity type: IP / User / Pattern
+- Value: (input)
+- Reason: (required)
+- Duration: 15min / 1hr / 24hr / 7d / Permanent
+- Notify user: checkbox (for user blocks)
+
+#### 5. Rate Limit Monitor
+
+Real-time view of:
+- Endpoints hitting rate limits
+- Top IPs by request count
+- Current blocked IPs (temporary)
+
+### API Endpoints Required
+
+| Method | Endpoint | Status | Purpose |
+|--------|----------|--------|---------|
+| GET | `/api/v1/admin/security/overview` | NOT BUILT | Dashboard summary stats |
+| GET | `/api/v1/admin/security/moderation-log` | NOT BUILT | AI Police log with filters |
+| GET | `/api/v1/admin/security/audit-log` | EXISTS | Security events |
+| POST | `/api/v1/admin/security/block` | NOT BUILT | Add to blocklist |
+| DELETE | `/api/v1/admin/security/block/:id` | NOT BUILT | Remove from blocklist |
+| GET | `/api/v1/admin/security/blocklist` | NOT BUILT | List blocked entities |
+| GET | `/api/v1/admin/security/rate-limits` | NOT BUILT | Current rate limit status |
+| POST | `/api/v1/admin/security/false-positive` | NOT BUILT | Mark moderation as false positive |
+
+### Implementation Priority
+
+| Priority | Component | Depends On |
+|----------|-----------|------------|
+| P1 | AI Moderation Log Viewer | Phase 1 complete ✅ |
+| P1 | Security Overview Panel | Phases 1-2 complete ✅ |
+| P2 | Block Management UI | Phase 3 (rate limiting) |
+| P2 | Audit Log Enhancements | Phase 4 (audit endpoints) |
+| P3 | Rate Limit Monitor | Phase 3 |
+| P3 | Real-time Alerts | Future |
+
+### Access Control
+
+| Feature | Tier 1 | Tier 2 | Notes |
+|---------|--------|--------|-------|
+| View Overview | ✅ | ✅ | Read-only for Tier 2 |
+| View Moderation Log | ✅ | ✅ | |
+| View Audit Log | ✅ | ❌ | Contains sensitive data |
+| Manage Blocks | ✅ | ❌ | |
+| Mark False Positive | ✅ | ❌ | Affects AI behavior |
+| Export Reports | ✅ | ❌ | |
 
 ---
 
@@ -1172,8 +1314,10 @@ curl -X GET "https://pmerit-api-worker.peoplemerit.workers.dev/api/v1/admin/secu
 | 71 | 2025-12-22 | Restructured to Scope Template v2, added FEATURE_GUIDE section | Claude Code |
 | 71 | 2025-12-22 | Implemented Phase 1 (AI Police) - 17 injection patterns, PII detection, age-tier filtering | Claude Code |
 | 71 | 2025-12-24 | Implemented Phase 2 (Security Headers + CSP) - HSTS, CSP, Permissions-Policy | Claude Code |
+| 71 | 2025-12-23 | Fixed Phase 2 bug - security headers now on ALL route files | Claude Code |
+| 71 | 2025-12-23 | Added Admin Security Dashboard requirements (Section 5.1) | Claude Code |
 
 ---
 
-*Last Updated: 2025-12-24 (Session 71)*
+*Last Updated: 2025-12-23 (Session 71)*
 *Template Version: SCOPE_TEMPLATE_V2*
