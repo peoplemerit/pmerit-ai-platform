@@ -3,15 +3,84 @@
 
 /**
  * PMERIT Components CSS
- * Version: 3.4 - Unified Modal System
- * Last Updated: November 27, 2025
- * 
+ * Version: 3.5 - Development Banner Added
+ * Last Updated: December 22, 2025
+ *
  * FIXES:
  * - Control buttons now horizontal (VH Mode + Read About on same line)
  * - Removed redundant "Connected to Educational Services" text
  * - Polished ChatGPT-style input with smooth interactions
  * - Added animated typing indicator for AI responses
+ * - Added development banner (remove after Feb 2026)
  */
+
+/* ========================================
+   DEVELOPMENT BANNER - Remove after Feb 2026
+   ======================================== */
+.dev-banner {
+  background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+  color: #1a1a1a;
+  text-align: center;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  position: relative;
+  z-index: 9999;
+}
+
+.dev-banner-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dev-banner-content i.fa-hard-hat {
+  font-size: 1rem;
+}
+
+.dev-banner-close {
+  background: transparent;
+  border: none;
+  color: #1a1a1a;
+  cursor: pointer;
+  padding: 4px 8px;
+  margin-left: 16px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.dev-banner-close:hover {
+  opacity: 1;
+}
+
+/* Dark mode banner */
+[data-theme="dark"] .dev-banner {
+  background: linear-gradient(90deg, #b45309 0%, #92400e 100%);
+  color: #fef3c7;
+}
+
+[data-theme="dark"] .dev-banner-close {
+  color: #fef3c7;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .dev-banner {
+    font-size: 0.75rem;
+    padding: 6px 12px;
+  }
+
+  .dev-banner-content {
+    gap: 6px;
+  }
+
+  .dev-banner-close {
+    margin-left: 8px;
+  }
+}
 
 /* ========================================
    CHATGPT-STYLE INPUT BAR (MOBILE & DESKTOP)
