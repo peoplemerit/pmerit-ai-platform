@@ -284,6 +284,53 @@ R740 (primary) <--> RunPod (overflow)
 
 ---
 
+## COST OPTIMIZATION STRATEGIES (From Brainstorm Session 70)
+
+### 1. JIT GPU Instantiation
+
+**Concept:** Spin up GPU resources only during active user sessions, auto-shutdown after inactivity.
+
+```
+User Request → Check GPU Status → Provision (if needed) → Process → Idle Timer → Auto-Shutdown
+                                         ↓
+                              Cold start: 30-60 seconds
+                              Warm start: 5-10 seconds (if pod cached)
+```
+
+**Implementation:**
+- Use RunPod serverless for overflow (already implemented for TTS)
+- R740 stays on but GPUs enter low-power state when idle
+- Wake-on-LAN or IPMI for full cold start (if datacenter supports)
+- Session-based billing for usage tracking
+
+**Savings:** Up to 70% GPU cost reduction vs 24/7 operation
+
+### 2. Spot/Preemptible Instances (Cloud Burst)
+
+**Concept:** Use 70-90% cheaper spot instances for batch processing and overflow.
+
+| Provider | Spot vs On-Demand | Best Use Case |
+|----------|-------------------|---------------|
+| RunPod | ~60% cheaper | Burst capacity |
+| AWS Spot | ~70% cheaper | Batch TTS generation |
+| GCP Preemptible | ~80% cheaper | Non-real-time AI |
+
+**When to Use:**
+- Pre-generating TTS for common phrases
+- Batch processing assessment responses
+- Training/fine-tuning models
+- Non-time-critical avatar rendering
+
+**Fallback Strategy:**
+```
+1. Primary: Dell R740 (self-hosted)
+2. Burst: RunPod serverless (on-demand)
+3. Batch: RunPod spot instances (when available)
+4. Emergency: Cloud provider on-demand
+```
+
+---
+
 ## COST COMPARISON
 
 ### Monthly Costs for 1,000 Premium Users
@@ -614,7 +661,8 @@ scrape_configs:
 | Session | Date | Action |
 |---------|------|--------|
 | 64 | 2025-12-19 | Scope created based on Director's R740 infrastructure plan |
+| 70 | 2025-12-22 | Added JIT GPU and spot instance cost optimization strategies |
 
 ---
 
-*Last Updated: 2025-12-19 (Session 64)*
+*Last Updated: 2025-12-22 (Session 70)*

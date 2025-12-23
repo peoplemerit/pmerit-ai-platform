@@ -311,6 +311,111 @@ const DB_SCHEMA = {
 
 ---
 
+## 4.1 ENHANCED CACHING STRATEGY (From Brainstorm Session 70)
+
+### Low-Bandwidth Prioritization
+
+**Concept:** Optimize for learners with expensive/limited mobile data.
+
+### Data-Saving Mode
+
+```javascript
+// User preference for data-saving mode
+const DATA_SAVE_MODE = localStorage.getItem('dataSaveMode') === 'true';
+
+// Adjust caching behavior based on mode
+const CACHE_STRATEGY = DATA_SAVE_MODE ? {
+    images: 'lazy',           // Only load visible images
+    videos: 'none',           // Never auto-cache videos
+    avatarTier: 'fallback',   // Static image only
+    ttsCache: 'frequent',     // Pre-cache common phrases
+    prefetch: false           // No speculative loading
+} : {
+    images: 'eager',
+    videos: 'prefetch',
+    avatarTier: 'standard',
+    ttsCache: 'all',
+    prefetch: true
+};
+```
+
+### Offline AI Interface (Local Model Execution)
+
+**Future Enhancement:** Use WebAssembly for local AI inference when offline.
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    OFFLINE AI STRATEGY                                    │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│  ONLINE MODE                                                            │
+│  ───────────                                                            │
+│  User Question → Anthropic Claude API → Personalized Answer             │
+│                                                                         │
+│  OFFLINE MODE (Graceful Degradation)                                    │
+│  ─────────────                                                          │
+│  User Question → Check FAQ Cache (KV/IndexedDB)                         │
+│       ↓ [Cache Hit]                                                     │
+│  Return cached answer with disclaimer                                   │
+│       ↓ [Cache Miss]                                                    │
+│  TRY: Local WASM model (TinyLlama/Phi-2)   [FUTURE]                    │
+│       ↓ [Model Not Available]                                           │
+│  Show: "This question requires an internet connection"                  │
+│       + Queue question for when online                                  │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Local Model Options (Future Research)
+
+| Model | Size | Use Case | Status |
+|-------|------|----------|--------|
+| TinyLlama (ONNX) | 600MB | Simple Q&A | RESEARCH |
+| Phi-2 (ONNX) | 2.7GB | Better reasoning | RESEARCH |
+| Whisper Tiny | 75MB | Speech-to-text | RESEARCH |
+| Piper (WASM) | 50MB | Text-to-speech | POSSIBLE |
+
+**Note:** Local models would require download and storage. Only viable for users with sufficient device storage and initial bandwidth.
+
+### IndexedDB Sync Queue
+
+```javascript
+// Queue offline actions for sync
+async function queueForSync(action) {
+    const db = await openDB('pmerit-offline');
+
+    await db.add('pendingSync', {
+        type: action.type,           // 'progress', 'quiz_answer', 'chat_message'
+        payload: action.payload,
+        createdAt: Date.now(),
+        retryCount: 0
+    });
+
+    // Request background sync if supported
+    if ('serviceWorker' in navigator && 'sync' in registration) {
+        await registration.sync.register('sync-pending');
+    }
+}
+
+// Conflict resolution strategy
+function resolveConflict(local, server) {
+    // For progress: Take the higher value (most complete)
+    if (local.type === 'progress') {
+        return local.value > server.value ? local : server;
+    }
+
+    // For quiz answers: Server wins (prevents cheating)
+    if (local.type === 'quiz_answer') {
+        return server;
+    }
+
+    // Default: Last-write-wins with timestamp
+    return local.updatedAt > server.updatedAt ? local : server;
+}
+```
+
+---
+
 ## 5. RESEARCH_FINDINGS
 
 *No implementation yet - awaiting specification approval*
@@ -381,7 +486,8 @@ const DB_SCHEMA = {
 | Session | Date | Action |
 |---------|------|--------|
 | 62 | 2025-12-18 | Scope file created |
+| 70 | 2025-12-22 | Added enhanced caching strategy with data-saving mode and local model research (from brainstorm) |
 
 ---
 
-*Last Updated: 2025-12-18 (Session 62)*
+*Last Updated: 2025-12-22 (Session 70)*

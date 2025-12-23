@@ -164,6 +164,38 @@
 2. **No assessment retry gating** - Accountability model not enforced
 3. **No certificate verification system** - "Verified certificates" not implemented
 
+### Priority 4: Credit System for GPU Features (From Brainstorm Session 70)
+
+**Concept:** Micro-transaction credits for GPU-intensive features like virtual human time.
+
+| Feature | Credit Cost | Real Cost |
+|---------|-------------|-----------|
+| Premium TTS (1 min) | 5 credits | ~$0.02 |
+| MetaHuman session (5 min) | 25 credits | ~$0.15 |
+| Voice cloning setup | 100 credits | ~$0.50 |
+| AI tutor extended session | 10 credits | ~$0.05 |
+
+**Credit Packages:**
+| Package | Credits | Price | Per-Credit |
+|---------|---------|-------|------------|
+| Starter | 100 | $0.99 | $0.0099 |
+| Standard | 500 | $3.99 | $0.0080 |
+| Premium | 1,500 | $9.99 | $0.0067 |
+| Unlimited | ∞ | $19.99/mo | Subscription |
+
+**Benefits:**
+- Pay-as-you-go for occasional premium users
+- Lower barrier than monthly subscription
+- Usage visibility for cost control
+- Path to subscription upgrade
+
+**Database Tables Needed:**
+```sql
+-- user_credits (user_id, balance, last_updated)
+-- credit_transactions (id, user_id, amount, type, feature, created_at)
+-- credit_packages (id, name, credits, price_usd, price_ngn)
+```
+
 ---
 
 ## DEPENDENCIES
@@ -214,7 +246,8 @@
 |---------|------|--------|
 | 60 | 2025-12-17 | Initial audit completed |
 | 64 | 2025-12-19 | Added Self-Hosted Premium tier based on Dell R740 infrastructure plan |
+| 70 | 2025-12-22 | Added credit system for GPU features (from brainstorm) |
 
 ---
 
-*Last Updated: 2025-12-19 (Session 64)*
+*Last Updated: 2025-12-22 (Session 70)*

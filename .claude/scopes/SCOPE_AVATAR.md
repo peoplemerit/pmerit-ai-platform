@@ -1,9 +1,9 @@
 # PMERIT SUB-SCOPE: Avatar System
 
-**Version:** 2.1
+**Version:** 2.2
 **Created:** 2025-12-12
-**Last Updated:** 2025-12-19
-**Status:** LOCKED (TTS Regression in Session 64)
+**Last Updated:** 2025-12-22
+**Status:** LOCKED (TTS Regression in Session 64) / ENHANCEMENT NEEDED (Micro-Expressions)
 **Phase:** Integrated with P5 (Classroom)
 **Session:** 65
 **Related Scopes:** SCOPE_SELF_HOSTED_PREMIUM.md, SCOPE_TTS.md
@@ -295,6 +295,293 @@ Dell R740 Server
 
 ---
 
+## 6.1 GRACEFUL DEGRADATION STRATEGY (From Brainstorm Session 70)
+
+**Concept:** Connection speed detection to auto-switch avatar quality based on bandwidth.
+
+### Bandwidth Tier Detection
+
+```javascript
+// On classroom load, test bandwidth and select appropriate tier
+async function detectBandwidthTier() {
+    const testUrl = '/assets/bandwidth-test.bin'; // 100KB file
+    const startTime = performance.now();
+
+    try {
+        const response = await fetch(testUrl, { cache: 'no-store' });
+        const blob = await response.blob();
+        const endTime = performance.now();
+
+        const fileSizeKB = blob.size / 1024;
+        const durationSec = (endTime - startTime) / 1000;
+        const speedMbps = (fileSizeKB * 8) / (durationSec * 1000);
+
+        if (speedMbps >= 25) return 'premium';      // MetaHuman capable
+        if (speedMbps >= 5) return 'standard';       // WebGL 3D
+        if (speedMbps >= 1) return 'basic';          // CSS animation
+        return 'fallback';                            // Static image
+    } catch {
+        return 'fallback'; // Network error = minimal experience
+    }
+}
+```
+
+### Fallback Chain
+
+```
+┌──────────────────────────────────────────────────────────────────────────┐
+│                     AVATAR FALLBACK CHAIN                                  │
+├──────────────────────────────────────────────────────────────────────────┤
+│                                                                          │
+│  TRY: MetaHuman (25+ Mbps)                                               │
+│    ↓ [Fail: Low bandwidth / WebRTC error]                                │
+│  TRY: WebGL 3D Avatar (5+ Mbps)                                          │
+│    ↓ [Fail: Low bandwidth / WebGL not supported]                         │
+│  TRY: CSS Animated Avatar (1+ Mbps)                                      │
+│    ↓ [Fail: Very low bandwidth]                                          │
+│  FALLBACK: Static Image + Text-only                                      │
+│                                                                          │
+│  At each level:                                                          │
+│  • Store user's tier preference in localStorage                          │
+│  • Allow manual override via settings                                    │
+│  • Re-test on session start (may improve/degrade)                        │
+│                                                                          │
+└──────────────────────────────────────────────────────────────────────────┘
+```
+
+### User Notification
+
+When degrading, show non-intrusive notification:
+```
+"Avatar quality adjusted for your connection speed. Change in Settings."
+```
+
+### Implementation Status
+
+| Task | Status |
+|------|--------|
+| Bandwidth test endpoint | EXISTS (`/api/v1/bandwidth-test`) |
+| Tier detection function | NOT IMPLEMENTED |
+| Automatic switching | NOT IMPLEMENTED |
+| User preference storage | NOT IMPLEMENTED |
+| Settings UI for override | NOT IMPLEMENTED |
+
+---
+
+## 6.2 MICRO-EXPRESSIONS & UNIFIED SYNC (From Session 70 Research)
+
+### 6.2.1 Current Problem: "Statue Effect"
+
+The avatar currently only animates during speech (jaw movement). Between speech and during idle, the avatar appears frozen like a statue. This undermines the feeling of a living tutor.
+
+### 6.2.2 Micro-Expression Categories
+
+| Category | Examples | Purpose |
+|----------|----------|---------|
+| **Idle Animations** | Blinking, breathing, subtle head shifts | Prevent "statue" appearance |
+| **Thinking Cues** | Head tilt, gaze shift, slight frown | Show active processing |
+| **Emotional Feedback** | Smile, raised eyebrows, nod | Respond to student input |
+| **Attention Signals** | Eye contact, lean forward | Engage the student |
+
+### 6.2.3 Implementation by Tier
+
+| Tier | Micro-Expressions Available | Method |
+|------|----------------------------|--------|
+| **Free (WebGL)** | Blinking, breathing, head bob | Procedural animation loop |
+| **Premium (Cloud)** | + Thinking, basic emotions | Enhanced procedural + triggers |
+| **Self-Hosted** | Full expression range | NVIDIA Audio2Face + MetaHuman |
+
+### 6.2.4 WebGL Micro-Expression Implementation
+
+```javascript
+// Idle animation loop for Three.js avatar
+class MicroExpressionController {
+    constructor(avatar) {
+        this.avatar = avatar;
+        this.headBone = this.findBone('Head');
+        this.eyeBones = {
+            left: this.findBone('LeftEye'),
+            right: this.findBone('RightEye')
+        };
+        this.lastBlink = 0;
+        this.blinkInterval = 3000 + Math.random() * 2000; // 3-5 seconds
+        this.breathPhase = 0;
+    }
+
+    update(deltaTime) {
+        this.updateBreathing(deltaTime);
+        this.updateBlinking(deltaTime);
+        this.updateIdleHeadMovement(deltaTime);
+    }
+
+    updateBreathing(deltaTime) {
+        // Subtle chest/shoulder rise and fall
+        this.breathPhase += deltaTime * 0.5; // Slow breathing
+        const breathIntensity = Math.sin(this.breathPhase) * 0.002;
+        if (this.avatar.position) {
+            this.avatar.position.y += breathIntensity;
+        }
+    }
+
+    updateBlinking(deltaTime) {
+        const now = performance.now();
+        if (now - this.lastBlink > this.blinkInterval) {
+            this.triggerBlink();
+            this.lastBlink = now;
+            this.blinkInterval = 3000 + Math.random() * 2000;
+        }
+    }
+
+    triggerBlink() {
+        // Quick eye close/open animation
+        // If eye bones exist, rotate them down briefly
+        // Or if using morph targets for eyes, animate eyeClosed morph
+        if (this.eyeBones.left && this.eyeBones.right) {
+            const blinkDuration = 150; // milliseconds
+            // Animate eye bones or trigger blink morph
+            this.animateEyeBlink(blinkDuration);
+        }
+    }
+
+    updateIdleHeadMovement(deltaTime) {
+        // Very subtle head micro-movements
+        if (this.headBone) {
+            const time = performance.now() * 0.001;
+            // Subtle nod/tilt on different frequencies
+            this.headBone.rotation.x += Math.sin(time * 0.3) * 0.0005;
+            this.headBone.rotation.y += Math.sin(time * 0.2) * 0.0003;
+            this.headBone.rotation.z += Math.sin(time * 0.4) * 0.0002;
+        }
+    }
+}
+```
+
+### 6.2.5 Expression Triggers
+
+| Trigger | Expression | When to Use |
+|---------|------------|-------------|
+| Student asks question | Head tilt + raised eyebrows | Show interest/attention |
+| AI is "thinking" | Gaze shifts, slight frown | During LLM processing |
+| Correct answer | Smile + nod | Positive reinforcement |
+| Wrong answer | Gentle head shake, encouraging look | Supportive correction |
+| Complex topic | Thoughtful expression | Signaling importance |
+| Session start | Warm smile + slight wave | Welcome |
+
+### 6.2.6 Unified Lip Sync Architecture
+
+**Current (Reactive):**
+```
+Audio plays → Analyze amplitude → Move jaw (reactive, ~100ms lag)
+```
+
+**Target (Predictive/Streaming):**
+```
+TIER: FREE (WebGL)
+─────────────────
+Audio amplitude → Jaw rotation (current, reactive)
++ Micro-expressions loop (idle animations)
+
+TIER: PREMIUM (Cloud)
+─────────────────────
+TTS with viseme timing data → Predictive lip sync (~50ms)
++ Expression triggers from AI response sentiment
+
+TIER: SELF-HOSTED
+─────────────────
+NVIDIA Audio2Face → MetaHuman blendshapes (<20ms)
++ Full emotional expression from voice analysis
++ Perfect lip sync from phoneme detection
+```
+
+### 6.2.7 Streaming Integration
+
+When unified streaming (SCOPE_CLASSROOM Section 9) is implemented:
+
+```javascript
+// Enhanced lip sync with streaming TTS
+class UnifiedLipSyncController {
+    constructor(avatar, ttsQueue) {
+        this.avatar = avatar;
+        this.ttsQueue = ttsQueue;
+        this.microExpressions = new MicroExpressionController(avatar);
+        this.isListening = false;
+        this.isSpeaking = false;
+    }
+
+    // Called when user sends message
+    onUserMessage() {
+        this.isListening = false;
+        this.isSpeaking = false;
+        this.showThinkingExpression(); // Head tilt, gaze shift
+    }
+
+    // Called when LLM starts streaming
+    onLLMStreamStart() {
+        this.isSpeaking = true;
+        this.showSpeakingExpression(); // Eye contact, slight forward lean
+    }
+
+    // Called for each TTS sentence chunk
+    onTTSChunkPlay(audioBuffer, visemeData) {
+        if (visemeData) {
+            // Premium: Use viseme timing for predictive sync
+            this.playWithVisemes(audioBuffer, visemeData);
+        } else {
+            // Free: Use amplitude analysis for reactive sync
+            this.playWithAmplitude(audioBuffer);
+        }
+    }
+
+    // Called when all speech complete
+    onSpeechComplete() {
+        this.isSpeaking = false;
+        this.isListening = true;
+        this.showListeningExpression(); // Attentive, waiting
+    }
+
+    update(deltaTime) {
+        // Always run micro-expressions unless overridden by speech
+        if (!this.isSpeaking) {
+            this.microExpressions.update(deltaTime);
+        }
+    }
+}
+```
+
+### 6.2.8 Implementation Checklist
+
+**Phase A: Idle Micro-Expressions (Free Tier)**
+- [ ] Create MicroExpressionController class
+- [ ] Implement breathing animation
+- [ ] Implement random blinking
+- [ ] Implement subtle idle head movement
+- [ ] Integrate with existing gpu-streaming.js animation loop
+- [ ] Test: Avatar should never appear "frozen"
+
+**Phase B: Expression Triggers**
+- [ ] Add thinking expression on user message
+- [ ] Add speaking expression on TTS start
+- [ ] Add listening expression on TTS complete
+- [ ] Add positive feedback expression on correct answers
+- [ ] Integrate with AI response sentiment (future)
+
+**Phase C: Unified Streaming Integration**
+- [ ] Coordinate with SCOPE_CLASSROOM SSE streaming
+- [ ] Handle sentence-chunked TTS with lip sync
+- [ ] Smooth transitions between expressions
+- [ ] Test latency improvements
+
+### 6.2.9 Service Providers for Premium Expressions
+
+| Service | Type | Best For |
+|---------|------|----------|
+| HeyGen Interactive | Streaming avatar | Real-time lip sync + expressions |
+| Tavus | Conversational video | Low-latency personalized avatar |
+| D-ID | Streaming avatar | Cost-effective option |
+| NVIDIA Audio2Face | Self-hosted | Perfect sync (requires GPU) |
+
+---
+
 ## 7. GPU STREAMING API
 
 | Method | Endpoint | Purpose |
@@ -320,5 +607,17 @@ Dell R740 Server
 
 ---
 
-*Last Updated: 2025-12-13 by Claude Code (Session 52)*
-*DigitalOcean → RunPod migration complete*
+## 9. SESSION HISTORY
+
+| Session | Date | Action |
+|---------|------|--------|
+| 43-45 | 2025-12-09-11 | Avatar system implementation |
+| 52 | 2025-12-13 | DigitalOcean → RunPod migration |
+| 62 | 2025-12-18 | Speech orchestration fix |
+| 64 | 2025-12-19 | Files locked due to TTS regression |
+| 70 | 2025-12-22 | Added graceful degradation strategy (from brainstorm) |
+| 70 | 2025-12-22 | Added micro-expressions & unified sync (Section 6.2) from streaming research |
+
+---
+
+*Last Updated: 2025-12-22 by Claude Code (Session 70)*

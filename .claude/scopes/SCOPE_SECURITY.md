@@ -608,6 +608,126 @@ const RATE_LIMITS: Record<string, RateLimitConfig> = {
 
 ---
 
+## 4.1 AI-BASED SECURITY MONITORING (From Brainstorm Session 70)
+
+**Concept:** Use Cloudflare Workers AI to analyze logs for vulnerability patterns and anomalies.
+
+### Automated Threat Detection
+
+```typescript
+// src/security/ai-threat-detector.ts
+
+interface LogEntry {
+    timestamp: string;
+    ip: string;
+    userId?: string;
+    endpoint: string;
+    method: string;
+    statusCode: number;
+    userAgent: string;
+    requestBody?: string;
+    responseTime: number;
+}
+
+// Patterns that trigger AI analysis
+const SUSPICIOUS_PATTERNS = {
+    // Rapid-fire requests (possible bot/attack)
+    highFrequency: (logs: LogEntry[]) =>
+        countRequestsPerMinute(logs) > 100,
+
+    // Multiple failed logins (brute force)
+    failedLogins: (logs: LogEntry[]) =>
+        logs.filter(l => l.endpoint === '/api/v1/auth/login' && l.statusCode === 401).length > 5,
+
+    // SQL injection patterns in requests
+    sqlInjection: (logs: LogEntry[]) =>
+        logs.some(l => /(\bOR\b|\bAND\b|--|;|\bUNION\b)/i.test(l.requestBody || '')),
+
+    // Unusual user agents
+    suspiciousAgent: (logs: LogEntry[]) =>
+        logs.some(l => /(curl|wget|python|bot|crawler)/i.test(l.userAgent)),
+
+    // Geographic anomaly (user in two countries simultaneously)
+    geoAnomaly: async (logs: LogEntry[], userId: string) =>
+        await checkGeoAnomaly(logs, userId)
+};
+
+// Use Workers AI for pattern analysis
+async function analyzeWithAI(logs: LogEntry[], env: Env): Promise<ThreatAssessment> {
+    const prompt = `Analyze these API logs for security threats:
+${JSON.stringify(logs.slice(-50), null, 2)}
+
+Identify:
+1. Attack patterns (SQL injection, XSS, CSRF)
+2. Brute force attempts
+3. Unusual access patterns
+4. Data exfiltration indicators
+5. Bot behavior
+
+Respond with JSON: { "threat_level": "low|medium|high|critical", "threats": [...], "recommendations": [...] }`;
+
+    const response = await env.AI.run('@cf/meta/llama-2-7b-chat-int8', {
+        messages: [{ role: 'user', content: prompt }]
+    });
+
+    return JSON.parse(response.response);
+}
+```
+
+### Real-Time Monitoring Dashboard
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    SECURITY MONITORING DASHBOARD                          │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│  THREAT LEVEL: 🟢 LOW                     Last Scan: 2 minutes ago      │
+│                                                                         │
+│  ┌─────────────────────────────────────────────────────────────────┐   │
+│  │  ACTIVE THREATS (0)                                              │   │
+│  │  No active threats detected                                      │   │
+│  └─────────────────────────────────────────────────────────────────┘   │
+│                                                                         │
+│  ┌─────────────────────────────────────────────────────────────────┐   │
+│  │  24-HOUR SUMMARY                                                 │   │
+│  │  • Requests: 45,231                                              │   │
+│  │  • Blocked: 127 (0.28%)                                          │   │
+│  │  • Failed logins: 23                                             │   │
+│  │  • Rate limit hits: 89                                           │   │
+│  │  • AI moderation blocks: 12                                      │   │
+│  └─────────────────────────────────────────────────────────────────┘   │
+│                                                                         │
+│  ┌─────────────────────────────────────────────────────────────────┐   │
+│  │  RECENT ALERTS                                                   │   │
+│  │  • [12:34] Rate limit: 192.168.1.x hit 100 req/min               │   │
+│  │  • [11:22] AI Police: Prompt injection blocked                   │   │
+│  │  • [10:15] Failed login: user@example.com (3rd attempt)          │   │
+│  └─────────────────────────────────────────────────────────────────┘   │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Automated Response Actions
+
+| Threat Level | Automatic Response | Notification |
+|--------------|-------------------|--------------|
+| LOW | Log only | None |
+| MEDIUM | Temporary rate limit (15 min) | Slack alert |
+| HIGH | IP block (1 hour), session revoke | Email + Slack |
+| CRITICAL | Service isolation, all sessions revoked | Phone call + all channels |
+
+### Implementation Status
+
+| Task | Status |
+|------|--------|
+| Log collection infrastructure | PARTIAL (Cloudflare logs exist) |
+| AI threat analysis | NOT IMPLEMENTED |
+| Real-time monitoring dashboard | NOT IMPLEMENTED |
+| Automated response system | NOT IMPLEMENTED |
+| Alert integrations (Slack/email) | NOT IMPLEMENTED |
+
+---
+
 ## 5. RESEARCH_FINDINGS
 
 *No implementation yet - awaiting specification approval*
@@ -705,7 +825,8 @@ const RATE_LIMITS: Record<string, RateLimitConfig> = {
 | Session | Date | Action |
 |---------|------|--------|
 | 62 | 2025-12-18 | Scope file created |
+| 70 | 2025-12-22 | Added AI-based security monitoring strategy (from brainstorm) |
 
 ---
 
-*Last Updated: 2025-12-18 (Session 62)*
+*Last Updated: 2025-12-22 (Session 70)*

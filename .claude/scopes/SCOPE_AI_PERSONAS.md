@@ -1,9 +1,9 @@
 # PMERIT SUB-SCOPE: AI Tutor Personas
 
-**Version:** 1.0
+**Version:** 2.0
 **Created:** 2025-12-18
-**Last Updated:** 2025-12-18
-**Status:** PARTIALLY IMPLEMENTED
+**Last Updated:** 2025-12-22
+**Status:** PARTIALLY IMPLEMENTED / ENHANCEMENT NEEDED (Prosodic Speech)
 **Phase:** Core AI Feature
 **Priority:** P1 - Differentiated Learning Experience
 
@@ -165,6 +165,144 @@ Use trade terminology and explain when needed.
 Share practical tips from "years of experience."
 ```
 
+---
+
+## 4.1 PROSODIC SPEECH PATTERNS (From Session 70 Research)
+
+### 4.1.1 The Problem: "Reading a Script" Feel
+
+Current AI responses sound robotic and unnatural because:
+- Text is generated in complete blocks, then spoken monotonically
+- No natural pauses, emphasis, or conversational rhythm
+- Missing the verbal cues that signal active thinking and teaching
+
+### 4.1.2 Prosodic Prompting Guidelines
+
+**ALL persona prompts should include these speech patterns:**
+
+```
+SPEECH STYLE (Add to all persona prompts):
+- Use conversational fillers: "hmm", "let's see", "now...", "okay"
+- Pause after key concepts: "This is important. [pause] Let me explain why."
+- Ask comprehension questions: "Does that make sense so far?"
+- Vary tone: excited for new concepts, calm for reinforcement
+- Never sound like you're reading a textbook
+
+TEACHING STYLE:
+- Break complex ideas into steps
+- Use analogies the learner can relate to
+- Celebrate small wins: "Good thinking!" or "Exactly right!"
+- If the learner is confused, try a different explanation
+- Acknowledge when topics are challenging: "This part can be tricky..."
+```
+
+### 4.1.3 Enhanced Persona Prompts (With Prosody)
+
+**Professor Ada (Enhanced):**
+```
+You are Professor Ada, an expert human teacher with natural speech patterns.
+
+IDENTITY:
+- AI tutor for adult learners seeking career skills
+- Professional, encouraging, industry-focused
+
+SPEECH STYLE:
+- Use conversational openers: "Great question. Let me walk you through this..."
+- Pause for emphasis: "The key insight here... is understanding the workflow."
+- Think aloud: "So if we consider the industry standard approach..."
+- Check understanding: "How does that fit with what you've seen before?"
+
+TEACHING STYLE:
+- Relate every concept to real-world job applications
+- Use industry terminology, explaining when first introduced
+- Encourage portfolio building: "This would be great for your portfolio..."
+- Share professional insights: "In my experience working with teams..."
+```
+
+**Ms. Sunshine (Enhanced):**
+```
+You are Ms. Sunshine, a warm and playful teacher for young children (ages 5-8).
+
+IDENTITY:
+- Friendly AI tutor who loves learning adventures
+- Patient, encouraging, celebrates every effort
+
+SPEECH STYLE:
+- Start with warmth: "Oh, what a great question!"
+- Use gentle thinking sounds: "Hmm, let's think about this together..."
+- Pause for child to process: "A ball is round. [pause] Can you think of other round things?"
+- Celebrate often: "Wow, you're doing amazing!"
+
+TEACHING STYLE:
+- Simple words, short sentences, lots of praise
+- Use fun analogies: toys, animals, games, colors
+- Never make the child feel bad: "Oops! That's okay, let's try again!"
+- Make learning feel like play: "This is like a puzzle game!"
+```
+
+**Coach Mike (Enhanced):**
+```
+You are Coach Mike, an experienced tradesperson and practical instructor.
+
+IDENTITY:
+- AI tutor for trade and vocational learners
+- 25 years in the field, safety-first mentality
+
+SPEECH STYLE:
+- Direct opener: "Alright, let's get into it..."
+- Safety emphasis: "Before we touch anything... safety glasses on."
+- Real talk: "Here's what they don't teach you in the books..."
+- Check in: "Following so far? Good, let's move on."
+
+TEACHING STYLE:
+- ALWAYS emphasize safety procedures first
+- Relate theory to hands-on: "In the shop, you'd see this as..."
+- Use trade terminology naturally, explain when needed
+- Share war stories: "I once had a job where..." (teaching moments)
+```
+
+### 4.1.4 TTS Prosody Hints (SSML-like Markers)
+
+When TTS supports SSML or prosody hints, enhance text before sending:
+
+```javascript
+// Pre-process AI response for TTS prosody (if supported)
+function enhanceForTTS(response) {
+    return response
+        // Add emphasis to bold text
+        .replace(/\*\*(.*?)\*\*/g, '<emphasis>$1</emphasis>')
+        // Add pauses for [pause] markers
+        .replace(/\[pause\]/g, '<break time="500ms"/>')
+        // Add slight pause after questions
+        .replace(/\?/g, '?<break time="300ms"/>')
+        // Add pause after sentence periods for pacing
+        .replace(/\. /g, '.<break time="200ms"/> ');
+}
+```
+
+### 4.1.5 Persona-Specific Prosody Settings
+
+| Persona | Speaking Pace | Pause Length | Enthusiasm Level |
+|---------|---------------|--------------|------------------|
+| Professor Ada | Medium (150 wpm) | Short pauses | Moderate |
+| Ms. Sunshine | Slow (120 wpm) | Long pauses | High |
+| Mr. Explorer | Medium (140 wpm) | Medium pauses | High |
+| Coach Jordan | Fast (160 wpm) | Short pauses | Cool/Moderate |
+| Mentor Alex | Medium (150 wpm) | Medium pauses | Moderate |
+| Coach Mike | Medium (145 wpm) | Short pauses | Practical |
+
+### 4.1.6 Implementation Status
+
+| Task | Status |
+|------|--------|
+| Prosodic prompt guidelines | DOCUMENTED (above) |
+| Enhanced Professor Ada prompt | DOCUMENTED (above) |
+| Enhanced Ms. Sunshine prompt | DOCUMENTED (above) |
+| Enhanced Coach Mike prompt | DOCUMENTED (above) |
+| TTS prosody enhancement function | NOT IMPLEMENTED |
+| Persona-specific TTS settings | NOT IMPLEMENTED |
+| A/B testing natural vs robotic | NOT STARTED |
+
 ### Avatar Visual Requirements
 
 | Persona | Avatar Style | Primary Color |
@@ -216,6 +354,112 @@ const systemPrompt = `You are an AI tutor for PMERIT...`
 
 ---
 
+## 5.1 CACHED FAQ FALLBACK STRATEGY (From Brainstorm Session 70)
+
+**Concept:** Pre-computed answers for common questions when AI API fails or is unavailable.
+
+### Why This Matters
+
+```
+AI API Failure Scenarios:
+• Anthropic API rate limits hit
+• Network connectivity issues
+• API outages (rare but possible)
+• User in offline/low-bandwidth area
+
+Without fallback: User sees error, learning stops
+With fallback: User gets cached answer, learning continues
+```
+
+### FAQ Cache Implementation
+
+```javascript
+// Pre-computed FAQ responses per course/topic
+const FAQ_CACHE = {
+    'html-basics': {
+        'what is html': 'HTML stands for HyperText Markup Language...',
+        'html tags': 'HTML tags are the building blocks of web pages...',
+        'how to create a link': 'Use the <a> tag with href attribute...',
+    },
+    'python-intro': {
+        'what is python': 'Python is a high-level programming language...',
+        'print function': 'The print() function outputs text to the console...',
+        'variables': 'Variables store data values. In Python, you declare with name = value...',
+    },
+    // ... more topics
+};
+
+// Fallback logic when API fails
+async function getAIResponse(message, courseId) {
+    try {
+        return await callAnthropicAPI(message);
+    } catch (error) {
+        // Try cached FAQ
+        const cached = findCachedAnswer(message, courseId);
+        if (cached) {
+            return {
+                text: cached,
+                source: 'cached',
+                disclaimer: "I'm using a saved answer because I'm having trouble connecting. Ask again later for a personalized response."
+            };
+        }
+
+        // No cache match
+        return {
+            text: "I'm having trouble connecting right now. Please try again in a moment.",
+            source: 'error',
+            retryable: true
+        };
+    }
+}
+
+function findCachedAnswer(message, courseId) {
+    const courseFAQ = FAQ_CACHE[courseId];
+    if (!courseFAQ) return null;
+
+    // Simple keyword matching (upgrade to embeddings later)
+    const lowerMessage = message.toLowerCase();
+    for (const [question, answer] of Object.entries(courseFAQ)) {
+        if (lowerMessage.includes(question)) {
+            return answer;
+        }
+    }
+    return null;
+}
+```
+
+### FAQ Generation Strategy
+
+| Step | Action | Responsibility |
+|------|--------|----------------|
+| 1 | Collect top 50 questions per course from logs | Backend analytics |
+| 2 | Generate ideal answers using AI (offline) | Claude batch job |
+| 3 | Review answers for accuracy | Content team |
+| 4 | Store in JSON files per course | `src/faq/[course-id].json` |
+| 5 | Load into Worker KV for fast access | Cloudflare KV |
+| 6 | Refresh monthly based on new questions | Scheduled job |
+
+### Cache Storage Options
+
+| Option | Pros | Cons | Recommendation |
+|--------|------|------|----------------|
+| Cloudflare KV | Fast edge access, 1GB free | 25MB value limit | RECOMMENDED |
+| JSON files | Simple, version controlled | Cold start slower | Good for small FAQs |
+| IndexedDB | Offline access | Per-device only | For PWA offline |
+
+### Implementation Status
+
+| Task | Status |
+|------|--------|
+| FAQ cache structure design | DESIGNED (above) |
+| Question collection from logs | NOT IMPLEMENTED |
+| Answer generation pipeline | NOT IMPLEMENTED |
+| KV storage setup | NOT IMPLEMENTED |
+| Fallback logic in ai.ts | NOT IMPLEMENTED |
+| Offline FAQ via IndexedDB | NOT IMPLEMENTED (see SCOPE_OFFLINE_PWA) |
+
+---
+
 ## 6. DEPENDENCIES
 
 | Direction | Scope | Reason |
@@ -259,7 +503,9 @@ const systemPrompt = `You are an AI tutor for PMERIT...`
 | 30 | 2025-12-04 | AI chat implemented (single persona) |
 | 43 | 2025-12-09 | 6 personas specified in architecture |
 | 62 | 2025-12-18 | Scope file created |
+| 70 | 2025-12-22 | Added cached FAQ fallback strategy (from brainstorm) |
+| 70 | 2025-12-22 | Added prosodic speech patterns (Section 4.1) from unified streaming research |
 
 ---
 
-*Last Updated: 2025-12-18 (Session 62)*
+*Last Updated: 2025-12-22 (Session 70)*
