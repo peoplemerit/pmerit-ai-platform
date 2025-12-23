@@ -1,10 +1,11 @@
 # PMERIT MASTER SCOPE
 
-**Version:** 2.0
+**Version:** 3.0
 **Created:** 2025-12-12
-**Last Updated:** 2025-12-19 (Session 64)
+**Last Updated:** 2025-12-22 (Session 70)
 **Status:** ACTIVE
 **Purpose:** Consolidated project vision — single source of truth for all sub-scopes
+**Scope Count:** 24 active scopes (reconciled from 33 files)
 
 ---
 
@@ -183,21 +184,86 @@ PREMIUM LAYERS
 
 ---
 
-## 7. SUB-SCOPES INDEX
+## 7. SUB-SCOPES INDEX (Complete Registry)
+
+### 7.1 GATE & CORE USER JOURNEY (Complete)
+
+| Scope File | Feature | Status | Phase |
+|------------|---------|--------|-------|
+| SCOPE_HOMEPAGE.md | Homepage gate (H1-H10) | Complete | Gate |
+| SCOPE_Select_Language.md | Multi-language modal (H7) | Audited | Gate |
+| SCOPE_ASSESSMENT.md | Assessment flow (P1-P2) | Complete | P1-P2 |
+| SCOPE_DASHBOARD.md | Student dashboard (P3-P4) | Complete | P3-P4 |
+| SCOPE_CLASSROOM.md | Virtual classroom (P5) | Complete | P5 |
+| SCOPE_ENROLLMENT.md | Course enrollment | Complete | P2 |
+
+### 7.2 CONTENT & CATALOG
 
 | Scope File | Feature | Status | Priority |
 |------------|---------|--------|----------|
-| SCOPE_HOMEPAGE.md | Homepage gate (H1-H10) | Complete | Gate |
-| SCOPE_ASSESSMENT.md | Assessment flow (P1-P2) | Complete | P1 |
-| SCOPE_DASHBOARD.md | Student dashboard (P3-P4) | Complete | P2 |
-| SCOPE_CLASSROOM.md | Virtual classroom (P5) | Complete | P3 |
+| SCOPE_courses.md | Course catalog & management | Implemented | P1 |
+| SCOPE_Learning_Pathways.md | Pathway catalog with three-track arch | Complete | P1 |
+| SCOPE_CONTENT_SOURCES.md | External OER integration (freeCodeCamp, MOOSE) | Partial | P2 |
+
+### 7.3 AI & AVATAR SYSTEM
+
+| Scope File | Feature | Status | Priority |
+|------------|---------|--------|----------|
 | SCOPE_AVATAR.md | Avatar system (Free + Self-Hosted) | Complete | P3 |
-| SCOPE_ENROLLMENT.md | Course enrollment | Complete | P2 |
 | SCOPE_TTS.md | Text-to-Speech (Free + Premium + Self-Hosted) | Complete | P3 |
-| SCOPE_pricing.md | Pricing tiers (Free/Premium/Self-Hosted) | Audited | P2 |
-| **SCOPE_SELF_HOSTED_PREMIUM.md** | **Dell R740 infrastructure** | **Planned** | **P3** |
-| SCOPE_ADMIN.md | Admin portal (P7-P10) | Not Started | P4 |
-| SCOPE_CREDENTIALS.md | Blockchain credentials | Not Started | P5 |
+| SCOPE_AI_PERSONAS.md | Age-appropriate AI tutor personas | Partial | P1 |
+
+### 7.4 THREE-TRACK ARCHITECTURE
+
+| Scope File | Feature | Status | Priority |
+|------------|---------|--------|----------|
+| SCOPE_K12_EDUCATION.md | Track 2: Maine K-12 grade structure | Not Started | P1 |
+| SCOPE_CTE_VOCATIONAL.md | Track 3: CTE/Trade certification prep | Not Started | P1 |
+| SCOPE_PARENT_PORTAL.md | Parent/guardian dashboard for K-12 | Not Started | P0 |
+
+### 7.5 MONETIZATION & PAYMENTS
+
+| Scope File | Feature | Status | Priority |
+|------------|---------|--------|----------|
+| SCOPE_pricing.md | Pricing tiers (Free/Premium/Self-Hosted) | Frontend Complete | P2 |
+| SCOPE_donate.md | Donation system | Frontend Complete | P2 |
+| SCOPE_PAYMENTS.md | Stripe integration & subscriptions | Partial (DB only) | P2 |
+
+### 7.6 INFRASTRUCTURE & PREMIUM
+
+| Scope File | Feature | Status | Priority |
+|------------|---------|--------|----------|
+| SCOPE_SELF_HOSTED_PREMIUM.md | Dell R740 infrastructure | Planned | P3 |
+| SCOPE_EMAIL_SYSTEM.md | Official email system (Resend) | In Progress | P2 |
+
+### 7.7 PLATFORM FOUNDATION
+
+| Scope File | Feature | Status | Priority |
+|------------|---------|--------|----------|
+| SCOPE_PROGRESS.md | Unified progress tracking | Partial | P0 |
+| SCOPE_SECURITY.md | Platform security & AI police | Partial | P0 |
+| SCOPE_THEME.md | Platform theme & design system | Draft | P2 |
+| SCOPE_NOTIFICATIONS.md | Email & in-app notifications | Not Started | P2 |
+| SCOPE_OFFLINE_PWA.md | Offline & PWA support | Not Started | P2 |
+
+### 7.8 ADMIN & CREDENTIALS
+
+| Scope File | Feature | Status | Priority |
+|------------|---------|--------|----------|
+| SCOPE_ADMIN.md | Admin portal (P7-P10) | Phase B Complete | P4 |
+| SCOPE_CREDENTIALS.md | Blockchain credentials (ARCH-2/3) | Not Started | P5 |
+
+### 7.9 NON-SCOPE FILES (To Be Archived)
+
+These files exist in `/scopes/` but are **not formal scopes**:
+
+| File | Type | Action |
+|------|------|--------|
+| Start_Learning.md | Empty/stub | Archive |
+| Sign_In_Sign_Up.md | Documentation | Move to docs/ |
+| Research_with_Copilot.md | Research notes | Move to docs/ |
+| SCOPE_TEMPLATE.md | Template | Keep as reference |
+| SCOPE_courses_backup.md | Backup | Delete |
 
 ---
 
@@ -206,7 +272,7 @@ PREMIUM LAYERS
 | Document | Path | Purpose |
 |----------|------|---------|
 | Architecture Spec | docs/project/PMERIT_ARCHITECTURE_FINAL.md | Complete architecture |
-| Feature Spec | docs/handoffs/BRAINSTORM_ASU_LIKE_SCHEMA.md | Feature details |
+| Feature Spec | docs/project/PMERIT_FEATURE_SPEC.md | Platform feature specification |
 | User Journey | docs/project/Pmerit-comprehensively-narrative-users-and-Admin-Journey.md | User flows |
 | Project Document | docs/project/Pmerit_Project_Document.md | Master roadmap |
 | Governance | docs/aados/GOVERNANCE.md | Workflow rules |
