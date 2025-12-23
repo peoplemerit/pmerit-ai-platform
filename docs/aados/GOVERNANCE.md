@@ -1,8 +1,8 @@
-# 📑 PMERIT Platform — Canonical Audit & Handoff Governance V8
+# 📑 PMERIT Platform — Canonical Audit & Handoff Governance V9
 
-**Version:** 8.0
-**Updated:** 2025-12-21
-**New:** Migrated to C:\dev\pmerit + Isolated Node.js v20.18.1
+**Version:** 9.0
+**Updated:** 2025-12-22
+**New:** Enhanced Scope Template v2 with FEATURE_GUIDE documentation
 
 ---
 
@@ -69,18 +69,62 @@ Claude Code audits production reality FIRST, then Claude Web writes specs based 
 | **Audited** | AUDIT_REPORT section | Claude Code |
 | **Specified** | HANDOFF_DOCUMENT section | Claude Web |
 | **Implemented** | RESEARCH_FINDINGS section | Claude Code |
+| **Documented** | FEATURE_GUIDE section | Claude Code |
 
-### Sub-Scope Structure (After Full Cycle)
+### Sub-Scope Structure v2 (Full Cycle + Documentation)
 
-| Section | Purpose |
-|---------|---------|
-| **SCOPE IDENTITY** | Files, APIs, tables for this feature |
-| **ARCHITECTURAL DECISIONS (LOCKED)** | Final decisions — no changes without approval |
-| **AUDIT_REPORT** | What Claude Code found (reality check) |
-| **HANDOFF_DOCUMENT** | Requirements from Claude Web |
-| **RESEARCH_FINDINGS** | Implementation notes, session history |
-| **DEPENDENCIES** | What this scope requires/enables |
-| **VERIFICATION CHECKLIST** | Acceptance criteria |
+| Section | Purpose | Author |
+|---------|---------|--------|
+| **1. SCOPE IDENTITY** | Files, APIs, tables, target users | Claude Code |
+| **2. ARCHITECTURAL DECISIONS** | Final decisions — locked after approval | Claude Web + Director |
+| **3. AUDIT_REPORT** | Reality check — what exists in production | Claude Code |
+| **4. HANDOFF_DOCUMENT** | Requirements and specifications | Claude Web |
+| **5. RESEARCH_FINDINGS** | Implementation notes, session history | Claude Code |
+| **6. FEATURE_GUIDE** | **NEW:** End-user/admin documentation | Claude Code |
+| **7. DEPENDENCIES** | What this scope requires/enables/blocks | Claude Code |
+| **8. VERIFICATION CHECKLIST** | Acceptance criteria with evidence | Claude Code |
+| **9. LOCKED FILES** | Protected files requiring unlock | Claude Code |
+| **10. SCOPE HISTORY** | Full lifecycle log | All |
+
+### FEATURE_GUIDE Section (NEW in v2)
+
+The FEATURE_GUIDE section provides **functional documentation** for post-launch use:
+
+```
+## 6. FEATURE_GUIDE
+
+### 6.1 Overview
+- What the feature does (plain language)
+- Who uses it (user types and access levels)
+
+### 6.2 User Guide
+- For Students/Learners: How to access, what you can do
+- For Parents/Guardians: Parental controls, monitoring
+- For Administrators: Admin dashboard, troubleshooting
+
+### 6.3 Technical Reference
+- API Endpoints with examples
+- Database schema
+- Configuration options
+- Error codes
+
+### 6.4 Security Considerations
+- Threats and mitigations
+
+### 6.5 Integration Points
+- What systems this feature connects to
+- Events triggered
+
+### 6.6 Performance & Limits
+- Rate limits, data limits
+```
+
+**Purpose:** After project completion, each FEATURE_GUIDE serves as:
+- User manual for students, parents, admins
+- Technical reference for maintenance
+- Onboarding documentation for future developers
+
+**Template:** `.claude/scopes/SCOPE_TEMPLATE_V2.md`
 
 ### Scope Commands
 
@@ -1048,4 +1092,4 @@ Purpose: [Brief explanation]
 
 *Production: https://pmerit.com*
 *Repository: github.com/peoplemerit/pmerit-ai-platform*
-*Version: V7 — 2025-12-13 — Scope Order v2: Reality-First Workflow*
+*Version: V9 — 2025-12-22 — Enhanced Scope Template v2 with FEATURE_GUIDE*

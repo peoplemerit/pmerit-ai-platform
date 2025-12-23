@@ -1,9 +1,10 @@
 # CLAUDE WEB INSTRUCTIONS (Synced Copy)
 
 **Purpose:** This file mirrors Claude Web's instructions so Claude Code has visibility into what the Architect role sees.
-**Last Synced:** 2025-12-21
+**Last Synced:** 2025-12-22
 **Sync Method:** Manual copy from Claude Web settings
-**Workflow Version:** 3.0 (Reality-First + Dual-Repo + Strict AADOS)
+**Workflow Version:** 3.1 (Reality-First + Dual-Repo + Strict AADOS + Enhanced Scopes)
+**Current Session:** 70
 
 ---
 
@@ -254,20 +255,41 @@ cd C:\dev\pmerit
 
 ```
 .claude/scopes/
-├── MASTER_SCOPE.md          ← Full project vision
-├── SCOPE_HOMEPAGE.md        ← Homepage gate (H1-H10)
-├── SCOPE_ASSESSMENT.md      ← Assessment flow (P1-P2)
-├── SCOPE_DASHBOARD.md       ← Dashboard & auth (P3-P4)
-├── SCOPE_CLASSROOM.md       ← Virtual classroom (P5)
-├── SCOPE_AVATAR.md          ← Avatar system
-├── SCOPE_ENROLLMENT.md      ← Course enrollment
-├── SCOPE_TTS.md             ← TTS system (LOCKED)
-├── SCOPE_ADMIN.md           ← Admin portal (P7-P10)
-├── SCOPE_CREDENTIALS.md     ← Blockchain credentials
-├── SCOPE_pricing.md         ← Pricing (frontend_complete)
-├── SCOPE_donate.md          ← Donate (frontend_complete)
-└── SCOPE_EMAIL_SYSTEM.md    ← Email (in_progress)
+├── MASTER_SCOPE.md              ← Full project vision
+├── SCOPE_HOMEPAGE.md            ← Homepage gate (H1-H10) - COMPLETE
+├── SCOPE_ASSESSMENT.md          ← Assessment flow (P1-P2) - v2.0 with enhancements
+├── SCOPE_DASHBOARD.md           ← Dashboard & auth (P3-P4) - COMPLETE
+├── SCOPE_CLASSROOM.md           ← Virtual classroom (P5) - v2.0 + Streaming Architecture
+├── SCOPE_AVATAR.md              ← Avatar system - v2.2 + Micro-Expressions (LOCKED)
+├── SCOPE_AI_PERSONAS.md         ← AI tutor personas - v2.0 + Prosodic Speech
+├── SCOPE_ENROLLMENT.md          ← Course enrollment - COMPLETE
+├── SCOPE_TTS.md                 ← TTS system (LOCKED)
+├── SCOPE_ADMIN.md               ← Admin portal (P7-P10) - NOT STARTED
+├── SCOPE_CREDENTIALS.md         ← Blockchain credentials - NOT STARTED
+├── SCOPE_PROGRESS.md            ← Progress tracking
+├── SCOPE_NOTIFICATIONS.md       ← Email/push notifications
+├── SCOPE_PAYMENTS.md            ← Stripe integration
+├── SCOPE_SECURITY.md            ← Security & compliance
+├── SCOPE_K12_EDUCATION.md       ← Track 2 K-12 structure
+├── SCOPE_CTE_VOCATIONAL.md      ← Track 3 CTE structure
+├── SCOPE_PARENT_PORTAL.md       ← K-12 parent oversight
+├── SCOPE_CONTENT_SOURCES.md     ← External content integration
+├── SCOPE_OFFLINE_PWA.md         ← Offline/PWA support
+├── SCOPE_SELF_HOSTED_PREMIUM.md ← Dell R740 self-hosted tier
+├── SCOPE_pricing.md             ← Pricing (frontend_complete)
+├── SCOPE_donate.md              ← Donate (frontend_complete)
+├── SCOPE_courses.md             ← Course structure
+├── SCOPE_Learning_Pathways.md   ← Learning pathways
+└── SCOPE_EMAIL_SYSTEM.md        ← Email (in_progress)
 ```
+
+### Recent Scope Enhancements (Session 70)
+
+| Scope | Enhancement | Section |
+|-------|-------------|---------|
+| SCOPE_CLASSROOM | Unified Streaming Architecture | Section 9 |
+| SCOPE_AI_PERSONAS | Prosodic Speech Patterns | Section 4.1 |
+| SCOPE_AVATAR | Micro-Expressions & Unified Sync | Section 6.2 |
 
 ---
 
@@ -433,6 +455,7 @@ git push origin main
 
 ---
 
-*Last Synced: 2025-12-21*
+*Last Synced: 2025-12-22*
 *Migration: E:\pmerit → C:\dev\pmerit (Session 65)*
-*Version: 3.0 — Dual-Repo Protocol + Strict AADOS*
+*Version: 3.1 — Dual-Repo Protocol + Strict AADOS + Enhanced Scopes*
+*Session: 70*
