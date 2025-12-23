@@ -4,8 +4,8 @@ Write-Host ""
 Write-Host "===== PMERIT SESSION STARTUP =====" -ForegroundColor Cyan
 Write-Host ""
 
-$frontendPath = "E:\pmerit\pmerit-ai-platform"
-$backendPath = "E:\pmerit\pmerit-api-worker"
+$frontendPath = "C:\dev\pmerit\pmerit-ai-platform"
+$backendPath = "C:\dev\pmerit\pmerit-api-worker"
 
 # Check Frontend
 Write-Host "Checking Frontend..." -ForegroundColor Yellow
