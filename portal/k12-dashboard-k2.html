@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <title>My Learning | PMERIT</title>
+  <meta name="description" content="PMERIT K-2 Learning Dashboard - Fun and friendly learning for young learners!">
+
+  <!-- Prevent zoom on input focus (accessibility for young users) -->
+  <meta name="format-detection" content="telephone=no">
+
+  <!-- Favicons -->
+  <link rel="icon" href="../assets/images/favicon.ico">
+
+  <!-- Google Fonts - Rounded, friendly font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+  <style>
+    /* ============================================
+       K-2 DASHBOARD - SIMPLIFIED CHILD UI
+       For ages 5-8 (Kindergarten to Grade 2)
+       ============================================ */
+
+    :root {
+      /* Warm, friendly colors */
+      --k2-yellow: #FFD93D;
+      --k2-orange: #FF9F45;
+      --k2-green: #6BCB77;
+      --k2-blue: #4D96FF;
+      --k2-pink: #FF6B9D;
+      --k2-purple: #C780FA;
+
+      /* Background */
+      --k2-bg: #FFF8E7;
+      --k2-bg-card: #FFFFFF;
+
+      /* Text - high contrast for readability */
+      --k2-text: #2D3436;
+      --k2-text-light: #636E72;
+
+      /* Touch target minimum (WCAG 2.1) */
+      --touch-min: 48px;
+
+      /* Border radius - soft, friendly */
+      --radius-soft: 20px;
+      --radius-round: 50%;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Nunito', sans-serif;
+      background: var(--k2-bg);
+      color: var(--k2-text);
+      font-size: 18px;
+      line-height: 1.4;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Prevent text selection for cleaner touch experience */
+    .no-select {
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* ============================================
+       HEADER - Simple, friendly
+       ============================================ */
+    .k2-header {
+      background: linear-gradient(135deg, var(--k2-yellow), var(--k2-orange));
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(255, 159, 69, 0.3);
+    }
+
+    .k2-header__greeting {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .k2-header__avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-round);
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .k2-header__name {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--k2-text);
+    }
+
+    .k2-header__message {
+      font-size: 0.95rem;
+      color: var(--k2-text-light);
+    }
+
+    /* Audio toggle button */
+    .k2-audio-btn {
+      width: var(--touch-min);
+      height: var(--touch-min);
+      border-radius: var(--radius-round);
+      border: 3px solid white;
+      background: rgba(255,255,255,0.3);
+      color: var(--k2-text);
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .k2-audio-btn:hover, .k2-audio-btn:focus {
+      transform: scale(1.1);
+      background: rgba(255,255,255,0.5);
+    }
+
+    .k2-audio-btn.active {
+      background: var(--k2-green);
+      color: white;
+    }
+
+    /* ============================================
+       MAIN CONTENT
+       ============================================ */
+    .k2-main {
+      padding: 1.5rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* Section Title with Speaker */
+    .k2-section-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--k2-text);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .k2-section-title__icon {
+      font-size: 1.8rem;
+    }
+
+    .k2-speak-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-round);
+      border: none;
+      background: var(--k2-blue);
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: auto;
+      transition: transform 0.2s;
+    }
+
+    .k2-speak-btn:hover {
+      transform: scale(1.15);
+    }
+
+    /* ============================================
+       SUBJECT CARDS - Large, colorful, tappable
+       ============================================ */
+    .k2-subjects {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .k2-subject-card {
+      background: var(--k2-bg-card);
+      border-radius: var(--radius-soft);
+      padding: 1.5rem;
+      text-align: center;
+      text-decoration: none;
+      color: var(--k2-text);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      min-height: 140px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      border: 3px solid transparent;
+    }
+
+    .k2-subject-card:hover, .k2-subject-card:focus {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+
+    .k2-subject-card:active {
+      transform: scale(0.98);
+    }
+
+    .k2-subject-card--reading { border-color: var(--k2-orange); }
+    .k2-subject-card--math { border-color: var(--k2-blue); }
+    .k2-subject-card--science { border-color: var(--k2-green); }
+    .k2-subject-card--life { border-color: var(--k2-purple); }
+
+    .k2-subject-card__icon {
+      font-size: 3rem;
+    }
+
+    .k2-subject-card--reading .k2-subject-card__icon { color: var(--k2-orange); }
+    .k2-subject-card--math .k2-subject-card__icon { color: var(--k2-blue); }
+    .k2-subject-card--science .k2-subject-card__icon { color: var(--k2-green); }
+    .k2-subject-card--life .k2-subject-card__icon { color: var(--k2-purple); }
+
+    .k2-subject-card__name {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    /* Stars earned indicator */
+    .k2-subject-card__stars {
+      display: flex;
+      gap: 0.25rem;
+      color: var(--k2-yellow);
+      font-size: 1rem;
+    }
+
+    /* ============================================
+       CONTINUE LEARNING - Big friendly button
+       ============================================ */
+    .k2-continue {
+      background: linear-gradient(135deg, var(--k2-green), #4CAF50);
+      border-radius: var(--radius-soft);
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: white;
+      text-decoration: none;
+      margin-bottom: 2rem;
+      box-shadow: 0 6px 16px rgba(76, 175, 80, 0.3);
+      transition: transform 0.2s;
+    }
+
+    .k2-continue:hover, .k2-continue:focus {
+      transform: translateY(-2px);
+    }
+
+    .k2-continue:active {
+      transform: scale(0.98);
+    }
+
+    .k2-continue__icon {
+      width: 64px;
+      height: 64px;
+      background: rgba(255,255,255,0.2);
+      border-radius: var(--radius-round);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+    }
+
+    .k2-continue__text {
+      flex: 1;
+    }
+
+    .k2-continue__title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 0.25rem;
+    }
+
+    .k2-continue__lesson {
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+
+    .k2-continue__arrow {
+      font-size: 2rem;
+      opacity: 0.8;
+    }
+
+    /* ============================================
+       PROGRESS / STARS SECTION
+       ============================================ */
+    .k2-progress {
+      background: var(--k2-bg-card);
+      border-radius: var(--radius-soft);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .k2-progress__bar-container {
+      background: #E8E8E8;
+      border-radius: 20px;
+      height: 24px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .k2-progress__bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--k2-yellow), var(--k2-orange));
+      border-radius: 20px;
+      transition: width 0.5s ease;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 0.5rem;
+    }
+
+    .k2-progress__bar-star {
+      font-size: 1.2rem;
+      animation: bounce 1s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-3px); }
+    }
+
+    .k2-progress__stars-earned {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .k2-progress__stars-earned i {
+      color: var(--k2-yellow);
+      font-size: 1.5rem;
+    }
+
+    /* ============================================
+       ASK MS. SUNSHINE BUTTON
+       ============================================ */
+    .k2-ask-tutor {
+      background: linear-gradient(135deg, var(--k2-pink), var(--k2-purple));
+      border-radius: var(--radius-soft);
+      padding: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: white;
+      text-decoration: none;
+      margin-bottom: 2rem;
+      box-shadow: 0 6px 16px rgba(199, 128, 250, 0.3);
+      transition: transform 0.2s;
+    }
+
+    .k2-ask-tutor:hover, .k2-ask-tutor:focus {
+      transform: translateY(-2px);
+    }
+
+    .k2-ask-tutor__icon {
+      font-size: 2.5rem;
+    }
+
+    .k2-ask-tutor__text {
+      flex: 1;
+    }
+
+    .k2-ask-tutor__title {
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+
+    .k2-ask-tutor__subtitle {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    /* ============================================
+       NAVIGATION FOOTER (Parent access)
+       ============================================ */
+    .k2-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-top: 2px solid #E8E8E8;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .k2-footer__btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      text-decoration: none;
+      color: var(--k2-text-light);
+      font-size: 0.75rem;
+      font-weight: 600;
+      min-width: var(--touch-min);
+      min-height: var(--touch-min);
+      justify-content: center;
+      transition: color 0.2s;
+    }
+
+    .k2-footer__btn:hover, .k2-footer__btn.active {
+      color: var(--k2-orange);
+    }
+
+    .k2-footer__btn i {
+      font-size: 1.5rem;
+    }
+
+    /* Add padding for footer */
+    .k2-main {
+      padding-bottom: 100px;
+    }
+
+    /* ============================================
+       SUCCESS MODAL (Star Animation)
+       ============================================ */
+    .k2-success-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .k2-success-modal.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .k2-success-modal__content {
+      background: white;
+      border-radius: var(--radius-soft);
+      padding: 2rem;
+      text-align: center;
+      max-width: 300px;
+      transform: scale(0.8);
+      transition: transform 0.3s;
+    }
+
+    .k2-success-modal.show .k2-success-modal__content {
+      transform: scale(1);
+    }
+
+    .k2-success-modal__stars {
+      font-size: 4rem;
+      color: var(--k2-yellow);
+      margin-bottom: 1rem;
+      animation: starPop 0.5s ease;
+    }
+
+    @keyframes starPop {
+      0% { transform: scale(0); }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+
+    .k2-success-modal__message {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--k2-text);
+      margin-bottom: 0.5rem;
+    }
+
+    .k2-success-modal__submessage {
+      color: var(--k2-text-light);
+      margin-bottom: 1.5rem;
+    }
+
+    .k2-success-modal__btn {
+      background: var(--k2-green);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 30px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      min-width: 150px;
+    }
+
+    /* ============================================
+       LOADING STATE
+       ============================================ */
+    .k2-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      gap: 1rem;
+    }
+
+    .k2-loading__spinner {
+      width: 60px;
+      height: 60px;
+      border: 5px solid #E8E8E8;
+      border-top-color: var(--k2-orange);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .k2-loading__text {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--k2-text-light);
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 480px) {
+      .k2-subjects {
+        grid-template-columns: 1fr;
+      }
+
+      .k2-subject-card {
+        flex-direction: row;
+        min-height: auto;
+        padding: 1rem 1.25rem;
+        text-align: left;
+      }
+
+      .k2-subject-card__icon {
+        font-size: 2.5rem;
+      }
+
+      .k2-subject-card__info {
+        flex: 1;
+      }
+    }
+  </style>
+</head>
+<body class="no-select">
+  <!-- Header -->
+  <header class="k2-header">
+    <div class="k2-header__greeting">
+      <div class="k2-header__avatar">
+        <span id="user-emoji">🌟</span>
+      </div>
+      <div>
+        <div class="k2-header__name">Hi, <span id="user-name">Friend</span>!</div>
+        <div class="k2-header__message">Ready to learn today?</div>
+      </div>
+    </div>
+    <button class="k2-audio-btn" id="audio-toggle" aria-label="Toggle read aloud" data-speak="Toggle sound on or off">
+      <i class="fas fa-volume-up"></i>
+    </button>
+  </header>
+
+  <!-- Main Content -->
+  <main class="k2-main">
+    <!-- Continue Learning -->
+    <a href="classroom.html?lesson=current" class="k2-continue" id="continue-btn" data-speak="Keep learning! Tap here to continue your lesson.">
+      <div class="k2-continue__icon">
+        <i class="fas fa-play"></i>
+      </div>
+      <div class="k2-continue__text">
+        <div class="k2-continue__title">Keep Learning!</div>
+        <div class="k2-continue__lesson" id="current-lesson">Loading...</div>
+      </div>
+      <i class="fas fa-arrow-right k2-continue__arrow"></i>
+    </a>
+
+    <!-- My Stars -->
+    <section class="k2-progress">
+      <div class="k2-section-title">
+        <span class="k2-section-title__icon">⭐</span>
+        My Stars
+        <button class="k2-speak-btn" data-speak="You have earned stars! Great job!">
+          <i class="fas fa-volume-up"></i>
+        </button>
+      </div>
+      <div class="k2-progress__bar-container">
+        <div class="k2-progress__bar" id="progress-bar" style="width: 35%;">
+          <span class="k2-progress__bar-star">⭐</span>
+        </div>
+      </div>
+      <div class="k2-progress__stars-earned">
+        <i class="fas fa-star"></i>
+        <span id="stars-count">7</span> stars earned!
+      </div>
+    </section>
+
+    <!-- Subjects -->
+    <section>
+      <div class="k2-section-title">
+        <span class="k2-section-title__icon">📚</span>
+        Pick a Subject
+        <button class="k2-speak-btn" data-speak="Pick a subject to learn about!">
+          <i class="fas fa-volume-up"></i>
+        </button>
+      </div>
+      <div class="k2-subjects">
+        <a href="classroom.html?subject=ela" class="k2-subject-card k2-subject-card--reading" data-speak="Reading and Writing. Tap to learn letters and words!">
+          <div class="k2-subject-card__icon">
+            <i class="fas fa-book-open"></i>
+          </div>
+          <div class="k2-subject-card__info">
+            <div class="k2-subject-card__name">Reading</div>
+            <div class="k2-subject-card__stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="far fa-star"></i>
+            </div>
+          </div>
+        </a>
+
+        <a href="classroom.html?subject=math" class="k2-subject-card k2-subject-card--math" data-speak="Math. Tap to learn numbers and counting!">
+          <div class="k2-subject-card__icon">
+            <i class="fas fa-calculator"></i>
+          </div>
+          <div class="k2-subject-card__info">
+            <div class="k2-subject-card__name">Math</div>
+            <div class="k2-subject-card__stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+          </div>
+        </a>
+
+        <a href="classroom.html?subject=sci" class="k2-subject-card k2-subject-card--science" data-speak="Science. Tap to discover how things work!">
+          <div class="k2-subject-card__icon">
+            <i class="fas fa-flask"></i>
+          </div>
+          <div class="k2-subject-card__info">
+            <div class="k2-subject-card__name">Science</div>
+            <div class="k2-subject-card__stars">
+              <i class="fas fa-star"></i>
+              <i class="far fa-star"></i>
+              <i class="far fa-star"></i>
+            </div>
+          </div>
+        </a>
+
+        <a href="classroom.html?subject=lcr" class="k2-subject-card k2-subject-card--life" data-speak="Life Skills. Tap to learn about feelings and being a good friend!">
+          <div class="k2-subject-card__icon">
+            <i class="fas fa-heart"></i>
+          </div>
+          <div class="k2-subject-card__info">
+            <div class="k2-subject-card__name">Life Skills</div>
+            <div class="k2-subject-card__stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="far fa-star"></i>
+            </div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Ask Ms. Sunshine -->
+    <a href="classroom.html?mode=chat" class="k2-ask-tutor" data-speak="Ask Miss Sunshine! Tap here to talk to your friendly helper!">
+      <span class="k2-ask-tutor__icon">🌻</span>
+      <div class="k2-ask-tutor__text">
+        <div class="k2-ask-tutor__title">Ask Ms. Sunshine!</div>
+        <div class="k2-ask-tutor__subtitle">Your friendly helper</div>
+      </div>
+      <i class="fas fa-comments" style="font-size: 1.5rem; opacity: 0.8;"></i>
+    </a>
+  </main>
+
+  <!-- Footer Navigation -->
+  <nav class="k2-footer">
+    <a href="k12-dashboard-k2.html" class="k2-footer__btn active" data-speak="Home">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="classroom.html?mode=chat" class="k2-footer__btn" data-speak="Ask for help">
+      <i class="fas fa-question-circle"></i>
+      <span>Help</span>
+    </a>
+    <a href="#" class="k2-footer__btn" id="parent-btn" data-speak="Parent area. Ask a grown-up for help.">
+      <i class="fas fa-user-shield"></i>
+      <span>Parent</span>
+    </a>
+  </nav>
+
+  <!-- Success Modal (for celebrations) -->
+  <div class="k2-success-modal" id="success-modal">
+    <div class="k2-success-modal__content">
+      <div class="k2-success-modal__stars">⭐⭐⭐</div>
+      <div class="k2-success-modal__message">Great Job!</div>
+      <div class="k2-success-modal__submessage">You earned a star!</div>
+      <button class="k2-success-modal__btn" id="success-close">Yay!</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script>
+    /**
+     * K-2 Dashboard JavaScript
+     * Features: Read-aloud support, simple interactions, celebration animations
+     */
+    (function() {
+      'use strict';
+
+      // State
+      let audioEnabled = localStorage.getItem('k2_audio_enabled') !== 'false';
+      let speechSynthesis = window.speechSynthesis;
+      let currentUtterance = null;
+
+      // DOM Elements
+      const audioToggle = document.getElementById('audio-toggle');
+      const userName = document.getElementById('user-name');
+      const userEmoji = document.getElementById('user-emoji');
+      const currentLesson = document.getElementById('current-lesson');
+      const starsCount = document.getElementById('stars-count');
+      const progressBar = document.getElementById('progress-bar');
+      const successModal = document.getElementById('success-modal');
+      const successClose = document.getElementById('success-close');
+      const parentBtn = document.getElementById('parent-btn');
+
+      // Initialize
+      function init() {
+        // Load user data
+        loadUserData();
+
+        // Setup audio toggle
+        updateAudioButton();
+        audioToggle.addEventListener('click', toggleAudio);
+
+        // Setup speak buttons
+        document.querySelectorAll('[data-speak]').forEach(el => {
+          el.addEventListener('click', function(e) {
+            if (audioEnabled) {
+              speakText(this.dataset.speak);
+            }
+          });
+
+          // Also speak on focus for accessibility
+          el.addEventListener('focus', function() {
+            if (audioEnabled && this.dataset.speak) {
+              speakText(this.dataset.speak);
+            }
+          });
+        });
+
+        // Success modal close
+        successClose.addEventListener('click', () => {
+          successModal.classList.remove('show');
+        });
+
+        // Parent button - require PIN
+        parentBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const pin = prompt('Enter parent PIN:');
+          if (pin === '1234') { // Simple PIN for now
+            window.location.href = 'parent-dashboard.html';
+          } else if (pin !== null) {
+            speakText('Wrong PIN. Ask your parent for help.');
+          }
+        });
+
+        // Welcome message
+        if (audioEnabled) {
+          setTimeout(() => {
+            const user = window.AUTH?.getCurrentUser();
+            const name = user?.firstName || 'Friend';
+            speakText(`Hi ${name}! Ready to learn today?`);
+          }, 500);
+        }
+      }
+
+      // Load user data
+      function loadUserData() {
+        const user = window.AUTH?.getCurrentUser();
+
+        if (user) {
+          userName.textContent = user.firstName || 'Friend';
+
+          // Fun emoji based on first letter of name
+          const emojis = ['🌟', '🦋', '🌈', '🎨', '🚀', '🌻', '🐱', '🐶'];
+          const index = (user.firstName?.charCodeAt(0) || 0) % emojis.length;
+          userEmoji.textContent = emojis[index];
+        }
+
+        // Load progress (mock for now - will connect to API)
+        loadProgress();
+      }
+
+      // Load progress data
+      async function loadProgress() {
+        // For now, use mock data
+        // TODO: Connect to /api/v1/users/:id/k12/progress
+        const mockProgress = {
+          currentLesson: 'Shapes on the Playground',
+          starsEarned: 7,
+          progressPercent: 35
+        };
+
+        currentLesson.textContent = mockProgress.currentLesson;
+        starsCount.textContent = mockProgress.starsEarned;
+        progressBar.style.width = mockProgress.progressPercent + '%';
+      }
+
+      // Toggle audio
+      function toggleAudio() {
+        audioEnabled = !audioEnabled;
+        localStorage.setItem('k2_audio_enabled', audioEnabled);
+        updateAudioButton();
+
+        if (audioEnabled) {
+          speakText('Sound is on!');
+        } else {
+          speechSynthesis.cancel();
+        }
+      }
+
+      // Update audio button appearance
+      function updateAudioButton() {
+        if (audioEnabled) {
+          audioToggle.classList.add('active');
+          audioToggle.innerHTML = '<i class="fas fa-volume-up"></i>';
+        } else {
+          audioToggle.classList.remove('active');
+          audioToggle.innerHTML = '<i class="fas fa-volume-mute"></i>';
+        }
+      }
+
+      // Speak text using Web Speech API
+      function speakText(text) {
+        if (!audioEnabled || !speechSynthesis) return;
+
+        // Cancel any current speech
+        speechSynthesis.cancel();
+
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 0.85; // Slower for young children
+        utterance.pitch = 1.1; // Slightly higher, friendlier
+        utterance.volume = 1;
+
+        // Try to use a friendly voice
+        const voices = speechSynthesis.getVoices();
+        const friendlyVoice = voices.find(v =>
+          v.name.includes('Female') ||
+          v.name.includes('Samantha') ||
+          v.name.includes('Karen')
+        );
+        if (friendlyVoice) {
+          utterance.voice = friendlyVoice;
+        }
+
+        currentUtterance = utterance;
+        speechSynthesis.speak(utterance);
+      }
+
+      // Show celebration modal
+      function showCelebration(message = 'Great Job!', submessage = 'You earned a star!') {
+        document.querySelector('.k2-success-modal__message').textContent = message;
+        document.querySelector('.k2-success-modal__submessage').textContent = submessage;
+        successModal.classList.add('show');
+
+        if (audioEnabled) {
+          speakText(message + ' ' + submessage);
+        }
+      }
+
+      // Expose for external use
+      window.K2Dashboard = {
+        showCelebration,
+        speakText
+      };
+
+      // Initialize when DOM ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+
+      // Load voices when available
+      speechSynthesis.onvoiceschanged = () => {};
+    })();
+  </script>
+</body>
+</html>
