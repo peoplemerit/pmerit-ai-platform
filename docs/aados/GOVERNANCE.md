@@ -1,8 +1,8 @@
-# 📑 PMERIT Platform — Canonical Audit & Handoff Governance V9
+# 📑 PMERIT Platform — Canonical Audit & Handoff Governance V10
 
-**Version:** 9.0
-**Updated:** 2025-12-22
-**New:** Enhanced Scope Template v2 with FEATURE_GUIDE documentation
+**Version:** 10.0
+**Updated:** 2025-12-24
+**New:** Scope Audit & Reassessment Protocol (Foundational Integrity Check)
 
 ---
 
@@ -162,6 +162,145 @@ The FEATURE_GUIDE section provides **functional documentation** for post-launch 
 | After Claude Web updates | `SCOPE UPDATED: [name]` |
 | After implementation | Update RESEARCH_FINDINGS |
 | Need full picture | `SCOPE: MASTER` for project vision |
+
+---
+
+## 🔍 SCOPE AUDIT & REASSESSMENT PROTOCOL (V10 - NEW)
+
+### Purpose
+
+Before implementing any scope work, verify that the scope's foundational principles, ideas, and assumptions remain valid. This prevents building on outdated architecture or contradicting locked decisions.
+
+### When to Trigger Audit
+
+| Trigger | Action |
+|---------|--------|
+| First touch of a scope in new session | Run Foundational Integrity Check |
+| Resuming paused scope (>3 sessions gap) | Run Full Audit |
+| Before Phase 2+ of multi-phase scope | Run Delta Check |
+| After major platform changes | Run Cross-Scope Validation |
+
+### Foundational Integrity Check (MANDATORY)
+
+Before implementing ANY scope work, Claude Code MUST:
+
+```
+## FOUNDATIONAL INTEGRITY CHECK: SCOPE_[NAME]
+
+### 1. ARCHITECTURAL DECISIONS
+□ Check MASTER_SCOPE.md ARCH-XXX decisions
+□ Verify scope doesn't contradict locked decisions
+□ Flag any conflicts: "⚠️ CONFLICT: [scope assumption] vs ARCH-XXX"
+
+### 2. DEPENDENCY VALIDATION
+□ Check scope_dependencies in STATE.json
+□ Verify all "depends_on" scopes are complete/adequate
+□ Flag unmet dependencies: "🚫 BLOCKED BY: [scope]"
+
+### 3. ASSUMPTION REVIEW
+□ Re-read scope's original HANDOFF_DOCUMENT
+□ Compare against current production reality
+□ Flag outdated assumptions: "📛 STALE: [assumption] - Reality: [current state]"
+
+### 4. TECHNOLOGY STACK CHECK
+□ Verify scope's planned tech matches current stack
+□ Check for deprecated patterns or replaced components
+□ Flag mismatches: "🔧 TECH DRIFT: [planned] → [current]"
+
+### 5. INTEGRATION POINTS
+□ Identify APIs, tables, components scope depends on
+□ Verify they exist and function as expected
+□ Flag missing integrations: "❌ MISSING: [component]"
+```
+
+### Audit Output Template
+
+```markdown
+## SCOPE AUDIT: SCOPE_[NAME]
+**Session:** [#] | **Date:** [YYYY-MM-DD]
+
+### Foundational Integrity: ✅ VALID / ⚠️ NEEDS UPDATE / 🚫 BLOCKED
+
+| Check | Status | Notes |
+|-------|--------|-------|
+| Architectural Decisions | ✅/⚠️/🚫 | [details] |
+| Dependency Validation | ✅/⚠️/🚫 | [details] |
+| Assumption Review | ✅/⚠️/🚫 | [details] |
+| Technology Stack | ✅/⚠️/🚫 | [details] |
+| Integration Points | ✅/⚠️/🚫 | [details] |
+
+### Conflicts Found
+[List any conflicts or none]
+
+### Recommended Actions
+1. [Action if updates needed]
+2. [Action if blocked]
+
+### Cleared to Proceed: YES / NO (requires user approval)
+```
+
+### Scope Drift Detection
+
+Signs that a scope needs reassessment:
+
+| Indicator | Action |
+|-----------|--------|
+| Referenced API endpoint doesn't exist | Update scope or create endpoint first |
+| Database table structure changed | Update scope's schema references |
+| New ARCH decision affects scope | Re-evaluate scope against decision |
+| Parent scope's approach changed | Cascade review to dependent scopes |
+| >5 sessions since last touch | Full foundational re-audit required |
+
+### Cross-Scope Validation
+
+When a scope change affects other scopes:
+
+```
+SCOPE_[A] modified → Check blocks in STATE.json →
+  For each blocked scope:
+    1. Read SCOPE_[blocked].md
+    2. Check if assumptions still valid
+    3. Flag if cascade update needed
+```
+
+### Audit Commands
+
+| Command | Effect |
+|---------|--------|
+| `AUDIT SCOPE: [name]` | Full foundational integrity check |
+| `QUICK AUDIT: [name]` | Dependency + tech check only |
+| `CROSS AUDIT: [name]` | Check impact on dependent scopes |
+| `VALIDATE ARCH: [name]` | Check against ARCH-XXX decisions only |
+
+### Governance Integration
+
+The Scope Audit Protocol integrates with:
+
+1. **PMERIT CONTINUE** - Quick audit of active scope
+2. **Dependency Chain** - Validate tier completion before proceeding
+3. **Lock Protocol** - Audit before unlocking files
+4. **Three-Way Workflow** - Audit before implementation step
+
+### Example Audit Workflow
+
+```
+User: "Let's work on SCOPE_PAYMENTS"
+
+Claude Code:
+1. Run FOUNDATIONAL INTEGRITY CHECK
+2. Check STATE.json: PAYMENTS depends_on: ["EMAIL_SYSTEM"]
+3. Check EMAIL_SYSTEM status: "in_progress"
+4. Flag: "🚫 BLOCKED BY: EMAIL_SYSTEM (in_progress)"
+5. Output: "SCOPE_PAYMENTS blocked. EMAIL_SYSTEM must complete first."
+
+User: "EMAIL_SYSTEM is now complete, proceed"
+
+Claude Code:
+1. Re-run check with updated status
+2. Verify ARCH decisions: Stripe/Paystack = ARCH-compliant
+3. Check tech stack: Cloudflare Workers compatible
+4. Output: "✅ FOUNDATIONAL INTEGRITY VALID. Proceeding."
+```
 
 ---
 
@@ -995,6 +1134,7 @@ HOMEPAGE GATE COMPLETE
 8. **Single-Step Execution:** One command at a time, wait for "DONE"
 9. **Sync Protocol:** Keep task tracker synchronized between tools
 10. **Handoff Decisions Supersede:** Latest handoff overrides original documents
+11. **Scope Audit First:** Before implementing any scope, verify foundational integrity (V10)
 
 ---
 
@@ -1092,4 +1232,4 @@ Purpose: [Brief explanation]
 
 *Production: https://pmerit.com*
 *Repository: github.com/peoplemerit/pmerit-ai-platform*
-*Version: V9 — 2025-12-22 — Enhanced Scope Template v2 with FEATURE_GUIDE*
+*Version: V10 — 2025-12-24 — Scope Audit & Reassessment Protocol*
