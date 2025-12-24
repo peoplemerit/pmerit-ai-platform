@@ -3,7 +3,7 @@
 **Version:** 2.2
 **Created:** 2025-12-18
 **Last Updated:** 2025-12-23
-**Status:** PHASE 2 COMPLETE (Frontend UI)
+**Status:** PHASE 4 COMPLETE (Age-Out + E2E Tested)
 **Phase:** Track 2 Requirement
 **Priority:** P0 - Required for K-12 Track
 **Template:** SCOPE_TEMPLATE_V2
@@ -846,6 +846,10 @@ The Parent Portal allows you to monitor and manage your child's learning on PMER
 | 72 | 2025-12-23 | AUDIT_REPORT updated — Found existing DB tables |
 | 72 | 2025-12-23 | Major enhancement: Added COPPA compliance section, User Journeys, State Machine, Error Handling, Navigation, Enhanced DB Schema, Feature Guide, Data Retention Policy |
 | 72 | 2025-12-23 | **PHASE 1 COMPLETE:** Migration 012 ran successfully, 17 API endpoints deployed, backend tested |
+| 73 | 2025-12-23 | **PHASE 2 COMPLETE:** Frontend UI (consent, dashboard, settings) |
+| 73 | 2025-12-23 | **PHASE 3 COMPLETE:** Email integration, Migration 013 (email_logs) |
+| 74 | 2025-12-23 | **PHASE 4 COMPLETE:** Age-out job, Migration 014, cron trigger |
+| 74 | 2025-12-23 | E2E testing complete, frontend bug fix (data binding) |
 
 ---
 
@@ -936,12 +940,63 @@ The Parent Portal allows you to monitor and manage your child's learning on PMER
 - Uses Font Awesome 6.5.2 for icons
 
 ### Remaining Phase 3 Tasks
-- [ ] Email integration for consent requests (depends on SCOPE_EMAIL_SYSTEM)
+- [x] Email integration for consent requests (depends on SCOPE_EMAIL_SYSTEM)
 - [ ] Email integration for parent notifications
-- [ ] Age-out transition job (when child turns 13)
-- [ ] Full end-to-end testing with real accounts
+- [x] Age-out transition job (when child turns 13)
+- [x] Full end-to-end testing with real accounts
 
 ---
 
-*Last Updated: 2025-12-23 (Session 72)*
+### Session 73-74 Implementation (2025-12-23)
+
+**Email Integration (SCOPE_EMAIL_SYSTEM):**
+- ✅ Consent request emails with `parentConsentRequest` template
+- ✅ Resend API integration with retry logic
+- ✅ Email logging to `email_logs` table
+- ✅ Migration 013 for email_logs table
+
+**Age-Out Transition Job:**
+- ✅ Created `src/scheduled/age-out.ts` with scheduled handler
+- ✅ 3 email templates: `ageOutNotice30Day`, `ageOutCompleteParent`, `ageOutCompleteTeen`
+- ✅ Cron trigger in `wrangler.toml`: `0 2 * * *` (daily at 2:00 AM UTC)
+- ✅ Migration 014: `age_out_notices` table + `aged_out_at` column + status constraint
+- ✅ Logic: 30-day advance notice → transition on 13th birthday
+
+**Age-Out Flow:**
+1. Daily job checks `thirteenth_birthday_at` field
+2. 30 days before: sends notice to parent AND child
+3. On birthday:
+   - Sets `is_minor = false`
+   - Updates guardian link status to `aged_out`
+   - Archives consent record (`aged_out_at` timestamp)
+   - Disables parental controls
+   - Sends transition complete emails
+
+**E2E Testing Results:**
+| Test | Status | Notes |
+|------|--------|-------|
+| T1: Create child account | ✅ PASS | API returns userId |
+| T2: Request consent | ✅ PASS | Email sent, token generated |
+| T3: Email logged | ✅ PASS | `parentConsentRequest` template |
+| T4: Verify token | ✅ PASS | Returns child info + COPPA disclosures |
+| T5: Submit consent (Frontend) | ✅ PASS | Consent form works |
+| T6: Child activated | ✅ PASS | "Account is now active" |
+| T7: Parent Dashboard | ✅ PASS | Shows "Sign In Required" |
+
+**Bug Fix Applied:**
+- Fixed `parent-consent.html` line 640: `data.data` → `data` (commit 1a40038)
+- Frontend now correctly populates child info and COPPA disclosures
+
+**Deployment Info:**
+- Backend: Version df95ddfb-154a-4209-bc3c-c75763ae0941 (with cron trigger)
+- Frontend: Commit 1a40038 pushed to GitHub
+- Migrations: 013 (email_logs) + 014 (age_out_notices) executed in Neon
+
+### Remaining Tasks
+- [ ] Email integration for parent notifications (weekly summaries, etc.)
+- [ ] Progress report PDF export
+
+---
+
+*Last Updated: 2025-12-23 (Session 74)*
 *Template Version: SCOPE_TEMPLATE_V2*
