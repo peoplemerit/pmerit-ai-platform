@@ -5,7 +5,7 @@
   "last_updated": "2025-12-24T14:30:00Z",
   "last_updated_by": "claude-code",
 
-  "session_number": 75,
+  "session_number": 76,
   "last_audit_date": "2025-12-24",
 
   "local_environment": {
@@ -230,7 +230,7 @@
       "SCOPE_CONTENT_SOURCES": { "status": "partial", "file": ".claude/scopes/SCOPE_CONTENT_SOURCES.md", "category": "content_catalog" },
       "SCOPE_AVATAR": { "status": "complete", "file": ".claude/scopes/SCOPE_AVATAR.md", "category": "ai_avatar" },
       "SCOPE_TTS": { "status": "complete", "file": ".claude/scopes/SCOPE_TTS.md", "category": "ai_avatar" },
-      "SCOPE_AI_PERSONAS": { "status": "migration_ready", "file": ".claude/scopes/SCOPE_AI_PERSONAS.md", "category": "ai_avatar", "version": "2.1" },
+      "SCOPE_AI_PERSONAS": { "status": "deployed_needs_model_upgrade", "file": ".claude/scopes/SCOPE_AI_PERSONAS.md", "category": "ai_avatar", "version": "2.1", "notes": "Phase A+B complete. DB prompts working. Llama 3.1 8B doesn't follow persona instructions well - upgrade to 70B or Claude API needed" },
       "SCOPE_K12_EDUCATION": { "status": "phase1_complete", "file": ".claude/scopes/SCOPE_K12_EDUCATION.md", "category": "three_track" },
       "SCOPE_CTE_VOCATIONAL": { "status": "not_started", "file": ".claude/scopes/SCOPE_CTE_VOCATIONAL.md", "category": "three_track" },
       "SCOPE_PARENT_PORTAL": { "status": "phase4_complete", "file": ".claude/scopes/SCOPE_PARENT_PORTAL.md", "category": "three_track" },
@@ -452,6 +452,12 @@
   },
 
   "recent_changes": [
+    {
+      "session": 76,
+      "date": "2025-12-24",
+      "change": "SCOPE_AI_PERSONAS Deployed v2.4.0 + Model Limitation Discovery",
+      "impact": "Backend v2.4.0 deployed to production. Database-driven persona selection working: /api/v1/ai/tutor now queries ai_tutor_personas table, selects persona by grade_code/persona_override, returns metadata in headers (X-Persona-Name, X-Persona-Voice, X-Persona-Rate). FINDING: Llama 3.1 8B model doesn't follow persona personality instructions well - responses are generic regardless of persona. Architecture is correct - upgrade to larger model (70B) or Claude API will make personas work. Commit: 2d7f9ac (version fix)."
+    },
     {
       "session": 75,
       "date": "2025-12-24",
