@@ -2,11 +2,24 @@
   "schema_version": "3.2",
   "schema_notes": "Session 67 - Dual-Repo Prompt Protocol + Strict AADOS",
 
-  "last_updated": "2025-12-24T14:30:00Z",
+  "last_updated": "2025-12-24T18:00:00Z",
   "last_updated_by": "claude-code",
 
   "session_number": 76,
   "last_audit_date": "2025-12-24",
+
+  "session_76_summary": {
+    "focus": "Claude Web Recommendations Implementation",
+    "backend_version": "2.5.0",
+    "commits": ["ced27c7", "cae8907"],
+    "major_changes": [
+      "Context-aware model selection: K-12 uses 70B Llama, adults use 24B Mistral",
+      "Homework detection patterns added to AI Police (v1.1.0)",
+      "Homework redirect converts cheating to signup opportunity"
+    ],
+    "tested_working": ["Model upgrade", "Homework detection", "K-12 context routing"],
+    "next_steps": ["Dual-mode front page AI", "Strengthen persona prompts"]
+  },
 
   "local_environment": {
     "project_root": "C:\\dev\\pmerit",
@@ -452,6 +465,12 @@
   },
 
   "recent_changes": [
+    {
+      "session": 76,
+      "date": "2025-12-24",
+      "change": "Claude Web Recommendations - Context-Aware Models + Homework Detection",
+      "impact": "Backend v2.5.0 deployed. (1) Context-aware model selection: K-12 gets 70B Llama 3.3 for better persona following, adults get 24B Mistral Small for efficiency - all FREE on Cloudflare Workers AI. (2) Homework detection patterns (10 patterns) added to AI Police v1.1.0 - redirects cheating attempts to AI Tutor signup (conversion opportunity). (3) Dual-mode front page AI designed but not yet implemented. TESTED: Homework detection working ('write an essay about WWII' → redirect). K-12 model routing working. Commits: ced27c7 (model upgrade), cae8907 (homework detection)."
+    },
     {
       "session": 76,
       "date": "2025-12-24",
