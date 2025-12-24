@@ -140,7 +140,9 @@
       },
       "SCOPE_AI_PERSONAS": {
         "tier": 2, "priority": "P1", "depends_on": ["SECURITY"], "blocks": ["K12_EDUCATION", "CTE_VOCATIONAL"],
-        "parallel_with": ["PARENT_PORTAL"], "status": "partial"
+        "parallel_with": ["PARENT_PORTAL"], "status": "migration_ready",
+        "session": 75, "critical_finding": "Two Systems Problem - AI Handler Types vs Database Personas not unified",
+        "notes": "Migration 016 created: Populates system_prompt for all 6 personas, adds prosody columns (speaking_rate_wpm, pause_duration_ms, enthusiasm_level)"
       },
       "SCOPE_K12_EDUCATION": {
         "tier": 3, "priority": "P1", "depends_on": ["PARENT_PORTAL", "AI_PERSONAS"], "blocks": ["CREDENTIALS", "LAUNCH_CLEANUP"],
@@ -226,7 +228,7 @@
       "SCOPE_CONTENT_SOURCES": { "status": "partial", "file": ".claude/scopes/SCOPE_CONTENT_SOURCES.md", "category": "content_catalog" },
       "SCOPE_AVATAR": { "status": "complete", "file": ".claude/scopes/SCOPE_AVATAR.md", "category": "ai_avatar" },
       "SCOPE_TTS": { "status": "complete", "file": ".claude/scopes/SCOPE_TTS.md", "category": "ai_avatar" },
-      "SCOPE_AI_PERSONAS": { "status": "partial", "file": ".claude/scopes/SCOPE_AI_PERSONAS.md", "category": "ai_avatar" },
+      "SCOPE_AI_PERSONAS": { "status": "migration_ready", "file": ".claude/scopes/SCOPE_AI_PERSONAS.md", "category": "ai_avatar", "version": "2.1" },
       "SCOPE_K12_EDUCATION": { "status": "phase1_complete", "file": ".claude/scopes/SCOPE_K12_EDUCATION.md", "category": "three_track" },
       "SCOPE_CTE_VOCATIONAL": { "status": "not_started", "file": ".claude/scopes/SCOPE_CTE_VOCATIONAL.md", "category": "three_track" },
       "SCOPE_PARENT_PORTAL": { "status": "phase4_complete", "file": ".claude/scopes/SCOPE_PARENT_PORTAL.md", "category": "three_track" },
@@ -448,6 +450,12 @@
   },
 
   "recent_changes": [
+    {
+      "session": 75,
+      "date": "2025-12-24",
+      "change": "SCOPE_AI_PERSONAS v2.1 - Critical Audit + Migration 016",
+      "impact": "CRITICAL FINDING: Two Persona Systems not unified. AI Handler Types (index.ts) uses 'assistant/support/tutor/insight/pathfinder' while Database Personas (ai_tutor_personas table) has professor_ada/ms_sunshine/etc. The system_prompt column was EMPTY! Migration 016 created: (1) Adds prosody columns (speaking_rate_wpm, pause_duration_ms, enthusiasm_level), (2) Populates full system_prompt for all 6 personas with identity/speech style/teaching style/boundaries/prosody, (3) Age-appropriate settings: Ms. Sunshine 120wpm (slow for K-2), Coach Jordan 160wpm (fast for teens). SCOPE updated to v2.1 with unified architecture, RAG+Persona integration flow, complete persona specifications."
+    },
     {
       "session": 75,
       "date": "2025-12-24",
