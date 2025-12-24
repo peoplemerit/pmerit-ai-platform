@@ -13,7 +13,7 @@
 | P0 | Context-aware model selection | ✅ DONE | 76 |
 | P0 | Homework detection patterns | ✅ DONE | 76 |
 | P0 | Dual-mode front page AI | ✅ DONE | 76 |
-| P1 | Strengthen persona prompts | 🔲 PENDING | - |
+| P1 | Strengthen persona prompts | ⏳ MIGRATION READY | 76 |
 | P2 | Frontend grade_code passing | 🔲 PENDING | - |
 | P3 | SCOPE_CTE_VOCATIONAL | 🔲 PENDING | - |
 
@@ -76,34 +76,28 @@ DIRECTLY TO TUTOR  PLATFORM  DIRECTLY
 
 ---
 
-## 2. STRENGTHEN PERSONA PROMPTS (P1)
+## 2. STRENGTHEN PERSONA PROMPTS (P1) - ⏳ MIGRATION READY
+
+**Status:** Code complete, migration ready to run | **Backend Version:** 2.7.0 | **Commit:** `f5df351`
 
 ### Problem
 70B model is better than 8B but still not perfectly following persona instructions. Ms. Sunshine responses aren't "warm and playful" enough for K-2.
 
 ### Solution: Add Few-Shot Examples
 
-```sql
--- Add example_interactions column to ai_tutor_personas
-ALTER TABLE ai_tutor_personas ADD COLUMN example_interactions JSONB;
-
--- Example for Ms. Sunshine
-UPDATE ai_tutor_personas
-SET example_interactions = '[
-  {
-    "student": "What is 2 + 2?",
-    "tutor": "Oh, what a wonderful question! 🌟 Let''s figure this out together!\n\nImagine you have 2 yummy cookies... *mmm cookies!*\nNow your friend gives you 2 MORE cookies!\n\nCan you count them all? 1... 2... 3... 4!\n\nYou have 4 cookies! Great job thinking about that! 🎉"
-  }
-]'::jsonb
-WHERE persona_name = 'Ms. Sunshine';
-```
+Migration 017 created with:
+- `example_interactions` JSONB column added to `ai_tutor_personas`
+- 2 example interactions per persona demonstrating ideal style/tone
+- Backend code updated to inject examples into system prompt
 
 ### Implementation Tasks
 
-- [ ] Create Migration 017 to add `example_interactions` column
-- [ ] Write 2-3 example interactions for each persona
-- [ ] Update `getPersonaFromDatabase()` to include examples
-- [ ] Modify system prompt builder to inject examples
+- [x] Create Migration 017 to add `example_interactions` column
+- [x] Write 2-3 example interactions for each persona
+- [x] Update `getPersonaFromDatabase()` to include examples
+- [x] Modify system prompt builder to inject examples
+- [ ] **NEXT: Run migration on Neon database**
+- [ ] Deploy to Cloudflare Workers
 - [ ] Test with K-2, 3-5, 6-8, 9-12 queries
 
 ### Persona Example Guidelines
@@ -260,4 +254,4 @@ After implementing each task, update these scope files:
 
 ---
 
-*Last Updated: Session 76 (2025-12-24)*
+*Last Updated: Session 76 (2025-12-24) - P1 code complete, awaiting migration*
