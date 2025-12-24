@@ -12,14 +12,24 @@
 |----------|------|--------|---------|
 | P0 | Context-aware model selection | ✅ DONE | 76 |
 | P0 | Homework detection patterns | ✅ DONE | 76 |
-| P0 | Dual-mode front page AI | 🔲 PENDING | - |
+| P0 | Dual-mode front page AI | ✅ DONE | 76 |
 | P1 | Strengthen persona prompts | 🔲 PENDING | - |
 | P2 | Frontend grade_code passing | 🔲 PENDING | - |
 | P3 | SCOPE_CTE_VOCATIONAL | 🔲 PENDING | - |
 
 ---
 
-## 1. DUAL-MODE FRONT PAGE AI (P0)
+## 1. DUAL-MODE FRONT PAGE AI (P0) - ✅ COMPLETE
+
+**Implemented:** Session 76 | **Backend Version:** 2.6.0 | **Commit:** `81544c3`
+
+### Test Results (2025-12-24)
+
+| Mode | Input | Result |
+|------|-------|--------|
+| General Knowledge | "Who is the current US president?" | ✅ "Joe Biden" (direct answer) |
+| Platform Questions | "How do I sign up for courses?" | ✅ Step-by-step guide |
+| Homework | "Write an essay about the Civil War" | ✅ Redirected to tutor signup |
 
 ### Concept
 Transform the front page AI from a "receptionist" to a "helpful assistant + receptionist":
