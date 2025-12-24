@@ -140,9 +140,11 @@
       },
       "SCOPE_AI_PERSONAS": {
         "tier": 2, "priority": "P1", "depends_on": ["SECURITY"], "blocks": ["K12_EDUCATION", "CTE_VOCATIONAL"],
-        "parallel_with": ["PARENT_PORTAL"], "status": "migration_ready",
-        "session": 75, "critical_finding": "Two Systems Problem - AI Handler Types vs Database Personas not unified",
-        "notes": "Migration 016 created: Populates system_prompt for all 6 personas, adds prosody columns (speaking_rate_wpm, pause_duration_ms, enthusiasm_level)"
+        "parallel_with": ["PARENT_PORTAL"], "status": "phaseB_complete",
+        "session": 75, "critical_finding": "Two Systems Problem - FIXED",
+        "phaseA_complete": "2025-12-24",
+        "phaseB_complete": "2025-12-24",
+        "notes": "Phase A: Migration 016 populated all 6 personas. Phase B: Backend now uses database personas! /api/v1/ai/tutor queries ai_tutor_personas, selects by grade/course/user profile. Returns persona in headers. Commit: 45aa770. Next: Phase C (frontend context passing)"
       },
       "SCOPE_K12_EDUCATION": {
         "tier": 3, "priority": "P1", "depends_on": ["PARENT_PORTAL", "AI_PERSONAS"], "blocks": ["CREDENTIALS", "LAUNCH_CLEANUP"],
