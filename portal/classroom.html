@@ -2340,11 +2340,22 @@
 
         // Call AI Tutor API
         try {
+          // Build context with grade_code if available (enables persona selection)
+          const user = window.AUTH?.getCurrentUser();
+          const tutorContext = {};
+          if (user?.gradeCode) {
+            tutorContext.grade_code = user.gradeCode;
+          }
+          if (user?.personaOverride) {
+            tutorContext.persona_override = user.personaOverride;
+          }
+
           const response = await fetch(`${window.CONFIG?.API_BASE_URL || 'https://pmerit-api-worker.peoplemerit.workers.dev'}/api/v1/ai/tutor`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              messages: state.chatMessages.concat([{ role: 'user', content: message }])
+              messages: state.chatMessages.concat([{ role: 'user', content: message }]),
+              context: Object.keys(tutorContext).length > 0 ? tutorContext : undefined
             })
           });
 

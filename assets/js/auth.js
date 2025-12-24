@@ -77,7 +77,12 @@
             lastName: userData.lastName || data.lastName || 'User',
             emailVerified: userData.emailVerified || data.emailVerified || false,
             role: userData.role || 'user',  // Admin role: tier1_admin, tier2_admin, or user
-            subscriptionTier: userData.subscriptionTier || 'basic'
+            subscriptionTier: userData.subscriptionTier || 'basic',
+            // K-12 specific fields (from /auth/me or login)
+            isMinor: userData.isMinor || false,
+            gradeCode: userData.gradeCode || null,
+            uiType: userData.uiType || null,
+            personaOverride: userData.personaOverride || null
           };
           TokenManager.setUser(user);
 
