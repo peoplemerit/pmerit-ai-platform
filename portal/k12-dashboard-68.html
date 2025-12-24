@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>My Progress | PMERIT</title>
+  <meta name="description" content="PMERIT 6-8 Learning Dashboard - Track your progress, set goals, level up!">
+
+  <!-- Favicons -->
+  <link rel="icon" href="../assets/images/favicon.ico">
+
+  <!-- Google Fonts - Modern, clean -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+  <style>
+    /* ============================================
+       6-8 DASHBOARD - SOCIAL TEEN UI
+       For ages 11-14 (Grades 6-8)
+       Theme: Data-driven, goals, streaks, clean
+       ============================================ */
+
+    :root {
+      /* Modern, slightly muted palette */
+      --t68-primary: #6366F1;
+      --t68-secondary: #8B5CF6;
+      --t68-accent: #EC4899;
+      --t68-success: #10B981;
+      --t68-warning: #F59E0B;
+      --t68-danger: #EF4444;
+
+      /* Backgrounds */
+      --t68-bg: #0F172A;
+      --t68-bg-card: #1E293B;
+      --t68-bg-elevated: #334155;
+
+      /* Text */
+      --t68-text: #F1F5F9;
+      --t68-text-muted: #94A3B8;
+      --t68-text-dim: #64748B;
+
+      /* Gradients */
+      --t68-gradient-primary: linear-gradient(135deg, #6366F1, #8B5CF6);
+      --t68-gradient-accent: linear-gradient(135deg, #EC4899, #F472B6);
+      --t68-gradient-success: linear-gradient(135deg, #10B981, #34D399);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      background: var(--t68-bg);
+      color: var(--t68-text);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    /* ============================================
+       HEADER
+       ============================================ */
+    .t68-header {
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .t68-header__user {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .t68-header__avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--t68-gradient-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .t68-header__info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .t68-header__name {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .t68-header__streak {
+      font-size: 0.8rem;
+      color: var(--t68-warning);
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .t68-header__actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .t68-header__btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: var(--t68-bg-card);
+      color: var(--t68-text-muted);
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .t68-header__btn:hover {
+      background: var(--t68-bg-elevated);
+      color: var(--t68-text);
+    }
+
+    .t68-header__btn--notification::after {
+      content: '';
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 8px;
+      height: 8px;
+      background: var(--t68-danger);
+      border-radius: 50%;
+    }
+
+    /* ============================================
+       STATS BAR
+       ============================================ */
+    .t68-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      padding: 1rem 1.5rem;
+      background: var(--t68-bg-card);
+    }
+
+    .t68-stat {
+      text-align: center;
+    }
+
+    .t68-stat__value {
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: var(--t68-gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .t68-stat__label {
+      font-size: 0.7rem;
+      color: var(--t68-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ============================================
+       MAIN CONTENT
+       ============================================ */
+    .t68-main {
+      padding: 1.5rem;
+      max-width: 900px;
+      margin: 0 auto;
+      padding-bottom: 100px;
+    }
+
+    .t68-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .t68-section__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .t68-section__title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .t68-section__title i {
+      color: var(--t68-primary);
+    }
+
+    .t68-link {
+      color: var(--t68-primary);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    /* ============================================
+       CONTINUE CARD
+       ============================================ */
+    .t68-continue {
+      background: var(--t68-gradient-primary);
+      border-radius: 16px;
+      padding: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      text-decoration: none;
+      color: white;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .t68-continue:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+    }
+
+    .t68-continue__icon {
+      width: 52px;
+      height: 52px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .t68-continue__text {
+      flex: 1;
+    }
+
+    .t68-continue__label {
+      font-size: 0.75rem;
+      opacity: 0.8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .t68-continue__title {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .t68-continue__meta {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.25rem;
+    }
+
+    .t68-continue__meta span {
+      font-size: 0.8rem;
+      opacity: 0.9;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .t68-continue__arrow {
+      font-size: 1.5rem;
+      opacity: 0.8;
+    }
+
+    /* ============================================
+       SUBJECTS GRID
+       ============================================ */
+    .t68-subjects {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+    }
+
+    .t68-subject {
+      background: var(--t68-bg-card);
+      border-radius: 12px;
+      padding: 1rem;
+      text-decoration: none;
+      color: var(--t68-text);
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+
+    .t68-subject:hover {
+      background: var(--t68-bg-elevated);
+      border-color: rgba(99, 102, 241, 0.3);
+    }
+
+    .t68-subject__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .t68-subject__icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .t68-subject--ela .t68-subject__icon { background: rgba(239, 68, 68, 0.15); color: #EF4444; }
+    .t68-subject--math .t68-subject__icon { background: rgba(99, 102, 241, 0.15); color: #6366F1; }
+    .t68-subject--sci .t68-subject__icon { background: rgba(16, 185, 129, 0.15); color: #10B981; }
+    .t68-subject--lcr .t68-subject__icon { background: rgba(139, 92, 246, 0.15); color: #8B5CF6; }
+
+    .t68-subject__percent {
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+
+    .t68-subject--ela .t68-subject__percent { color: #EF4444; }
+    .t68-subject--math .t68-subject__percent { color: #6366F1; }
+    .t68-subject--sci .t68-subject__percent { color: #10B981; }
+    .t68-subject--lcr .t68-subject__percent { color: #8B5CF6; }
+
+    .t68-subject__name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .t68-subject__progress-bar {
+      height: 6px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .t68-subject__progress-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.3s;
+    }
+
+    .t68-subject--ela .t68-subject__progress-fill { background: #EF4444; }
+    .t68-subject--math .t68-subject__progress-fill { background: #6366F1; }
+    .t68-subject--sci .t68-subject__progress-fill { background: #10B981; }
+    .t68-subject--lcr .t68-subject__progress-fill { background: #8B5CF6; }
+
+    /* ============================================
+       WEEKLY GOALS
+       ============================================ */
+    .t68-goals {
+      background: var(--t68-bg-card);
+      border-radius: 12px;
+      padding: 1rem;
+    }
+
+    .t68-goal {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .t68-goal:last-child {
+      border-bottom: none;
+    }
+
+    .t68-goal__check {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      border: 2px solid var(--t68-text-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: transparent;
+      transition: all 0.2s;
+    }
+
+    .t68-goal.completed .t68-goal__check {
+      background: var(--t68-success);
+      border-color: var(--t68-success);
+      color: white;
+    }
+
+    .t68-goal__info {
+      flex: 1;
+    }
+
+    .t68-goal__name {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .t68-goal.completed .t68-goal__name {
+      text-decoration: line-through;
+      opacity: 0.5;
+    }
+
+    .t68-goal__progress {
+      font-size: 0.75rem;
+      color: var(--t68-text-muted);
+    }
+
+    .t68-goal__xp {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--t68-primary);
+    }
+
+    /* ============================================
+       ASK COACH JORDAN
+       ============================================ */
+    .t68-coach {
+      background: var(--t68-bg-card);
+      border-radius: 12px;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      text-decoration: none;
+      color: var(--t68-text);
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+
+    .t68-coach:hover {
+      border-color: var(--t68-accent);
+      background: var(--t68-bg-elevated);
+    }
+
+    .t68-coach__avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: var(--t68-gradient-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .t68-coach__text {
+      flex: 1;
+    }
+
+    .t68-coach__title {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .t68-coach__subtitle {
+      font-size: 0.8rem;
+      color: var(--t68-text-muted);
+    }
+
+    .t68-coach__arrow {
+      color: var(--t68-text-muted);
+    }
+
+    /* ============================================
+       FOOTER NAVIGATION
+       ============================================ */
+    .t68-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--t68-bg-card);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 0.5rem 1rem;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .t68-footer__btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      text-decoration: none;
+      color: var(--t68-text-dim);
+      font-size: 0.65rem;
+      font-weight: 500;
+      padding: 0.5rem;
+      min-width: 56px;
+      transition: color 0.2s;
+    }
+
+    .t68-footer__btn:hover, .t68-footer__btn.active {
+      color: var(--t68-primary);
+    }
+
+    .t68-footer__btn i {
+      font-size: 1.15rem;
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 500px) {
+      .t68-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+      }
+
+      .t68-subjects {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="t68-header">
+    <div class="t68-header__user">
+      <div class="t68-header__avatar" id="user-initials">JD</div>
+      <div class="t68-header__info">
+        <div class="t68-header__name" id="user-name">Jordan</div>
+        <div class="t68-header__streak">
+          <i class="fas fa-fire"></i>
+          <span id="streak-count">7</span> day streak
+        </div>
+      </div>
+    </div>
+    <div class="t68-header__actions">
+      <button class="t68-header__btn t68-header__btn--notification" id="notifications-btn">
+        <i class="fas fa-bell"></i>
+      </button>
+      <button class="t68-header__btn" id="settings-btn">
+        <i class="fas fa-cog"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Stats Bar -->
+  <div class="t68-stats">
+    <div class="t68-stat">
+      <div class="t68-stat__value" id="total-xp">2,450</div>
+      <div class="t68-stat__label">Total XP</div>
+    </div>
+    <div class="t68-stat">
+      <div class="t68-stat__value" id="lessons-done">24</div>
+      <div class="t68-stat__label">Lessons</div>
+    </div>
+    <div class="t68-stat">
+      <div class="t68-stat__value" id="avg-score">87%</div>
+      <div class="t68-stat__label">Avg Score</div>
+    </div>
+    <div class="t68-stat">
+      <div class="t68-stat__value" id="rank">#12</div>
+      <div class="t68-stat__label">Class Rank</div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="t68-main">
+    <!-- Continue Learning -->
+    <section class="t68-section">
+      <a href="classroom.html?lesson=current" class="t68-continue" id="continue-btn">
+        <div class="t68-continue__icon">
+          <i class="fas fa-play"></i>
+        </div>
+        <div class="t68-continue__text">
+          <div class="t68-continue__label">Continue</div>
+          <div class="t68-continue__title" id="current-lesson">Loading...</div>
+          <div class="t68-continue__meta">
+            <span><i class="fas fa-clock"></i> 15 min</span>
+            <span><i class="fas fa-bolt"></i> +30 XP</span>
+          </div>
+        </div>
+        <i class="fas fa-chevron-right t68-continue__arrow"></i>
+      </a>
+    </section>
+
+    <!-- Subjects -->
+    <section class="t68-section">
+      <div class="t68-section__header">
+        <h2 class="t68-section__title">
+          <i class="fas fa-book"></i>
+          Subjects
+        </h2>
+        <a href="#" class="t68-link">View All</a>
+      </div>
+
+      <div class="t68-subjects">
+        <a href="classroom.html?subject=ela" class="t68-subject t68-subject--ela">
+          <div class="t68-subject__header">
+            <div class="t68-subject__icon"><i class="fas fa-book-open"></i></div>
+            <div class="t68-subject__percent">72%</div>
+          </div>
+          <div class="t68-subject__name">English</div>
+          <div class="t68-subject__progress-bar">
+            <div class="t68-subject__progress-fill" style="width: 72%;"></div>
+          </div>
+        </a>
+
+        <a href="classroom.html?subject=math" class="t68-subject t68-subject--math">
+          <div class="t68-subject__header">
+            <div class="t68-subject__icon"><i class="fas fa-calculator"></i></div>
+            <div class="t68-subject__percent">85%</div>
+          </div>
+          <div class="t68-subject__name">Math</div>
+          <div class="t68-subject__progress-bar">
+            <div class="t68-subject__progress-fill" style="width: 85%;"></div>
+          </div>
+        </a>
+
+        <a href="classroom.html?subject=sci" class="t68-subject t68-subject--sci">
+          <div class="t68-subject__header">
+            <div class="t68-subject__icon"><i class="fas fa-flask"></i></div>
+            <div class="t68-subject__percent">68%</div>
+          </div>
+          <div class="t68-subject__name">Science</div>
+          <div class="t68-subject__progress-bar">
+            <div class="t68-subject__progress-fill" style="width: 68%;"></div>
+          </div>
+        </a>
+
+        <a href="classroom.html?subject=lcr" class="t68-subject t68-subject--lcr">
+          <div class="t68-subject__header">
+            <div class="t68-subject__icon"><i class="fas fa-compass"></i></div>
+            <div class="t68-subject__percent">78%</div>
+          </div>
+          <div class="t68-subject__name">Life Skills</div>
+          <div class="t68-subject__progress-bar">
+            <div class="t68-subject__progress-fill" style="width: 78%;"></div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Weekly Goals -->
+    <section class="t68-section">
+      <div class="t68-section__header">
+        <h2 class="t68-section__title">
+          <i class="fas fa-target"></i>
+          Weekly Goals
+        </h2>
+        <span class="t68-link">3/5 done</span>
+      </div>
+
+      <div class="t68-goals">
+        <div class="t68-goal completed">
+          <div class="t68-goal__check"><i class="fas fa-check"></i></div>
+          <div class="t68-goal__info">
+            <div class="t68-goal__name">Complete 5 lessons</div>
+            <div class="t68-goal__progress">5/5 done</div>
+          </div>
+          <div class="t68-goal__xp">+50 XP</div>
+        </div>
+
+        <div class="t68-goal completed">
+          <div class="t68-goal__check"><i class="fas fa-check"></i></div>
+          <div class="t68-goal__info">
+            <div class="t68-goal__name">Maintain streak</div>
+            <div class="t68-goal__progress">7 days</div>
+          </div>
+          <div class="t68-goal__xp">+25 XP</div>
+        </div>
+
+        <div class="t68-goal completed">
+          <div class="t68-goal__check"><i class="fas fa-check"></i></div>
+          <div class="t68-goal__info">
+            <div class="t68-goal__name">Score 80%+ on quiz</div>
+            <div class="t68-goal__progress">Scored 87%</div>
+          </div>
+          <div class="t68-goal__xp">+30 XP</div>
+        </div>
+
+        <div class="t68-goal">
+          <div class="t68-goal__check"><i class="fas fa-check"></i></div>
+          <div class="t68-goal__info">
+            <div class="t68-goal__name">Ask 3 questions</div>
+            <div class="t68-goal__progress">1/3 done</div>
+          </div>
+          <div class="t68-goal__xp">+20 XP</div>
+        </div>
+
+        <div class="t68-goal">
+          <div class="t68-goal__check"><i class="fas fa-check"></i></div>
+          <div class="t68-goal__info">
+            <div class="t68-goal__name">Earn 200 XP</div>
+            <div class="t68-goal__progress">145/200 XP</div>
+          </div>
+          <div class="t68-goal__xp">+40 XP</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ask Coach Jordan -->
+    <section class="t68-section">
+      <a href="classroom.html?mode=chat" class="t68-coach">
+        <div class="t68-coach__avatar">🏀</div>
+        <div class="t68-coach__text">
+          <div class="t68-coach__title">Ask Coach Jordan</div>
+          <div class="t68-coach__subtitle">Get help with anything</div>
+        </div>
+        <i class="fas fa-chevron-right t68-coach__arrow"></i>
+      </a>
+    </section>
+  </main>
+
+  <!-- Footer Navigation -->
+  <nav class="t68-footer">
+    <a href="k12-dashboard-68.html" class="t68-footer__btn active">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="#" class="t68-footer__btn">
+      <i class="fas fa-chart-line"></i>
+      <span>Progress</span>
+    </a>
+    <a href="classroom.html?mode=chat" class="t68-footer__btn">
+      <i class="fas fa-comments"></i>
+      <span>Ask</span>
+    </a>
+    <a href="#" class="t68-footer__btn">
+      <i class="fas fa-users"></i>
+      <span>Class</span>
+    </a>
+    <a href="#" class="t68-footer__btn" id="parent-btn">
+      <i class="fas fa-user"></i>
+      <span>Profile</span>
+    </a>
+  </nav>
+
+  <!-- Scripts -->
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script>
+    /**
+     * 6-8 Dashboard JavaScript
+     * Features: Stats tracking, goals, streaks, data-driven UI
+     */
+    (function() {
+      'use strict';
+
+      const API_BASE = window.CONFIG?.API_BASE_URL || 'https://pmerit-api-worker.peoplemerit.workers.dev';
+
+      async function init() {
+        loadUserData();
+        await loadProgress();
+        setupEventListeners();
+      }
+
+      function loadUserData() {
+        const user = window.AUTH?.getCurrentUser();
+        if (user) {
+          document.getElementById('user-name').textContent = user.firstName || 'Student';
+
+          // Initials
+          const initials = (user.firstName?.[0] || 'S') + (user.lastName?.[0] || '');
+          document.getElementById('user-initials').textContent = initials.toUpperCase();
+        }
+      }
+
+      async function loadProgress() {
+        const user = window.AUTH?.getCurrentUser();
+        if (!user) {
+          updateUI({
+            totalXP: 2450,
+            lessonsDone: 24,
+            avgScore: 87,
+            rank: 12,
+            streak: 7,
+            currentLesson: 'Maple Made: A Syrup Startup'
+          });
+          return;
+        }
+
+        try {
+          const response = await fetch(`${API_BASE}/api/v1/users/${user.id}/k12/progress`, {
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('pmerit_token')}`
+            }
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            if (data.success) {
+              updateUI(data.progress);
+            }
+          }
+        } catch (error) {
+          console.warn('Could not load progress:', error);
+          updateUI({
+            totalXP: 2450,
+            lessonsDone: 24,
+            avgScore: 87,
+            rank: 12,
+            streak: 7,
+            currentLesson: 'Maple Made: A Syrup Startup'
+          });
+        }
+      }
+
+      function updateUI(progress) {
+        document.getElementById('total-xp').textContent = (progress.totalXP || 2450).toLocaleString();
+        document.getElementById('lessons-done').textContent = progress.lessonsDone || 24;
+        document.getElementById('avg-score').textContent = (progress.avgScore || 87) + '%';
+        document.getElementById('rank').textContent = '#' + (progress.rank || 12);
+        document.getElementById('streak-count').textContent = progress.streak || 7;
+        document.getElementById('current-lesson').textContent = progress.currentLesson || 'Maple Made: A Syrup Startup';
+      }
+
+      function setupEventListeners() {
+        document.getElementById('parent-btn').addEventListener('click', (e) => {
+          e.preventDefault();
+          window.location.href = 'parent-dashboard.html';
+        });
+
+        document.getElementById('settings-btn').addEventListener('click', () => {
+          alert('Settings coming soon!');
+        });
+
+        document.getElementById('notifications-btn').addEventListener('click', () => {
+          alert('No new notifications!');
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+</body>
+</html>
