@@ -1,11 +1,30 @@
 # PMERIT Platform — Task Tracker
 
-**Last Updated:** 2025-12-11
-**Current Session:** 46
+**Last Updated:** 2025-12-24
+**Current Session:** 76
 **Governance Version:** V6 (Architecture Spec Integrated)
 **Workflow Mode:** Direct Execution (Claude Code Desktop)
 **Architecture Spec:** [PMERIT_ARCHITECTURE_FINAL.md](../project/PMERIT_ARCHITECTURE_FINAL.md) — APPROVED
-**Current Focus:** Classroom UX Redesign (App Shell Architecture)
+**Current Focus:** Claude Web Recommendations Implementation
+
+---
+
+## 🎯 IMMEDIATE PRIORITIES (Session 76+)
+
+| Priority | Task | Status | Reference |
+|----------|------|--------|-----------|
+| **P0** | Dual-mode front page AI | 🔲 PENDING | `CLAUDE_WEB_IMPLEMENTATION_TRACKER.md` |
+| **P1** | Strengthen persona prompts (few-shot examples) | 🔲 PENDING | Migration 017 |
+| **P2** | Frontend grade_code passing | 🔲 PENDING | `classroom.js` |
+| **P3** | SCOPE_CTE_VOCATIONAL Track 3 | 🔲 PENDING | New scope |
+
+### Recently Completed (Session 76)
+
+| Task | Status | Commit |
+|------|--------|--------|
+| Context-aware model selection (K-12→70B, Adult→24B) | ✅ DONE | `ced27c7` |
+| Homework detection patterns (AI Police v1.1.0) | ✅ DONE | `cae8907` |
+| Backend v2.5.0 deployed | ✅ DONE | - |
 
 ---
 
