@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>My Adventures | PMERIT</title>
+  <meta name="description" content="PMERIT 3-5 Learning Dashboard - Explore, discover, and level up!">
+
+  <!-- Favicons -->
+  <link rel="icon" href="../assets/images/favicon.ico">
+
+  <!-- Google Fonts - Fun but readable -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+  <style>
+    /* ============================================
+       3-5 DASHBOARD - GAMIFIED CHILD UI
+       For ages 8-11 (Grades 3-5)
+       Theme: Adventure, Exploration, Quests
+       ============================================ */
+
+    :root {
+      /* Adventure color palette */
+      --g35-emerald: #2ECC71;
+      --g35-gold: #F1C40F;
+      --g35-sky: #3498DB;
+      --g35-coral: #E74C3C;
+      --g35-purple: #9B59B6;
+      --g35-teal: #1ABC9C;
+
+      /* Background - adventure map feel */
+      --g35-bg: #F5F6FA;
+      --g35-bg-card: #FFFFFF;
+      --g35-bg-dark: #2C3E50;
+
+      /* Text */
+      --g35-text: #2C3E50;
+      --g35-text-light: #7F8C8D;
+
+      /* Gamification */
+      --g35-xp-bar: linear-gradient(90deg, #3498DB, #2ECC71);
+      --g35-level-badge: linear-gradient(135deg, #F1C40F, #E67E22);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      min-height: 100vh;
+      font-family: 'Fredoka', sans-serif;
+      background: var(--g35-bg);
+      color: var(--g35-text);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    /* ============================================
+       HEADER - Adventure theme with level badge
+       ============================================ */
+    .g35-header {
+      background: linear-gradient(135deg, var(--g35-sky), var(--g35-teal));
+      padding: 1rem 1.5rem;
+      color: white;
+    }
+
+    .g35-header__top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .g35-header__user {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .g35-header__avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      border: 2px solid rgba(255,255,255,0.5);
+    }
+
+    .g35-header__name {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .g35-header__title {
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+
+    .g35-header__actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .g35-header__btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 2px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.1);
+      color: white;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .g35-header__btn:hover {
+      background: rgba(255,255,255,0.2);
+      transform: scale(1.05);
+    }
+
+    /* Level & XP Bar */
+    .g35-level-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .g35-level-badge {
+      background: var(--g35-level-badge);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 12px rgba(241, 196, 15, 0.3);
+    }
+
+    .g35-level-badge i {
+      font-size: 1.1rem;
+    }
+
+    .g35-xp-container {
+      flex: 1;
+    }
+
+    .g35-xp-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      margin-bottom: 0.25rem;
+      opacity: 0.9;
+    }
+
+    .g35-xp-bar {
+      height: 12px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .g35-xp-fill {
+      height: 100%;
+      background: var(--g35-xp-bar);
+      border-radius: 10px;
+      transition: width 0.5s ease;
+      position: relative;
+    }
+
+    .g35-xp-fill::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 20px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5));
+      animation: xpShine 2s infinite;
+    }
+
+    @keyframes xpShine {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+
+    /* ============================================
+       MAIN CONTENT
+       ============================================ */
+    .g35-main {
+      padding: 1.5rem;
+      max-width: 900px;
+      margin: 0 auto;
+      padding-bottom: 100px;
+    }
+
+    /* Section Headers */
+    .g35-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .g35-section-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .g35-section-title i {
+      color: var(--g35-gold);
+    }
+
+    .g35-see-all {
+      color: var(--g35-sky);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* ============================================
+       DAILY QUESTS CARD
+       ============================================ */
+    .g35-quests {
+      background: var(--g35-bg-card);
+      border-radius: 16px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+
+    .g35-quest-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #EEE;
+    }
+
+    .g35-quest-item:last-child {
+      border-bottom: none;
+    }
+
+    .g35-quest-check {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 3px solid #DDD;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      color: transparent;
+      transition: all 0.2s;
+    }
+
+    .g35-quest-item.completed .g35-quest-check {
+      background: var(--g35-emerald);
+      border-color: var(--g35-emerald);
+      color: white;
+    }
+
+    .g35-quest-info {
+      flex: 1;
+    }
+
+    .g35-quest-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .g35-quest-item.completed .g35-quest-name {
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+
+    .g35-quest-xp {
+      font-size: 0.8rem;
+      color: var(--g35-sky);
+      font-weight: 500;
+    }
+
+    .g35-quest-reward {
+      background: linear-gradient(135deg, var(--g35-gold), #E67E22);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: white;
+    }
+
+    /* ============================================
+       SUBJECT ADVENTURES
+       ============================================ */
+    .g35-adventures {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .g35-adventure-card {
+      background: var(--g35-bg-card);
+      border-radius: 16px;
+      padding: 1.25rem;
+      text-decoration: none;
+      color: var(--g35-text);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .g35-adventure-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+
+    .g35-adventure-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+    }
+
+    .g35-adventure-card--reading::before { background: var(--g35-coral); }
+    .g35-adventure-card--math::before { background: var(--g35-sky); }
+    .g35-adventure-card--science::before { background: var(--g35-emerald); }
+    .g35-adventure-card--life::before { background: var(--g35-purple); }
+
+    .g35-adventure-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.75rem;
+    }
+
+    .g35-adventure-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .g35-adventure-card--reading .g35-adventure-icon { background: rgba(231, 76, 60, 0.1); color: var(--g35-coral); }
+    .g35-adventure-card--math .g35-adventure-icon { background: rgba(52, 152, 219, 0.1); color: var(--g35-sky); }
+    .g35-adventure-card--science .g35-adventure-icon { background: rgba(46, 204, 113, 0.1); color: var(--g35-emerald); }
+    .g35-adventure-card--life .g35-adventure-icon { background: rgba(155, 89, 182, 0.1); color: var(--g35-purple); }
+
+    .g35-adventure-level {
+      background: #F0F0F0;
+      padding: 0.25rem 0.5rem;
+      border-radius: 8px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--g35-text-light);
+    }
+
+    .g35-adventure-name {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .g35-adventure-progress {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .g35-adventure-progress-bar {
+      flex: 1;
+      height: 8px;
+      background: #EEE;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .g35-adventure-progress-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.3s;
+    }
+
+    .g35-adventure-card--reading .g35-adventure-progress-fill { background: var(--g35-coral); }
+    .g35-adventure-card--math .g35-adventure-progress-fill { background: var(--g35-sky); }
+    .g35-adventure-card--science .g35-adventure-progress-fill { background: var(--g35-emerald); }
+    .g35-adventure-card--life .g35-adventure-progress-fill { background: var(--g35-purple); }
+
+    .g35-adventure-progress-text {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--g35-text-light);
+      min-width: 35px;
+    }
+
+    /* ============================================
+       CONTINUE ADVENTURE BUTTON
+       ============================================ */
+    .g35-continue {
+      background: linear-gradient(135deg, var(--g35-emerald), var(--g35-teal));
+      border-radius: 16px;
+      padding: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: white;
+      text-decoration: none;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 6px 20px rgba(46, 204, 113, 0.3);
+      transition: transform 0.2s;
+    }
+
+    .g35-continue:hover {
+      transform: translateY(-2px);
+    }
+
+    .g35-continue__icon {
+      width: 56px;
+      height: 56px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+    }
+
+    .g35-continue__text {
+      flex: 1;
+    }
+
+    .g35-continue__title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .g35-continue__lesson {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .g35-continue__xp {
+      background: rgba(255,255,255,0.2);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    /* ============================================
+       ASK MR. EXPLORER
+       ============================================ */
+    .g35-explorer {
+      background: linear-gradient(135deg, var(--g35-purple), #8E44AD);
+      border-radius: 16px;
+      padding: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: white;
+      text-decoration: none;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 6px 20px rgba(155, 89, 182, 0.3);
+      transition: transform 0.2s;
+    }
+
+    .g35-explorer:hover {
+      transform: translateY(-2px);
+    }
+
+    .g35-explorer__icon {
+      font-size: 2.5rem;
+    }
+
+    .g35-explorer__text {
+      flex: 1;
+    }
+
+    .g35-explorer__title {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .g35-explorer__subtitle {
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+
+    /* ============================================
+       ACHIEVEMENTS PREVIEW
+       ============================================ */
+    .g35-achievements {
+      background: var(--g35-bg-card);
+      border-radius: 16px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+
+    .g35-badges {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+    }
+
+    .g35-badge {
+      flex-shrink: 0;
+      width: 64px;
+      text-align: center;
+    }
+
+    .g35-badge__icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--g35-gold), #E67E22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin: 0 auto 0.5rem;
+      box-shadow: 0 4px 12px rgba(241, 196, 15, 0.3);
+    }
+
+    .g35-badge--locked .g35-badge__icon {
+      background: #DDD;
+      color: #AAA;
+      box-shadow: none;
+    }
+
+    .g35-badge__name {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--g35-text-light);
+    }
+
+    /* ============================================
+       FOOTER NAVIGATION
+       ============================================ */
+    .g35-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      border-top: 1px solid #EEE;
+      padding: 0.5rem 1rem;
+      display: flex;
+      justify-content: space-around;
+      box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+    }
+
+    .g35-footer__btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      text-decoration: none;
+      color: var(--g35-text-light);
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.5rem;
+      min-width: 60px;
+      transition: color 0.2s;
+    }
+
+    .g35-footer__btn:hover, .g35-footer__btn.active {
+      color: var(--g35-sky);
+    }
+
+    .g35-footer__btn i {
+      font-size: 1.25rem;
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 600px) {
+      .g35-adventures {
+        grid-template-columns: 1fr;
+      }
+
+      .g35-level-section {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+      }
+
+      .g35-level-badge {
+        align-self: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="g35-header">
+    <div class="g35-header__top">
+      <div class="g35-header__user">
+        <div class="g35-header__avatar" id="user-avatar">🧭</div>
+        <div>
+          <div class="g35-header__name">Hey, <span id="user-name">Explorer</span>!</div>
+          <div class="g35-header__title">Adventure awaits!</div>
+        </div>
+      </div>
+      <div class="g35-header__actions">
+        <button class="g35-header__btn" id="notifications-btn" aria-label="Notifications">
+          <i class="fas fa-bell"></i>
+        </button>
+        <button class="g35-header__btn" id="settings-btn" aria-label="Settings">
+          <i class="fas fa-cog"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Level & XP -->
+    <div class="g35-level-section">
+      <div class="g35-level-badge">
+        <i class="fas fa-trophy"></i>
+        Level <span id="user-level">5</span>
+      </div>
+      <div class="g35-xp-container">
+        <div class="g35-xp-label">
+          <span><span id="current-xp">450</span> XP</span>
+          <span><span id="next-level-xp">600</span> XP to Level <span id="next-level">6</span></span>
+        </div>
+        <div class="g35-xp-bar">
+          <div class="g35-xp-fill" id="xp-bar" style="width: 75%;"></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="g35-main">
+    <!-- Continue Adventure -->
+    <a href="classroom.html?lesson=current" class="g35-continue" id="continue-btn">
+      <div class="g35-continue__icon">
+        <i class="fas fa-play-circle"></i>
+      </div>
+      <div class="g35-continue__text">
+        <div class="g35-continue__title">Continue Adventure</div>
+        <div class="g35-continue__lesson" id="current-lesson">Loading...</div>
+      </div>
+      <div class="g35-continue__xp">+25 XP</div>
+    </a>
+
+    <!-- Daily Quests -->
+    <section class="g35-quests">
+      <div class="g35-section-header">
+        <h2 class="g35-section-title">
+          <i class="fas fa-scroll"></i>
+          Daily Quests
+        </h2>
+        <span class="g35-quest-reward"><i class="fas fa-gift"></i> Bonus: 50 XP</span>
+      </div>
+
+      <div class="g35-quest-item completed">
+        <div class="g35-quest-check"><i class="fas fa-check"></i></div>
+        <div class="g35-quest-info">
+          <div class="g35-quest-name">Complete 1 lesson</div>
+          <div class="g35-quest-xp">+10 XP</div>
+        </div>
+      </div>
+
+      <div class="g35-quest-item">
+        <div class="g35-quest-check"><i class="fas fa-check"></i></div>
+        <div class="g35-quest-info">
+          <div class="g35-quest-name">Ask Mr. Explorer a question</div>
+          <div class="g35-quest-xp">+15 XP</div>
+        </div>
+      </div>
+
+      <div class="g35-quest-item">
+        <div class="g35-quest-check"><i class="fas fa-check"></i></div>
+        <div class="g35-quest-info">
+          <div class="g35-quest-name">Earn 3 stars</div>
+          <div class="g35-quest-xp">+20 XP</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Subject Adventures -->
+    <section>
+      <div class="g35-section-header">
+        <h2 class="g35-section-title">
+          <i class="fas fa-map-marked-alt"></i>
+          Your Adventures
+        </h2>
+        <a href="#" class="g35-see-all">See All</a>
+      </div>
+
+      <div class="g35-adventures">
+        <a href="classroom.html?subject=ela" class="g35-adventure-card g35-adventure-card--reading">
+          <div class="g35-adventure-header">
+            <div class="g35-adventure-icon"><i class="fas fa-book-open"></i></div>
+            <span class="g35-adventure-level">Lvl 4</span>
+          </div>
+          <div class="g35-adventure-name">Reading Quest</div>
+          <div class="g35-adventure-progress">
+            <div class="g35-adventure-progress-bar">
+              <div class="g35-adventure-progress-fill" style="width: 65%;"></div>
+            </div>
+            <span class="g35-adventure-progress-text">65%</span>
+          </div>
+        </a>
+
+        <a href="classroom.html?subject=math" class="g35-adventure-card g35-adventure-card--math">
+          <div class="g35-adventure-header">
+            <div class="g35-adventure-icon"><i class="fas fa-calculator"></i></div>
+            <span class="g35-adventure-level">Lvl 5</span>
+          </div>
+          <div class="g35-adventure-name">Math Journey</div>
+          <div class="g35-adventure-progress">
+            <div class="g35-adventure-progress-bar">
+              <div class="g35-adventure-progress-fill" style="width: 80%;"></div>
+            </div>
+            <span class="g35-adventure-progress-text">80%</span>
+          </div>
+        </a>
+
+        <a href="classroom.html?subject=sci" class="g35-adventure-card g35-adventure-card--science">
+          <div class="g35-adventure-header">
+            <div class="g35-adventure-icon"><i class="fas fa-flask"></i></div>
+            <span class="g35-adventure-level">Lvl 3</span>
+          </div>
+          <div class="g35-adventure-name">Science Lab</div>
+          <div class="g35-adventure-progress">
+            <div class="g35-adventure-progress-bar">
+              <div class="g35-adventure-progress-fill" style="width: 45%;"></div>
+            </div>
+            <span class="g35-adventure-progress-text">45%</span>
+          </div>
+        </a>
+
+        <a href="classroom.html?subject=lcr" class="g35-adventure-card g35-adventure-card--life">
+          <div class="g35-adventure-header">
+            <div class="g35-adventure-icon"><i class="fas fa-compass"></i></div>
+            <span class="g35-adventure-level">Lvl 4</span>
+          </div>
+          <div class="g35-adventure-name">Life Explorer</div>
+          <div class="g35-adventure-progress">
+            <div class="g35-adventure-progress-bar">
+              <div class="g35-adventure-progress-fill" style="width: 55%;"></div>
+            </div>
+            <span class="g35-adventure-progress-text">55%</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Ask Mr. Explorer -->
+    <a href="classroom.html?mode=chat" class="g35-explorer">
+      <span class="g35-explorer__icon">🧭</span>
+      <div class="g35-explorer__text">
+        <div class="g35-explorer__title">Ask Mr. Explorer!</div>
+        <div class="g35-explorer__subtitle">What do you want to discover?</div>
+      </div>
+      <i class="fas fa-arrow-right" style="font-size: 1.25rem; opacity: 0.8;"></i>
+    </a>
+
+    <!-- Achievements -->
+    <section class="g35-achievements">
+      <div class="g35-section-header">
+        <h2 class="g35-section-title">
+          <i class="fas fa-medal"></i>
+          Achievements
+        </h2>
+        <a href="#" class="g35-see-all">View All</a>
+      </div>
+
+      <div class="g35-badges">
+        <div class="g35-badge">
+          <div class="g35-badge__icon">🌟</div>
+          <div class="g35-badge__name">First Star</div>
+        </div>
+        <div class="g35-badge">
+          <div class="g35-badge__icon">🔥</div>
+          <div class="g35-badge__name">3-Day Streak</div>
+        </div>
+        <div class="g35-badge">
+          <div class="g35-badge__icon">🧠</div>
+          <div class="g35-badge__name">Math Whiz</div>
+        </div>
+        <div class="g35-badge g35-badge--locked">
+          <div class="g35-badge__icon"><i class="fas fa-lock"></i></div>
+          <div class="g35-badge__name">Quiz Master</div>
+        </div>
+        <div class="g35-badge g35-badge--locked">
+          <div class="g35-badge__icon"><i class="fas fa-lock"></i></div>
+          <div class="g35-badge__name">Level 10</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer Navigation -->
+  <nav class="g35-footer">
+    <a href="k12-dashboard-35.html" class="g35-footer__btn active">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="#" class="g35-footer__btn">
+      <i class="fas fa-map"></i>
+      <span>Map</span>
+    </a>
+    <a href="classroom.html?mode=chat" class="g35-footer__btn">
+      <i class="fas fa-comments"></i>
+      <span>Ask</span>
+    </a>
+    <a href="#" class="g35-footer__btn">
+      <i class="fas fa-trophy"></i>
+      <span>Awards</span>
+    </a>
+    <a href="#" class="g35-footer__btn" id="parent-btn">
+      <i class="fas fa-user-shield"></i>
+      <span>Parent</span>
+    </a>
+  </nav>
+
+  <!-- Scripts -->
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script>
+    /**
+     * 3-5 Dashboard JavaScript
+     * Features: Gamification, XP tracking, quests, achievements
+     */
+    (function() {
+      'use strict';
+
+      const API_BASE = window.CONFIG?.API_BASE_URL || 'https://pmerit-api-worker.peoplemerit.workers.dev';
+
+      // Initialize
+      async function init() {
+        loadUserData();
+        await loadProgress();
+        setupEventListeners();
+      }
+
+      // Load user data
+      function loadUserData() {
+        const user = window.AUTH?.getCurrentUser();
+        if (user) {
+          document.getElementById('user-name').textContent = user.firstName || 'Explorer';
+
+          // Fun avatar based on name
+          const avatars = ['🧭', '🚀', '🌟', '🎯', '🏆', '⚡', '🎨', '🔮'];
+          const index = (user.firstName?.charCodeAt(0) || 0) % avatars.length;
+          document.getElementById('user-avatar').textContent = avatars[index];
+        }
+      }
+
+      // Load progress from API
+      async function loadProgress() {
+        const user = window.AUTH?.getCurrentUser();
+        if (!user) {
+          // Mock data for non-authenticated users
+          updateUI({
+            level: 5,
+            currentXP: 450,
+            nextLevelXP: 600,
+            currentLesson: 'Let\'s Sell a Maine Product!'
+          });
+          return;
+        }
+
+        try {
+          const response = await fetch(`${API_BASE}/api/v1/users/${user.id}/k12/progress`, {
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('pmerit_token')}`
+            }
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            if (data.success) {
+              updateUI(data.progress);
+            }
+          }
+        } catch (error) {
+          console.warn('Could not load progress, using defaults:', error);
+          updateUI({
+            level: 5,
+            currentXP: 450,
+            nextLevelXP: 600,
+            currentLesson: 'Let\'s Sell a Maine Product!'
+          });
+        }
+      }
+
+      // Update UI with progress data
+      function updateUI(progress) {
+        document.getElementById('user-level').textContent = progress.level || 5;
+        document.getElementById('current-xp').textContent = progress.currentXP || 450;
+        document.getElementById('next-level-xp').textContent = progress.nextLevelXP || 600;
+        document.getElementById('next-level').textContent = (progress.level || 5) + 1;
+
+        const xpPercent = ((progress.currentXP || 450) / (progress.nextLevelXP || 600)) * 100;
+        document.getElementById('xp-bar').style.width = xpPercent + '%';
+
+        document.getElementById('current-lesson').textContent = progress.currentLesson || 'Let\'s Sell a Maine Product!';
+      }
+
+      // Setup event listeners
+      function setupEventListeners() {
+        // Parent button
+        document.getElementById('parent-btn').addEventListener('click', (e) => {
+          e.preventDefault();
+          const pin = prompt('Enter parent PIN:');
+          if (pin === '1234') {
+            window.location.href = 'parent-dashboard.html';
+          } else if (pin !== null) {
+            alert('Wrong PIN. Ask your parent for help.');
+          }
+        });
+
+        // Settings button
+        document.getElementById('settings-btn').addEventListener('click', () => {
+          alert('Settings coming soon!');
+        });
+
+        // Notifications button
+        document.getElementById('notifications-btn').addEventListener('click', () => {
+          alert('No new notifications!');
+        });
+      }
+
+      // Initialize
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Dashboard | PMERIT</title>
+  <meta name="description" content="PMERIT 9-12 Learning Dashboard - College and career readiness">
+
+  <!-- Favicons -->
+  <link rel="icon" href="../assets/images/favicon.ico">
+
+  <!-- Google Fonts - Professional, clean -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+  <style>
+    /* ============================================
+       9-12 DASHBOARD - PROFESSIONAL YOUNG ADULT UI
+       For ages 14-18 (Grades 9-12)
+       Theme: Clean, professional, career/college focus
+       ============================================ */
+
+    :root {
+      /* Professional, mature palette */
+      --p912-primary: #2563EB;
+      --p912-secondary: #7C3AED;
+      --p912-success: #059669;
+      --p912-warning: #D97706;
+      --p912-error: #DC2626;
+
+      /* Neutral backgrounds */
+      --p912-bg: #FAFAFA;
+      --p912-bg-card: #FFFFFF;
+      --p912-border: #E5E7EB;
+
+      /* Text */
+      --p912-text: #111827;
+      --p912-text-secondary: #6B7280;
+      --p912-text-tertiary: #9CA3AF;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      min-height: 100vh;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--p912-bg);
+      color: var(--p912-text);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* ============================================
+       HEADER
+       ============================================ */
+    .p912-header {
+      background: var(--p912-bg-card);
+      border-bottom: 1px solid var(--p912-border);
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .p912-header__left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .p912-logo {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--p912-primary);
+    }
+
+    .p912-header__nav {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .p912-header__nav-link {
+      padding: 0.5rem 1rem;
+      text-decoration: none;
+      color: var(--p912-text-secondary);
+      font-size: 0.9rem;
+      font-weight: 500;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .p912-header__nav-link:hover {
+      background: var(--p912-bg);
+      color: var(--p912-text);
+    }
+
+    .p912-header__nav-link.active {
+      background: var(--p912-primary);
+      color: white;
+    }
+
+    .p912-header__right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .p912-header__btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid var(--p912-border);
+      background: var(--p912-bg-card);
+      color: var(--p912-text-secondary);
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .p912-header__btn:hover {
+      background: var(--p912-bg);
+      color: var(--p912-text);
+    }
+
+    .p912-header__avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--p912-primary), var(--p912-secondary));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* ============================================
+       MAIN LAYOUT
+       ============================================ */
+    .p912-main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .p912-main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ============================================
+       CARDS
+       ============================================ */
+    .p912-card {
+      background: var(--p912-bg-card);
+      border: 1px solid var(--p912-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .p912-card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .p912-card__title {
+      font-size: 1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .p912-card__title i {
+      color: var(--p912-primary);
+    }
+
+    .p912-card__link {
+      color: var(--p912-primary);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    /* ============================================
+       WELCOME BANNER
+       ============================================ */
+    .p912-welcome {
+      background: linear-gradient(135deg, var(--p912-primary), var(--p912-secondary));
+      border-radius: 12px;
+      padding: 1.5rem;
+      color: white;
+      margin-bottom: 1rem;
+    }
+
+    .p912-welcome__greeting {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      margin-bottom: 0.25rem;
+    }
+
+    .p912-welcome__name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .p912-welcome__stats {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .p912-welcome__stat {
+      text-align: left;
+    }
+
+    .p912-welcome__stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .p912-welcome__stat-label {
+      font-size: 0.8rem;
+      opacity: 0.9;
+    }
+
+    /* ============================================
+       CONTINUE LEARNING
+       ============================================ */
+    .p912-continue {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: var(--p912-bg);
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--p912-text);
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+
+    .p912-continue:hover {
+      border-color: var(--p912-primary);
+      background: white;
+    }
+
+    .p912-continue__icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      background: var(--p912-primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .p912-continue__text {
+      flex: 1;
+    }
+
+    .p912-continue__label {
+      font-size: 0.75rem;
+      color: var(--p912-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .p912-continue__title {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .p912-continue__meta {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.25rem;
+    }
+
+    .p912-continue__meta span {
+      font-size: 0.8rem;
+      color: var(--p912-text-secondary);
+    }
+
+    .p912-continue__arrow {
+      color: var(--p912-text-tertiary);
+      font-size: 1.25rem;
+    }
+
+    /* ============================================
+       SUBJECTS LIST
+       ============================================ */
+    .p912-subject {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--p912-border);
+      text-decoration: none;
+      color: var(--p912-text);
+      transition: all 0.2s;
+    }
+
+    .p912-subject:last-child {
+      border-bottom: none;
+    }
+
+    .p912-subject:hover {
+      background: var(--p912-bg);
+      margin: 0 -1.25rem;
+      padding: 0.75rem 1.25rem;
+    }
+
+    .p912-subject__icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .p912-subject--ela .p912-subject__icon { background: #FEE2E2; color: #DC2626; }
+    .p912-subject--math .p912-subject__icon { background: #DBEAFE; color: #2563EB; }
+    .p912-subject--sci .p912-subject__icon { background: #D1FAE5; color: #059669; }
+    .p912-subject--lcr .p912-subject__icon { background: #EDE9FE; color: #7C3AED; }
+
+    .p912-subject__info {
+      flex: 1;
+    }
+
+    .p912-subject__name {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .p912-subject__progress {
+      font-size: 0.8rem;
+      color: var(--p912-text-secondary);
+    }
+
+    .p912-subject__percent {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--p912-success);
+    }
+
+    /* ============================================
+       COLLEGE/CAREER TRACKER
+       ============================================ */
+    .p912-tracker {
+      background: var(--p912-bg);
+      border-radius: 8px;
+      padding: 1rem;
+    }
+
+    .p912-tracker__item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem 0;
+    }
+
+    .p912-tracker__check {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--p912-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      color: transparent;
+    }
+
+    .p912-tracker__item.completed .p912-tracker__check {
+      background: var(--p912-success);
+      border-color: var(--p912-success);
+      color: white;
+    }
+
+    .p912-tracker__text {
+      flex: 1;
+      font-size: 0.9rem;
+    }
+
+    .p912-tracker__item.completed .p912-tracker__text {
+      color: var(--p912-text-secondary);
+    }
+
+    /* ============================================
+       MENTOR CARD
+       ============================================ */
+    .p912-mentor {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(124, 58, 237, 0.1));
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--p912-text);
+      transition: all 0.2s;
+    }
+
+    .p912-mentor:hover {
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(124, 58, 237, 0.15));
+    }
+
+    .p912-mentor__avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--p912-primary), var(--p912-secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .p912-mentor__text {
+      flex: 1;
+    }
+
+    .p912-mentor__title {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .p912-mentor__subtitle {
+      font-size: 0.8rem;
+      color: var(--p912-text-secondary);
+    }
+
+    /* ============================================
+       SIDEBAR
+       ============================================ */
+    .p912-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    /* Upcoming */
+    .p912-upcoming__item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--p912-border);
+    }
+
+    .p912-upcoming__item:last-child {
+      border-bottom: none;
+    }
+
+    .p912-upcoming__date {
+      text-align: center;
+      min-width: 44px;
+    }
+
+    .p912-upcoming__day {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--p912-primary);
+    }
+
+    .p912-upcoming__month {
+      font-size: 0.7rem;
+      color: var(--p912-text-secondary);
+      text-transform: uppercase;
+    }
+
+    .p912-upcoming__info {
+      flex: 1;
+    }
+
+    .p912-upcoming__title {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .p912-upcoming__detail {
+      font-size: 0.8rem;
+      color: var(--p912-text-secondary);
+    }
+
+    /* Resources */
+    .p912-resource {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 0;
+      text-decoration: none;
+      color: var(--p912-text);
+      border-bottom: 1px solid var(--p912-border);
+    }
+
+    .p912-resource:last-child {
+      border-bottom: none;
+    }
+
+    .p912-resource:hover {
+      color: var(--p912-primary);
+    }
+
+    .p912-resource__icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: var(--p912-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--p912-text-secondary);
+    }
+
+    .p912-resource__name {
+      flex: 1;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 768px) {
+      .p912-header__nav {
+        display: none;
+      }
+
+      .p912-welcome__stats {
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="p912-header">
+    <div class="p912-header__left">
+      <span class="p912-logo">PMERIT</span>
+      <nav class="p912-header__nav">
+        <a href="k12-dashboard-912.html" class="p912-header__nav-link active">Dashboard</a>
+        <a href="#" class="p912-header__nav-link">Courses</a>
+        <a href="#" class="p912-header__nav-link">Portfolio</a>
+        <a href="#" class="p912-header__nav-link">College</a>
+      </nav>
+    </div>
+    <div class="p912-header__right">
+      <button class="p912-header__btn" id="search-btn">
+        <i class="fas fa-search"></i>
+      </button>
+      <button class="p912-header__btn" id="notifications-btn">
+        <i class="fas fa-bell"></i>
+      </button>
+      <div class="p912-header__avatar" id="user-avatar">AS</div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="p912-main">
+    <!-- Left Column -->
+    <div class="p912-content">
+      <!-- Welcome Banner -->
+      <div class="p912-welcome">
+        <div class="p912-welcome__greeting">Welcome back,</div>
+        <div class="p912-welcome__name" id="user-name">Alex</div>
+        <div class="p912-welcome__stats">
+          <div class="p912-welcome__stat">
+            <div class="p912-welcome__stat-value" id="gpa">3.7</div>
+            <div class="p912-welcome__stat-label">Current GPA</div>
+          </div>
+          <div class="p912-welcome__stat">
+            <div class="p912-welcome__stat-value" id="credits">42</div>
+            <div class="p912-welcome__stat-label">Credits Earned</div>
+          </div>
+          <div class="p912-welcome__stat">
+            <div class="p912-welcome__stat-value" id="lessons-complete">28</div>
+            <div class="p912-welcome__stat-label">Lessons Complete</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Continue Learning -->
+      <div class="p912-card">
+        <div class="p912-card__header">
+          <h2 class="p912-card__title">
+            <i class="fas fa-play-circle"></i>
+            Continue Learning
+          </h2>
+        </div>
+        <a href="classroom.html?lesson=current" class="p912-continue" id="continue-btn">
+          <div class="p912-continue__icon">
+            <i class="fas fa-book"></i>
+          </div>
+          <div class="p912-continue__text">
+            <div class="p912-continue__label">In Progress</div>
+            <div class="p912-continue__title" id="current-lesson">Loading...</div>
+            <div class="p912-continue__meta">
+              <span><i class="fas fa-clock"></i> 25 min left</span>
+              <span><i class="fas fa-layer-group"></i> Unit 4</span>
+            </div>
+          </div>
+          <i class="fas fa-chevron-right p912-continue__arrow"></i>
+        </a>
+      </div>
+
+      <!-- Subjects -->
+      <div class="p912-card">
+        <div class="p912-card__header">
+          <h2 class="p912-card__title">
+            <i class="fas fa-graduation-cap"></i>
+            My Courses
+          </h2>
+          <a href="#" class="p912-card__link">View All</a>
+        </div>
+
+        <a href="classroom.html?subject=ela" class="p912-subject p912-subject--ela">
+          <div class="p912-subject__icon"><i class="fas fa-book-open"></i></div>
+          <div class="p912-subject__info">
+            <div class="p912-subject__name">English Language Arts</div>
+            <div class="p912-subject__progress">12 of 15 lessons complete</div>
+          </div>
+          <div class="p912-subject__percent">80%</div>
+        </a>
+
+        <a href="classroom.html?subject=math" class="p912-subject p912-subject--math">
+          <div class="p912-subject__icon"><i class="fas fa-calculator"></i></div>
+          <div class="p912-subject__info">
+            <div class="p912-subject__name">Mathematics</div>
+            <div class="p912-subject__progress">10 of 12 lessons complete</div>
+          </div>
+          <div class="p912-subject__percent">83%</div>
+        </a>
+
+        <a href="classroom.html?subject=sci" class="p912-subject p912-subject--sci">
+          <div class="p912-subject__icon"><i class="fas fa-flask"></i></div>
+          <div class="p912-subject__info">
+            <div class="p912-subject__name">Science</div>
+            <div class="p912-subject__progress">8 of 14 lessons complete</div>
+          </div>
+          <div class="p912-subject__percent">57%</div>
+        </a>
+
+        <a href="classroom.html?subject=lcr" class="p912-subject p912-subject--lcr">
+          <div class="p912-subject__icon"><i class="fas fa-briefcase"></i></div>
+          <div class="p912-subject__info">
+            <div class="p912-subject__name">Career Readiness</div>
+            <div class="p912-subject__progress">6 of 10 lessons complete</div>
+          </div>
+          <div class="p912-subject__percent">60%</div>
+        </a>
+      </div>
+
+      <!-- Ask Mentor Alex -->
+      <div class="p912-card">
+        <a href="classroom.html?mode=chat" class="p912-mentor">
+          <div class="p912-mentor__avatar">🎓</div>
+          <div class="p912-mentor__text">
+            <div class="p912-mentor__title">Ask Mentor Alex</div>
+            <div class="p912-mentor__subtitle">Get help with coursework, college prep, or career questions</div>
+          </div>
+          <i class="fas fa-chevron-right" style="color: var(--p912-text-tertiary);"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="p912-sidebar">
+      <!-- College Readiness -->
+      <div class="p912-card">
+        <div class="p912-card__header">
+          <h2 class="p912-card__title">
+            <i class="fas fa-university"></i>
+            College Readiness
+          </h2>
+        </div>
+        <div class="p912-tracker">
+          <div class="p912-tracker__item completed">
+            <div class="p912-tracker__check"><i class="fas fa-check"></i></div>
+            <div class="p912-tracker__text">Create Common App account</div>
+          </div>
+          <div class="p912-tracker__item completed">
+            <div class="p912-tracker__check"><i class="fas fa-check"></i></div>
+            <div class="p912-tracker__text">Request transcripts</div>
+          </div>
+          <div class="p912-tracker__item">
+            <div class="p912-tracker__check"><i class="fas fa-check"></i></div>
+            <div class="p912-tracker__text">Draft personal statement</div>
+          </div>
+          <div class="p912-tracker__item">
+            <div class="p912-tracker__check"><i class="fas fa-check"></i></div>
+            <div class="p912-tracker__text">Research scholarships</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upcoming -->
+      <div class="p912-card">
+        <div class="p912-card__header">
+          <h2 class="p912-card__title">
+            <i class="fas fa-calendar"></i>
+            Upcoming
+          </h2>
+          <a href="#" class="p912-card__link">View All</a>
+        </div>
+
+        <div class="p912-upcoming__item">
+          <div class="p912-upcoming__date">
+            <div class="p912-upcoming__day">28</div>
+            <div class="p912-upcoming__month">Dec</div>
+          </div>
+          <div class="p912-upcoming__info">
+            <div class="p912-upcoming__title">Math Quiz: Chapter 7</div>
+            <div class="p912-upcoming__detail">Quadratic functions</div>
+          </div>
+        </div>
+
+        <div class="p912-upcoming__item">
+          <div class="p912-upcoming__date">
+            <div class="p912-upcoming__day">2</div>
+            <div class="p912-upcoming__month">Jan</div>
+          </div>
+          <div class="p912-upcoming__info">
+            <div class="p912-upcoming__title">Essay Due: Climate Change</div>
+            <div class="p912-upcoming__detail">English - 1500 words</div>
+          </div>
+        </div>
+
+        <div class="p912-upcoming__item">
+          <div class="p912-upcoming__date">
+            <div class="p912-upcoming__day">15</div>
+            <div class="p912-upcoming__month">Jan</div>
+          </div>
+          <div class="p912-upcoming__info">
+            <div class="p912-upcoming__title">College App Deadline</div>
+            <div class="p912-upcoming__detail">Regular decision</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resources -->
+      <div class="p912-card">
+        <div class="p912-card__header">
+          <h2 class="p912-card__title">
+            <i class="fas fa-folder"></i>
+            Resources
+          </h2>
+        </div>
+
+        <a href="#" class="p912-resource">
+          <div class="p912-resource__icon"><i class="fas fa-file-alt"></i></div>
+          <div class="p912-resource__name">Resume Builder</div>
+        </a>
+
+        <a href="#" class="p912-resource">
+          <div class="p912-resource__icon"><i class="fas fa-search"></i></div>
+          <div class="p912-resource__name">College Search</div>
+        </a>
+
+        <a href="#" class="p912-resource">
+          <div class="p912-resource__icon"><i class="fas fa-dollar-sign"></i></div>
+          <div class="p912-resource__name">Scholarship Finder</div>
+        </a>
+
+        <a href="#" class="p912-resource">
+          <div class="p912-resource__icon"><i class="fas fa-clipboard-list"></i></div>
+          <div class="p912-resource__name">SAT/ACT Prep</div>
+        </a>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Scripts -->
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script>
+    /**
+     * 9-12 Dashboard JavaScript
+     * Features: GPA tracking, college readiness, professional UI
+     */
+    (function() {
+      'use strict';
+
+      const API_BASE = window.CONFIG?.API_BASE_URL || 'https://pmerit-api-worker.peoplemerit.workers.dev';
+
+      async function init() {
+        loadUserData();
+        await loadProgress();
+        setupEventListeners();
+      }
+
+      function loadUserData() {
+        const user = window.AUTH?.getCurrentUser();
+        if (user) {
+          document.getElementById('user-name').textContent = user.firstName || 'Student';
+
+          // Initials
+          const initials = (user.firstName?.[0] || 'S') + (user.lastName?.[0] || '');
+          document.getElementById('user-avatar').textContent = initials.toUpperCase();
+        }
+      }
+
+      async function loadProgress() {
+        const user = window.AUTH?.getCurrentUser();
+        if (!user) {
+          updateUI({
+            gpa: 3.7,
+            credits: 42,
+            lessonsComplete: 28,
+            currentLesson: 'The Media Mystery: Uncovering How Data Gets Distorted'
+          });
+          return;
+        }
+
+        try {
+          const response = await fetch(`${API_BASE}/api/v1/users/${user.id}/k12/progress`, {
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('pmerit_token')}`
+            }
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            if (data.success) {
+              updateUI(data.progress);
+            }
+          }
+        } catch (error) {
+          console.warn('Could not load progress:', error);
+          updateUI({
+            gpa: 3.7,
+            credits: 42,
+            lessonsComplete: 28,
+            currentLesson: 'The Media Mystery: Uncovering How Data Gets Distorted'
+          });
+        }
+      }
+
+      function updateUI(progress) {
+        document.getElementById('gpa').textContent = progress.gpa || 3.7;
+        document.getElementById('credits').textContent = progress.credits || 42;
+        document.getElementById('lessons-complete').textContent = progress.lessonsComplete || 28;
+        document.getElementById('current-lesson').textContent = progress.currentLesson || 'The Media Mystery: Uncovering How Data Gets Distorted';
+      }
+
+      function setupEventListeners() {
+        document.getElementById('user-avatar').addEventListener('click', () => {
+          window.location.href = 'parent-dashboard.html';
+        });
+
+        document.getElementById('notifications-btn').addEventListener('click', () => {
+          alert('No new notifications');
+        });
+
+        document.getElementById('search-btn').addEventListener('click', () => {
+          alert('Search coming soon!');
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+</body>
+</html>
