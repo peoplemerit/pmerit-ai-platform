@@ -1,9 +1,10 @@
 # PMERIT Development System — Quick Reference Guide
 
-**Version:** 2.0
+**Version:** 3.0 (AIXORD Governance)
 **Created:** 2025-12-12
-**Updated:** 2025-12-13
-**Purpose:** Complete operational guide for the three-way workflow and Scope Order system
+**Updated:** 2025-12-24
+**Purpose:** Complete operational guide for the three-way workflow and AIXORD Scope Order system
+**Governance:** AIXORD (AI Execution Order) — formerly AADOS
 
 ---
 
@@ -53,11 +54,9 @@
 ## 2. Directory Layout
 
 ```
-E:\pmerit\                                    ← WORKSPACE ROOT
+C:\dev\pmerit\                                ← WORKSPACE ROOT
 │
-├── CLAUDE.md                                 ← Claude Code instructions (v3.1)
-├── .claude\
-│   └── CLAUDE.md                             ← Backup of instructions
+├── CLAUDE.md                                 ← Claude Code instructions (v4.0 AIXORD)
 │
 ├── pmerit-ai-platform\                       ← FRONTEND REPO (git)
 │   ├── .claude\
@@ -76,11 +75,13 @@ E:\pmerit\                                    ← WORKSPACE ROOT
 │   │       └── SCOPE_CREDENTIALS.md          ← ARCH-2/3
 │   │
 │   ├── docs\
-│   │   ├── aados\                            ← GOVERNANCE
-│   │   │   ├── STATE.json                    ← Current state (machine-readable)
-│   │   │   ├── TASK_TRACKER.md               ← Living status
-│   │   │   ├── GOVERNANCE.md                 ← Workflow rules (v6)
-│   │   │   └── PRODUCTION_AUDIT_*.md         ← Audit reports
+│   │   ├── aixord\                           ← AIXORD GOVERNANCE (V12+)
+│   │   │   ├── AIXORD_STATE.json             ← Current state (machine-readable)
+│   │   │   ├── AIXORD_TRACKER.md             ← Living status
+│   │   │   ├── AIXORD_GOVERNANCE.md          ← Workflow rules (OPORD structure)
+│   │   │   ├── AIXORD_VWP.md                 ← Visual Walkthrough Protocol
+│   │   │   ├── AIXORD_EVOLUTION.md           ← AADOS → AIXORD history
+│   │   │   └── AIXORD_GAP_*.md               ← Gap reports from VWP
 │   │   ├── project\
 │   │   │   ├── Pmerit_Project_Document.md    ← Master roadmap
 │   │   │   └── PMERIT_ARCHITECTURE_FINAL.md  ← Architecture spec
@@ -524,6 +525,7 @@ AUDIT SCOPE: CLASSROOM
 
 ---
 
-*Quick Reference Guide v2.0*
-*Updated: 2025-12-13*
+*Quick Reference Guide v3.0*
+*Updated: 2025-12-24*
 *For: PMERIT Three-Way Development Workflow*
+*Governance: AIXORD (AI Execution Order) — formerly AADOS*

@@ -1,10 +1,11 @@
 # CLAUDE WEB INSTRUCTIONS (Synced Copy)
 
 **Purpose:** This file mirrors Claude Web's instructions so Claude Code has visibility into what the Architect role sees.
-**Last Synced:** 2025-12-22
+**Last Synced:** 2025-12-24
 **Sync Method:** Manual copy from Claude Web settings
-**Workflow Version:** 3.1 (Reality-First + Dual-Repo + Strict AADOS + Enhanced Scopes)
-**Current Session:** 70
+**Workflow Version:** 4.0 (AIXORD Governance System)
+**Current Session:** 77
+**Governance:** AIXORD (AI Execution Order) — formerly AADOS
 
 ---
 
@@ -24,7 +25,7 @@ PMERIT uses **two distinct repositories** for different purposes. Claude MUST id
 | **Production** | https://pmerit.com |
 | **API** | https://pmerit-api-worker.peoplemerit.workers.dev |
 | **Trigger Command** | `PMERIT CONTINUE` |
-| **Governance** | Strict AADOS protocol |
+| **Governance** | AIXORD (AI Execution Order) protocol |
 
 ### Repository 2: Product Development
 
@@ -45,7 +46,7 @@ PMERIT uses **two distinct repositories** for different purposes. Claude MUST id
 
 | Command | Context | Action |
 |---------|---------|--------|
-| `PMERIT CONTINUE` | Platform | Full AADOS protocol: governance + scopes + handoffs + audit |
+| `PMERIT CONTINUE` | Platform | Full AIXORD protocol: governance + scopes + handoffs + audit |
 | `PMERIT STATUS` | Platform | Quick health check + state (no work) |
 | `PMERIT SYNC CONFIRMED` | Platform | Confirms repos synced |
 | `PMERIT QUICK FIX: [desc]` | Platform | Skip audit, minor fixes only |
@@ -93,11 +94,13 @@ Claude MUST automatically detect context based on:
 
 # PART 1: PLATFORM DEVELOPMENT INSTRUCTIONS
 
-## STRICT AADOS ADHERENCE (MANDATORY)
+## STRICT AIXORD ADHERENCE (MANDATORY)
 
-Claude MUST follow the AADOS (Anthropic AI Delivery Operating System) protocol **without deviation**.
+Claude MUST follow the AIXORD (AI Execution Order) protocol **without deviation**.
 
-### What AADOS Requires
+> **AIXORD** = AI Execution Order: A structured, guardrailed instruction framework issued by an AI system to a human operator, requiring sequential execution and explicit confirmation. Based on military OPORD (Operations Order) doctrine.
+
+### What AIXORD Requires
 
 | Requirement | Description |
 |-------------|-------------|
@@ -110,23 +113,23 @@ Claude MUST follow the AADOS (Anthropic AI Delivery Operating System) protocol *
 | **Three-Attempt Rule** | Escalate after 3 failed attempts (extendable to 5 once) |
 | **Phase-Gated Execution** | Complete phases in order, no skipping Homepage Gate |
 
-### AADOS Startup Protocol (8 Steps)
+### AIXORD Startup Protocol (8 Steps)
 
 When receiving **"PMERIT CONTINUE"**:
 
-1. **READ** `docs/aados/STATE.json` — Get session number, phase, blockers
-2. **READ** `docs/aados/TASK_TRACKER.md` — Get detailed status
-3. **READ** `docs/aados/GOVERNANCE.md` — Get workflow rules
+1. **READ** `docs/aixord/AIXORD_STATE.json` — Get session number, phase, blockers
+2. **READ** `docs/aixord/AIXORD_TRACKER.md` — Get detailed status
+3. **READ** `docs/aixord/AIXORD_GOVERNANCE.md` — Get workflow rules (OPORD structure)
 4. **CHECK** Active scope from STATE.json, read scope file if set
 5. **READ** Latest handoff document for incomplete tasks
 6. **VERIFY** Git sync: `git fetch origin && git status`
 7. **RUN** Production audit (curl pmerit.com, API endpoints)
-8. **OUTPUT** Auto-Continuity response with audit results
+8. **OUTPUT** AIXORD Auto-Continuity response with audit results
 
 ### Auto-Continuity Response Template
 
 ```
-🔄 PMERIT AUTO-CONTINUITY ACTIVATED — Session [#]
+🔄 AIXORD AUTO-CONTINUITY — Session [#]
 
 🔒 Sync Gate: [Pending/Confirmed]
 📍 Current Phase: [From STATE.json]
@@ -156,7 +159,7 @@ Incomplete Tasks: [count or "None"]
 ⏭️ Next Action: [Based on audit findings and current phase]
 ```
 
-### AADOS Violations (What Claude Must NEVER Do)
+### AIXORD Violations (What Claude Must NEVER Do)
 
 | Violation | Why It's Bad |
 |-----------|--------------|
@@ -210,14 +213,15 @@ cd C:\dev\pmerit
 
 ---
 
-## Governance Files
+## AIXORD Governance Files
 
 | File | Purpose |
 |------|---------|
-| `docs/aados/STATE.json` | Current state pointer (machine-readable) |
-| `docs/aados/TASK_TRACKER.md` | Living status, attempts |
-| `docs/aados/GOVERNANCE.md` | Rules, phases, workflows |
-| `docs/aados/ENVIRONMENTS.md` | Environment definitions |
+| `docs/aixord/AIXORD_STATE.json` | Current state pointer (machine-readable) |
+| `docs/aixord/AIXORD_TRACKER.md` | Living status, attempts |
+| `docs/aixord/AIXORD_GOVERNANCE.md` | Rules, phases, workflows (OPORD structure) |
+| `docs/aixord/AIXORD_VWP.md` | Visual Walkthrough Protocol |
+| `docs/aixord/AIXORD_ENVIRONMENTS.md` | Environment definitions |
 
 ---
 
@@ -455,7 +459,8 @@ git push origin main
 
 ---
 
-*Last Synced: 2025-12-22*
+*Last Synced: 2025-12-24*
 *Migration: E:\pmerit → C:\dev\pmerit (Session 65)*
-*Version: 3.1 — Dual-Repo Protocol + Strict AADOS + Enhanced Scopes*
-*Session: 70*
+*Version: 4.0 — AIXORD (AI Execution Order) Governance System*
+*Evolution: AADOS V1-V11 → AIXORD V12+*
+*Session: 77*
