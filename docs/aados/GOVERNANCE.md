@@ -1,8 +1,9 @@
-# 📑 PMERIT Platform — Canonical Audit & Handoff Governance V10
+# 📑 PMERIT Platform — Canonical Audit & Handoff Governance V11
 
-**Version:** 10.0
+**Version:** 11.0
 **Updated:** 2025-12-24
-**New:** Scope Audit & Reassessment Protocol (Foundational Integrity Check)
+**New in V11:** Visual Walkthrough Protocol (VWP) - Mandatory scope completion validation
+**New in V10:** Scope Audit & Reassessment Protocol (Foundational Integrity Check)
 
 ---
 
@@ -301,6 +302,120 @@ Claude Code:
 3. Check tech stack: Cloudflare Workers compatible
 4. Output: "✅ FOUNDATIONAL INTEGRITY VALID. Proceeding."
 ```
+
+---
+
+## 👁️ VISUAL WALKTHROUGH PROTOCOL (VWP) — V11 NEW
+
+### Purpose
+
+The Visual Walkthrough Protocol (VWP) is a **MANDATORY** quality control step that validates scope implementations through end-to-end user journey testing with real screenshots. It prevents the "built but not connected" problem where backend infrastructure exists but frontend user flows don't utilize it.
+
+### Why This Exists (Session 77 Discovery)
+
+In Session 77, we discovered that despite building:
+- ✅ K-12 database tables
+- ✅ Age-appropriate dashboard HTML files
+- ✅ K12 API routes
+- ✅ Parent portal backend
+
+The actual user experience was **completely broken** because:
+- ❌ Registration form had no K-12 options
+- ❌ No routing logic to age-appropriate dashboards
+- ❌ Parent consent flow not connected
+
+**VWP ensures we catch these gaps BEFORE closing a scope.**
+
+### When to Execute VWP (MANDATORY)
+
+| Trigger | Action |
+|---------|--------|
+| Scope reaches "Phase Complete" | Execute VWP BEFORE marking COMPLETE |
+| Major feature implementation | Execute VWP for that feature's user journey |
+| Before production deployment | Execute VWP for all affected flows |
+| Sprint completion | Execute VWP for sprint deliverables |
+
+### VWP Command
+
+```
+WALKTHROUGH: [SCOPE_NAME] [USER_PERSONA]
+```
+
+**Examples:**
+- `WALKTHROUGH: SCOPE_K12_EDUCATION parent_with_child`
+- `WALKTHROUGH: SCOPE_ASSESSMENT adult_learner`
+- `WALKTHROUGH: SCOPE_CLASSROOM k12_student_grade3`
+
+### VWP Execution Steps
+
+1. **Define Persona & Scenario** - Who is the user? What are they trying to do?
+2. **Execute Step-by-Step** - One action per step, user provides screenshot
+3. **Analyze Each Screenshot** - Document what's visible, expected, any gaps
+4. **Document Gaps Real-Time** - Assign GAP-ID, severity, description
+5. **Generate GAP Report** - `docs/aados/GAP_REPORT_[SCOPE]_[DATE].md`
+6. **Update Scope Status** - No critical gaps = can complete; gaps found = tasks created
+
+### Gap Severity Definitions
+
+| Severity | Symbol | Definition | Action |
+|----------|--------|------------|--------|
+| Critical | 🔴 | Blocks core functionality, security/compliance risk | Must fix before scope completion |
+| High | 🔴 | Major feature broken, primary flow affected | Should fix before scope completion |
+| Medium | 🟡 | Suboptimal UX, secondary flow affected | Can fix in next iteration |
+| Low | 🟢 | Minor polish, cosmetic | Backlog item |
+
+### Modified Scope Completion Checklist
+
+Before marking ANY scope COMPLETE, verify:
+
+```markdown
+## Scope Completion Checklist
+
+- [ ] All requirements implemented
+- [ ] Unit tests passing
+- [ ] Integration tests passing
+- [ ] Code reviewed
+- [ ] Documentation updated
+- [ ] **VWP Executed** ← MANDATORY (V11)
+- [ ] **GAP Report generated** ← MANDATORY (V11)
+- [ ] **No Critical Gaps remaining** ← MANDATORY (V11)
+- [ ] Deployed to staging
+- [ ] Deployed to production
+```
+
+### Standard User Personas
+
+| ID | Persona | Description |
+|----|---------|-------------|
+| `adult_new` | New Adult User | First-time visitor, no account |
+| `parent_new` | New Parent | Registering child for first time |
+| `k12_student_35` | Grade 3-5 Student | Gamified experience user |
+| `k12_student_912` | Grade 9-12 Student | Professional UI user |
+| `admin_tier1` | Super Admin | Full system access |
+
+### VWP Output Files
+
+| File | Location | Purpose |
+|------|----------|---------|
+| GAP Report | `docs/aados/GAP_REPORT_[SCOPE]_[DATE].md` | Formal gap documentation |
+| Protocol Doc | `docs/aados/VISUAL_WALKTHROUGH_PROTOCOL.md` | Full VWP instructions |
+
+### Integration with AADOS
+
+VWP integrates with:
+- **PMERIT CONTINUE** - Check if active scope needs VWP
+- **Scope Order v2** - VWP runs between implementation and completion
+- **Task Tracker** - Gaps become tasks automatically
+- **STATE.json** - Tracks VWP status and gap counts
+
+### VWP Commands
+
+| Command | Effect |
+|---------|--------|
+| `WALKTHROUGH: [SCOPE] [PERSONA]` | Start VWP for scope |
+| `VWP STATUS` | Check VWP status for active scope |
+| `VWP GAPS` | List all open gaps from last VWP |
+| `CLOSE GAP: [GAP-ID]` | Mark gap as resolved |
 
 ---
 
@@ -1119,6 +1234,10 @@ HOMEPAGE GATE COMPLETE
 | **PHASE [X] COMPLETE** | Unlock Phase X+1 |
 | **ESCALATE** | Force escalation of current issue |
 | **DONE** | Confirm step completion |
+| **WALKTHROUGH: [SCOPE] [PERSONA]** | Start Visual Walkthrough Protocol (V11) |
+| **VWP STATUS** | Check VWP status for active scope |
+| **VWP GAPS** | List open gaps from last walkthrough |
+| **CLOSE GAP: [ID]** | Mark a gap as resolved |
 
 ---
 
@@ -1135,6 +1254,7 @@ HOMEPAGE GATE COMPLETE
 9. **Sync Protocol:** Keep task tracker synchronized between tools
 10. **Handoff Decisions Supersede:** Latest handoff overrides original documents
 11. **Scope Audit First:** Before implementing any scope, verify foundational integrity (V10)
+12. **Visual Walkthrough Required:** Execute VWP before marking any scope COMPLETE (V11)
 
 ---
 
@@ -1232,4 +1352,4 @@ Purpose: [Brief explanation]
 
 *Production: https://pmerit.com*
 *Repository: github.com/peoplemerit/pmerit-ai-platform*
-*Version: V10 — 2025-12-24 — Scope Audit & Reassessment Protocol*
+*Version: V11 — 2025-12-24 — Visual Walkthrough Protocol (VWP)*
