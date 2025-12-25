@@ -52,70 +52,243 @@
           aria-hidden="false">
           
           <h2 id="auth-modal-title" class="auth-modal-title">Create Your Account</h2>
-          <p class="auth-modal-subtitle">Join PMERIT and start your learning journey</p>
-	  <p class="auth-modal-subtitle">Create your PMERIT account to unlock your personalized learning journey.</p>
-          
+          <p class="auth-modal-subtitle">Create your PMERIT account to unlock your personalized learning journey.</p>
+
           <!-- Error/Success Messages -->
           <div id="signup-message" class="auth-modal-message" role="alert" aria-live="polite"></div>
-          
+
           <form id="signup-form" class="auth-modal-form">
-            <div class="form-row">
+            <!-- Step 1: Account Type Selection -->
+            <div id="signup-step-1" class="signup-step active">
+              <div class="form-group account-type-group">
+                <label class="form-label-main">Who is this account for?</label>
+                <div class="account-type-options">
+                  <label class="account-type-option">
+                    <input type="radio" name="accountType" value="adult" checked>
+                    <div class="account-type-card">
+                      <i class="fas fa-user-graduate"></i>
+                      <span class="account-type-title">Myself</span>
+                      <span class="account-type-desc">I'm an adult learner (18+)</span>
+                    </div>
+                  </label>
+                  <label class="account-type-option">
+                    <input type="radio" name="accountType" value="child">
+                    <div class="account-type-card">
+                      <i class="fas fa-child"></i>
+                      <span class="account-type-title">My Child</span>
+                      <span class="account-type-desc">Registering a K-12 student</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <button type="button" class="auth-modal-button primary" id="signup-next-step">
+                Continue <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+
+            <!-- Step 2: Adult Registration (default) -->
+            <div id="signup-step-adult" class="signup-step">
+              <button type="button" class="back-to-step1" aria-label="Go back">
+                <i class="fas fa-arrow-left"></i> Back
+              </button>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="signup-firstname">First Name</label>
+                  <input
+                    type="text"
+                    id="signup-firstname"
+                    name="firstname"
+                    autocomplete="given-name"
+                    aria-required="true">
+                </div>
+
+                <div class="form-group">
+                  <label for="signup-lastname">Last Name</label>
+                  <input
+                    type="text"
+                    id="signup-lastname"
+                    name="lastname"
+                    autocomplete="family-name"
+                    aria-required="true">
+                </div>
+              </div>
+
               <div class="form-group">
-                <label for="signup-firstname">First Name</label>
-                <input 
-                  type="text" 
-                  id="signup-firstname" 
-                  name="firstname" 
-                  autocomplete="given-name"
-                  required
+                <label for="signup-email">Email Address</label>
+                <input
+                  type="email"
+                  id="signup-email"
+                  name="email"
+                  autocomplete="email"
                   aria-required="true">
               </div>
-              
+
               <div class="form-group">
-                <label for="signup-lastname">Last Name</label>
-                <input 
-                  type="text" 
-                  id="signup-lastname" 
-                  name="lastname" 
-                  autocomplete="family-name"
-                  required
-                  aria-required="true">
+                <label for="signup-password">Password</label>
+                <div class="password-wrapper">
+                  <input
+                    type="password"
+                    id="signup-password"
+                    name="password"
+                    autocomplete="new-password"
+                    minlength="8"
+                    aria-required="true"
+                    aria-describedby="password-hint">
+                  <button type="button" class="password-toggle" data-target="signup-password" aria-label="Toggle password visibility">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+                <small id="password-hint" class="form-hint">8+ chars, uppercase, lowercase, number, special char</small>
               </div>
+
+              <button type="submit" class="auth-modal-button primary">
+                Create Account
+              </button>
             </div>
-            
-            <div class="form-group">
-              <label for="signup-email">Email Address</label>
-              <input 
-                type="email" 
-                id="signup-email" 
-                name="email" 
-                autocomplete="email"
-                required
-                aria-required="true">
-            </div>
-            
-            <div class="form-group">
-              <label for="signup-password">Password</label>
-              <div class="password-wrapper">
-                <input 
-                  type="password" 
-                  id="signup-password" 
-                  name="password"
-                  autocomplete="new-password"
-                  minlength="6"
-                  required
+
+            <!-- Step 2: K-12 Child Registration -->
+            <div id="signup-step-child" class="signup-step">
+              <button type="button" class="back-to-step1" aria-label="Go back">
+                <i class="fas fa-arrow-left"></i> Back
+              </button>
+
+              <div class="k12-info-banner">
+                <i class="fas fa-shield-alt"></i>
+                <span>We take child safety seriously. Parental consent is required for students under 13 (COPPA).</span>
+              </div>
+
+              <!-- Child's Information -->
+              <h3 class="form-section-title">Child's Information</h3>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="child-firstname">Child's First Name</label>
+                  <input
+                    type="text"
+                    id="child-firstname"
+                    name="childFirstname"
+                    aria-required="true">
+                </div>
+
+                <div class="form-group">
+                  <label for="child-lastname">Child's Last Name</label>
+                  <input
+                    type="text"
+                    id="child-lastname"
+                    name="childLastname"
+                    aria-required="true">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="child-dob">Date of Birth</label>
+                  <input
+                    type="date"
+                    id="child-dob"
+                    name="childDob"
+                    max=""
+                    aria-required="true"
+                    aria-describedby="dob-hint">
+                  <small id="dob-hint" class="form-hint">Required for age-appropriate content</small>
+                </div>
+
+                <div class="form-group">
+                  <label for="child-grade">Current Grade Level</label>
+                  <select id="child-grade" name="childGrade" aria-required="true">
+                    <option value="">Select grade...</option>
+                    <optgroup label="Elementary (K-5)">
+                      <option value="K">Kindergarten</option>
+                      <option value="1">Grade 1</option>
+                      <option value="2">Grade 2</option>
+                      <option value="3">Grade 3</option>
+                      <option value="4">Grade 4</option>
+                      <option value="5">Grade 5</option>
+                    </optgroup>
+                    <optgroup label="Middle School (6-8)">
+                      <option value="6">Grade 6</option>
+                      <option value="7">Grade 7</option>
+                      <option value="8">Grade 8</option>
+                    </optgroup>
+                    <optgroup label="High School (9-12)">
+                      <option value="9">Grade 9</option>
+                      <option value="10">Grade 10</option>
+                      <option value="11">Grade 11</option>
+                      <option value="12">Grade 12</option>
+                    </optgroup>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Parent/Guardian Information -->
+              <h3 class="form-section-title">Parent/Guardian Information</h3>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="parent-firstname">Your First Name</label>
+                  <input
+                    type="text"
+                    id="parent-firstname"
+                    name="parentFirstname"
+                    autocomplete="given-name"
+                    aria-required="true">
+                </div>
+
+                <div class="form-group">
+                  <label for="parent-lastname">Your Last Name</label>
+                  <input
+                    type="text"
+                    id="parent-lastname"
+                    name="parentLastname"
+                    autocomplete="family-name"
+                    aria-required="true">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="parent-email">Your Email Address</label>
+                <input
+                  type="email"
+                  id="parent-email"
+                  name="parentEmail"
+                  autocomplete="email"
                   aria-required="true"
-                  aria-describedby="password-hint">
-                <button type="button" class="password-toggle" data-target="signup-password" aria-label="Toggle password visibility">
-                  <i class="fas fa-eye"></i>
-                </button>
+                  aria-describedby="parent-email-hint">
+                <small id="parent-email-hint" class="form-hint">Consent & verification emails will be sent here</small>
               </div>
-              <small id="password-hint" class="form-hint">8+ chars, uppercase, lowercase, number, special char</small>
+
+              <div class="form-group">
+                <label for="parent-password">Create Password</label>
+                <div class="password-wrapper">
+                  <input
+                    type="password"
+                    id="parent-password"
+                    name="parentPassword"
+                    autocomplete="new-password"
+                    minlength="8"
+                    aria-required="true"
+                    aria-describedby="parent-password-hint">
+                  <button type="button" class="password-toggle" data-target="parent-password" aria-label="Toggle password visibility">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+                <small id="parent-password-hint" class="form-hint">8+ chars, uppercase, lowercase, number, special char</small>
+              </div>
+
+              <!-- Consent Checkbox -->
+              <div class="form-group consent-group">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="parent-consent" name="parentConsent" required>
+                  <span>I am the parent/legal guardian and consent to create this account for my child. I understand I will receive a verification email to complete the registration.</span>
+                </label>
+              </div>
+
+              <button type="submit" class="auth-modal-button primary" id="signup-child-submit">
+                <i class="fas fa-user-plus"></i> Register My Child
+              </button>
             </div>
-            
-            <button type="submit" class="auth-modal-button primary">
-              Create Account
-            </button>
           </form>
           
           <p class="auth-modal-footer-text">
