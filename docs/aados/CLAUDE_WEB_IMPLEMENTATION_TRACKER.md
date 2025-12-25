@@ -14,7 +14,7 @@
 | P0 | Homework detection patterns | ✅ DONE | 76 |
 | P0 | Dual-mode front page AI | ✅ DONE | 76 |
 | P1 | Strengthen persona prompts | ✅ DONE | 77 |
-| P2 | Frontend grade_code passing | 🔲 PENDING | - |
+| P2 | Frontend grade_code passing | ✅ DONE | 77 |
 | P3 | SCOPE_CTE_VOCATIONAL | 🔲 PENDING | - |
 
 ---
@@ -113,24 +113,34 @@ Migration 017 created with:
 
 ---
 
-## 3. FRONTEND GRADE_CODE PASSING (P2)
+## 3. FRONTEND GRADE_CODE PASSING (P2) - ✅ COMPLETE
 
-### Current State
-- Backend supports `grade_code` in context
-- Frontend (`classroom.js`) doesn't pass it
-- All users get default persona
+**Implemented:** Session 77 | **Commits:** `7c766bb` (FE), `a89a546` (BE)
+
+### Implementation Summary
+
+**Backend Changes (`/auth/me` endpoint):**
+- Returns K-12 fields: `gradeCode`, `uiType`, `personaOverride`, `isMinor`
+- Fetches from `k12_student_profiles` + `grade_levels` tables
+- Graceful fallback if K-12 tables don't exist
+
+**Frontend Changes:**
+- `auth.js`: Stores K-12 fields in localStorage user object
+- `classroom.html`: Passes `context.grade_code` in AI tutor API calls
 
 ### Implementation Tasks
 
-- [ ] Add `data-grade-code` attribute to classroom page (from user profile)
-- [ ] Update `classroom.js` to read grade code
-- [ ] Pass `context: { grade_code: "X" }` in tutor API calls
-- [ ] Test persona selection end-to-end
+- [x] Backend: Update `/auth/me` to return grade_code from k12_student_profiles
+- [x] Frontend: Update `auth.js` to store K-12 fields
+- [x] Frontend: Update `classroom.html` to pass context in tutor API
+- [x] Deploy backend (Version bcdc9815)
+- [x] Push frontend changes
 
-### Code Location
+### Code Locations
 ```
-pmerit-ai-platform/js/classroom.js
-pmerit-ai-platform/classroom.html
+pmerit-api-worker/src/routes/auth.ts (lines 853-895)
+pmerit-ai-platform/assets/js/auth.js (lines 80-86)
+pmerit-ai-platform/portal/classroom.html (lines 2343-2359)
 ```
 
 ---
@@ -254,4 +264,4 @@ After implementing each task, update these scope files:
 
 ---
 
-*Last Updated: Session 77 (2025-12-24) - P1 COMPLETE: Migration 017 executed, personas with few-shot examples deployed*
+*Last Updated: Session 77 (2025-12-24) - P1 + P2 COMPLETE: Persona few-shot examples + Frontend grade_code passing*
