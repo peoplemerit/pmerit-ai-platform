@@ -663,6 +663,39 @@ Implementation decisions are documented here for reference. Each decision includ
 
 ---
 
+### DEC-003: Checkbox-Style Selectors Over Radio Buttons
+**Date:** 2025-12-24 | **Session:** 79 | **Decided By:** @peoplemerit
+
+**Context:** During K-12 registration form review, the account type selector used radio buttons which created visual inconsistency with other parts of the platform.
+
+**Options Considered:**
+- A) Keep radio buttons for single-select options
+- B) Use checkbox-style cards with JavaScript single-select behavior
+- C) Use dropdown selects
+
+**Decision:** B — Checkbox-style cards with JavaScript-enforced single selection
+
+**Rationale:**
+- Consistent UI pattern across the platform
+- Better visual feedback with card-based selection
+- Cards provide more space for descriptions
+- JavaScript ensures only one option is selected at a time
+- Checkmarks (when visible) are more universally understood than radio dots
+
+**Impact:**
+- Updated auth-modal.html to use checkbox inputs instead of radio inputs
+- Updated auth-modal.js to handle single-select behavior for checkboxes
+- Added `.selected` class styling for card highlighting
+- This pattern should be used for all future single-select card interfaces
+
+**UI Guidelines:**
+- For single-select options presented as cards: Use checkboxes with JS single-select
+- For simple form fields with 2-3 options: Use dropdowns
+- For multiple-select options: Use standard checkboxes
+- Radio buttons should generally be avoided in favor of the above patterns
+
+---
+
 ## Task Carryforward
 
 Incomplete tasks are carried forward between sessions. This section is updated at the end of each session.

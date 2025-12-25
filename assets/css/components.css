@@ -1463,7 +1463,8 @@
   cursor: pointer;
 }
 
-.account-type-option input[type="radio"] {
+.account-type-option input[type="radio"],
+.account-type-option input[type="checkbox"] {
   position: absolute;
   opacity: 0;
   pointer-events: none;
@@ -1501,7 +1502,8 @@
   line-height: 1.4;
 }
 
-.account-type-option input:checked + .account-type-card {
+.account-type-option input:checked + .account-type-card,
+.account-type-card.selected {
   border-color: var(--primary, #2A5B8C);
   background: rgba(42, 91, 140, 0.08);
   box-shadow: 0 0 0 4px rgba(42, 91, 140, 0.12);
@@ -1527,7 +1529,8 @@
   color: var(--text-secondary-dark, #a0a0a0);
 }
 
-[data-theme="dark"] .account-type-option input:checked + .account-type-card {
+[data-theme="dark"] .account-type-option input:checked + .account-type-card,
+[data-theme="dark"] .account-type-card.selected {
   background: rgba(42, 91, 140, 0.2);
   border-color: var(--primary, #2A5B8C);
 }
