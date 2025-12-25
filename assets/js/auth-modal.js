@@ -176,10 +176,16 @@
       });
 
       // Continue button (step 1 -> step 2)
-      const nextStepBtn = document.getElementById('signup-next-step');
-      nextStepBtn?.addEventListener('click', () => {
-        this.goToSignupStep(this.accountType === 'child' ? 'child' : 'adult');
-      });
+      const nextStepBtn = this.modal?.querySelector('#signup-next-step');
+      logger.debug('🔐 Continue button found:', !!nextStepBtn);
+      if (nextStepBtn) {
+        nextStepBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          logger.debug('🔐 Continue clicked, accountType:', this.accountType);
+          this.goToSignupStep(this.accountType === 'child' ? 'child' : 'adult');
+        });
+      }
 
       // Back buttons
       const backButtons = this.modal?.querySelectorAll('.back-to-step1');
@@ -201,10 +207,12 @@
      * Navigate between signup steps
      */
     goToSignupStep: function (step) {
+      logger.debug('🔐 goToSignupStep called with:', step);
       this.currentSignupStep = step;
 
       // Hide all steps using inline style (more reliable than CSS classes)
       const allSteps = this.modal?.querySelectorAll('.signup-step');
+      logger.debug('🔐 Found signup steps:', allSteps?.length);
       allSteps?.forEach(s => {
         s.style.display = 'none';
         s.classList.remove('active');
