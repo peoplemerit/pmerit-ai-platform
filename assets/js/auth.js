@@ -121,6 +121,7 @@
             subscriptionTier: userData.subscriptionTier || 'basic',
             // K-12 specific fields (from /auth/me or login)
             isMinor: userData.isMinor || false,
+            accountType: userData.accountType || 'adult',  // 'adult' or 'k12'
             gradeCode: userData.gradeCode || null,
             uiType: userData.uiType || null,
             personaOverride: userData.personaOverride || null
