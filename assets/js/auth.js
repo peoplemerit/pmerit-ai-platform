@@ -14,13 +14,37 @@
   const API_BASE = 'https://pmerit-api-worker.peoplemerit.workers.dev/api/v1';
   const USE_MOCK_FALLBACK = true; // Set to false to disable mock fallback
 
-  // Token management utilities
+  // Session configuration (GAP-1: 24 hour max session)
+  const SESSION_MAX_AGE_MS = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+  // Token management utilities with session expiration
   const TokenManager = {
-    getToken: () => localStorage.getItem('pmerit_token'),
-    setToken: (token) => localStorage.setItem('pmerit_token', token),
+    getToken: () => {
+      // Check if session has expired
+      const expiry = localStorage.getItem('pmerit_session_expiry');
+      if (expiry && Date.now() > parseInt(expiry, 10)) {
+        // Session expired - clear everything
+        TokenManager.clear();
+        return null;
+      }
+      return localStorage.getItem('pmerit_token');
+    },
+
+    setToken: (token) => {
+      localStorage.setItem('pmerit_token', token);
+      // Set session expiry (24 hours from now)
+      localStorage.setItem('pmerit_session_expiry', (Date.now() + SESSION_MAX_AGE_MS).toString());
+    },
+
     removeToken: () => localStorage.removeItem('pmerit_token'),
 
     getUser: () => {
+      // Check session expiry before returning user
+      const expiry = localStorage.getItem('pmerit_session_expiry');
+      if (expiry && Date.now() > parseInt(expiry, 10)) {
+        TokenManager.clear();
+        return null;
+      }
       try {
         const userJson = localStorage.getItem('pmerit_user');
         return userJson ? JSON.parse(userJson) : null;
@@ -29,12 +53,29 @@
         return null;
       }
     },
+
     setUser: (user) => localStorage.setItem('pmerit_user', JSON.stringify(user)),
     removeUser: () => localStorage.removeItem('pmerit_user'),
 
     clear: () => {
       localStorage.removeItem('pmerit_token');
       localStorage.removeItem('pmerit_user');
+      localStorage.removeItem('pmerit_session_expiry');
+    },
+
+    // Check if session is still valid (not expired)
+    isSessionValid: () => {
+      const expiry = localStorage.getItem('pmerit_session_expiry');
+      if (!expiry) return false;
+      return Date.now() < parseInt(expiry, 10);
+    },
+
+    // Get remaining session time in milliseconds
+    getSessionTimeRemaining: () => {
+      const expiry = localStorage.getItem('pmerit_session_expiry');
+      if (!expiry) return 0;
+      const remaining = parseInt(expiry, 10) - Date.now();
+      return remaining > 0 ? remaining : 0;
     }
   };
 
