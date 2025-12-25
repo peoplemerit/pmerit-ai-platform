@@ -2122,3 +2122,82 @@
   background-color: var(--bg-elevated);
 }
 
+/* ========================================
+   K-12 DASHBOARD ADAPTATIONS (Session 80)
+   Option C Hybrid: Single dashboard with dynamic content
+   ======================================== */
+
+/* Hide career content for K-12 users */
+.user-k12 .hidden-for-k12,
+body.user-k12 #nav-career {
+  display: none !important;
+}
+
+/* K-12 visible content */
+.visible-for-k12 {
+  display: block;
+}
+
+/* Hide K-12 specific content for adults */
+.user-adult .visible-for-k12,
+.user-adult .k12-learning-section,
+.user-adult .parent-oversight-notice {
+  display: none !important;
+}
+
+/* Grade badge styling */
+.grade-badge {
+  font-size: 0.6em;
+  background: var(--color-primary, #2A5B8C);
+  color: white;
+  padding: 0.25em 0.5em;
+  border-radius: 4px;
+  margin-left: 0.5em;
+  vertical-align: middle;
+}
+
+/* K-2 specific: Larger touch targets and text */
+.ui-tier-k2 .quick-action-card {
+  padding: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.ui-tier-k2 .nav-menu-link {
+  padding: 1rem 1.25rem;
+  font-size: 1.1rem;
+}
+
+.ui-tier-k2 .dashboard-card {
+  padding: 1.75rem;
+}
+
+/* Elementary (3-5): Slightly larger */
+.ui-tier-elementary .quick-action-card {
+  padding: 1.25rem;
+}
+
+/* Middle school (6-8): Standard with some career prep visible */
+.ui-tier-middle .hidden-for-k12[href*="pathway"] {
+  display: flex !important; /* Show pathways for 6-8 */
+}
+
+/* High school (9-12): Near-adult experience */
+.ui-tier-high .hidden-for-k12[href*="pathway"],
+.ui-tier-high .hidden-for-k12[href*="assessment"] {
+  display: flex !important; /* Show career prep for 9-12 */
+}
+
+/* Dark theme K-12 adjustments */
+[data-theme="dark"] .grade-badge {
+  background: var(--color-primary, #3B82F6);
+}
+
+/* K-12 friendly colors for younger students */
+.ui-tier-k2 {
+  --color-primary: #10B981; /* Friendly green */
+}
+
+.ui-tier-elementary {
+  --color-primary: #3B82F6; /* Bright blue */
+}
+

@@ -341,10 +341,33 @@ Per [PMERIT_ARCHITECTURE_FINAL.md](./PMERIT_ARCHITECTURE_FINAL.md):
 | Blocklist Management | ✅ Available | IP, user, pattern blocks with duration | API endpoints active |
 | Rate Limiting | ⚠️ Basic | Cloudflare default, enhanced rate limiting pending | Phase 3 |
 | 2FA for Admins | ❌ Not Started | Phase 5 | - |
+| Email Uniqueness | ✅ Active | Prevents duplicate accounts with same email | Session 79 |
+| Duplicate Prevention | 📋 Planned | See Session 80 decision below | - |
 
 **Security Dashboard Access:** https://pmerit.com/admin/security.html (Tier 1 admins only)
 
 **SCOPE_SECURITY Status:** Phase 1, 2, 4 complete; Phase 3, 5-7 pending
+
+### Session 80 Decision — Duplicate Account Prevention (2025-12-25)
+
+**Context:** During K-12 registration testing, confirmed email uniqueness check works correctly. User requested documentation of additional security controls for future implementation.
+
+**Current Protection (Active):**
+| Control | Status | Implementation |
+|---------|--------|----------------|
+| Email uniqueness | ✅ Active | Database constraint + API validation |
+
+**Planned Controls (Priority Order):**
+| Priority | Control | Description | Effort |
+|----------|---------|-------------|--------|
+| 🔴 High | Disposable email blocking | Block ~500 disposable domains (mailinator, tempmail, etc.) | Low |
+| 🔴 High | Registration rate limiting | Limit to 5 registrations/hour per IP | Medium |
+| 🟡 Medium | CAPTCHA | reCAPTCHA v3 or hCaptcha on registration | Medium |
+| 🟡 Medium | Child DOB+Name warning | Warn if same child name + DOB exists under different parent | Medium |
+| 🟢 Low | Phone verification | Optional phone number verification | High |
+| 🟢 Low | Device fingerprinting | Track browser/device signatures | High |
+
+**Decision:** Document now, implement as part of SCOPE_SECURITY Phase 3 (Rate Limiting) and Phase 6 (Enhanced Registration Security).
 
 ### Session 43 Key Finding — Avatar Model Mismatch
 
