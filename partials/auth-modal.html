@@ -59,12 +59,12 @@
 
           <form id="signup-form" class="auth-modal-form">
             <!-- Step 1: Account Type Selection -->
-            <div id="signup-step-1" class="signup-step" style="display: block;">
+            <div id="signup-step-1" class="signup-step active">
               <div class="form-group account-type-group">
                 <label class="form-label-main">Who is this account for?</label>
                 <div class="account-type-options">
                   <label class="account-type-option" id="option-adult">
-                    <input type="checkbox" name="accountType" value="adult" class="account-type-checkbox" checked aria-hidden="true">
+                    <input type="checkbox" name="accountType" value="adult" class="account-type-checkbox" checked tabindex="-1">
                     <div class="account-type-card selected">
                       <i class="fas fa-user-graduate"></i>
                       <span class="account-type-title">Myself</span>
@@ -72,7 +72,7 @@
                     </div>
                   </label>
                   <label class="account-type-option" id="option-child">
-                    <input type="checkbox" name="accountType" value="child" class="account-type-checkbox" aria-hidden="true">
+                    <input type="checkbox" name="accountType" value="child" class="account-type-checkbox" tabindex="-1">
                     <div class="account-type-card">
                       <i class="fas fa-child"></i>
                       <span class="account-type-title">My Child</span>
@@ -88,7 +88,7 @@
             </div>
 
             <!-- Step 2: Adult Registration (default) -->
-            <div id="signup-step-adult" class="signup-step" style="display: none;">
+            <div id="signup-step-adult" class="signup-step">
               <button type="button" class="back-to-step1" aria-label="Go back">
                 <i class="fas fa-arrow-left"></i> Back
               </button>
@@ -153,7 +153,7 @@
             </div>
 
             <!-- Step 2: K-12 Child Registration -->
-            <div id="signup-step-child" class="signup-step" style="display: none;">
+            <div id="signup-step-child" class="signup-step">
               <button type="button" class="back-to-step1" aria-label="Go back">
                 <i class="fas fa-arrow-left"></i> Back
               </button>
