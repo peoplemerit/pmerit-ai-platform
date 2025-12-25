@@ -226,11 +226,11 @@
       console.log('🔐 goToSignupStep called with:', step);
       this.currentSignupStep = step;
 
-      // Hide all steps using inline style (more reliable than CSS classes)
+      // Hide all steps using inline style with !important (more reliable than CSS classes)
       const allSteps = this.modal?.querySelectorAll('.signup-step');
       console.log('🔐 Found signup steps:', allSteps?.length);
       allSteps?.forEach(s => {
-        s.style.display = 'none';
+        s.style.setProperty('display', 'none', 'important');
         s.classList.remove('active');
       });
 
@@ -243,8 +243,9 @@
 
       const targetStep = document.getElementById(stepMap[step]);
       if (targetStep) {
-        targetStep.style.display = 'block';
+        targetStep.style.setProperty('display', 'block', 'important');
         targetStep.classList.add('active');
+        console.log('🔐 Showing step:', step, 'element:', targetStep.id);
 
         // Focus first input in the new step
         setTimeout(() => {
