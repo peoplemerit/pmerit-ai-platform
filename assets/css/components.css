@@ -1461,13 +1461,19 @@
 
 .account-type-option {
   cursor: pointer;
+  position: relative;
 }
 
 .account-type-option input[type="radio"],
-.account-type-option input[type="checkbox"] {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
+.account-type-option input[type="checkbox"],
+.account-type-checkbox {
+  position: absolute !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
 }
 
 .account-type-card {
