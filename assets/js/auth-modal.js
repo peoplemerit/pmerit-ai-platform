@@ -23,6 +23,8 @@
     previousFocus: null,
     isOpen: false,
     currentTab: 'signup',
+    currentSignupStep: 'step1', // step1, adult, child
+    accountType: 'adult', // adult or child
 
     /**
      * Initialize the Auth Modal
@@ -128,6 +130,74 @@
       if (this.signupTab && this.signinTab) {
         this.signupTab.addEventListener('keydown', (e) => this.handleTabKeyboard(e, 'signup'));
         this.signinTab.addEventListener('keydown', (e) => this.handleTabKeyboard(e, 'signin'));
+      }
+
+      // K-12 Multi-step form navigation
+      this.bindK12FormEvents();
+    },
+
+    /**
+     * Bind K-12 multi-step form events
+     */
+    bindK12FormEvents: function () {
+      // Account type radio buttons
+      const accountTypeRadios = this.modal?.querySelectorAll('input[name="accountType"]');
+      accountTypeRadios?.forEach(radio => {
+        radio.addEventListener('change', (e) => {
+          this.accountType = e.target.value;
+        });
+      });
+
+      // Continue button (step 1 -> step 2)
+      const nextStepBtn = document.getElementById('signup-next-step');
+      nextStepBtn?.addEventListener('click', () => {
+        this.goToSignupStep(this.accountType === 'child' ? 'child' : 'adult');
+      });
+
+      // Back buttons
+      const backButtons = this.modal?.querySelectorAll('.back-to-step1');
+      backButtons?.forEach(btn => {
+        btn.addEventListener('click', () => {
+          this.goToSignupStep('step1');
+        });
+      });
+
+      // Set max date for DOB (today)
+      const dobInput = document.getElementById('child-dob');
+      if (dobInput) {
+        const today = new Date().toISOString().split('T')[0];
+        dobInput.setAttribute('max', today);
+      }
+    },
+
+    /**
+     * Navigate between signup steps
+     */
+    goToSignupStep: function (step) {
+      this.currentSignupStep = step;
+
+      // Hide all steps
+      const allSteps = this.modal?.querySelectorAll('.signup-step');
+      allSteps?.forEach(s => s.classList.remove('active'));
+
+      // Show target step
+      const stepMap = {
+        'step1': 'signup-step-1',
+        'adult': 'signup-step-adult',
+        'child': 'signup-step-child'
+      };
+
+      const targetStep = document.getElementById(stepMap[step]);
+      if (targetStep) {
+        targetStep.classList.add('active');
+
+        // Focus first input in the new step
+        setTimeout(() => {
+          const firstInput = targetStep.querySelector('input:not([type="hidden"]):not([type="radio"]):not([type="checkbox"])');
+          if (firstInput) {
+            firstInput.focus();
+          }
+        }, 100);
       }
     },
 
@@ -247,7 +317,12 @@
     handleSignup: async function (e) {
       e.preventDefault();
 
-      // Get form data
+      // Determine which step we're on
+      if (this.currentSignupStep === 'child') {
+        return this.handleK12Signup(e);
+      }
+
+      // Adult registration flow
       const firstname = document.getElementById('signup-firstname')?.value.trim();
       const lastname = document.getElementById('signup-lastname')?.value.trim();
       const email = document.getElementById('signup-email')?.value.trim();
@@ -263,13 +338,7 @@
       }
 
       // Password strength validation (matches backend requirements)
-      const hasMinLength = password.length >= 8;
-      const hasUppercase = /[A-Z]/.test(password);
-      const hasLowercase = /[a-z]/.test(password);
-      const hasNumber = /[0-9]/.test(password);
-      const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-
-      if (!hasMinLength || !hasUppercase || !hasLowercase || !hasNumber || !hasSpecial) {
+      if (!this.validatePassword(password)) {
         this.showMessage('signup', 'error', 'Password must be 8+ chars with uppercase, lowercase, number, and special character');
         return;
       }
@@ -284,7 +353,7 @@
       this.setFormLoading('signup', true);
 
       // Dispatch analytics event
-      this.dispatchAnalytics('signup_attempt', { email });
+      this.dispatchAnalytics('signup_attempt', { email, accountType: 'adult' });
 
       try {
         // Call AUTH.signup
@@ -293,11 +362,7 @@
         if (result.success) {
           // Check if email verification is required
           if (result.requiresVerification) {
-            // Show verification message with code (for development/testing)
             let message = 'Account created! Please check your email for verification.';
-            if (result.verificationCode) {
-              message += ` (Dev code: ${result.verificationCode})`;
-            }
             this.showMessage('signup', 'success', message);
 
             // Store email for verification flow
@@ -321,6 +386,144 @@
       } catch (error) {
         console.error('Sign up error:', error);
         this.showMessage('signup', 'error', 'An unexpected error occurred');
+        this.setFormLoading('signup', false);
+      }
+    },
+
+    /**
+     * Validate password strength
+     */
+    validatePassword: function (password) {
+      const hasMinLength = password.length >= 8;
+      const hasUppercase = /[A-Z]/.test(password);
+      const hasLowercase = /[a-z]/.test(password);
+      const hasNumber = /[0-9]/.test(password);
+      const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+      return hasMinLength && hasUppercase && hasLowercase && hasNumber && hasSpecial;
+    },
+
+    /**
+     * Handle K-12 child registration
+     */
+    handleK12Signup: async function (e) {
+      e.preventDefault();
+
+      // Get child's information
+      const childFirstname = document.getElementById('child-firstname')?.value.trim();
+      const childLastname = document.getElementById('child-lastname')?.value.trim();
+      const childDob = document.getElementById('child-dob')?.value;
+      const childGrade = document.getElementById('child-grade')?.value;
+
+      // Get parent's information
+      const parentFirstname = document.getElementById('parent-firstname')?.value.trim();
+      const parentLastname = document.getElementById('parent-lastname')?.value.trim();
+      const parentEmail = document.getElementById('parent-email')?.value.trim();
+      const parentPassword = document.getElementById('parent-password')?.value;
+      const parentConsent = document.getElementById('parent-consent')?.checked;
+
+      // Clear previous messages
+      this.clearMessages();
+
+      // Validate child info
+      if (!childFirstname || !childLastname || !childDob || !childGrade) {
+        this.showMessage('signup', 'error', 'Please fill in all child information fields');
+        return;
+      }
+
+      // Validate parent info
+      if (!parentFirstname || !parentLastname || !parentEmail || !parentPassword) {
+        this.showMessage('signup', 'error', 'Please fill in all parent/guardian information fields');
+        return;
+      }
+
+      // Validate consent
+      if (!parentConsent) {
+        this.showMessage('signup', 'error', 'Parent/guardian consent is required');
+        return;
+      }
+
+      // Validate password
+      if (!this.validatePassword(parentPassword)) {
+        this.showMessage('signup', 'error', 'Password must be 8+ chars with uppercase, lowercase, number, and special character');
+        return;
+      }
+
+      // Calculate age from DOB
+      const birthDate = new Date(childDob);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+
+      // Validate age range (3-19 for K-12)
+      if (age < 3 || age > 19) {
+        this.showMessage('signup', 'error', 'Child must be between 3 and 19 years old for K-12 registration');
+        return;
+      }
+
+      // Check localStorage availability
+      if (!this.checkStorageAvailable()) {
+        this.showCookieWarning();
+        return;
+      }
+
+      // Disable form
+      this.setFormLoading('signup', true);
+
+      // Dispatch analytics event
+      this.dispatchAnalytics('signup_attempt', {
+        email: parentEmail,
+        accountType: 'k12_child',
+        gradeLevel: childGrade,
+        childAge: age
+      });
+
+      try {
+        // Call K-12 registration endpoint
+        const apiUrl = window.CONFIG?.API_BASE_URL || 'https://pmerit-api-worker.peoplemerit.workers.dev';
+        const response = await fetch(`${apiUrl}/api/v1/auth/register-k12`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            // Child info
+            childFirstName: childFirstname,
+            childLastName: childLastname,
+            childDob: childDob,
+            childGrade: childGrade,
+            // Parent info
+            parentFirstName: parentFirstname,
+            parentLastName: parentLastname,
+            parentEmail: parentEmail,
+            parentPassword: parentPassword
+          })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          // Show success message
+          this.showMessage('signup', 'success',
+            `Account created for ${childFirstname}! A consent email has been sent to ${parentEmail}. ` +
+            'Please check your email to complete the registration.'
+          );
+
+          // Store email for verification flow
+          sessionStorage.setItem('pmerit_pending_verification', parentEmail);
+          sessionStorage.setItem('pmerit_k12_registration', 'true');
+
+          // Redirect to account page after delay
+          setTimeout(() => {
+            window.location.href = '/account.html';
+          }, 4000);
+        } else {
+          this.showMessage('signup', 'error', result.error || result.message || 'Registration failed');
+          this.setFormLoading('signup', false);
+        }
+      } catch (error) {
+        console.error('K-12 sign up error:', error);
+        this.showMessage('signup', 'error', 'An unexpected error occurred. Please try again.');
         this.setFormLoading('signup', false);
       }
     },
@@ -369,12 +572,17 @@
           this.showMessage('signin', 'success', 'Signed in! Redirecting...');
 
           // Check for stored redirect URL (from protected route)
-          const redirectUrl = sessionStorage.getItem('pmerit_redirect_after_login');
+          let redirectUrl = sessionStorage.getItem('pmerit_redirect_after_login');
           sessionStorage.removeItem('pmerit_redirect_after_login');
+
+          // If no stored redirect, determine based on user type
+          if (!redirectUrl) {
+            redirectUrl = this.getDefaultDashboard(result.user);
+          }
 
           // Redirect after short delay
           setTimeout(() => {
-            window.location.href = redirectUrl || '/account.html';
+            window.location.href = redirectUrl;
           }, 1000);
         } else {
           this.showMessage('signin', 'error', result.message || 'Sign in failed');
@@ -385,6 +593,52 @@
         this.showMessage('signin', 'error', 'An unexpected error occurred');
         this.setFormLoading('signin', false);
       }
+    },
+
+    /**
+     * Get the appropriate dashboard URL based on user type
+     * @param {object} user - User object with K-12 fields
+     * @returns {string} Dashboard URL
+     */
+    getDefaultDashboard: function (user) {
+      // Check if user has K-12 profile (uiType indicates K-12 student)
+      if (user?.uiType) {
+        const uiType = user.uiType;
+        // Route to age-appropriate dashboard
+        switch (uiType) {
+          case 'k2':
+            return '/portal/k12-dashboard-k2.html';
+          case '35':
+            return '/portal/k12-dashboard-35.html';
+          case '68':
+            return '/portal/k12-dashboard-68.html';
+          case '912':
+            return '/portal/k12-dashboard-912.html';
+          default:
+            // Fallback to appropriate dashboard based on gradeCode
+            if (user?.gradeCode) {
+              const grade = user.gradeCode === 'K' ? 0 : parseInt(user.gradeCode, 10);
+              if (grade <= 2) return '/portal/k12-dashboard-k2.html';
+              if (grade <= 5) return '/portal/k12-dashboard-35.html';
+              if (grade <= 8) return '/portal/k12-dashboard-68.html';
+              return '/portal/k12-dashboard-912.html';
+            }
+        }
+      }
+
+      // Check gradeCode as fallback (might not have uiType yet)
+      if (user?.gradeCode) {
+        const grade = user.gradeCode === 'K' ? 0 : parseInt(user.gradeCode, 10);
+        if (!isNaN(grade)) {
+          if (grade <= 2) return '/portal/k12-dashboard-k2.html';
+          if (grade <= 5) return '/portal/k12-dashboard-35.html';
+          if (grade <= 8) return '/portal/k12-dashboard-68.html';
+          if (grade <= 12) return '/portal/k12-dashboard-912.html';
+        }
+      }
+
+      // Default: Adult dashboard (account page)
+      return '/account.html';
     },
 
     /**
@@ -420,6 +674,15 @@
     clearForms: function () {
       if (this.signupForm) {this.signupForm.reset();}
       if (this.signinForm) {this.signinForm.reset();}
+
+      // Reset K-12 form state
+      this.currentSignupStep = 'step1';
+      this.accountType = 'adult';
+      this.goToSignupStep('step1');
+
+      // Reset account type radio to adult
+      const adultRadio = document.querySelector('input[name="accountType"][value="adult"]');
+      if (adultRadio) {adultRadio.checked = true;}
     },
 
     /**
