@@ -1464,21 +1464,11 @@
   position: relative;
 }
 
-/* Hide checkbox/radio inputs - use sr-only technique */
+/* Hide checkbox/radio inputs - simple display none */
+.account-type-checkbox,
 .account-type-option input[type="radio"],
-.account-type-option input[type="checkbox"],
-input.account-type-checkbox,
-.account-type-options input[type="checkbox"],
-#signup-step-1 input[type="checkbox"] {
-  position: absolute !important;
-  left: -9999px !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-  width: 1px !important;
-  height: 1px !important;
-  overflow: hidden !important;
-  clip: rect(0, 0, 0, 0) !important;
-  visibility: hidden !important;
+.account-type-option input[type="checkbox"] {
+  display: none !important;
 }
 
 .account-type-card {

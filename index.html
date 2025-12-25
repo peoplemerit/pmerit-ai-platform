@@ -54,7 +54,7 @@
   <!-- MODULAR CSS FILES - Version 4 -->
   <link rel="stylesheet" href="assets/css/light-theme.css?v=4">
   <link rel="stylesheet" href="assets/css/mobile-mockup-match.css?v=4">
-  <link rel="stylesheet" href="assets/css/components.css?v=4">
+  <link rel="stylesheet" href="assets/css/components.css?v=79">
   <link rel="stylesheet" href="assets/css/avatar.css?v=4">
   
   <!-- Responsive & Visual Fixes -->
@@ -446,7 +446,7 @@
   
   <script src="assets/js/main.js?v=2"></script>
   <script src="assets/js/chat.js?v=2"></script>
-  <script src="assets/js/auth-modal.js"></script>
+  <script src="assets/js/auth-modal.js?v=79"></script>
   <script src="assets/js/util/diagnostics.js"></script>
   
   <!-- Customer Service Modal Controller -->
@@ -491,8 +491,8 @@
     (function () {
       'use strict';
       
-      // Load auth modal partial
-      fetch('/partials/auth-modal.html')
+      // Load auth modal partial (v=79 for cache busting)
+      fetch('/partials/auth-modal.html?v=79')
         .then(response => response.text())
         .then(html => {
           const container = document.getElementById('auth-modal-container');

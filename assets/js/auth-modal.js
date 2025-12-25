@@ -152,6 +152,8 @@
      */
     bindK12FormEvents: function () {
       console.log('🔐 bindK12FormEvents called, modal:', !!this.modal);
+      // DEBUG: Uncomment alert below if console.log isn't showing
+      // alert('bindK12FormEvents running - modal found: ' + !!this.modal);
 
       // Account type checkboxes (single-select behavior)
       const accountTypeCheckboxes = this.modal?.querySelectorAll('.account-type-checkbox');
