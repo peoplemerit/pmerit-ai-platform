@@ -140,11 +140,38 @@
      * Bind K-12 multi-step form events
      */
     bindK12FormEvents: function () {
-      // Account type radio buttons
-      const accountTypeRadios = this.modal?.querySelectorAll('input[name="accountType"]');
-      accountTypeRadios?.forEach(radio => {
-        radio.addEventListener('change', (e) => {
-          this.accountType = e.target.value;
+      // Account type checkboxes (single-select behavior)
+      const accountTypeCheckboxes = this.modal?.querySelectorAll('.account-type-checkbox');
+      const accountTypeCards = this.modal?.querySelectorAll('.account-type-card');
+
+      accountTypeCheckboxes?.forEach(checkbox => {
+        checkbox.addEventListener('change', (e) => {
+          const selectedValue = e.target.value;
+
+          // Uncheck all other checkboxes and remove selected class
+          accountTypeCheckboxes.forEach(cb => {
+            if (cb !== e.target) {
+              cb.checked = false;
+              cb.closest('.account-type-option')?.querySelector('.account-type-card')?.classList.remove('selected');
+            }
+          });
+
+          // Ensure clicked checkbox stays checked
+          e.target.checked = true;
+          e.target.closest('.account-type-option')?.querySelector('.account-type-card')?.classList.add('selected');
+
+          this.accountType = selectedValue;
+        });
+      });
+
+      // Also handle card clicks for better UX
+      accountTypeCards?.forEach(card => {
+        card.addEventListener('click', () => {
+          const checkbox = card.closest('.account-type-option')?.querySelector('.account-type-checkbox');
+          if (checkbox && !checkbox.checked) {
+            checkbox.checked = true;
+            checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+          }
         });
       });
 
@@ -176,9 +203,12 @@
     goToSignupStep: function (step) {
       this.currentSignupStep = step;
 
-      // Hide all steps
+      // Hide all steps using inline style (more reliable than CSS classes)
       const allSteps = this.modal?.querySelectorAll('.signup-step');
-      allSteps?.forEach(s => s.classList.remove('active'));
+      allSteps?.forEach(s => {
+        s.style.display = 'none';
+        s.classList.remove('active');
+      });
 
       // Show target step
       const stepMap = {
@@ -189,11 +219,12 @@
 
       const targetStep = document.getElementById(stepMap[step]);
       if (targetStep) {
+        targetStep.style.display = 'block';
         targetStep.classList.add('active');
 
         // Focus first input in the new step
         setTimeout(() => {
-          const firstInput = targetStep.querySelector('input:not([type="hidden"]):not([type="radio"]):not([type="checkbox"])');
+          const firstInput = targetStep.querySelector('input:not([type="hidden"]):not([type="checkbox"]):not([aria-hidden="true"])');
           if (firstInput) {
             firstInput.focus();
           }
@@ -680,9 +711,17 @@
       this.accountType = 'adult';
       this.goToSignupStep('step1');
 
-      // Reset account type radio to adult
-      const adultRadio = document.querySelector('input[name="accountType"][value="adult"]');
-      if (adultRadio) {adultRadio.checked = true;}
+      // Reset account type checkbox to adult
+      const adultCheckbox = document.querySelector('.account-type-checkbox[value="adult"]');
+      const childCheckbox = document.querySelector('.account-type-checkbox[value="child"]');
+      if (adultCheckbox) {
+        adultCheckbox.checked = true;
+        adultCheckbox.closest('.account-type-option')?.querySelector('.account-type-card')?.classList.add('selected');
+      }
+      if (childCheckbox) {
+        childCheckbox.checked = false;
+        childCheckbox.closest('.account-type-option')?.querySelector('.account-type-card')?.classList.remove('selected');
+      }
     },
 
     /**
