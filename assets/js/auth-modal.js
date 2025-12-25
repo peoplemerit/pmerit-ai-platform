@@ -10,6 +10,17 @@
 (function () {
   'use strict';
 
+  // Ensure logger is available (fallback if logger.js hasn't loaded yet)
+  if (typeof window.logger === 'undefined') {
+    window.logger = {
+      debug: function() {},
+      info: console.info.bind(console),
+      warn: console.warn.bind(console),
+      error: console.error.bind(console)
+    };
+  }
+  const logger = window.logger;
+
   const AuthModal = {
     modal: null,
     backdrop: null,
@@ -140,9 +151,12 @@
      * Bind K-12 multi-step form events
      */
     bindK12FormEvents: function () {
+      console.log('🔐 bindK12FormEvents called, modal:', !!this.modal);
+
       // Account type checkboxes (single-select behavior)
       const accountTypeCheckboxes = this.modal?.querySelectorAll('.account-type-checkbox');
       const accountTypeCards = this.modal?.querySelectorAll('.account-type-card');
+      console.log('🔐 Found checkboxes:', accountTypeCheckboxes?.length, 'cards:', accountTypeCards?.length);
 
       accountTypeCheckboxes?.forEach(checkbox => {
         checkbox.addEventListener('change', (e) => {
@@ -177,14 +191,16 @@
 
       // Continue button (step 1 -> step 2)
       const nextStepBtn = this.modal?.querySelector('#signup-next-step');
-      logger.debug('🔐 Continue button found:', !!nextStepBtn);
+      console.log('🔐 Continue button found:', !!nextStepBtn, nextStepBtn);
       if (nextStepBtn) {
         nextStepBtn.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation();
-          logger.debug('🔐 Continue clicked, accountType:', this.accountType);
+          console.log('🔐 Continue clicked, accountType:', this.accountType);
           this.goToSignupStep(this.accountType === 'child' ? 'child' : 'adult');
         });
+      } else {
+        console.warn('🔐 Continue button NOT found! Check if modal HTML is loaded.');
       }
 
       // Back buttons
@@ -207,12 +223,12 @@
      * Navigate between signup steps
      */
     goToSignupStep: function (step) {
-      logger.debug('🔐 goToSignupStep called with:', step);
+      console.log('🔐 goToSignupStep called with:', step);
       this.currentSignupStep = step;
 
       // Hide all steps using inline style (more reliable than CSS classes)
       const allSteps = this.modal?.querySelectorAll('.signup-step');
-      logger.debug('🔐 Found signup steps:', allSteps?.length);
+      console.log('🔐 Found signup steps:', allSteps?.length);
       allSteps?.forEach(s => {
         s.style.display = 'none';
         s.classList.remove('active');
