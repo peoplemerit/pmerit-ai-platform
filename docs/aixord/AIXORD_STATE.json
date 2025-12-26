@@ -5,11 +5,35 @@
   "system_full_name": "AI Execution Order",
   "system_evolution": "AADOS V1-V11 → AIXORD V12+",
 
-  "last_updated": "2025-12-25T23:59:00Z",
+  "last_updated": "2025-12-26T00:30:00Z",
   "last_updated_by": "claude-code",
 
-  "session_number": 80,
+  "session_number": 81,
   "last_audit_date": "2025-12-25",
+
+  "session_81_summary": {
+    "focus": "K-12 Dashboard Career Content Hiding Fix",
+    "issues_resolved": ["ISSUE-80-002"],
+    "root_cause": "Race condition - dashboard-adapter ran before fetchCurrentUser completed",
+    "fixes_applied": [
+      "dashboard-adapter.js now fetches fresh user data if K-12 fields missing",
+      "Added .icon-sidebar-item[data-section=career] selector to hide career button",
+      "Added [data-content-type=career] data attribute to Career Guidance card",
+      "Updated CSS to target new selectors"
+    ],
+    "files_modified": [
+      "assets/js/dashboard-adapter.js",
+      "assets/css/components.css",
+      "dashboard.html",
+      ".claude/scopes/SCOPE_K12_EDUCATION.md"
+    ],
+    "files_created": [
+      "docs/architecture/K12_DASHBOARD_ARCHITECTURE.md",
+      "docs/testing/K12_REGRESSION_CHECKLIST.md"
+    ],
+    "selectors_documented": true,
+    "regression_tests_added": true
+  },
 
   "session_80_summary": {
     "focus": "Option C Hybrid Dashboard Architecture",
@@ -723,6 +747,8 @@
     "master_doc": "docs/project/Pmerit_Project_Document.md",
     "governance": "docs/aixord/AIXORD_GOVERNANCE.md",
     "vwp_protocol": "docs/aixord/AIXORD_VWP.md",
+    "k12_dashboard_arch": "docs/architecture/K12_DASHBOARD_ARCHITECTURE.md",
+    "k12_regression_tests": "docs/testing/K12_REGRESSION_CHECKLIST.md",
     "system_evolution": "docs/aixord/AIXORD_EVOLUTION.md",
     "latest_handoff": "docs/handoffs/PMERIT_HANDOFF_SESSION_80.md"
   },

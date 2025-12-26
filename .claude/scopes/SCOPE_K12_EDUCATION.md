@@ -651,14 +651,125 @@ CREATE TABLE IF NOT EXISTS k12_lesson_progress (
 
 ---
 
-## 13. SESSION HISTORY
+## 13. K-12 DASHBOARD ADAPTATION (Sessions 80-81)
+
+### Decision: Option C Hybrid Dashboard (DECISION-80-001)
+
+| Attribute | Value |
+|-----------|-------|
+| **Decision** | Single `dashboard.html` for all users |
+| **Alternative A Rejected** | Show/hide sections (too complex conditional logic) |
+| **Alternative B Rejected** | Multiple dashboards by grade span (5 files to maintain) |
+| **Rationale** | Easier maintenance, consistent URL, natural age progression without URL changes |
+
+### Implementation Architecture
+
+```
+User Login → auth-check.js → fetchCurrentUser() → dashboard-adapter.js → Apply CSS Classes
+                                                          ↓
+                                                   Detect user type:
+                                                   - accountType: 'k12' or 'adult'
+                                                   - gradeCode: 'K', '1', '2', ... '12'
+                                                   - uiType: derived from grade
+                                                          ↓
+                                                   Apply body classes:
+                                                   - .user-k12 or .user-adult
+                                                   - .ui-tier-k2, .ui-tier-elementary, etc.
+                                                          ↓
+                                                   CSS rules hide/show content
+```
+
+### Hidden Elements for K-12 Users
+
+| Element | Selector | Reason |
+|---------|----------|--------|
+| Career nav section | `#nav-career` | Career focus is adult feature |
+| Career sidebar button | `.icon-sidebar-item[data-section="career"]` | Hide from sidebar |
+| Career Guidance card | `[data-content-type="career"]` | Not age-appropriate for K-8 |
+| Career Assessment links | `[href="assessment-entry.html"]` | Career assessment for adults |
+| Explore Pathways (K-8) | Quick action with "pathway" text | Not relevant for young students |
+
+### Required Database Fields
+
+| Field | Table | Purpose |
+|-------|-------|---------|
+| `is_minor` | `users` | Boolean flag for minor status |
+| `grade_code` | `k12_student_profiles` | Grade level (K, 1-12) |
+| `ui_type` | `k12_student_profiles` | UI tier (early_childhood, childhood, etc.) |
+| `parental_consent_status` | `k12_student_profiles` | COPPA consent tracking |
+| `parent_guardian_email` | `k12_student_profiles` | Parent contact |
+| `date_of_birth` | `k12_student_profiles` | Age verification |
+
+### API Response Structure (/auth/me)
+
+```json
+{
+  "success": true,
+  "user": {
+    "id": "uuid",
+    "email": "student@example.com",
+    "firstName": "Johnny",
+    "lastName": "Student",
+    "isMinor": true,
+    "accountType": "k12",
+    "gradeCode": "3",
+    "uiType": "childhood",
+    "personaOverride": null
+  }
+}
+```
+
+### CSS Tier Classes
+
+| Class | Grade Span | Description |
+|-------|------------|-------------|
+| `.ui-tier-k2` | K-2 | Larger touch targets, simplified text |
+| `.ui-tier-elementary` | 3-5 | Gamified, slightly larger elements |
+| `.ui-tier-middle` | 6-8 | Standard with pathways visible |
+| `.ui-tier-high` | 9-12 | Near-adult, career prep visible |
+| `.ui-tier-adult` | Adult | Full career focus |
+
+### Files Modified (Session 80-81)
+
+| File | Change |
+|------|--------|
+| `pmerit-api-worker/src/routes/auth.ts` | `/auth/me` returns accountType, gradeCode, uiType |
+| `assets/js/dashboard-adapter.js` | Detects user type, applies CSS classes, fetches fresh user data |
+| `assets/js/auth.js` | Stores K-12 fields in user object |
+| `assets/css/components.css` | K-12 hiding rules (~80 lines) |
+| `dashboard.html` | Added `data-content-type="career"` attributes |
+| `scripts/migrations/019_k12_profile_fix.sql` | Added missing columns to k12_student_profiles |
+
+### Regression Test Checklist
+
+Before any dashboard or auth changes, verify:
+
+1. **K-12 User (Grade 3)**
+   - [ ] Console shows `accountType: 'k12'`
+   - [ ] Console shows `gradeCode: '3'`
+   - [ ] Career Guidance card is hidden
+   - [ ] Career sidebar button is hidden
+   - [ ] #nav-career is hidden
+   - [ ] Grade badge appears near username
+
+2. **Adult User**
+   - [ ] Console shows `accountType: 'adult'`
+   - [ ] Career Guidance card is visible
+   - [ ] Career sidebar button is visible
+   - [ ] No grade badge appears
+
+---
+
+## 14. SESSION HISTORY
 
 | Session | Date | Action |
 |---------|------|--------|
 | 43 | 2025-12-09 | Architecture specified |
 | 62 | 2025-12-18 | Scope file created |
 | 75 | 2025-12-24 | Comprehensive update with RAG, UI specs, personas, migration schema |
+| 80 | 2025-12-25 | Option C Hybrid Dashboard decided, initial implementation |
+| 81 | 2025-12-25 | Fixed race condition, added data attributes, documented architecture |
 
 ---
 
-*Last Updated: 2025-12-24 (Session 75)*
+*Last Updated: 2025-12-25 (Session 81)*

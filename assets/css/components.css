@@ -2129,7 +2129,9 @@
 
 /* Hide career content for K-12 users */
 .user-k12 .hidden-for-k12,
-body.user-k12 #nav-career {
+body.user-k12 #nav-career,
+body.user-k12 .icon-sidebar-item[data-section="career"],
+body.user-k12 [data-content-type="career"] {
   display: none !important;
 }
 

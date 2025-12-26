@@ -30,12 +30,14 @@
 
     // Elements to hide for K-12 users (career-focused content)
     K12_HIDDEN_SELECTORS: [
-      '#nav-career',                         // Career sidebar section
-      '.dashboard-card:has(.fa-briefcase)', // Career Guidance card
-      '[href="assessment-entry.html"]',     // Career Assessment links
-      '.career-assessment-cta',             // Career assessment CTAs
-      '.career-guidance-section',           // Career guidance sections
-      '.learner-journey-map'                // Adult learner journey
+      '#nav-career',                                  // Career sidebar section
+      '.icon-sidebar-item[data-section="career"]',   // Career icon button in sidebar
+      '[data-content-type="career"]',                // Any element with career content type
+      '.dashboard-card:has(.fa-briefcase)',          // Career Guidance card (modern browsers)
+      '[href="assessment-entry.html"]',              // Career Assessment links
+      '.career-assessment-cta',                      // Career assessment CTAs
+      '.career-guidance-section',                    // Career guidance sections
+      '.learner-journey-map'                         // Adult learner journey
     ],
 
     // Elements to show only for K-12 users
@@ -46,8 +48,9 @@
 
     /**
      * Initialize the dashboard adapter
+     * Fetches fresh user data from API to ensure K-12 fields are available
      */
-    init: function() {
+    init: async function() {
       console.log('[DashboardAdapter] Initializing...');
 
       // Wait for AUTH to be available
@@ -57,11 +60,26 @@
         return;
       }
 
-      // Get current user
-      const user = window.AUTH.getCurrentUser();
+      // Get current user from localStorage first (for immediate display)
+      let user = window.AUTH.getCurrentUser();
       if (!user) {
         console.warn('[DashboardAdapter] No user found');
         return;
+      }
+
+      // If K-12 fields are missing, fetch fresh data from API
+      // This handles the case where user logged in before K-12 fields were added
+      if (user.accountType === undefined || user.gradeCode === undefined) {
+        console.log('[DashboardAdapter] K-12 fields missing, fetching fresh user data...');
+        try {
+          const result = await window.AUTH.fetchCurrentUser();
+          if (result.success && result.user) {
+            user = result.user;
+            console.log('[DashboardAdapter] Fresh user data fetched');
+          }
+        } catch (e) {
+          console.warn('[DashboardAdapter] Could not fetch fresh user data:', e);
+        }
       }
 
       console.log('[DashboardAdapter] User:', {
