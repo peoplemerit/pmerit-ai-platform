@@ -5,11 +5,61 @@
   "system_full_name": "AI Execution Order",
   "system_evolution": "AADOS V1-V11 → AIXORD V12+",
 
-  "last_updated": "2025-12-24T18:30:00Z",
+  "last_updated": "2025-12-25T23:59:00Z",
   "last_updated_by": "claude-code",
 
   "session_number": 80,
   "last_audit_date": "2025-12-25",
+
+  "session_80_summary": {
+    "focus": "Option C Hybrid Dashboard Architecture",
+    "backend_version": "2.7.0",
+    "commits": ["abe9c40", "951fd91", "3525ac6"],
+    "decisions": {
+      "DECISION_80_001": {
+        "title": "Hybrid Dashboard Architecture (Option C)",
+        "decision": "Single dashboard.html with dynamic content based on user type instead of separate K-12 dashboard files",
+        "rationale": "Easier maintenance, consistent URL, natural age progression without URL changes",
+        "implementation": {
+          "backend": "/auth/me returns accountType ('adult'/'k12'), gradeCode, uiType",
+          "frontend": "dashboard-adapter.js detects user type, applies CSS classes to show/hide content",
+          "css_tiers": ["ui-tier-k2", "ui-tier-elementary", "ui-tier-middle", "ui-tier-high", "ui-tier-adult"]
+        }
+      },
+      "DECISION_80_002": {
+        "title": "Duplicate Account Prevention Security Controls",
+        "decision": "Document now, implement in SCOPE_SECURITY Phases 3 & 6",
+        "controls_planned": [
+          {"priority": "high", "control": "Disposable email blocking", "effort": "low"},
+          {"priority": "high", "control": "Registration rate limiting (5/hour per IP)", "effort": "medium"},
+          {"priority": "medium", "control": "CAPTCHA (reCAPTCHA v3 or hCaptcha)", "effort": "medium"},
+          {"priority": "medium", "control": "Child DOB+Name duplicate warning", "effort": "medium"},
+          {"priority": "low", "control": "Phone verification", "effort": "high"},
+          {"priority": "low", "control": "Device fingerprinting", "effort": "high"}
+        ],
+        "current_protection": "Email uniqueness (database constraint + API validation)"
+      }
+    },
+    "major_changes": [
+      "Backend /auth/me enhanced with accountType field and auto-derived uiType",
+      "Created dashboard-adapter.js for dynamic content based on user type",
+      "Added K-12 dashboard CSS (hide career content, grade badges, tier-specific styling)",
+      "Documented security controls decision in Pmerit_Project_Document.md"
+    ],
+    "tested_working": [
+      "K-12 registration flow (email: k12test-session80@pmerit.com)",
+      "Duplicate email prevention (409 error on same email)"
+    ],
+    "issues_found": [
+      "K-12 profile not being created (schema mismatch: grade_code column vs current_grade_id)",
+      "Dashboard adapter not detecting K-12 status (needs profile or is_minor flag)"
+    ],
+    "next_steps": [
+      "Fix k12_student_profiles schema to add grade_code column",
+      "Set is_minor flag on K-12 user records",
+      "Test dashboard adapter with proper K-12 detection"
+    ]
+  },
 
   "session_77_summary": {
     "focus": "K-12 Education System - Phases 1-4",
@@ -674,7 +724,7 @@
     "governance": "docs/aixord/AIXORD_GOVERNANCE.md",
     "vwp_protocol": "docs/aixord/AIXORD_VWP.md",
     "system_evolution": "docs/aixord/AIXORD_EVOLUTION.md",
-    "latest_handoff": "docs/handoffs/PMERIT_HANDOFF_SESSION_77.md"
+    "latest_handoff": "docs/handoffs/PMERIT_HANDOFF_SESSION_80.md"
   },
 
   "session_48_audit": {
