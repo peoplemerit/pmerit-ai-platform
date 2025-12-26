@@ -2,11 +2,47 @@
   "schema_version": "3.2",
   "schema_notes": "Session 67 - Dual-Repo Prompt Protocol + Strict AADOS",
 
-  "last_updated": "2025-12-24T18:30:00Z",
+  "last_updated": "2025-12-26T19:00:00Z",
   "last_updated_by": "claude-code",
 
-  "session_number": 77,
-  "last_audit_date": "2025-12-24",
+  "session_number": 81,
+  "last_audit_date": "2025-12-26",
+
+  "session_81_summary": {
+    "focus": "K-12 Dashboard Career Content Hiding Fix",
+    "frontend_version": "1.1.0",
+    "commits": [],
+    "issues_resolved": [
+      "Career Guidance card visibility bug (visible despite console showing hidden)"
+    ],
+    "major_changes": [
+      "Added cache-busting to all CSS files in dashboard.html (?v=81)",
+      "Added inline style.display='none' as cache-proof fallback in dashboard-adapter.js",
+      "Added data-audience attributes (adult, k12, all) for explicit content targeting",
+      "Added Learning Adventure card for K-12 users (data-audience='k12')",
+      "Updated CSS rules to support data-audience selectors",
+      "Updated K12_DASHBOARD_ARCHITECTURE.md with triple-layer hiding strategy",
+      "Updated K12_REGRESSION_CHECKLIST.md with Session 81 checks"
+    ],
+    "architecture_decisions": [
+      "DECISION-81-001: Data attributes (data-audience) for explicit audience targeting",
+      "DECISION-81-002: Triple-layer hiding: CSS + JS class + inline style",
+      "DECISION-81-003: Cache-busting on all CSS/JS files"
+    ],
+    "files_changed": [
+      "dashboard.html (cache-busting + data-audience attributes)",
+      "assets/js/dashboard-adapter.js v1.1.0 (inline style hiding)",
+      "assets/css/components.css (data-audience CSS rules)",
+      "docs/architecture/K12_DASHBOARD_ARCHITECTURE.md v1.1.0",
+      "docs/testing/K12_REGRESSION_CHECKLIST.md v1.1"
+    ],
+    "next_steps": [
+      "Test K-12 user login to verify Career Guidance hidden",
+      "Test adult user login to verify Career Guidance visible",
+      "K-12 dashboards 3-5, 6-8, 9-12 grade-specific content",
+      "SCOPE_CTE_VOCATIONAL Track 3"
+    ]
+  },
 
   "session_77_summary": {
     "focus": "K-12 Education System - Phases 1-4",
@@ -484,6 +520,12 @@
   },
 
   "recent_changes": [
+    {
+      "session": 81,
+      "date": "2025-12-26",
+      "change": "K-12 Dashboard Career Content Hiding Fix + Data Attributes",
+      "impact": "Fixed Career Guidance card visibility bug for K-12 users. Root cause: CSS cached without K-12 rules, JS class addition not sufficient. Solution: (1) Cache-busting on all CSS files (?v=81), (2) Triple-layer hiding: CSS rules + JS class + inline style.display='none', (3) New data-audience attributes (adult, k12, all) for explicit content targeting. Added Learning Adventure card (data-audience='k12') as K-12 replacement for Career Guidance. Updated architecture and testing docs."
+    },
     {
       "session": 76,
       "date": "2025-12-24",

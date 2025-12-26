@@ -1,6 +1,8 @@
 # K-12 Dashboard Regression Checklist
 
-**Created:** 2025-12-25 (Session 81)
+**Version:** 1.1
+**Created:** 2025-12-25 (Session 80)
+**Updated:** 2025-12-26 (Session 81) - data-audience checks, inline style verification
 **Purpose:** Prevent regressions in K-12 dashboard content hiding
 
 ---
@@ -38,7 +40,16 @@ Run these checks with a K-12 test user:
 - [ ] Check `<body>` element has class `user-k12`
 - [ ] Check `<body>` element has appropriate tier class (e.g., `ui-tier-elementary`)
 
-### 4. K-12 Specific Features
+### 4. Session 81: Data Attributes & Inline Styles
+
+- [ ] Career Guidance card has `data-audience="adult"` attribute
+- [ ] Career Guidance card has `style="display: none"` inline
+- [ ] Learning Adventure card has `data-audience="k12"` attribute
+- [ ] Learning Adventure card IS visible for K-12 users
+- [ ] Console shows: `[DashboardAdapter] Hidden adult content: Career Guidance`
+- [ ] Console shows: `[DashboardAdapter] Shown K-12 content: Learning Adventure`
+
+### 5. K-12 Specific Features
 
 - [ ] Grade badge appears next to username
 - [ ] Navigation labels simplified for K-2 users
