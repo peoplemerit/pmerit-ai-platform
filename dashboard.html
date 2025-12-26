@@ -18,13 +18,13 @@
   })();
   </script>
 
-<link rel="stylesheet" href="assets/css/theme-variables.css">
-  <link rel="stylesheet" href="assets/css/base.css">
-  <link rel="stylesheet" href="assets/css/brand.css">
-  <link rel="stylesheet" href="assets/css/learner-portal-layout.css">
-  <link rel="stylesheet" href="assets/css/components.css">
-  <link rel="stylesheet" href="assets/css/responsive.css">
-  <link rel="stylesheet" href="assets/css/responsive-fixes.css">
+<link rel="stylesheet" href="assets/css/theme-variables.css?v=81">
+  <link rel="stylesheet" href="assets/css/base.css?v=81">
+  <link rel="stylesheet" href="assets/css/brand.css?v=81">
+  <link rel="stylesheet" href="assets/css/learner-portal-layout.css?v=81">
+  <link rel="stylesheet" href="assets/css/components.css?v=81">
+  <link rel="stylesheet" href="assets/css/responsive.css?v=81">
+  <link rel="stylesheet" href="assets/css/responsive-fixes.css?v=81">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
   <style>
     /* Hybrid Layout Specific Styles */
@@ -394,8 +394,8 @@
   <script src="assets/js/config.js"></script>
   <script src="assets/js/auth.js"></script>
   <script src="assets/js/auth-check.js"></script>
-  <script src="assets/js/dashboard-adapter.js?v=81"></script>
-  <script src="assets/js/dashboard-courses.js?v=80"></script>
+  <script src="assets/js/dashboard-adapter.js?v=81.1"></script>
+  <script src="assets/js/dashboard-courses.js?v=81"></script>
 </head>
 <body>
   <!-- Overlay for mobile panel toggling -->
@@ -733,14 +733,16 @@
     <section class="portal-section">
       <h2>Dashboard Overview</h2>
       <div class="dashboard-cards">
-        <div class="dashboard-card">
+        <!-- Universal: AI Assistant (all users) -->
+        <div class="dashboard-card" data-audience="all">
           <h3><i class="fas fa-brain"></i> AI Assistant</h3>
           <ul>
             <li>Chat with PMERIT AI for help and recommendations</li>
             <li>Get support or escalate to a human</li>
           </ul>
         </div>
-        <div class="dashboard-card">
+        <!-- Universal: Courses (all users) -->
+        <div class="dashboard-card" data-audience="all">
           <h3><i class="fas fa-book"></i> My Courses & Paths</h3>
           <ul>
             <li>View enrolled courses and recommended paths</li>
@@ -748,28 +750,41 @@
             <li><a href="#my-courses-section" class="text-accent" onclick="document.getElementById('my-courses-section').scrollIntoView({behavior:'smooth'}); return false;"><i class="fas fa-graduation-cap"></i> Enter Classroom (with Virtual Human)</a></li>
           </ul>
         </div>
-        <div class="dashboard-card">
-          <h3><i class="fas fa-chart-line"></i> Progress & Assessments</h3>
+        <!-- Universal: Progress (all users) -->
+        <div class="dashboard-card" data-audience="all">
+          <h3><i class="fas fa-chart-line"></i> My Progress</h3>
           <ul>
             <li>Track progress, milestones, and assessment scores</li>
             <li>Earn badges and certificates</li>
           </ul>
         </div>
-        <div class="dashboard-card" data-content-type="career" data-min-age="14">
+        <!-- Adult-only: Career Guidance (hidden for K-8) -->
+        <div class="dashboard-card" data-audience="adult" data-content-type="career" data-min-age="14">
           <h3><i class="fas fa-briefcase"></i> Career Guidance</h3>
           <ul>
             <li>Take career assessments</li>
             <li>Explore job curricula and connect with employers</li>
           </ul>
         </div>
-        <div class="dashboard-card">
+        <!-- K-12 Only: Learning Adventure (shown for K-12, hidden for adults) -->
+        <div class="dashboard-card k12-learning-section" data-audience="k12" style="display: none;">
+          <h3><i class="fas fa-rocket"></i> Learning Adventure</h3>
+          <ul>
+            <li>Explore fun lessons and activities</li>
+            <li>Earn stars and achievements</li>
+            <li>Track your learning journey</li>
+          </ul>
+        </div>
+        <!-- Universal: Community (all users) -->
+        <div class="dashboard-card" data-audience="all">
           <h3><i class="fas fa-users"></i> Community & Support</h3>
           <ul>
             <li>Join forums, study groups, and get help</li>
             <li>Contact human support if needed</li>
           </ul>
         </div>
-        <div class="dashboard-card">
+        <!-- Universal: Settings (all users) -->
+        <div class="dashboard-card" data-audience="all">
           <h3><i class="fas fa-cog"></i> Settings & Profile</h3>
           <ul>
             <li>Manage your info, notifications, and privacy</li>

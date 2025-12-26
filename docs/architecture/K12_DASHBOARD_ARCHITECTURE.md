@@ -1,7 +1,8 @@
 # K-12 Dashboard Architecture
 
-**Version:** 1.0.0
-**Created:** 2025-12-25 (Session 81)
+**Version:** 1.1.0
+**Created:** 2025-12-25 (Session 80)
+**Updated:** 2025-12-26 (Session 81) - data-audience attributes, inline style fallback
 **Decision:** DECISION-80-001 (Option C Hybrid Dashboard)
 
 ---
@@ -49,17 +50,35 @@ PMERIT uses a **single dashboard.html** that dynamically adapts content based on
 
 ## 2. HTML Element Targeting
 
-### 2.1 Elements with Data Attributes (Preferred)
+### 2.1 Data Attributes (Primary - Session 81)
+
+| Attribute | Values | Purpose |
+|-----------|--------|---------|
+| `data-audience` | `adult`, `k12`, `all` | **Primary** content filter (Session 81) |
+| `data-content-type` | `career` | Legacy content type marker |
+| `data-min-age` | `14`, `18` | Age-based filtering (future use) |
 
 ```html
-<!-- Career Guidance Card -->
-<div class="dashboard-card" data-content-type="career" data-min-age="14">
+<!-- Universal: Shown for ALL users -->
+<div class="dashboard-card" data-audience="all">
+  <h3>AI Assistant</h3>
+</div>
+
+<!-- Adult-only: Hidden for K-12 users -->
+<div class="dashboard-card" data-audience="adult" data-content-type="career" data-min-age="14">
   <h3><i class="fas fa-briefcase"></i> Career Guidance</h3>
-  ...
+</div>
+
+<!-- K-12 only: Shown for K-12 users, hidden for adults -->
+<div class="dashboard-card k12-learning-section" data-audience="k12" style="display: none;">
+  <h3><i class="fas fa-rocket"></i> Learning Adventure</h3>
 </div>
 ```
 
-**CSS Selector:** `[data-content-type="career"]`
+**CSS Selectors:**
+- `[data-audience="adult"]` (hidden for K-12)
+- `[data-audience="k12"]` (shown for K-12, hidden for adults)
+- `[data-content-type="career"]` (legacy fallback)
 
 ### 2.2 Sidebar Navigation
 
@@ -117,11 +136,17 @@ K12_HIDDEN_SELECTORS: [
 .user-k12 .hidden-for-k12,
 body.user-k12 #nav-career,
 body.user-k12 .icon-sidebar-item[data-section="career"],
-body.user-k12 [data-content-type="career"] {
+body.user-k12 [data-content-type="career"],
+body.user-k12 [data-audience="adult"] {
   display: none !important;
 }
 
-/* K-12 visible content */
+/* Show K-12 specific content (data-audience="k12") */
+body.user-k12 [data-audience="k12"] {
+  display: flex !important;
+}
+
+/* K-12 visible content (legacy class support) */
 .visible-for-k12 {
   display: block;
 }
@@ -129,10 +154,19 @@ body.user-k12 [data-content-type="career"] {
 /* Hide K-12 specific content for adults */
 .user-adult .visible-for-k12,
 .user-adult .k12-learning-section,
-.user-adult .parent-oversight-notice {
+.user-adult .parent-oversight-notice,
+body.user-adult [data-audience="k12"] {
   display: none !important;
 }
 ```
+
+### Triple-Layer Hiding (Session 81)
+
+To ensure content is hidden even if CSS is cached:
+
+1. **CSS Rules** (Primary): `body.user-k12 [data-audience="adult"] { display: none !important; }`
+2. **JS Class Addition**: Elements get `hidden-for-k12` class for fallback CSS
+3. **JS Inline Style** (Cache-proof): `element.style.display = 'none'`
 
 ---
 

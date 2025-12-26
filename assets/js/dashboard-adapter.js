@@ -2,8 +2,9 @@
  * PMERIT Dashboard Adapter
  * Implements Option C (Hybrid) - Single dashboard with dynamic content based on user type
  *
- * @version 1.0.0
+ * @version 1.1.0
  * @created December 25, 2025 (Session 80)
+ * @updated December 26, 2025 (Session 81) - Added inline style.display for cache-proof hiding
  *
  * Purpose:
  * - Detects user type (adult, K-2, 3-5, 6-8, 9-12) from AUTH module
@@ -166,50 +167,65 @@
 
     /**
      * Hide career-focused content for K-12 users
+     * Uses data-audience attributes for explicit targeting + fallback selectors
      */
     hideCareerContent: function() {
-      // Use CSS classes to hide instead of display:none for better maintainability
+      // PRIMARY: Use data-audience="adult" attribute for explicit targeting
+      document.querySelectorAll('[data-audience="adult"]').forEach(el => {
+        el.classList.add('hidden-for-k12');
+        el.setAttribute('aria-hidden', 'true');
+        el.style.display = 'none';
+        console.log('[DashboardAdapter] Hidden adult content:', el.querySelector('h3')?.textContent || el.className);
+      });
+
+      // FALLBACK: Use K12_HIDDEN_SELECTORS for legacy/other elements
       this.K12_HIDDEN_SELECTORS.forEach(selector => {
         try {
           const elements = document.querySelectorAll(selector);
           elements.forEach(el => {
-            el.classList.add('hidden-for-k12');
-            el.setAttribute('aria-hidden', 'true');
+            if (!el.classList.contains('hidden-for-k12')) { // Avoid double-processing
+              el.classList.add('hidden-for-k12');
+              el.setAttribute('aria-hidden', 'true');
+              el.style.display = 'none';
+              console.log('[DashboardAdapter] Hidden element (fallback):', selector);
+            }
           });
         } catch (e) {
-          // Selector might be invalid (e.g., :has not supported in all browsers)
           console.debug('[DashboardAdapter] Selector not supported:', selector);
         }
       });
 
-      // Fallback: Hide career guidance card by icon
+      // FALLBACK: Hide career guidance card by icon (fa-briefcase)
       document.querySelectorAll('.dashboard-card').forEach(card => {
-        if (card.querySelector('.fa-briefcase')) {
+        if (card.querySelector('.fa-briefcase') && !card.classList.contains('hidden-for-k12')) {
           card.classList.add('hidden-for-k12');
           card.setAttribute('aria-hidden', 'true');
+          card.style.display = 'none';
+          console.log('[DashboardAdapter] Hidden career card by icon');
         }
       });
 
-      // Hide "Career Assessment" quick action
+      // Hide "Career Assessment" quick action (Take Assessment) for K-8
+      const uiTier = document.body.classList;
+      const isK8OrYounger = uiTier.contains('ui-tier-k2') || uiTier.contains('ui-tier-elementary') || uiTier.contains('ui-tier-middle');
+
       document.querySelectorAll('.quick-action-card').forEach(card => {
         const text = card.textContent || '';
+        // Hide Assessment for all K-12
         if (text.includes('Assessment') && !text.includes('Quiz')) {
           card.classList.add('hidden-for-k12');
           card.setAttribute('aria-hidden', 'true');
+          card.style.display = 'none';
+          console.log('[DashboardAdapter] Hidden quick action: Assessment');
+        }
+        // Hide Pathways for K-8 only (keep for high school)
+        if (isK8OrYounger && (text.includes('Pathway') || text.includes('pathway'))) {
+          card.classList.add('hidden-for-k12');
+          card.setAttribute('aria-hidden', 'true');
+          card.style.display = 'none';
+          console.log('[DashboardAdapter] Hidden quick action: Pathways (K-8)');
         }
       });
-
-      // Hide "Explore Pathways" for K-8 (keep for high school)
-      const uiTier = document.body.classList;
-      if (uiTier.contains('ui-tier-k2') || uiTier.contains('ui-tier-elementary') || uiTier.contains('ui-tier-middle')) {
-        document.querySelectorAll('.quick-action-card').forEach(card => {
-          const text = card.textContent || '';
-          if (text.includes('Pathway') || text.includes('pathway')) {
-            card.classList.add('hidden-for-k12');
-            card.setAttribute('aria-hidden', 'true');
-          }
-        });
-      }
 
       console.log('[DashboardAdapter] Career content hidden for K-12 user');
     },
@@ -218,9 +234,18 @@
      * Show career content (for adults)
      */
     showCareerContent: function() {
+      // Show adult-only content
+      document.querySelectorAll('[data-audience="adult"]').forEach(el => {
+        el.classList.remove('hidden-for-k12');
+        el.removeAttribute('aria-hidden');
+        el.style.display = '';
+      });
+
+      // Also clear any fallback-hidden elements
       document.querySelectorAll('.hidden-for-k12').forEach(el => {
         el.classList.remove('hidden-for-k12');
         el.removeAttribute('aria-hidden');
+        el.style.display = '';
       });
     },
 
@@ -228,10 +253,20 @@
      * Show K-12 specific content
      */
     showK12Content: function() {
+      // PRIMARY: Use data-audience="k12" attribute
+      document.querySelectorAll('[data-audience="k12"]').forEach(el => {
+        el.classList.remove('hidden');
+        el.classList.add('visible-for-k12');
+        el.style.display = '';
+        console.log('[DashboardAdapter] Shown K-12 content:', el.querySelector('h3')?.textContent || el.className);
+      });
+
+      // FALLBACK: Use K12_ONLY_SELECTORS
       this.K12_ONLY_SELECTORS.forEach(selector => {
         document.querySelectorAll(selector).forEach(el => {
           el.classList.remove('hidden');
           el.classList.add('visible-for-k12');
+          el.style.display = '';
         });
       });
     },
@@ -240,9 +275,16 @@
      * Hide K-12 specific content (for adults)
      */
     hideK12Content: function() {
+      // Hide K-12-only content
+      document.querySelectorAll('[data-audience="k12"]').forEach(el => {
+        el.classList.add('hidden');
+        el.style.display = 'none';
+      });
+
       this.K12_ONLY_SELECTORS.forEach(selector => {
         document.querySelectorAll(selector).forEach(el => {
           el.classList.add('hidden');
+          el.style.display = 'none';
         });
       });
     },
