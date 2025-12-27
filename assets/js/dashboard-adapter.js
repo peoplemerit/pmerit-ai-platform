@@ -2,9 +2,10 @@
  * PMERIT Dashboard Adapter
  * Implements Option C (Hybrid) - Single dashboard with dynamic content based on user type
  *
- * @version 1.1.0
+ * @version 1.2.0
  * @created December 25, 2025 (Session 80)
  * @updated December 26, 2025 (Session 81) - Added inline style.display for cache-proof hiding
+ * @updated December 27, 2025 (Session 82) - 9-12 now sees career content (K-8 hide only)
  *
  * Purpose:
  * - Detects user type (adult, K-2, 3-5, 6-8, 9-12) from AUTH module
@@ -141,20 +142,38 @@
     applyUIType: function(uiType, user) {
       const body = document.body;
       const isK12 = uiType !== 'adult';
+      const isHighSchool = uiType === 'adolescence'; // 9-12 graders
+      const isK8 = isK12 && !isHighSchool; // K-8 only
 
       // Add UI tier class to body
       const uiClass = this.UI_CLASSES[uiType] || 'ui-tier-adult';
       body.classList.add(uiClass);
       body.classList.add(isK12 ? 'user-k12' : 'user-adult');
 
-      console.log('[DashboardAdapter] Applied classes:', uiClass, isK12 ? 'user-k12' : 'user-adult');
+      // Add specific class for high school students (9-12)
+      if (isHighSchool) {
+        body.classList.add('user-high-school');
+      }
 
-      // Hide/show content based on user type
-      if (isK12) {
+      console.log('[DashboardAdapter] Applied classes:', uiClass, isK12 ? 'user-k12' : 'user-adult', isHighSchool ? 'user-high-school' : '');
+
+      // Career content visibility policy:
+      // - K-8 (early_childhood, childhood, early_adolescence): HIDE career content
+      // - 9-12 (adolescence): SHOW career content (reinforces aspirations)
+      // - Adults: SHOW career content
+      if (isK8) {
         this.hideCareerContent();
         this.showK12Content();
         this.adaptUIForGrade(uiType, user.gradeCode);
+        console.log('[DashboardAdapter] K-8 user: career content hidden');
+      } else if (isHighSchool) {
+        // 9-12 students see career content but also get K-12 adaptations
+        this.showCareerContent();
+        this.showK12Content();
+        this.adaptUIForGrade(uiType, user.gradeCode);
+        console.log('[DashboardAdapter] 9-12 user: career content visible (aspirational)');
       } else {
+        // Adults
         this.showCareerContent();
         this.hideK12Content();
       }

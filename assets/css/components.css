@@ -2123,17 +2123,26 @@
 }
 
 /* ========================================
-   K-12 DASHBOARD ADAPTATIONS (Session 80)
+   K-12 DASHBOARD ADAPTATIONS (Session 80-82)
    Option C Hybrid: Single dashboard with dynamic content
+   Policy: K-8 hide career, 9-12 show career (Session 82)
    ======================================== */
 
-/* Hide career content for K-12 users */
-.user-k12 .hidden-for-k12,
-body.user-k12 #nav-career,
-body.user-k12 .icon-sidebar-item[data-section="career"],
-body.user-k12 [data-content-type="career"],
-body.user-k12 [data-audience="adult"] {
+/* Hide career content for K-8 users (NOT high school 9-12) */
+.user-k12:not(.user-high-school) .hidden-for-k12,
+body.user-k12:not(.user-high-school) #nav-career,
+body.user-k12:not(.user-high-school) .icon-sidebar-item[data-section="career"],
+body.user-k12:not(.user-high-school) [data-content-type="career"],
+body.user-k12:not(.user-high-school) [data-audience="adult"] {
   display: none !important;
+}
+
+/* High school students (9-12) see career content */
+body.user-high-school [data-audience="adult"],
+body.user-high-school #nav-career,
+body.user-high-school .icon-sidebar-item[data-section="career"],
+body.user-high-school [data-content-type="career"] {
+  display: flex !important;
 }
 
 /* Show K-12 specific content (data-audience="k12") */
