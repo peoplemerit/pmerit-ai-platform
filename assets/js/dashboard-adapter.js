@@ -2,10 +2,11 @@
  * PMERIT Dashboard Adapter
  * Implements Option C (Hybrid) - Single dashboard with dynamic content based on user type
  *
- * @version 1.2.0
+ * @version 1.3.0
  * @created December 25, 2025 (Session 80)
  * @updated December 26, 2025 (Session 81) - Added inline style.display for cache-proof hiding
  * @updated December 27, 2025 (Session 82) - 9-12 now sees career content (K-8 hide only)
+ * @updated December 27, 2025 (Session 82b) - Fixed uiType mapping: backend '912' -> frontend 'adolescence'
  *
  * Purpose:
  * - Detects user type (adult, K-2, 3-5, 6-8, 9-12) from AUTH module
@@ -102,12 +103,25 @@
     /**
      * Determine UI type from user data
      * @param {object} user - User object from AUTH
-     * @returns {string} UI type
+     * @returns {string} UI type (normalized to descriptive names)
      */
     determineUIType: function(user) {
-      // If backend provided uiType, use it
+      // If backend provided uiType, normalize it to descriptive names
       if (user.uiType) {
-        return user.uiType;
+        // Map backend shortcodes to frontend descriptive names
+        const uiTypeMap = {
+          'k2': 'early_childhood',
+          '35': 'childhood',
+          '68': 'early_adolescence',
+          '912': 'adolescence',
+          // Also accept already-descriptive names (pass-through)
+          'early_childhood': 'early_childhood',
+          'childhood': 'childhood',
+          'early_adolescence': 'early_adolescence',
+          'adolescence': 'adolescence',
+          'adult': 'adult'
+        };
+        return uiTypeMap[user.uiType] || user.uiType;
       }
 
       // If user is K-12 (by accountType), derive from gradeCode
