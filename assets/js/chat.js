@@ -191,11 +191,11 @@ function initializeMobileChat() {
 
   logger.debug('📱 Initializing mobile chat...');
 
-  // Character counter
+  // Character counter (2000 char limit for general AI mode)
   chatInput.addEventListener('input', function() {
     if (charCount) {
-      charCount.textContent = `${this.value.length}/1000`;
-      
+      charCount.textContent = `${this.value.length}/2000`;
+
       if (this.value.length > 0) {
         charCount.classList.remove('hidden');
       } else {
@@ -232,10 +232,10 @@ function initializeDesktopChat() {
 
   logger.debug('🖥️ Initializing desktop chat...');
 
-  // Character counter
+  // Character counter (2000 char limit for general AI mode)
   desktopInput.addEventListener('input', function() {
     if (desktopCharCount) {
-      desktopCharCount.textContent = `${this.value.length}/1000`;
+      desktopCharCount.textContent = `${this.value.length}/2000`;
       
       if (this.value.length > 0) {
         desktopCharCount.classList.remove('hidden');
@@ -322,7 +322,7 @@ async function sendMessage(source) {
   chatInput.style.height = 'auto';
   
   if (charCount) {
-    charCount.textContent = '0/1000';
+    charCount.textContent = '0/2000';
     charCount.classList.add('hidden');
   }
 
