@@ -616,6 +616,117 @@ function updateDashboardButtons() {
 
 ---
 
+## 12. VWP SESSION 82 — Visual Walkthrough Protocol (2025-12-27)
+
+### 12.1 VWP GAPS IDENTIFIED
+
+| Gap ID | Component | Description | Severity | Recommendation |
+|--------|-----------|-------------|----------|----------------|
+| HP-G17 | Logo | PMERIT logo not clickable (should redirect to homepage) | Medium | FIX - Add anchor wrapper |
+| HP-G18 | AI Chat | AI doesn't respond in user's selected language | **HIGH** | FIX - Pass language context to AI |
+| HP-G19 | Pricing | Red color feels out of place vs blue theme | Low | REVIEW - Consider blue tones |
+| HP-G20 | Auth Toggle | Sign In → Sign Out not toggling when authenticated | High | FIX - updateHeaderAuthState |
+| HP-G21 | Learning Pathways | Registration-focused, should be browse-only catalog | Medium | REDESIGN - ASU-style catalog |
+| HP-G22 | Assessment Header | Missing Sign In/Start Learning buttons | Medium | FIX - Add header buttons |
+| HP-G23 | AI Chat | 1000 char limit cuts words in half | Medium | FIX - Word boundary detection |
+| HP-G24 | AI Chat | Top banner appears as part of conversation | Medium | FIX - Visual separator |
+| HP-G25 | AI Chat | File input icons (+ / paperclip) not functional | Low | DISABLE - Remove or "Coming Soon" |
+| HP-G26 | AI Chat | Mic/voice input not working | Medium | IMPLEMENT - Web Speech API |
+| LP-G2 | Learning Pathways | K-12 programs visible to guests (should be hidden) | High | FIX - Filter by audience |
+
+### 12.2 ELEMENTS VERIFIED WORKING
+
+| Element | Status | Notes |
+|---------|--------|-------|
+| Settings → Dark Mode | ✅ WORKING | Toggles correctly |
+| Settings → Text-to-Speech | ✅ WORKING | Enables/disables TTS |
+| Settings → Preview Voices | ✅ WORKING | Opens voice selector |
+| Customer Service Modal | ✅ WORKING | Opens correctly |
+| Begin Assessment | ✅ WORKING | Navigates correctly |
+| AI Chat General Mode | ✅ WORKING | Responds to questions |
+| Language UI Translation | ✅ WORKING | UI text translates |
+
+### 12.3 PRIORITY BREAKDOWN
+
+**HIGH PRIORITY (Must Fix):**
+- HP-G18: AI language response - Currently responds in wrong language
+- HP-G20: Auth toggle broken - Users can't sign out from header
+- LP-G2: K-12 visible to guests - Privacy/UX issue
+
+**MEDIUM PRIORITY (Should Fix):**
+- HP-G17: Logo clickability
+- HP-G21: Learning Pathways redesign (browse-only catalog)
+- HP-G22: Assessment header buttons
+- HP-G23: Character limit word-cutting
+- HP-G24: Banner separation
+- HP-G26: Voice input (Web Speech API)
+
+**LOW PRIORITY (Can Defer):**
+- HP-G19: Pricing page color
+- HP-G25: File input icons
+
+### 12.4 FEATURE RECOMMENDATIONS
+
+#### File Input (HP-G25)
+**Recommendation: DISABLE**
+- Requires backend storage infrastructure
+- COPPA compliance issues for K-12
+- Security scanning needed for uploads
+- Action: Remove icons or show "Coming Soon" tooltip
+
+#### Voice Input (HP-G26)
+**Recommendation: IMPLEMENT (MVP)**
+- Uses Web Speech API (browser-native, no backend)
+- Improves accessibility
+- Benefits K-12 users (young children)
+- Natural complement to existing TTS
+
+#### Character Limit (HP-G23)
+**Recommendation: FIX**
+- Option A: Word boundary detection (truncate at last complete word)
+- Option B: Increase limit for General AI mode (2000), keep 1000 for CS
+- Option C: Show character count with warning at 900
+
+### 12.5 FOOTER & SUBPAGE GAPS
+
+| Gap ID | Component | Description | Severity | Recommendation |
+|--------|-----------|-------------|----------|----------------|
+| FT-G1 | Privacy Page | Styling inconsistent (white theme, no sidebar) | Medium | Style to match main theme |
+| FT-G2 | Privacy Page | Content incomplete/placeholder-level | Medium | Expand legal content |
+| FT-G3 | Subpage Headers | Orange "Donate" button vs blue theme | Low | Consider blue tones |
+| FT-G4 | Privacy Header | Sign In/Start Learning buttons missing | High | Add to partials/header.html |
+| FT-G5 | Contact Page | Same styling inconsistency | Medium | Apply consistent theme |
+| FT-G6 | Contact Header | Sign In/Start Learning buttons missing | High | Add to partials/header.html |
+| FT-G7 | Contact Form | "Send Message" button invisible/disabled | Medium | Fix button visibility |
+| FT-G8 | Partnerships | Same styling issues | Medium | Apply consistent theme |
+| FT-G9 | Partnerships | "Apply Now" button invisible/disabled | Medium | Fix button visibility |
+| FT-G10 | Partnerships Header | Sign In/Start Learning buttons missing | High | Add to partials/header.html |
+| FT-G11 | Footer | "Customer Service" redundant (in Features column) | Low | REMOVE from Support column |
+| FT-G12 | Footer | "Support" section name unclear | Low | RENAME to "FAQ" or "Help" |
+| FT-G13 | Footer | Missing "Products" link | Medium | ADD Products link |
+
+### 12.6 SUBPAGE THEME INCONSISTENCIES
+
+**Observed Pattern:**
+- Homepage: Dark blue header, vibrant design
+- Subpages (Privacy, Contact, Partnerships): Light gray/white header, muted design
+- Modals (Voice Selector, Customer Service): ✅ Consistent with blue theme
+
+**Root Cause:** `partials/header.html` uses different styling than homepage embedded header
+
+**Fix Required:**
+1. Update `partials/header.html` to match homepage header styling
+2. Add Sign In / Start Learning buttons to subpage headers
+3. Ensure Donate button matches homepage gold/blue styling
+
+---
+
+*VWP Session 82 conducted: 2025-12-27*
+*Gaps documented for remediation*
+
+---
+
 *Documentation created: 2025-12-13*
 *Session duration: ~3 hours*
 *Primary contributor: Claude Web (Architect) + Claude Code (Implementer)*
+*Updated: 2025-12-27 (VWP Session 82)*

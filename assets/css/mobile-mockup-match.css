@@ -67,6 +67,12 @@
     display: flex;
     align-items: center;
     gap: var(--space-sm);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .pmerit-logo:hover {
+    opacity: 0.9;
   }
   
   .pmerit-logo::before {
