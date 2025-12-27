@@ -11,7 +11,7 @@
   "session_82_summary": {
     "focus": "K-12 Career Visibility Policy - 9-12 See Career Content",
     "frontend_version": "1.2.0",
-    "commits": [],
+    "commits": ["93ed927", "9ca5a9c"],
     "issues_resolved": [
       "9-12 students now see Career Guidance (aspirational content)"
     ],
