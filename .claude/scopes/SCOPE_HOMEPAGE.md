@@ -721,12 +721,54 @@ function updateDashboardButtons() {
 
 ---
 
+### 12.7 VWP SESSION 82 — FIXES IMPLEMENTED
+
+**Date:** 2025-12-27
+
+**Theme Color Fix (HP-G27)**
+Changed hover/press indicators from coral/red to blue:
+- `light-theme.css`: `--text-link: #2A5B8C` (was `#FF6B6B`)
+- `light-theme.css`: `--text-link-hover: #1f4567` (was `#E05A5A`)
+- `theme-variables.css`: Updated corresponding variables
+- Dark mode: `--text-link: #6a9bd8`, `--text-link-hover: #7ab0eb`
+
+**Customer Service Modal Theme Fix (HP-G28)**
+Fixed theme inconsistency in `partials/customer-service-modal.html`:
+- Changed Tailwind blue (`#2563EB`) to PMERIT brand gradient (`--gradient-hero`)
+- Updated fallback colors to use PMERIT primary (`#2A5B8C`)
+- Added proper dark mode support
+- Removed duplicate HTML content in file
+- Version bumped to 1.1
+
+**Fixes Completed:**
+| Gap ID | Fix | Files Changed |
+|--------|-----|---------------|
+| HP-G17 | Logo clickable | `index.html`, `index-layout.css`, `mobile-mockup-match.css` |
+| HP-G23 | Char limit 2000 | `index.html`, `chat.js`, `chat-input.js` |
+| HP-G24 | Banner separator | `components.css` (`.dev-banner`) |
+| HP-G25 | File icons removed | `index.html` (attachment buttons removed) |
+| HP-G27 | Link hover blue | `light-theme.css`, `theme-variables.css` |
+| HP-G28 | CS modal theme | `partials/customer-service-modal.html` |
+| FT-G7/G9 | Button visibility | `contact.html`, `partnerships.html`, `privacy.html` (added light-theme.css) |
+| FT-G11 | Customer Service duplicate | `partials/footer.html` (removed) |
+| FT-G12 | Support → FAQ & Help | `partials/footer.html` (renamed) |
+| FT-G13 | Products link | `partials/footer.html` (added) |
+
+**Remaining:**
+- HP-G18: AI language response (backend)
+- HP-G20: Auth toggle broken
+- HP-G26: Voice input (Web Speech API)
+- LP-G2: K-12 visible to guests
+- Non-scrollable design verification
+
+---
+
 *VWP Session 82 conducted: 2025-12-27*
-*Gaps documented for remediation*
+*Gaps documented and fixes implemented*
 
 ---
 
 *Documentation created: 2025-12-13*
 *Session duration: ~3 hours*
 *Primary contributor: Claude Web (Architect) + Claude Code (Implementer)*
-*Updated: 2025-12-27 (VWP Session 82)*
+*Updated: 2025-12-27 (VWP Session 82 - Phase 2 Fixes)*

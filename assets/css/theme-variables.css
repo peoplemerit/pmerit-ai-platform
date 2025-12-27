@@ -63,8 +63,8 @@
     --text-secondary: #6C757D;         /* Secondary text */
     --text-muted: #8E9499;             /* Muted text */
     --text-inverse: #FFFFFF;           /* White text (on dark backgrounds) */
-    --text-link: #FF6B6B;              /* Link color (coral) */
-    --text-link-hover: #E05A5A;        /* Link hover */
+    --text-link: #375b8d;              /* Blue link color (VWP Session 82 - was coral #FF6B6B) */
+    --text-link-hover: #2a4a73;        /* Darker blue hover (was coral #E05A5A) */
     
     /* === INTERACTIVE COLORS === */
     --interactive-primary: #375b8d;           /* Primary buttons */
@@ -212,8 +212,8 @@
     --text-secondary: #B0B0B0;         /* Secondary light text */
     --text-muted: #8A8A8A;             /* Muted light text */
     --text-inverse: #121212;           /* Dark text (on light backgrounds) */
-    --text-link: #FF7B7B;
-    --text-link-hover: #FF6B6B;
+    --text-link: #6a9bd8;              /* Lighter blue for dark mode (VWP Session 82) */
+    --text-link-hover: #7ab0eb;        /* Even lighter blue on hover */
     
     /* === INTERACTIVE COLORS === */
     --interactive-primary: #598bca;
