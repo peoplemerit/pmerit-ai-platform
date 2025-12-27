@@ -111,18 +111,13 @@
     <!-- ChatGPT-Style Input (Mobile) -->
     <div class="chat-input-container">
       <div class="chat-input-wrapper">
-        <!-- Add/Attachment Button -->
-        <button class="input-add-btn" aria-label="Add attachment">
-          <i class="fas fa-plus"></i>
-        </button>
-        
         <!-- Text Input -->
         <textarea
           class="chat-input"
           id="chatInput"
           placeholder="Ask about courses, learning paths, or your goals..."
           data-i18n-placeholder="chat.placeholder"
-          maxlength="1000"
+          maxlength="2000"
           rows="1"
           aria-label="Chat input"
         ></textarea>
@@ -140,8 +135,8 @@
           </button>
         </div>
         
-        <!-- Character Counter (hidden initially) -->
-        <span class="char-counter hidden" id="charCount">0/1000</span>
+        <!-- Character Counter -->
+        <span class="char-counter" id="charCount">0/2000</span>
       </div>
     </div>
 
@@ -324,42 +319,32 @@
       <div class="interaction-bar desktop-chat-input-area">
         <!-- Input Wrapper with Icons -->
         <div class="desktop-input-wrapper">
-          <!-- Add Button -->
-          <button class="desktop-add-btn" aria-label="Add attachment">
-            <i class="fas fa-plus"></i>
-          </button>
-          
           <!-- Text Input -->
           <textarea
             class="desktop-chat-input"
             id="desktopChatInput"
             placeholder="Ask about courses, learning paths, or your goals..."
             data-i18n-placeholder="chat.placeholder"
-            maxlength="1000"
+            maxlength="2000"
             rows="1"
             aria-label="Chat input"
           ></textarea>
-          
+
           <!-- Right Actions -->
           <div class="desktop-input-actions">
-            <!-- Attachment Button -->
-            <button class="desktop-attach-btn" aria-label="Attach file">
-              <i class="fas fa-paperclip"></i>
-            </button>
-            
             <!-- Voice Button -->
             <button class="desktop-voice-btn" aria-label="Voice input">
               <i class="fas fa-microphone"></i>
             </button>
-            
+
             <!-- Send Button -->
             <button class="desktop-send-btn" id="sendBtnDesktop" aria-label="Send message">
               <i class="fas fa-arrow-up"></i>
             </button>
           </div>
-          
-          <!-- Character Counter (hidden initially) -->
-          <span class="desktop-char-counter hidden" id="desktopCharCount">0/1000</span>
+
+          <!-- Character Counter -->
+          <span class="desktop-char-counter" id="desktopCharCount">0/2000</span>
         </div>
         
         <!-- Control Buttons Row -->

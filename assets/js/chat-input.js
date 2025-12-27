@@ -22,7 +22,7 @@
         isKeyboardOpen: false,
         originalViewportHeight: 0,
         isRecording: false,
-        charLimit: 1000
+        charLimit: 2000
     };
 
     // ========================================
