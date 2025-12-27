@@ -462,8 +462,25 @@ Before marking tasks complete:
 | Session | Date | Changes |
 |---------|------|---------|
 | 65 | 2025-12-19 | Created scope, completed audit |
+| 82 | 2025-12-27 | **Link colors changed from coral to blue** (VWP fix) |
+
+### Session 82 Changes
+
+**Link Color Update:**
+Changed `--text-link` and `--text-link-hover` from coral/red to blue to match brand:
+
+| Variable | Old Value | New Value | Theme |
+|----------|-----------|-----------|-------|
+| `--text-link` | `#FF6B6B` (coral) | `#2A5B8C` (blue) | Light |
+| `--text-link-hover` | `#E05A5A` (dark coral) | `#1f4567` (dark blue) | Light |
+| `--text-link` | `#FF7B7B` | `#6a9bd8` | Dark |
+| `--text-link-hover` | `#FF6B6B` | `#7ab0eb` | Dark |
+
+**Rationale:** Coral was causing confusion as hover/press indicators on non-CTA elements (logo, navigation) appeared "red" which felt like an error state. Blue aligns with brand identity.
+
+**Note:** Coral (`--color-accent: #FF6B6B`) is still available for intentional accent elements like CTA buttons.
 
 ---
 
-*Last Updated: 2025-12-19 by Claude Code (Session 65)*
-*Status: Audit Complete, Implementation Ready*
+*Last Updated: 2025-12-27 by Claude Code (Session 82)*
+*Status: Audit Complete, Implementation In Progress*
