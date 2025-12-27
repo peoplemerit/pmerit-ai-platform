@@ -1,8 +1,9 @@
 # K-12 Dashboard Architecture
 
-**Version:** 1.1.0
+**Version:** 1.2.0
 **Created:** 2025-12-25 (Session 80)
 **Updated:** 2025-12-26 (Session 81) - data-audience attributes, inline style fallback
+**Updated:** 2025-12-27 (Session 82) - 9-12 career visibility policy (K-8 hide, 9-12 show)
 **Decision:** DECISION-80-001 (Option C Hybrid Dashboard)
 
 ---
@@ -36,11 +37,14 @@ PMERIT uses a **single dashboard.html** that dynamically adapts content based on
 │  │  3. Determine uiType from gradeCode                                   ││
 │  │  4. Add CSS classes to <body>:                                        ││
 │  │     - .user-k12 or .user-adult                                        ││
+│  │     - .user-high-school (for 9-12 students) [Session 82]              ││
 │  │     - .ui-tier-k2 / .ui-tier-elementary / .ui-tier-middle /           ││
 │  │       .ui-tier-high / .ui-tier-adult                                  ││
-│  │  5. Call hideCareerContent() for K-12 users                           ││
-│  │  6. Add .hidden-for-k12 class to matching elements                    ││
-│  │  7. CSS rules apply display:none                                      ││
+│  │  5. Career visibility (Session 82):                                   ││
+│  │     - K-8: hideCareerContent() → hidden                               ││
+│  │     - 9-12: showCareerContent() → visible (aspirational)              ││
+│  │  6. Add .hidden-for-k12 class to matching elements (K-8 only)         ││
+│  │  7. CSS uses :not(.user-high-school) to exclude 9-12                  ││
 │  └────────────────────────────────────────────────────────────────────────┘│
 │                                                                              │
 └─────────────────────────────────────────────────────────────────────────────┘
@@ -132,13 +136,21 @@ K12_HIDDEN_SELECTORS: [
 ## 4. CSS Rules (components.css)
 
 ```css
-/* Hide career content for K-12 users */
-.user-k12 .hidden-for-k12,
-body.user-k12 #nav-career,
-body.user-k12 .icon-sidebar-item[data-section="career"],
-body.user-k12 [data-content-type="career"],
-body.user-k12 [data-audience="adult"] {
+/* Hide career content for K-8 users only (NOT high school 9-12) - Session 82 */
+.user-k12:not(.user-high-school) .hidden-for-k12,
+body.user-k12:not(.user-high-school) #nav-career,
+body.user-k12:not(.user-high-school) .icon-sidebar-item[data-section="career"],
+body.user-k12:not(.user-high-school) [data-content-type="career"],
+body.user-k12:not(.user-high-school) [data-audience="adult"] {
   display: none !important;
+}
+
+/* High school students (9-12) see career content - Session 82 */
+body.user-high-school [data-audience="adult"],
+body.user-high-school #nav-career,
+body.user-high-school .icon-sidebar-item[data-section="career"],
+body.user-high-school [data-content-type="career"] {
+  display: flex !important;
 }
 
 /* Show K-12 specific content (data-audience="k12") */

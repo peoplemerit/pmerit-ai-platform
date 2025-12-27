@@ -2,11 +2,42 @@
   "schema_version": "3.2",
   "schema_notes": "Session 67 - Dual-Repo Prompt Protocol + Strict AADOS",
 
-  "last_updated": "2025-12-26T19:00:00Z",
+  "last_updated": "2025-12-27T12:00:00Z",
   "last_updated_by": "claude-code",
 
-  "session_number": 81,
-  "last_audit_date": "2025-12-26",
+  "session_number": 82,
+  "last_audit_date": "2025-12-27",
+
+  "session_82_summary": {
+    "focus": "K-12 Career Visibility Policy - 9-12 See Career Content",
+    "frontend_version": "1.2.0",
+    "commits": [],
+    "issues_resolved": [
+      "9-12 students now see Career Guidance (aspirational content)"
+    ],
+    "major_changes": [
+      "Updated dashboard-adapter.js v1.2.0 with 9-12 career visibility logic",
+      "Added user-high-school CSS class for 9-12 students",
+      "Updated CSS rules with :not(.user-high-school) selector for K-8 only hiding",
+      "Cache-busting updated to v=82 on all dashboard assets"
+    ],
+    "architecture_decisions": [
+      "DECISION-82-001: Career content visibility policy - K-8 hide, 9-12 show (aspirational)",
+      "DECISION-82-002: user-high-school CSS class distinguishes 9-12 from K-8"
+    ],
+    "files_changed": [
+      "dashboard.html (cache-busting v=82)",
+      "assets/js/dashboard-adapter.js v1.2.0 (9-12 career visibility)",
+      "assets/css/components.css (:not(.user-high-school) selectors)",
+      "docs/architecture/K12_DASHBOARD_ARCHITECTURE.md v1.2.0"
+    ],
+    "next_steps": [
+      "Test K-8 user login to verify Career Guidance hidden",
+      "Test 9-12 user login to verify Career Guidance visible",
+      "Test adult user login to verify Career Guidance visible",
+      "Investigate network errors (Failed to fetch, Token validation)"
+    ]
+  },
 
   "session_81_summary": {
     "focus": "K-12 Dashboard Career Content Hiding Fix",
@@ -520,6 +551,12 @@
   },
 
   "recent_changes": [
+    {
+      "session": 82,
+      "date": "2025-12-27",
+      "change": "K-12 Career Visibility Policy - 9-12 See Career Content",
+      "impact": "Implemented refined career visibility policy: K-8 (K through grade 8) have career content hidden, 9-12 (high school) see career content as aspirational guidance. Changes: (1) dashboard-adapter.js v1.2.0 now checks for 'adolescence' uiType and calls showCareerContent() for 9-12 students, (2) Added 'user-high-school' CSS class for 9-12 students, (3) CSS rules updated with :not(.user-high-school) selector to exclude 9-12 from hiding, (4) Cache-busting updated to v=82. Architecture doc updated to v1.2.0."
+    },
     {
       "session": 81,
       "date": "2025-12-26",

@@ -1,8 +1,9 @@
 # K-12 Dashboard Regression Checklist
 
-**Version:** 1.1
+**Version:** 1.2
 **Created:** 2025-12-25 (Session 80)
 **Updated:** 2025-12-26 (Session 81) - data-audience checks, inline style verification
+**Updated:** 2025-12-27 (Session 82) - 9-12 career visibility policy (K-8 hide, 9-12 show)
 **Purpose:** Prevent regressions in K-12 dashboard content hiding
 
 ---
@@ -89,6 +90,29 @@ Run these checks with a K-12 test user:
 
 ---
 
+## High School (9-12) Verification - Session 82
+
+9-12 students SEE career content (aspirational guidance):
+
+- [ ] Login as 9-12 user (grade 9, 10, 11, or 12)
+- [ ] Open browser Developer Tools → Console
+- [ ] Verify log shows:
+  ```
+  [DashboardAdapter] User:
+    accountType: 'k12'
+    gradeCode: '9' (or 10, 11, 12)
+    uiType: 'adolescence'
+    isMinor: true
+  ```
+- [ ] Console shows: `[DashboardAdapter] 9-12 user: career content visible (aspirational)`
+- [ ] Check `<body>` has classes: `user-k12`, `ui-tier-high`, `user-high-school`
+- [ ] Career Guidance card IS visible
+- [ ] Career sidebar icon IS visible
+- [ ] Career nav section IS accessible
+- [ ] Learning Adventure card IS visible (K-12 content still shown)
+
+---
+
 ## Adult User Verification
 
 Always verify adult users still see career content:
@@ -150,5 +174,6 @@ document.querySelectorAll('.hidden-for-k12').forEach(el => console.log(el));
 
 ---
 
-*Checklist Version: 1.0*
-*Created: Session 81*
+*Checklist Version: 1.2*
+*Created: Session 80*
+*Updated: Session 82*
