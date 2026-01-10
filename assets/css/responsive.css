@@ -298,7 +298,8 @@
   left: -100%;
   width: 320px;
   max-width: 85vw;
-  height: 100vh;
+  height: 100vh; /* Fallback */
+  height: 100dvh;
   background: var(--bg-primary);
   box-shadow: var(--shadow-lg);
   z-index: 1100;
