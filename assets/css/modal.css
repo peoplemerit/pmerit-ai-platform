@@ -169,7 +169,8 @@
 .modal__body,
 .modal-body {
   padding: 2rem;
-  max-height: calc(100vh - 200px);
+  max-height: calc(100vh - 200px); /* Fallback */
+  max-height: calc(100dvh - 200px);
   overflow-y: auto;
 }
 

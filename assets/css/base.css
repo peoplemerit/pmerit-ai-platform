@@ -29,13 +29,13 @@ html {
     scroll-behavior: smooth;
     
     /* Use dynamic viewport height (prevents iOS address bar issues) */
-    height: 100dvh;
     height: 100vh; /* Fallback for older browsers */
+    height: 100dvh;
 }
 
 body {
+    min-height: 100vh; /* Fallback for older browsers */
     min-height: 100dvh;
-    min-height: 100vh; /* Fallback */
 
     /* Typography */
     font-family: var(--font-secondary);
@@ -59,8 +59,8 @@ body {
 /* GAP-2: Homepage fixed viewport - hide scrollbar on fixed layout pages */
 body.fixed-viewport {
     overflow: hidden;
+    height: 100vh; /* Fallback */
     height: 100dvh;
-    height: 100vh;
 }
 
 /* Subtle scrollbar styling for all scrollable elements */
@@ -302,8 +302,8 @@ input[type="number"] {
 .app-container {
     display: flex;
     flex-direction: column;
-    min-height: 100dvh;
     min-height: 100vh; /* Fallback */
+    min-height: 100dvh;
     overflow: hidden; /* Prevent body scroll */
 }
 

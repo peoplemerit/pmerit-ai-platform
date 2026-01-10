@@ -60,6 +60,7 @@
         align-items: center;
         justify-content: center;
         min-height: 100vh;
+        min-height: 100dvh;
         font-family: 'Inter', system-ui, sans-serif;
         background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         text-align: center;
