@@ -2,11 +2,49 @@
   "schema_version": "3.2",
   "schema_notes": "Session 67 - Dual-Repo Prompt Protocol + Strict AADOS",
 
-  "last_updated": "2026-01-08T12:00:00Z",
+  "last_updated": "2026-01-10T00:45:00Z",
   "last_updated_by": "claude-code",
 
-  "session_number": 82,
-  "last_audit_date": "2026-01-08",
+  "session_number": 83,
+  "last_audit_date": "2026-01-10",
+
+  "session_83_summary": {
+    "focus": "UJ-002.1 100vh→100dvh Fix + Homepage Scrollbar Elimination",
+    "frontend_version": "1.3.0",
+    "commits": ["c2bc8f5", "4bf574b", "8279ef2"],
+    "issues_resolved": [
+      "UJ-002.1: 100vh mobile viewport issue (iOS Safari address bar)",
+      "Homepage scrollbar appearing despite fixed viewport design"
+    ],
+    "major_changes": [
+      "Added 100dvh with 100vh fallback across 29 files (CSS, HTML, JS)",
+      "Fixed CSS cascade order: vh fallback first, then dvh override",
+      "Made dev-banner position:fixed to prevent document flow overflow",
+      "Added --dev-banner-height CSS variable (40px)",
+      "Added padding-top to layouts for fixed banner",
+      "CRITICAL FIX: base.css was NOT loaded in index.html",
+      "Added overflow:hidden rules directly to index-layout.css",
+      "Added fixed-viewport-html class to html element"
+    ],
+    "architecture_decisions": [
+      "DECISION-83-001: dvh with vh fallback pattern (vh first, dvh second for cascade)",
+      "DECISION-83-002: Fixed banner + padded layouts instead of calc() height",
+      "DECISION-83-003: Dual class approach (html + body) for overflow:hidden browser compat"
+    ],
+    "files_changed": [
+      "index.html (fixed-viewport-html class, cache versions v80/v6)",
+      "assets/css/index-layout.css v6 (overflow:hidden rules for html/body)",
+      "assets/css/components.css v80 (--dev-banner-height, position:fixed banner)",
+      "assets/css/base.css (overflow:hidden rules - NOT loaded in index.html)",
+      "28 other files (100dvh fallback pattern)"
+    ],
+    "next_steps": [
+      "Merge branch to main",
+      "Deploy via Cloudflare dashboard",
+      "Verify homepage has no scrollbar (match Google.com)",
+      "Verify footer visible at bottom"
+    ]
+  },
 
   "dag_reality_audit_session_3": {
     "date": "2026-01-08",
