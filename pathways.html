@@ -1134,6 +1134,161 @@
     [data-theme="dark"] .syllabus-modal {
       border: 1px solid var(--border-color);
     }
+
+    /* Coming Soon College Section */
+    .coming-soon-section {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(139, 92, 246, 0.05));
+      border: 2px dashed rgba(99, 102, 241, 0.3);
+      border-radius: var(--border-radius-lg);
+      padding: var(--space-8);
+      margin-top: var(--space-8);
+      text-align: center;
+    }
+
+    .coming-soon-section .coming-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      padding: var(--space-1) var(--space-3);
+      border-radius: 20px;
+      font-size: var(--text-xs);
+      font-weight: var(--weight-semibold);
+      margin-bottom: var(--space-4);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .coming-soon-section h2 {
+      font-size: var(--text-3xl);
+      margin-bottom: var(--space-3);
+      color: var(--text-primary);
+    }
+
+    .coming-soon-section .section-subtitle {
+      font-size: var(--text-lg);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-6);
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .coming-soon-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--space-4);
+      max-width: 900px;
+      margin: 0 auto var(--space-6);
+    }
+
+    .program-card-preview {
+      background: var(--bg-card);
+      border-radius: var(--border-radius-md);
+      padding: var(--space-5);
+      position: relative;
+      opacity: 0.85;
+      border: 1px solid var(--border-color);
+      transition: all var(--transition-fast);
+    }
+
+    .program-card-preview::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(139, 92, 246, 0.05));
+      border-radius: inherit;
+      pointer-events: none;
+    }
+
+    .program-card-preview .program-icon {
+      font-size: var(--text-3xl);
+      margin-bottom: var(--space-3);
+    }
+
+    .program-card-preview h3 {
+      font-size: var(--text-lg);
+      font-weight: var(--weight-semibold);
+      margin-bottom: var(--space-2);
+      color: var(--text-primary);
+    }
+
+    .program-card-preview p {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      margin-bottom: var(--space-3);
+    }
+
+    .status-badge {
+      display: inline-block;
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      padding: var(--space-1) var(--space-2);
+      border-radius: var(--border-radius-sm);
+      font-size: var(--text-xs);
+      font-weight: var(--weight-medium);
+    }
+
+    .notify-section {
+      margin-top: var(--space-6);
+    }
+
+    #notify-college-btn {
+      background: transparent;
+      border: 2px solid #6366f1;
+      color: #6366f1;
+      padding: var(--space-3) var(--space-6);
+      border-radius: var(--border-radius-md);
+      font-weight: var(--weight-semibold);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      min-height: var(--mobile-touch-target);
+    }
+
+    #notify-college-btn:hover {
+      background: #6366f1;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    [data-theme="dark"] .coming-soon-section {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+      border-color: rgba(99, 102, 241, 0.4);
+    }
+
+    [data-theme="dark"] #notify-college-btn {
+      border-color: #818cf8;
+      color: #818cf8;
+    }
+
+    [data-theme="dark"] #notify-college-btn:hover {
+      background: #818cf8;
+      color: white;
+    }
+
+    /* Coming Soon Nav Badge */
+    .section-nav .nav-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-size: 0.65rem;
+      font-weight: var(--weight-semibold);
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+
+    .section-nav .coming-soon-link {
+      opacity: 0.8;
+    }
+
+    .section-nav .coming-soon-link:hover {
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
@@ -1193,6 +1348,7 @@
       <a href="#global-remote-tracks">Global Remote Tracks</a>
       <a href="#local-education-tracks">Local Education</a>
       <a href="#local-career-pathways">Local Career Pathways</a>
+      <a href="#college-programs" class="coming-soon-link">College Programs <span class="nav-badge">Soon</span></a>
     </div>
   </nav>
 
@@ -1234,6 +1390,55 @@
       </div>
       <div id="career-cards" class="card-grid" role="list">
         <!-- Cards will be rendered here by JavaScript -->
+      </div>
+    </section>
+
+    <!-- College Programs Coming Soon Section -->
+    <section id="college-programs" class="track-section coming-soon-section" aria-labelledby="college-heading">
+      <span class="coming-badge">Coming Q2 2026</span>
+      <h2 id="college-heading">College Programs</h2>
+      <p class="section-subtitle">
+        Degree-alternative education. Same content as $50,000 university programs — completely free.
+        Prepare for CLEP exams to earn real college credits.
+      </p>
+
+      <div class="coming-soon-cards" role="list">
+        <div class="program-card-preview" role="listitem">
+          <div class="program-icon" aria-hidden="true">📈</div>
+          <h3>Accounting</h3>
+          <p>18 months • CPA Prep</p>
+          <span class="status-badge">Coming Soon</span>
+        </div>
+        <div class="program-card-preview" role="listitem">
+          <div class="program-icon" aria-hidden="true">🏛️</div>
+          <h3>Business Administration</h3>
+          <p>18 months • CLEP Ready</p>
+          <span class="status-badge">Coming Soon</span>
+        </div>
+        <div class="program-card-preview" role="listitem">
+          <div class="program-icon" aria-hidden="true">💻</div>
+          <h3>Computer Science</h3>
+          <p>18 months • Industry Certs</p>
+          <span class="status-badge">Coming Soon</span>
+        </div>
+        <div class="program-card-preview" role="listitem">
+          <div class="program-icon" aria-hidden="true">📊</div>
+          <h3>Data Analytics</h3>
+          <p>12 months • Google Cert</p>
+          <span class="status-badge">Coming Soon</span>
+        </div>
+        <div class="program-card-preview" role="listitem">
+          <div class="program-icon" aria-hidden="true">🧠</div>
+          <h3>Psychology</h3>
+          <p>12 months • CLEP Ready</p>
+          <span class="status-badge">Coming Soon</span>
+        </div>
+      </div>
+
+      <div class="notify-section">
+        <button id="notify-college-btn" aria-label="Get notified when college programs launch">
+          <i class="fas fa-bell" aria-hidden="true"></i> Notify Me When Available
+        </button>
       </div>
     </section>
   </main>
