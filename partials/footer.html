@@ -187,170 +187,22 @@
   </div>
 </footer>
 
-<!-- Modals (Shared across all pages) -->
-<!-- Sign Up Modal -->
-<div class="modal modal--auth" id="sign-up-modal" aria-hidden="true" role="dialog" aria-labelledby="sign-up-title">
-  <div class="modal__backdrop" id="sign-up-backdrop"></div>
-  <div class="modal__dialog">
-    <div class="modal__header">
-      <h2 class="modal__title" id="sign-up-title">Create Your Account</h2>
-      <button class="modal__close" id="sign-up-close" aria-label="Close">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-    <div class="modal__body">
-      <form class="auth-form" id="sign-up-form">
-        
-        <!-- Name Field -->
-        <div class="form-group">
-          <label for="sign-up-name" class="form-label">Full Name</label>
-          <input 
-            type="text" 
-            id="sign-up-name" 
-            class="form-input" 
-            placeholder="Enter your full name"
-            required
-            aria-required="true"
-          >
-        </div>
+<!--
+  Auth Modals - REMOVED FROM FOOTER
 
-        <!-- Email Field -->
-        <div class="form-group">
-          <label for="sign-up-email" class="form-label">Email Address</label>
-          <input 
-            type="email" 
-            id="sign-up-email" 
-            class="form-input" 
-            placeholder="you@example.com"
-            required
-            aria-required="true"
-          >
-        </div>
+  DEPRECATION NOTICE (January 10, 2026):
+  The old auth modals (sign-up-modal, sign-in-modal) have been removed from footer.html.
+  These old modals did NOT include COPPA-compliant "Myself/My Child" flow.
 
-        <!-- Password Field -->
-        <div class="form-group">
-          <label for="sign-up-password" class="form-label">Password</label>
-          <input 
-            type="password" 
-            id="sign-up-password" 
-            class="form-input" 
-            placeholder="Create a strong password"
-            required
-            aria-required="true"
-            minlength="8"
-          >
-          <p class="form-help">Must be at least 8 characters</p>
-        </div>
+  NEW LOCATION: Use partials/auth-modal.html instead
+  - Includes "Who is this account for?" step
+  - "Myself" option for adult learners (18+)
+  - "My Child" option for K-12 students with parental consent
+  - COPPA compliant for children under 13
 
-        <!-- Submit Button -->
-        <button type="submit" class="btn btn-primary btn-block">
-          Create Account
-        </button>
+  To open auth modal from JavaScript:
+  - if (window.AuthModal) window.AuthModal.open('signup');
+  - Or redirect to /signin.html
 
-        <!-- Social Sign Up -->
-        <div class="auth-divider">
-          <span>or sign up with</span>
-        </div>
-
-        <div class="social-auth">
-          <button type="button" class="btn btn-social">
-            <i class="fab fa-google"></i>
-            Google
-          </button>
-          <button type="button" class="btn btn-social">
-            <i class="fab fa-microsoft"></i>
-            Microsoft
-          </button>
-        </div>
-
-        <!-- Sign In Link -->
-        <p class="auth-switch">
-          Already have an account? 
-          <a href="#" class="auth-link" id="switch-to-sign-in">Sign in</a>
-        </p>
-
-      </form>
-    </div>
-  </div>
-</div>
-
-<!-- Sign In Modal -->
-<div class="modal modal--auth" id="sign-in-modal" aria-hidden="true" role="dialog" aria-labelledby="sign-in-title">
-  <div class="modal__backdrop" id="sign-in-backdrop"></div>
-  <div class="modal__dialog">
-    <div class="modal__header">
-      <h2 class="modal__title" id="sign-in-title">Sign In</h2>
-      <button class="modal__close" id="sign-in-close" aria-label="Close">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-	
-    <div class="modal__body">
-      <form class="auth-form" id="sign-in-form">
-        
-        <!-- Email Field -->
-        <div class="form-group">
-          <label for="sign-in-email" class="form-label">Email Address</label>
-          <input 
-            type="email" 
-            id="sign-in-email" 
-            class="form-input" 
-            placeholder="you@example.com"
-            required
-            aria-required="true"
-          >
-        </div>
-
-        <!-- Password Field -->
-        <div class="form-group">
-          <label for="sign-in-password" class="form-label">Password</label>
-          <input 
-            type="password" 
-            id="sign-in-password" 
-            class="form-input" 
-            placeholder="Enter your password"
-            required
-            aria-required="true"
-          >
-        </div>
-
-        <!-- Remember Me & Forgot Password -->
-        <div class="form-row">
-          <label class="checkbox-label">
-            <input type="checkbox" id="remember-me">
-            <span>Remember me</span>
-          </label>
-          <a href="forgot-password.html" class="auth-link">Forgot password?</a>
-        </div>
-
-        <!-- Submit Button -->
-        <button type="submit" class="btn btn-primary btn-block">
-          Sign In
-        </button>
-
-        <!-- Social Sign In -->
-        <div class="auth-divider">
-          <span>or sign in with</span>
-        </div>
-
-        <div class="social-auth">
-          <button type="button" class="btn btn-social">
-            <i class="fab fa-google"></i>
-            Google
-          </button>
-          <button type="button" class="btn btn-social">
-            <i class="fab fa-microsoft"></i>
-            Microsoft
-          </button>
-        </div>
-
-        <!-- Sign Up Link -->
-        <p class="auth-switch">
-          Don't have an account? 
-          <a href="#" class="auth-link" id="switch-to-sign-up">Sign up</a>
-        </p>
-
-      </form>
-    </div>
-  </div>
-</div>
+  ISS-001: Browser inconsistency fix - ensure single source of truth for auth modals
+-->

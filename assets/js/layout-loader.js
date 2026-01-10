@@ -731,87 +731,72 @@ if (typeof window.logger === 'undefined') {
     }
 
     /**
-     * Initialize footer auth modals (sign-up and sign-in)
+     * Initialize auth modals (COPPA-compliant)
      *
-     * @description Sets up event handlers for the auth modals included in footer.html.
-     * Creates global openSignInModal/openSignUpModal functions for use by buttons.
+     * @description Loads the COPPA-compliant auth modal from partials/auth-modal.html
+     * and initializes AuthModal controller. Creates global openSignInModal/openSignUpModal
+     * functions for use by buttons.
+     *
+     * NOTE: Old footer modals were removed (Jan 2026) - ISS-001 fix.
+     * All auth flows now use partials/auth-modal.html with "Myself/My Child" step flow.
      *
      * @private
      */
-    initFooterModals() {
-      const signUpModal = document.getElementById('sign-up-modal');
-      const signInModal = document.getElementById('sign-in-modal');
+    async initFooterModals() {
+      // Check if auth-modal already exists in DOM (some pages include it directly)
+      let authModal = document.getElementById('auth-modal');
 
-      // Exit if footer modals don't exist
-      if (!signUpModal && !signInModal) {
-        return;
+      if (!authModal) {
+        // Load auth-modal partial if not already present
+        try {
+          const response = await fetch('/partials/auth-modal.html');
+          if (response.ok) {
+            const html = await response.text();
+            document.body.insertAdjacentHTML('beforeend', html);
+            authModal = document.getElementById('auth-modal');
+            logger.debug('[LayoutLoader] Auth modal partial loaded');
+          }
+        } catch (error) {
+          console.warn('[LayoutLoader] Failed to load auth-modal.html:', error);
+        }
       }
 
-      // Helper: Open a modal
-      const openModal = (modal) => {
-        if (!modal) return;
-        modal.classList.add('active');
-        modal.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
-      };
+      // Load auth-modal.js controller if not already loaded
+      if (!window.AuthModal && authModal) {
+        try {
+          await this.loadScript('/assets/js/auth-modal.js');
+          logger.debug('[LayoutLoader] auth-modal.js loaded');
+        } catch (error) {
+          console.warn('[LayoutLoader] Failed to load auth-modal.js:', error);
+        }
+      }
 
-      // Helper: Close a modal
-      const closeModal = (modal) => {
-        if (!modal) return;
-        modal.classList.remove('active');
-        modal.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-      };
+      // Initialize AuthModal if available
+      if (window.AuthModal && authModal) {
+        window.AuthModal.init();
+        logger.debug('[LayoutLoader] AuthModal initialized');
+      }
 
-      // Close all modals
-      const closeAllModals = () => {
-        closeModal(signUpModal);
-        closeModal(signInModal);
-      };
-
-      // Expose global functions for buttons to use
+      // Create global helper functions that route to AuthModal
       window.openSignUpModal = () => {
-        closeAllModals();
-        openModal(signUpModal);
+        if (window.AuthModal) {
+          window.AuthModal.open('signup');
+        } else {
+          // Fallback to signin page
+          window.location.href = '/signin.html';
+        }
       };
 
       window.openSignInModal = () => {
-        closeAllModals();
-        openModal(signInModal);
+        if (window.AuthModal) {
+          window.AuthModal.open('signin');
+        } else {
+          // Fallback to signin page
+          window.location.href = '/signin.html';
+        }
       };
 
-      // Close button handlers
-      document.getElementById('sign-up-close')?.addEventListener('click', () => closeModal(signUpModal));
-      document.getElementById('sign-in-close')?.addEventListener('click', () => closeModal(signInModal));
-
-      // Backdrop click handlers
-      document.getElementById('sign-up-backdrop')?.addEventListener('click', (e) => {
-        if (e.target.id === 'sign-up-backdrop') closeModal(signUpModal);
-      });
-      document.getElementById('sign-in-backdrop')?.addEventListener('click', (e) => {
-        if (e.target.id === 'sign-in-backdrop') closeModal(signInModal);
-      });
-
-      // Switch between modals
-      document.getElementById('switch-to-sign-in')?.addEventListener('click', (e) => {
-        e.preventDefault();
-        closeModal(signUpModal);
-        openModal(signInModal);
-      });
-      document.getElementById('switch-to-sign-up')?.addEventListener('click', (e) => {
-        e.preventDefault();
-        closeModal(signInModal);
-        openModal(signUpModal);
-      });
-
-      // Escape key to close
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          closeAllModals();
-        }
-      });
-
-      logger.debug('[LayoutLoader] Footer auth modals initialized');
+      logger.debug('[LayoutLoader] Auth modal system initialized (COPPA-compliant)');
     }
 
     /**
