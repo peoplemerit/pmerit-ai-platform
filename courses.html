@@ -509,6 +509,13 @@
         </div>
         
         <div class="courses-grid" id="coursesGrid">
+          <!-- Auth check state (shown briefly before redirect if not authenticated) -->
+          <div class="loading-state" id="authCheckState" style="display: none;">
+            <div style="text-align: center; padding: 4rem;">
+              <i class="fas fa-lock" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+              <p style="color: var(--text-secondary);">Please sign in to view your courses...</p>
+            </div>
+          </div>
           <!-- Loading state -->
           <div class="loading-state" id="coursesLoading">
             <div style="text-align: center; padding: 4rem;">
@@ -551,6 +558,24 @@
       // Initialize courses page
       async init() {
         console.log('🎓 PMERIT Courses - Initializing...');
+
+        // SECURITY: Gate this page behind authentication (ISS-004)
+        // Unauthenticated users should not see the raw course dump
+        if (!window.AUTH?.isAuthenticated()) {
+          console.log('🔒 User not authenticated, redirecting to sign-in');
+          // Show auth check state and hide loading
+          const authState = document.getElementById('authCheckState');
+          const loadingState = document.getElementById('coursesLoading');
+          if (authState) authState.style.display = 'block';
+          if (loadingState) loadingState.style.display = 'none';
+          // Store redirect URL for after login
+          sessionStorage.setItem('redirect_after_login', '/courses');
+          // Redirect after brief delay so user sees the message
+          setTimeout(() => {
+            window.location.href = '/signin';
+          }, 500);
+          return;
+        }
 
         try {
           // Check for pathway filter in URL
