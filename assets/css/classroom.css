@@ -47,14 +47,16 @@
    100vh fixed viewport, no scrolling on body
    ============================================ */
 html {
-  height: 100vh;
+  height: 100vh; /* Fallback */
+  height: 100dvh;
   margin: 0;
   padding: 0;
   overflow: hidden !important;
 }
 
 body {
-  height: 100vh;
+  height: 100vh; /* Fallback */
+  height: 100dvh;
   margin: 0;
   padding: 0;
   overflow: hidden !important;
@@ -67,15 +69,18 @@ body.classroom-body {
   color: var(--classroom-text-primary);
   color: #e7e9ea;
   line-height: 1.5;
-  min-height: 100vh;
-  max-height: 100vh;
+  min-height: 100vh; /* Fallback */
+  min-height: 100dvh;
+  max-height: 100vh; /* Fallback */
+  max-height: 100dvh;
 }
 
 /* Main app container - full viewport */
 .classroom-app {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100vh; /* Fallback */
+  height: 100dvh;
   width: 100vw;
   overflow: hidden;
   background-color: #0f1419;
