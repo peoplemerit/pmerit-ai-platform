@@ -344,11 +344,12 @@ async function sendMessage(source) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'X-User-Language': currentLanguage  // Language header for AI/TTS propagation
       },
       body: JSON.stringify({
         messages: conversationHistory,
         stream: true,
-        language: currentLanguage  // Send user's language for translation
+        language: currentLanguage  // Send user's language for translation (legacy)
       })
     });
 

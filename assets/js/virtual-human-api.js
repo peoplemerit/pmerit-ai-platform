@@ -112,14 +112,19 @@
       let lastError;
       for (let attempt = 1; attempt <= this.config.retryAttempts; attempt++) {
         try {
+          // Get current language for voice selection
+          const userLanguage = localStorage.getItem('pmerit_language') || 'en';
+
           const response = await fetch(url, {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'X-User-Language': userLanguage  // For voice mapping on backend
             },
             body: JSON.stringify({
               text: text,
               voice: voice,
+              language: userLanguage,  // Explicit language for TTS
               return_visemes: true
             })
           });
