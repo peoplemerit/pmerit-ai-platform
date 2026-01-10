@@ -1,11 +1,35 @@
     /* ============================================ */
+    /* HOMEPAGE FIXED VIEWPORT - NO SCROLLBAR     */
+    /* ============================================ */
+    html.fixed-viewport-html,
+    html:has(body.fixed-viewport) {
+      overflow: hidden !important;
+      height: 100vh;
+      height: 100dvh;
+    }
+
+    body.fixed-viewport {
+      overflow: hidden !important;
+      height: 100vh;
+      height: 100dvh;
+      max-height: 100vh;
+      max-height: 100dvh;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ============================================ */
     /* MOBILE-FIRST LAYOUT CONTROL                */
     /* ============================================ */
     .mobile-layout {
       display: flex;
       flex-direction: column;
-      height: 100vh;
+      height: 100vh; /* Fallback */
+      height: 100dvh;
       width: 100%;
+      /* Account for fixed dev-banner */
+      padding-top: var(--dev-banner-height, 0);
+      box-sizing: border-box;
     }
 
     .desktop-layout {
@@ -90,10 +114,15 @@
         display: grid !important;
         grid-template-rows: auto 1fr auto;
         grid-template-columns: 280px 1fr 320px;
-        min-height: 100vh;
-        height: 100vh;
+        min-height: 100vh; /* Fallback */
+        min-height: 100dvh;
+        height: 100vh; /* Fallback */
+        height: 100dvh;
         gap: 0;
         overflow: hidden;
+        /* Account for fixed dev-banner */
+        padding-top: var(--dev-banner-height, 0);
+        box-sizing: border-box;
       }
 
       /* Header Styling */

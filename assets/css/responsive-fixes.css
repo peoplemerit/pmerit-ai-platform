@@ -189,7 +189,8 @@
 @media (max-width: 1023px) and (orientation: landscape) {
   .chat-messages {
     /* Reduce header impact in landscape */
-    height: calc(100vh - var(--header-height) - 80px) !important;
+    height: calc(100vh - var(--header-height) - 80px) !important; /* Fallback */
+    height: calc(100dvh - var(--header-height) - 80px) !important;
   }
   
   .chat-input-container {
@@ -259,7 +260,8 @@
 @media (max-width: 1023px) {
   /* Fix for Android Chrome address bar disappearing */
   .mobile-layout {
-    min-height: 100vh;
+    min-height: 100vh; /* Fallback */
+    min-height: 100dvh;
     min-height: -webkit-fill-available;
   }
   
@@ -529,7 +531,8 @@
   /* Assessment container - make it a flex container */
   .assessment-container {
     padding: var(--space-3) var(--space-3) 100px var(--space-3); /* Bottom padding for sticky nav */
-    min-height: calc(100vh - 60px); /* Account for header */
+    min-height: calc(100vh - 60px); /* Fallback */
+    min-height: calc(100dvh - 60px); /* Account for header */
   }
 
   /* Question card mobile sizing */

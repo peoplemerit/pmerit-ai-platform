@@ -44,7 +44,8 @@
       max-width: 1200px;
       margin: 0 auto;
       padding: 2rem 1rem;
-      min-height: calc(100vh - 200px);
+      min-height: calc(100vh - 200px); /* Fallback */
+      min-height: calc(100dvh - 200px);
     }
 
     .dashboard-header {

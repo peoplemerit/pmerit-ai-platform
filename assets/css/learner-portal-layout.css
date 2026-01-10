@@ -23,7 +23,8 @@
     grid-template-areas:
         "header header header header"
         "icon-sidebar nav-panel main-content right-sidebar";
-    min-height: 100vh;
+    min-height: 100vh; /* Fallback */
+    min-height: 100dvh;
     background-color: var(--bg-primary);
 }
 
@@ -43,7 +44,8 @@
     position: fixed;
     left: 0;
     top: 0;
-    height: 100vh;
+    height: 100vh; /* Fallback */
+    height: 100dvh;
     z-index: var(--z-fixed);
     overflow-y: auto;
 }
@@ -114,7 +116,8 @@
     position: fixed;
     left: var(--sidebar-width);
     top: 0;
-    height: 100vh;
+    height: 100vh; /* Fallback */
+    height: 100dvh;
     z-index: calc(var(--z-fixed) - 1);
     overflow-y: auto;
 }
@@ -271,7 +274,8 @@
     margin-right: var(--rightbar-width);
     padding: var(--space-8) var(--space-6);
     background: var(--bg-primary);
-    min-height: 100vh;
+    min-height: 100vh; /* Fallback */
+    min-height: 100dvh;
 }
 
 /* ========================================
@@ -286,7 +290,8 @@
     position: fixed;
     right: 0;
     top: 0;
-    height: 100vh;
+    height: 100vh; /* Fallback */
+    height: 100dvh;
     overflow-y: auto;
     padding: var(--space-6) var(--space-4);
     z-index: calc(var(--z-fixed) - 2);
