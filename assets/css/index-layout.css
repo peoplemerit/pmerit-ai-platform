@@ -1,4 +1,24 @@
     /* ============================================ */
+    /* HOMEPAGE FIXED VIEWPORT - NO SCROLLBAR     */
+    /* ============================================ */
+    html.fixed-viewport-html,
+    html:has(body.fixed-viewport) {
+      overflow: hidden !important;
+      height: 100vh;
+      height: 100dvh;
+    }
+
+    body.fixed-viewport {
+      overflow: hidden !important;
+      height: 100vh;
+      height: 100dvh;
+      max-height: 100vh;
+      max-height: 100dvh;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ============================================ */
     /* MOBILE-FIRST LAYOUT CONTROL                */
     /* ============================================ */
     .mobile-layout {
@@ -7,6 +27,9 @@
       height: 100vh; /* Fallback */
       height: 100dvh;
       width: 100%;
+      /* Account for fixed dev-banner */
+      padding-top: var(--dev-banner-height, 0);
+      box-sizing: border-box;
     }
 
     .desktop-layout {
@@ -97,6 +120,9 @@
         height: 100dvh;
         gap: 0;
         overflow: hidden;
+        /* Account for fixed dev-banner */
+        padding-top: var(--dev-banner-height, 0);
+        box-sizing: border-box;
       }
 
       /* Header Styling */
