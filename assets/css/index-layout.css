@@ -1,4 +1,24 @@
     /* ============================================ */
+    /* HOMEPAGE FIXED VIEWPORT - NO SCROLLBAR     */
+    /* ============================================ */
+    html.fixed-viewport-html,
+    html:has(body.fixed-viewport) {
+      overflow: hidden !important;
+      height: 100vh;
+      height: 100dvh;
+    }
+
+    body.fixed-viewport {
+      overflow: hidden !important;
+      height: 100vh;
+      height: 100dvh;
+      max-height: 100vh;
+      max-height: 100dvh;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ============================================ */
     /* MOBILE-FIRST LAYOUT CONTROL                */
     /* ============================================ */
     .mobile-layout {
