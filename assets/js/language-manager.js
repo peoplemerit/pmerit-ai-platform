@@ -3,7 +3,7 @@
  * Handles multi-language support with offline and online translations
  * Follows MOSA modular architecture
  *
- * VERSION: 3.0.0 (API Integration)
+ * VERSION: 3.1.0 (Hybrid Cache-First - H7 Fix)
  *
  * NEW FEATURES:
  * - Extended attribute support (aria-label, value, etc.)
@@ -13,6 +13,8 @@
  * - Missing translation warnings in dev mode
  * - API integration for online languages (v3.0)
  * - localStorage caching for API translations (v3.0)
+ * - Hybrid cache-first with background sync (v3.1)
+ * - Bootstrap pre-caching for offline languages (v3.1)
  *
  * OFFLINE LANGUAGES: en, yo, ig, ha (bundled with app)
  * ONLINE LANGUAGES: All others (fetched from Translation API)
@@ -53,7 +55,10 @@
   // localStorage key prefix for cached translations
   const CACHE_PREFIX = 'pmerit_i18n_';
 
-  // Cache expiry time (7 days in milliseconds)
+  // Cache TTL (24 hours) - after this, background sync triggers
+  const CACHE_TTL = 24 * 60 * 60 * 1000;
+
+  // Cache hard expiry (7 days) - after this, cache is invalid
   const CACHE_EXPIRY = 7 * 24 * 60 * 60 * 1000;
 
   // Translation API endpoint
@@ -89,7 +94,7 @@
     // ============================================
     
     init: function() {
-      logger.debug('[LanguageManager] Initializing Enhanced v2.0.0...');
+      logger.debug('[LanguageManager] Initializing v3.1.0 (Hybrid Cache-First)...');
       
       // Load saved language or use default
       this.currentLang = localStorage.getItem('pmerit_language') || this.defaultLang;
@@ -114,9 +119,10 @@
         return;
       }
 
-      logger.debug('[LanguageManager] Switching to:', langCode);
+      const previousLang = this.currentLang;
+      logger.debug('[LanguageManager] Switching from', previousLang, 'to:', langCode);
 
-      // Save to localStorage
+      // Save to localStorage (immediate)
       localStorage.setItem('pmerit_language', langCode);
       this.currentLang = langCode;
 
@@ -126,6 +132,18 @@
       // Update all dropdowns to show current selection
       this.updateSelectors(langCode);
 
+      // Dispatch languageChanged event for AI/TTS/other modules
+      window.dispatchEvent(new CustomEvent('languageChanged', {
+        detail: {
+          language: langCode,
+          previousLanguage: previousLang,
+          languageName: this.getLanguageName(langCode)
+        }
+      }));
+
+      // Sync to database if user is logged in (async, non-blocking)
+      this.syncLanguageToDatabase(langCode);
+
       // Load translations for this language
       this.loadTranslations(langCode).then(() => {
         // Process auto-translations first
@@ -134,7 +152,7 @@
         // Apply translations to current page
         this.applyTranslations();
 
-        // Dispatch language change event for other modules
+        // Dispatch legacy language change event for other modules
         window.dispatchEvent(new CustomEvent('pmerit-language-change', {
           detail: { language: langCode, translations: this.translations }
         }));
@@ -219,18 +237,29 @@
 
     /**
      * Load translations from API with localStorage caching (online languages)
+     * Uses hybrid cache-first strategy:
+     * 1. If cached and valid: Use immediately, background sync if stale
+     * 2. If not cached: Fetch from API, cache result
      */
     loadOnlineTranslations: function(langCode) {
       // Check localStorage cache first
-      const cached = this.getCachedTranslations(langCode);
-      if (cached) {
-        this.translations[langCode] = cached;
+      const cacheResult = this.getCachedTranslationsWithMeta(langCode);
+
+      if (cacheResult && cacheResult.data) {
+        // Use cached translations immediately
+        this.translations[langCode] = cacheResult.data;
         this.dispatchLoadingEvent(langCode, 'complete');
         logger.debug(`[LanguageManager] ✅ Loaded ${langCode} from cache`);
-        return Promise.resolve(cached);
+
+        // Background sync if cache is stale (>24h but <7d)
+        if (cacheResult.isStale) {
+          this.backgroundSync(langCode);
+        }
+
+        return Promise.resolve(cacheResult.data);
       }
 
-      // Fetch from API
+      // Fetch from API (no cache or expired cache)
       logger.debug(`[LanguageManager] Fetching ${langCode} from API...`);
 
       return fetch(`${API_ENDPOINT}/${langCode}`)
@@ -259,24 +288,62 @@
     },
 
     /**
-     * Get cached translations from localStorage
+     * Background sync - updates cache without blocking UI
+     */
+    backgroundSync: function(langCode) {
+      logger.debug(`[LanguageManager] Background sync started for ${langCode}`);
+
+      fetch(`${API_ENDPOINT}/${langCode}`)
+        .then(response => {
+          if (!response.ok) throw new Error(`API returned ${response.status}`);
+          return response.json();
+        })
+        .then(data => {
+          this.setCachedTranslations(langCode, data);
+          logger.debug(`[LanguageManager] ✅ Background sync complete for ${langCode}`);
+          // Don't re-apply translations - user already has working version
+        })
+        .catch(error => {
+          // Silent fail - user has cached version
+          console.warn(`[LanguageManager] Background sync failed for ${langCode}:`, error.message);
+        });
+    },
+
+    /**
+     * Get cached translations from localStorage (legacy - returns data only)
      */
     getCachedTranslations: function(langCode) {
+      const result = this.getCachedTranslationsWithMeta(langCode);
+      return result ? result.data : null;
+    },
+
+    /**
+     * Get cached translations with metadata (staleness check)
+     * Returns: { data, timestamp, isStale, isExpired } or null
+     */
+    getCachedTranslationsWithMeta: function(langCode) {
       try {
         const cacheKey = CACHE_PREFIX + langCode;
         const cached = localStorage.getItem(cacheKey);
         if (!cached) return null;
 
         const { data, timestamp } = JSON.parse(cached);
+        const age = Date.now() - timestamp;
 
-        // Check if cache has expired
-        if (Date.now() - timestamp > CACHE_EXPIRY) {
+        // Check if cache has hard expired (7 days)
+        if (age > CACHE_EXPIRY) {
           localStorage.removeItem(cacheKey);
           logger.debug(`[LanguageManager] Cache expired for ${langCode}`);
           return null;
         }
 
-        return data;
+        // Return data with staleness flag (stale after 24h)
+        return {
+          data: data,
+          timestamp: timestamp,
+          isStale: age > CACHE_TTL,
+          isExpired: false
+        };
       } catch (error) {
         console.warn('[LanguageManager] Error reading cache:', error);
         return null;
@@ -549,7 +616,78 @@
       };
       return codes[langCode] || 'En';
     },
-    
+
+    /**
+     * Get the full name of a language by code
+     */
+    getLanguageName: function(langCode) {
+      // Try PMERIT_LANGUAGES first
+      if (window.PMERIT_LANGUAGES && Array.isArray(window.PMERIT_LANGUAGES)) {
+        const lang = window.PMERIT_LANGUAGES.find(l => l.code === langCode);
+        if (lang) return lang.name;
+      }
+      // Fallback to hardcoded
+      return this.languages[langCode] || 'English';
+    },
+
+    /**
+     * Sync language preference to database (for logged-in users)
+     * Non-blocking - localStorage is source of truth for current session
+     */
+    syncLanguageToDatabase: async function(langCode) {
+      const token = localStorage.getItem('pmerit_token');
+      if (!token) {
+        logger.debug('[LanguageManager] Not logged in, skipping DB sync');
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/v1/user/preferences', {
+          method: 'PATCH',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ preferred_language: langCode })
+        });
+
+        if (response.ok) {
+          logger.debug(`[LanguageManager] ✅ Synced ${langCode} to database`);
+        } else {
+          console.warn(`[LanguageManager] DB sync failed: ${response.status}`);
+        }
+      } catch (error) {
+        console.warn('[LanguageManager] DB sync error:', error.message);
+        // Non-critical - localStorage is source of truth
+      }
+    },
+
+    /**
+     * Load language preference from database on login
+     */
+    loadLanguageFromDatabase: async function() {
+      const token = localStorage.getItem('pmerit_token');
+      if (!token) return null;
+
+      try {
+        const response = await fetch('/api/v1/user/preferences', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (response.ok) {
+          const prefs = await response.json();
+          if (prefs.preferred_language) {
+            logger.debug(`[LanguageManager] Loaded ${prefs.preferred_language} from database`);
+            return prefs.preferred_language;
+          }
+        }
+      } catch (error) {
+        console.warn('[LanguageManager] Failed to load preferences:', error.message);
+      }
+
+      return null;
+    },
+
     // ============================================
     // PUBLIC API (v3.0 - Enhanced)
     // ============================================
@@ -593,6 +731,39 @@
     // Enable/disable dev mode
     setDevMode: function(enabled) {
       this.devMode = enabled;
+    },
+
+    /**
+     * Bootstrap offline languages - pre-cache bundled JSON files
+     * Called on first load to ensure offline languages work without network
+     */
+    bootstrapOfflineLanguages: async function() {
+      logger.debug('[LanguageManager] Bootstrapping offline languages...');
+
+      for (const lang of OFFLINE_LANGUAGES) {
+        const cacheKey = CACHE_PREFIX + lang;
+
+        // Skip if already cached
+        if (this.getCachedTranslations(lang)) {
+          logger.debug(`[LanguageManager] ${lang} already cached, skipping`);
+          continue;
+        }
+
+        // Load from bundled JSON file and cache
+        try {
+          const response = await fetch(`/assets/i18n/${lang}.json`);
+          if (!response.ok) {
+            throw new Error(`Failed to load ${lang}.json`);
+          }
+          const data = await response.json();
+          this.setCachedTranslations(lang, data);
+          logger.debug(`[LanguageManager] ✅ Pre-cached ${lang}`);
+        } catch (error) {
+          console.warn(`[LanguageManager] Failed to pre-cache ${lang}:`, error.message);
+        }
+      }
+
+      logger.debug('[LanguageManager] ✅ Offline bootstrap complete');
     }
   };
 
@@ -609,12 +780,16 @@
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       LanguageManager.init();
+      // Bootstrap offline languages in background (non-blocking)
+      LanguageManager.bootstrapOfflineLanguages();
     });
   } else {
     LanguageManager.init();
+    // Bootstrap offline languages in background (non-blocking)
+    LanguageManager.bootstrapOfflineLanguages();
   }
 
-  logger.debug('[LanguageManager] v3.0.0 loaded (API Integration)');
+  logger.debug('[LanguageManager] v3.1.0 loaded (Hybrid Cache-First)');
   logger.debug('[LanguageManager] Offline languages:', OFFLINE_LANGUAGES.join(', '));
   logger.debug('[LanguageManager] Global t() function available');
 

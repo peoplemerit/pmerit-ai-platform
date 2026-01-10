@@ -1,7 +1,12 @@
 /**
  * PMERIT Searchable Language Modal
  * Hybrid solution: Custom searchable UI + Translation API backend
- * Version: 2.0.0 - API Integration with loading states
+ * Version: 2.1.0 - Defensive Loading (H7 Fix)
+ *
+ * Changes in 2.1.0:
+ * - Added defensive loading with retry logic for language data
+ * - Waits up to 1 second for PMERIT_LANGUAGES to load
+ * - Shows error state on buttons if data fails to load
  */
 
 (function() {
@@ -447,8 +452,17 @@
     }
   }
 
-  // Initialize modal
-  function init() {
+  // Show error state on language buttons when data fails to load
+  function showLanguageLoadError() {
+    const triggers = document.querySelectorAll('[data-action="open-language-modal"]');
+    triggers.forEach(trigger => {
+      trigger.title = 'Language selection unavailable - please refresh';
+      trigger.style.opacity = '0.5';
+    });
+  }
+
+  // Core initialization logic (called after language data is confirmed)
+  function initializeModal() {
     // Inject CSS
     const style = document.createElement('style');
     style.textContent = modalCSS;
@@ -487,7 +501,34 @@
     const initialLang = getCurrentLanguage();
     updateLanguageButton(initialLang);
 
-    console.log('[LanguageModal] v2.0.0 Initialized (API Integration)');
+    console.log('[LanguageModal] v2.1.0 Initialized (Defensive Loading)');
+  }
+
+  // Initialize modal with defensive waiting for language data
+  function init() {
+    const maxRetries = 10;
+    const retryInterval = 100; // ms
+    let retries = 0;
+
+    function attemptInit() {
+      // Check if language data is loaded and has items
+      if (window.PMERIT_LANGUAGES && window.PMERIT_LANGUAGES.length > 0) {
+        console.log('[LanguageModal] Language data confirmed:', window.PMERIT_LANGUAGES.length, 'languages');
+        initializeModal();
+        return;
+      }
+
+      retries++;
+      if (retries < maxRetries) {
+        console.warn('[LanguageModal] Waiting for language data (' + retries + '/' + maxRetries + ')...');
+        setTimeout(attemptInit, retryInterval);
+      } else {
+        console.error('[LanguageModal] Language data failed to load after ' + (maxRetries * retryInterval) + 'ms');
+        showLanguageLoadError();
+      }
+    }
+
+    attemptInit();
   }
 
   // Render languages

@@ -128,6 +128,9 @@
           };
           TokenManager.setUser(user);
 
+          // H7 Language Propagation: Sync language preference from database
+          this._syncLanguageFromDatabase(data.token);
+
           return {
             success: true,
             message: 'Signed in successfully',
@@ -177,6 +180,48 @@
         message: 'Signed in (offline mode)',
         user: user
       };
+    },
+
+    /**
+     * H7 Language Propagation: Sync language preference from database on login
+     * Runs in background (non-blocking) to update localStorage with DB preference
+     * @private
+     */
+    _syncLanguageFromDatabase: async function (token) {
+      try {
+        const response = await fetch(`${API_BASE}/user/preferences`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          console.warn('[Auth] Language sync failed:', response.status);
+          return;
+        }
+
+        const prefs = await response.json();
+
+        if (prefs.preferred_language && prefs.preferred_language !== 'en') {
+          // Sync DB preference to localStorage
+          const currentLang = localStorage.getItem('pmerit_language');
+
+          if (currentLang !== prefs.preferred_language) {
+            console.log(`[Auth] Syncing language from DB: ${prefs.preferred_language}`);
+            localStorage.setItem('pmerit_language', prefs.preferred_language);
+
+            // Apply translations if LanguageManager is available
+            if (window.LanguageManager && typeof window.LanguageManager.setLanguage === 'function') {
+              window.LanguageManager.setLanguage(prefs.preferred_language);
+            }
+          }
+        }
+      } catch (error) {
+        console.warn('[Auth] Language sync error (non-critical):', error);
+        // Non-blocking - user can still use localStorage language
+      }
     },
 
     /**
