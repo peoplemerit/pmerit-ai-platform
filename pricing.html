@@ -109,7 +109,11 @@
                             <li>Career counseling sessions</li>
                             <li>Job matching & recommendations</li>
                         </ul>
-                        <a href="signin.html?plan=premium" class="pricing-button">Start Premium</a>
+                        <button
+                          class="pricing-button"
+                          data-subscribe-price="price_PLACEHOLDER_individual"
+                          aria-label="Subscribe to Premium for $9.99/month"
+                        >Start Premium</button>
                     </article>
 
                     <!-- Pay It Forward Tier -->
@@ -378,10 +382,13 @@
                         <i class="fas fa-rocket" aria-hidden="true"></i>
                         Start Learning Free
                     </a>
-                    <a href="signin.html?plan=premium" class="cta-button primary">
+                    <button
+                      class="cta-button primary"
+                      data-subscribe-price="price_PLACEHOLDER_individual"
+                    >
                         <i class="fas fa-star" aria-hidden="true"></i>
                         Upgrade to Premium
-                    </a>
+                    </button>
                     <a href="donate.html" class="cta-button secondary">
                         <i class="fas fa-heart" aria-hidden="true"></i>
                         Support Our Mission
@@ -396,6 +403,9 @@
     <!-- FAQ Accordion Functionality -->
     <script src="assets/js/settings-manager.js"></script>
     <script src="assets/js/layout-loader.js"></script>
+    <!-- Stripe Checkout Integration (GAP-C8) -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="assets/js/checkout.js"></script>
     <script>
         // FAQ Accordion
         document.querySelectorAll('.faq-question').forEach(button => {

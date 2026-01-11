@@ -1,0 +1,785 @@
+{
+  "schema_version": "4.0",
+  "schema_notes": "Session 77 - AIXORD (AI Execution Order) - Renamed from AADOS",
+  "system_name": "AIXORD",
+  "system_full_name": "AI Execution Order",
+  "system_evolution": "AADOS V1-V11 → AIXORD V12+",
+
+  "last_updated": "2025-12-26T00:30:00Z",
+  "last_updated_by": "claude-code",
+
+  "session_number": 83,
+  "last_audit_date": "2025-12-26",
+
+  "session_81_summary": {
+    "focus": "K-12 Dashboard Career Content Hiding Fix",
+    "issues_resolved": ["ISSUE-80-002"],
+    "root_cause": "Race condition - dashboard-adapter ran before fetchCurrentUser completed",
+    "fixes_applied": [
+      "dashboard-adapter.js now fetches fresh user data if K-12 fields missing",
+      "Added .icon-sidebar-item[data-section=career] selector to hide career button",
+      "Added [data-content-type=career] data attribute to Career Guidance card",
+      "Updated CSS to target new selectors"
+    ],
+    "files_modified": [
+      "assets/js/dashboard-adapter.js",
+      "assets/css/components.css",
+      "dashboard.html",
+      ".claude/scopes/SCOPE_K12_EDUCATION.md"
+    ],
+    "files_created": [
+      "docs/architecture/K12_DASHBOARD_ARCHITECTURE.md",
+      "docs/testing/K12_REGRESSION_CHECKLIST.md"
+    ],
+    "selectors_documented": true,
+    "regression_tests_added": true
+  },
+
+  "session_80_summary": {
+    "focus": "Option C Hybrid Dashboard Architecture",
+    "backend_version": "2.7.0",
+    "commits": ["abe9c40", "951fd91", "3525ac6"],
+    "decisions": {
+      "DECISION_80_001": {
+        "title": "Hybrid Dashboard Architecture (Option C)",
+        "decision": "Single dashboard.html with dynamic content based on user type instead of separate K-12 dashboard files",
+        "rationale": "Easier maintenance, consistent URL, natural age progression without URL changes",
+        "implementation": {
+          "backend": "/auth/me returns accountType ('adult'/'k12'), gradeCode, uiType",
+          "frontend": "dashboard-adapter.js detects user type, applies CSS classes to show/hide content",
+          "css_tiers": ["ui-tier-k2", "ui-tier-elementary", "ui-tier-middle", "ui-tier-high", "ui-tier-adult"]
+        }
+      },
+      "DECISION_80_002": {
+        "title": "Duplicate Account Prevention Security Controls",
+        "decision": "Document now, implement in SCOPE_SECURITY Phases 3 & 6",
+        "controls_planned": [
+          {"priority": "high", "control": "Disposable email blocking", "effort": "low"},
+          {"priority": "high", "control": "Registration rate limiting (5/hour per IP)", "effort": "medium"},
+          {"priority": "medium", "control": "CAPTCHA (reCAPTCHA v3 or hCaptcha)", "effort": "medium"},
+          {"priority": "medium", "control": "Child DOB+Name duplicate warning", "effort": "medium"},
+          {"priority": "low", "control": "Phone verification", "effort": "high"},
+          {"priority": "low", "control": "Device fingerprinting", "effort": "high"}
+        ],
+        "current_protection": "Email uniqueness (database constraint + API validation)"
+      }
+    },
+    "major_changes": [
+      "Backend /auth/me enhanced with accountType field and auto-derived uiType",
+      "Created dashboard-adapter.js for dynamic content based on user type",
+      "Added K-12 dashboard CSS (hide career content, grade badges, tier-specific styling)",
+      "Documented security controls decision in Pmerit_Project_Document.md"
+    ],
+    "tested_working": [
+      "K-12 registration flow (email: k12test-session80@pmerit.com)",
+      "Duplicate email prevention (409 error on same email)"
+    ],
+    "issues_found": [
+      "K-12 profile not being created (schema mismatch: grade_code column vs current_grade_id)",
+      "Dashboard adapter not detecting K-12 status (needs profile or is_minor flag)"
+    ],
+    "next_steps": [
+      "Fix k12_student_profiles schema to add grade_code column",
+      "Set is_minor flag on K-12 user records",
+      "Test dashboard adapter with proper K-12 detection"
+    ]
+  },
+
+  "session_77_summary": {
+    "focus": "K-12 Education System - Phases 1-4",
+    "backend_version": "2.7.0",
+    "commits": ["ff2bf89", "7c766bb", "a89a546", "a39b1c3", "4adcf8d"],
+    "major_changes": [
+      "Migration 017 executed: Persona few-shot examples (6 personas × 2 examples)",
+      "Migration 018 executed: 16 MOOSE modules mapped to k12_lessons with AI context",
+      "Backend /auth/me returns K-12 fields (gradeCode, uiType, personaOverride)",
+      "Frontend passes grade_code context in AI tutor API calls",
+      "K-2 age-appropriate dashboard created (read-aloud, large touch targets, warm colors)"
+    ],
+    "tested_working": [
+      "Ms. Sunshine persona with Socratic questioning",
+      "70B model selection for K-12",
+      "MOOSE content mapping (16 modules)"
+    ],
+    "next_steps": ["K12 dashboards 3-5, 6-8, 9-12", "SCOPE_CTE_VOCATIONAL Track 3"]
+  },
+
+  "session_76_summary": {
+    "focus": "Claude Web Recommendations Implementation",
+    "backend_version": "2.5.0",
+    "commits": ["ced27c7", "cae8907"],
+    "major_changes": [
+      "Context-aware model selection: K-12 uses 70B Llama, adults use 24B Mistral",
+      "Homework detection patterns added to AI Police (v1.1.0)",
+      "Homework redirect converts cheating to signup opportunity"
+    ],
+    "tested_working": ["Model upgrade", "Homework detection", "K-12 context routing"],
+    "next_steps": ["Dual-mode front page AI", "Strengthen persona prompts"]
+  },
+
+  "local_environment": {
+    "project_root": "C:\\dev\\pmerit",
+    "frontend_path": "C:\\dev\\pmerit\\pmerit-ai-platform",
+    "backend_path": "C:\\dev\\pmerit\\pmerit-api-worker",
+    "node_path": "C:\\dev\\pmerit\\.node\\node-v20.18.1-win-x64",
+    "node_version": "20.18.1",
+    "npm_version": "10.8.2",
+    "migration_date": "2025-12-21",
+    "migration_reason": "Portable E: drive connection instability",
+    "activation_script_ps1": "pmerit-env.ps1",
+    "activation_script_cmd": "pmerit-env.cmd"
+  },
+
+  "current_phase": "POST_CLASSROOM",
+  "phase_name": "Voice System Complete / ARCH-2 / Assessment Enhancements",
+  "phase_status": "ready_for_execution",
+  "gate_status": "passed",
+
+  "active_requirement": "VOICE_SYSTEM_COMPLETE",
+  "requirement_description": "5-voice TTS system deployed: 3 free (Edge TTS), 2 premium (Piper TTS)",
+  "attempt_count": 0,
+  "max_attempts": 3,
+  "extended": false,
+
+  "active_environment": "FE",
+  "workflow_mode": "direct_execution",
+
+  "platform_equation": {
+    "version": "1.0",
+    "last_calculated": "2025-12-22",
+    "session": 70,
+    "equation": "MASTER_SCOPE = Project_Docs = All_SCOPEs = Platform",
+    "target_completion_date": "2026-02",
+    "metrics": {
+      "total_scopes": 27,
+      "complete": 11,
+      "partial": 7,
+      "not_started": 9,
+      "completion_percentage": 55,
+      "track_1_status": "mvp_complete",
+      "track_2_status": "phase1_complete",
+      "track_3_status": "not_started"
+    },
+    "by_category": {
+      "gate_core": { "complete": 6, "total": 6, "pct": 100 },
+      "content_catalog": { "complete": 2, "total": 3, "pct": 67 },
+      "ai_avatar": { "complete": 2, "total": 3, "pct": 67 },
+      "three_track": { "complete": 0, "partial": 1, "total": 3, "pct": 17 },
+      "monetization": { "complete": 0, "total": 3, "pct": 0 },
+      "infrastructure": { "complete": 0, "total": 2, "pct": 0 },
+      "platform_foundation": { "complete": 0, "total": 5, "pct": 0 },
+      "admin_credentials": { "complete": 1, "total": 2, "pct": 50 }
+    }
+  },
+
+  "scope_dependencies": {
+    "version": "1.0",
+    "created": "2025-12-22",
+    "session": 70,
+    "critical_path": ["SECURITY", "PARENT_PORTAL", "K12_EDUCATION", "LAUNCH_CLEANUP"],
+    "tiers": {
+      "tier_0_foundation": {
+        "scopes": ["HOMEPAGE", "ASSESSMENT", "DASHBOARD", "CLASSROOM", "ENROLLMENT", "Select_Language", "AVATAR", "TTS", "courses", "Learning_Pathways", "ADMIN"],
+        "status": "complete",
+        "depends_on": []
+      },
+      "tier_1_platform": {
+        "scopes": ["SECURITY", "PROGRESS", "EMAIL_SYSTEM"],
+        "status": "in_progress",
+        "depends_on": ["tier_0_foundation"],
+        "parallel": true
+      },
+      "tier_2_legal": {
+        "scopes": ["PARENT_PORTAL", "AI_PERSONAS"],
+        "status": "not_started",
+        "depends_on": ["SECURITY"]
+      },
+      "tier_3_three_track": {
+        "scopes": ["K12_EDUCATION", "CTE_VOCATIONAL", "CONTENT_SOURCES"],
+        "status": "not_started",
+        "depends_on": ["PARENT_PORTAL", "AI_PERSONAS"]
+      },
+      "tier_4_monetization": {
+        "scopes": ["PAYMENTS", "pricing", "donate"],
+        "status": "partial",
+        "depends_on": ["EMAIL_SYSTEM"],
+        "parallel_with": ["tier_3_three_track"]
+      },
+      "tier_5_enhancements": {
+        "scopes": ["NOTIFICATIONS", "OFFLINE_PWA", "THEME"],
+        "status": "not_started",
+        "depends_on": ["EMAIL_SYSTEM"],
+        "parallel_with": ["tier_4_monetization"]
+      },
+      "tier_6_infrastructure": {
+        "scopes": ["SELF_HOSTED_PREMIUM"],
+        "status": "planned",
+        "depends_on": ["PAYMENTS"]
+      },
+      "tier_7_credentials": {
+        "scopes": ["CREDENTIALS"],
+        "status": "not_started",
+        "depends_on": ["K12_EDUCATION", "CTE_VOCATIONAL", "PROGRESS"]
+      },
+      "tier_8_launch": {
+        "scopes": ["LAUNCH_CLEANUP"],
+        "status": "not_started",
+        "depends_on": ["ALL_P0_P1"],
+        "trigger": "2026-02"
+      }
+    },
+    "individual_scopes": {
+      "SCOPE_SECURITY": {
+        "tier": 1, "priority": "P0", "depends_on": [], "blocks": ["PARENT_PORTAL", "AI_PERSONAS"],
+        "parallel_with": ["PROGRESS", "EMAIL_SYSTEM"], "status": "phase4_complete", "critical_path": true,
+        "phase1_complete": "2025-12-24", "phase2_complete": "2025-12-24", "phase4_complete": "2025-12-23", "session": 71
+      },
+      "SCOPE_PROGRESS": {
+        "tier": 1, "priority": "P0", "depends_on": [], "blocks": ["CREDENTIALS"],
+        "parallel_with": ["SECURITY", "EMAIL_SYSTEM"], "status": "partial"
+      },
+      "SCOPE_EMAIL_SYSTEM": {
+        "tier": 1, "priority": "P2", "depends_on": [], "blocks": ["NOTIFICATIONS", "PAYMENTS"],
+        "parallel_with": ["SECURITY", "PROGRESS"], "status": "in_progress"
+      },
+      "SCOPE_PARENT_PORTAL": {
+        "tier": 2, "priority": "P0", "depends_on": ["SECURITY"], "blocks": ["K12_EDUCATION", "CTE_VOCATIONAL"],
+        "parallel_with": ["AI_PERSONAS"], "status": "phase4_complete", "critical_path": true, "legal_requirement": "COPPA",
+        "phase1_complete": "2025-12-23", "phase2_complete": "2025-12-23", "phase3_complete": "2025-12-23", "phase4_complete": "2025-12-23", "session": 74
+      },
+      "SCOPE_AI_PERSONAS": {
+        "tier": 2, "priority": "P1", "depends_on": ["SECURITY"], "blocks": ["K12_EDUCATION", "CTE_VOCATIONAL"],
+        "parallel_with": ["PARENT_PORTAL"], "status": "phaseB_complete",
+        "session": 75, "critical_finding": "Two Systems Problem - FIXED",
+        "phaseA_complete": "2025-12-24",
+        "phaseB_complete": "2025-12-24",
+        "notes": "Phase A: Migration 016 populated all 6 personas. Phase B: Backend now uses database personas! /api/v1/ai/tutor queries ai_tutor_personas, selects by grade/course/user profile. Returns persona in headers. Commit: 45aa770. Next: Phase C (frontend context passing)"
+      },
+      "SCOPE_K12_EDUCATION": {
+        "tier": 3, "priority": "P1", "depends_on": ["PARENT_PORTAL", "AI_PERSONAS"], "blocks": ["CREDENTIALS", "LAUNCH_CLEANUP"],
+        "parallel_with": ["CTE_VOCATIONAL"], "status": "phase1_complete", "critical_path": true,
+        "phase1_complete": "2025-12-24", "session": 75,
+        "notes": "Migration 015 deployed: k12_lessons, k12_student_profiles, k12_lesson_progress tables + grade_subjects matrix (52 records) + 13 sample ELA lessons"
+      },
+      "SCOPE_CTE_VOCATIONAL": {
+        "tier": 3, "priority": "P1", "depends_on": ["PARENT_PORTAL", "AI_PERSONAS"], "blocks": ["CREDENTIALS", "LAUNCH_CLEANUP"],
+        "parallel_with": ["K12_EDUCATION"], "status": "not_started"
+      },
+      "SCOPE_CONTENT_SOURCES": {
+        "tier": 3, "priority": "P2", "depends_on": ["K12_EDUCATION", "CTE_VOCATIONAL"], "blocks": [],
+        "parallel_with": [], "status": "partial"
+      },
+      "SCOPE_PAYMENTS": {
+        "tier": 4, "priority": "P2", "depends_on": ["EMAIL_SYSTEM"], "blocks": ["SELF_HOSTED_PREMIUM"],
+        "parallel_with": ["pricing", "donate"], "status": "partial"
+      },
+      "SCOPE_pricing": {
+        "tier": 4, "priority": "P2", "depends_on": ["PAYMENTS"], "blocks": [],
+        "parallel_with": ["donate"], "status": "frontend_complete"
+      },
+      "SCOPE_donate": {
+        "tier": 4, "priority": "P2", "depends_on": ["PAYMENTS"], "blocks": [],
+        "parallel_with": ["pricing"], "status": "frontend_complete"
+      },
+      "SCOPE_NOTIFICATIONS": {
+        "tier": 5, "priority": "P2", "depends_on": ["EMAIL_SYSTEM"], "blocks": [],
+        "parallel_with": ["OFFLINE_PWA", "THEME"], "status": "not_started"
+      },
+      "SCOPE_OFFLINE_PWA": {
+        "tier": 5, "priority": "P2", "depends_on": [], "blocks": [],
+        "parallel_with": ["NOTIFICATIONS", "THEME"], "status": "not_started"
+      },
+      "SCOPE_THEME": {
+        "tier": 5, "priority": "P2", "depends_on": [], "blocks": [],
+        "parallel_with": ["NOTIFICATIONS", "OFFLINE_PWA"], "status": "draft"
+      },
+      "SCOPE_SELF_HOSTED_PREMIUM": {
+        "tier": 6, "priority": "P3", "depends_on": ["PAYMENTS"], "blocks": [],
+        "parallel_with": [], "status": "planned"
+      },
+      "SCOPE_CREDENTIALS": {
+        "tier": 7, "priority": "P5", "depends_on": ["K12_EDUCATION", "CTE_VOCATIONAL", "PROGRESS"], "blocks": [],
+        "parallel_with": [], "status": "not_started"
+      },
+      "SCOPE_LAUNCH_CLEANUP": {
+        "tier": 8, "priority": "P-FINAL", "depends_on": ["SECURITY", "PARENT_PORTAL", "K12_EDUCATION", "CTE_VOCATIONAL", "AI_PERSONAS", "PROGRESS"],
+        "blocks": [], "parallel_with": [], "status": "not_started", "trigger": "2026-02", "critical_path": true
+      }
+    },
+    "recommended_order": [
+      { "session": "Next", "scopes": ["SECURITY"], "reason": "Blocks PARENT_PORTAL + AI_PERSONAS" },
+      { "session": "+1", "scopes": ["EMAIL_SYSTEM"], "reason": "Blocks PAYMENTS, NOTIFICATIONS" },
+      { "session": "+2", "scopes": ["PROGRESS"], "reason": "Blocks CREDENTIALS" },
+      { "session": "+3", "scopes": ["PARENT_PORTAL"], "reason": "Unblocks Track 2/3 (critical path)" },
+      { "session": "+4", "scopes": ["AI_PERSONAS"], "reason": "Parallel with PARENT_PORTAL" },
+      { "session": "+5", "scopes": ["PAYMENTS"], "reason": "Unblocks monetization" },
+      { "session": "+6-7", "scopes": ["K12_EDUCATION", "CTE_VOCATIONAL"], "reason": "Parallel, core product" },
+      { "session": "+8", "scopes": ["CREDENTIALS"], "reason": "After tracks complete" },
+      { "session": "Final", "scopes": ["LAUNCH_CLEANUP"], "reason": "February 2026" }
+    ]
+  },
+
+  "scope_order": {
+    "version": "2.0",
+    "location": "pmerit-ai-platform/.claude/scopes/",
+    "master_scope": ".claude/scopes/MASTER_SCOPE.md",
+    "active_scope": "SCOPE_pricing",
+    "total_scopes": 24,
+    "reconciliation_date": "2025-12-22",
+    "reconciliation_session": 70,
+    "scopes": {
+      "SCOPE_HOMEPAGE": { "status": "complete", "file": ".claude/scopes/SCOPE_HOMEPAGE.md", "category": "gate_core" },
+      "SCOPE_Select_Language": { "status": "audited", "file": ".claude/scopes/SCOPE_Select_Language.md", "category": "gate_core" },
+      "SCOPE_ASSESSMENT": { "status": "complete", "file": ".claude/scopes/SCOPE_ASSESSMENT.md", "category": "gate_core" },
+      "SCOPE_DASHBOARD": { "status": "complete", "file": ".claude/scopes/SCOPE_DASHBOARD.md", "category": "gate_core" },
+      "SCOPE_CLASSROOM": { "status": "complete", "file": ".claude/scopes/SCOPE_CLASSROOM.md", "category": "gate_core" },
+      "SCOPE_ENROLLMENT": { "status": "complete", "file": ".claude/scopes/SCOPE_ENROLLMENT.md", "category": "gate_core" },
+      "SCOPE_courses": { "status": "implemented", "file": ".claude/scopes/SCOPE_courses.md", "category": "content_catalog" },
+      "SCOPE_Learning_Pathways": { "status": "complete", "file": ".claude/scopes/SCOPE_Learning_Pathways.md", "category": "content_catalog" },
+      "SCOPE_CONTENT_SOURCES": { "status": "partial", "file": ".claude/scopes/SCOPE_CONTENT_SOURCES.md", "category": "content_catalog" },
+      "SCOPE_AVATAR": { "status": "complete", "file": ".claude/scopes/SCOPE_AVATAR.md", "category": "ai_avatar" },
+      "SCOPE_TTS": { "status": "complete", "file": ".claude/scopes/SCOPE_TTS.md", "category": "ai_avatar" },
+      "SCOPE_AI_PERSONAS": { "status": "deployed_needs_model_upgrade", "file": ".claude/scopes/SCOPE_AI_PERSONAS.md", "category": "ai_avatar", "version": "2.1", "notes": "Phase A+B complete. DB prompts working. Llama 3.1 8B doesn't follow persona instructions well - upgrade to 70B or Claude API needed" },
+      "SCOPE_K12_EDUCATION": { "status": "phase1_complete", "file": ".claude/scopes/SCOPE_K12_EDUCATION.md", "category": "three_track" },
+      "SCOPE_CTE_VOCATIONAL": { "status": "not_started", "file": ".claude/scopes/SCOPE_CTE_VOCATIONAL.md", "category": "three_track" },
+      "SCOPE_PARENT_PORTAL": { "status": "phase4_complete", "file": ".claude/scopes/SCOPE_PARENT_PORTAL.md", "category": "three_track" },
+      "SCOPE_pricing": { "status": "frontend_complete", "file": ".claude/scopes/SCOPE_pricing.md", "category": "monetization" },
+      "SCOPE_donate": { "status": "frontend_complete", "file": ".claude/scopes/SCOPE_donate.md", "category": "monetization" },
+      "SCOPE_PAYMENTS": { "status": "partial_db_only", "file": ".claude/scopes/SCOPE_PAYMENTS.md", "category": "monetization" },
+      "SCOPE_SELF_HOSTED_PREMIUM": { "status": "planned", "file": ".claude/scopes/SCOPE_SELF_HOSTED_PREMIUM.md", "category": "infrastructure" },
+      "SCOPE_EMAIL_SYSTEM": { "status": "in_progress", "file": ".claude/scopes/SCOPE_EMAIL_SYSTEM.md", "category": "infrastructure" },
+      "SCOPE_PROGRESS": { "status": "partial", "file": ".claude/scopes/SCOPE_PROGRESS.md", "category": "platform_foundation" },
+      "SCOPE_SECURITY": { "status": "phase4_complete", "file": ".claude/scopes/SCOPE_SECURITY.md", "category": "platform_foundation" },
+      "SCOPE_THEME": { "status": "draft", "file": ".claude/scopes/SCOPE_THEME.md", "category": "platform_foundation" },
+      "SCOPE_NOTIFICATIONS": { "status": "not_started", "file": ".claude/scopes/SCOPE_NOTIFICATIONS.md", "category": "platform_foundation" },
+      "SCOPE_OFFLINE_PWA": { "status": "not_started", "file": ".claude/scopes/SCOPE_OFFLINE_PWA.md", "category": "platform_foundation" },
+      "SCOPE_ADMIN": { "status": "phase_b_complete", "file": ".claude/scopes/SCOPE_ADMIN.md", "category": "admin_credentials" },
+      "SCOPE_CREDENTIALS": { "status": "not_started", "file": ".claude/scopes/SCOPE_CREDENTIALS.md", "category": "admin_credentials" },
+      "SCOPE_LAUNCH_CLEANUP": { "status": "not_started", "file": ".claude/scopes/SCOPE_LAUNCH_CLEANUP.md", "category": "launch", "trigger": "Feb 2026" }
+    },
+    "non_scope_files": [
+      "Start_Learning.md (empty stub - archive)",
+      "Sign_In_Sign_Up.md (documentation - move to docs/)",
+      "Research_with_Copilot.md (notes - move to docs/)",
+      "SCOPE_TEMPLATE.md (keep as reference)",
+      "SCOPE_courses_backup.md (delete)"
+    ]
+  },
+
+  "architecture_spec": {
+    "document": "docs/project/PMERIT_ARCHITECTURE_FINAL.md",
+    "version": "1.1",
+    "status": "APPROVED",
+    "tracks": {
+      "global_remote": "Adult career training (6 pathways)",
+      "local_education": "Maine K-12 aligned (K-5, 6-8, 9-Diploma)",
+      "local_career": "CTE/Vocational (4 clusters)"
+    },
+    "key_decisions": {
+      "ai_tutor_access": "Enrolled students only (not public catalog)",
+      "grade_spans": "Maine exact (Childhood K-5, Early Adolescence 6-8, Adolescence 9-Diploma)",
+      "subjects": "Career-focused (ELA, Math, Science, Life & Career Readiness)",
+      "credentials": "5-level hierarchy with blockchain (Polygon)",
+      "parent_portal": "Required for minors from start",
+      "content_sources": "Curator model (MOOSE, freeCodeCamp, OSHA)"
+    }
+  },
+
+  "avatar_system": {
+    "status": "COMPLETE",
+    "model": "pmerit-tutor-no-morph.glb",
+    "size": "773KB",
+    "rendering": "Three.js WebGL",
+    "lip_sync": "Jaw bone X-axis rotation",
+    "ready_player_me": {
+      "account": "peoplemerit",
+      "application": "Pmerit AI Tutor",
+      "avatar_id": "693a05bd100ae875d551b445",
+      "avatar_code": "MWM8XR"
+    },
+    "planned_avatars": [
+      "pmerit-tutor-youth.glb (K-5 students)",
+      "pmerit-tutor-teen.glb (6-12 students)",
+      "pmerit-tutor-female.glb (gender diversity)",
+      "pmerit-tutor-elder.glb (CTE/Career)",
+      "pmerit-tutor-nigeria.glb (Nigeria market)"
+    ]
+  },
+
+  "production_health": {
+    "frontend": "healthy",
+    "backend": "healthy",
+    "ai_services": "healthy",
+    "database": "healthy",
+    "assessment": "healthy",
+    "classroom": "healthy",
+    "avatar": "healthy",
+    "tts_api": "healthy",
+    "tts_runpod": "healthy",
+    "last_check": "2025-12-23T19:06:00Z",
+    "homepage_gate_score": "verified"
+  },
+
+  "voice_system": {
+    "status": "COMPLETE",
+    "runpod_pod_id": "xfdsuii2ig7rsl",
+    "runpod_url": "https://xfdsuii2ig7rsl-8000.proxy.runpod.net",
+    "voices": {
+      "free": ["standard-male", "standard-female", "standard-young"],
+      "premium": ["primo", "primo-female"],
+      "self_hosted": ["lessac-natural", "amy-natural", "cloned-teacher", "cloned-custom"]
+    },
+    "engines": {
+      "edge_tts": "Microsoft Neural Voices (free)",
+      "piper_tts": "Local ONNX models (premium)",
+      "coqui_xtts": "Voice cloning, 17 languages (self-hosted premium)"
+    },
+    "cost_per_hour": "$0.26",
+    "note": "STOP pod when not in use to save costs"
+  },
+
+  "self_hosted_infrastructure": {
+    "status": "PLANNED",
+    "server": "Dell PowerEdge R740",
+    "gpus_planned": "2x RTX 4090 (24GB each)",
+    "components": {
+      "tts": "Coqui XTTS v2",
+      "avatar": "Unreal Engine 5 MetaHuman",
+      "lip_sync": "NVIDIA Audio2Face",
+      "llm": "Llama 3 70B (local)",
+      "streaming": "Pixel Streaming (WebRTC)"
+    },
+    "connection": "Cloudflare Tunnel",
+    "deployment": "Colocation datacenter (recommended)",
+    "estimated_monthly_cost": "$250-550",
+    "pricing_tier": "$10-20/month per user",
+    "break_even_users": "22-44 subscribers",
+    "scope_file": ".claude/scopes/SCOPE_SELF_HOSTED_PREMIUM.md",
+    "implementation_phases": [
+      "Phase 1: Server Foundation (1-2 weeks)",
+      "Phase 2: Avatar System (2-4 weeks)",
+      "Phase 3: Frontend Integration (1-2 weeks)",
+      "Phase 4: Optimization & Scale (ongoing)"
+    ],
+    "questions_for_director": [
+      "What are the current specs of your R740? (CPU, RAM, storage, network)",
+      "Where will the R740 be hosted? (home, colo, cloud)",
+      "Which GPU option? (RTX 3090, 2x RTX 4090, or A100)"
+    ]
+  },
+
+  "blockers": [],
+
+  "resolved_blockers": [
+    {
+      "id": "AVATAR_RENDERING_COMPLETE",
+      "description": "Avatar system fully operational with Ready Player Me model and jaw bone lip sync",
+      "since": "Session 44",
+      "resolved": "Session 45",
+      "resolution": "Multiple iterations: (1) morph targets caused Three.js errors, (2) ARKit blend shapes also failed, (3) jaw bone rotation works. Final: gpu-streaming.js v1.8.0 with pmerit-tutor-no-morph.glb. Commits: 9f3836a, 6e92f8f, 0c2c055.",
+      "affected": ["gpu-streaming.js", "lip-sync-controller.js", "assets/models/avatars/"]
+    },
+    {
+      "id": "AVATAR_MORPH_TARGETS",
+      "description": "Ready Player Me avatar morph targets causing TypeError: Cannot read properties of null (reading 'name') at updateMorphTargets",
+      "since": "Session 44",
+      "resolved": "Session 45",
+      "resolution": "Downloaded avatar without morph targets using ?morphTargets=none parameter. Updated gpu-streaming.js v1.6.0 to use pmerit-tutor-no-morph.glb (773KB). Commit 9f3836a.",
+      "affected": ["gpu-streaming.js:42,50", "assets/models/avatars/pmerit-tutor-no-morph.glb"]
+    },
+    {
+      "id": "AVATAR_MODEL_MISMATCH",
+      "description": "AvatarManager defaults to pm_classic.glb, GPUStreaming uses Ty.glb, but deployed asset is humano_professional.glb",
+      "since": "Session 43",
+      "resolved": "Session 43",
+      "resolution": "Updated AvatarManager.js:22 and gpu-streaming.js:42,50 to use humano_professional.glb. Commit 0bdf6a3.",
+      "affected": ["AvatarManager.js:22", "gpu-streaming.js:42", "assets/models/avatars/"]
+    },
+    {
+      "id": "AVATAR_INIT_FAIL",
+      "description": "AvatarManager initialization fails due to incorrect TTS path - shows error overlay instead of graceful fallback",
+      "since": "Session 39",
+      "resolved": "Session 41",
+      "resolution": "Fixed TTS path in AvatarManager.js (now uses window.CONFIG?.API_BASE_URL + /api/v1/tts). Also fixed tts.js and virtual-human-api.js. Graceful fallback already implemented.",
+      "affected": ["AvatarManager.js", "tts.js", "virtual-human-api.js"]
+    },
+    {
+      "id": "AVATAR_SYSTEM_CONFLICT",
+      "description": "Two competing avatar systems (AvatarManager vs GPUStreaming) both try to render to same container",
+      "since": "Session 39",
+      "resolved": "Session 41",
+      "resolution": "Systems are now properly unified: AvatarManager handles TTS/audio only (canvasId: null, enabled: false in classroom), GPUStreaming handles all WebGL rendering. Graceful fallback chain: Premium -> Standard -> Free -> Static with toast notifications instead of error overlays.",
+      "affected": ["AvatarManager.js", "gpu-streaming.js", "classroom.html"]
+    },
+    {
+      "id": "TTS_404",
+      "description": "TTS API endpoint appeared to return 404",
+      "since": "Session 39",
+      "resolved": "Session 40",
+      "resolution": "TTS endpoint /api/v1/tts is WORKING - returns valid WAV audio. The 404 was from incorrect path /tts in AvatarManager.js",
+      "affected": ["AvatarManager.js"]
+    },
+    {
+      "id": "AI_BINDING",
+      "description": "env.AI binding undefined - AI chat returns empty responses",
+      "since": "Session 20",
+      "resolved": "Session 29",
+      "resolution": "AI binding now working - verified via /api/v1/ai/chat endpoint",
+      "affected": ["H3", "P0.2", "P0.3", "P0.4"]
+    },
+    {
+      "id": "ENROLLMENT_REDIRECT",
+      "description": "Enrollment on courses.html redirected to sign-up even when logged in",
+      "since": "Session 36",
+      "resolved": "Session 36",
+      "resolution": "Fixed auth check to use window.AUTH?.getCurrentUser() and correct API endpoint",
+      "affected": ["courses.html"]
+    },
+    {
+      "id": "CLASSROOM_NO_COURSE",
+      "description": "Enter Classroom links had no courseId, causing errors",
+      "since": "Session 36",
+      "resolved": "Session 36",
+      "resolution": "Changed all Enter Classroom links to redirect to My Courses section for course selection",
+      "affected": ["dashboard.html"]
+    }
+  ],
+
+  "notes": {
+    "current_focus": "SCOPE_K12_EDUCATION Phase 1 COMPLETE - Next: Phase 2 (MOOSE content mapping) or UI development",
+    "session_71_milestone": "SCOPE_SECURITY Phases 1, 2, 4 COMPLETE - (1) AI Police content moderation with 17 injection patterns, PII masking, age-tier filtering, (2) Security headers with Grade A on SecurityHeaders.com, (4) Admin Security Dashboard with full UI and 8 API endpoints.",
+    "session_46_milestone": "Classroom Redesign planning complete - App Shell specs defined",
+    "session_45_milestone": "Avatar system COMPLETE - jaw bone lip sync working (commits: 9f3836a, 6e92f8f, 0c2c055)",
+    "session_44_milestone": "Ready Player Me integration started - morph targets error identified",
+    "session_43_milestone": "ARCH-1 FOUNDATION COMPLETE: 14 new tables, avatar fix, 6 AI personas seeded",
+    "session_41_milestone": "Fixed TTS paths, unified avatar systems, DEPLOYED 15 avatar texture files, lip sync integration",
+    "session_40_milestone": "Production Audit - TTS confirmed working, handoffs archived",
+    "session_38_39_milestone": "Digital Desk Backend + Frontend COMPLETE",
+    "remaining_partial": "H7 language modal - VERIFIED WORKING (Session 56)",
+    "audits_archived": "PRODUCTION_AUDIT_2025-12-05, 2025-12-06, 2025-12-07 moved to docs/aados/archive/",
+    "premium_tier_decision": "Cloud AI avatar services (HeyGen, Synthesia) incompatible with free education at scale. Ready Player Me + Three.js = sustainable free tier."
+  },
+
+  "recent_changes": [
+    {
+      "session": 76,
+      "date": "2025-12-24",
+      "change": "Claude Web Recommendations - Context-Aware Models + Homework Detection",
+      "impact": "Backend v2.5.0 deployed. (1) Context-aware model selection: K-12 gets 70B Llama 3.3 for better persona following, adults get 24B Mistral Small for efficiency - all FREE on Cloudflare Workers AI. (2) Homework detection patterns (10 patterns) added to AI Police v1.1.0 - redirects cheating attempts to AI Tutor signup (conversion opportunity). (3) Dual-mode front page AI designed but not yet implemented. TESTED: Homework detection working ('write an essay about WWII' → redirect). K-12 model routing working. Commits: ced27c7 (model upgrade), cae8907 (homework detection)."
+    },
+    {
+      "session": 76,
+      "date": "2025-12-24",
+      "change": "SCOPE_AI_PERSONAS Deployed v2.4.0 + Model Limitation Discovery",
+      "impact": "Backend v2.4.0 deployed to production. Database-driven persona selection working: /api/v1/ai/tutor now queries ai_tutor_personas table, selects persona by grade_code/persona_override, returns metadata in headers (X-Persona-Name, X-Persona-Voice, X-Persona-Rate). FINDING: Llama 3.1 8B model doesn't follow persona personality instructions well - responses are generic regardless of persona. Architecture is correct - upgrade to larger model (70B) or Claude API will make personas work. Commit: 2d7f9ac (version fix)."
+    },
+    {
+      "session": 75,
+      "date": "2025-12-24",
+      "change": "SCOPE_AI_PERSONAS v2.1 - Critical Audit + Migration 016",
+      "impact": "CRITICAL FINDING: Two Persona Systems not unified. AI Handler Types (index.ts) uses 'assistant/support/tutor/insight/pathfinder' while Database Personas (ai_tutor_personas table) has professor_ada/ms_sunshine/etc. The system_prompt column was EMPTY! Migration 016 created: (1) Adds prosody columns (speaking_rate_wpm, pause_duration_ms, enthusiasm_level), (2) Populates full system_prompt for all 6 personas with identity/speech style/teaching style/boundaries/prosody, (3) Age-appropriate settings: Ms. Sunshine 120wpm (slow for K-2), Coach Jordan 160wpm (fast for teens). SCOPE updated to v2.1 with unified architecture, RAG+Persona integration flow, complete persona specifications."
+    },
+    {
+      "session": 75,
+      "date": "2025-12-24",
+      "change": "SCOPE_K12_EDUCATION Phase 1 COMPLETE - Database Migration 015",
+      "impact": "Migration 015 deployed to production: (1) k12_lessons table for MOOSE content links + AI tutoring context, (2) k12_student_profiles for grade assignment/UI type/persona, (3) k12_lesson_progress for individual lesson tracking, (4) k12_unit_progress for aggregate tracking, (5) grade_subjects matrix populated (52 records: 13 grades × 4 subjects), (6) subject_units created (52 sample units), (7) 13 sample ELA lessons with AI context/common_struggles/teaching_tips, (8) Helper functions: get_grade_span(), get_persona_for_grade(), get_ui_type_for_grade(), get_grade_from_birth_date(). MOOSE validated: 300+ modules available, no login required, CC licensed. Scope updated to v2.0 with RAG architecture, age-appropriate UI specs, AI persona prompts. Backend commit: 01a5135. Frontend commit: a798738."
+    },
+    {
+      "session": 74,
+      "date": "2025-12-23",
+      "change": "SCOPE_PARENT_PORTAL Phase 4 COMPLETE - Age-Out + E2E Testing",
+      "impact": "Parent Portal is now fully operational: (1) Age-out transition job (src/scheduled/age-out.ts) runs daily at 2 AM UTC via cron trigger, sends 30-day notices and processes transitions when children turn 13. (2) Migration 014 adds age_out_notices table and aged_out_at column. (3) E2E testing verified full consent flow: create child → request consent → verify token → submit consent → child activated. (4) Frontend bug fix: parent-consent.html data binding (commit 1a40038). Backend: df95ddfb-154a-4209-bc3c-c75763ae0941. Commits: f414097, 994036b (backend), 1a40038, aa193e9 (frontend)."
+    },
+    {
+      "session": 71,
+      "date": "2025-12-23",
+      "change": "SCOPE_SECURITY Phase 4 - Admin Security Dashboard",
+      "impact": "Implemented Admin Security Dashboard: (1) Created src/routes/security.ts with 8 API endpoints for security monitoring (overview, moderation-log, blocklist, rate-limits, false-positive). (2) Created admin/security.html with full dashboard UI - Security Overview Panel (5 status cards), AI Police Moderation Log viewer with filters, Blocklist Management (add/remove blocks with duration). (3) Added JWT auth helper for admin endpoints. (4) Updated tier1.html Security card to link to new dashboard. Backend commit: ae8d14f. Frontend commit: 5843bd3."
+    },
+    {
+      "session": 71,
+      "date": "2025-12-23",
+      "change": "SCOPE_SECURITY Phase 2 Bug Fix - Security Headers on All Routes",
+      "impact": "Fixed security headers not appearing on route-specific responses: (1) Created src/utils/response.ts shared utility with SECURE_CORS_HEADERS. (2) Updated 8 route files to use shared corsResponse function. (3) All API responses now include 9 security headers (HSTS, CSP, X-Content-Type-Options, etc.). SecurityHeaders.com Grade: A. Backend commit: a536720."
+    },
+    {
+      "session": 71,
+      "date": "2025-12-24",
+      "change": "SCOPE_SECURITY Phase 1 - AI Police Content Moderation",
+      "impact": "Implemented AI Police content moderation system: (1) Created ai-police.ts with 17 injection detection patterns, 6 PII detection/masking patterns, age-tier content filtering (K-5, 6-8, 9-12, adult), universal blocked content patterns. (2) Created 011_security_phase1.sql migration with 4 new tables (ai_moderation_log, security_audit_log, rate_limit_tracking, security_blocklist) + helper functions. (3) Integrated into handleAI() in index.ts v2.2.0 - all AI requests now moderated before processing. (4) Enhanced AADOS with FEATURE_GUIDE section in scope template v2 for post-launch documentation. (5) Updated GOVERNANCE.md v9 with new 'Documented' scope state. Backend commit: dbf76a8. Frontend commit: 7310125."
+    },
+    {
+      "session": 69,
+      "date": "2025-12-22",
+      "change": "Admin Portal Improvements - Security & UX",
+      "impact": "Session 68-69 comprehensive admin fixes: (1) Fixed CONFIG.API_BASE undefined causing HTML parsing error, (2) Fixed localStorage token key mismatch (auth_token -> pmerit_token), (3) Implemented NIST/RBAC security: audit log immutability with SHA-256 checksums, content ownership (created_by/updated_by), soft delete with 30-day retention, (4) Fixed audit logs field name mapping in frontend, (5) Added admin portal link to dashboard sidebar (visible only for tier1_admin/tier2_admin), (6) Backend now returns role on login for admin access control."
+    },
+    {
+      "session": 64,
+      "date": "2025-12-19",
+      "change": "Self-Hosted Premium infrastructure scopes created",
+      "impact": "Created SCOPE_SELF_HOSTED_PREMIUM.md documenting Dell R740 infrastructure for premium tier: Coqui XTTS v2 (voice cloning), Unreal MetaHuman + Audio2Face (photorealistic avatar), Llama 3 70B (local LLM). Updated SCOPE_TTS.md with 3-tier architecture. Updated SCOPE_AVATAR.md with self-hosted rendering. Updated SCOPE_pricing.md with $10-20/mo Self-Hosted Premium tier. Updated MASTER_SCOPE.md with ARCH-008 through ARCH-011 decisions. ROI: 2-4 month payback vs cloud costs."
+    },
+    {
+      "session": 61,
+      "date": "2025-12-18",
+      "change": "donate.html CREATED, pricing.html CTAs updated",
+      "impact": "Created donate.html (380 lines) with full donation UI: Impact stats ($10-500 levels), One-Time/Monthly/Pay It Forward options, Corporate section, Crypto/Stock/Planned Giving, FAQ, Transparency table, LLC Charter info (#202605331DC). Updated pricing.html: Pay It Forward link now goes to donate.html, Support Our Mission CTA goes to donate.html. Both scopes marked frontend_complete. Backend payment integration pending."
+    },
+    {
+      "session": 60,
+      "date": "2025-12-17",
+      "change": "SCOPE_pricing and SCOPE_donate audited",
+      "impact": "pricing.md: Full audit of pricing.html (422 lines) - 3 tiers (Free/$2.99 Premium/Pay It Forward), Pay-for-Accountability model, FAQ, growth projections. Backend NOT implemented. donate.md: Page DOES NOT EXIST - header.html links to donate.html return 404. Recommended page structure documented. Both scopes ready for Claude Web to write HANDOFF_DOCUMENT requirements."
+    },
+    {
+      "session": 59,
+      "date": "2025-12-17",
+      "change": "SCOPE_Learning_Pathways + SCOPE_courses frontend COMPLETE",
+      "impact": "pathways.html: Added Program Finder component (track selector tabs), Syllabus Modal (view course sequence), updated card CTAs. courses.html: Added Learning Pathway filter dropdown (grouped by track type), removed Career Tracks section (moved to pathways), URL query param support (?pathway=data-analytics). All committed and pushed. course.html already existed with full functionality."
+    },
+    {
+      "session": 58,
+      "date": "2025-12-17",
+      "change": "Admin Portal Phase A Foundation COMPLETE",
+      "impact": "Backend: Migration 005 added role column to users table (user/tier2_admin/tier1_admin), created audit_logs table, admin middleware (verifyAdminAuth), 9 admin API endpoints deployed (/api/v1/admin/*). Frontend: admin-auth-check.js created for role validation, tier1.html/tier2.html now protected. Non-admin users see 'Access Denied' page. Ready for Phase B: Content Management."
+    },
+    {
+      "session": 58,
+      "date": "2025-12-17",
+      "change": "BLS salary data and career outcomes added to pathways",
+      "impact": "Migration 004 run: 3 new tables (content_sources, course_external_content, user_external_certifications), 12 new columns on pathways, 3 new columns on courses. 9 content sources seeded. All 6 Global Remote pathways updated with BLS May 2024 salary data. Frontend updated: pathways.html now displays salary ranges ($65K-$112K format), career outcomes, program duration, commitment hours. Database now 93 tables."
+    },
+    {
+      "session": 57,
+      "date": "2025-12-17",
+      "change": "SCOPE_courses.md created and audited",
+      "impact": "Comprehensive courses system audit: 14 pathways (3 tracks), 42 courses, 12 API endpoints. System fully operational: courses.html catalog, dashboard-courses.js module, enrollment/unenroll working. Gaps identified: no module/lesson content, no admin UI for modules/lessons, no rating system."
+    },
+    {
+      "session": 56,
+      "date": "2025-12-14",
+      "change": "SCOPE_Select_Language.md created and audited",
+      "impact": "H7 Language Modal VERIFIED WORKING. 153 languages supported (4 offline: en, yo, ig, ha). System includes language-modal.js v2.0.0, language-manager.js v3.0.0, language-data.js, Azure Translator API integration, Cloudflare KV caching. Previous 'No languages found' issue resolved."
+    },
+    {
+      "session": 51,
+      "date": "2025-12-13",
+      "change": "SCOPE_TTS.md created",
+      "impact": "Comprehensive TTS scope documentation based on implementation reality. Documents backend (tts.ts), frontend (tts.js, tts-client.js, lip-sync-controller.js), API endpoints, voice options, fallback hierarchy, and integration with Avatar system. Identified gap: TTS_QUOTA_KV binding not configured in wrangler.toml."
+    },
+    {
+      "session": 50,
+      "date": "2025-12-12",
+      "change": "Scope Order System implemented",
+      "impact": "Created hierarchical scope management: MASTER_SCOPE.md (project vision) + 8 sub-scopes (Homepage, Assessment, Dashboard, Classroom, Avatar, Enrollment, Admin, Credentials). Each scope contains HANDOFF_DOCUMENT (spec) + RESEARCH_FINDINGS (implementation notes). Enables focused context loading and three-way workflow (Claude Web + You + Claude Code)."
+    },
+    {
+      "session": 49,
+      "date": "2025-12-11",
+      "change": "Mobile responsiveness & dark mode fixes",
+      "impact": "Fixed hamburger menu JS (added .active class toggle), dark mode styling for menu/toggles, assessment page mobile layout with sticky nav buttons, comprehensive classroom page mobile redesign (slide-out outline drawer, slide-up chat panel, swipe gestures, sticky playback controls). Commits: 9d1d718, 68d52a4, 1fe2fc5."
+    },
+    {
+      "session": 46,
+      "date": "2025-12-11",
+      "change": "Classroom Redesign planning",
+      "impact": "Defined App Shell architecture: 100vh fixed viewport, dark theme, tabbed left panel, docked avatar PIP, unified playback controls. Based on Gemini UX recommendations and front page design consistency."
+    },
+    {
+      "session": 45,
+      "date": "2025-12-11",
+      "change": "Avatar system COMPLETE",
+      "impact": "Multiple iterations: (1) morph targets fix, (2) ARKit lip sync attempted but failed, (3) jaw bone animation implemented. Final: gpu-streaming.js v1.8.0 with pmerit-tutor-no-morph.glb. Commits: 9f3836a, 6e92f8f, 0c2c055. Avatar rendering confirmed in production."
+    },
+    {
+      "session": 44,
+      "date": "2025-12-10",
+      "change": "Ready Player Me integration started",
+      "impact": "Created Ready Player Me account and application. Selected professional avatar (ID: 693a05bd100ae875d551b445). Identified morph targets error blocking avatar rendering."
+    },
+    {
+      "session": 43,
+      "date": "2025-12-09",
+      "change": "ARCH-1 Foundation COMPLETE",
+      "impact": "Ran 003_architecture_tables.sql migration: 14 new tables (credentials, K-12, parent portal, AI personas, syllabi), 7 indexes, seed data (5 credential types, 13 grades, 4 subjects, 6 AI personas). Avatar fix deployed (humano_professional.glb). Database now 96 tables."
+    },
+    {
+      "session": 42,
+      "date": "2025-12-08",
+      "change": "Avatar debugging session",
+      "impact": "Avatar temporarily disabled for debugging. Root cause: two avatar systems competing."
+    },
+    {
+      "session": 41,
+      "date": "2025-12-07",
+      "change": "Avatar System COMPLETE - Textures Deployed",
+      "impact": "Fixed TTS paths, deployed 15 avatar texture files to production (commit 617066a), implemented lip sync integration, floating widget. All texture 404 errors resolved. Avatar should now render with full PBR materials."
+    }
+  ],
+
+  "classroom_redesign": {
+    "status": "PLANNING_COMPLETE",
+    "phases": {
+      "phase_1": "App Shell Foundation (100vh, overflow hidden, 3-column fixed)",
+      "phase_2": "Layout Restructure (tabbed left panel, docked avatar PIP)",
+      "phase_3": "Visual Polish (dark theme, glassmorphism, unified controls)"
+    },
+    "files_to_modify": [
+      "portal/classroom.html",
+      "assets/css/classroom.css (new)",
+      "assets/js/classroom.js",
+      "assets/js/gpu-streaming.js"
+    ],
+    "design_references": [
+      "Front page dark theme (#0f1419)",
+      "Support Assistant chat styling",
+      "Quick Actions tabbed interface"
+    ]
+  },
+
+  "reference_docs": {
+    "architecture_spec": "docs/project/PMERIT_ARCHITECTURE_FINAL.md",
+    "feature_spec": "docs/project/PMERIT_FEATURE_SPEC.md",
+    "user_journey": "docs/project/Pmerit-comprehensively-narrative-users-and-Admin-Journey.md",
+    "latest_audit": "docs/aixord/AIXORD_GAP_K12_REGISTRATION_FLOW.md",
+    "master_doc": "docs/project/Pmerit_Project_Document.md",
+    "governance": "docs/aixord/AIXORD_GOVERNANCE.md",
+    "vwp_protocol": "docs/aixord/AIXORD_VWP.md",
+    "k12_dashboard_arch": "docs/architecture/K12_DASHBOARD_ARCHITECTURE.md",
+    "k12_regression_tests": "docs/testing/K12_REGRESSION_CHECKLIST.md",
+    "system_evolution": "docs/aixord/AIXORD_EVOLUTION.md",
+    "latest_handoff": "docs/handoffs/PMERIT_HANDOFF_SESSION_80.md"
+  },
+
+  "session_48_audit": {
+    "completed_with_no_gaps": [
+      "Phase 0-5 (User Journey)",
+      "ARCH-1 Foundation (14 tables, 96 total)",
+      "Avatar System (Ready Player Me + jaw bone lip sync)",
+      "Classroom Redesign (App Shell)",
+      "Digital Desk Backend (13 endpoints)",
+      "Authentication System (8 endpoints)"
+    ],
+    "completed_with_gaps": [
+      "TTS Quota - not configured",
+      "Assessment Results - DB query issue"
+    ],
+    "work_in_progress": [
+      "Classroom content testing (needs verification)",
+      "Avatar browser testing (needs verification)"
+    ],
+    "not_started": [
+      "Phase 6 (Progress & Assessment)",
+      "ARCH-2 (Credential API, Blockchain)",
+      "ARCH-3 (Polygon Integration)",
+      "Admin Portal (Phases 7-10)",
+      "Assessment Enhancements (Tiers 1-5)",
+      "Avatar Diversity (Track B)"
+    ],
+    "handoffs_archived": [
+      "Sessions 27-47 moved to docs/handoffs/archive/"
+    ]
+  }
+}
