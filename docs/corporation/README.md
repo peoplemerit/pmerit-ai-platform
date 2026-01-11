@@ -1,6 +1,6 @@
 # PMERIT Corporation - Document Repository
 
-**Last Updated:** December 18, 2025
+**Last Updated:** January 11, 2026
 **Structure:** Mission Holding Company Model
 **Status:** PARTIALLY COMPLETE - See checklist below
 
@@ -11,10 +11,13 @@
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │              PMERIT (PEOPLE MERIT) LLC                          │
+│              DBA: Pmerit / People merit                         │
 │              Charter #: 202605331DC                             │
-│              EIN: [Pending confirmation]                        │
-│              (Maine LLC - Holdings/Parent)                      │
-│              Status: REGISTERED                                 │
+│              EIN: 41-2862549                                    │
+│              (Maine Single-Member LLC - Holdings/Parent)        │
+│              Status: ACTIVE                                     │
+│              Principal: 32 Thomas Ave, Caribou, ME 04736        │
+│              Reg Agent: 439 US Route 1 STE A, York, ME 03909    │
 └─────────────────────────────┬───────────────────────────────────┘
                               │
               ┌───────────────┴───────────────┐
@@ -23,9 +26,9 @@
 ┌─────────────────────────────┐   ┌─────────────────────────────┐
 │     PMERIT FOUNDATION       │   │   PMERIT TECHNOLOGIES LLC   │
 │     (Public Benefit Corp)   │   │      (For-Profit LLC)       │
-│     EIN: 41-3091629         │   │      EIN: [PENDING]         │
-│     Status: REGISTERED      │   │      Status: NOT FILED      │
-│     501(c)(3): PENDING      │   │                             │
+│     EIN: 41-3091629         │   │      EIN: None              │
+│     Status: ACTIVE          │   │      Status: NOT FORMED     │
+│     501(c)(3): PENDING      │   │      (Deferred post-launch) │
 └─────────────────────────────┘   └─────────────────────────────┘
 ```
 
@@ -79,13 +82,15 @@ corporation/
 ### 1. PMERIT (PEOPLE MERIT) LLC - Holdings
 | Field | Value |
 |-------|-------|
-| **Type** | Maine LLC (Standard) |
+| **Type** | Maine Single-Member LLC |
 | **Charter Number** | 202605331DC |
 | **Formation Date** | December 3, 2025 |
-| **EIN** | [Verify in current_documents] |
+| **EIN** | 41-2862549 |
+| **Name Control** | PEOP |
 | **Status** | ACTIVE |
 | **Registered Agent** | Registered Agents Inc (CRA P10263) |
-| **Address** | 439 US Route 1 STE A, York, ME 03909 |
+| **Registered Agent Address** | 439 US Route 1 STE A, York, ME 03909 |
+| **Principal/Member Address** | 32 Thomas Ave, Caribou, ME 04736 |
 | **Member** | Idowu J. Gabriel (100%) |
 | **Purpose** | Hold and manage subsidiary entities |
 
@@ -106,9 +111,11 @@ corporation/
 | Field | Value |
 |-------|-------|
 | **Type** | Maine LLC (Standard) |
-| **Status** | NOT YET FORMED |
+| **Status** | NOT FORMED |
+| **EIN** | None (entity does not exist) |
 | **Planned Member** | PMERIT (PEOPLE MERIT) LLC |
 | **Purpose** | Platform development, premium services |
+| **Note** | Formation deferred until post-launch |
 
 ---
 
@@ -136,12 +143,24 @@ corporation/
 | Date | Event | Status |
 |------|-------|--------|
 | Nov 20, 2024 | Nigerian NGO Constitution Signed | COMPLETE |
+| Dec 1, 2025 | Holdings EIN Issued (41-2862549) | COMPLETE |
 | Dec 3, 2025 | PMERIT (PEOPLE MERIT) LLC Formed (Maine) | COMPLETE |
 | Dec 13, 2025 | PMERIT FOUNDATION Incorporated | COMPLETE |
 | Dec 17, 2025 | Form 1023-EZ Submitted to IRS | COMPLETE |
+| Jan 31, 2026 | Form 940/943 Filing Deadline | PENDING |
 | TBD | 501(c)(3) Determination Received | PENDING (2-4 weeks) |
-| TBD | PMERIT TECHNOLOGIES LLC Formation | NOT STARTED |
+| TBD | PMERIT TECHNOLOGIES LLC Formation | DEFERRED (post-launch) |
 | TBD | SAM.gov Registration | NOT STARTED |
+
+---
+
+## TAX FILING DEADLINES
+
+| Form | Description | Due Date | Status |
+|------|-------------|----------|--------|
+| Form 940 | Federal Unemployment Tax (FUTA) | 01/31/2026 | PENDING |
+| Form 943 | Employer's Annual Federal Tax Return | 01/31/2026 | PENDING |
+| Form 990-N | Annual e-Postcard (Foundation) | TBD | NOT YET DUE |
 
 ---
 
@@ -186,5 +205,20 @@ Example: HOLDINGS_LLC_CERTIFICATE_2025-12-03.pdf
 
 ---
 
+## STRIPE ACCOUNT SETUP
+
+**Use Holdings Entity for Stripe since Technologies LLC is not formed:**
+
+| Stripe Field | Correct Value |
+|--------------|---------------|
+| Legal business name | People merit |
+| EIN | 41-2862549 |
+| Business structure | Single-member LLC |
+| Address | 32 Thomas Ave, Caribou, ME 04736 |
+| Verification document | CP 575 A (Pmerit_EIN_Certificate.pdf) |
+
+---
+
 *Document Repository Created: December 18, 2025*
+*Last Updated: January 11, 2026*
 *For questions, reference: Incorporation_structure_chat_session.md*

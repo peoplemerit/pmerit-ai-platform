@@ -672,9 +672,72 @@
     let allCourses = [];
     let allPathways = [];
     let editingCourseId = null;
+    let currentAdmin = null;
+
+    // =========================================================================
+    // GAP-C5: Admin Authentication Check
+    // =========================================================================
+    async function verifyAdminAccess() {
+      const token = localStorage.getItem('pmerit_token');
+
+      if (!token) {
+        console.warn('No auth token found');
+        window.location.href = '/signin.html?redirect=/admin-courses.html&error=auth_required';
+        return false;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE}/admin/me`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            console.warn('Token expired or invalid');
+            localStorage.removeItem('pmerit_token');
+            window.location.href = '/signin.html?redirect=/admin-courses.html&error=session_expired';
+            return false;
+          }
+          if (response.status === 403) {
+            console.warn('User lacks admin privileges');
+            window.location.href = '/dashboard.html?error=admin_required';
+            return false;
+          }
+          throw new Error(`Auth check failed: ${response.status}`);
+        }
+
+        const data = await response.json();
+        currentAdmin = data.user;
+        console.log('Admin verified:', currentAdmin.email, 'Role:', currentAdmin.role);
+        return true;
+      } catch (error) {
+        console.error('Admin verification failed:', error);
+        showToast('Authentication failed. Please sign in again.', 'error');
+        setTimeout(() => {
+          window.location.href = '/signin.html?redirect=/admin-courses.html';
+        }, 2000);
+        return false;
+      }
+    }
+
+    // Get auth headers for API calls
+    function getAuthHeaders() {
+      const token = localStorage.getItem('pmerit_token');
+      return {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      };
+    }
 
     // Initialize
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
+      // GAP-C5: Verify admin before loading any data
+      const isAdmin = await verifyAdminAccess();
+      if (!isAdmin) return;
+
       loadPathways();
       loadCourses();
     });
@@ -888,17 +951,17 @@
       try {
         let response;
         if (editingCourseId) {
-          // Update existing course
+          // Update existing course (GAP-C5: Include auth headers)
           response = await fetch(`${API_BASE}/courses/${editingCourseId}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers: getAuthHeaders(),
             body: JSON.stringify(courseData)
           });
         } else {
-          // Create new course
+          // Create new course (GAP-C5: Include auth headers)
           response = await fetch(`${API_BASE}/courses`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: getAuthHeaders(),
             body: JSON.stringify(courseData)
           });
         }
@@ -925,8 +988,10 @@
       }
 
       try {
+        // GAP-C5: Include auth headers for delete
         const response = await fetch(`${API_BASE}/courses/${courseId}`, {
-          method: 'DELETE'
+          method: 'DELETE',
+          headers: getAuthHeaders()
         });
 
         const data = await response.json();
