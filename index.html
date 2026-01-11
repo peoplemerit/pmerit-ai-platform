@@ -61,7 +61,7 @@
   <link rel="stylesheet" href="assets/css/responsive-fixes.css?v=4">
 
   <!-- Index Page Layout (MOSA extracted) -->
-  <link rel="stylesheet" href="assets/css/index-layout.css?v=6">
+  <link rel="stylesheet" href="assets/css/index-layout.css?v=7">
 
   <!-- Language Modal styles are auto-injected by language-modal.js -->
 
@@ -145,6 +145,8 @@
       <a href="/privacy.html" class="footer-link-mobile" data-i18n="footer.privacy">Privacy & Terms</a>
       <span class="footer-separator"> • </span>
       <a href="#" class="footer-link-mobile" id="mobile-customer-service-link" data-i18n="footer.customerService">Customer Service</a>
+      <span class="footer-separator"> • </span>
+      <a href="/products.html" class="footer-link-mobile" data-i18n="footer.products">Products</a>
       <span class="footer-separator"> • </span>
       <span class="footer-status-mobile" data-i18n="footer.status">Connected to Educational Services</span>
     </footer>
@@ -312,6 +314,25 @@
               <p>Welcome to PMERIT! I'm here to guide your learning journey. Our mission is to provide accessible, high-quality education that opens doors to endless opportunities. How can I help you discover your potential today?</p>
             </div>
           </div>
+
+          <!-- Quick Start Cards -->
+          <div class="quick-start-cards" id="quickStartCards">
+            <a href="assessment-entry.html" class="quick-card">
+              <span class="quick-card-icon"><i class="fas fa-compass"></i></span>
+              <span class="quick-card-label">Start Assessment</span>
+              <span class="quick-card-desc">Discover your learning path</span>
+            </a>
+            <a href="pathways.html" class="quick-card">
+              <span class="quick-card-icon"><i class="fas fa-graduation-cap"></i></span>
+              <span class="quick-card-label">Browse Courses</span>
+              <span class="quick-card-desc">Explore available programs</span>
+            </a>
+            <a href="pathways.html#careers" class="quick-card">
+              <span class="quick-card-icon"><i class="fas fa-briefcase"></i></span>
+              <span class="quick-card-label">Explore Careers</span>
+              <span class="quick-card-desc">Find your future profession</span>
+            </a>
+          </div>
         </div>
       </div>
 
@@ -349,8 +370,8 @@
         
         <!-- Control Buttons Row -->
         <div class="desktop-input-controls">
-          <button class="control-btn" data-mode="customer-service">
-            <i class="fas fa-headset"></i> <span data-i18n="chat.customerService">Customer Service</span>
+          <button class="control-btn" data-action="browse-courses" onclick="window.location.href='/pathways.html'">
+            <i class="fas fa-graduation-cap"></i> <span data-i18n="chat.browseCourses">Browse Courses</span>
           </button>
           <button class="control-btn" data-action="read-about">
             <i class="fas fa-book"></i> <span data-i18n="chat.readAbout">Read About</span>
@@ -384,13 +405,13 @@
         <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;" data-i18n="assessment.subtitle">
           Personalized learning plan
         </p>
-        <p style="font-size: 0.75rem; color: var(--text-secondary); font-style: italic; margin-bottom: 1rem;">
+        <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 1rem;">
           Start a short flow that blends learning style, interests, and skills into a plan.
         </p>
         <button class="cta-large" onclick="window.location.href='assessment-entry.html'">
           <i class="fas fa-compass"></i> <span data-i18n="assessment.button">Begin Assessment</span>
         </button>
-        <p style="font-size: 0.7rem; color: var(--text-secondary); font-style: italic; margin-top: 0.75rem;">
+        <p style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.75rem;">
           Short, frequent study sessions are more effective than long cramming sessions.
         </p>
       </div>
@@ -410,6 +431,7 @@
           <a href="/partnerships.html" class="footer-link" data-i18n="footer.partnerships">Partnerships</a>
           <a href="/support.html" class="footer-link" data-i18n="footer.support">Support</a>
           <a href="#" class="footer-link" id="desktop-customer-service-link" data-i18n="footer.customerService">Customer Service</a>
+          <a href="/products.html" class="footer-link" data-i18n="footer.products">Products</a>
         </div>
       </div>
     </footer>

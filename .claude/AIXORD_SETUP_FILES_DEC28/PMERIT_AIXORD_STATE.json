@@ -1,0 +1,244 @@
+{
+  "_comment": "PMERIT Platform — AIXORD State v2.1 (3-Repo Federation)",
+  "_schema_version": "2.1",
+  "_docs": "See AIXORD_ROOT/GOVERNANCE/AIXORD_GOVERNANCE_V2.1.md",
+
+  "governance": {
+    "doc_id": "AIXORD_GOVERNANCE_V2.1.md",
+    "version": "2.1",
+    "effective": "2025-12-28",
+    "hash_sha256": null,
+    "source": "AIXORD_ROOT/GOVERNANCE/AIXORD_GOVERNANCE_V2.1.md",
+    "pin_required": true
+  },
+
+  "project": {
+    "name": "PMERIT AI Educational Platform",
+    "description": "AI-powered educational platform with multi-track learning",
+    "repositories": {
+      "frontend": {
+        "name": "pmerit-ai-platform",
+        "path": "C:/dev/pmerit/pmerit-ai-platform",
+        "scopes_path": ".claude/scopes",
+        "role": "UI, Components, User Flows, Pages, Styling",
+        "production_url": "https://pmerit.com"
+      },
+      "backend": {
+        "name": "pmerit-api-worker",
+        "path": "C:/dev/pmerit/pmerit-api-worker",
+        "scopes_path": ".claude/scopes",
+        "role": "API Endpoints, TTS, AI Personas, Data Services",
+        "production_url": "https://pmerit-api-worker.peoplemerit.workers.dev"
+      },
+      "products": {
+        "name": "Pmerit_Product_Development",
+        "path": "C:/dev/pmerit/Pmerit_Product_Development",
+        "scopes_path": ".claude/scopes",
+        "role": "AIXORD, Publications, Templates, KDP Products"
+      }
+    },
+    "created": "2024-06-15"
+  },
+
+  "session": {
+    "number": 1,
+    "started": null,
+    "last_updated": "2025-12-28T00:00:00Z"
+  },
+
+  "authority": {
+    "decision": "human",
+    "execution": "none",
+    "transfer_log": []
+  },
+
+  "mode": {
+    "current": "DECISION",
+    "previous": null,
+    "entered_at": "2025-12-28T00:00:00Z",
+    "entered_by": "human",
+    "reason": "session_start",
+    "allowed": ["DECISION", "EXECUTION", "AUDIT", "VISUAL_AUDIT"]
+  },
+
+  "scope": {
+    "active": null,
+    "queue": [],
+    "status": {
+      "frontend": {
+        "SCOPE_HOMEPAGE": { "state": "LOCKED", "has_subscopes": false },
+        "SCOPE_DASHBOARD": { "state": "LOCKED", "has_subscopes": false },
+        "SCOPE_ASSESSMENT": { "state": "COMPLETE", "has_subscopes": false },
+        "SCOPE_ENROLLMENT": { "state": "COMPLETE", "has_subscopes": false },
+        "SCOPE_CLASSROOM": { "state": "IN_PROGRESS", "has_subscopes": false },
+        "SCOPE_AVATAR": { "state": "LOCKED", "has_subscopes": false },
+        "SCOPE_PARENT_PORTAL": { "state": "IN_PROGRESS", "has_subscopes": true },
+        "SCOPE_SECURITY": { "state": "IN_PROGRESS", "has_subscopes": true },
+        "SCOPE_K12_EDUCATION": { "state": "SPECIFIED", "has_subscopes": true },
+        "SCOPE_ADMIN": { "state": "SPECIFIED", "has_subscopes": false }
+      },
+      "backend": {
+        "SCOPE_TTS": { "state": "PENDING_MOVE", "has_subscopes": true, "note": "Move from frontend" },
+        "SCOPE_AI_PERSONAS": { "state": "PENDING_MOVE", "has_subscopes": true, "note": "Move from frontend" }
+      },
+      "products": {
+        "SCOPE_AIXORD": { "state": "IN_PROGRESS", "has_subscopes": true },
+        "SCOPE_AIForCuriousMinds": { "state": "SPECIFIED", "has_subscopes": false }
+      }
+    }
+  },
+
+  "halt": {
+    "is_halted": false,
+    "reason": null,
+    "halted_at": null,
+    "blockers": [],
+    "types_allowed": [
+      "ambiguous_requirement",
+      "missing_specification",
+      "scope_conflict",
+      "prerequisite_not_met",
+      "three_attempts_exceeded",
+      "locked_file_modification",
+      "authority_violation",
+      "human_issued",
+      "visual_discrepancy_unresolved",
+      "unexpected_error",
+      "scope_creep_detected",
+      "cross_repo_conflict"
+    ]
+  },
+
+  "confirmations": {
+    "pending": [],
+    "history": []
+  },
+
+  "attempts": {
+    "rule": {
+      "default_max": 3,
+      "extend_to": 5,
+      "extend_command": "EXTEND ATTEMPTS: [task]"
+    },
+    "by_scope": {}
+  },
+
+  "visual_audit": {
+    "pending_scopes": [],
+    "last_audit": null,
+    "last_audit_scope": null
+  },
+
+  "continuity": {
+    "last_handoff": null,
+    "carryforward_items": [
+      "Move SCOPE_TTS to backend repo",
+      "Move SCOPE_AI_PERSONAS to backend repo",
+      "Decompose SCOPE_SECURITY into SUB-SCOPEs",
+      "Decompose SCOPE_PARENT_PORTAL into SUB-SCOPEs",
+      "Create AIXORD_ROOT directory structure"
+    ],
+    "incomplete_tasks": []
+  },
+
+  "roots": {
+    "aixord_root": {
+      "enabled": true,
+      "path": "C:/dev/pmerit/AIXORD_ROOT",
+      "read_only": true,
+      "structure": {
+        "governance": "GOVERNANCE/AIXORD_GOVERNANCE_V2.1.md",
+        "state": "STATE/PMERIT_AIXORD_STATE.json",
+        "handoffs": "HANDOFFS/",
+        "audits": "AUDITS/"
+      }
+    },
+    "execution_sandbox": {
+      "enabled": true,
+      "path": "C:/dev/pmerit/sandbox",
+      "allowed_commands": [
+        "gzip", "tar", "zip", "unzip",
+        "sed", "awk", "grep", "find",
+        "ls", "cat", "head", "tail",
+        "cp", "mv", "mkdir", "touch", "echo",
+        "npm", "node", "npx",
+        "git fetch", "git status", "git diff", "git log"
+      ],
+      "prohibited_patterns": [
+        "sudo", "rm -rf", "del /s", "format",
+        "curl", "wget", "ssh", "scp",
+        "eval", "exec"
+      ],
+      "audit_log_path": "C:/dev/pmerit/sandbox/audit.log"
+    }
+  },
+
+  "genesis": {
+    "_comment": "SCOPE GENESIS Protocol state tracking",
+    "active_genesis": null,
+    "history": []
+  },
+
+  "subscope_tracking": {
+    "_comment": "SUB-SCOPE rollup status",
+    "decomposed_scopes": {
+      "SCOPE_SECURITY": {
+        "parent_path": "pmerit-ai-platform/.claude/scopes/SCOPE_SECURITY/",
+        "subscopes": [
+          "SUB-SCOPE_AUTHENTICATION",
+          "SUB-SCOPE_AUTHORIZATION",
+          "SUB-SCOPE_DATA_PROTECTION",
+          "SUB-SCOPE_COMPLIANCE"
+        ],
+        "status": "PENDING_DECOMPOSITION"
+      },
+      "SCOPE_PARENT_PORTAL": {
+        "parent_path": "pmerit-ai-platform/.claude/scopes/SCOPE_PARENT_PORTAL/",
+        "subscopes": [
+          "SUB-SCOPE_DASHBOARD_UI",
+          "SUB-SCOPE_STUDENT_TRACKING",
+          "SUB-SCOPE_COMMUNICATION",
+          "SUB-SCOPE_REPORTS"
+        ],
+        "status": "PENDING_DECOMPOSITION"
+      },
+      "SCOPE_TTS": {
+        "parent_path": "pmerit-api-worker/.claude/scopes/SCOPE_TTS/",
+        "subscopes": [
+          "SUB-SCOPE_VOICE_SELECTION",
+          "SUB-SCOPE_STREAMING",
+          "SUB-SCOPE_CACHING",
+          "SUB-SCOPE_API"
+        ],
+        "status": "PENDING_MOVE_AND_DECOMPOSITION"
+      },
+      "SCOPE_AI_PERSONAS": {
+        "parent_path": "pmerit-api-worker/.claude/scopes/SCOPE_AI_PERSONAS/",
+        "subscopes": [
+          "SUB-SCOPE_PERSONA_ENGINE",
+          "SUB-SCOPE_VOICE_PROFILES",
+          "SUB-SCOPE_CONTEXT_MEMORY"
+        ],
+        "status": "PENDING_MOVE_AND_DECOMPOSITION"
+      },
+      "SCOPE_K12_EDUCATION": {
+        "parent_path": "pmerit-ai-platform/.claude/scopes/SCOPE_K12_EDUCATION/",
+        "subscopes": [
+          "SUB-SCOPE_CURRICULUM",
+          "SUB-SCOPE_GRADE_LEVELS",
+          "SUB-SCOPE_STANDARDS_ALIGNMENT"
+        ],
+        "status": "PENDING_DECOMPOSITION"
+      },
+      "SCOPE_AIXORD": {
+        "parent_path": "Pmerit_Product_Development/.claude/scopes/SCOPE_AIXORD/",
+        "subscopes": [
+          "SUB-SCOPE_GOVERNANCE",
+          "SUB-SCOPE_VARIANTS",
+          "SUB-SCOPE_MANUSCRIPT"
+        ],
+        "status": "PENDING_DECOMPOSITION"
+      }
+    }
+  }
+}

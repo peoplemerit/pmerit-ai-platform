@@ -697,27 +697,35 @@
    CRITICAL FIX SUMMARY
    ========================================== */
 
+/* ========================================
+   QUICK START CARDS - Mobile Responsive
+   ======================================== */
+
+  .quick-start-cards {
+    display: none; /* Hidden on mobile by default - desktop feature */
+  }
+
 /**
  * VERSION 2.2 - BORDERLESS INPUT FIX
- * 
+ *
  * ❌ BEFORE (Line 443):
  * .chat-input {
  *   border: 1px solid var(--border-color);  // Rectangle line!
  *   background-color: white;
  * }
- * 
+ *
  * ✅ AFTER (Lines 443-475):
  * .chat-input {
  *   border: none;              // No rectangle!
  *   background: transparent;   // Seamless
  *   outline: none;             // Clean
  * }
- * 
+ *
  * .chat-input:focus {
  *   background: rgba(255, 255, 255, 0.5);  // Subtle highlight
  *   box-shadow: 0 0 0 2px rgba(42, 91, 140, 0.15);  // Soft glow
  * }
- * 
+ *
  * RESULT:
  * - No visible border/rectangle ✅
  * - Transparent background ✅

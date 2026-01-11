@@ -457,10 +457,10 @@
   .support-btn {
     flex: 1;
     padding: 0.5rem;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--text-secondary);
     border-radius: 8px;
-    background-color: var(--bg-card);
-    color: var(--text-primary);
+    background-color: transparent;
+    color: var(--text-secondary);
     cursor: pointer;
     transition: all 0.2s ease;
     display: flex;
@@ -471,14 +471,18 @@
   }
 
   .support-btn:hover {
-    border-color: var(--primary);
-    background-color: var(--primary);
-    color: #FFFFFF;
+    border-color: var(--text-primary);
+    color: var(--text-primary);
     transform: translateY(-2px);
   }
 
   .support-btn i {
     font-size: 1.25rem;
+    color: var(--text-secondary);
+  }
+
+  .support-btn:hover i {
+    color: var(--text-primary);
   }
 
   /* Right sidebar sections */
@@ -547,7 +551,7 @@
     color: var(--text-secondary);
     font-size: 0.9rem;
     min-height: 2.5em;
-    font-style: italic;
+    font-style: normal;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -791,8 +795,8 @@
   }
 
   .dark .support-btn:hover {
-    background-color: #2A5B8C;
-    border-color: #2A5B8C;
+    border-color: var(--text-primary);
+    color: var(--text-primary);
   }
 
   .dark .human-frame {
@@ -811,6 +815,81 @@
   .dark .message.ai .message-bubble {
     background-color: #111827;
     border-color: #374151;
+  }
+
+  /* ========================================
+     QUICK START CARDS - Empty State Fill
+     ======================================== */
+
+  .quick-start-cards {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding: 2rem 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .quick-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+    min-width: 140px;
+    max-width: 180px;
+  }
+
+  .quick-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .quick-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: var(--primary);
+    border-radius: 50%;
+    margin-bottom: 0.75rem;
+  }
+
+  .quick-card-icon i {
+    font-size: 1.25rem;
+    color: #fff;
+  }
+
+  .quick-card-label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+    text-align: center;
+  }
+
+  .quick-card-desc {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-align: center;
+  }
+
+  /* Dark mode for quick cards */
+  .dark .quick-card,
+  [data-theme="dark"] .quick-card {
+    background: #1f2937;
+    border-color: #374151;
+  }
+
+  .dark .quick-card:hover,
+  [data-theme="dark"] .quick-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 
 } /* End of @media (min-width: 1024px) */

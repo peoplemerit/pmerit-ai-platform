@@ -118,7 +118,11 @@
                             <li>Recognition on donor wall</li>
                             <li>Impact report updates</li>
                         </ul>
-                        <a href="contact.html?subject=donate-onetime" class="pricing-button">Donate Now</a>
+                        <button
+                          class="pricing-button"
+                          onclick="openDonationModal()"
+                          aria-label="Open donation form"
+                        >Donate Now</button>
                     </article>
 
                     <!-- Monthly Giving -->
@@ -367,14 +371,14 @@
                 <h2 id="donate-cta-title" class="cta-title">Ready to Make a Difference?</h2>
                 <p class="cta-description">Every contribution, no matter the size, helps someone access life-changing education. Join us in building a world where knowledge has no barriers.</p>
                 <div class="cta-buttons">
-                    <a href="contact.html?subject=donate-onetime" class="cta-button">
+                    <button class="cta-button" onclick="openDonationModal()">
                         <i class="fas fa-gift" aria-hidden="true"></i>
                         Give Once
-                    </a>
-                    <a href="contact.html?subject=donate-monthly" class="cta-button primary">
+                    </button>
+                    <button class="cta-button primary" onclick="openDonationModal(true)">
                         <i class="fas fa-heart" aria-hidden="true"></i>
                         Give Monthly
-                    </a>
+                    </button>
                     <a href="contact.html?subject=corporate-partnership" class="cta-button secondary">
                         <i class="fas fa-building" aria-hidden="true"></i>
                         Corporate Giving
@@ -392,10 +396,119 @@
 
     <!-- Footer will be loaded by layout-loader.js -->
 
+    <!-- Donation Modal -->
+    <div id="donation-modal" class="modal" role="dialog" aria-labelledby="modal-title" aria-modal="true" style="display:none;">
+      <div class="modal-overlay" onclick="closeDonationModal()"></div>
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeDonationModal()" aria-label="Close modal">&times;</button>
+        <h2 id="modal-title">Support Free Education</h2>
+
+        <!-- 501(c)(3) Disclaimer -->
+        <div class="donation-disclaimer" style="background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; padding: 12px; margin-bottom: 20px;">
+          <p style="margin: 0; font-size: 0.9rem; color: #856404;">
+            <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+            <strong>Important:</strong> PMERIT Foundation's 501(c)(3) tax-exempt status is pending.
+            Donations made before IRS approval may not be tax-deductible. We will notify donors when
+            tax-deductible receipts become available.
+          </p>
+        </div>
+
+        <form id="donation-form" onsubmit="submitDonation(event)">
+          <div class="form-group">
+            <label for="donation-amount">Donation Amount (USD)</label>
+            <div class="amount-buttons">
+              <button type="button" class="amount-btn" onclick="setAmount(10)">$10</button>
+              <button type="button" class="amount-btn" onclick="setAmount(25)">$25</button>
+              <button type="button" class="amount-btn" onclick="setAmount(50)">$50</button>
+              <button type="button" class="amount-btn" onclick="setAmount(100)">$100</button>
+            </div>
+            <input type="number" id="donation-amount" name="amount" min="1" max="10000" placeholder="Custom amount" required>
+          </div>
+
+          <div class="form-group">
+            <label for="donor-name">Your Name (Optional)</label>
+            <input type="text" id="donor-name" name="name" placeholder="Anonymous">
+          </div>
+
+          <div class="form-group">
+            <label for="donor-email">Email Address</label>
+            <input type="email" id="donor-email" name="email" placeholder="for receipt" required>
+          </div>
+
+          <div class="form-group">
+            <label for="donor-message">Message (Optional)</label>
+            <textarea id="donor-message" name="message" rows="2" placeholder="Share why you're giving..."></textarea>
+          </div>
+
+          <button type="submit" class="cta-button primary" style="width: 100%;">
+            <i class="fas fa-heart"></i>
+            <span id="submit-btn-text">Donate Now</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <style>
+      /* Donation Modal Styles */
+      .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; display: flex; align-items: center; justify-content: center; }
+      .modal-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
+      .modal-content { position: relative; background: var(--bg-primary, #fff); border-radius: 12px; padding: 24px; max-width: 450px; width: 90%; max-height: 90vh; overflow-y: auto; }
+      .modal-close { position: absolute; top: 10px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-secondary, #666); }
+      .form-group { margin-bottom: 16px; }
+      .form-group label { display: block; margin-bottom: 6px; font-weight: 600; }
+      .form-group input, .form-group textarea { width: 100%; padding: 10px; border: 1px solid var(--border-color, #ddd); border-radius: 6px; font-size: 1rem; }
+      .amount-buttons { display: flex; gap: 8px; margin-bottom: 10px; }
+      .amount-btn { flex: 1; padding: 10px; border: 2px solid var(--primary-color, #2A5B8C); background: transparent; color: var(--primary-color, #2A5B8C); border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s; }
+      .amount-btn:hover, .amount-btn.selected { background: var(--primary-color, #2A5B8C); color: white; }
+    </style>
+
     <!-- FAQ Accordion Functionality -->
     <script src="assets/js/settings-manager.js"></script>
     <script src="assets/js/layout-loader.js"></script>
+    <!-- Stripe Checkout Integration (GAP-C8) -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="assets/js/checkout.js"></script>
     <script>
+        // Donation Modal Functions
+        let isMonthly = false;
+
+        function openDonationModal(monthly = false) {
+            isMonthly = monthly;
+            document.getElementById('donation-modal').style.display = 'flex';
+            document.getElementById('submit-btn-text').textContent = monthly ? 'Start Monthly Giving' : 'Donate Now';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDonationModal() {
+            document.getElementById('donation-modal').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        function setAmount(amount) {
+            document.getElementById('donation-amount').value = amount;
+            document.querySelectorAll('.amount-btn').forEach(btn => btn.classList.remove('selected'));
+            event.target.classList.add('selected');
+        }
+
+        function submitDonation(e) {
+            e.preventDefault();
+            const amount = parseFloat(document.getElementById('donation-amount').value);
+            const name = document.getElementById('donor-name').value || 'Anonymous';
+            const email = document.getElementById('donor-email').value;
+            const message = document.getElementById('donor-message').value;
+
+            if (window.PMERITCheckout) {
+                PMERITCheckout.donate(amount, { name, email, message });
+            } else {
+                alert('Payment system loading... Please try again.');
+            }
+        }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeDonationModal();
+        });
+
         // FAQ Accordion
         document.querySelectorAll('.faq-question').forEach(button => {
             button.addEventListener('click', () => {
