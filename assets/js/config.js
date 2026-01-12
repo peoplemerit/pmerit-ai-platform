@@ -58,13 +58,16 @@
   window.PMERIT = window.PMERIT || {};
   
   // Ensure AVATAR_BASE_URL always has trailing slash
-  let avatarBaseUrl = window.PMERIT.AVATAR_BASE_URL || '/assets/avatars/';
+  // NOTE: Avatar files are in /assets/models/avatars/ NOT /assets/avatars/
+  let avatarBaseUrl = window.PMERIT.AVATAR_BASE_URL || '/assets/models/avatars/';
   if (!avatarBaseUrl.endsWith('/')) {
     avatarBaseUrl += '/';
   }
-  
+
   window.PMERIT.AVATAR_BASE_URL = avatarBaseUrl;
-  window.PMERIT.AVATAR_MODEL = window.PMERIT.AVATAR_MODEL || 'chris_redfield__re6_bad.glb';
+  // Use Ready Player Me avatar with jaw bone animation (no morph targets)
+  // See SCOPE_AVATAR.md decision AV-003
+  window.PMERIT.AVATAR_MODEL = window.PMERIT.AVATAR_MODEL || 'pmerit-tutor-no-morph.glb';
   window.PMERIT.AVATAR_SCALE = window.PMERIT.AVATAR_SCALE || 1.0;
   window.PMERIT.CAMERA_POS = window.PMERIT.CAMERA_POS || [0, 1.4, 2.2];
   window.PMERIT.LIGHT_PRESET = window.PMERIT.LIGHT_PRESET || 'hemi-dir-soft';
