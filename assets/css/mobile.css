@@ -697,14 +697,6 @@
    CRITICAL FIX SUMMARY
    ========================================== */
 
-/* ========================================
-   QUICK START CARDS - Mobile Responsive
-   ======================================== */
-
-  .quick-start-cards {
-    display: none; /* Hidden on mobile by default - desktop feature */
-  }
-
 /**
  * VERSION 2.2 - BORDERLESS INPUT FIX
  *
