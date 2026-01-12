@@ -12,26 +12,32 @@ All avatar configuration is set in `assets/js/config.js` and can be overridden v
 
 ### PMERIT.AVATAR_BASE_URL
 
-**Type:** `string`  
-**Default:** `/assets/avatars/`  
+**Type:** `string`
+**Default:** `/assets/models/avatars/`
 **Description:** Base URL for avatar assets. Must end with a trailing slash.
 
 ```javascript
-window.PMERIT.AVATAR_BASE_URL = '/assets/avatars/';
+window.PMERIT.AVATAR_BASE_URL = '/assets/models/avatars/';
 // or
 window.PMERIT.AVATAR_BASE_URL = 'https://cdn.example.com/models/';
 ```
 
 ### PMERIT.AVATAR_MODEL
 
-**Type:** `string`  
-**Default:** `pm_classic.glb`  
+**Type:** `string`
+**Default:** `pmerit-tutor-no-morph.glb`
 **Description:** Filename of the GLB model to load. Should exist in AVATAR_BASE_URL.
 
+**Available Models:**
+- `pmerit-tutor-no-morph.glb` (773KB) - Ready Player Me avatar with jaw bone animation (recommended)
+- `pmerit-tutor.glb` - Original with morph targets (may cause Three.js errors)
+- `pmerit-tutor-arkit.glb` - ARKit morph targets variant
+- `humano_professional.glb` - Alternative professional avatar
+
 ```javascript
-window.PMERIT.AVATAR_MODEL = 'pm_classic.glb';
+window.PMERIT.AVATAR_MODEL = 'pmerit-tutor-no-morph.glb';
 // or switch to an alternative
-window.PMERIT.AVATAR_MODEL = 'pm_minimal.glb';
+window.PMERIT.AVATAR_MODEL = 'humano_professional.glb';
 ```
 
 ### PMERIT.AVATAR_SCALE
@@ -386,15 +392,15 @@ For issues or questions:
 
 ```javascript
 // Minimal config (defaults)
-window.PMERIT.AVATAR_BASE_URL = '/assets/avatars/';
-window.PMERIT.AVATAR_MODEL = 'pm_classic.glb';
+window.PMERIT.AVATAR_BASE_URL = '/assets/models/avatars/';
+window.PMERIT.AVATAR_MODEL = 'pmerit-tutor-no-morph.glb';
 window.PMERIT.AVATAR_SCALE = 1.0;
 window.PMERIT.CAMERA_POS = [0, 1.4, 2.2];
 window.PMERIT.LIGHT_PRESET = 'hemi-dir-soft';
 
 // Example: External CDN
 window.PMERIT.AVATAR_BASE_URL = 'https://cdn.pmerit.com/avatars/v1/';
-window.PMERIT.AVATAR_MODEL = 'maya-v2.glb';
+window.PMERIT.AVATAR_MODEL = 'pmerit-tutor-no-morph.glb';
 
 // Example: Closer camera, larger avatar
 window.PMERIT.CAMERA_POS = [0, 1.5, 1.8];
@@ -403,4 +409,4 @@ window.PMERIT.AVATAR_SCALE = 1.3;
 
 ---
 
-**Last Updated:** Phase 5 Implementation (October 2025)
+**Last Updated:** Session 12 (January 2026) - Fixed CF-006 path mismatch
