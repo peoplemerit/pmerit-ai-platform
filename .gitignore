@@ -36,6 +36,9 @@ temp/
 # Testing
 coverage/
 .nyc_output/
+Test_*.jpg
+Test_*.png
+Test_*.gif
 
 # Cloudflare
 .wrangler/
