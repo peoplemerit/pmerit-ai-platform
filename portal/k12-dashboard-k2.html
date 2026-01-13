@@ -632,14 +632,15 @@
           <i class="fas fa-volume-up"></i>
         </button>
       </div>
-      <div class="k2-subjects">
-        <a href="classroom.html?subject=ela" class="k2-subject-card k2-subject-card--reading" data-speak="Reading and Writing. Tap to learn letters and words!">
+      <div class="k2-subjects" id="subjects-grid">
+        <!-- K-2 grade subjects - linked to curriculum browse -->
+        <a href="units.html?grade=K" class="k2-subject-card k2-subject-card--reading" data-subject="ELA" data-speak="Reading and Writing. Tap to learn letters and words!">
           <div class="k2-subject-card__icon">
             <i class="fas fa-book-open"></i>
           </div>
           <div class="k2-subject-card__info">
             <div class="k2-subject-card__name">Reading</div>
-            <div class="k2-subject-card__stars">
+            <div class="k2-subject-card__stars" id="stars-ela">
               <i class="fas fa-star"></i>
               <i class="fas fa-star"></i>
               <i class="far fa-star"></i>
@@ -647,13 +648,13 @@
           </div>
         </a>
 
-        <a href="classroom.html?subject=math" class="k2-subject-card k2-subject-card--math" data-speak="Math. Tap to learn numbers and counting!">
+        <a href="units.html?grade=K" class="k2-subject-card k2-subject-card--math" data-subject="MATH" data-speak="Math. Tap to learn numbers and counting!">
           <div class="k2-subject-card__icon">
             <i class="fas fa-calculator"></i>
           </div>
           <div class="k2-subject-card__info">
             <div class="k2-subject-card__name">Math</div>
-            <div class="k2-subject-card__stars">
+            <div class="k2-subject-card__stars" id="stars-math">
               <i class="fas fa-star"></i>
               <i class="fas fa-star"></i>
               <i class="fas fa-star"></i>
@@ -661,13 +662,13 @@
           </div>
         </a>
 
-        <a href="classroom.html?subject=sci" class="k2-subject-card k2-subject-card--science" data-speak="Science. Tap to discover how things work!">
+        <a href="units.html?grade=K" class="k2-subject-card k2-subject-card--science" data-subject="SCI" data-speak="Science. Tap to discover how things work!">
           <div class="k2-subject-card__icon">
             <i class="fas fa-flask"></i>
           </div>
           <div class="k2-subject-card__info">
             <div class="k2-subject-card__name">Science</div>
-            <div class="k2-subject-card__stars">
+            <div class="k2-subject-card__stars" id="stars-sci">
               <i class="fas fa-star"></i>
               <i class="far fa-star"></i>
               <i class="far fa-star"></i>
@@ -675,13 +676,13 @@
           </div>
         </a>
 
-        <a href="classroom.html?subject=lcr" class="k2-subject-card k2-subject-card--life" data-speak="Life Skills. Tap to learn about feelings and being a good friend!">
+        <a href="units.html?grade=K" class="k2-subject-card k2-subject-card--life" data-subject="LCR" data-speak="Life Skills. Tap to learn about feelings and being a good friend!">
           <div class="k2-subject-card__icon">
             <i class="fas fa-heart"></i>
           </div>
           <div class="k2-subject-card__info">
             <div class="k2-subject-card__name">Life Skills</div>
-            <div class="k2-subject-card__stars">
+            <div class="k2-subject-card__stars" id="stars-lcr">
               <i class="fas fa-star"></i>
               <i class="fas fa-star"></i>
               <i class="far fa-star"></i>
@@ -823,19 +824,66 @@
         loadProgress();
       }
 
-      // Load progress data
+      // Load progress data from API
       async function loadProgress() {
-        // For now, use mock data
-        // TODO: Connect to /api/v1/users/:id/k12/progress
-        const mockProgress = {
+        const API_BASE = window.PMERIT_CONFIG?.API_BASE || 'https://pmerit-api-worker.peoplemerit.workers.dev';
+        const token = localStorage.getItem('auth_token');
+
+        // Default fallback data
+        let progressData = {
           currentLesson: 'Shapes on the Playground',
-          starsEarned: 7,
-          progressPercent: 35
+          starsEarned: 0,
+          progressPercent: 0,
+          gradeId: null
         };
 
-        currentLesson.textContent = mockProgress.currentLesson;
-        starsCount.textContent = mockProgress.starsEarned;
-        progressBar.style.width = mockProgress.progressPercent + '%';
+        try {
+          if (token) {
+            // Try to load real progress from API
+            const response = await fetch(`${API_BASE}/api/v1/k12/progress`, {
+              headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (response.ok) {
+              const data = await response.json();
+              if (data.success && data.progress) {
+                progressData = {
+                  currentLesson: data.progress.current_lesson?.title || 'Start Learning!',
+                  starsEarned: data.progress.total_stars || 0,
+                  progressPercent: data.progress.completion_percentage || 0,
+                  gradeId: data.progress.grade_id
+                };
+
+                // Update subject card links with grade ID
+                if (progressData.gradeId) {
+                  updateSubjectLinks(progressData.gradeId);
+                }
+              }
+            }
+          }
+        } catch (err) {
+          console.warn('Could not load progress from API:', err);
+        }
+
+        // Update UI
+        currentLesson.textContent = progressData.currentLesson;
+        starsCount.textContent = progressData.starsEarned;
+        progressBar.style.width = progressData.progressPercent + '%';
+
+        // Update continue button with current lesson
+        if (progressData.currentLessonId) {
+          const continueBtn = document.getElementById('continue-btn');
+          continueBtn.href = `lesson.html?id=${progressData.currentLessonId}`;
+        }
+      }
+
+      // Update subject card links with user's grade ID
+      function updateSubjectLinks(gradeId) {
+        const subjectCards = document.querySelectorAll('.k2-subject-card[data-subject]');
+        subjectCards.forEach(card => {
+          const subject = card.dataset.subject;
+          card.href = `units.html?grade=${gradeId}&subject_code=${subject}`;
+        });
       }
 
       // Toggle audio
