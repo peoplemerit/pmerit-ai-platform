@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson | PMERIT</title>
+    <link rel="stylesheet" href="/assets/css/theme-variables.css">
+    <link rel="stylesheet" href="/assets/css/base.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
+    <link rel="stylesheet" href="/assets/css/lesson.css">
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
+</head>
+<body>
+    <!-- Header with back navigation -->
+    <header class="lesson-header">
+        <a href="#" id="back-to-unit" class="back-link">← Back to Unit</a>
+        <div class="breadcrumb" id="breadcrumb">
+            <!-- Populated by JS: Grade X • Subject • Unit -->
+        </div>
+    </header>
+
+    <main class="lesson-container">
+        <!-- Content Area (70%) -->
+        <section class="content-panel">
+            <div class="lesson-meta">
+                <h1 id="lesson-title">Loading...</h1>
+                <div class="meta-badges">
+                    <span class="badge time" id="estimated-time">-- min</span>
+                    <span class="badge difficulty" id="difficulty">--</span>
+                    <span class="badge audio" id="audio-badge" style="display:none">🔊 Audio</span>
+                    <span class="badge captions" id="captions-badge" style="display:none">CC</span>
+                </div>
+            </div>
+
+            <div class="content-frame-wrapper">
+                <iframe
+                    id="moose-frame"
+                    class="moose-content"
+                    src=""
+                    title="Lesson content"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope"
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+            <!-- MLR Standards -->
+            <div class="standards-section" id="standards-section">
+                <h3>Maine Learning Results</h3>
+                <ul id="standards-list"></ul>
+            </div>
+        </section>
+
+        <!-- AI Tutor Panel (30%) -->
+        <aside class="tutor-panel">
+            <div class="tutor-header">
+                <img id="persona-avatar" src="/assets/img/avatar-default.png" alt="AI Tutor" class="persona-avatar">
+                <div class="persona-info">
+                    <h3 id="persona-name">Loading...</h3>
+                    <span class="persona-role">Your AI Tutor</span>
+                </div>
+            </div>
+
+            <div class="tutor-greeting" id="tutor-greeting">
+                <!-- AI greeting based on persona -->
+            </div>
+
+            <div class="chat-interface">
+                <div class="chat-messages" id="chat-messages">
+                    <!-- AI conversation will appear here -->
+                </div>
+                <div class="chat-input-wrapper">
+                    <input type="text" id="chat-input" placeholder="Ask a question..." />
+                    <button id="send-btn" class="btn-icon" aria-label="Send message">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="learning-objectives">
+                <h4>Learning Objectives</h4>
+                <ul id="objectives-list">
+                    <!-- Populated from ai_context -->
+                </ul>
+            </div>
+
+            <div class="tutor-tips" id="tutor-tips" style="display:none">
+                <!-- Common struggles, hidden by default, shown when relevant -->
+            </div>
+        </aside>
+    </main>
+
+    <!-- Navigation Footer -->
+    <footer class="lesson-nav">
+        <a href="#" id="prev-lesson" class="nav-btn prev" style="visibility:hidden">
+            ◀ Previous Lesson
+        </a>
+        <button id="mark-complete" class="btn btn-primary">
+            Mark Complete ✓
+        </button>
+        <a href="#" id="next-lesson" class="nav-btn next" style="visibility:hidden">
+            Next Lesson ▶
+        </a>
+    </footer>
+
+    <script src="/assets/js/config.js"></script>
+    <script src="/assets/js/auth.js"></script>
+    <script src="/assets/js/lesson.js"></script>
+</body>
+</html>

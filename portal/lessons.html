@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lessons | PMERIT</title>
+    <link rel="stylesheet" href="/assets/css/theme-variables.css">
+    <link rel="stylesheet" href="/assets/css/base.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
+    <style>
+        .page-header {
+            padding: 1.5rem 2rem;
+            background: var(--bg-secondary, #fff);
+            border-bottom: 1px solid var(--border-color, #e5e7eb);
+        }
+
+        .page-header .back-link {
+            color: var(--color-primary, #375b8d);
+            text-decoration: none;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .page-header .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .page-header h1 {
+            margin: 0.5rem 0 0;
+            font-size: 1.5rem;
+            color: var(--color-dark-gray, #2C2C2C);
+        }
+
+        .unit-meta {
+            color: var(--color-medium-gray, #6b7280);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .lessons-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .lessons-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .lesson-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            background: var(--bg-secondary, #fff);
+            border-radius: 12px;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-left: 4px solid transparent;
+        }
+
+        .lesson-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .lesson-card.completed {
+            border-left-color: var(--color-success, #3A7F5C);
+        }
+
+        .lesson-card.in_progress {
+            border-left-color: var(--color-warning, #f59e0b);
+        }
+
+        .lesson-number {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+            color: var(--color-primary, #375b8d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .lesson-card.completed .lesson-number {
+            background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+            color: var(--color-success, #3A7F5C);
+        }
+
+        .lesson-info {
+            flex: 1;
+        }
+
+        .lesson-info h3 {
+            margin: 0 0 0.25rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-dark-gray, #2C2C2C);
+        }
+
+        .lesson-meta {
+            font-size: 0.8125rem;
+            color: var(--color-medium-gray, #6b7280);
+            display: flex;
+            gap: 1rem;
+        }
+
+        .lesson-status {
+            display: flex;
+            align-items: center;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background: #f3f4f6;
+            color: var(--color-medium-gray, #6b7280);
+        }
+
+        .status-badge.completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-badge.in-progress {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--color-medium-gray, #6b7280);
+        }
+
+        .error-state {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .error-state h2 {
+            color: var(--color-error, #DC3545);
+            margin-bottom: 1rem;
+        }
+
+        .unit-progress {
+            background: var(--bg-secondary, #fff);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .unit-progress h3 {
+            font-size: 0.875rem;
+            color: var(--color-medium-gray, #6b7280);
+            margin: 0 0 0.75rem;
+        }
+
+        .progress-bar-container {
+            background: #e5e7eb;
+            border-radius: 9999px;
+            height: 8px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+            height: 100%;
+            border-radius: 9999px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 0.875rem;
+            color: var(--color-charcoal, #3A3A3A);
+            margin-top: 0.5rem;
+            text-align: right;
+        }
+
+        @media (max-width: 640px) {
+            .lessons-container {
+                padding: 1rem;
+            }
+
+            .lesson-card {
+                padding: 0.875rem 1rem;
+            }
+
+            .lesson-meta {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+
+            .lesson-number {
+                width: 36px;
+                height: 36px;
+                min-width: 36px;
+                font-size: 0.875rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <a href="#" id="back-link" class="back-link">← Back to Subjects</a>
+        <h1 id="unit-title">Loading...</h1>
+        <p class="unit-meta" id="unit-meta"></p>
+    </header>
+
+    <main class="lessons-container">
+        <div class="unit-progress" id="unit-progress" style="display: none;">
+            <h3>Your Progress</h3>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
+            </div>
+            <p class="progress-text" id="progress-text">0 of 0 lessons completed</p>
+        </div>
+
+        <div class="lessons-list" id="lessons-list">
+            <div class="loading">Loading lessons...</div>
+        </div>
+    </main>
+
+    <script src="/assets/js/config.js"></script>
+    <script>
+        const API_BASE = window.PMERIT_CONFIG?.API_BASE || 'https://pmerit-api-worker.peoplemerit.workers.dev';
+
+        function getUnitId() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('unit');
+        }
+
+        function getGradeId() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('grade');
+        }
+
+        function getSubjectId() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('subject');
+        }
+
+        function getAuthHeaders() {
+            const token = localStorage.getItem('auth_token');
+            return token ? { 'Authorization': `Bearer ${token}` } : {};
+        }
+
+        async function loadLessons() {
+            const unitId = getUnitId();
+            if (!unitId) {
+                document.getElementById('lessons-list').innerHTML = `
+                    <div class="error-state">
+                        <h2>No Unit Specified</h2>
+                        <p>Please select a unit from the curriculum.</p>
+                        <a href="/pathways.html" class="btn btn-primary">Return to Pathways</a>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/api/v1/k12/units/${unitId}/lessons`, {
+                    headers: getAuthHeaders()
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    // Update header
+                    document.getElementById('unit-title').textContent = data.unit?.title || 'Lessons';
+
+                    // Build meta info
+                    const metaParts = [];
+                    if (data.unit?.grade_code) metaParts.push(`Grade ${data.unit.grade_code}`);
+                    if (data.unit?.subject_name) metaParts.push(data.unit.subject_name);
+                    if (data.lessons?.length) metaParts.push(`${data.lessons.length} lessons`);
+                    document.getElementById('unit-meta').textContent = metaParts.join(' • ');
+
+                    // Back link
+                    const gradeId = getGradeId() || data.unit?.grade_id;
+                    if (gradeId) {
+                        document.getElementById('back-link').href = `/portal/subjects.html?grade=${gradeId}`;
+                    } else {
+                        document.getElementById('back-link').href = '/pathways.html';
+                    }
+
+                    // Calculate progress
+                    const completedCount = data.lessons.filter(l => l.status === 'completed').length;
+                    const totalCount = data.lessons.length;
+
+                    if (totalCount > 0) {
+                        const progressEl = document.getElementById('unit-progress');
+                        progressEl.style.display = 'block';
+                        document.getElementById('progress-bar').style.width = `${(completedCount / totalCount) * 100}%`;
+                        document.getElementById('progress-text').textContent =
+                            `${completedCount} of ${totalCount} lessons completed`;
+                    }
+
+                    // Render lessons
+                    const listEl = document.getElementById('lessons-list');
+                    if (data.lessons && data.lessons.length > 0) {
+                        listEl.innerHTML = data.lessons.map((lesson, idx) => `
+                            <a href="/portal/lesson.html?id=${lesson.lesson_id}" class="lesson-card ${lesson.status || ''}">
+                                <span class="lesson-number">${idx + 1}</span>
+                                <div class="lesson-info">
+                                    <h3>${escapeHtml(lesson.title)}</h3>
+                                    <div class="lesson-meta">
+                                        <span>⏱️ ${lesson.estimated_minutes || 30} min</span>
+                                        <span>📊 ${capitalizeFirst(lesson.difficulty_level || 'beginner')}</span>
+                                    </div>
+                                </div>
+                                <div class="lesson-status">
+                                    ${getStatusBadge(lesson.status, lesson.stars_earned)}
+                                </div>
+                            </a>
+                        `).join('');
+                    } else {
+                        listEl.innerHTML = `
+                            <div class="error-state">
+                                <h2>No Lessons Available</h2>
+                                <p>This unit doesn't have any lessons yet.</p>
+                                <a href="/pathways.html" class="btn btn-primary">Return to Pathways</a>
+                            </div>
+                        `;
+                    }
+                } else {
+                    throw new Error(data.error || 'Failed to load lessons');
+                }
+            } catch (err) {
+                console.error('Load lessons error:', err);
+                document.getElementById('lessons-list').innerHTML = `
+                    <div class="error-state">
+                        <h2>Failed to Load Lessons</h2>
+                        <p>${err.message}</p>
+                        <a href="/pathways.html" class="btn btn-primary">Return to Pathways</a>
+                    </div>
+                `;
+            }
+        }
+
+        function getStatusBadge(status, stars) {
+            switch (status) {
+                case 'completed':
+                    const starDisplay = stars ? '⭐'.repeat(stars) : '⭐';
+                    return `<span class="status-badge completed">${starDisplay} Complete</span>`;
+                case 'in_progress':
+                    return '<span class="status-badge in-progress">In Progress</span>';
+                default:
+                    return '<span class="status-badge">Start →</span>';
+            }
+        }
+
+        function capitalizeFirst(str) {
+            if (!str) return '';
+            return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        document.addEventListener('DOMContentLoaded', loadLessons);
+    </script>
+</body>
+</html>
