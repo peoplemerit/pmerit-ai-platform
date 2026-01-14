@@ -606,48 +606,48 @@
         <a href="#" class="t68-link">View All</a>
       </div>
 
-      <div class="t68-subjects">
-        <a href="classroom.html?subject=ela" class="t68-subject t68-subject--ela">
+      <div class="t68-subjects" id="subject-cards">
+        <a href="units.html?grade=6&subject=ELA" class="t68-subject t68-subject--ela" data-subject="ELA">
           <div class="t68-subject__header">
             <div class="t68-subject__icon"><i class="fas fa-book-open"></i></div>
-            <div class="t68-subject__percent">72%</div>
+            <div class="t68-subject__percent">0%</div>
           </div>
           <div class="t68-subject__name">English</div>
           <div class="t68-subject__progress-bar">
-            <div class="t68-subject__progress-fill" style="width: 72%;"></div>
+            <div class="t68-subject__progress-fill" style="width: 0%;"></div>
           </div>
         </a>
 
-        <a href="classroom.html?subject=math" class="t68-subject t68-subject--math">
+        <a href="units.html?grade=6&subject=MATH" class="t68-subject t68-subject--math" data-subject="MATH">
           <div class="t68-subject__header">
             <div class="t68-subject__icon"><i class="fas fa-calculator"></i></div>
-            <div class="t68-subject__percent">85%</div>
+            <div class="t68-subject__percent">0%</div>
           </div>
           <div class="t68-subject__name">Math</div>
           <div class="t68-subject__progress-bar">
-            <div class="t68-subject__progress-fill" style="width: 85%;"></div>
+            <div class="t68-subject__progress-fill" style="width: 0%;"></div>
           </div>
         </a>
 
-        <a href="classroom.html?subject=sci" class="t68-subject t68-subject--sci">
+        <a href="units.html?grade=6&subject=SCI" class="t68-subject t68-subject--sci" data-subject="SCI">
           <div class="t68-subject__header">
             <div class="t68-subject__icon"><i class="fas fa-flask"></i></div>
-            <div class="t68-subject__percent">68%</div>
+            <div class="t68-subject__percent">0%</div>
           </div>
           <div class="t68-subject__name">Science</div>
           <div class="t68-subject__progress-bar">
-            <div class="t68-subject__progress-fill" style="width: 68%;"></div>
+            <div class="t68-subject__progress-fill" style="width: 0%;"></div>
           </div>
         </a>
 
-        <a href="classroom.html?subject=lcr" class="t68-subject t68-subject--lcr">
+        <a href="units.html?grade=6&subject=LCR" class="t68-subject t68-subject--lcr" data-subject="LCR">
           <div class="t68-subject__header">
             <div class="t68-subject__icon"><i class="fas fa-compass"></i></div>
-            <div class="t68-subject__percent">78%</div>
+            <div class="t68-subject__percent">0%</div>
           </div>
           <div class="t68-subject__name">Life Skills</div>
           <div class="t68-subject__progress-bar">
-            <div class="t68-subject__progress-fill" style="width: 78%;"></div>
+            <div class="t68-subject__progress-fill" style="width: 0%;"></div>
           </div>
         </a>
       </div>
@@ -779,8 +779,9 @@
       }
 
       async function loadProgress() {
-        const user = window.AUTH?.getCurrentUser();
-        if (!user) {
+        const token = localStorage.getItem('auth_token') || localStorage.getItem('pmerit_token');
+
+        if (!token) {
           updateUI({
             totalXP: 2450,
             lessonsDone: 24,
@@ -793,16 +794,32 @@
         }
 
         try {
-          const response = await fetch(`${API_BASE}/api/v1/users/${user.id}/k12/progress`, {
+          const response = await fetch(`${API_BASE}/api/v1/k12/progress`, {
             headers: {
-              'Authorization': `Bearer ${localStorage.getItem('pmerit_token')}`
+              'Authorization': `Bearer ${token}`
             }
           });
 
           if (response.ok) {
             const data = await response.json();
             if (data.success) {
-              updateUI(data.progress);
+              // Update subject card links with grade ID
+              if (data.current_grade?.grade_id) {
+                updateSubjectLinks(data.current_grade.grade_id);
+              }
+              // Update progress percentages per subject
+              if (data.by_subject) {
+                updateSubjectProgress(data.by_subject);
+              }
+              // Map API response to UI
+              updateUI({
+                totalXP: (data.overall?.total_stars || 0) * 50,
+                lessonsDone: data.overall?.completed_lessons || 0,
+                avgScore: 87, // Calculate from average scores when available
+                rank: 12,
+                streak: 7,
+                currentLesson: 'Continue your learning journey!'
+              });
             }
           }
         } catch (error) {
@@ -816,6 +833,28 @@
             currentLesson: 'Maple Made: A Syrup Startup'
           });
         }
+      }
+
+      // Update subject card links with grade ID
+      function updateSubjectLinks(gradeId) {
+        const cards = document.querySelectorAll('[data-subject]');
+        cards.forEach(card => {
+          const subject = card.getAttribute('data-subject');
+          card.href = `units.html?gradeId=${gradeId}&subject=${subject}`;
+        });
+      }
+
+      // Update subject progress bars
+      function updateSubjectProgress(subjects) {
+        subjects.forEach(subject => {
+          const card = document.querySelector(`[data-subject="${subject.subject_code}"]`);
+          if (card) {
+            const progressBar = card.querySelector('.t68-subject__progress-fill');
+            const progressText = card.querySelector('.t68-subject__percent');
+            if (progressBar) progressBar.style.width = subject.completion_percentage + '%';
+            if (progressText) progressText.textContent = subject.completion_percentage + '%';
+          }
+        });
       }
 
       function updateUI(progress) {
