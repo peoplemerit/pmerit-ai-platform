@@ -715,8 +715,8 @@
         <a href="#" class="g35-see-all">See All</a>
       </div>
 
-      <div class="g35-adventures">
-        <a href="classroom.html?subject=ela" class="g35-adventure-card g35-adventure-card--reading">
+      <div class="g35-adventures" id="subject-cards">
+        <a href="units.html?grade=3&subject=ELA" class="g35-adventure-card g35-adventure-card--reading" data-subject="ELA">
           <div class="g35-adventure-header">
             <div class="g35-adventure-icon"><i class="fas fa-book-open"></i></div>
             <span class="g35-adventure-level">Lvl 4</span>
@@ -724,13 +724,13 @@
           <div class="g35-adventure-name">Reading Quest</div>
           <div class="g35-adventure-progress">
             <div class="g35-adventure-progress-bar">
-              <div class="g35-adventure-progress-fill" style="width: 65%;"></div>
+              <div class="g35-adventure-progress-fill" style="width: 0%;"></div>
             </div>
-            <span class="g35-adventure-progress-text">65%</span>
+            <span class="g35-adventure-progress-text">0%</span>
           </div>
         </a>
 
-        <a href="classroom.html?subject=math" class="g35-adventure-card g35-adventure-card--math">
+        <a href="units.html?grade=3&subject=MATH" class="g35-adventure-card g35-adventure-card--math" data-subject="MATH">
           <div class="g35-adventure-header">
             <div class="g35-adventure-icon"><i class="fas fa-calculator"></i></div>
             <span class="g35-adventure-level">Lvl 5</span>
@@ -738,13 +738,13 @@
           <div class="g35-adventure-name">Math Journey</div>
           <div class="g35-adventure-progress">
             <div class="g35-adventure-progress-bar">
-              <div class="g35-adventure-progress-fill" style="width: 80%;"></div>
+              <div class="g35-adventure-progress-fill" style="width: 0%;"></div>
             </div>
-            <span class="g35-adventure-progress-text">80%</span>
+            <span class="g35-adventure-progress-text">0%</span>
           </div>
         </a>
 
-        <a href="classroom.html?subject=sci" class="g35-adventure-card g35-adventure-card--science">
+        <a href="units.html?grade=3&subject=SCI" class="g35-adventure-card g35-adventure-card--science" data-subject="SCI">
           <div class="g35-adventure-header">
             <div class="g35-adventure-icon"><i class="fas fa-flask"></i></div>
             <span class="g35-adventure-level">Lvl 3</span>
@@ -752,13 +752,13 @@
           <div class="g35-adventure-name">Science Lab</div>
           <div class="g35-adventure-progress">
             <div class="g35-adventure-progress-bar">
-              <div class="g35-adventure-progress-fill" style="width: 45%;"></div>
+              <div class="g35-adventure-progress-fill" style="width: 0%;"></div>
             </div>
-            <span class="g35-adventure-progress-text">45%</span>
+            <span class="g35-adventure-progress-text">0%</span>
           </div>
         </a>
 
-        <a href="classroom.html?subject=lcr" class="g35-adventure-card g35-adventure-card--life">
+        <a href="units.html?grade=3&subject=LCR" class="g35-adventure-card g35-adventure-card--life" data-subject="LCR">
           <div class="g35-adventure-header">
             <div class="g35-adventure-icon"><i class="fas fa-compass"></i></div>
             <span class="g35-adventure-level">Lvl 4</span>
@@ -766,9 +766,9 @@
           <div class="g35-adventure-name">Life Explorer</div>
           <div class="g35-adventure-progress">
             <div class="g35-adventure-progress-bar">
-              <div class="g35-adventure-progress-fill" style="width: 55%;"></div>
+              <div class="g35-adventure-progress-fill" style="width: 0%;"></div>
             </div>
-            <span class="g35-adventure-progress-text">55%</span>
+            <span class="g35-adventure-progress-text">0%</span>
           </div>
         </a>
       </div>
@@ -878,8 +878,9 @@
 
       // Load progress from API
       async function loadProgress() {
-        const user = window.AUTH?.getCurrentUser();
-        if (!user) {
+        const token = localStorage.getItem('auth_token') || localStorage.getItem('pmerit_token');
+
+        if (!token) {
           // Mock data for non-authenticated users
           updateUI({
             level: 5,
@@ -891,16 +892,34 @@
         }
 
         try {
-          const response = await fetch(`${API_BASE}/api/v1/users/${user.id}/k12/progress`, {
+          const response = await fetch(`${API_BASE}/api/v1/k12/progress`, {
             headers: {
-              'Authorization': `Bearer ${localStorage.getItem('pmerit_token')}`
+              'Authorization': `Bearer ${token}`
             }
           });
 
           if (response.ok) {
             const data = await response.json();
             if (data.success) {
-              updateUI(data.progress);
+              // Update subject card links with grade ID
+              if (data.current_grade?.grade_id) {
+                updateSubjectLinks(data.current_grade.grade_id);
+              }
+              // Update progress percentages per subject
+              if (data.by_subject) {
+                updateSubjectProgress(data.by_subject);
+              }
+              // Calculate level/XP from total stars
+              const totalStars = data.overall?.total_stars || 0;
+              const level = Math.floor(totalStars / 10) + 1;
+              const currentXP = (totalStars % 10) * 50;
+              const nextLevelXP = 500;
+              updateUI({
+                level: level,
+                currentXP: currentXP,
+                nextLevelXP: nextLevelXP,
+                currentLesson: 'Continue your adventure!'
+              });
             }
           }
         } catch (error) {
@@ -912,6 +931,28 @@
             currentLesson: 'Let\'s Sell a Maine Product!'
           });
         }
+      }
+
+      // Update subject card links with grade ID
+      function updateSubjectLinks(gradeId) {
+        const cards = document.querySelectorAll('[data-subject]');
+        cards.forEach(card => {
+          const subject = card.getAttribute('data-subject');
+          card.href = `units.html?gradeId=${gradeId}&subject=${subject}`;
+        });
+      }
+
+      // Update subject progress bars
+      function updateSubjectProgress(subjects) {
+        subjects.forEach(subject => {
+          const card = document.querySelector(`[data-subject="${subject.subject_code}"]`);
+          if (card) {
+            const progressBar = card.querySelector('.g35-adventure-progress-fill');
+            const progressText = card.querySelector('.g35-adventure-progress-text');
+            if (progressBar) progressBar.style.width = subject.completion_percentage + '%';
+            if (progressText) progressText.textContent = subject.completion_percentage + '%';
+          }
+        });
       }
 
       // Update UI with progress data

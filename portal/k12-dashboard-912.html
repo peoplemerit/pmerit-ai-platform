@@ -641,40 +641,40 @@
           <a href="#" class="p912-card__link">View All</a>
         </div>
 
-        <a href="classroom.html?subject=ela" class="p912-subject p912-subject--ela">
+        <a href="units.html?grade=9&subject=ELA" class="p912-subject p912-subject--ela" data-subject="ELA">
           <div class="p912-subject__icon"><i class="fas fa-book-open"></i></div>
           <div class="p912-subject__info">
             <div class="p912-subject__name">English Language Arts</div>
-            <div class="p912-subject__progress">12 of 15 lessons complete</div>
+            <div class="p912-subject__progress">0 lessons complete</div>
           </div>
-          <div class="p912-subject__percent">80%</div>
+          <div class="p912-subject__percent">0%</div>
         </a>
 
-        <a href="classroom.html?subject=math" class="p912-subject p912-subject--math">
+        <a href="units.html?grade=9&subject=MATH" class="p912-subject p912-subject--math" data-subject="MATH">
           <div class="p912-subject__icon"><i class="fas fa-calculator"></i></div>
           <div class="p912-subject__info">
             <div class="p912-subject__name">Mathematics</div>
-            <div class="p912-subject__progress">10 of 12 lessons complete</div>
+            <div class="p912-subject__progress">0 lessons complete</div>
           </div>
-          <div class="p912-subject__percent">83%</div>
+          <div class="p912-subject__percent">0%</div>
         </a>
 
-        <a href="classroom.html?subject=sci" class="p912-subject p912-subject--sci">
+        <a href="units.html?grade=9&subject=SCI" class="p912-subject p912-subject--sci" data-subject="SCI">
           <div class="p912-subject__icon"><i class="fas fa-flask"></i></div>
           <div class="p912-subject__info">
             <div class="p912-subject__name">Science</div>
-            <div class="p912-subject__progress">8 of 14 lessons complete</div>
+            <div class="p912-subject__progress">0 lessons complete</div>
           </div>
-          <div class="p912-subject__percent">57%</div>
+          <div class="p912-subject__percent">0%</div>
         </a>
 
-        <a href="classroom.html?subject=lcr" class="p912-subject p912-subject--lcr">
+        <a href="units.html?grade=9&subject=LCR" class="p912-subject p912-subject--lcr" data-subject="LCR">
           <div class="p912-subject__icon"><i class="fas fa-briefcase"></i></div>
           <div class="p912-subject__info">
             <div class="p912-subject__name">Career Readiness</div>
-            <div class="p912-subject__progress">6 of 10 lessons complete</div>
+            <div class="p912-subject__progress">0 lessons complete</div>
           </div>
-          <div class="p912-subject__percent">60%</div>
+          <div class="p912-subject__percent">0%</div>
         </a>
       </div>
 
@@ -828,8 +828,9 @@
       }
 
       async function loadProgress() {
-        const user = window.AUTH?.getCurrentUser();
-        if (!user) {
+        const token = localStorage.getItem('auth_token') || localStorage.getItem('pmerit_token');
+
+        if (!token) {
           updateUI({
             gpa: 3.7,
             credits: 42,
@@ -840,16 +841,30 @@
         }
 
         try {
-          const response = await fetch(`${API_BASE}/api/v1/users/${user.id}/k12/progress`, {
+          const response = await fetch(`${API_BASE}/api/v1/k12/progress`, {
             headers: {
-              'Authorization': `Bearer ${localStorage.getItem('pmerit_token')}`
+              'Authorization': `Bearer ${token}`
             }
           });
 
           if (response.ok) {
             const data = await response.json();
             if (data.success) {
-              updateUI(data.progress);
+              // Update subject card links with grade ID
+              if (data.current_grade?.grade_id) {
+                updateSubjectLinks(data.current_grade.grade_id);
+              }
+              // Update progress percentages per subject
+              if (data.by_subject) {
+                updateSubjectProgress(data.by_subject);
+              }
+              // Map API response to UI
+              updateUI({
+                gpa: 3.7, // Calculate from scores when available
+                credits: data.overall?.completed_lessons || 0,
+                lessonsComplete: data.overall?.completed_lessons || 0,
+                currentLesson: 'Continue your studies!'
+              });
             }
           }
         } catch (error) {
@@ -861,6 +876,28 @@
             currentLesson: 'The Media Mystery: Uncovering How Data Gets Distorted'
           });
         }
+      }
+
+      // Update subject card links with grade ID
+      function updateSubjectLinks(gradeId) {
+        const cards = document.querySelectorAll('[data-subject]');
+        cards.forEach(card => {
+          const subject = card.getAttribute('data-subject');
+          card.href = `units.html?gradeId=${gradeId}&subject=${subject}`;
+        });
+      }
+
+      // Update subject progress
+      function updateSubjectProgress(subjects) {
+        subjects.forEach(subject => {
+          const card = document.querySelector(`[data-subject="${subject.subject_code}"]`);
+          if (card) {
+            const progressText = card.querySelector('.p912-subject__progress');
+            const progressPercent = card.querySelector('.p912-subject__percent');
+            if (progressText) progressText.textContent = `${subject.completed_lessons} of ${subject.total_lessons} lessons complete`;
+            if (progressPercent) progressPercent.textContent = subject.completion_percentage + '%';
+          }
+        });
       }
 
       function updateUI(progress) {
