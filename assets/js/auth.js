@@ -124,7 +124,9 @@
             accountType: userData.accountType || 'adult',  // 'adult' or 'k12'
             gradeCode: userData.gradeCode || null,
             uiType: userData.uiType || null,
-            personaOverride: userData.personaOverride || null
+            personaOverride: userData.personaOverride || null,
+            // Dashboard routing (from backend grade-based routing)
+            dashboardUrl: data.redirect_url || '/dashboard.html'
           };
           TokenManager.setUser(user);
 
@@ -134,7 +136,8 @@
           return {
             success: true,
             message: 'Signed in successfully',
-            user: user
+            user: user,
+            redirect_url: data.redirect_url || null  // Grade-based routing from backend
           };
         }
 
@@ -573,6 +576,55 @@
      */
     getToken: function () {
       return TokenManager.getToken();
+    },
+
+    /**
+     * Get the user's dashboard URL based on their account type and grade
+     * Returns grade-appropriate K-12 dashboard for students, parent dashboard for parents,
+     * admin portal for admins, or default dashboard for adults
+     * @returns {string} Dashboard URL
+     */
+    getDashboardUrl: function () {
+      const user = TokenManager.getUser();
+      if (!user) {
+        return '/dashboard.html'; // Default fallback
+      }
+
+      // Use stored dashboardUrl if available (from login response)
+      if (user.dashboardUrl) {
+        return user.dashboardUrl;
+      }
+
+      // Fallback: compute from user data
+      // Admin users
+      if (user.role === 'tier1_admin' || user.role === 'tier2_admin' || user.role === 'admin') {
+        return '/admin/tier2.html';
+      }
+
+      // Parent users
+      if (user.accountType === 'parent') {
+        return '/portal/parent-dashboard.html';
+      }
+
+      // K-12 students (have grade code)
+      if (user.gradeCode) {
+        const gradeCode = user.gradeCode;
+        if (['K', '1', '2'].includes(gradeCode)) {
+          return '/portal/k12-dashboard-k2.html';
+        }
+        if (['3', '4', '5'].includes(gradeCode)) {
+          return '/portal/k12-dashboard-35.html';
+        }
+        if (['6', '7', '8'].includes(gradeCode)) {
+          return '/portal/k12-dashboard-68.html';
+        }
+        if (['9', '10', '11', '12'].includes(gradeCode)) {
+          return '/portal/k12-dashboard-912.html';
+        }
+      }
+
+      // Default: Adult dashboard
+      return '/dashboard.html';
     }
   };
 

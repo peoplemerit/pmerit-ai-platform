@@ -320,12 +320,13 @@
           const result = await window.AUTH.signin(email, password);
 
           if (result.success) {
-            // Check for redirect
-            const redirectUrl = sessionStorage.getItem('redirect_after_login');
+            // Priority: 1) sessionStorage redirect (deep link), 2) backend redirect_url, 3) fallback
+            const savedRedirect = sessionStorage.getItem('redirect_after_login');
             sessionStorage.removeItem('redirect_after_login');
 
-            // Redirect to account or saved URL
-            window.location.href = redirectUrl || '/account.html';
+            // Use saved redirect if it exists (deep link), otherwise use grade-based redirect from backend
+            const redirectUrl = savedRedirect || result.redirect_url || '/dashboard.html';
+            window.location.href = redirectUrl;
           } else {
             // Show error
             showError(result.message || 'Sign in failed. Please try again.');
