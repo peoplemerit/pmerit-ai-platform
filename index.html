@@ -540,7 +540,8 @@
               e.preventDefault();
               console.log('📊 Analytics: start_learning_clicked');
               if (window.AUTH && window.AUTH.isAuthenticated()) {
-                window.location.href = '/dashboard.html';
+                // Use grade-based dashboard routing
+                window.location.href = window.AUTH.getDashboardUrl();
               } else if (window.AuthModal) {
                 window.AuthModal.open('signup');
               } else {
@@ -568,7 +569,8 @@
               console.log('📊 Analytics:', eventName);
 
               if (isAuth) {
-                window.location.href = '/portal/dashboard.html';
+                // Use grade-based dashboard routing
+                window.location.href = window.AUTH.getDashboardUrl();
               } else {
                 if (window.AuthModal) {
                   window.AuthModal.open('signin');
@@ -659,7 +661,8 @@
             startLearningBtn.textContent = 'Dashboard';
             startLearningBtn.onclick = function(e) {
               e.preventDefault();
-              window.location.href = '/dashboard.html';
+              // Use grade-based dashboard routing
+              window.location.href = window.AUTH.getDashboardUrl();
             };
           }
           if (mobileSignInBtn) {
@@ -676,7 +679,8 @@
             mobileStartLearningBtn.textContent = 'Go';
             mobileStartLearningBtn.onclick = function(e) {
               e.preventDefault();
-              window.location.href = '/dashboard.html';
+              // Use grade-based dashboard routing
+              window.location.href = window.AUTH.getDashboardUrl();
             };
           }
         } else {

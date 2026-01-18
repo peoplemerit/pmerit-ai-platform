@@ -13,15 +13,17 @@ This repository operates under **AIXORD v2.1** governance.
 | Resource | Location |
 |----------|----------|
 | **Governance Document** | `C:/dev/pmerit/AIXORD_ROOT/GOVERNANCE/AIXORD_GOVERNANCE_V2.1.md` |
-| **State File** | `C:/dev/pmerit/AIXORD_ROOT/STATE/PMERIT_AIXORD_STATE.json` |
+| **State File** | `C:/dev/pmerit/AIXORD_ROOT/STATE/STATE.json` |
 | **SCOPEs** | `.claude/scopes/` |
 
 ### Startup Protocol
 
 When you receive `PMERIT CONTINUE` or start any session:
 
-1. **READ** `AIXORD_ROOT/GOVERNANCE/AIXORD_GOVERNANCE_V2.1.md`
-2. **READ** `AIXORD_ROOT/STATE/PMERIT_AIXORD_STATE.json`
+1. **READ `AIXORD_ROOT/STATE/STATE.json` — Current state
+2. **READ** `AIXORD_ROOT/CONTINUITY/SESSION_CONTEXT.md` — Prior session
+3. **READ** `AIXORD_ROOT/GOVERNANCE_V2.1.md`
+2. **READ** `AIXORD_ROOT/STATE/STATE.json`
 3. **CHECK** halt status — if halted, report and wait
 4. **LOAD** active SCOPE from state
 5. **REPORT** current state to Human
@@ -118,7 +120,7 @@ Ready for directive.
 | Repository | Purpose | CLAUDE.md |
 |------------|---------|-----------|
 | `pmerit-api-worker/` | Backend API | `CLAUDE.md` |
-| `Pmerit_Product_Development/` | Products | `.claude/CLAUDE.md` |
+| `pmerit-technologies/` | Products | `.claude/CLAUDE.md` |
 
 ---
 
