@@ -571,9 +571,12 @@
           sessionStorage.setItem('pmerit_pending_verification', parentEmail);
           sessionStorage.setItem('pmerit_k12_registration', 'true');
 
-          // Redirect to account page after delay
+          // Determine grade-appropriate dashboard for K-12 student
+          const redirectUrl = this.getK12DashboardFromGrade(childGrade);
+
+          // Redirect to grade-appropriate dashboard after delay
           setTimeout(() => {
-            window.location.href = '/account.html';
+            window.location.href = redirectUrl;
           }, 4000);
         } else {
           this.showMessage('signup', 'error', result.error || result.message || 'Registration failed');
@@ -629,13 +632,16 @@
         if (result.success) {
           this.showMessage('signin', 'success', 'Signed in! Redirecting...');
 
-          // Check for stored redirect URL (from protected route)
+          // Priority order for redirect:
+          // 1. Stored redirect URL (from protected route deep link)
+          // 2. Backend-provided redirect_url (grade-based routing)
+          // 3. Fallback to getDefaultDashboard()
           let redirectUrl = sessionStorage.getItem('pmerit_redirect_after_login');
           sessionStorage.removeItem('pmerit_redirect_after_login');
 
-          // If no stored redirect, determine based on user type
+          // If no stored redirect, use backend-provided redirect_url or fallback
           if (!redirectUrl) {
-            redirectUrl = this.getDefaultDashboard(result.user);
+            redirectUrl = result.redirect_url || this.getDefaultDashboard(result.user);
           }
 
           // Redirect after short delay
@@ -651,6 +657,28 @@
         this.showMessage('signin', 'error', 'An unexpected error occurred');
         this.setFormLoading('signin', false);
       }
+    },
+
+    /**
+     * Get the K-12 dashboard URL from grade code
+     * Used for K-12 signup flow where we have the grade but not full user object
+     * @param {string} gradeCode - Grade code (K, 1-12)
+     * @returns {string} Dashboard URL
+     */
+    getK12DashboardFromGrade: function (gradeCode) {
+      if (!gradeCode) return '/dashboard.html';
+
+      // Convert grade to number for comparison (K = 0)
+      const grade = gradeCode === 'K' ? 0 : parseInt(gradeCode, 10);
+
+      if (isNaN(grade)) return '/dashboard.html';
+
+      if (grade <= 2) return '/portal/k12-dashboard-k2.html';
+      if (grade <= 5) return '/portal/k12-dashboard-35.html';
+      if (grade <= 8) return '/portal/k12-dashboard-68.html';
+      if (grade <= 12) return '/portal/k12-dashboard-912.html';
+
+      return '/dashboard.html';
     },
 
     /**
