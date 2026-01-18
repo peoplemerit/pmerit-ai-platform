@@ -2350,6 +2350,14 @@
             tutorContext.persona_override = user.personaOverride;
           }
 
+          // Lesson context for RAG-enhanced tutoring (Session 17: P0-2 Fix)
+          if (state.lessonId) {
+            tutorContext.lesson_id = state.lessonId;
+          }
+          if (state.courseId) {
+            tutorContext.course_id = state.courseId;
+          }
+
           const response = await fetch(`${window.CONFIG?.API_BASE_URL || 'https://pmerit-api-worker.peoplemerit.workers.dev'}/api/v1/ai/tutor`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
