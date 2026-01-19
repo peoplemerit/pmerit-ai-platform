@@ -398,6 +398,48 @@
   <script src="assets/js/dashboard-courses.js?v=82"></script>
 </head>
 <body>
+  <script>
+  // K-12 Grade-Based Redirect Safety Net
+  // Runs immediately on dashboard load - redirects K-12 students to grade-appropriate dashboard
+  (function() {
+    try {
+      var userStr = localStorage.getItem('pmerit_user');
+      if (!userStr) return; // No user data, let page load normally
+
+      var user = JSON.parse(userStr);
+
+      // Check if K-12 student - check multiple possible key names
+      var grade = user.gradeCode || user.grade_code || user.current_grade;
+      var isK12 = user.uiType === 'k12' || user.ui_type === 'k12' || user.accountType === 'k12' || user.account_type === 'k12_student' || grade;
+
+      if (!isK12 || !grade) return; // Not K-12 or no grade info
+
+      // Map grade to dashboard URL
+      var redirectUrl = null;
+      var gradeStr = String(grade).toUpperCase();
+
+      if (gradeStr === 'K' || gradeStr === '1' || gradeStr === '2') {
+        redirectUrl = '/portal/k12-dashboard-k2.html';
+      } else if (gradeStr === '3' || gradeStr === '4' || gradeStr === '5') {
+        redirectUrl = '/portal/k12-dashboard-35.html';
+      } else if (gradeStr === '6' || gradeStr === '7' || gradeStr === '8') {
+        redirectUrl = '/portal/k12-dashboard-68.html';
+      } else if (gradeStr === '9' || gradeStr === '10' || gradeStr === '11' || gradeStr === '12') {
+        redirectUrl = '/portal/k12-dashboard-912.html';
+      }
+
+      // Redirect if we have a target and we're not already there
+      if (redirectUrl && window.location.pathname.indexOf(redirectUrl.replace('.html', '')) === -1) {
+        console.log('[PMERIT] K-12 redirect:', grade, '→', redirectUrl);
+        window.location.replace(redirectUrl);
+      }
+    } catch (e) {
+      console.error('[PMERIT] Redirect check failed:', e);
+      // Fail silently, let dashboard load
+    }
+  })();
+  </script>
+
   <!-- Overlay for mobile panel toggling -->
   <div class="panel-overlay" id="panel-overlay" tabindex="-1" aria-hidden="true"></div>
 
