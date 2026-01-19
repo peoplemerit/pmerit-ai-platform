@@ -592,7 +592,7 @@
   <!-- Main Content -->
   <main class="k2-main">
     <!-- Continue Learning -->
-    <a href="classroom.html?lesson=current" class="k2-continue" id="continue-btn" data-speak="Keep learning! Tap here to continue your lesson.">
+    <a href="units.html?grade=K&subject=ELA" class="k2-continue" id="continue-btn" data-speak="Keep learning! Tap here to continue your lesson.">
       <div class="k2-continue__icon">
         <i class="fas fa-play"></i>
       </div>
@@ -633,8 +633,8 @@
         </button>
       </div>
       <div class="k2-subjects" id="subjects-grid">
-        <!-- K-2 grade subjects - linked to curriculum browse -->
-        <a href="units.html?grade=K" class="k2-subject-card k2-subject-card--reading" data-subject="ELA" data-speak="Reading and Writing. Tap to learn letters and words!">
+        <!-- K-2 grade subjects - linked to curriculum browse with subject param -->
+        <a href="units.html?grade=K&subject=ELA" class="k2-subject-card k2-subject-card--reading" data-subject="ELA" data-speak="Reading and Writing. Tap to learn letters and words!">
           <div class="k2-subject-card__icon">
             <i class="fas fa-book-open"></i>
           </div>
@@ -648,7 +648,7 @@
           </div>
         </a>
 
-        <a href="units.html?grade=K" class="k2-subject-card k2-subject-card--math" data-subject="MATH" data-speak="Math. Tap to learn numbers and counting!">
+        <a href="units.html?grade=K&subject=MATH" class="k2-subject-card k2-subject-card--math" data-subject="MATH" data-speak="Math. Tap to learn numbers and counting!">
           <div class="k2-subject-card__icon">
             <i class="fas fa-calculator"></i>
           </div>
@@ -662,7 +662,7 @@
           </div>
         </a>
 
-        <a href="units.html?grade=K" class="k2-subject-card k2-subject-card--science" data-subject="SCI" data-speak="Science. Tap to discover how things work!">
+        <a href="units.html?grade=K&subject=SCI" class="k2-subject-card k2-subject-card--science" data-subject="SCI" data-speak="Science. Tap to discover how things work!">
           <div class="k2-subject-card__icon">
             <i class="fas fa-flask"></i>
           </div>
@@ -676,7 +676,7 @@
           </div>
         </a>
 
-        <a href="units.html?grade=K" class="k2-subject-card k2-subject-card--life" data-subject="LCR" data-speak="Life Skills. Tap to learn about feelings and being a good friend!">
+        <a href="units.html?grade=K&subject=LCR" class="k2-subject-card k2-subject-card--life" data-subject="LCR" data-speak="Life Skills. Tap to learn about feelings and being a good friend!">
           <div class="k2-subject-card__icon">
             <i class="fas fa-heart"></i>
           </div>
@@ -693,7 +693,7 @@
     </section>
 
     <!-- Ask Ms. Sunshine -->
-    <a href="classroom.html?mode=chat" class="k2-ask-tutor" data-speak="Ask Miss Sunshine! Tap here to talk to your friendly helper!">
+    <a href="#" class="k2-ask-tutor" id="ask-sunshine-btn" data-speak="Ask Miss Sunshine! Tap here to talk to your friendly helper!">
       <span class="k2-ask-tutor__icon">🌻</span>
       <div class="k2-ask-tutor__text">
         <div class="k2-ask-tutor__title">Ask Ms. Sunshine!</div>
@@ -709,7 +709,7 @@
       <i class="fas fa-home"></i>
       <span>Home</span>
     </a>
-    <a href="classroom.html?mode=chat" class="k2-footer__btn" data-speak="Ask for help">
+    <a href="#" class="k2-footer__btn" id="help-btn" data-speak="Ask for help">
       <i class="fas fa-question-circle"></i>
       <span>Help</span>
     </a>
@@ -755,6 +755,8 @@
       const successModal = document.getElementById('success-modal');
       const successClose = document.getElementById('success-close');
       const parentBtn = document.getElementById('parent-btn');
+      const askSunshineBtn = document.getElementById('ask-sunshine-btn');
+      const helpBtn = document.getElementById('help-btn');
 
       // Initialize
       function init() {
@@ -796,6 +798,24 @@
             speakText('Wrong PIN. Ask your parent for help.');
           }
         });
+
+        // Ms. Sunshine button - coming soon
+        if (askSunshineBtn) {
+          askSunshineBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            showCelebration('Coming Soon!', 'Ms. Sunshine is getting ready to help you!');
+            speakText('Ms. Sunshine is getting ready! Check back soon.');
+          });
+        }
+
+        // Help button - coming soon
+        if (helpBtn) {
+          helpBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            showCelebration('Need Help?', 'Ask a grown-up or pick a subject to learn!');
+            speakText('Need help? Ask a grown-up or pick a subject to start learning!');
+          });
+        }
 
         // Welcome message
         if (audioEnabled) {
