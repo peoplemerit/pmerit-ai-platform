@@ -62,7 +62,7 @@
      */
     async function loadUserGradeAndSubjects() {
         try {
-            const token = localStorage.getItem('auth_token');
+            const token = localStorage.getItem('pmerit_token');
             if (!token) {
                 showMessage('Please log in to see your subjects');
                 return;
@@ -102,7 +102,7 @@
         container.innerHTML = '<div class="curriculum-nav-loading">Loading subjects...</div>';
 
         try {
-            const token = localStorage.getItem('auth_token');
+            const token = localStorage.getItem('pmerit_token');
             const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
 
             const response = await fetch(`${API_BASE}/api/v1/k12/grades/${gradeId}/subjects`, { headers });

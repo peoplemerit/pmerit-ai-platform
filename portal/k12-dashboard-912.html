@@ -828,7 +828,7 @@
       }
 
       async function loadProgress() {
-        const token = localStorage.getItem('auth_token') || localStorage.getItem('pmerit_token');
+        const token = localStorage.getItem('pmerit_token');
 
         if (!token) {
           updateUI({
