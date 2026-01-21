@@ -28,7 +28,7 @@
 
     // Get auth headers
     function getAuthHeaders() {
-        const token = localStorage.getItem('auth_token');
+        const token = localStorage.getItem('pmerit_token');
         return token ? { 'Authorization': `Bearer ${token}` } : {};
     }
 
@@ -61,7 +61,7 @@
                 renderLesson(data.lesson);
 
                 // Mark as started if authenticated
-                const token = localStorage.getItem('auth_token');
+                const token = localStorage.getItem('pmerit_token');
                 if (token && data.lesson.progress?.status === 'not_started') {
                     markLessonStarted(lessonId);
                 }
@@ -233,7 +233,7 @@
     // Mark lesson as complete
     async function markLessonComplete() {
         const lessonId = getLessonId();
-        const token = localStorage.getItem('auth_token');
+        const token = localStorage.getItem('pmerit_token');
 
         if (!token) {
             alert('Please log in to track your progress');

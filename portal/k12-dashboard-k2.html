@@ -847,7 +847,7 @@
       // Load progress data from API
       async function loadProgress() {
         const API_BASE = window.PMERIT_CONFIG?.API_BASE || 'https://pmerit-api-worker.peoplemerit.workers.dev';
-        const token = localStorage.getItem('auth_token');
+        const token = localStorage.getItem('pmerit_token');
 
         // Default fallback data
         let progressData = {
