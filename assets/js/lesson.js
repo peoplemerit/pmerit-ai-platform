@@ -79,7 +79,7 @@
         // Title and meta
         document.getElementById('lesson-title').textContent = lesson.title;
         document.getElementById('estimated-time').textContent = `${lesson.estimated_minutes || 30} min`;
-        document.getElementById('difficulty').textContent = capitalizeFirst(lesson.difficulty_level || 'beginner');
+        document.getElementById('difficulty').textContent = getDifficultyLabel(lesson.difficulty_level);
         document.title = `${lesson.title} | PMERIT`;
 
         // Audio/Captions badges
@@ -199,8 +199,23 @@
 
     // Capitalize first letter
     function capitalizeFirst(str) {
-        if (!str) return '';
-        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+        if (!str && str !== 0) return '';
+        // Convert to string in case it's a number
+        const s = String(str);
+        return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+    }
+
+    // Convert difficulty level integer to readable string
+    function getDifficultyLabel(level) {
+        if (level === null || level === undefined) return 'Beginner';
+        const labels = {
+            1: 'Beginner',
+            2: 'Easy',
+            3: 'Intermediate',
+            4: 'Advanced',
+            5: 'Expert'
+        };
+        return labels[level] || capitalizeFirst(level);
     }
 
     // Mark lesson as started

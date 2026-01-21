@@ -318,7 +318,7 @@
                                     <h3>${escapeHtml(lesson.title)}</h3>
                                     <div class="lesson-meta">
                                         <span>⏱️ ${lesson.estimated_minutes || 30} min</span>
-                                        <span>📊 ${capitalizeFirst(lesson.difficulty_level || 'beginner')}</span>
+                                        <span>📊 ${getDifficultyLabel(lesson.difficulty_level)}</span>
                                     </div>
                                 </div>
                                 <div class="lesson-status">
@@ -363,8 +363,23 @@
         }
 
         function capitalizeFirst(str) {
-            if (!str) return '';
-            return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+            if (!str && str !== 0) return '';
+            // Convert to string in case it's a number
+            const s = String(str);
+            return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+        }
+
+        // Convert difficulty level integer to readable string
+        function getDifficultyLabel(level) {
+            if (level === null || level === undefined) return 'Beginner';
+            const labels = {
+                1: 'Beginner',
+                2: 'Easy',
+                3: 'Intermediate',
+                4: 'Advanced',
+                5: 'Expert'
+            };
+            return labels[level] || capitalizeFirst(level);
         }
 
         function escapeHtml(text) {
