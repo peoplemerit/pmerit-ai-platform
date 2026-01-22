@@ -17,7 +17,7 @@
 (function() {
     'use strict';
 
-    const API_BASE = window.PMERIT_CONFIG?.API_BASE || 'https://pmerit-api-worker.peoplemerit.workers.dev';
+    const API_BASE = window.CONFIG?.API_BASE_URL || 'https://pmerit-api-worker.peoplemerit.workers.dev';
 
     // Subject icons mapping
     const SUBJECT_ICONS = {
