@@ -15,7 +15,7 @@
 (function() {
     'use strict';
 
-    const API_BASE = window.PMERIT_CONFIG?.API_BASE || 'https://pmerit-api-worker.peoplemerit.workers.dev';
+    const API_BASE = window.CONFIG?.API_BASE_URL || 'https://pmerit-api-worker.peoplemerit.workers.dev';
     let currentLesson = null;
     let currentPersona = null;
     const pageLoadTime = Date.now();
