@@ -36,18 +36,34 @@
     async function loadLesson() {
         const lessonId = getLessonId();
         if (!lessonId) {
-            showError('No lesson specified');
+            showError('No lesson specified. Please select a lesson from your dashboard.');
             return;
         }
+
+        const token = localStorage.getItem('pmerit_token');
+        console.log('[Lesson] Loading lesson:', lessonId);
+        console.log('[Lesson] Token exists:', !!token);
 
         try {
             const response = await fetch(`${API_BASE}/api/v1/k12/lessons/${lessonId}`, {
                 headers: getAuthHeaders()
             });
 
+            console.log('[Lesson] API response status:', response.status);
+
             if (!response.ok) {
                 if (response.status === 401) {
-                    showError('Please log in to view this lesson');
+                    // Distinguish between "not logged in" and "token expired"
+                    if (token) {
+                        console.warn('[Lesson] Token exists but got 401 - session may be expired');
+                        showError('Your session has expired. Please log in again.');
+                    } else {
+                        showError('Please log in to view this lesson.');
+                    }
+                    return;
+                }
+                if (response.status === 404) {
+                    showError('Lesson not found. It may have been moved or deleted.');
                     return;
                 }
                 throw new Error(`HTTP ${response.status}`);
@@ -61,7 +77,6 @@
                 renderLesson(data.lesson);
 
                 // Mark as started if authenticated
-                const token = localStorage.getItem('pmerit_token');
                 if (token && data.lesson.progress?.status === 'not_started') {
                     markLessonStarted(lessonId);
                 }
@@ -69,7 +84,7 @@
                 showError(data.error || 'Lesson not found');
             }
         } catch (err) {
-            console.error('Load lesson error:', err);
+            console.error('[Lesson] Load lesson error:', err);
             showError('Failed to load lesson. Please try again.');
         }
     }
@@ -348,11 +363,23 @@
 
     function showError(message) {
         document.getElementById('lesson-title').textContent = 'Error';
+
+        // Determine if this is an auth error
+        const isAuthError = message.toLowerCase().includes('log in') ||
+                           message.toLowerCase().includes('session');
+
+        const loginButton = isAuthError
+            ? `<a href="/signin.html?redirect=${encodeURIComponent(window.location.href)}" class="btn btn-primary">Log In</a>`
+            : '';
+
         document.querySelector('.content-panel').innerHTML = `
             <div class="error-message">
                 <h2>Unable to Load Lesson</h2>
                 <p>${message}</p>
-                <a href="/pathways.html" class="btn btn-primary">Return to Pathways</a>
+                <div class="error-actions">
+                    ${loginButton}
+                    <a href="/pathways.html" class="btn ${isAuthError ? 'btn-secondary' : 'btn-primary'}">Return to Pathways</a>
+                </div>
             </div>
         `;
         // Hide tutor panel on error
