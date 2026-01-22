@@ -70,14 +70,41 @@
             }
 
             const data = await response.json();
+            console.log('[Lesson] API response:', data);
 
             if (data.success && data.lesson) {
-                currentLesson = data.lesson;
-                currentPersona = data.lesson.persona;
-                renderLesson(data.lesson);
+                // Merge nested response structure into flat object for rendering
+                // API returns: { lesson: {...}, context: {...}, ai_context: {...}, standards: {...}, navigation: {...}, progress: {...} }
+                const lessonData = {
+                    ...data.lesson,
+                    // Context fields
+                    grade_code: data.context?.grade?.grade_code,
+                    grade_name: data.context?.grade?.grade_name,
+                    subject_name: data.context?.subject?.subject_name,
+                    subject_code: data.context?.subject?.subject_code,
+                    unit_id: data.context?.unit?.unit_id,
+                    unit_title: data.context?.unit?.unit_title,
+                    // Persona (API returns string code, not object)
+                    persona: data.context?.persona ? { code: data.context.persona } : null,
+                    // AI context for tutor
+                    ai_context: data.ai_context?.teaching_approach,
+                    common_struggles: data.ai_context?.common_misconceptions,
+                    teaching_tips: data.ai_context?.teaching_tips,
+                    prerequisite_concepts: data.ai_context?.prerequisite_concepts,
+                    // Standards
+                    mlr_standards: data.standards,
+                    // Navigation
+                    navigation: data.navigation,
+                    // Progress
+                    progress: data.progress
+                };
+
+                currentLesson = lessonData;
+                currentPersona = lessonData.persona;
+                renderLesson(lessonData);
 
                 // Mark as started if authenticated
-                if (token && data.lesson.progress?.status === 'not_started') {
+                if (token && data.progress?.status === 'not_started') {
                     markLessonStarted(lessonId);
                 }
             } else {
@@ -112,10 +139,28 @@
         if (lesson.unit_title) breadcrumb.push(lesson.unit_title);
         document.getElementById('breadcrumb').textContent = breadcrumb.join(' • ');
 
-        // MOOSE iframe
+        // MOOSE iframe or fallback content
+        const iframe = document.getElementById('moose-frame');
+        const frameWrapper = document.querySelector('.content-frame-wrapper');
+
         if (lesson.content_url) {
-            const iframe = document.getElementById('moose-frame');
             iframe.src = lesson.content_url;
+        } else {
+            // No external content URL - show placeholder with lesson description
+            iframe.style.display = 'none';
+            const placeholder = document.createElement('div');
+            placeholder.className = 'content-placeholder';
+            placeholder.innerHTML = `
+                <div class="placeholder-content">
+                    <h2>${escapeHtml(lesson.title)}</h2>
+                    ${lesson.description ? `<p class="lesson-description">${escapeHtml(lesson.description)}</p>` : ''}
+                    <div class="placeholder-message">
+                        <p>This lesson's interactive content is being prepared.</p>
+                        <p>In the meantime, try asking your AI tutor questions about the topic!</p>
+                    </div>
+                </div>
+            `;
+            frameWrapper.appendChild(placeholder);
         }
 
         // MLR Standards
@@ -231,6 +276,14 @@
             5: 'Expert'
         };
         return labels[level] || capitalizeFirst(level);
+    }
+
+    // Escape HTML to prevent XSS
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
     }
 
     // Mark lesson as started
