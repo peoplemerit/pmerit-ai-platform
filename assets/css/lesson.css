@@ -368,6 +368,55 @@
 }
 
 /* ========================================
+   CONTENT PLACEHOLDER (when no content_url)
+   ======================================== */
+
+.content-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 500px;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+}
+
+.placeholder-content {
+    text-align: center;
+    max-width: 500px;
+}
+
+.placeholder-content h2 {
+    font-size: 1.5rem;
+    color: var(--color-dark-gray, #2C2C2C);
+    margin-bottom: 1rem;
+}
+
+.lesson-description {
+    color: var(--color-charcoal, #3A3A3A);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.placeholder-message {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.placeholder-message p {
+    margin: 0.5rem 0;
+    color: var(--color-medium-gray, #6b7280);
+    font-size: 0.9375rem;
+}
+
+.placeholder-message p:first-child {
+    font-weight: 500;
+    color: var(--color-charcoal, #3A3A3A);
+}
+
+/* ========================================
    ERROR STATE
    ======================================== */
 
