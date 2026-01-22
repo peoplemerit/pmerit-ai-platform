@@ -139,14 +139,22 @@
         if (lesson.unit_title) breadcrumb.push(lesson.unit_title);
         document.getElementById('breadcrumb').textContent = breadcrumb.join(' • ');
 
-        // MOOSE iframe or fallback content
+        // Content display: iframe URL, inline HTML, or placeholder
         const iframe = document.getElementById('moose-frame');
         const frameWrapper = document.querySelector('.content-frame-wrapper');
 
         if (lesson.content_url) {
+            // External content via iframe (MOOSE)
             iframe.src = lesson.content_url;
+        } else if (lesson.content) {
+            // Inline HTML content from database
+            iframe.style.display = 'none';
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'inline-lesson-content';
+            contentDiv.innerHTML = lesson.content; // Content is sanitized server-side
+            frameWrapper.appendChild(contentDiv);
         } else {
-            // No external content URL - show placeholder with lesson description
+            // No content - show placeholder
             iframe.style.display = 'none';
             const placeholder = document.createElement('div');
             placeholder.className = 'content-placeholder';
