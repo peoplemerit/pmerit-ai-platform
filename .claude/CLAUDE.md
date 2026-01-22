@@ -1,45 +1,41 @@
 # PMERIT Platform — Claude Code Instructions
 
-**Version:** 4.0 (AIXORD v2.1)
-**Updated:** 2025-12-28
-**Status:** Active under AIXORD v2.1 governance
+**Version:** 5.0 (Unified Router Compatible)
+**Updated:** 2026-01-19
+**Status:** Active under AIXORD v3.0 governance (Foundation Protocol)
+
+---
+
+## ROUTING NOTE
+
+This file is loaded AFTER the root router (`C:\dev\pmerit\CLAUDE.md`) detects `PMERIT CONTINUE` or `ENV: FE`. The root router has already:
+- Read STATE.json
+- Read SESSION_CONTEXT.md
+- Checked kingdom status
+- Reported state to Director
+
+You should now follow the platform-specific instructions below.
 
 ---
 
 ## AIXORD AUTHORITY CONTRACT
 
-This repository operates under **AIXORD v2.1** governance.
+This repository operates under **AIXORD v3.0** governance (Foundation Protocol).
 
 | Resource | Location |
 |----------|----------|
-| **Governance Document** | `C:/dev/pmerit/AIXORD_ROOT/GOVERNANCE/AIXORD_GOVERNANCE_V2.1.md` |
+| **Governance Document** | `C:/dev/pmerit/AIXORD_ROOT/GOVERNANCE/AIXORD_GOVERNANCE_V3.0.md` |
 | **State File** | `C:/dev/pmerit/AIXORD_ROOT/STATE/STATE.json` |
+| **Session Context** | `C:/dev/pmerit/AIXORD_ROOT/CONTINUITY/SESSION_CONTEXT.md` |
 | **SCOPEs** | `.claude/scopes/` |
 
-### Startup Protocol
+### Kingdom Enforcement (from root router)
 
-When you receive `PMERIT CONTINUE` or start any session:
-
-1. **READ `AIXORD_ROOT/STATE/STATE.json` — Current state
-2. **READ** `AIXORD_ROOT/CONTINUITY/SESSION_CONTEXT.md` — Prior session
-3. **READ** `AIXORD_ROOT/GOVERNANCE_V2.1.md`
-2. **READ** `AIXORD_ROOT/STATE/STATE.json`
-3. **CHECK** halt status — if halted, report and wait
-4. **LOAD** active SCOPE from state
-5. **REPORT** current state to Human
-
-### Response Format
-
-```
-🔄 PMERIT CONTINUITY — AIXORD v2.1
-
-Mode: [DECISION | EXECUTION]
-Halt: [None | Reason]
-Active SCOPE: [From STATE.json]
-SCOPE State: [SPECIFIED | IN_PROGRESS | COMPLETE]
-
-Ready for directive.
-```
+| Kingdom | Code | Allowed Actions |
+|---------|------|-----------------|
+| **IDEATION** | K:I | Research, analysis, file reading ONLY |
+| **BLUEPRINT** | K:B | Review specs, validate feasibility ONLY |
+| **REALIZATION** | K:R | Code modifications allowed with approval |
 
 ---
 
@@ -49,6 +45,7 @@ Ready for directive.
 |-------|-------|
 | **Name** | pmerit-ai-platform |
 | **Type** | Frontend |
+| **Entity** | PMERIT FOUNDATION (501(c)(3)) |
 | **Purpose** | Platform UI, docs, admin portals |
 | **SCOPE Location** | `.claude/scopes/` |
 
@@ -84,23 +81,23 @@ Ready for directive.
 
 ```
 .claude/scopes/
-├── SCOPE_TEMPLATE_V2.1.md          <- Template for new SCOPEs
-├── SUB-SCOPE_TEMPLATE.md           <- Template for SUB-SCOPEs
-├── SCOPE_SECURITY/                 <- Decomposed SCOPE
-│   ├── SCOPE_SECURITY.md
-│   ├── SUB-SCOPE_AUTHENTICATION.md
-│   ├── SUB-SCOPE_AUTHORIZATION.md
-│   ├── SUB-SCOPE_DATA_PROTECTION.md
-│   └── SUB-SCOPE_COMPLIANCE.md
-├── SCOPE_PARENT_PORTAL/            <- Decomposed SCOPE
-│   ├── SCOPE_PARENT_PORTAL.md
-│   ├── SUB-SCOPE_COPPA_CONSENT.md
-│   ├── SUB-SCOPE_PROGRESS_DASHBOARD.md
-│   ├── SUB-SCOPE_CONTROLS.md
-│   └── SUB-SCOPE_NOTIFICATIONS.md
-├── SCOPE_K12_EDUCATION/            <- Pending decomposition
-├── SCOPE_DASHBOARD/                <- Pending decomposition
-└── [other SCOPE files]
++-- SCOPE_TEMPLATE_V2.1.md          <- Template for new SCOPEs
++-- SUB-SCOPE_TEMPLATE.md           <- Template for SUB-SCOPEs
++-- SCOPE_SECURITY/                 <- Decomposed SCOPE
+|   +-- SCOPE_SECURITY.md
+|   +-- SUB-SCOPE_AUTHENTICATION.md
+|   +-- SUB-SCOPE_AUTHORIZATION.md
+|   +-- SUB-SCOPE_DATA_PROTECTION.md
+|   +-- SUB-SCOPE_COMPLIANCE.md
++-- SCOPE_PARENT_PORTAL/            <- Decomposed SCOPE
+|   +-- SCOPE_PARENT_PORTAL.md
+|   +-- SUB-SCOPE_COPPA_CONSENT.md
+|   +-- SUB-SCOPE_PROGRESS_DASHBOARD.md
+|   +-- SUB-SCOPE_CONTROLS.md
+|   +-- SUB-SCOPE_NOTIFICATIONS.md
++-- SCOPE_K12_EDUCATION/            <- Pending decomposition
++-- SCOPE_DASHBOARD/                <- Pending decomposition
++-- [other SCOPE files]
 ```
 
 ---
@@ -112,6 +109,7 @@ Ready for directive.
 3. **Document Decisions** — All decisions logged in SCOPE files
 4. **HALT on Ambiguity** — Return to Human if unclear
 5. **Repo Sovereignty** — Backend SCOPEs live in `pmerit-api-worker/`
+6. **Kingdom Compliance** — Respect K:I/K:B/K:R restrictions from root router
 
 ---
 
@@ -128,11 +126,13 @@ Ready for directive.
 
 | Document | Location | Purpose |
 |----------|----------|---------|
-| Master Roadmap | `docs/project/Pmerit_Project_Document.md` | Strategic overview |
+| Project Document | `AIXORD_ROOT/ARCHITECT/decisions/PMERIT_PROJECT_DOCUMENT.md` | Strategic overview |
+| Blueprint | `AIXORD_ROOT/ARCHITECT/decisions/PMERIT_BLUEPRINT.md` | Architecture |
+| Master Scope | `AIXORD_ROOT/ARCHITECT/decisions/PMERIT_MASTER_SCOPE.md` | Execution scope |
 | Feature Specs | `docs/handoffs/` | Implementation specs |
-| User Journeys | `docs/project/Pmerit-comprehensively-narrative-users-and-Admin-Journey.md` | User flows |
 
 ---
 
-*AIXORD v2.1 — Authority. Execution. Confirmation. Genesis.*
-*Updated: 2025-12-28*
+*AIXORD v3.0 — Authority. Execution. Verification.*
+*PMERIT FOUNDATION*
+*Updated: 2026-01-19*
