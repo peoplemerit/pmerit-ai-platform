@@ -32,6 +32,10 @@ importers:
         version: 1.6.1(@types/node@20.19.30)
 
   products/aixord-extension:
+    dependencies:
+      '@aixord/core':
+        specifier: workspace:*
+        version: link:../../packages/core
     devDependencies:
       '@types/chrome':
         specifier: ^0.1.36

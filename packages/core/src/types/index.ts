@@ -1,8 +1,5 @@
 /**
  * AIXORD Core Types
- * 
- * Re-exports all type definitions.
- * 
  * @module @aixord/core/types
  */
 
@@ -12,8 +9,5 @@ export * from './state';
 // Governance types
 export * from './governance';
 
-// Entity types
+// Entity types (contains VariantConfig)
 export * from './entities';
-
-// Variant types
-export * from './variants';
