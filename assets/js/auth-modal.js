@@ -649,7 +649,9 @@
             window.location.href = redirectUrl;
           }, 1000);
         } else {
-          this.showMessage('signin', 'error', result.message || 'Sign in failed');
+          // Handle specific error codes with descriptive messages
+          const errorMessage = this.getSigninErrorMessage(result);
+          this.showSigninError(result.error, errorMessage, result.remainingAttempts);
           this.setFormLoading('signin', false);
         }
       } catch (error) {
@@ -725,6 +727,121 @@
 
       // Default: Adult dashboard (account page)
       return '/account.html';
+    },
+
+    /**
+     * Get descriptive error message based on error code
+     */
+    getSigninErrorMessage: function (result) {
+      switch (result.error) {
+        case 'USER_NOT_FOUND':
+          return 'No account found with this email address.';
+        case 'INVALID_PASSWORD':
+          return 'Incorrect password.';
+        case 'EMAIL_NOT_VERIFIED':
+          return 'Please verify your email before signing in.';
+        case 'ACCOUNT_LOCKED':
+          return 'Account temporarily locked due to too many failed attempts.';
+        default:
+          return result.message || 'Sign in failed. Please try again.';
+      }
+    },
+
+    /**
+     * Show sign-in error with helpful links
+     */
+    showSigninError: function (errorCode, message, remainingAttempts) {
+      const messageEl = document.getElementById('signin-message');
+      if (!messageEl) return;
+
+      // Build error message with helpful links
+      let html = `<span class="error-text">${message}</span>`;
+
+      // Add remaining attempts warning if applicable
+      if (typeof remainingAttempts === 'number' && remainingAttempts > 0 && remainingAttempts <= 3) {
+        html += `<br><small class="attempts-warning">${remainingAttempts} attempt${remainingAttempts === 1 ? '' : 's'} remaining before lockout.</small>`;
+      }
+
+      // Add helpful links based on error type
+      if (errorCode === 'USER_NOT_FOUND') {
+        html += `<div class="error-actions">
+          <a href="#" data-switch-to="signup" class="error-link">Create an account</a>
+          <span class="error-divider">or</span>
+          <a href="#" class="error-link" onclick="AuthModal.showFindAccountFlow(); return false;">Find my account</a>
+        </div>`;
+      } else if (errorCode === 'INVALID_PASSWORD') {
+        html += `<div class="error-actions">
+          <a href="#" class="error-link" onclick="AuthModal.showForgotPasswordFlow(); return false;">Forgot password?</a>
+        </div>`;
+      } else if (errorCode === 'EMAIL_NOT_VERIFIED') {
+        html += `<div class="error-actions">
+          <a href="#" class="error-link" onclick="AuthModal.resendVerification(); return false;">Resend verification email</a>
+        </div>`;
+      }
+
+      messageEl.innerHTML = html;
+      messageEl.className = 'auth-modal-message error';
+      messageEl.style.display = 'block';
+
+      // Bind switch-to links
+      const switchLinks = messageEl.querySelectorAll('[data-switch-to]');
+      switchLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetTab = link.getAttribute('data-switch-to');
+          this.switchTab(targetTab);
+        });
+      });
+    },
+
+    /**
+     * Show forgot password flow
+     */
+    showForgotPasswordFlow: function () {
+      const email = document.getElementById('signin-email')?.value.trim();
+      if (email) {
+        // Store email and redirect to forgot password page
+        sessionStorage.setItem('pmerit_forgot_password_email', email);
+      }
+      window.location.href = '/forgot-password.html';
+    },
+
+    /**
+     * Show find account flow (for users who forgot their email)
+     */
+    showFindAccountFlow: function () {
+      window.location.href = '/find-account.html';
+    },
+
+    /**
+     * Resend verification email
+     */
+    resendVerification: async function () {
+      const email = document.getElementById('signin-email')?.value.trim();
+      if (!email) {
+        this.showMessage('signin', 'error', 'Please enter your email address');
+        return;
+      }
+
+      try {
+        const apiUrl = window.CONFIG?.API_BASE_URL || 'https://pmerit-api-worker.peoplemerit.workers.dev';
+        const response = await fetch(`${apiUrl}/api/v1/auth/resend-verification`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          this.showMessage('signin', 'success', 'Verification email sent! Please check your inbox.');
+        } else {
+          this.showMessage('signin', 'error', result.message || 'Failed to send verification email');
+        }
+      } catch (error) {
+        console.error('Resend verification error:', error);
+        this.showMessage('signin', 'error', 'An error occurred. Please try again.');
+      }
     },
 
     /**

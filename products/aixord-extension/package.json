@@ -1,0 +1,11 @@
+﻿{
+  "name": "@aixord/extension",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Application-layer governance enforcement for LLM interactions",
+  "type": "module",
+  "scripts": {
+    "build": "echo \"TODO: build pipeline\"",
+    "dev": "echo \"TODO: dev pipeline\""
+  }
+}

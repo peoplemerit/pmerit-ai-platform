@@ -143,7 +143,9 @@
 
         return {
           success: false,
-          message: data.message || 'Invalid email or password'
+          message: data.message || 'Invalid email or password',
+          error: data.error || null,
+          remainingAttempts: data.remainingAttempts
         };
       } catch (error) {
         console.error('Sign in error:', error);
