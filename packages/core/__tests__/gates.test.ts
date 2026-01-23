@@ -149,7 +149,7 @@ describe('Gate Transitions', () => {
       const result = updateGate(state, 'LIC', 1);
       
       expect(result.success).toBe(true);
-      expect(result.gates.LIC).toBe(1);
+      expect(result.state.gates.LIC).toBe(1);
       expect(result.updatedGates).toContain('LIC');
     });
     
@@ -398,3 +398,4 @@ describe('Blocking Gate Detection', () => {
     });
   });
 });
+
