@@ -5,8 +5,11 @@
   "description": "Application-layer governance enforcement for LLM interactions",
   "type": "module",
   "scripts": {
-    "build": "echo \"TODO: build pipeline\"",
-    "dev": "echo \"TODO: dev pipeline\""
+    "build": "node build.mjs",
+    "dev": "node build.mjs --watch"
+  },
+  "dependencies": {
+    "@aixord/core": "workspace:*"
   },
   "devDependencies": {
     "@types/chrome": "^0.1.36",

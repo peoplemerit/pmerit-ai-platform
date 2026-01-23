@@ -14,9 +14,8 @@ import type {
   MessageThresholds,
   VariantPrompts,
   VariantRule,
-  DEFAULT_THRESHOLDS,
-  DEFAULT_HEADER_TEMPLATE,
 } from '../types/variants';
+import { DEFAULT_THRESHOLDS, DEFAULT_HEADER_TEMPLATE } from '../types/variants';
 
 // ============================================================================
 // VARIANT INSTANCE
@@ -129,7 +128,7 @@ export class VariantInstance {
     
     // Format gates
     const gatesStr = Object.entries(state.gates)
-      .map(([k, v]) => `${k}${v === 1 ? '●' : '○'}`)
+      .map(([k, v]) => `${k}${v === 1 ? '???' : '???'}`)
       .join('');
     
     return template
@@ -388,3 +387,4 @@ export class VariantBuilder {
     return new VariantInstance(this.build());
   }
 }
+

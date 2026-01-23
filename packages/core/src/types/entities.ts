@@ -16,7 +16,8 @@ import type {
   ExecutionMode,
   LicenseType,
 } from './state';
-import type { GateID, TaskClass } from './governance';
+import type { GateID } from './state';
+import type { TaskClass } from './governance';
 
 // ============================================================================
 // BASE ENTITY
@@ -728,3 +729,4 @@ export interface ApiError {
   /** Stack trace (dev only) */
   stack?: string;
 }
+
