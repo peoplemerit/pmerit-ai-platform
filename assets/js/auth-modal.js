@@ -414,6 +414,14 @@
       this.dispatchAnalytics('signup_attempt', { email, accountType: 'adult' });
 
       try {
+        // Check if AUTH module is loaded
+        if (!window.AUTH || typeof window.AUTH.signup !== 'function') {
+          console.error('AUTH module not loaded');
+          this.showMessage('signup', 'error', 'Authentication service not ready. Please refresh the page.');
+          this.setFormLoading('signup', false);
+          return;
+        }
+
         // Call AUTH.signup
         const result = await window.AUTH.signup(email, password, firstname, lastname);
 
@@ -626,6 +634,14 @@
       this.dispatchAnalytics('signin_attempt', { email });
 
       try {
+        // Check if AUTH module is loaded
+        if (!window.AUTH || typeof window.AUTH.signin !== 'function') {
+          console.error('AUTH module not loaded');
+          this.showMessage('signin', 'error', 'Authentication service not ready. Please refresh the page.');
+          this.setFormLoading('signin', false);
+          return;
+        }
+
         // Call AUTH.signin
         const result = await window.AUTH.signin(email, password);
 

@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "@aixord/extension",
   "private": true,
   "version": "1.0.0",
@@ -7,5 +7,14 @@
   "scripts": {
     "build": "echo \"TODO: build pipeline\"",
     "dev": "echo \"TODO: dev pipeline\""
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.1.36",
+    "@types/react": "^19.2.9",
+    "@types/react-dom": "^19.2.3",
+    "esbuild": "^0.27.2",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "typescript": "^5.9.3"
   }
 }
