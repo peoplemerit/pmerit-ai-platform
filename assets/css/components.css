@@ -1165,6 +1165,43 @@
   color: #060;
 }
 
+/* Error message with action links */
+.auth-modal-message .error-text {
+  display: block;
+}
+
+.auth-modal-message .attempts-warning {
+  color: #b00;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+.auth-modal-message .error-actions {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #fcc;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.auth-modal-message .error-link {
+  color: var(--primary-color, #0066cc);
+  text-decoration: underline;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.auth-modal-message .error-link:hover {
+  color: var(--primary-hover, #0052a3);
+}
+
+.auth-modal-message .error-divider {
+  color: #999;
+  font-size: 0.85rem;
+}
+
 /* Form Styles */
 .auth-modal-form {
   display: flex;

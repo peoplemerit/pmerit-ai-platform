@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Find your PMERIT account"/>
+  <title>Find Your Account - PMERIT</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico"/>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+  <!-- Theme Init - Prevent FOUC -->
+  <script>
+  (function() {
+    var theme = localStorage.getItem('theme');
+    if (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      theme = 'dark';
+    }
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  })();
+  </script>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="assets/css/light-theme.css?v=4">
+  <link rel="stylesheet" href="assets/css/components.css?v=4">
+  <link rel="stylesheet" href="assets/css/responsive-fixes.css?v=4">
+
+  <!-- Debug Logger -->
+  <script src="assets/js/utils/logger.js"></script>
+
+  <style>
+    .recovery-container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      min-height: calc(100vh - 200px);
+      min-height: calc(100dvh - 200px);
+    }
+
+    .recovery-card {
+      background: var(--card-bg, #fff);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      border: 1px solid var(--border-color, #e0e0e0);
+    }
+
+    .recovery-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .recovery-header .icon {
+      font-size: 3rem;
+      color: var(--primary-color, #0066cc);
+      margin-bottom: 1rem;
+    }
+
+    .recovery-header h1 {
+      font-size: 1.5rem;
+      color: var(--text-primary, #333);
+      margin-bottom: 0.5rem;
+    }
+
+    .recovery-header p {
+      color: var(--text-secondary, #666);
+      font-size: 0.95rem;
+    }
+
+    .recovery-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text-primary, #333);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border-color, #ccc);
+      border-radius: 8px;
+      font-size: 1rem;
+      background: var(--input-bg, #fff);
+      color: var(--text-primary, #333);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--primary-color, #0066cc);
+      box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+    }
+
+    .form-hint {
+      font-size: 0.85rem;
+      color: var(--text-secondary, #666);
+      margin-top: 0.5rem;
+    }
+
+    .recovery-message {
+      display: none;
+      padding: 0.875rem 1rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .recovery-message.error {
+      display: block;
+      background: #fee;
+      border: 1px solid #fcc;
+      color: #c00;
+    }
+
+    .recovery-message.success {
+      display: block;
+      background: #efe;
+      border: 1px solid #cfc;
+      color: #060;
+    }
+
+    .btn-primary {
+      background: var(--primary-color, #0066cc);
+      color: white;
+      padding: 0.875rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      width: 100%;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover, #0052a3);
+    }
+
+    .btn-primary:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+
+    .back-link a {
+      color: var(--primary-color, #0066cc);
+      text-decoration: none;
+    }
+
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* Step styles */
+    .step {
+      display: none;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    /* Result card */
+    .account-result {
+      background: var(--surface-bg, #f8f9fa);
+      border: 1px solid var(--border-color, #e0e0e0);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 1rem 0;
+    }
+
+    .account-result .email-display {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary, #333);
+      margin-bottom: 0.5rem;
+      word-break: break-all;
+    }
+
+    .account-result .email-masked {
+      color: var(--text-secondary, #666);
+      font-size: 0.9rem;
+    }
+
+    .account-result .account-info {
+      font-size: 0.85rem;
+      color: var(--text-secondary, #666);
+      margin-top: 0.5rem;
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--primary-color, #0066cc);
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--primary-color, #0066cc);
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: var(--primary-color, #0066cc);
+      color: white;
+    }
+
+    .not-found-message {
+      text-align: center;
+      padding: 1.5rem;
+    }
+
+    .not-found-message .icon {
+      font-size: 2.5rem;
+      color: var(--text-secondary, #999);
+      margin-bottom: 1rem;
+    }
+
+    .not-found-message p {
+      color: var(--text-secondary, #666);
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header Partial (loaded via JS) -->
+  <header id="header-container"></header>
+
+  <main>
+    <div class="recovery-container">
+      <div class="recovery-card">
+        <!-- Step 1: Enter Name -->
+        <div id="step-search" class="step active">
+          <div class="recovery-header">
+            <div class="icon"><i class="fas fa-search"></i></div>
+            <h1>Find Your Account</h1>
+            <p>Enter your name and we'll search for your account.</p>
+          </div>
+
+          <div id="search-message" class="recovery-message"></div>
+
+          <form id="search-form" class="recovery-form">
+            <div class="form-group">
+              <label for="first-name">First Name</label>
+              <input type="text" id="first-name" name="first-name" required autocomplete="given-name" placeholder="Your first name">
+            </div>
+
+            <div class="form-group">
+              <label for="last-name">Last Name</label>
+              <input type="text" id="last-name" name="last-name" required autocomplete="family-name" placeholder="Your last name">
+            </div>
+
+            <button type="submit" class="btn-primary" id="search-btn">
+              Search for Account
+            </button>
+          </form>
+
+          <div class="back-link">
+            <a href="/?auth=signin"><i class="fas fa-arrow-left"></i> Back to Sign In</a>
+          </div>
+        </div>
+
+        <!-- Step 2: Results Found -->
+        <div id="step-found" class="step">
+          <div class="recovery-header">
+            <div class="icon" style="color: #28a745;"><i class="fas fa-user-check"></i></div>
+            <h1>Account Found!</h1>
+            <p>We found an account matching your name.</p>
+          </div>
+
+          <div class="account-result">
+            <div class="email-display" id="found-email"></div>
+            <div class="account-info" id="account-info"></div>
+          </div>
+
+          <div class="action-buttons">
+            <a href="/?auth=signin" class="btn-primary" id="signin-with-email" style="text-decoration: none; text-align: center;">
+              Sign In with This Email
+            </a>
+            <a href="#" class="btn-secondary" id="forgot-password-link">
+              I forgot my password
+            </a>
+          </div>
+
+          <div class="back-link">
+            <a href="#" id="search-again"><i class="fas fa-arrow-left"></i> Search with different name</a>
+          </div>
+        </div>
+
+        <!-- Step 3: Not Found -->
+        <div id="step-not-found" class="step">
+          <div class="recovery-header">
+            <div class="icon" style="color: var(--text-secondary);"><i class="fas fa-user-times"></i></div>
+            <h1>No Account Found</h1>
+            <p>We couldn't find an account matching that name.</p>
+          </div>
+
+          <div class="not-found-message">
+            <p>This could mean:</p>
+            <ul style="text-align: left; color: var(--text-secondary); margin-bottom: 1rem;">
+              <li>You haven't created an account yet</li>
+              <li>You signed up with a different name</li>
+              <li>You may have a K-12 child account (try your parent's name)</li>
+            </ul>
+          </div>
+
+          <div class="action-buttons">
+            <a href="/?auth=signup" class="btn-primary" style="text-decoration: none; text-align: center;">
+              Create an Account
+            </a>
+            <a href="#" class="btn-secondary" id="try-again">
+              Try a Different Name
+            </a>
+          </div>
+
+          <div class="back-link">
+            <a href="/?auth=signin"><i class="fas fa-arrow-left"></i> Back to Sign In</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer Partial (loaded via JS) -->
+  <footer id="footer-container"></footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/config.js"></script>
+  <script>
+    (function() {
+      const API_BASE = window.CONFIG?.API_BASE_URL || 'https://pmerit-api-worker.peoplemerit.workers.dev';
+      let foundEmail = '';
+
+      // DOM Elements
+      const steps = {
+        search: document.getElementById('step-search'),
+        found: document.getElementById('step-found'),
+        notFound: document.getElementById('step-not-found')
+      };
+
+      // Step navigation
+      function showStep(stepName) {
+        Object.values(steps).forEach(step => step.classList.remove('active'));
+        steps[stepName].classList.add('active');
+      }
+
+      function showMessage(stepName, type, message) {
+        const msgEl = document.getElementById(`${stepName}-message`);
+        if (msgEl) {
+          msgEl.textContent = message;
+          msgEl.className = `recovery-message ${type}`;
+        }
+      }
+
+      function clearMessage(stepName) {
+        const msgEl = document.getElementById(`${stepName}-message`);
+        if (msgEl) {
+          msgEl.textContent = '';
+          msgEl.className = 'recovery-message';
+        }
+      }
+
+      function setLoading(btnId, loading) {
+        const btn = document.getElementById(btnId);
+        if (btn) {
+          btn.disabled = loading;
+          if (loading) {
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Searching...';
+          } else {
+            btn.textContent = 'Search for Account';
+          }
+        }
+      }
+
+      // Mask email for privacy (show first 2 chars + domain)
+      function maskEmail(email) {
+        if (!email) return '';
+        const [local, domain] = email.split('@');
+        if (!local || !domain) return email;
+
+        const visibleChars = Math.min(2, local.length);
+        const masked = local.substring(0, visibleChars) + '*'.repeat(Math.max(0, local.length - visibleChars));
+        return `${masked}@${domain}`;
+      }
+
+      // Search form submission
+      document.getElementById('search-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        clearMessage('search');
+
+        const firstName = document.getElementById('first-name').value.trim();
+        const lastName = document.getElementById('last-name').value.trim();
+
+        if (!firstName || !lastName) {
+          showMessage('search', 'error', 'Please enter both first and last name');
+          return;
+        }
+
+        setLoading('search-btn', true);
+
+        try {
+          const response = await fetch(`${API_BASE}/api/v1/auth/find-account`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ firstName, lastName })
+          });
+
+          const data = await response.json();
+
+          if (data.success && data.found) {
+            foundEmail = data.email;
+            document.getElementById('found-email').textContent = maskEmail(data.email);
+
+            // Show account info if available
+            const infoEl = document.getElementById('account-info');
+            if (data.accountType === 'k12') {
+              infoEl.textContent = 'K-12 Student Account';
+            } else if (data.createdAt) {
+              const date = new Date(data.createdAt).toLocaleDateString();
+              infoEl.textContent = `Account created: ${date}`;
+            } else {
+              infoEl.textContent = '';
+            }
+
+            showStep('found');
+          } else {
+            showStep('notFound');
+          }
+        } catch (error) {
+          console.error('Search error:', error);
+          showMessage('search', 'error', 'Network error. Please try again.');
+        } finally {
+          setLoading('search-btn', false);
+        }
+      });
+
+      // Forgot password with found email
+      document.getElementById('forgot-password-link').addEventListener('click', (e) => {
+        e.preventDefault();
+        if (foundEmail) {
+          sessionStorage.setItem('pmerit_forgot_password_email', foundEmail);
+        }
+        window.location.href = '/forgot-password.html';
+      });
+
+      // Search again
+      document.getElementById('search-again').addEventListener('click', (e) => {
+        e.preventDefault();
+        showStep('search');
+        document.getElementById('first-name').value = '';
+        document.getElementById('last-name').value = '';
+        document.getElementById('first-name').focus();
+      });
+
+      // Try again from not found
+      document.getElementById('try-again').addEventListener('click', (e) => {
+        e.preventDefault();
+        showStep('search');
+        document.getElementById('first-name').value = '';
+        document.getElementById('last-name').value = '';
+        document.getElementById('first-name').focus();
+      });
+
+      // Load header and footer partials
+      fetch('partials/header.html')
+        .then(r => r.text())
+        .then(html => document.getElementById('header-container').innerHTML = html);
+
+      fetch('partials/footer.html')
+        .then(r => r.text())
+        .then(html => document.getElementById('footer-container').innerHTML = html);
+    })();
+  </script>
+</body>
+</html>
