@@ -1,14 +1,20 @@
-﻿export type MessageRequest =
+﻿import type { GateState } from "../enforcement/gates";
+
+export type MessageRequest =
   | { type: "PING"; payload?: unknown }
   | { type: "AUTH_GET_TOKEN" }
   | { type: "AUTH_SET_TOKEN"; token: string }
-  | { type: "AUTH_CLEAR_TOKEN" };
+  | { type: "AUTH_CLEAR_TOKEN" }
+  | { type: "GATE_GET_STATE" }
+  | { type: "GATE_SET_STATE"; state: GateState }
+  | { type: "GATE_UPDATE"; gateId: string; value: 0 | 1 };
 
 export type MessageResponse =
   | { ok: true; data?: unknown }
   | { ok: false; error: string };
 
 const TOKEN_KEY = "aixord_auth_token";
+const GATE_STATE_KEY = "aixord_gate_state";
 
 /**
  * Storage helpers (MV3 service worker safe).
@@ -24,6 +30,25 @@ export async function setToken(token: string): Promise<void> {
 
 export async function clearToken(): Promise<void> {
   await chrome.storage.local.remove([TOKEN_KEY]);
+}
+
+/**
+ * Gate state storage helpers.
+ */
+export async function getGateState(): Promise<GateState> {
+  const result = await chrome.storage.local.get([GATE_STATE_KEY]);
+  return (result[GATE_STATE_KEY] as GateState) ?? {};
+}
+
+export async function setGateState(state: GateState): Promise<void> {
+  await chrome.storage.local.set({ [GATE_STATE_KEY]: state });
+}
+
+export async function updateGate(gateId: string, value: 0 | 1): Promise<GateState> {
+  const current = await getGateState();
+  const updated = { ...current, [gateId]: value };
+  await setGateState(updated);
+  return updated;
 }
 
 /**
@@ -53,6 +78,30 @@ export async function handleMessage(
       case "AUTH_CLEAR_TOKEN":
         await clearToken();
         return { ok: true };
+
+      case "GATE_GET_STATE": {
+        const state = await getGateState();
+        return { ok: true, data: { state } };
+      }
+
+      case "GATE_SET_STATE": {
+        if (!req.state || typeof req.state !== "object") {
+          return { ok: false, error: "Missing gate state" };
+        }
+        await setGateState(req.state);
+        return { ok: true };
+      }
+
+      case "GATE_UPDATE": {
+        if (!req.gateId || typeof req.gateId !== "string") {
+          return { ok: false, error: "Missing gateId" };
+        }
+        if (req.value !== 0 && req.value !== 1) {
+          return { ok: false, error: "Invalid gate value (must be 0 or 1)" };
+        }
+        const updated = await updateGate(req.gateId, req.value);
+        return { ok: true, data: { state: updated } };
+      }
 
       default:
         return { ok: false, error: "Unknown message type" };
