@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" class="fixed-viewport-html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PMERIT Governance Dashboard - Mathematical governance system with work unit conservation tracking">
+    <title>Governance Dashboard - PMERIT</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="/assets/css/theme.css">
+    <link rel="stylesheet" href="/assets/css/base.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
+    <link rel="stylesheet" href="/assets/css/governance.css">
+</head>
+<body>
+    <!-- Error Display -->
+    <div id="dashboard-error" style="display: none;"></div>
+    
+    <!-- Main Container -->
+    <div class="governance-container">
+        <!-- Project Header -->
+        <section id="project-header">
+            <!-- Rendered by JavaScript -->
+        </section>
+        
+        <!-- Conservation Status -->
+        <section id="conservation-status">
+            <!-- Rendered by JavaScript -->
+        </section>
+        
+        <!-- Metrics Cards -->
+        <section id="metrics-cards">
+            <!-- Rendered by JavaScript -->
+        </section>
+        
+        <!-- Scopes Table -->
+        <section class="scopes-section">
+            <div class="section-header">
+                <h2>Scopes & Deliverables</h2>
+                <button class="btn btn-primary" onclick="showCreateScopeForm()">Create Scope</button>
+            </div>
+            <div id="scopes-table">
+                <!-- Rendered by JavaScript -->
+            </div>
+        </section>
+        
+        <!-- Approval Gates -->
+        <section class="gates-section">
+            <div class="section-header">
+                <h2>Approval Gates</h2>
+                <button class="btn btn-primary" onclick="checkIdeationGate()">Check Ideation Gate</button>
+            </div>
+            <div id="approval-gates">
+                <!-- Rendered by JavaScript -->
+            </div>
+        </section>
+        
+        <!-- Reconciliation Button -->
+        <section class="reconciliation-section">
+            <button class="btn btn-secondary" onclick="showReconciliation()">View Reconciliation</button>
+        </section>
+    </div>
+    
+    <!-- JavaScript Files -->
+    <script src="/assets/js/api/projects-api.js"></script>
+    <script src="/assets/js/governance/governance-dashboard.js"></script>
+    <script src="/assets/js/governance/approval-gate-ui.js"></script>
+    
+    <!-- Initialize Dashboard -->
+    <script>
+        // Get project ID from URL query parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const projectId = urlParams.get('projectId');
+        
+        if (!projectId) {
+            document.getElementById('dashboard-error').innerHTML = `
+                <div class="error-message">
+                    <span class="error-icon">⚠</span>
+                    <span>No project ID provided. Please select a project.</span>
+                </div>
+            `;
+            document.getElementById('dashboard-error').style.display = 'block';
+        } else {
+            // Initialize approval gate UI
+            ApprovalGateUI.init();
+            
+            // Initialize dashboard
+            GovernanceDashboard.init(projectId);
+        }
+        
+        /**
+         * Show create scope form
+         */
+        function showCreateScopeForm() {
+            // TODO: Implement create scope form modal
+            alert('Create scope form coming soon');
+        }
+        
+        /**
+         * Check ideation gate
+         */
+        async function checkIdeationGate() {
+            if (!projectId) {
+                alert('No project ID available');
+                return;
+            }
+            
+            await ApprovalGateUI.showIdeationGate(projectId);
+        }
+        
+        /**
+         * Show reconciliation view
+         */
+        async function showReconciliation() {
+            if (!projectId) {
+                alert('No project ID available');
+                return;
+            }
+            
+            try {
+                const result = await ProjectsAPI.getReconciliation(projectId);
+                
+                if (result.success) {
+                    // Display reconciliation in modal or new page
+                    console.log('Reconciliation data:', result.reconciliation);
+                    
+                    // Simple alert for now - TODO: Create proper UI
+                    const { reconciliation } = result;
+                    alert(`
+Reconciliation Status: ${reconciliation.status}
+
+PLANNED: ${reconciliation.planned.total_wu.toFixed(2)} WU
+CLAIMED: ${reconciliation.claimed.total_wu.toFixed(2)} WU
+VERIFIED: ${reconciliation.verified.total_wu.toFixed(2)} WU
+
+Divergences: ${reconciliation.divergences.length}
+- Critical: ${reconciliation.summary.critical}
+- High: ${reconciliation.summary.high}
+- Medium: ${reconciliation.summary.medium}
+                    `.trim());
+                }
+            } catch (error) {
+                console.error('Reconciliation error:', error);
+                alert('Failed to load reconciliation data: ' + error.message);
+            }
+        }
+        
+        /**
+         * Cleanup on page unload
+         */
+        window.addEventListener('beforeunload', () => {
+            GovernanceDashboard.destroy();
+        });
+    </script>
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 1rem;
+            background: #f8fafc;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        
+        .governance-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .section-header h2 {
+            margin: 0;
+            color: var(--color-text-primary, #1a1a1a);
+        }
+        
+        .scopes-section,
+        .gates-section,
+        .reconciliation-section {
+            margin-bottom: 2rem;
+        }
+        
+        .reconciliation-section {
+            text-align: center;
+        }
+    </style>
+</body>
+</html>
