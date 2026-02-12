@@ -107,13 +107,10 @@ export async function onRequestPost(context) {
 
     // If gate passed, update project
     if (allChecksPassed) {
-      await db.db.prepare(`
-        UPDATE projects
-        SET ideation_gate_passed = TRUE,
-            current_phase = 'EXECUTION',
-            updated_at = NOW()
-        WHERE id = $1
-      `).bind(projectId).run();
+      await db.updateProject(projectId, {
+        ideation_gate_passed: true,
+        current_phase: 'EXECUTION'
+      });
 
       // Log to audit trail
       await db.logProjectAudit({

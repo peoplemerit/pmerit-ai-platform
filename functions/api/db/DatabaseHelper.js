@@ -600,6 +600,50 @@ class DatabaseHelper {
   }
 
   /**
+   * Update project
+   * @param {string} projectId - Project UUID
+   * @param {Object} updates - Fields to update
+   * @returns {Promise<Object>} Updated project
+   */
+  async updateProject(projectId, updates) {
+    try {
+      const setClauses = [];
+      const values = [];
+      let paramCount = 1;
+
+      // Build SET clause dynamically
+      for (const [key, value] of Object.entries(updates)) {
+        setClauses.push(`${key} = $${paramCount}`);
+        values.push(value);
+        paramCount++;
+      }
+
+      // Always update timestamp
+      setClauses.push(`updated_at = NOW()`);
+
+      const query = `
+        UPDATE projects
+        SET ${setClauses.join(', ')}
+        WHERE id = $${paramCount}
+        RETURNING *
+      `;
+
+      const result = await this.db.prepare(query).bind(...values, projectId).first();
+
+      if (!result) {
+        throw new Error('Project not found');
+      }
+
+      console.log('[DatabaseHelper] Project updated:', projectId);
+      return result;
+
+    } catch (error) {
+      console.error('[DatabaseHelper] updateProject error:', error);
+      throw new Error(`Failed to update project: ${error.message}`);
+    }
+  }
+
+  /**
    * Create scope with work unit allocation
    * @param {Object} data - Scope data
    * @param {string} data.projectId - Project UUID
