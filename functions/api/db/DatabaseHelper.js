@@ -533,6 +533,373 @@ class DatabaseHelper {
   }
 
   // =========================================================================
+  // GOVERNANCE PROJECT OPERATIONS
+  // =========================================================================
+
+  /**
+   * Create new project with work unit conservation
+   * @param {Object} data - Project data
+   * @param {number} data.userId - User ID
+   * @param {string} data.title - Project title
+   * @param {string} data.objective - Project objective
+   * @param {number} data.execution_total_wu - Total work units
+   * @param {number} data.formula_execution_wu - Formula WU
+   * @param {number} data.verified_reality_wu - Verified WU
+   * @returns {Promise<Object>} Created project
+   */
+  async createProject(data) {
+    try {
+      const { userId, title, objective, execution_total_wu, formula_execution_wu, verified_reality_wu } = data;
+
+      const result = await this.db.prepare(`
+        INSERT INTO projects (
+          user_id, title, objective,
+          execution_total_wu, formula_execution_wu, verified_reality_wu
+        )
+        VALUES ($1, $2, $3, $4, $5, $6)
+        RETURNING *
+      `).bind(
+        userId,
+        title,
+        objective,
+        execution_total_wu,
+        formula_execution_wu,
+        verified_reality_wu
+      ).first();
+
+      console.log('[DatabaseHelper] Project created:', result.id);
+      return result;
+
+    } catch (error) {
+      console.error('[DatabaseHelper] createProject error:', error);
+      throw new Error(`Failed to create project: ${error.message}`);
+    }
+  }
+
+  /**
+   * Get project by ID
+   * @param {string} projectId - Project UUID
+   * @returns {Promise<Object>} Project data
+   */
+  async getProject(projectId) {
+    try {
+      const result = await this.db.prepare(`
+        SELECT * FROM projects WHERE id = $1
+      `).bind(projectId).first();
+
+      if (!result) {
+        throw new Error('Project not found');
+      }
+
+      return result;
+
+    } catch (error) {
+      console.error('[DatabaseHelper] getProject error:', error);
+      throw new Error(`Failed to get project: ${error.message}`);
+    }
+  }
+
+  /**
+   * Create scope with work unit allocation
+   * @param {Object} data - Scope data
+   * @param {string} data.projectId - Project UUID
+   * @param {string} data.scopeName - Scope name
+   * @param {number} data.allocated_wu - Allocated work units
+   * @param {Array} data.acceptance_criteria - Acceptance criteria
+   * @returns {Promise<Object>} Created scope
+   */
+  async createScope(data) {
+    try {
+      const { projectId, scopeName, allocated_wu, acceptance_criteria } = data;
+
+      // Verify project exists and has enough unallocated WU
+      const project = await this.getProject(projectId);
+      
+      // Get total allocated WU across all scopes
+      const allocatedSum = await this.db.prepare(`
+        SELECT COALESCE(SUM(allocated_wu), 0) as total_allocated
+        FROM scopes
+        WHERE project_id = $1
+      `).bind(projectId).first();
+
+      const totalAllocated = parseFloat(allocatedSum.total_allocated || 0);
+      const projectTotal = parseFloat(project.execution_total_wu);
+
+      if (totalAllocated + allocated_wu > projectTotal) {
+        throw new Error(`Cannot allocate ${allocated_wu} WU. Project has ${projectTotal} total, ${totalAllocated} already allocated, ${projectTotal - totalAllocated} remaining.`);
+      }
+
+      const result = await this.db.prepare(`
+        INSERT INTO scopes (
+          project_id, scope_name, allocated_wu, acceptance_criteria
+        )
+        VALUES ($1, $2, $3, $4)
+        RETURNING *
+      `).bind(
+        projectId,
+        scopeName,
+        allocated_wu,
+        JSON.stringify(acceptance_criteria || [])
+      ).first();
+
+      console.log('[DatabaseHelper] Scope created:', result.id);
+      return result;
+
+    } catch (error) {
+      console.error('[DatabaseHelper] createScope error:', error);
+      throw new Error(`Failed to create scope: ${error.message}`);
+    }
+  }
+
+  /**
+   * Verify scope and transfer work units
+   * @param {string} scopeId - Scope UUID
+   * @param {Object} scores - DMAIC scores
+   * @param {number} scores.logic_score - Logic score (0-1)
+   * @param {number} scores.procedural_score - Procedural score (0-1)
+   * @param {number} scores.validation_score - Validation score (0-1)
+   * @returns {Promise<Object>} Updated scope with WU transfer
+   */
+  async verifyScope(scopeId, scores) {
+    try {
+      const { logic_score, procedural_score, validation_score } = scores;
+
+      // Update scope with scores (readiness_score is computed automatically)
+      const scope = await this.db.prepare(`
+        UPDATE scopes
+        SET 
+          logic_score = $1,
+          procedural_score = $2,
+          validation_score = $3,
+          verified_at = NOW(),
+          status = 'VERIFIED',
+          updated_at = NOW()
+        WHERE id = $4
+        RETURNING *
+      `).bind(
+        logic_score,
+        procedural_score,
+        validation_score,
+        scopeId
+      ).first();
+
+      if (!scope) {
+        throw new Error('Scope not found');
+      }
+
+      // Calculate transferred WU using readiness score
+      // Transfer rule: WU_transferred = allocated_wu × R
+      const readiness = parseFloat(scope.readiness_score);
+      const allocated = parseFloat(scope.allocated_wu);
+      const transferred = allocated * readiness;
+
+      // Update verified_wu
+      await this.db.prepare(`
+        UPDATE scopes
+        SET verified_wu = $1
+        WHERE id = $2
+      `).bind(transferred, scopeId).run();
+
+      // Update project WU (transfer from formula to verified)
+      const project = await this.getProject(scope.project_id);
+      const newFormulaWu = parseFloat(project.formula_execution_wu) - transferred;
+      const newVerifiedWu = parseFloat(project.verified_reality_wu) + transferred;
+
+      await this.db.prepare(`
+        UPDATE projects
+        SET 
+          formula_execution_wu = $1,
+          verified_reality_wu = $2,
+          updated_at = NOW()
+        WHERE id = $3
+      `).bind(newFormulaWu, newVerifiedWu, scope.project_id).run();
+
+      console.log('[DatabaseHelper] Scope verified:', scopeId, 'WU transferred:', transferred);
+
+      return {
+        scope: scope,
+        wu_transferred: transferred,
+        readiness_score: readiness
+      };
+
+    } catch (error) {
+      console.error('[DatabaseHelper] verifyScope error:', error);
+      throw new Error(`Failed to verify scope: ${error.message}`);
+    }
+  }
+
+  /**
+   * Create approval gate
+   * @param {Object} data - Gate data
+   * @param {string} data.projectId - Project UUID (optional)
+   * @param {string} data.scopeId - Scope UUID (optional)
+   * @param {string} data.gateType - Gate type
+   * @returns {Promise<Object>} Created gate
+   */
+  async createApprovalGate(data) {
+    try {
+      const { projectId, scopeId, gateType } = data;
+
+      const result = await this.db.prepare(`
+        INSERT INTO approval_gates (project_id, scope_id, gate_type, status)
+        VALUES ($1, $2, $3, 'PENDING')
+        RETURNING *
+      `).bind(
+        projectId || null,
+        scopeId || null,
+        gateType
+      ).first();
+
+      console.log('[DatabaseHelper] Approval gate created:', result.id);
+      return result;
+
+    } catch (error) {
+      console.error('[DatabaseHelper] createApprovalGate error:', error);
+      throw new Error(`Failed to create approval gate: ${error.message}`);
+    }
+  }
+
+  /**
+   * Update approval gate status
+   * @param {string} gateId - Gate UUID
+   * @param {Object} data - Update data
+   * @param {string} data.status - New status
+   * @param {number} data.approvedBy - User ID
+   * @param {string} data.approvalMessage - Approval message
+   * @returns {Promise<Object>} Updated gate
+   */
+  async updateApprovalGate(gateId, data) {
+    try {
+      const { status, approvedBy, approvalMessage } = data;
+
+      const result = await this.db.prepare(`
+        UPDATE approval_gates
+        SET 
+          status = $1,
+          approved_by = $2,
+          approval_message = $3,
+          approved_at = NOW()
+        WHERE id = $4
+        RETURNING *
+      `).bind(status, approvedBy, approvalMessage, gateId).first();
+
+      console.log('[DatabaseHelper] Approval gate updated:', gateId);
+      return result;
+
+    } catch (error) {
+      console.error('[DatabaseHelper] updateApprovalGate error:', error);
+      throw new Error(`Failed to update approval gate: ${error.message}`);
+    }
+  }
+
+  /**
+   * Log project audit event
+   * @param {Object} data - Audit data
+   * @param {string} data.projectId - Project UUID
+   * @param {string} data.scopeId - Scope UUID (optional)
+   * @param {string} data.eventType - Event type
+   * @param {Object} data.eventData - Event data
+   * @param {number} data.execution_total_wu - WU snapshot
+   * @param {number} data.formula_execution_wu - WU snapshot
+   * @param {number} data.verified_reality_wu - WU snapshot
+   * @returns {Promise<Object>} Audit log entry
+   */
+  async logProjectAudit(data) {
+    try {
+      const { projectId, scopeId, eventType, eventData, execution_total_wu, formula_execution_wu, verified_reality_wu } = data;
+
+      const result = await this.db.prepare(`
+        INSERT INTO project_audit_log (
+          project_id, scope_id, event_type, event_data,
+          execution_total_wu, formula_execution_wu, verified_reality_wu
+        )
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        RETURNING *
+      `).bind(
+        projectId,
+        scopeId || null,
+        eventType,
+        JSON.stringify(eventData || {}),
+        execution_total_wu || null,
+        formula_execution_wu || null,
+        verified_reality_wu || null
+      ).first();
+
+      return result;
+
+    } catch (error) {
+      console.error('[DatabaseHelper] logProjectAudit error:', error);
+      // Don't throw - audit logging should not break main operations
+      return null;
+    }
+  }
+
+  /**
+   * Get project scopes
+   * @param {string} projectId - Project UUID
+   * @returns {Promise<Array>} Scopes array
+   */
+  async getProjectScopes(projectId) {
+    try {
+      const result = await this.db.prepare(`
+        SELECT * FROM scopes
+        WHERE project_id = $1
+        ORDER BY created_at ASC
+      `).bind(projectId).all();
+
+      return result.results || [];
+
+    } catch (error) {
+      console.error('[DatabaseHelper] getProjectScopes error:', error);
+      throw new Error(`Failed to get scopes: ${error.message}`);
+    }
+  }
+
+  /**
+   * Get project approval gates
+   * @param {string} projectId - Project UUID
+   * @returns {Promise<Array>} Gates array
+   */
+  async getProjectGates(projectId) {
+    try {
+      const result = await this.db.prepare(`
+        SELECT * FROM approval_gates
+        WHERE project_id = $1
+        ORDER BY created_at DESC
+      `).bind(projectId).all();
+
+      return result.results || [];
+
+    } catch (error) {
+      console.error('[DatabaseHelper] getProjectGates error:', error);
+      throw new Error(`Failed to get gates: ${error.message}`);
+    }
+  }
+
+  /**
+   * Get project audit log
+   * @param {string} projectId - Project UUID
+   * @param {number} limit - Number of entries (default: 50)
+   * @returns {Promise<Array>} Audit log entries
+   */
+  async getProjectAuditLog(projectId, limit = 50) {
+    try {
+      const result = await this.db.prepare(`
+        SELECT * FROM project_audit_log
+        WHERE project_id = $1
+        ORDER BY created_at DESC
+        LIMIT $2
+      `).bind(projectId, limit).all();
+
+      return result.results || [];
+
+    } catch (error) {
+      console.error('[DatabaseHelper] getProjectAuditLog error:', error);
+      throw new Error(`Failed to get audit log: ${error.message}`);
+    }
+  }
+
+  // =========================================================================
   // UTILITY METHODS
   // =========================================================================
 
