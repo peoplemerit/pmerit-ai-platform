@@ -46,6 +46,15 @@
 /career.html /pathways.html 301
 
 # ==============================================================================
+# PMERIT APPS HUB REDIRECT (Short URL for QR codes + analytics)
+# ==============================================================================
+# Short trackable URL for business cards and print materials
+# Cloudflare analytics will show scan-driven visits at /get
+
+/get https://apps.pmerit.com 301
+/get/ https://apps.pmerit.com 301
+
+# ==============================================================================
 # CLEAN URL SUPPORT (Optional - for future enhancement)
 # ==============================================================================
 # If we want to support /assessment-results without .html extension in the future
